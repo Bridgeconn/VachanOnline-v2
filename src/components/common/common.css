@@ -1,0 +1,46 @@
+.searchIcon {
+  display: inline;
+}
+
+.searchBox input {
+  width: 300px;
+  border: none;
+  padding-top: 9px;
+  padding-left: 12px;
+  outline: none;
+}
+.searchBox {
+  float: right;
+  width: 340px;
+  background-color: #fff;
+  margin-top: 5px;
+}
+button:focus {
+  outline: none;
+}
+button:hover {
+  background-color: white;
+}
+.my-component {
+  background: #fff;
+}
+
+.fullscreen-enabled .my-component {
+  background: #000;
+}
+.fullscreen-enabled > div {
+  height: 100vh;
+  overflow-y: scroll;
+}
+.material-icons.md-18 {
+  font-size: 18px;
+}
+.material-icons.md-26 {
+  font-size: 26px;
+}
+.material-icons.md-32 {
+  font-size: 32px;
+}
+.material-icons.md-36 {
+  font-size: 36px;
+}
