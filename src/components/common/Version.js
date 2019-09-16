@@ -39,11 +39,12 @@ const useStyles = makeStyles(theme => ({
     color: "#fff",
     boxShadow: "none",
     padding: "0 0 0 20px",
-    width: "100%"
+    width: "100%",
+
   },
   summaryPanel: {
     textTransform: "capitalize",
-    borderBottom: "1px solid #b7b7b726",
+    borderBottom: "1px solid #bbb",
     "&$expanded": {
       minHeight: 50
     }
@@ -69,7 +70,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: "1rem"
   },
   version: {
-    fontSize: "1rem",
+    fontSize: "13px",
     cursor: "pointer"
   }
 }));
@@ -112,73 +113,73 @@ const Version = props => {
       {props.versions.length === 0 ? (
         ""
       ) : (
-        <>
-          <Menu
-            elevation={0}
-            getContentAnchorEl={null}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center"
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center"
-            }}
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            classes={{
-              list: classes.list,
-              paper: classes.paper
-            }}
-          >
-            {props.versions.map((version, i) => (
-              <ExpansionPanel
-                defaultExpanded={true}
-                classes={{
-                  root: classes.menuRoot,
-                  expanded: classes.expanded
-                }}
-                key={i}
-              >
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon />}
+          <>
+            <Menu
+              elevation={0}
+              getContentAnchorEl={null}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center"
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center"
+              }}
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              classes={{
+                list: classes.list,
+                paper: classes.paper
+              }}
+            >
+              {props.versions.map((version, i) => (
+                <ExpansionPanel
+                  defaultExpanded={false}
                   classes={{
-                    root: classes.summaryPanel,
-                    expanded: classes.expanded,
-                    content: classes.content
+                    root: classes.menuRoot,
+                    expanded: classes.expanded
                   }}
+                  key={i}
                 >
-                  <Typography className={classes.language}>
-                    {version.language}
-                  </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails style={{ padding: 0 }}>
-                  <List className={classes.expansionDetails}>
-                    {version.languageVersions.map((item, i) => (
-                      <ListItem
-                        key={i}
-                        value={
-                          item.language.name +
-                          "-" +
-                          item.version.code.toUpperCase()
-                        }
-                        data-sourceid={item.sourceId}
-                        onClick={setVersion}
-                        className={classes.version}
-                      >
-                        {item.version.code.toUpperCase()} : {item.version.name}
-                      </ListItem>
-                    ))}
-                  </List>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            ))}
-          </Menu>
-        </>
-      )}
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    classes={{
+                      root: classes.summaryPanel,
+                      expanded: classes.expanded,
+                      content: classes.content
+                    }}
+                  >
+                    <Typography className={classes.language}>
+                      {version.language}
+                    </Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails style={{ padding: 0 }}>
+                    <List className={classes.expansionDetails}>
+                      {version.languageVersions.map((item, i) => (
+                        <ListItem
+                          key={i}
+                          value={
+                            item.language.name +
+                            "-" +
+                            item.version.code.toUpperCase()
+                          }
+                          data-sourceid={item.sourceId}
+                          onClick={setVersion}
+                          className={classes.version}
+                        >
+                          {item.version.code.toUpperCase()} : {item.version.name}
+                        </ListItem>
+                      ))}
+                    </List>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              ))}
+            </Menu>
+          </>
+        )}
     </>
   );
 };

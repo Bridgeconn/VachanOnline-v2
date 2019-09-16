@@ -9,11 +9,15 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        marginTop: 100
+        marginTop: 100,
+        borderBottom: '1px solid rgba(0, 0, 0, .125)',
+        paddingLeft: 15,
+
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
+
     },
     title: {
         paddingLeft: 25,

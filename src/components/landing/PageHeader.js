@@ -5,7 +5,10 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 import logo from "../common/images/logo.png";
-
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import Login from './Login'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -15,11 +18,11 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   appBar: {
-    background: "rgba(0,0,0,0.5)"
+    background: "rgba(0,0,0,0.2)"
   },
   title: {
     flexGrow: 1,
-    width: "30%",
+    width: "33%",
     display: "inline-block",
     [theme.breakpoints.up("sm")]: {
       display: "block"
@@ -29,7 +32,7 @@ const useStyles = makeStyles(theme => ({
       textDecoration: "none"
     },
     "& img": {
-      width: "25%"
+      width: "33%"
     }
   },
   search: {
@@ -92,7 +95,7 @@ const PageHeader = ({ toggleDrawer }) => {
               color="inherit"
               aria-label="Open drawer"
             >
-              {/* <MenuIcon /> */}
+              <MenuIcon />
             </IconButton>
             <div className={classes.title} variant="h5" noWrap>
               <Link
@@ -105,6 +108,20 @@ const PageHeader = ({ toggleDrawer }) => {
                 <img src={logo} alt={"logo"} />
               </Link>
             </div>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </div>
+            <Login />
           </Toolbar>
         </AppBar>
       </div>

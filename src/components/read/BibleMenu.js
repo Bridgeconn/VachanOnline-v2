@@ -19,15 +19,15 @@ export default function BibleMenu(props) {
           icon="import_contacts"
           title="Parallel Bible"
         />
-        <MenuItem icon="comment" title="Commentaries" />
-        <MenuItem icon="format_shapes" title="Word Study" />
-        <MenuItem icon="functions" title="Interlinear" />
-        <MenuItem icon="videocam" title=" Videos" />
-        <MenuItem icon="image" title="Images" />
-        <MenuItem icon="volume_up" title="Audio" />
+        <MenuItem icon="comment" title="Commentaries" style={{ marginBottom: "20px " }} />
+        <MenuItem icon="format_shapes" title="Dictionary" style={{ marginTop: 20 }} />
+        <MenuItem icon="functions" title="Interlinear" style={{ marginBottom: 10 }} />
+        <MenuItem icon="videocam" title=" Videos" style={{ marginBottom: 10 }} />
+        <MenuItem icon="image" title="Images" style={{ marginBottom: 10 }} />
+        <MenuItem icon="volume_up" title="Audio" style={{ marginBottom: 10 }} />
         <MenuItem icon="rate_review" title="Articles" />
-        <MenuItem icon="sort_by_alpha" title="Dictionary" />
-        <MenuItem icon="more_horiz" title="More" />
+        <MenuItem icon="today" title="Daily Devotion" />
+
       </List>
     </div>
   );

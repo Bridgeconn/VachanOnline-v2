@@ -8,6 +8,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import SerachBox from "../common/SearchBox";
 import logo from "../common/images/logo.png";
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Profile from '../common/Profile'
 const useStyles = makeStyles(theme => ({
   root: {
     top: 0,
@@ -17,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     height: 74
   },
   appBar: {
-    background: "#089de3",
+    background: "#2e639a",
     padding: "0px 10px",
     marginBottom: "10px"
   },
@@ -33,7 +36,7 @@ const useStyles = makeStyles(theme => ({
       textDecoration: "none"
     },
     "& img": {
-      width: "36%"
+      width: "33%"
     }
   },
   search: {
@@ -100,14 +103,14 @@ export default function TopBar() {
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
         <Toolbar>
-          {/* <IconButton
+          <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="Open drawer"
           >
             <MenuIcon />
-          </IconButton> */}
+          </IconButton>
           <div className={classes.title}>
             <Link to="/">
               {" "}
@@ -129,6 +132,7 @@ export default function TopBar() {
             />
           </FormGroup>
           <SerachBox />
+          <Profile />
         </Toolbar>
       </AppBar>
     </div>
