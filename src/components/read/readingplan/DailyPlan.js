@@ -64,7 +64,7 @@ export default function DailyPlan() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="default" style={{ backgroundColor: "#5197a2" }}>
+            <AppBar position="static" color="default">
                 <Tabs
                     value={value}
                     onChange={handleChange}

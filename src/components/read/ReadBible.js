@@ -12,7 +12,9 @@ import Images from '../rightmenu/Images';
 import Articles from '../rightmenu/Articles';
 import Audio from '../rightmenu/Audio';
 import MyContent from './mycontent/MyContent'
-import ReadingPlan from './readingplan/ReadingPlan'
+import ReadingPlan from './readingplan/ReadingPlan';
+import DailyDevotion from '../rightmenu/DailyDevotion'
+
 const useStyles = makeStyles(theme => ({
   // biblePane2: {
   //   position: "absolute",
@@ -98,8 +100,11 @@ const ReadBible = () => {
       {/* <div className={classes.biblePane2}>
         <MyContent />
       </div> */}
-      <div className={classes.biblePane2}>
+      {/* <div className={classes.biblePane2}>
         <ReadingPlan />
+      </div> */}
+      <div className={classes.biblePane2}>
+        <DailyDevotion />
       </div>
       <div className={classes.biblePane3}>
         <BibleMenu />

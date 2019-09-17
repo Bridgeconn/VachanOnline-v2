@@ -5,8 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
@@ -25,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        width: 260
+        width: 320
     },
 
     form: {
@@ -33,7 +31,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(1),
     },
     submit: {
-        margin: theme.spacing(0, 0, 1),
+        margin: theme.spacing(1, 0, 1),
         backgroundColor: "#0d5773",
         color: "#fff",
 
@@ -46,7 +44,30 @@ const useStyles = makeStyles(theme => ({
     },
     popver: {
         width: 550
+    },
+    fileInput: {
+        border: "1px solid #ddd",
+        display: "inline-block",
+        padding: "10px 10px",
+        margin: 0,
+        width: 200,
+        cursor: "pointer",
+
+    },
+    submitButton: {
+        padding: 7,
+        marginLeft: 7,
+        background: "white",
+        border: "4px solid lightgray",
+        borderRadius: 10,
+        fontSize: "10pt",
+        cursor: "pointer",
+        display: "inline-block",
+        textTransform: "none"
+
     }
+
+
 }));
 
 export default function SimplePopover() {
@@ -90,35 +111,71 @@ export default function SimplePopover() {
                     <div className={classes.paper}>
 
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            Sign up
         </Typography>
                         <form className={classes.form} noValidate>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                            />
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            />
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        autoComplete="fname"
+                                        name="firstName"
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        id="firstName"
+                                        label="First Name"
+                                        autoFocus
+
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        id="lastName"
+                                        label="Last Name"
+                                        name="lastName"
+                                        autoComplete="lname"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        id="email"
+                                        label="Email Address"
+                                        name="email"
+                                        autoComplete="email"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+
+                                    <form >
+                                        <input className={classes.fileInput}
+                                            type="file"
+                                        />
+                                        <Button className={classes.submitButton}
+                                            type="submit">Upload image
+                                        </Button>
+                                    </form>
+
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        label="Password"
+                                        type="password"
+                                        id="password"
+                                        autoComplete="current-password"
+                                    />
+                                </Grid>
+
+                            </Grid>
                             <Button
                                 type="submit"
                                 fullWidth
@@ -126,7 +183,7 @@ export default function SimplePopover() {
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Sign In
+                                Sign Up
           </Button>
                             <Button type="submit"
                                 fullWidth
@@ -139,16 +196,11 @@ export default function SimplePopover() {
                                 color="primary"
                                 style={{ textTransform: "none", marginBottom: 5 }}
                             >Sign in with Facebook</Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        <Button style={{ border: "1px solid #ccc", color: "#000", textTransform: "none" }} >Signup</Button>
-                                    </Link>
-                                </Grid>
+                            <Grid container justify="flex-end">
                                 <Grid item>
                                     <Link href="#" variant="body2">
-                                        <Button style={{ border: "1px solid #ccc", color: "#000", textTransform: "none" }}> Forgot password?</Button>
-                                    </Link>
+                                        Already have an account? Sign in
+              </Link>
                                 </Grid>
                             </Grid>
                         </form>

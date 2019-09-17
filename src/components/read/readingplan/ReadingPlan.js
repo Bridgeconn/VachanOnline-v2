@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import PropTypes from 'prop-types';
 import MyPlans from './MyPlans';
+import FindPlan from './FindPlan';
 
 
 const useStyles = makeStyles(theme => ({
@@ -88,7 +89,7 @@ export default function ReadingPlan() {
                 <MyPlans />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                xxxxzzzzzzzzzz
+                <FindPlan />
             </TabPanel>
 
 

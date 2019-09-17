@@ -8,7 +8,9 @@ import logo from "../common/images/logo.png";
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import Login from './Login'
+// import Login from './Login';
+import SignUp from './SignUp';
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -121,7 +123,8 @@ const PageHeader = ({ toggleDrawer }) => {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </div>
-            <Login />
+            {/* <Login /> */}
+            <SignUp />
           </Toolbar>
         </AppBar>
       </div>
