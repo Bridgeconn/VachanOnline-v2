@@ -9,8 +9,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 // import Login from './Login';
-import SignUp from './SignUp';
-
+// import SignUp from './SignUp';
+// import ForgotPassword from './ForgotPassword'
+import ResetPassword from './ResetPassword';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -124,7 +125,9 @@ const PageHeader = ({ toggleDrawer }) => {
               />
             </div>
             {/* <Login /> */}
-            <SignUp />
+            {/* <SignUp /> */}
+            {/* <ForgotPassword /> */}
+            <ResetPassword />
           </Toolbar>
         </AppBar>
       </div>

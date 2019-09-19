@@ -9,7 +9,7 @@ const useStyles = makeStyles({
 
     btn: {
 
-        padding: "5px"
+        padding: "15px"
     }
 
 });
