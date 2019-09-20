@@ -106,6 +106,7 @@ const ReadBible = () => {
       <div className={classes.biblePane2}>
         <DailyDevotion />
       </div>
+
       <div className={classes.biblePane3}>
         <BibleMenu />
       </div>

@@ -11,7 +11,8 @@ import InputBase from '@material-ui/core/InputBase';
 // import Login from './Login';
 // import SignUp from './SignUp';
 // import ForgotPassword from './ForgotPassword'
-import ResetPassword from './ResetPassword';
+// import ResetPassword from './ResetPassword';
+import EditProfile from './EditProfile';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -127,7 +128,8 @@ const PageHeader = ({ toggleDrawer }) => {
             {/* <Login /> */}
             {/* <SignUp /> */}
             {/* <ForgotPassword /> */}
-            <ResetPassword />
+            {/* <ResetPassword /> */}
+            <EditProfile />
           </Toolbar>
         </AppBar>
       </div>
