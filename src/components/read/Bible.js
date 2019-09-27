@@ -1,26 +1,46 @@
 import React from "react";
-import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import * as actions from "../../store/actions";
 import API from "../../store/api";
 import { nextChapter, previousChapter } from "../common/utillity";
 const useStyles = makeStyles(theme => ({
   biblePanel: {
-    padding: "25px 8%",
-    backgroundColor: "white",
     lineHeight: 2,
+    position: "absolute",
+    backgroundColor: "#fff",
+    width: "100%",
+    height: "100%",
     "& p": {
       textAlign: "justify",
-      color: "#616161",
+      color: "#464545",
       marginBottom: 5
     },
     "& span": {
       textAlign: "justify",
-      color: "#616161"
+      color: "#464545"
     }
+  },
+  bibleReadingPane: {
+    position: "absolute",
+    right: 0,
+    left: 44,
+    paddingRight: "35px",
+    textAlign: "justify",
+    paddingTop: 20,
+    height: "100%",
+    overflow: "auto"
+  },
+
+  prevChapter: {
+    position: "absolute",
+    top: "45%",
+    left: 3,
+    cursor: "pointer"
+  },
+  nextChapter: {
+    position: "absolute",
+    top: "45%",
+    right: 14,
+    cursor: "pointer"
   }
 }));
 const Bible = props => {
@@ -76,6 +96,11 @@ const Bible = props => {
       );
     }
   };
+  const scrollText = () => {
+    if (props.scroll) {
+      props.scroll(props.paneNo);
+    }
+  };
   const classes = useStyles();
   return (
     <div
@@ -86,67 +111,51 @@ const Bible = props => {
       }}
     >
       {!isLoading ? (
-        <div>
+        <div
+          onScroll={() => {
+            scrollText();
+          }}
+          ref={props.ref1}
+          className={classes.bibleReadingPane}
+        >
           {verses.map(item => (
             <span key={item.number}>
-              {item.metadata &&
-              item.metadata[0] &&
-              item.metadata[0]["styling"] &&
-              (item.metadata[0]["styling"][0] === "p" ||
-                item.metadata[0]["styling"][0].startsWith("q")) ? (
-                <p>
-                  {item.number}. {item.text}
-                </p>
-              ) : (
-                <span>
-                  {item.number}. {item.text}
-                </span>
-              )}
+              <span>
+                {item.number}. {item.text}
+              </span>
             </span>
           ))}
         </div>
       ) : (
         <h3>Loading</h3>
       )}
-      <Fab
-        size="small"
+      <div
         color="default"
         aria-label="Add"
-        style={{ position: "fixed", top: "50vh", left: "2%" }}
+        className={classes.prevChapter}
         onClick={prevClick}
       >
-        <KeyboardArrowLeft />
-      </Fab>
-      <Fab
-        size="small"
+        <i
+          className="material-icons material"
+          style={{ fontSize: "38px", color: "#777777" }}
+        >
+          navigate_before
+        </i>
+      </div>
+      <div
         color="default"
         aria-label="Add"
-        style={{ position: "fixed", top: "50vh", right: "3%" }}
+        className={classes.nextChapter}
         onClick={nextClick}
       >
-        <KeyboardArrowRight />
-      </Fab>
+        <i
+          className="material-icons material"
+          style={{ fontSize: "38px", color: "#777777" }}
+        >
+          keyboard_arrow_right
+        </i>
+      </div>
     </div>
   );
 };
-const mapStateToProps = state => {
-  return {
-    fontSize: state.fontSize,
-    fontFamily: state.fontFamily,
-    sourceId: state.sourceId,
-    bookCode: state.bookCode,
-    chapter: state.chapter,
-    chapterList: state.chapterList,
-    bookList: state.bookList
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value })
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Bible);
+export default Bible;

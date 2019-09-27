@@ -3,30 +3,37 @@ import { Link } from "react-router-dom";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import SerachBox from "../common/SearchBox";
+import logo from "../common/images/logo.png";
 const useStyles = makeStyles(theme => ({
   root: {
     top: 0,
     display: "flex",
-    width: "100%"
+    width: "100%",
+    position: "absolute",
+    height: 74
   },
   appBar: {
-    background: "#3970a7",
-    padding: "0px 20px",
+    background: "#089de3",
+    padding: "0px 10px",
     marginBottom: "10px"
   },
   title: {
     flexGrow: 1,
-    display: "none",
+    width: "30%",
+    display: "inline-block",
     [theme.breakpoints.up("sm")]: {
       display: "block"
     },
     "& a": {
       color: "inherit",
       textDecoration: "none"
+    },
+    "& img": {
+      width: "36%"
     }
   },
   search: {
@@ -72,25 +79,52 @@ const useStyles = makeStyles(theme => ({
     color: "white",
     borderColor: "white",
     backgroundColor: "#007bff"
+  },
+
+  form: {
+    display: "inline-block",
+    marginTop: 7
   }
 }));
-export default function TopBar() {
+export default function TopBar({ pScroll, setValue }) {
   const classes = useStyles();
+
+  const handleChange = () => event => {
+    setValue("parallelScroll", event.target.checked);
+  };
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="Open drawer"
           >
             <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h5" noWrap>
-            <Link to="/">Vachanonline</Link>
-          </Typography>
+          </IconButton> */}
+          <div className={classes.title}>
+            <Link to="/">
+              {" "}
+              <img src={logo} alt={"logo"} />{" "}
+            </Link>
+          </div>
+
+          <FormGroup className={classes.form}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={pScroll}
+                  onChange={handleChange()}
+                  value="checked"
+                  color="primary"
+                />
+              }
+              label="Parallel Scroll"
+            />
+          </FormGroup>
+          <SerachBox />
         </Toolbar>
       </AppBar>
     </div>

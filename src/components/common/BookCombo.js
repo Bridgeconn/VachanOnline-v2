@@ -23,17 +23,20 @@ const useStyles = makeStyles(theme => ({
   },
   root: {
     width: "100%",
-    maxWidth: 770,
-    backgroundColor: "#ffffff",
+    maxWidth: 680,
+    backgroundColor: "#eaeaea",
     textTransform: "capitalize",
-    maxHeight: "calc(100vh - 150px)"
+    maxHeight: "calc(100vh - 150px)",
+
   },
   paper: {
     position: "relative",
     maxHeight: "calc(100vh - 150px)",
-    width: 770,
-    backgroundColor: "#eeefff",
-    color: "#2a2a2a"
+    width: 680,
+    backgroundColor: "#eaeaea",
+    color: "#2a2a2a",
+
+
   },
   book: {
     marginRight: theme.spacing(1),
@@ -41,24 +44,29 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2),
     paddingBottom: 1,
     display: "inline-block",
-    width: 160,
+    width: 140,
     transition: "width 500ms ease-out, height 500ms ease-out",
     textAlign: "center",
-    padding: "0px 0px"
+    padding: "0px 0px",
+    fontSize: "11px",
+    border: "1px solid #d2d2d2c9",
   },
-  active: {
-    backgroundColor: "#7b94da"
-  },
+  // active: {
+  //   backgroundColor: "#00aaff"
+  // },
   openBook: {
-    border: "1px solid #2a2a2a"
+    border: "1px solid #ccc",
+    backgroundColor: "#3f7ad2",
+    color: "#fff"
   },
   chapter: {
-    marginRight: theme.spacing(1),
+    marginRight: 7,
     marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(0),
     display: "inline-block",
     width: 50,
+    border: "1px solid #ccc",
     backgroundColor: "#ffffff",
     textAlign: "center",
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -74,12 +82,28 @@ export default function BookCombo({
   setValue
 }) {
   const classes = useStyles();
+  //book combo button ref
   const bookDropdown = React.useRef(null);
-
-  const [bookOpen, setBookOpen] = React.useState(-1);
+  //last book count in book drop down to show list of chapters in
+  const [bookOpen, setBookOpen] = React.useState(4);
+  const [selectedChapterList, setSelectedChapterList] = React.useState(
+    chapterList
+  );
+  const [selectedBookIndex, setSelectedBookIndex] = React.useState(4);
   React.useEffect(() => {
-    setBookOpen(bookList.length < 4 ? bookList.length : 4);
+    if (bookList !== undefined) {
+      setBookOpen(bookList.length < 4 ? bookList.length : 4);
+    }
   }, [bookList]);
+  React.useEffect(() => {
+    setSelectedChapterList(chapterList);
+  }, [chapterList]);
+  React.useEffect(() => {
+    if (book !== "Loading..." && book !== "" && bookList !== undefined) {
+      setBookOpen(bookList.findIndex(e => e.bibleBookFullName === book) + 1);
+    }
+  }, [bookList, book]);
+  //book to highlight on clicking
   const [bookOpened, setBookOpened] = React.useState("");
   //function to set book once its clicked and open the chapter list for it
   function bookClicked(event) {
@@ -93,7 +117,9 @@ export default function BookCombo({
       getChapters(
         setValue,
         sourceId,
-        event.currentTarget.getAttribute("data-bookcode")
+        event.currentTarget.getAttribute("data-bookcode"),
+        false,
+        setSelectedChapterList
       );
     } else {
       setBookOpen("");
@@ -102,12 +128,16 @@ export default function BookCombo({
   const [openCombo, setOpenCombo] = React.useState(false);
   function openMenu(event) {
     setOpenCombo(true);
+    getChapters(setValue, sourceId, bookCode);
   }
   function closeMenu() {
+    setBookOpened(book);
+    setSelectedChapterList(chapterList);
     setOpenCombo(false);
+    setBookOpen(selectedBookIndex);
   }
-
   const clickChapter = event => {
+    setSelectedBookIndex(bookOpen);
     closeMenu();
     let reference = event.currentTarget
       .getAttribute("data-reference")
@@ -133,87 +163,89 @@ export default function BookCombo({
         {book} {chapter}
         <i className={classesI}>keyboard_arrow_downn</i>
       </Button>
-      {!bookList && bookList.length === 0 ? (
+      {bookList === undefined || bookList.length === 0 ? (
         ""
       ) : (
-        <Menu
-          elevation={0}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center"
-          }}
-          id="customized-menu"
-          anchorEl={bookDropdown.current}
-          keepMounted
-          open={openCombo}
-          onClose={closeMenu}
-          classes={{ paper: classes.paper }}
-        >
-          <List
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            className={classes.root}
+          <Menu
+            elevation={0}
+            getContentAnchorEl={null}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center"
+            }}
+            id="customized-menu"
+            anchorEl={bookDropdown.current}
+            keepMounted
+            open={openCombo}
+            onClose={closeMenu}
+            classes={{ paper: classes.paper }}
           >
-            {bookList.map((item, i) => {
-              let open =
-                bookOpened === item.bibleBookFullName ? classes.openBook : "";
-              var bookActive =
-                bookCode === item.abbreviation ? classes.active : "";
-              return (
-                <React.Fragment key={item.bibleBookID}>
-                  <ListItem
-                    value={item.bibleBookFullName}
-                    data-bookcode={item.abbreviation}
-                    data-sourceid={item.sourceId}
-                    data-count={i + 1}
-                    button
-                    onClick={event => bookClicked(event)}
-                    className={`${classes.book} ${open} ${bookActive}`}
-                  >
-                    <ListItemText primary={item.bibleBookFullName} />
-                  </ListItem>
-                  {bookOpen === i + 1 ? (
-                    <Collapse
-                      in={chapterList && chapterList.length !== 0}
-                      timeout="auto"
-                      unmountOnExit
+            <List
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+              className={classes.root}
+            >
+              {bookList.map((item, i) => {
+                let open =
+                  bookOpened === item.bibleBookFullName ? classes.openBook : "";
+                var bookActive =
+                  bookCode === item.abbreviation ? classes.active : "";
+                return (
+                  <React.Fragment key={item.bibleBookID}>
+                    <ListItem
+                      value={item.bibleBookFullName}
+                      data-bookcode={item.abbreviation}
+                      data-sourceid={item.sourceId}
+                      data-count={i + 1}
+                      button
+                      onClick={event => bookClicked(event)}
+                      className={`${classes.book} ${open} ${bookActive}`}
                     >
-                      <List component="div" disablePadding>
-                        {chapterList.map((item, i) => {
-                          var chapterActive =
-                            item.chapter.reference === book + " " + chapter
-                              ? classes.active
-                              : "";
-                          return (
-                            <ListItem
-                              value={item.chapter.number}
-                              key={item.chapter.chapterId}
-                              data-reference={item.chapter.reference}
-                              data-bookcode={item.bibleBookCode}
-                              button
-                              className={`${chapterActive} ${classes.chapter}`}
-                              onClick={clickChapter}
-                            >
-                              {item.chapter.number}
-                            </ListItem>
-                          );
-                        })}
-                      </List>
-                    </Collapse>
-                  ) : (
-                    ""
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </List>
-        </Menu>
-      )}
+                      <ListItemText primary={item.bibleBookFullName} />
+                    </ListItem>
+                    {bookOpen === i + 1 && selectedChapterList ? (
+                      <Collapse
+                        in={
+                          selectedChapterList && selectedChapterList.length !== 0
+                        }
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <List component="div" disablePadding>
+                          {selectedChapterList.map((item, i) => {
+                            var chapterActive =
+                              item.chapter.reference === book + " " + chapter
+                                ? classes.active
+                                : "";
+                            return (
+                              <ListItem
+                                value={item.chapter.number}
+                                key={item.chapter.chapterId}
+                                data-reference={item.chapter.reference}
+                                data-bookcode={item.bibleBookCode}
+                                button
+                                className={`${classes.chapter} ${chapterActive}`}
+                                onClick={clickChapter}
+                              >
+                                {item.chapter.number}
+                              </ListItem>
+                            );
+                          })}
+                        </List>
+                      </Collapse>
+                    ) : (
+                        ""
+                      )}
+                  </React.Fragment>
+                );
+              })}
+            </List>
+          </Menu>
+        )}
     </>
   );
 }

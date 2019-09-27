@@ -25,12 +25,13 @@ const Landing = props => {
     }
     setMenu(open);
   };
-  const [modal, setMenuModal] = React.useState({
+  //const [modal, setMenuModal] = React.useState({
+  const modal = {
     aboutUs: false,
     contactUs: false,
     feedback: false,
     subscribe: false
-  });
+  };
   const toggleModal = (name, value) => () => {
     //uncomment below lines to start using modals for about us etc
     //setMenuModal({ ...modal, [name]: value });

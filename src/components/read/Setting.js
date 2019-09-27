@@ -65,7 +65,7 @@ const Setting = ({
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
             width: 250,
-            backgroundColor: "#5181a9",
+            backgroundColor: "#286dab",
             color: "#fff"
           }
         }}

@@ -1,19 +1,19 @@
 import API from "../../store/api";
 //Function to get the bible versions
-export const getVersions = setValue => {
+export const getVersions = (setVersions, setValue) => {
   API.get("bibles")
     .then(function(response) {
       const versions = response.data;
-      setValue("versions", versions);
+      setVersions(versions);
       if (versions.length > 0) {
         setValue(
           "version",
-          versions[0].languageVersions[1].language.name +
+          versions[0].languageVersions[0].language.name +
             "-" +
-            versions[0].languageVersions[1].version.code.toUpperCase()
+            versions[0].languageVersions[0].version.code.toUpperCase()
         );
-        setValue("sourceId", versions[0].languageVersions[1].sourceId);
-        getBooks(setValue, versions[0].languageVersions[1].sourceId);
+        setValue("sourceId", versions[0].languageVersions[0].sourceId);
+        getBooks(setValue, versions[0].languageVersions[0].sourceId);
       }
     })
     .catch(function(error) {
@@ -45,14 +45,24 @@ export const getBooks = (setValue, sourceId) => {
     });
 };
 //Function to get the book chapters
-export const getChapters = (setValue, sourceId, bookCode, last) => {
+export const getChapters = (
+  setValue,
+  sourceId,
+  bookCode,
+  setLastChapter,
+  setChapter
+) => {
   API.get("bibles/" + sourceId + "/books/" + bookCode + "/chapters")
     .then(function(response) {
       let chapters = response.data.sort(
         (a, b) => a.chapter.number - b.chapter.number
       );
-      setValue("chapterList", chapters);
-      if (last) {
+      if (setChapter) {
+        setChapter(chapters);
+      } else {
+        setValue("chapterList", chapters);
+      }
+      if (setLastChapter) {
         setValue("chapter", chapters.slice(-1)[0].chapter.number);
       }
     })

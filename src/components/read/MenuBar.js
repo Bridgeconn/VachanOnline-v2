@@ -1,7 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import * as actions from "../../store/actions";
 import Grid from "@material-ui/core/Grid";
 import Popover from "@material-ui/core/Popover";
 import Setting from "../read/Setting";
@@ -9,9 +7,12 @@ import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 const useStyles = makeStyles(theme => ({
   read: {
-    padding: "0 8%",
+    padding: "0 15px 0 44px",
     width: "100%",
-    borderBottom: "1px solid #f1ecec"
+    borderBottom: "1px solid #f1ecec",
+    position: "absolute",
+    height: 61,
+    top: 74
   },
   select: {
     marginTop: "-8px",
@@ -19,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
   info: {
     padding: 0,
-    width: "40px",
+    width: "30px",
     marginTop: 20,
     marginRight: "8px",
     color: "#1976D2",
@@ -27,10 +28,10 @@ const useStyles = makeStyles(theme => ({
   },
   settings: {
     padding: 0,
-    width: "40px",
+    width: "30px",
     marginTop: 20,
     marginLeft: "-10px",
-    marginRight: "-21px",
+    marginRight: "-5px",
     color: "#1976D2",
     cursor: "pointer"
   },
@@ -76,12 +77,7 @@ const MenuBar = props => {
   return (
     <Grid container className={classes.read}>
       <Grid item xs={9}>
-        <Version
-          versions={props.versions}
-          version={props.version}
-          setValue={props.setValue}
-          style={{ backgroundColor: "#000" }}
-        />
+        <Version setValue={props.setValue} version={props.version} />
         <BookCombo
           book={props.book}
           bookList={props.bookList}
@@ -106,7 +102,7 @@ const MenuBar = props => {
           onClick={handleClick}
           className={classes.info}
         >
-          <i className="material-icons md-26">info_outline</i>
+          <i className="material-icons md-23">info_outline</i>
         </div>
         <Popover
           id={id}
@@ -140,7 +136,7 @@ const MenuBar = props => {
           </div>
         </Popover>
         <div className={classes.info} onClick={goFull}>
-          <i className="material-icons md-26">zoom_out_map</i>
+          <i className="material-icons md-23">zoom_out_map</i>
         </div>
         <div
           className={classes.settings}
@@ -149,7 +145,7 @@ const MenuBar = props => {
           aria-haspopup="true"
           onClick={openSettings}
         >
-          <i className="material-icons md-26">more_vert</i>
+          <i className="material-icons md-23">more_vert</i>
         </div>
         <Setting
           fontSize={props.fontSize}
@@ -158,31 +154,16 @@ const MenuBar = props => {
           settingsAnchor={settingsAnchor}
           handleClose={closeSettings}
         />
+        <div className={classes.info}>
+          <i
+            className="material-icons"
+            style={{ fontSize: "24px", marginTop: "-2px" }}
+          >
+            close
+          </i>
+        </div>
       </Grid>
     </Grid>
   );
 };
-const mapStateToProps = state => {
-  return {
-    version: state.version,
-    sourceId: state.sourceId,
-    book: state.book,
-    bookList: state.bookList,
-    bookCode: state.bookCode,
-    chapterList: state.chapterList,
-    chapter: state.chapter,
-    fontSize: state.fontSize,
-    fontFamily: state.fontFamily,
-    versions: state.versions
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value })
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MenuBar);
+export default MenuBar;

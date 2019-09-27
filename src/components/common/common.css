@@ -3,7 +3,7 @@
 }
 
 .searchBox input {
-  width: 300px;
+  width: 280px;
   border: none;
   padding-top: 9px;
   padding-left: 12px;
@@ -11,7 +11,7 @@
 }
 .searchBox {
   float: right;
-  width: 340px;
+  width: 300px;
   background-color: #fff;
   margin-top: 5px;
 }
@@ -35,12 +35,18 @@ button:hover {
 .material-icons.md-18 {
   font-size: 18px;
 }
-.material-icons.md-26 {
-  font-size: 26px;
+.material-icons.md-23 {
+  font-size: 20px;
 }
 .material-icons.md-32 {
   font-size: 32px;
 }
 .material-icons.md-36 {
   font-size: 36px;
+}
+
+.material:hover{
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  color:#000
 }

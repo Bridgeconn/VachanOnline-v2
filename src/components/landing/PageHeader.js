@@ -2,10 +2,9 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
+import logo from "../common/images/logo.png";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,13 +19,17 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    display: "none",
+    width: "30%",
+    display: "inline-block",
     [theme.breakpoints.up("sm")]: {
       display: "block"
     },
     "& a": {
       color: "inherit",
       textDecoration: "none"
+    },
+    "& img": {
+      width: "25%"
     }
   },
   search: {
@@ -89,9 +92,9 @@ const PageHeader = ({ toggleDrawer }) => {
               color="inherit"
               aria-label="Open drawer"
             >
-              <MenuIcon />
+              {/* <MenuIcon /> */}
             </IconButton>
-            <Typography className={classes.title} variant="h5" noWrap>
+            <div className={classes.title} variant="h5" noWrap>
               <Link
                 to={{
                   pathname: "/read",
@@ -99,9 +102,9 @@ const PageHeader = ({ toggleDrawer }) => {
                   search: "?quick-search=true"
                 }}
               >
-                Vachanonline
+                <img src={logo} alt={"logo"} />
               </Link>
-            </Typography>
+            </div>
           </Toolbar>
         </AppBar>
       </div>
