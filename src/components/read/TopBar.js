@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import SerachBox from "../common/SearchBox";
+/* import SerachBox from "../common/SearchBox"; */
 import logo from "../common/images/logo.png";
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,10 +30,11 @@ const useStyles = makeStyles(theme => ({
     },
     "& a": {
       color: "inherit",
-      textDecoration: "none"
+      textDecoration: "none",
+      lineHeight: "75px"
     },
     "& img": {
-      width: "36%"
+      width: "25%"
     }
   },
   search: {
@@ -83,10 +84,12 @@ const useStyles = makeStyles(theme => ({
 
   form: {
     display: "inline-block",
-    marginTop: 7
+    marginTop: 7,
+    float: "right",
+    lineHeight: "72px"
   }
 }));
-export default function TopBar({ pScroll, setValue }) {
+export default function TopBar({ pScroll, setValue, parallelBible }) {
   const classes = useStyles();
 
   const handleChange = () => event => {
@@ -109,22 +112,25 @@ export default function TopBar({ pScroll, setValue }) {
               {" "}
               <img src={logo} alt={"logo"} />{" "}
             </Link>
-          </div>
-
-          <FormGroup className={classes.form}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={pScroll}
-                  onChange={handleChange()}
-                  value="checked"
-                  color="primary"
+            {parallelBible ? (
+              <FormGroup className={classes.form}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={pScroll}
+                      onChange={handleChange()}
+                      value="checked"
+                      color="primary"
+                    />
+                  }
+                  label="Parallel Scroll"
                 />
-              }
-              label="Parallel Scroll"
-            />
-          </FormGroup>
-          <SerachBox />
+              </FormGroup>
+            ) : (
+              ""
+            )}
+            {/* <SerachBox /> */}
+          </div>
         </Toolbar>
       </AppBar>
     </div>

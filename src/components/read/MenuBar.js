@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Popover from "@material-ui/core/Popover";
+/* import Popover from "@material-ui/core/Popover"; */
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
@@ -55,14 +55,14 @@ const MenuBar = props => {
   function goFull() {
     props.setFullscreen(true);
   }
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  function handleClick(event) {
+  /*  const [anchorEl, setAnchorEl] = React.useState(null);
+   function handleClick(event) {
     //uncomment below line to make the info buton work again
     //setAnchorEl(event.currentTarget);
   }
   function handleClose() {
     setAnchorEl(null);
-  }
+  } */
 
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   function openSettings(event) {
@@ -71,9 +71,9 @@ const MenuBar = props => {
   function closeSettings() {
     setSettingsAnchor(null);
   }
-
+  /* 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const id = open ? "simple-popover" : undefined; */
   return (
     <Grid container className={classes.read}>
       <Grid item xs={9}>
@@ -97,7 +97,7 @@ const MenuBar = props => {
         justify="flex-end"
         direction="row"
       >
-        <div
+        {/* <div
           aria-describedby={id}
           onClick={handleClick}
           className={classes.info}
@@ -134,7 +134,7 @@ const MenuBar = props => {
             includes the 1,000+ official Material icons converted to SvgIcon
             components.
           </div>
-        </Popover>
+        </Popover> */}
         <div className={classes.info} onClick={goFull}>
           <i className="material-icons md-23">zoom_out_map</i>
         </div>
@@ -154,14 +154,14 @@ const MenuBar = props => {
           settingsAnchor={settingsAnchor}
           handleClose={closeSettings}
         />
-        <div className={classes.info}>
+        {/* <div className={classes.info}>
           <i
             className="material-icons"
             style={{ fontSize: "24px", marginTop: "-2px" }}
           >
             close
           </i>
-        </div>
+        </div> */}
       </Grid>
     </Grid>
   );

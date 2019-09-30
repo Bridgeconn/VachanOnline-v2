@@ -19,7 +19,7 @@ export default function BibleMenu(props) {
           icon="import_contacts"
           title="Parallel Bible"
         />
-        <MenuItem icon="comment" title="Commentaries" />
+        {/* <MenuItem icon="comment" title="Commentaries" />
         <MenuItem icon="format_shapes" title="Word Study" />
         <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="videocam" title=" Videos" />
@@ -27,7 +27,7 @@ export default function BibleMenu(props) {
         <MenuItem icon="volume_up" title="Audio" />
         <MenuItem icon="rate_review" title="Articles" />
         <MenuItem icon="sort_by_alpha" title="Dictionary" />
-        <MenuItem icon="more_horiz" title="More" />
+        <MenuItem icon="more_horiz" title="More" /> */}
       </List>
     </div>
   );

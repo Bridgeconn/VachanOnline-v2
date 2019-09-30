@@ -41,17 +41,22 @@ const useStyles = makeStyles(theme => ({
     top: "45%",
     right: 14,
     cursor: "pointer"
+  },
+  loading: {
+    padding: 20
   }
 }));
 const Bible = props => {
   const fontFamily =
     props.fontFamily === "Sans" ? "Roboto,Noto Sans" : "Roboto Slab,Martel";
   const [verses, setVerses] = React.useState([]);
+  const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
     if (props.sourceId && props.bookCode && props.chapter) {
       //code to get chatper content if version, book or chapter changed
       setIsLoading(true);
+      setLoadingText("Loading");
       API.get(
         "bibles/" +
           props.sourceId +
@@ -61,7 +66,11 @@ const Bible = props => {
           props.chapter
       )
         .then(function(response) {
-          setVerses(response.data.chapterContent.verses);
+          if (response.data.chapterContent === undefined) {
+            setLoadingText("Book not uploaded");
+          } else {
+            setVerses(response.data.chapterContent.verses);
+          }
           setIsLoading(false);
         })
         .catch(function(error) {
@@ -110,7 +119,7 @@ const Bible = props => {
         fontSize: props.fontSize
       }}
     >
-      {!isLoading ? (
+      {!isLoading && loadingText !== "Book not uploaded" ? (
         <div
           onScroll={() => {
             scrollText();
@@ -127,7 +136,7 @@ const Bible = props => {
           ))}
         </div>
       ) : (
-        <h3>Loading</h3>
+        <h3 className={classes.loading}>{loadingText}</h3>
       )}
       <div
         color="default"

@@ -156,7 +156,11 @@ const ReadBible = props => {
   }
   return (
     <>
-      <TopBar pScroll={props.parallelScroll} setValue={props.setValue} />
+      <TopBar
+        pScroll={props.parallelScroll}
+        setValue={props.setValue}
+        parallelBible={parallelBible}
+      />
       <div>
         {pane}
         <div className={classes.rightMenu}>

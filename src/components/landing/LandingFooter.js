@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
-import Button from "@material-ui/core/Button";
+/* import Button from "@material-ui/core/Button"; */
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -47,7 +47,7 @@ const LandingFooter = props => {
   return (
     <Grid container className={classes.landingFooter}>
       <Grid item xs={12} md={4}>
-        <Link
+        {/* <Link
           href="#"
           className={classes.link}
           key={props.links[0]}
@@ -70,7 +70,7 @@ const LandingFooter = props => {
           onClick={props.toggleModal("feedback", true)}
         >
           {props.links[2]}{" "}
-        </Link>
+        </Link> */}
       </Grid>
       <Grid item xs={12} md={5}>
         <Link>
@@ -78,7 +78,7 @@ const LandingFooter = props => {
         </Link>
       </Grid>
       <Grid item xs={12} md={3}>
-        <Button
+        {/* <Button
           variant="outlined"
           size="small"
           color="inherit"
@@ -86,7 +86,7 @@ const LandingFooter = props => {
           onClick={props.toggleModal("subscribe", true)}
         >
           {props.subscribe}
-        </Button>
+        </Button> */}
       </Grid>
     </Grid>
   );
