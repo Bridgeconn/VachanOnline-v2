@@ -46,7 +46,7 @@ const LandingFooter = props => {
   const classes = useStyles();
   return (
     <Grid container className={classes.landingFooter}>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={3}>
         {/* <Link
           href="#"
           className={classes.link}
@@ -72,7 +72,7 @@ const LandingFooter = props => {
           {props.links[2]}{" "}
         </Link> */}
       </Grid>
-      <Grid item xs={12} md={5}>
+      <Grid item xs={12} md={6}>
         <Link>
           <Typography className={classes.text}>{props.copyright}</Typography>
         </Link>

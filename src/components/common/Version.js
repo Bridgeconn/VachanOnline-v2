@@ -88,6 +88,17 @@ const Version = props => {
   function handleClose() {
     setAnchorEl(null);
   }
+  function sortVersionLanguages(a, b) {
+    var langA = a.language.toUpperCase(); // ignore upper and lowercase
+    var langB = b.language.toUpperCase();
+    if (langA < langB) {
+      return -1;
+    }
+    if (langA > langB) {
+      return 1;
+    }
+    return 0;
+  }
   //function to set the bible version when clicked
   const setVersion = event => {
     handleClose();
@@ -134,7 +145,7 @@ const Version = props => {
               paper: classes.paper
             }}
           >
-            {props.versions.map((version, i) => (
+            {props.versions.sort(sortVersionLanguages).map((version, i) => (
               <ExpansionPanel
                 defaultExpanded={true}
                 classes={{

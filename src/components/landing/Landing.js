@@ -11,7 +11,7 @@ import LandingAboutUs from "./LandingAboutUs";
 const Landing = props => {
   let footerData = {
     links: ["About us", "Contact us", "Feedback"],
-    copyright: "copyright@2019 VachanOnline",
+    copyright: "© 2019 Bridge Connectivity Solutions",
     subscribe: "Subscribe"
   };
 
@@ -38,7 +38,7 @@ const Landing = props => {
   };
   let menus = ["About us", "Contact us", "Feedback", "Subscribe"];
   let aboutUs =
-    "VachanOnline.com is the premier Bible study website in Indian languages." +
+    "VachanOnline is the premier Bible study website in Indian languages." +
     " It is part of The Vachan Project to provide free access to digital " +
     "scripture engagement resources. It is an initiative of Friends of Agape " +
     "(FOA), USA. The content herein is not for reuse or redistribution" +
