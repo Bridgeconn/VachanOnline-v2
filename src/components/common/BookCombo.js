@@ -6,16 +6,20 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getChapters } from "../common/utillity";
 const useStyles = makeStyles(theme => ({
   button: {
-    left: theme.spacing(1),
     fontSize: "1rem",
     margin: 9,
     padding: "6px 0 6px 19px",
     textTransform: "none",
     backgroundColor: "#fff",
-    border: "1px solid #fff"
+    border: "1px solid #fff",
+    [theme.breakpoints.down("xs")]: {
+      width: "60%"
+    }
   },
   icon: {
     left: 15,
@@ -48,9 +52,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: "11px",
     border: "1px solid #d2d2d2c9"
   },
-  // active: {
-  //   backgroundColor: "#00aaff"
-  // },
   openBook: {
     border: "1px solid #ccc",
     backgroundColor: "#3f7ad2",
@@ -67,6 +68,12 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#ffffff",
     textAlign: "center",
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
+  },
+  bookName: {
+    whiteSpace: "nowrap",
+    width: 100,
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   }
 }));
 export default function BookCombo({
@@ -76,9 +83,13 @@ export default function BookCombo({
   chapterList,
   chapter,
   sourceId,
-  setValue
+  setValue,
+  minimal,
+  landingPage
 }) {
   const classes = useStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   //book combo button ref
   const bookDropdown = React.useRef(null);
   //last book count in book drop down to show list of chapters in
@@ -155,9 +166,15 @@ export default function BookCombo({
         variant="contained"
         onClick={openMenu}
         ref={bookDropdown}
+        style={landingPage && mobile ? { marginLeft: "20%" } : {}}
         classes={{ root: classes.button }}
       >
-        {book} {chapter}
+        {minimal === true ? (
+          <div className={classes.bookName}>{book}</div>
+        ) : (
+          book
+        )}{" "}
+        {chapter}
         <i className={classesI}>keyboard_arrow_downn</i>
       </Button>
       {bookList === undefined || bookList.length === 0 ? (

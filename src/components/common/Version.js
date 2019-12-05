@@ -11,16 +11,24 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVersions, getBooks } from "../common/utillity";
 
 const useStyles = makeStyles(theme => ({
   button: {
-    left: theme.spacing(0),
     fontSize: "1rem",
-    marginRight: 10,
     textTransform: "capitalize",
     backgroundColor: "#fff",
-    border: "1px solid #fff"
+    border: "1px solid #fff",
+    [theme.breakpoints.only("xs")]: {
+      width: "30%",
+      marginLeft: 10
+    },
+    [theme.breakpoints.up("sm")]: {
+      left: theme.spacing(0),
+      marginRight: 10
+    }
   },
   list: {
     padding: 0
@@ -71,10 +79,17 @@ const useStyles = makeStyles(theme => ({
   version: {
     fontSize: "1rem",
     cursor: "pointer"
+  },
+  label: {
+    [theme.breakpoints.only("xs")]: {
+      justifyContent: "unset"
+    }
   }
 }));
 const Version = props => {
   const classes = useStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
@@ -115,9 +130,18 @@ const Version = props => {
         aria-haspopup="true"
         onClick={handleClick}
         variant="contained"
-        classes={{ root: classes.button }}
+        style={
+          props.landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}
+        }
+        classes={
+          props.landingPage
+            ? { root: classes.button }
+            : { root: classes.button, label: classes.label }
+        }
       >
-        {props.version}
+        {mobile && !props.landingPage
+          ? props.version.split("-")[1]
+          : props.version}
         <i className={classesI}>keyboard_arrow_downn</i>
       </Button>
       {props.versions.length === 0 ? (

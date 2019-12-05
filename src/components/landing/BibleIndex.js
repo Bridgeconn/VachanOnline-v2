@@ -17,11 +17,14 @@ const useStyles = makeStyles(theme => ({
   bibleIndex: {
     margin: "auto",
     position: "relative",
-    bottom: 80,
+    bottom: 70,
     height: "auto",
     padding: "15px 30px",
     boxShadow: "2px 2px 3px #968e8e",
-    backgroundColor: "#0f3c5f"
+    backgroundColor: "#0f3c5f",
+    [theme.breakpoints.down("xs")]: {
+      bottom: 25
+    }
   },
   button: {
     margin: theme.spacing(1.5),
@@ -29,6 +32,11 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #fff",
     "& hover": {
       textDecoration: "none"
+    },
+    [theme.breakpoints.only("xs")]: {
+      marginLeft: "20%",
+      width: "60%",
+      marginTop: 0
     }
   },
   heading: {
@@ -41,15 +49,23 @@ const useStyles = makeStyles(theme => ({
 const BibleIndex = props => {
   let label = "Read";
   const classes = useStyles();
-
   return (
     <div className={classes.container}>
       <Paper className={classes.bibleIndex}>
         <Typography variant="h5" gutterBottom className={classes.heading}>
           Read Bible
         </Typography>
-        <Version setValue={props.setValue} version={props.panel1.version} />
-        <BookCombo {...props.panel1} setValue={props.setValue} />
+        <Version
+          setValue={props.setValue}
+          version={props.panel1.version}
+          landingPage={true}
+        />
+        <BookCombo
+          {...props.panel1}
+          setValue={props.setValue}
+          minimal={false}
+          landingPage={true}
+        />
         <Link
           to={{
             pathname: "/read",

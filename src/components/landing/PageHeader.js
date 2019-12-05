@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
       textDecoration: "none"
     },
     "& img": {
-      width: "25%"
+      height: 50
     }
   },
   search: {
@@ -94,7 +94,7 @@ const PageHeader = ({ toggleDrawer }) => {
             >
               {/* <MenuIcon /> */}
             </IconButton>
-            <div className={classes.title} variant="h5" noWrap>
+            <div className={classes.title} variant="h5" nowrap="true">
               <Link
                 to={{
                   pathname: "/read",

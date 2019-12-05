@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import TopBar from "./TopBar";
@@ -10,7 +11,7 @@ import { getBooks } from "../common/utillity";
 const useStyles = makeStyles(theme => ({
   biblePane1: {
     position: "absolute",
-    width: "96%",
+    width: "100%",
     height: "100%",
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
@@ -18,18 +19,28 @@ const useStyles = makeStyles(theme => ({
   },
   biblePane2: {
     position: "absolute",
-    width: "47%",
+    width: "50%",
     height: "100%",
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
     "&:nth-child(2)": {
-      right: "6%",
+      right: 0,
       backgroundColor: "#fff"
     }
   },
+  biblePane: {
+    position: "absolute",
+    height: "100%",
+    [theme.breakpoints.only("xs")]: {
+      width: "100%"
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "calc(100% - 65px)"
+    }
+  },
   rightMenu: {
-    width: "5%",
+    width: 65,
     backgroundColor: "#2e639a",
     position: "absolute",
     height: "100vh",
@@ -38,10 +49,14 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     bottom: 0,
     overflow: "hidden",
-    textAlign: "center"
+    textAlign: "center",
+    [theme.breakpoints.only("xs")]: {
+      display: "none"
+    }
   }
 }));
 const ReadBible = props => {
+  const mobile = useMediaQuery("(max-width:600px)");
   const classes = useStyles();
   //ref to get bible panes 1 & 2
   const bibleText1 = React.useRef();
@@ -162,7 +177,7 @@ const ReadBible = props => {
         parallelBible={parallelBible}
       />
       <div>
-        {pane}
+        <div className={classes.biblePane}>{pane}</div>
         <div className={classes.rightMenu}>
           <BibleMenu toggleParallelBible={toggleParallelBible} />
         </div>

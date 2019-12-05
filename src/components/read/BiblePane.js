@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Swipeable } from "react-swipeable";
 import Grid from "@material-ui/core/Grid";
 import Fullscreen from "react-full-screen";
 import MenuBar from "./MenuBar";
@@ -23,9 +24,10 @@ const useStyles = makeStyles(theme => ({
 const BiblePane = ({ setValue, paneData, ref1, scroll, paneNo }) => {
   const classes = useStyles();
   const [fullscreen, setFullscreen] = React.useState(false);
-
+  const showMenu = () => console.log("showMenu");
+  const hideMenu = () => console.log("hideMenu");
   return (
-    <>
+    <Swipeable onSwipedUp={hideMenu} onSwipedDown={showMenu}>
       <MenuBar
         {...paneData}
         setFullscreen={setFullscreen}
@@ -48,7 +50,7 @@ const BiblePane = ({ setValue, paneData, ref1, scroll, paneNo }) => {
           </Fullscreen>
         </Grid>
       </Grid>
-    </>
+    </Swipeable>
   );
 };
 

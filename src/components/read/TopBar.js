@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
       lineHeight: "75px"
     },
     "& img": {
-      width: "25%"
+      height: 50
     }
   },
   search: {
