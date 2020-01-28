@@ -1,6 +1,7 @@
 import * as actions from "./actions";
 const defaultState = {
   versions: [],
+  versionBooks: {},
   parallelScroll: true,
   panel1: {
     version: "Loading...",
@@ -8,7 +9,6 @@ const defaultState = {
     bookList: [],
     book: "Loading...",
     bookCode: "",
-    chapterList: [],
     chapter: "",
     fontSize: 16,
     fontFamily: "Sans"
@@ -19,7 +19,6 @@ const defaultState = {
     bookList: [],
     book: "Loading...",
     bookCode: "",
-    chapterList: [],
     chapter: "",
     fontSize: 16,
     fontFamily: "Sans"
@@ -32,6 +31,11 @@ const reducer = (state = defaultState, action) => {
         ...state,
         versions: action.value
       };
+    case actions.ADDVERSIONBOOKS:
+      return {
+        ...state,
+        versionBooks: { ...state.versionBooks, [action.name]: action.value }
+      };
     case actions.SETVALUE1:
       return {
         ...state,
@@ -41,6 +45,11 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         panel2: { ...state.panel2, [action.name]: action.value }
+      };
+    case actions.COPYPANEL1:
+      return {
+        ...state,
+        panel2: { ...state.panel1 }
       };
     case actions.SETVALUE:
       return {

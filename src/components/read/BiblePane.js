@@ -24,7 +24,9 @@ const useStyles = makeStyles(theme => ({
 const BiblePane = ({ setValue, paneData, ref1, scroll, paneNo }) => {
   const classes = useStyles();
   const [fullscreen, setFullscreen] = React.useState(false);
+  //edit this function to show the menu at a later stage
   const showMenu = () => console.log("showMenu");
+  //edit this function to hide the menu at a later stage
   const hideMenu = () => console.log("hideMenu");
   return (
     <Swipeable onSwipedUp={hideMenu} onSwipedDown={showMenu}>

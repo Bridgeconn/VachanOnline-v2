@@ -46,9 +46,11 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 10
   }
 }));
+
 const BibleIndex = props => {
   let label = "Read";
   const classes = useStyles();
+  const { book, sourceId, chapter } = props.panel1;
   return (
     <div className={classes.container}>
       <Paper className={classes.bibleIndex}>
@@ -61,7 +63,9 @@ const BibleIndex = props => {
           landingPage={true}
         />
         <BookCombo
-          {...props.panel1}
+          book={book}
+          bookList={props.versionBooks[sourceId]}
+          chapter={chapter}
           setValue={props.setValue}
           minimal={false}
           landingPage={true}
@@ -85,7 +89,8 @@ const BibleIndex = props => {
 
 const mapStateToProps = state => {
   return {
-    panel1: state.panel1
+    panel1: state.panel1,
+    versionBooks: state.versionBooks
   };
 };
 
@@ -95,7 +100,4 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actions.SETVALUE1, name: name, value: value })
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BibleIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(BibleIndex);

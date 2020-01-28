@@ -1,12 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import TopBar from "./TopBar";
 import BiblePane from "./BiblePane";
 import BibleMenu from "./BibleMenu";
-import { getBooks } from "../common/utillity";
 
 const useStyles = makeStyles(theme => ({
   biblePane1: {
@@ -56,7 +54,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 const ReadBible = props => {
-  const mobile = useMediaQuery("(max-width:600px)");
   const classes = useStyles();
   //ref to get bible panes 1 & 2
   const bibleText1 = React.useRef();
@@ -101,7 +98,7 @@ const ReadBible = props => {
   function toggleParallelBible() {
     setParallelBible(!parallelBible);
   }
-  let { versions, setValue1, setValue2, panel1, panel2 } = props;
+  let { setValue1, setValue2, copyPanel1, panel1, panel2 } = props;
   //sync bible on scroll if parallel scroll on
   const syncBible = panelNo => {
     if (panelNo === 1) {
@@ -127,17 +124,9 @@ const ReadBible = props => {
   };
   React.useEffect(() => {
     if (parallelBible) {
-      if (versions.length > 0) {
-        let versionObj = versions[0].languageVersions[0];
-        setValue2(
-          "version",
-          versionObj.language.name + "-" + versionObj.version.code.toUpperCase()
-        );
-        setValue2("sourceId", versionObj.sourceId);
-        getBooks(setValue2, versionObj.sourceId);
-      }
+      copyPanel1();
     }
-  }, [parallelBible, versions, setValue2]);
+  }, [parallelBible, copyPanel1]);
   let pane;
   if (!parallelBible) {
     pane = (
@@ -197,15 +186,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setValue1: (name, value) =>
-      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+    setValue1: (name, value) => {
+      dispatch({ type: actions.SETVALUE1, name: name, value: value });
+    },
     setValue2: (name, value) =>
       dispatch({ type: actions.SETVALUE2, name: name, value: value }),
     setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value })
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    copyPanel1: () => dispatch({ type: actions.COPYPANEL1 })
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReadBible);
+export default connect(mapStateToProps, mapDispatchToProps)(ReadBible);

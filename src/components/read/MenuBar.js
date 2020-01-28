@@ -1,7 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import Grid from "@material-ui/core/Grid";
-/* import Popover from "@material-ui/core/Popover"; */
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
+import Popover from "@material-ui/core/Popover";
+import Paper from "@material-ui/core/Paper";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
@@ -12,7 +18,10 @@ const useStyles = makeStyles(theme => ({
     borderBottom: "1px solid #f1ecec",
     position: "absolute",
     height: 61,
-    top: 74
+    top: 74,
+    [theme.breakpoints.only("xs")]: {
+      padding: "0 15px 0 15px"
+    }
   },
   select: {
     marginTop: "-8px",
@@ -42,12 +51,36 @@ const useStyles = makeStyles(theme => ({
   paper: {
     width: "80%"
   },
-  content: {
-    padding: 20,
-    lineHeight: 2,
-    fontSize: 16,
-    backgroundColor: "#5181a9",
+  metadataTitle: {
+    fontSize: 26,
+    padding: "5px 0 0 12px"
+  },
+  metadataTitleBar: {
+    backgroundColor: "#2e639a",
     color: "#fff"
+  },
+  metadataHeading: {
+    fontSize: 17,
+    lineHeight: "28px",
+    display: "block",
+    textAlign: "end",
+    fontWeight: 600
+  },
+  metadataText: {
+    lineHeight: "28px",
+    fontSize: 16,
+    paddingLeft: 14
+  },
+  metadataRow: {
+    "&:last-child": {
+      marginBottom: 2
+    },
+    "&:nth-child(even)": {
+      backgroundColor: "#cfd9e6"
+    }
+  },
+  closeButton: {
+    color: "inherit"
   }
 }));
 const MenuBar = props => {
@@ -55,36 +88,55 @@ const MenuBar = props => {
   function goFull() {
     props.setFullscreen(true);
   }
-  /*  const [anchorEl, setAnchorEl] = React.useState(null);
-   function handleClick(event) {
-    //uncomment below line to make the info buton work again
-    //setAnchorEl(event.currentTarget);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  //metadata information popup
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
   }
   function handleClose() {
     setAnchorEl(null);
-  } */
-
+  }
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+  const [metadataList, setMetadataList] = React.useState(null);
+  //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
   }
   function closeSettings() {
     setSettingsAnchor(null);
   }
-  /* 
+  //get metadata from versions object if version changed
+  React.useEffect(() => {
+    if (props.versions !== undefined) {
+      const language = props.version.split("-");
+      const versions = props.versions.find(e => e.language === language[0]);
+      if (versions !== undefined) {
+        const version = versions.languageVersions.find(
+          e => (e.version.code = language[1])
+        );
+        setMetadataList(version.metadata);
+      }
+    }
+  }, [props.version, props.versions]);
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined; */
+  const id = open ? "simple-popover" : undefined;
+  const checkLink = text => {
+    return text.includes("http") ? (
+      <Link href={text} target="_blank">
+        {text}
+      </Link>
+    ) : (
+      text
+    );
+  };
   return (
     <Grid container className={classes.read}>
       <Grid item xs={10}>
         <Version setValue={props.setValue} version={props.version} />
         <BookCombo
           book={props.book}
-          bookList={props.bookList}
-          bookCode={props.bookCode}
-          chapterList={props.chapterList}
+          bookList={props.versionBooks[props.sourceId]}
           chapter={props.chapter}
-          sourceId={props.sourceId}
           setValue={props.setValue}
           minimal={true}
         />
@@ -98,44 +150,91 @@ const MenuBar = props => {
         justify="flex-end"
         direction="row"
       >
-        {/* <div
+        <div
           aria-describedby={id}
           onClick={handleClick}
           className={classes.info}
         >
           <i className="material-icons md-23">info_outline</i>
         </div>
-        <Popover
-          id={id}
-          className={classes.paper}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center"
-          }}
-        >
-          <div className={classes.content}>
-            <h2>SvgIcon components</h2>
-            It's interesting to have the building blocks needed to implement
-            custom icons, but what about presets? We provide a separate npm
-            package, @material-ui/icons, that includes the 1,000+ official
-            Material icons converted to SvgIcon components. It's interesting to
-            have the building blocks needed to implement custom icons, but what
-            about presets? We provide a separate npm package,
-            @material-ui/icons, that includes the 1,000+ official Material icons
-            converted to SvgIcon components. It's interesting to have the
-            building blocks needed to implement custom icons, but what about
-            presets? We provide a separate npm package, @material-ui/icons, that
-            includes the 1,000+ official Material icons converted to SvgIcon
-            components.
-          </div>
-        </Popover> */}
+        {metadataList ? (
+          <Popover
+            id={id}
+            className={classes.paper}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center"
+            }}
+          >
+            <Paper>
+              <Grid
+                justify="space-between" // Add it here :)
+                container
+                className={classes.metadataTitleBar}
+              >
+                <Grid item>
+                  <Typography
+                    type="title"
+                    color="inherit"
+                    className={classes.metadataTitle}
+                  >
+                    {metadataList["Version Name (in Eng)"] +
+                      " (" +
+                      metadataList["Abbreviation"] +
+                      ")"}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <IconButton
+                    className={classes.closeButton}
+                    size="medium"
+                    onClick={() => {
+                      setAnchorEl(null);
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
+              <Grid container>
+                {Object.keys(metadataList)
+                  .sort()
+                  .map((item, i) => {
+                    return item.trim() !== "" &&
+                      metadataList[item].trim() !== "" ? (
+                      <Grid
+                        container
+                        item
+                        xs={12}
+                        key={i}
+                        alignItems="flex-start"
+                        justify="flex-end"
+                        className={classes.metadataRow}
+                      >
+                        <Grid item sm={4} className={classes.metadataHeading}>
+                          {item}:
+                        </Grid>
+                        <Grid item sm={8} className={classes.metadataText}>
+                          {checkLink(metadataList[item])}
+                        </Grid>
+                      </Grid>
+                    ) : (
+                      ""
+                    );
+                  })}
+              </Grid>
+            </Paper>
+          </Popover>
+        ) : (
+          ""
+        )}
         <div className={classes.info} onClick={goFull}>
           <i className="material-icons md-23">zoom_out_map</i>
         </div>
@@ -167,4 +266,10 @@ const MenuBar = props => {
     </Grid>
   );
 };
-export default MenuBar;
+const mapStateToProps = state => {
+  return {
+    versions: state.versions,
+    versionBooks: state.versionBooks
+  };
+};
+export default connect(mapStateToProps)(MenuBar);
