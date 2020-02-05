@@ -52,3 +52,23 @@ export const getBookbyCode = abbreviation => {
 export const getBookByName = name => {
   return bibleBooks.find(element => element.book === name);
 };
+//Function to get the list of commentaries
+export const getCommentaries = setValue => {
+  API.get("commentaries")
+    .then(function(response) {
+      setValue("commentaries", response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+//Function to get the commentary for a chaper
+export const getCommentaryForChaper = (sourceId, book, chapter, setText) => {
+  API.get("commentaries/" + sourceId + "/" + book + "/" + chapter)
+    .then(function(response) {
+      setText(response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};

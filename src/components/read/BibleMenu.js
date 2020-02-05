@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import MenuItem from "./MenuItem";
+import * as views from "../../store/views";
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
@@ -15,12 +16,18 @@ export default function BibleMenu(props) {
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
         <MenuItem
-          toggleParallelBible={props.toggleParallelBible}
+          onClick={props.menuClick}
           icon="import_contacts"
           title="Parallel Bible"
+          item={views.PARALLELBIBLE}
         />
-        {/* <MenuItem icon="comment" title="Commentaries" />
-        <MenuItem icon="format_shapes" title="Word Study" />
+        <MenuItem
+          onClick={props.menuClick}
+          icon="comment"
+          title="Commentaries"
+          item={views.COMMENTARY}
+        />
+        {/* <MenuItem icon="format_shapes" title="Word Study" />
         <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="videocam" title=" Videos" />
         <MenuItem icon="image" title="Images" />

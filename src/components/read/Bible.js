@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { getBookbyCode } from "../common/utillity";
 const useStyles = makeStyles(theme => ({
   biblePanel: {
-    lineHeight: 2,
+    lineHeight: 1.7,
     position: "absolute",
     backgroundColor: "#fff",
     width: "100%",
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     overflow: "scroll",
     "&::-webkit-scrollbar": {
-      width: "0.4em"
+      width: "0.45em"
     },
     "&::-webkit-scrollbar-track": {
       "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
@@ -114,7 +114,7 @@ const Bible = props => {
   };
   const scrollText = () => {
     if (props.scroll) {
-      props.scroll(props.paneNo);
+      props.scroll(props.paneNo, props.parallelScroll);
     }
   };
   const classes = useStyles();
@@ -177,7 +177,8 @@ const Bible = props => {
 
 const mapStateToProps = state => {
   return {
-    versionBooks: state.versionBooks
+    versionBooks: state.versionBooks,
+    parallelScroll: state.parallelScroll
   };
 };
 export default connect(mapStateToProps)(Bible);

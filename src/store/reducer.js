@@ -1,6 +1,8 @@
 import * as actions from "./actions";
 const defaultState = {
   versions: [],
+  commentaries: [],
+  commentary: {},
   versionBooks: {},
   parallelScroll: true,
   panel1: {

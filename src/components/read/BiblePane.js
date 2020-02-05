@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     top: 135,
     bottom: 0,
-    overflow: "auto"
+    overflow: "auto",
+    marginBottom: -15
   },
   fullscreen: {
     backgroundColor: "#fff"

@@ -45,7 +45,7 @@ export default function MenuItem(props) {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
-        <div onClick={props.toggleParallelBible}>
+        <div onClick={() => props.onClick(props.item)}>
           <i
             className="material-icons"
             style={{ fontSize: "38px", color: "#fff" }}
