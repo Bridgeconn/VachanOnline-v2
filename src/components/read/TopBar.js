@@ -6,6 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import * as views from "../../store/views";
 /* import SerachBox from "../common/SearchBox"; */
 import logo from "../common/images/logo.png";
 const useStyles = makeStyles(theme => ({
@@ -89,7 +90,7 @@ const useStyles = makeStyles(theme => ({
     lineHeight: "72px"
   }
 }));
-export default function TopBar({ pScroll, setValue, parallelBible }) {
+export default function TopBar({ pScroll, setValue, parallelView }) {
   const classes = useStyles();
 
   const handleChange = () => event => {
@@ -112,7 +113,7 @@ export default function TopBar({ pScroll, setValue, parallelBible }) {
               {" "}
               <img src={logo} alt={"logo"} />{" "}
             </Link>
-            {parallelBible ? (
+            {parallelView === views.PARALLELBIBLE ? (
               <FormGroup className={classes.form}>
                 <FormControlLabel
                   control={

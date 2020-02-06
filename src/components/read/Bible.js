@@ -1,10 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import API from "../../store/api";
-import { nextChapter, previousChapter } from "../common/utillity";
+import { connect } from "react-redux";
+import { getBookbyCode } from "../common/utillity";
 const useStyles = makeStyles(theme => ({
   biblePanel: {
-    lineHeight: 2,
+    lineHeight: 1.7,
     position: "absolute",
     backgroundColor: "#fff",
     width: "100%",
@@ -23,11 +24,21 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     right: 0,
     left: 44,
-    paddingRight: "35px",
+    paddingRight: 42,
     textAlign: "justify",
     paddingTop: 20,
     height: "100%",
-    overflow: "auto"
+    overflow: "scroll",
+    "&::-webkit-scrollbar": {
+      width: "0.45em"
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.4)",
+      outline: "1px solid slategrey"
+    }
   },
 
   prevChapter: {
@@ -39,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   nextChapter: {
     position: "absolute",
     top: "45%",
-    right: 14,
+    right: 6,
     cursor: "pointer"
   },
   loading: {
@@ -52,9 +63,11 @@ const Bible = props => {
   const [verses, setVerses] = React.useState([]);
   const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
+  const [previous, setPrevious] = React.useState({});
+  const [next, setNext] = React.useState({});
   React.useEffect(() => {
     if (props.sourceId && props.bookCode && props.chapter) {
-      //code to get chatper content if version, book or chapter changed
+      //code to get chapter content if version(sourceId), book or chapter changed
       setIsLoading(true);
       setLoadingText("Loading");
       API.get(
@@ -66,6 +79,8 @@ const Bible = props => {
           props.chapter
       )
         .then(function(response) {
+          setPrevious(response.data.previous);
+          setNext(response.data.next);
           if (response.data.chapterContent === undefined) {
             setLoadingText("Book not uploaded");
           } else {
@@ -81,33 +96,25 @@ const Bible = props => {
 
   //Function to load previous chapter
   const prevClick = () => {
-    if (!isLoading) {
-      previousChapter(
-        props.setValue,
-        props.sourceId,
-        props.chapterList,
-        props.chapter,
-        props.bookList,
-        props.bookCode
-      );
+    if (!isLoading && Object.keys(previous).length > 0) {
+      props.setValue("chapter", previous.chapterId);
+      props.setValue("bookCode", previous.bibleBookCode);
+      let book = getBookbyCode(previous.bibleBookCode);
+      props.setValue("book", book.book);
     }
   };
   //Function to load next chapter
   const nextClick = () => {
-    if (!isLoading) {
-      nextChapter(
-        props.setValue,
-        props.sourceId,
-        props.chapterList,
-        props.chapter,
-        props.bookList,
-        props.bookCode
-      );
+    if (!isLoading && Object.keys(next).length > 0) {
+      props.setValue("chapter", next.chapterId);
+      props.setValue("bookCode", next.bibleBookCode);
+      let book = getBookbyCode(next.bibleBookCode);
+      props.setValue("book", book.book);
     }
   };
   const scrollText = () => {
     if (props.scroll) {
-      props.scroll(props.paneNo);
+      props.scroll(props.paneNo, props.parallelScroll);
     }
   };
   const classes = useStyles();
@@ -146,7 +153,7 @@ const Bible = props => {
       >
         <i
           className="material-icons material"
-          style={{ fontSize: "38px", color: "#777777" }}
+          style={{ fontSize: "38px", color: "#555555", opacity: 0.7 }}
         >
           navigate_before
         </i>
@@ -159,7 +166,7 @@ const Bible = props => {
       >
         <i
           className="material-icons material"
-          style={{ fontSize: "38px", color: "#777777" }}
+          style={{ fontSize: "38px", color: "#555555", opacity: 0.7 }}
         >
           keyboard_arrow_right
         </i>
@@ -167,4 +174,11 @@ const Bible = props => {
     </div>
   );
 };
-export default Bible;
+
+const mapStateToProps = state => {
+  return {
+    versionBooks: state.versionBooks,
+    parallelScroll: state.parallelScroll
+  };
+};
+export default connect(mapStateToProps)(Bible);

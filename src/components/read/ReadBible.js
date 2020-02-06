@@ -1,12 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import * as views from "../../store/views";
 import TopBar from "./TopBar";
 import BiblePane from "./BiblePane";
+import Commentary from "../commentary/Commentary";
 import BibleMenu from "./BibleMenu";
-import { getBooks } from "../common/utillity";
+import { getCommentaries } from "../common/utillity";
 
 const useStyles = makeStyles(theme => ({
   biblePane1: {
@@ -56,7 +57,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 const ReadBible = props => {
-  const mobile = useMediaQuery("(max-width:600px)");
   const classes = useStyles();
   //ref to get bible panes 1 & 2
   const bibleText1 = React.useRef();
@@ -64,13 +64,13 @@ const ReadBible = props => {
   //flag to prevent looping of on scroll event
   let ignoreScrollEvents = false;
   //function to implement parallel scroll
-  const getScroll = paneNo => {
+  const getScroll = React.useCallback((paneNo, parallelScroll) => {
     //check flag to prevent looping of on scroll event
     if (ignoreScrollEvents) {
       ignoreScrollEvents = false;
       return;
     }
-    if (!props.parallelScroll) {
+    if (!parallelScroll) {
       return;
     }
     let text1 = bibleText1.current;
@@ -96,12 +96,16 @@ const ReadBible = props => {
         syncBible(2);
       }
     }
-  };
-  const [parallelBible, setParallelBible] = React.useState(false);
-  function toggleParallelBible() {
-    setParallelBible(!parallelBible);
+  }, []);
+  const [parallelView, setParallelView] = React.useState("");
+  function menuClick(view) {
+    //if closing commentary then reset selected commentary
+    if (parallelView === view && view === views.COMMENTARY) {
+      props.setValue("commentary", {});
+    }
+    setParallelView(parallelView === view ? "" : view);
   }
-  let { versions, setValue1, setValue2, panel1, panel2 } = props;
+  let { setValue1, setValue2, copyPanel1, panel1, panel2 } = props;
   //sync bible on scroll if parallel scroll on
   const syncBible = panelNo => {
     if (panelNo === 1) {
@@ -126,60 +130,74 @@ const ReadBible = props => {
     }
   };
   React.useEffect(() => {
-    if (parallelBible) {
-      if (versions.length > 0) {
-        let versionObj = versions[0].languageVersions[0];
-        setValue2(
-          "version",
-          versionObj.language.name + "-" + versionObj.version.code.toUpperCase()
-        );
-        setValue2("sourceId", versionObj.sourceId);
-        getBooks(setValue2, versionObj.sourceId);
-      }
+    //if commentaries not loaded fetch list of commentaries
+    if (props.commentaries.length === 0) {
+      getCommentaries(props.setValue);
     }
-  }, [parallelBible, versions, setValue2]);
-  let pane;
-  if (!parallelBible) {
-    pane = (
-      <div className={classes.biblePane1}>
-        <BiblePane setValue={props.setValue1} paneData={props.panel1} />
-      </div>
-    );
-  } else {
-    pane = (
-      <>
-        <div className={classes.biblePane2}>
-          <BiblePane
-            setValue={props.setValue1}
-            paneData={props.panel1}
-            ref1={bibleText1}
-            scroll={getScroll}
-            paneNo={1}
-          />
-        </div>
-        <div className={classes.biblePane2}>
-          <BiblePane
-            setValue={props.setValue2}
-            paneData={props.panel2}
-            ref1={bibleText2}
-            scroll={getScroll}
-            paneNo={2}
-          />
-        </div>
-      </>
-    );
-  }
+  }, [props.commentaries.length, props.setValue]);
+  React.useEffect(() => {
+    if (parallelView === views.PARALLELBIBLE) {
+      copyPanel1();
+    }
+  }, [parallelView, copyPanel1]);
+  const [pane, setPane] = React.useState("");
+  React.useEffect(() => {
+    switch (parallelView) {
+      case views.PARALLELBIBLE:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane
+                setValue={props.setValue1}
+                paneData={props.panel1}
+                ref1={bibleText1}
+                scroll={getScroll}
+                paneNo={1}
+              />
+            </div>
+            <div className={classes.biblePane2}>
+              <BiblePane
+                setValue={props.setValue2}
+                paneData={props.panel2}
+                ref1={bibleText2}
+                scroll={getScroll}
+                paneNo={2}
+              />
+            </div>
+          </>
+        );
+        break;
+      case views.COMMENTARY:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Commentary />
+            </div>
+          </>
+        );
+        break;
+      default:
+        setPane(
+          <div className={classes.biblePane1}>
+            <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+          </div>
+        );
+    }
+  }, [classes.biblePane1, classes.biblePane2, getScroll, parallelView, props]);
   return (
     <>
       <TopBar
         pScroll={props.parallelScroll}
         setValue={props.setValue}
-        parallelBible={parallelBible}
+        parallelView={parallelView}
       />
       <div>
         <div className={classes.biblePane}>{pane}</div>
         <div className={classes.rightMenu}>
-          <BibleMenu toggleParallelBible={toggleParallelBible} />
+          <BibleMenu menuClick={menuClick} />
         </div>
       </div>
     </>
@@ -191,21 +209,21 @@ const mapStateToProps = state => {
     versions: state.versions,
     panel1: state.panel1,
     panel2: state.panel2,
-    parallelScroll: state.parallelScroll
+    parallelScroll: state.parallelScroll,
+    commentaries: state.commentaries
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setValue1: (name, value) =>
-      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+    setValue1: (name, value) => {
+      dispatch({ type: actions.SETVALUE1, name: name, value: value });
+    },
     setValue2: (name, value) =>
       dispatch({ type: actions.SETVALUE2, name: name, value: value }),
     setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value })
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    copyPanel1: () => dispatch({ type: actions.COPYPANEL1 })
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReadBible);
+export default connect(mapStateToProps, mapDispatchToProps)(ReadBible);

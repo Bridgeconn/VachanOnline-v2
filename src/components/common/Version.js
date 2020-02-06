@@ -13,7 +13,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { getVersions, getBooks } from "../common/utillity";
+import { getVersions } from "../common/utillity";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -22,8 +22,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "30%",
-      marginLeft: 10
+      width: "30%"
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
@@ -95,10 +94,11 @@ const Version = props => {
     setAnchorEl(event.currentTarget);
   }
   React.useEffect(() => {
+    //if versions not loaded fetch versions and books for the versions
     if (props.versions.length === 0) {
-      getVersions(props.setVersions, props.setValue);
+      getVersions(props.setVersions, props.setValue, props.setVersionBooks);
     }
-  }, [props.setVersions, props.versions, props.setValue]);
+  });
 
   function handleClose() {
     setAnchorEl(null);
@@ -120,7 +120,6 @@ const Version = props => {
     let selectedVersion = event.currentTarget;
     props.setValue("version", selectedVersion.getAttribute("value"));
     props.setValue("sourceId", selectedVersion.getAttribute("data-sourceid"));
-    getBooks(props.setValue, selectedVersion.getAttribute("data-sourceid"));
   };
   const classesI = `material-icons ${classes.icon}`;
   return (
@@ -225,10 +224,9 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    setVersions: value => dispatch({ type: actions.SETVERSIONS, value: value })
+    setVersions: value => dispatch({ type: actions.SETVERSIONS, value: value }),
+    setVersionBooks: (name, value) =>
+      dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value })
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Version);
+export default connect(mapStateToProps, mapDispatchToProps)(Version);
