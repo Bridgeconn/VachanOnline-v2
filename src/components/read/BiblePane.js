@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BiblePane = ({ setValue, paneData, ref1, scroll, paneNo }) => {
+const BiblePane = ({ setValue, paneData, ref1, scroll, setSync, paneNo }) => {
   const classes = useStyles();
   const [fullscreen, setFullscreen] = React.useState(false);
   //edit this function to show the menu at a later stage
@@ -50,6 +50,7 @@ const BiblePane = ({ setValue, paneData, ref1, scroll, paneNo }) => {
                 setValue={setValue}
                 ref1={ref1}
                 scroll={scroll}
+                setSync={setSync}
                 paneNo={paneNo}
               />
             </Fullscreen>
