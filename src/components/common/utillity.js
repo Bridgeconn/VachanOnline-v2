@@ -72,3 +72,34 @@ export const getCommentaryForChaper = (sourceId, book, chapter, setText) => {
       console.log(error);
     });
 };
+//Function to get the list of dictionaries
+export const getDictionaries = setDictionaries => {
+  API.get("dictionaries")
+    .then(function(response) {
+      setDictionaries("dictionaries", response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+//Function to get the dictionary index
+export const getDictionaryIndex = (sourceId, setDictionary) => {
+  API.get("dictionaries/" + sourceId)
+    .then(function(response) {
+      setDictionary("dictionaryIndex", response.data);
+      setDictionary("dictionaryWord", response.data[0]["words"][0]);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+//Function to get the dictionary word meaning
+export const getDictionaryWord = (sourceId, wordId, setDictionary) => {
+  API.get("dictionaries/" + sourceId + "/" + wordId)
+    .then(function(response) {
+      setDictionary("wordMeaning", response.data.meaning);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};

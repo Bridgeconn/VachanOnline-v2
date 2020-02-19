@@ -6,8 +6,9 @@ import * as views from "../../store/views";
 import TopBar from "./TopBar";
 import BiblePane from "./BiblePane";
 import Commentary from "../commentary/Commentary";
+import Dictionary from "../dictionary/Dictionary";
 import BibleMenu from "./BibleMenu";
-import { getCommentaries } from "../common/utillity";
+import { getCommentaries, getDictionaries } from "../common/utillity";
 
 const useStyles = makeStyles(theme => ({
   biblePane1: {
@@ -139,6 +140,12 @@ const ReadBible = props => {
     }
   }, [props.commentaries.length, props.setValue]);
   React.useEffect(() => {
+    //if dictionaries not loaded fetch list of dictionaries
+    if (props.dictionaries.length === 0) {
+      getDictionaries(props.setDictionary);
+    }
+  }, [props.dictionaries.length, props.setDictionary]);
+  React.useEffect(() => {
     if (parallelView === views.PARALLELBIBLE) {
       copyPanel1();
     }
@@ -184,6 +191,18 @@ const ReadBible = props => {
           </>
         );
         break;
+      case views.DICTIONARY:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Dictionary setDictionary={props.setDictionary} />
+            </div>
+          </>
+        );
+        break;
       default:
         setPane(
           <div className={classes.biblePane1}>
@@ -215,7 +234,8 @@ const mapStateToProps = state => {
     panel1: state.panel1,
     panel2: state.panel2,
     parallelScroll: state.parallelScroll,
-    commentaries: state.commentaries
+    commentaries: state.commentaries,
+    dictionaries: state.dictionary.dictionaries
   };
 };
 
@@ -228,6 +248,8 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actions.SETVALUE2, name: name, value: value }),
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    setDictionary: (name, value) =>
+      dispatch({ type: actions.SETDICTIONARY, name: name, value: value }),
     copyPanel1: () => dispatch({ type: actions.COPYPANEL1 })
   };
 };

@@ -4,3 +4,4 @@ export const SETVALUE2 = "SETVALUE2";
 export const COPYPANEL1 = "COPYPANEL1";
 export const SETVALUE = "SETVALUE";
 export const ADDVERSIONBOOKS = "ADDVERSIONBOOKS";
+export const SETDICTIONARY = "SETDICTIONARY";
