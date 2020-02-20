@@ -1,0 +1,190 @@
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import { connect } from "react-redux";
+import DictionaryCombo from "./DictionaryCombo";
+import DictionaryWordCombo from "./DictionaryWordCombo";
+import Metadata from "../common/Metadata";
+import { getDictionaryIndex, getDictionaryWord } from "../common/utillity";
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    marginTop: 82
+  },
+  title: {
+    paddingLeft: 35,
+    paddingBottom: 10,
+    marginBottom: 20,
+    borderBottom: "1px solid #f1ecec",
+    display: "flex",
+    width: "100%"
+  },
+  text: {
+    position: "absolute",
+    right: 0,
+    left: 35,
+    padding: "20px 20px 20px 0",
+    top: 135,
+    bottom: 0,
+    textAlign: "justify",
+    color: "#464545",
+    fontFamily: "Roboto,Noto Sans",
+    overflow: "scroll",
+    fontSize: "1rem",
+    fontWeight: 400,
+    lineHeight: 1.5,
+    letterSpacing: "0.00938em",
+    marginBottom: -15,
+    "& span": {
+      fontWeight: 600,
+      display: "block"
+    },
+    "& p": {
+      marginBottom: 10
+    },
+    "&::-webkit-scrollbar": {
+      width: "0.45em"
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.4)",
+      outline: "1px solid slategrey"
+    }
+  },
+  heading: {
+    fontWeight: "bold",
+    fontSize: "1.2em",
+    padding: "10px 0",
+    textTransform: "capitalize"
+  },
+  loading: {
+    paddingLeft: 20
+  },
+  metadata: {
+    marginTop: -8
+  }
+}));
+const Dictionary = props => {
+  const classes = useStyles();
+  const [dictionaryText, setDictionaryText] = React.useState("");
+  let { dictionary, version, setDictionary } = props;
+  let {
+    dictionaries,
+    selectedDictionary,
+    dictionaryIndex,
+    dictionaryWord,
+    wordMeaning
+  } = dictionary;
+  //console.log("Dictionary");
+  //Need to improve the performance of the component
+  React.useEffect(() => {
+    //if no dictionary selected set current language dictionary
+    if (Object.entries(selectedDictionary).length === 0 && dictionaries[0]) {
+      let language = version.split("-")[0];
+      let dict = dictionaries.find(d => {
+        return d.language === language;
+      });
+      if (dict === undefined) {
+        dict = dictionaries[0].dictionaries[0];
+      } else {
+        dict = dict.dictionaries[0];
+      }
+      setDictionary("selectedDictionary", dict);
+    }
+  }, [version, selectedDictionary, dictionaries, setDictionary]);
+  React.useEffect(() => {
+    //if dictionary changed get dictionary index
+    if (selectedDictionary && selectedDictionary.sourceId !== undefined) {
+      getDictionaryIndex(selectedDictionary.sourceId, setDictionary);
+    }
+  }, [selectedDictionary, setDictionary]);
+  React.useEffect(() => {
+    //if word changed, get word meaning
+    setDictionaryText("");
+    if (dictionaryWord !== undefined) {
+      getDictionaryWord(
+        selectedDictionary.sourceId,
+        dictionaryWord.wordId,
+        setDictionary
+      );
+    }
+  }, [selectedDictionary.sourceId, dictionaryWord, setDictionary]);
+  const clean1 = str => {
+    str = str.split(" (Translation suggestions")[0];
+    str = str.split(" (अनुवाद के सुझाव")[0];
+    return String(str).replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1");
+  };
+  const clean2 = str => {
+    str = String(str).replace(/{|}/gm, "");
+    return String(str).replace(/,/gm, ", ");
+  };
+  const clean3 = str => {
+    str = String(str).replace(/\)\)/gm, ")");
+    return String(str).replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1");
+  };
+  const clean4 = str => {
+    str = String(str).replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1");
+    return String(str).replace(/(:\d+) |(-\d+) /g, "$1, ");
+  };
+  React.useEffect(() => {
+    //if word meaning changed set meaning
+    if (wordMeaning && wordMeaning.keyword !== undefined) {
+      let header = dictionaryWord.word;
+      if (wordMeaning.wordForms.indexOf(",") >= 0) {
+        header += " (" + wordMeaning.wordForms + ")";
+      }
+      setDictionaryText(
+        <>
+          <div className={classes.heading}>{header}</div>
+          <div>{clean1(wordMeaning.definition)}</div>
+          <div>{clean1(wordMeaning.translationHelp)}</div>
+          <div className={classes.heading}>Strongs</div>
+          <div>{clean2(wordMeaning.strongs)}</div>
+          <div className={classes.heading}>See Also</div>
+          <div>{clean3(wordMeaning.seeAlso)}</div>
+          <div className={classes.heading}>Ref</div>
+          <div>{clean4(wordMeaning.ref)}</div>
+        </>
+      );
+    }
+  }, [classes.heading, dictionaryWord.word, wordMeaning]);
+  return (
+    <div className={classes.root}>
+      <Grid container className={classes.title}>
+        <Grid item xs={11}>
+          <DictionaryCombo
+            dictionaries={dictionaries}
+            selectedDictionary={selectedDictionary}
+            setDictionary={setDictionary}
+          />
+          <DictionaryWordCombo
+            dictionaryIndex={dictionaryIndex}
+            dictionaryWord={dictionaryWord}
+            setDictionary={setDictionary}
+          ></DictionaryWordCombo>
+        </Grid>
+        <Grid className={classes.metadata} item xs={1}>
+          <Metadata
+            metadataList={selectedDictionary.metadata}
+            title="Version Name (in Eng)"
+            abbreviation="Abbreviation"
+          ></Metadata>
+        </Grid>
+      </Grid>
+      {dictionaryText.length === 0 ? (
+        <h3 className={classes.loading}>Loading</h3>
+      ) : (
+        <div className={classes.text}>{dictionaryText}</div>
+      )}
+    </div>
+  );
+};
+const mapStateToProps = state => {
+  return {
+    dictionary: state.dictionary,
+    version: state.panel1.version
+  };
+};
+export default connect(mapStateToProps)(Dictionary);

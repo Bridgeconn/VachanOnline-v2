@@ -3,6 +3,13 @@ const defaultState = {
   versions: [],
   commentaries: [],
   commentary: {},
+  dictionary: {
+    dictionaries: [],
+    selectedDictionary: {},
+    dictionaryIndex: [],
+    dictionaryWord: {},
+    wordMeaning: {}
+  },
   versionBooks: {},
   parallelScroll: true,
   panel1: {
@@ -57,6 +64,11 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         [action.name]: action.value
+      };
+    case actions.SETDICTIONARY:
+      return {
+        ...state,
+        dictionary: { ...state.dictionary, [action.name]: action.value }
       };
     default:
       return state;

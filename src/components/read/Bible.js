@@ -114,7 +114,7 @@ const Bible = props => {
   };
   const scrollText = () => {
     if (props.scroll) {
-      props.scroll(props.paneNo, props.parallelScroll);
+      props.scroll(props.paneNo, props.parallelScroll, props.setSync);
     }
   };
   const classes = useStyles();

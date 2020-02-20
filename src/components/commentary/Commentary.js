@@ -1,16 +1,18 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import CommentaryCombo from "./CommentaryCombo";
+import Metadata from "../common/Metadata";
 import { getCommentaryForChaper } from "../common/utillity";
 import parse from "html-react-parser";
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
-    marginTop: 83
+    marginTop: 82
   },
   title: {
     paddingLeft: 35,
@@ -57,6 +59,15 @@ const useStyles = makeStyles(theme => ({
   },
   loading: {
     paddingLeft: 20
+  },
+  bookLabel: {
+    paddingLeft: 20,
+    verticalAlign: "middle",
+    fontSize: 20,
+    display: "inline-block"
+  },
+  metadata: {
+    marginTop: -8
   }
 }));
 
@@ -66,7 +77,8 @@ const Commentary = props => {
   const [commentaryObject, setCommentaryObject] = React.useState([]);
   const [verseLabel, setVerseLabel] = React.useState("Verse");
   let { panel1, commentaries, setCommentary, commentary } = props;
-  let { version, bookCode, chapter } = panel1;
+  let { version, book, bookCode, chapter } = panel1;
+  const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
     if (Object.entries(commentary).length === 0 && commentaries[0]) {
@@ -82,6 +94,7 @@ const Commentary = props => {
       setCommentary(comm);
     }
   }, [version, commentary, commentaries, setCommentary]);
+
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
@@ -96,6 +109,8 @@ const Commentary = props => {
     if (commentary && commentary.code) {
       setVerseLabel(commentary.code === "MHCC" ? "Verse" : "पद");
     }
+    //Scroll to top on text change
+    if (textRef.current !== undefined) textRef.current.scrollTo(0, 0);
   }, [commentary, bookCode, chapter]);
   //Remove leading break line
   const removeBr = str => {
@@ -123,17 +138,31 @@ const Commentary = props => {
   }, [commentaryObject, verseLabel]);
   return (
     <div className={classes.root}>
-      <Typography className={classes.title}>
-        <CommentaryCombo
-          commentaries={props.commentaries}
-          commentary={props.commentary}
-          setCommentary={props.setCommentary}
-        />
-      </Typography>
+      <Grid container className={classes.title}>
+        <Grid item xs={11}>
+          <CommentaryCombo
+            commentaries={props.commentaries}
+            commentary={props.commentary}
+            setCommentary={props.setCommentary}
+          />
+          <Typography className={classes.bookLabel}>
+            {book} {chapter}
+          </Typography>
+        </Grid>
+        <Grid className={classes.metadata} item xs={1}>
+          <Metadata
+            metadataList={commentary.metadata}
+            title="Version Name (in Eng)"
+            abbreviation="Abbreviation"
+          ></Metadata>
+        </Grid>
+      </Grid>
       {commentaryText.length === 0 ? (
         <h3 className={classes.loading}>Loading</h3>
       ) : (
-        <div className={classes.text}>{parse(commentaryText)}</div>
+        <div className={classes.text} ref={textRef}>
+          {parse(commentaryText)}
+        </div>
       )}
     </div>
   );

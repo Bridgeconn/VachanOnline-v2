@@ -1,16 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
-import Popover from "@material-ui/core/Popover";
-import Paper from "@material-ui/core/Paper";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
+import Metadata from "../common/Metadata";
 const useStyles = makeStyles(theme => ({
   read: {
     padding: "0 15px 0 44px",
@@ -45,56 +40,13 @@ const useStyles = makeStyles(theme => ({
     cursor: "pointer"
   },
   items: {
-    justify: "flex-end",
     float: "right"
-  },
-  paper: {
-    width: "80%"
-  },
-  metadataTitle: {
-    fontSize: 26,
-    padding: "5px 0 0 12px"
-  },
-  metadataTitleBar: {
-    backgroundColor: "#2e639a",
-    color: "#fff"
-  },
-  metadataHeading: {
-    fontSize: 17,
-    lineHeight: "28px",
-    display: "block",
-    textAlign: "end",
-    fontWeight: 600
-  },
-  metadataText: {
-    lineHeight: "28px",
-    fontSize: 16,
-    paddingLeft: 14
-  },
-  metadataRow: {
-    "&:last-child": {
-      marginBottom: 2
-    },
-    "&:nth-child(even)": {
-      backgroundColor: "#cfd9e6"
-    }
-  },
-  closeButton: {
-    color: "inherit"
   }
 }));
 const MenuBar = props => {
   const classes = useStyles();
   function goFull() {
     props.setFullscreen(true);
-  }
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  //metadata information popup
-  function handleClick(event) {
-    setAnchorEl(event.currentTarget);
-  }
-  function handleClose() {
-    setAnchorEl(null);
   }
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const [metadataList, setMetadataList] = React.useState(null);
@@ -118,17 +70,6 @@ const MenuBar = props => {
       }
     }
   }, [props.version, props.versions]);
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-  const checkLink = text => {
-    return text.includes("http") ? (
-      <Link href={text} target="_blank">
-        {text}
-      </Link>
-    ) : (
-      text
-    );
-  };
   return (
     <Grid container className={classes.read}>
       <Grid item xs={10}>
@@ -150,91 +91,11 @@ const MenuBar = props => {
         justify="flex-end"
         direction="row"
       >
-        <div
-          aria-describedby={id}
-          onClick={handleClick}
-          className={classes.info}
-        >
-          <i className="material-icons md-23">info_outline</i>
-        </div>
-        {metadataList ? (
-          <Popover
-            id={id}
-            className={classes.paper}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center"
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center"
-            }}
-          >
-            <Paper>
-              <Grid
-                justify="space-between" // Add it here :)
-                container
-                className={classes.metadataTitleBar}
-              >
-                <Grid item>
-                  <Typography
-                    type="title"
-                    color="inherit"
-                    className={classes.metadataTitle}
-                  >
-                    {metadataList["Version Name (in Eng)"] +
-                      " (" +
-                      metadataList["Abbreviation"] +
-                      ")"}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <IconButton
-                    className={classes.closeButton}
-                    size="medium"
-                    onClick={() => {
-                      setAnchorEl(null);
-                    }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Grid>
-              </Grid>
-              <Grid container>
-                {Object.keys(metadataList)
-                  .sort()
-                  .map((item, i) => {
-                    return item.trim() !== "" &&
-                      metadataList[item].trim() !== "" ? (
-                      <Grid
-                        container
-                        item
-                        xs={12}
-                        key={i}
-                        alignItems="flex-start"
-                        justify="flex-end"
-                        className={classes.metadataRow}
-                      >
-                        <Grid item sm={4} className={classes.metadataHeading}>
-                          {item}:
-                        </Grid>
-                        <Grid item sm={8} className={classes.metadataText}>
-                          {checkLink(metadataList[item])}
-                        </Grid>
-                      </Grid>
-                    ) : (
-                      ""
-                    );
-                  })}
-              </Grid>
-            </Paper>
-          </Popover>
-        ) : (
-          ""
-        )}
+        <Metadata
+          metadataList={metadataList}
+          title="Version Name (in Eng)"
+          abbreviation="Abbreviation"
+        ></Metadata>
         <div className={classes.info} onClick={goFull}>
           <i className="material-icons md-23">zoom_out_map</i>
         </div>

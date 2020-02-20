@@ -6,8 +6,9 @@ import * as views from "../../store/views";
 import TopBar from "./TopBar";
 import BiblePane from "./BiblePane";
 import Commentary from "../commentary/Commentary";
+import Dictionary from "../dictionary/Dictionary";
 import BibleMenu from "./BibleMenu";
-import { getCommentaries } from "../common/utillity";
+import { getCommentaries, getDictionaries } from "../common/utillity";
 
 const useStyles = makeStyles(theme => ({
   biblePane1: {
@@ -61,10 +62,12 @@ const ReadBible = props => {
   //ref to get bible panes 1 & 2
   const bibleText1 = React.useRef();
   const bibleText2 = React.useRef();
+  //used to sync bibles in paralle bibles on scroll
+  const [sync, setSync] = React.useState(0);
   //flag to prevent looping of on scroll event
   let ignoreScrollEvents = false;
   //function to implement parallel scroll
-  const getScroll = React.useCallback((paneNo, parallelScroll) => {
+  const getScroll = React.useCallback((paneNo, parallelScroll, setSync) => {
     //check flag to prevent looping of on scroll event
     if (ignoreScrollEvents) {
       ignoreScrollEvents = false;
@@ -87,13 +90,13 @@ const ReadBible = props => {
         text2.scrollTop =
           (text1.scrollTop / (text1.scrollHeight - text1.offsetHeight)) *
           (text2.scrollHeight - text2.offsetHeight);
-        syncBible(1);
+        setSync(1);
       } else if (paneNo === 2) {
         ignoreScrollEvents = true;
         text1.scrollTop =
           (text2.scrollTop / (text2.scrollHeight - text2.offsetHeight)) *
           (text1.scrollHeight - text1.offsetHeight);
-        syncBible(2);
+        setSync(2);
       }
     }
   }, []);
@@ -107,8 +110,8 @@ const ReadBible = props => {
   }
   let { setValue1, setValue2, copyPanel1, panel1, panel2 } = props;
   //sync bible on scroll if parallel scroll on
-  const syncBible = panelNo => {
-    if (panelNo === 1) {
+  React.useEffect(() => {
+    if (sync === 1) {
       if (panel2.book !== panel1.book) {
         setValue2("book", panel1.book);
         setValue2("bookCode", panel1.bookCode);
@@ -118,7 +121,7 @@ const ReadBible = props => {
         setValue2("chapter", panel1.chapter);
       }
     }
-    if (panelNo === 2) {
+    if (sync === 2) {
       if (panel1.book !== panel2.book) {
         setValue1("book", panel2.book);
         setValue1("bookCode", panel2.bookCode);
@@ -128,13 +131,20 @@ const ReadBible = props => {
         setValue1("chapter", panel2.chapter);
       }
     }
-  };
+    setSync(0);
+  }, [panel1, panel2, props, setValue1, setValue2, sync]);
   React.useEffect(() => {
     //if commentaries not loaded fetch list of commentaries
     if (props.commentaries.length === 0) {
       getCommentaries(props.setValue);
     }
   }, [props.commentaries.length, props.setValue]);
+  React.useEffect(() => {
+    //if dictionaries not loaded fetch list of dictionaries
+    if (props.dictionaries.length === 0) {
+      getDictionaries(props.setDictionary);
+    }
+  }, [props.dictionaries.length, props.setDictionary]);
   React.useEffect(() => {
     if (parallelView === views.PARALLELBIBLE) {
       copyPanel1();
@@ -152,6 +162,7 @@ const ReadBible = props => {
                 paneData={props.panel1}
                 ref1={bibleText1}
                 scroll={getScroll}
+                setSync={setSync}
                 paneNo={1}
               />
             </div>
@@ -161,6 +172,7 @@ const ReadBible = props => {
                 paneData={props.panel2}
                 ref1={bibleText2}
                 scroll={getScroll}
+                setSync={setSync}
                 paneNo={2}
               />
             </div>
@@ -175,6 +187,18 @@ const ReadBible = props => {
             </div>
             <div className={classes.biblePane2}>
               <Commentary />
+            </div>
+          </>
+        );
+        break;
+      case views.DICTIONARY:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Dictionary setDictionary={props.setDictionary} />
             </div>
           </>
         );
@@ -210,7 +234,8 @@ const mapStateToProps = state => {
     panel1: state.panel1,
     panel2: state.panel2,
     parallelScroll: state.parallelScroll,
-    commentaries: state.commentaries
+    commentaries: state.commentaries,
+    dictionaries: state.dictionary.dictionaries
   };
 };
 
@@ -223,6 +248,8 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actions.SETVALUE2, name: name, value: value }),
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    setDictionary: (name, value) =>
+      dispatch({ type: actions.SETDICTIONARY, name: name, value: value }),
     copyPanel1: () => dispatch({ type: actions.COPYPANEL1 })
   };
 };
