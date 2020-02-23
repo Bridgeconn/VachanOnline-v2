@@ -19,6 +19,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.4.0",
     "react-swipeable": "^5.4.0",
+    "react-viewerjs": "^0.1.9",
     "redux": "^4.0.4"
   },
   "scripts": {

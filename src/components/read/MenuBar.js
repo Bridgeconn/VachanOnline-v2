@@ -50,6 +50,7 @@ const MenuBar = props => {
   }
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const [metadataList, setMetadataList] = React.useState(null);
+  let { setValue } = props;
   //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -66,19 +67,20 @@ const MenuBar = props => {
         const version = versions.languageVersions.find(
           e => (e.version.code = language[1])
         );
+        setValue("languageCode", version.language.code);
         setMetadataList(version.metadata);
       }
     }
-  }, [props.version, props.versions]);
+  }, [setValue, props.version, props.versions]);
   return (
     <Grid container className={classes.read}>
       <Grid item xs={10}>
-        <Version setValue={props.setValue} version={props.version} />
+        <Version setValue={setValue} version={props.version} />
         <BookCombo
           book={props.book}
           bookList={props.versionBooks[props.sourceId]}
           chapter={props.chapter}
-          setValue={props.setValue}
+          setValue={setValue}
           minimal={true}
         />
       </Grid>
@@ -111,7 +113,7 @@ const MenuBar = props => {
         <Setting
           fontSize={props.fontSize}
           fontFamily={props.fontFamily}
-          setValue={props.setValue}
+          setValue={setValue}
           settingsAnchor={settingsAnchor}
           handleClose={closeSettings}
         />

@@ -7,6 +7,7 @@ import TopBar from "./TopBar";
 import BiblePane from "./BiblePane";
 import Commentary from "../commentary/Commentary";
 import Dictionary from "../dictionary/Dictionary";
+import Infographics from "../infographics/Infographics";
 import BibleMenu from "./BibleMenu";
 import { getCommentaries, getDictionaries } from "../common/utillity";
 
@@ -203,6 +204,18 @@ const ReadBible = props => {
           </>
         );
         break;
+      case views.INFOGRAPHICS:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Infographics setValue={props.setValue} />
+            </div>
+          </>
+        );
+        break;
       default:
         setPane(
           <div className={classes.biblePane1}>
@@ -235,7 +248,8 @@ const mapStateToProps = state => {
     panel2: state.panel2,
     parallelScroll: state.parallelScroll,
     commentaries: state.commentaries,
-    dictionaries: state.dictionary.dictionaries
+    dictionaries: state.dictionary.dictionaries,
+    infographics: state.infographics
   };
 };
 

@@ -64,6 +64,9 @@ const useStyles = makeStyles(theme => ({
   },
   metadata: {
     marginTop: -8
+  },
+  seeAlso: {
+    textTransform: "capitalize"
   }
 }));
 const Dictionary = props => {
@@ -143,13 +146,13 @@ const Dictionary = props => {
           <div className={classes.heading}>Strongs</div>
           <div>{clean2(wordMeaning.strongs)}</div>
           <div className={classes.heading}>See Also</div>
-          <div>{clean3(wordMeaning.seeAlso)}</div>
+          <div className={classes.seeAlso}>{clean3(wordMeaning.seeAlso)}</div>
           <div className={classes.heading}>Ref</div>
           <div>{clean4(wordMeaning.ref)}</div>
         </>
       );
     }
-  }, [classes.heading, dictionaryWord.word, wordMeaning]);
+  }, [classes.heading, classes.seeAlso, dictionaryWord.word, wordMeaning]);
   return (
     <div className={classes.root}>
       <Grid container className={classes.title}>

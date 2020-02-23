@@ -33,9 +33,14 @@ export default function BibleMenu(props) {
           title="Dictionaries"
           item={views.DICTIONARY}
         />
+        <MenuItem
+          onClick={props.menuClick}
+          icon="image"
+          title="Infographics"
+          item={views.INFOGRAPHICS}
+        />
         {/* <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="videocam" title=" Videos" />
-        <MenuItem icon="image" title="Images" />
         <MenuItem icon="volume_up" title="Audio" />
         <MenuItem icon="rate_review" title="Articles" />
         <MenuItem icon="sort_by_alpha" title="Dictionary" />

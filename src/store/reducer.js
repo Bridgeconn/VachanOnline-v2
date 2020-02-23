@@ -10,6 +10,7 @@ const defaultState = {
     dictionaryWord: {},
     wordMeaning: {}
   },
+  infographics: {},
   versionBooks: {},
   parallelScroll: true,
   panel1: {

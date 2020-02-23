@@ -103,3 +103,13 @@ export const getDictionaryWord = (sourceId, wordId, setDictionary) => {
       console.log(error);
     });
 };
+//Function to get the infographics index
+export const getInfographics = (languageCode, setValue) => {
+  API.get("infographics/" + languageCode)
+    .then(function(response) {
+      setValue("infographics", response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
