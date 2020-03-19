@@ -11,6 +11,7 @@ const defaultState = {
     wordMeaning: {}
   },
   infographics: {},
+  audioBible: [],
   versionBooks: {},
   parallelScroll: true,
   panel1: {
@@ -21,7 +22,9 @@ const defaultState = {
     bookCode: "",
     chapter: "",
     fontSize: 16,
-    fontFamily: "Sans"
+    fontFamily: "Sans",
+    audio: false,
+    audioBible: {}
   },
   panel2: {
     version: "Loading...",
@@ -31,7 +34,9 @@ const defaultState = {
     bookCode: "",
     chapter: "",
     fontSize: 16,
-    fontFamily: "Sans"
+    fontFamily: "Sans",
+    audio: false,
+    audioBible: {}
   }
 };
 const reducer = (state = defaultState, action) => {

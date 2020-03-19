@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import API from "../../store/api";
 import { connect } from "react-redux";
 import { getBookbyCode } from "../common/utillity";
+import ReactPlayer from "react-player";
+
 const useStyles = makeStyles(theme => ({
   biblePanel: {
     lineHeight: 1.7,
@@ -40,7 +42,9 @@ const useStyles = makeStyles(theme => ({
       outline: "1px solid slategrey"
     }
   },
-
+  audio: {
+    height: "calc(100% - 55px)"
+  },
   prevChapter: {
     position: "absolute",
     top: "45%",
@@ -55,6 +59,11 @@ const useStyles = makeStyles(theme => ({
   },
   loading: {
     padding: 20
+  },
+  player: {
+    position: "absolute",
+    bottom: "16px",
+    left: "2%"
   }
 }));
 const Bible = props => {
@@ -65,18 +74,27 @@ const Bible = props => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [previous, setPrevious] = React.useState({});
   const [next, setNext] = React.useState({});
+  const [audioUrl, setAudioUrl] = React.useState("");
+  let {
+    sourceId,
+    bookCode,
+    chapter,
+    audio,
+    audioBible,
+    setValue,
+    scroll,
+    paneNo,
+    parallelScroll,
+    setSync,
+    fontSize
+  } = props;
   React.useEffect(() => {
-    if (props.sourceId && props.bookCode && props.chapter) {
+    if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
       setIsLoading(true);
       setLoadingText("Loading");
       API.get(
-        "bibles/" +
-          props.sourceId +
-          "/books/" +
-          props.bookCode +
-          "/chapter/" +
-          props.chapter
+        "bibles/" + sourceId + "/books/" + bookCode + "/chapter/" + chapter
       )
         .then(function(response) {
           setPrevious(response.data.previous);
@@ -92,29 +110,35 @@ const Bible = props => {
           console.log(error);
         });
     }
-  }, [props.sourceId, props.bookCode, props.chapter]);
-
+  }, [sourceId, bookCode, chapter]);
+  React.useEffect(() => {
+    if (audio) {
+      setAudioUrl(
+        audioBible.url + bookCode + "/" + chapter + "." + audioBible.format
+      );
+    }
+  }, [audio, audioBible, bookCode, chapter]);
   //Function to load previous chapter
   const prevClick = () => {
     if (!isLoading && Object.keys(previous).length > 0) {
-      props.setValue("chapter", previous.chapterId);
-      props.setValue("bookCode", previous.bibleBookCode);
+      setValue("chapter", previous.chapterId);
+      setValue("bookCode", previous.bibleBookCode);
       let book = getBookbyCode(previous.bibleBookCode);
-      props.setValue("book", book.book);
+      setValue("book", book.book);
     }
   };
   //Function to load next chapter
   const nextClick = () => {
     if (!isLoading && Object.keys(next).length > 0) {
-      props.setValue("chapter", next.chapterId);
-      props.setValue("bookCode", next.bibleBookCode);
+      setValue("chapter", next.chapterId);
+      setValue("bookCode", next.bibleBookCode);
       let book = getBookbyCode(next.bibleBookCode);
-      props.setValue("book", book.book);
+      setValue("book", book.book);
     }
   };
   const scrollText = () => {
-    if (props.scroll) {
-      props.scroll(props.paneNo, props.parallelScroll, props.setSync);
+    if (scroll) {
+      scroll(paneNo, parallelScroll, setSync);
     }
   };
   const classes = useStyles();
@@ -123,24 +147,41 @@ const Bible = props => {
       className={classes.biblePanel}
       style={{
         fontFamily: fontFamily,
-        fontSize: props.fontSize
+        fontSize: fontSize
       }}
     >
       {!isLoading && loadingText !== "Book not uploaded" ? (
-        <div
-          onScroll={() => {
-            scrollText();
-          }}
-          ref={props.ref1}
-          className={classes.bibleReadingPane}
-        >
-          {verses.map(item => (
-            <span key={item.number}>
-              <span>
-                {item.number}. {item.text}
+        <div>
+          <div
+            onScroll={() => {
+              scrollText();
+            }}
+            ref={props.ref1}
+            className={
+              audio
+                ? `${classes.bibleReadingPane} ${classes.audio}`
+                : classes.bibleReadingPane
+            }
+          >
+            {verses.map(item => (
+              <span key={item.number}>
+                <span>
+                  {item.number}. {item.text}
+                </span>
               </span>
-            </span>
-          ))}
+            ))}
+          </div>
+          {audio ? (
+            <ReactPlayer
+              url={audioUrl}
+              controls
+              width="96%"
+              height="50px"
+              className={classes.player}
+            />
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         <h3 className={classes.loading}>{loadingText}</h3>

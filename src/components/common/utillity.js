@@ -113,3 +113,28 @@ export const getInfographics = (languageCode, setValue) => {
       console.log(error);
     });
 };
+//Function to get the infographics index
+export const getAudioBibles = setValue => {
+  API.get("audiobibles")
+    .then(function(response) {
+      setValue("audioBible", response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+
+//Function to get audioBible information from version json
+export const getAudioBibleObject = (versions, sourceId) => {
+  if (sourceId === "") {
+    return;
+  }
+  for (var i = 0; i < versions.length; i++) {
+    let languageVersions = versions[i]["languageVersions"];
+    for (var j = 0; j < languageVersions.length; j++) {
+      if (Number(sourceId) === languageVersions[j]["sourceId"]) {
+        return languageVersions[j]["audioBible"];
+      }
+    }
+  }
+};
