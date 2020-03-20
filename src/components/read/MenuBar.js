@@ -2,10 +2,12 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
+import { getAudioBibleObject } from "../common/utillity";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import Metadata from "../common/Metadata";
+
 const useStyles = makeStyles(theme => ({
   read: {
     padding: "0 15px 0 44px",
@@ -46,11 +48,28 @@ const useStyles = makeStyles(theme => ({
 const MenuBar = props => {
   const classes = useStyles();
   function goFull() {
-    props.setFullscreen(true);
+    setFullscreen(true);
+  }
+  function openAudioBible() {
+    setValue("audio", !props.audio);
+    setValue("audioBible", audioBible);
   }
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const [metadataList, setMetadataList] = React.useState(null);
-  let { setValue } = props;
+  const [audioBible, setAudioBible] = React.useState({});
+  let {
+    setValue,
+    setFullscreen,
+    versions,
+    version,
+    sourceId,
+    book,
+    chapter,
+    versionBooks,
+    fontSize,
+    fontFamily,
+    bookCode
+  } = props;
   //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -60,26 +79,29 @@ const MenuBar = props => {
   }
   //get metadata from versions object if version changed
   React.useEffect(() => {
-    if (props.versions !== undefined) {
-      const language = props.version.split("-");
-      const versions = props.versions.find(e => e.language === language[0]);
-      if (versions !== undefined) {
-        const version = versions.languageVersions.find(
+    if (versions !== undefined) {
+      const language = version.split("-");
+      const languageVersions = versions.find(e => e.language === language[0]);
+      if (languageVersions !== undefined) {
+        const version = languageVersions.languageVersions.find(
           e => (e.version.code = language[1])
         );
         setValue("languageCode", version.language.code);
         setMetadataList(version.metadata);
       }
     }
-  }, [setValue, props.version, props.versions]);
+  }, [setValue, version, versions]);
+  React.useEffect(() => {
+    setAudioBible(getAudioBibleObject(versions, sourceId));
+  }, [versions, sourceId]);
   return (
     <Grid container className={classes.read}>
       <Grid item xs={10}>
-        <Version setValue={setValue} version={props.version} />
+        <Version setValue={setValue} version={version} />
         <BookCombo
-          book={props.book}
-          bookList={props.versionBooks[props.sourceId]}
-          chapter={props.chapter}
+          book={book}
+          bookList={versionBooks[sourceId]}
+          chapter={chapter}
           setValue={setValue}
           minimal={true}
         />
@@ -98,6 +120,13 @@ const MenuBar = props => {
           title="Version Name (in Eng)"
           abbreviation="Abbreviation"
         ></Metadata>
+        {audioBible && audioBible.url && bookCode in audioBible.books ? (
+          <div className={classes.info} onClick={openAudioBible}>
+            <i className="material-icons md-23">volume_up</i>
+          </div>
+        ) : (
+          props.setValue("audio", false)
+        )}
         <div className={classes.info} onClick={goFull}>
           <i className="material-icons md-23">zoom_out_map</i>
         </div>
@@ -111,8 +140,8 @@ const MenuBar = props => {
           <i className="material-icons md-23">more_vert</i>
         </div>
         <Setting
-          fontSize={props.fontSize}
-          fontFamily={props.fontFamily}
+          fontSize={fontSize}
+          fontFamily={fontFamily}
           setValue={setValue}
           settingsAnchor={settingsAnchor}
           handleClose={closeSettings}

@@ -65,12 +65,12 @@ export default function Metadata({ metadataList, title, abbreviation }) {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const checkLink = text => {
-    return text.includes("http") ? (
+    return text.startsWith("http") ? (
       <Link href={text} target="_blank">
-        {text}
+        {text + " "}
       </Link>
     ) : (
-      text
+      text + " "
     );
   };
   return (
@@ -148,7 +148,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                           {item}:
                         </Grid>
                         <Grid item sm={8} className={classes.metadataText}>
-                          {checkLink(metadataList[item])}
+                          {metadataList[item].split(" ").map(checkLink)}
                         </Grid>
                       </Grid>
                     ) : (

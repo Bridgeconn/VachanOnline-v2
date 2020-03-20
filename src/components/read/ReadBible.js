@@ -8,8 +8,13 @@ import BiblePane from "./BiblePane";
 import Commentary from "../commentary/Commentary";
 import Dictionary from "../dictionary/Dictionary";
 import Infographics from "../infographics/Infographics";
+import Audio from "../audio/Audio";
 import BibleMenu from "./BibleMenu";
-import { getCommentaries, getDictionaries } from "../common/utillity";
+import {
+  getCommentaries,
+  getDictionaries,
+  getAudioBibles
+} from "../common/utillity";
 
 const useStyles = makeStyles(theme => ({
   biblePane1: {
@@ -102,14 +107,26 @@ const ReadBible = props => {
     }
   }, []);
   const [parallelView, setParallelView] = React.useState("");
+  let {
+    setValue,
+    setValue1,
+    setValue2,
+    copyPanel1,
+    panel1,
+    panel2,
+    commentaries,
+    dictionaries,
+    setDictionary,
+    audioBible,
+    parallelScroll
+  } = props;
   function menuClick(view) {
     //if closing commentary then reset selected commentary
     if (parallelView === view && view === views.COMMENTARY) {
-      props.setValue("commentary", {});
+      setValue("commentary", {});
     }
     setParallelView(parallelView === view ? "" : view);
   }
-  let { setValue1, setValue2, copyPanel1, panel1, panel2 } = props;
   //sync bible on scroll if parallel scroll on
   React.useEffect(() => {
     if (sync === 1) {
@@ -133,19 +150,26 @@ const ReadBible = props => {
       }
     }
     setSync(0);
-  }, [panel1, panel2, props, setValue1, setValue2, sync]);
+  }, [panel1, panel2, setValue1, setValue2, sync]);
   React.useEffect(() => {
     //if commentaries not loaded fetch list of commentaries
-    if (props.commentaries.length === 0) {
-      getCommentaries(props.setValue);
+    if (commentaries.length === 0) {
+      getCommentaries(setValue);
     }
-  }, [props.commentaries.length, props.setValue]);
+  }, [commentaries.length, setValue]);
   React.useEffect(() => {
     //if dictionaries not loaded fetch list of dictionaries
-    if (props.dictionaries.length === 0) {
-      getDictionaries(props.setDictionary);
+    if (dictionaries.length === 0) {
+      getDictionaries(setDictionary);
     }
-  }, [props.dictionaries.length, props.setDictionary]);
+  }, [dictionaries.length, setDictionary]);
+  React.useEffect(() => {
+    //if audio bibles not loaded fetch list of audio bibles
+    if (audioBible.length === 0) {
+      getAudioBibles(setValue);
+    }
+  }, [audioBible, audioBible.length, setValue]);
+
   React.useEffect(() => {
     if (parallelView === views.PARALLELBIBLE) {
       copyPanel1();
@@ -159,8 +183,8 @@ const ReadBible = props => {
           <>
             <div className={classes.biblePane2}>
               <BiblePane
-                setValue={props.setValue1}
-                paneData={props.panel1}
+                setValue={setValue1}
+                paneData={panel1}
                 ref1={bibleText1}
                 scroll={getScroll}
                 setSync={setSync}
@@ -169,8 +193,8 @@ const ReadBible = props => {
             </div>
             <div className={classes.biblePane2}>
               <BiblePane
-                setValue={props.setValue2}
-                paneData={props.panel2}
+                setValue={setValue2}
+                paneData={panel2}
                 ref1={bibleText2}
                 scroll={getScroll}
                 setSync={setSync}
@@ -184,7 +208,7 @@ const ReadBible = props => {
         setPane(
           <>
             <div className={classes.biblePane2}>
-              <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+              <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
               <Commentary />
@@ -196,10 +220,10 @@ const ReadBible = props => {
         setPane(
           <>
             <div className={classes.biblePane2}>
-              <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+              <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Dictionary setDictionary={props.setDictionary} />
+              <Dictionary setDictionary={setDictionary} />
             </div>
           </>
         );
@@ -208,10 +232,26 @@ const ReadBible = props => {
         setPane(
           <>
             <div className={classes.biblePane2}>
-              <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+              <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Infographics setValue={props.setValue} />
+              <Infographics setValue={setValue} />
+            </div>
+          </>
+        );
+        break;
+      case views.AUDIO:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={setValue1} paneData={panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Audio
+                audioBible={audioBible}
+                bookCode={panel1.bookCode}
+                chapter={panel1.chapter}
+              />
             </div>
           </>
         );
@@ -219,16 +259,28 @@ const ReadBible = props => {
       default:
         setPane(
           <div className={classes.biblePane1}>
-            <BiblePane setValue={props.setValue1} paneData={props.panel1} />
+            <BiblePane setValue={setValue1} paneData={panel1} />
           </div>
         );
     }
-  }, [classes.biblePane1, classes.biblePane2, getScroll, parallelView, props]);
+  }, [
+    audioBible,
+    classes.biblePane1,
+    classes.biblePane2,
+    getScroll,
+    panel1,
+    panel2,
+    parallelView,
+    setDictionary,
+    setValue,
+    setValue1,
+    setValue2
+  ]);
   return (
     <>
       <TopBar
-        pScroll={props.parallelScroll}
-        setValue={props.setValue}
+        pScroll={parallelScroll}
+        setValue={setValue}
         parallelView={parallelView}
       />
       <div>
@@ -249,7 +301,8 @@ const mapStateToProps = state => {
     parallelScroll: state.parallelScroll,
     commentaries: state.commentaries,
     dictionaries: state.dictionary.dictionaries,
-    infographics: state.infographics
+    infographics: state.infographics,
+    audioBible: state.audioBible
   };
 };
 
