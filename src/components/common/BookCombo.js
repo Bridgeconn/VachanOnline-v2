@@ -124,7 +124,11 @@ export default function BookCombo({
   }, [book]);
   //initialize chapter list when book opened changed
   React.useEffect(() => {
-    if (bookOpened !== "Loading..." && bookList.length > 0) {
+    if (
+      bookOpened !== "Loading..." &&
+      bookList !== undefined &&
+      bookList.length > 0
+    ) {
       let bookObject = getBookByName(bookOpened);
       let bookCode = bookObject.abbreviation;
       let chapters = new Array(bibleChapters[bookCode]);

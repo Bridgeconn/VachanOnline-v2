@@ -113,7 +113,8 @@ export const getInfographics = (languageCode, setValue) => {
       console.log(error);
     });
 };
-//Function to get the infographics index
+
+//Function to get the audiobibles
 export const getAudioBibles = setValue => {
   API.get("audiobibles")
     .then(function(response) {
@@ -137,4 +138,15 @@ export const getAudioBibleObject = (versions, sourceId) => {
       }
     }
   }
+};
+
+//Function to get the videos
+export const getVideos = setValue => {
+  API.get("videos")
+    .then(function(response) {
+      setValue("video", response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
 };

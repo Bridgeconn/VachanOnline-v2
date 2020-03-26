@@ -66,7 +66,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
   const id = open ? "simple-popover" : undefined;
   const checkLink = text => {
     return text.startsWith("http") ? (
-      <Link href={text} target="_blank">
+      <Link href={text} key={text} target="_blank">
         {text + " "}
       </Link>
     ) : (

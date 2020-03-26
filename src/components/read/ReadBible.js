@@ -9,11 +9,13 @@ import Commentary from "../commentary/Commentary";
 import Dictionary from "../dictionary/Dictionary";
 import Infographics from "../infographics/Infographics";
 import Audio from "../audio/Audio";
+import Video from "../video/Video";
 import BibleMenu from "./BibleMenu";
 import {
   getCommentaries,
   getDictionaries,
-  getAudioBibles
+  getAudioBibles,
+  getVideos
 } from "../common/utillity";
 
 const useStyles = makeStyles(theme => ({
@@ -118,6 +120,7 @@ const ReadBible = props => {
     dictionaries,
     setDictionary,
     audioBible,
+    video,
     parallelScroll
   } = props;
   function menuClick(view) {
@@ -168,8 +171,13 @@ const ReadBible = props => {
     if (audioBible.length === 0) {
       getAudioBibles(setValue);
     }
-  }, [audioBible, audioBible.length, setValue]);
-
+  }, [audioBible.length, setValue]);
+  React.useEffect(() => {
+    //if videos not loaded fetch list of videos
+    if (video.length === 0) {
+      getVideos(setValue);
+    }
+  }, [video.length, setValue]);
   React.useEffect(() => {
     if (parallelView === views.PARALLELBIBLE) {
       copyPanel1();
@@ -256,6 +264,22 @@ const ReadBible = props => {
           </>
         );
         break;
+      case views.VIDEO:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={setValue1} paneData={panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Video
+                video={video}
+                bookCode={panel1.bookCode}
+                languageCode={panel1.languageCode}
+              />
+            </div>
+          </>
+        );
+        break;
       default:
         setPane(
           <div className={classes.biblePane1}>
@@ -274,7 +298,8 @@ const ReadBible = props => {
     setDictionary,
     setValue,
     setValue1,
-    setValue2
+    setValue2,
+    video
   ]);
   return (
     <>
@@ -302,7 +327,8 @@ const mapStateToProps = state => {
     commentaries: state.commentaries,
     dictionaries: state.dictionary.dictionaries,
     infographics: state.infographics,
-    audioBible: state.audioBible
+    audioBible: state.audioBible,
+    video: state.video
   };
 };
 
