@@ -12,6 +12,7 @@ const defaultState = {
   },
   infographics: {},
   audioBible: [],
+  video: [],
   versionBooks: {},
   parallelScroll: true,
   panel1: {

@@ -1,0 +1,172 @@
+import React from "react";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import { makeStyles } from "@material-ui/core/styles";
+//import { RViewer, RViewerTrigger } from "react-viewerjs";
+import Typography from "@material-ui/core/Typography";
+//import Card from "@material-ui/core/Card";
+//import CardContent from "@material-ui/core/CardContent";
+//import CardMedia from "@material-ui/core/CardMedia";
+//import { connect } from "react-redux";
+//import { getInfographics } from "../common/utillity";
+import ModalVideo from "react-modal-video";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    position: "absolute",
+    top: 94,
+    bottom: 0,
+    paddingLeft: 15
+  },
+  container: {
+    top: 40,
+    bottom: 0,
+    overflow: "scroll",
+    position: "absolute",
+    paddingTop: 12,
+    "&::-webkit-scrollbar": {
+      width: "0.45em"
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.4)",
+      outline: "1px solid slategrey"
+    }
+  },
+  heading: {
+    borderBottom: "1px solid #f1ecec",
+    display: "flex",
+    width: "100%",
+    height: "2em"
+  },
+  card: {
+    minWidth: 170,
+    width: 170,
+    display: "inline-block",
+    marginRight: 20,
+    marginTop: 10,
+    cursor: "pointer"
+  },
+  video: {
+    width: "48%",
+    padding: 0,
+    margin: "0 2% 2% 0",
+    display: "inline-block",
+    verticalAlign: "top"
+  },
+  title: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
+  },
+  image: {
+    width: "100%",
+    height: "100%"
+  },
+  description: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  }
+}));
+const Video = props => {
+  const classes = useStyles();
+  let { video, bookCode, languageCode } = props;
+  const [message, setMessage] = React.useState("");
+  const [videoId, setVideoId] = React.useState("");
+  const [videos, setVideos] = React.useState([]);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const truncate = (string, length) =>
+    string.length < length ? string : string.substring(0, length) + "...";
+
+  //If language or book changed update videos and message to show
+  React.useEffect(() => {
+    if (video && bookCode && languageCode) {
+      const found = video.find(
+        element => element.language.code === languageCode
+      );
+      if (found) {
+        if (found.books && found.books.hasOwnProperty(bookCode)) {
+          setVideos(found.books[bookCode]);
+          setMessage("");
+        } else {
+          setVideos([]);
+          setMessage("No videos available for this Book");
+        }
+      } else {
+        setVideos([]);
+        setMessage("No videos available for this language");
+      }
+    }
+  }, [video, bookCode, languageCode]);
+  return (
+    <div className={classes.root}>
+      <Typography variant="h6" className={classes.heading}>
+        Videos
+      </Typography>
+      <div className={classes.container}>
+        {videos && videos.length > 0 ? (
+          <div>
+            <ModalVideo
+              channel="youtube"
+              isOpen={isOpen}
+              videoId={videoId}
+              onClose={() => setIsOpen(false)}
+            />
+            {videos.map((video, i) => {
+              let videoId = video.url.split("https://youtu.be/")[1];
+              return (
+                <Card
+                  key={i}
+                  onClick={() => {
+                    setVideoId(videoId);
+                    setIsOpen(true);
+                  }}
+                  className={classes.video}
+                >
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      alt="Video"
+                      height="244"
+                      className={classes.media}
+                      image={"https://img.youtube.com/vi/" + videoId + "/0.jpg"}
+                      title="Video"
+                    />
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="h2"
+                        title={video.title}
+                        className={classes.title}
+                      >
+                        {video.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                        title={video.description}
+                      >
+                        {truncate(video.description, 100)}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              );
+            })}
+          </div>
+        ) : (
+          message
+        )}
+      </div>
+    </div>
+  );
+};
+export default Video;
