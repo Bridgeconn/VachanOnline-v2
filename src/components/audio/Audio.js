@@ -86,15 +86,31 @@ const useStyles = makeStyles(theme => ({
 }));
 const Audio = props => {
   const classes = useStyles();
+  const [message, setMessage] = React.useState("");
   let { audioBible, bookCode, chapter } = props;
+  React.useEffect(() => {
+    if (audioBible.length === 0) {
+      setMessage("No audio bibles available");
+    } else {
+      let index = audioBible.findIndex(language => {
+        let bookIndex = language.audioBibles.findIndex(a =>
+          a.books.hasOwnProperty(bookCode)
+        );
+        return bookIndex !== -1;
+      });
+      if (index === -1) {
+        setMessage("No audio bibles available for this book");
+      } else {
+        setMessage("");
+      }
+    }
+  }, [audioBible, bookCode]);
   return (
     <div className={classes.root}>
       <Typography variant="h6" className={classes.heading}>
         Audio Bibles
       </Typography>
-      {audioBible.length === 0 ? (
-        "No Audio Bibles Available"
-      ) : (
+      {message || (
         <div className={classes.container}>
           {audioBible.map((language, i) => {
             //Assume that the whole book is there, not searching for chapter
