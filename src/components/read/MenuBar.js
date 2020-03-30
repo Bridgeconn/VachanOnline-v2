@@ -47,16 +47,6 @@ const useStyles = makeStyles(theme => ({
 }));
 const MenuBar = props => {
   const classes = useStyles();
-  function goFull() {
-    setFullscreen(true);
-  }
-  function openAudioBible() {
-    setValue("audio", !props.audio);
-    setValue("audioBible", audioBible);
-  }
-  const [settingsAnchor, setSettingsAnchor] = React.useState(null);
-  const [metadataList, setMetadataList] = React.useState(null);
-  const [audioBible, setAudioBible] = React.useState({});
   let {
     setValue,
     setFullscreen,
@@ -68,8 +58,16 @@ const MenuBar = props => {
     versionBooks,
     fontSize,
     fontFamily,
-    bookCode
+    bookCode,
+    audio
   } = props;
+  function goFull() {
+    setFullscreen(true);
+  }
+  const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+  const [metadataList, setMetadataList] = React.useState(null);
+  const [audioBible, setAudioBible] = React.useState({});
+  const [audioIcon, setAudioIcon] = React.useState("");
   //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -94,6 +92,23 @@ const MenuBar = props => {
   React.useEffect(() => {
     setAudioBible(getAudioBibleObject(versions, sourceId));
   }, [versions, sourceId]);
+  //if audioBible updated show audio bible icon if audio bible available
+  React.useEffect(() => {
+    const openAudioBible = () => {
+      setValue("audio", !audio);
+      setValue("audioBible", audioBible);
+    };
+    if (audioBible && audioBible.url && bookCode in audioBible.books) {
+      setAudioIcon(
+        <div className={classes.info} onClick={openAudioBible}>
+          <i className="material-icons md-23">volume_up</i>
+        </div>
+      );
+    } else {
+      setValue("audio", false);
+      setAudioIcon("");
+    }
+  }, [audio, audioBible, bookCode, classes.info, setValue]);
   return (
     <Grid container className={classes.read}>
       <Grid item xs={10}>
@@ -120,13 +135,7 @@ const MenuBar = props => {
           title="Version Name (in Eng)"
           abbreviation="Abbreviation"
         ></Metadata>
-        {audioBible && audioBible.url && bookCode in audioBible.books ? (
-          <div className={classes.info} onClick={openAudioBible}>
-            <i className="material-icons md-23">volume_up</i>
-          </div>
-        ) : (
-          props.setValue("audio", false)
-        )}
+        {audioIcon}
         <div className={classes.info} onClick={goFull}>
           <i className="material-icons md-23">zoom_out_map</i>
         </div>
