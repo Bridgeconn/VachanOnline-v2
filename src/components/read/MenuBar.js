@@ -8,7 +8,7 @@ import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import Metadata from "../common/Metadata";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   read: {
     padding: "0 15px 0 44px",
     width: "100%",
@@ -17,12 +17,12 @@ const useStyles = makeStyles(theme => ({
     height: 61,
     top: 74,
     [theme.breakpoints.only("xs")]: {
-      padding: "0 15px 0 15px"
-    }
+      padding: "0 15px 0 15px",
+    },
   },
   select: {
     marginTop: "-8px",
-    backgroundColor: "red"
+    backgroundColor: "red",
   },
   info: {
     padding: 0,
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: 20,
     marginRight: "8px",
     color: "#1976D2",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   settings: {
     padding: 0,
@@ -39,13 +39,13 @@ const useStyles = makeStyles(theme => ({
     marginLeft: "-10px",
     marginRight: "-5px",
     color: "#1976D2",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   items: {
-    float: "right"
-  }
+    float: "right",
+  },
 }));
-const MenuBar = props => {
+const MenuBar = (props) => {
   const classes = useStyles();
   let {
     setValue,
@@ -59,7 +59,7 @@ const MenuBar = props => {
     fontSize,
     fontFamily,
     bookCode,
-    audio
+    audio,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -79,10 +79,10 @@ const MenuBar = props => {
   React.useEffect(() => {
     if (versions !== undefined) {
       const language = version.split("-");
-      const languageVersions = versions.find(e => e.language === language[0]);
+      const languageVersions = versions.find((e) => e.language === language[0]);
       if (languageVersions !== undefined) {
         const version = languageVersions.languageVersions.find(
-          e => (e.version.code = language[1])
+          (e) => (e.version.code = language[1])
         );
         setValue("languageCode", version.language.code);
         setMetadataList(version.metadata);
@@ -167,10 +167,10 @@ const MenuBar = props => {
     </Grid>
   );
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    versions: state.versions,
-    versionBooks: state.versionBooks
+    versions: state.local.versions,
+    versionBooks: state.local.versionBooks,
   };
 };
 export default connect(mapStateToProps)(MenuBar);

@@ -15,30 +15,30 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVersions } from "../common/utillity";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "30%"
+      width: "30%",
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
-      marginRight: 10
-    }
+      marginRight: 10,
+    },
   },
   list: {
-    padding: 0
+    padding: 0,
   },
   menuRoot: {
     backgroundColor: "#3970a7",
     color: "#fff",
     boxShadow: "none",
     "&$expanded": {
-      margin: 0
-    }
+      margin: 0,
+    },
   },
   expanded: {},
   expansionDetails: {
@@ -46,46 +46,46 @@ const useStyles = makeStyles(theme => ({
     color: "#fff",
     boxShadow: "none",
     padding: "0 0 0 20px",
-    width: "100%"
+    width: "100%",
   },
   summaryPanel: {
     textTransform: "capitalize",
     borderBottom: "1px solid #b7b7b726",
     "&$expanded": {
-      minHeight: 50
-    }
+      minHeight: 50,
+    },
   },
   content: {
     margin: "10px 0",
     "&$expanded": {
-      margin: "12px 0"
-    }
+      margin: "12px 0",
+    },
   },
   icon: {
     left: 15,
-    position: "relative"
+    position: "relative",
   },
   paper: {
     maxHeight: "calc(100vh - 150px)",
     width: 300,
     border: "1px solid #d3d4d5",
     backgroundColor: "#3970a7",
-    color: "#fff"
+    color: "#fff",
   },
   language: {
-    fontSize: "1rem"
+    fontSize: "1rem",
   },
   version: {
     fontSize: "1rem",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   label: {
     [theme.breakpoints.only("xs")]: {
-      justifyContent: "unset"
-    }
-  }
+      justifyContent: "unset",
+    },
+  },
 }));
-const Version = props => {
+const Version = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -115,7 +115,7 @@ const Version = props => {
     return 0;
   }
   //function to set the bible version when clicked
-  const setVersion = event => {
+  const setVersion = (event) => {
     handleClose();
     let selectedVersion = event.currentTarget;
     props.setValue("version", selectedVersion.getAttribute("value"));
@@ -141,7 +141,7 @@ const Version = props => {
         {mobile && !props.landingPage
           ? props.version.split("-")[1]
           : props.version}
-        <i className={classesI}>keyboard_arrow_downn</i>
+        <i className={classesI}>keyboard_arrow_down</i>
       </Button>
       {props.versions.length === 0 ? (
         ""
@@ -152,11 +152,11 @@ const Version = props => {
             getContentAnchorEl={null}
             anchorOrigin={{
               vertical: "bottom",
-              horizontal: "center"
+              horizontal: "center",
             }}
             transformOrigin={{
               vertical: "top",
-              horizontal: "center"
+              horizontal: "center",
             }}
             id="simple-menu"
             anchorEl={anchorEl}
@@ -165,7 +165,7 @@ const Version = props => {
             onClose={handleClose}
             classes={{
               list: classes.list,
-              paper: classes.paper
+              paper: classes.paper,
             }}
           >
             {props.versions.sort(sortVersionLanguages).map((version, i) => (
@@ -173,7 +173,7 @@ const Version = props => {
                 defaultExpanded={true}
                 classes={{
                   root: classes.menuRoot,
-                  expanded: classes.expanded
+                  expanded: classes.expanded,
                 }}
                 key={i}
               >
@@ -182,7 +182,7 @@ const Version = props => {
                   classes={{
                     root: classes.summaryPanel,
                     expanded: classes.expanded,
-                    content: classes.content
+                    content: classes.content,
                   }}
                 >
                   <Typography className={classes.language}>
@@ -217,16 +217,17 @@ const Version = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    versions: state.versions
+    versions: state.local.versions,
   };
 };
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setVersions: value => dispatch({ type: actions.SETVERSIONS, value: value }),
+    setVersions: (value) =>
+      dispatch({ type: actions.SETVERSIONS, value: value }),
     setVersionBooks: (name, value) =>
-      dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value })
+      dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Version);

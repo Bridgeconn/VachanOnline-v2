@@ -1,17 +1,30 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
-import reducer from "./store/reducer";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+import initFirebase from "./firebase/initFirebase";
+import configureStore from "./firebase/store";
+import { rrfConfig } from "./firebase/firebaseConfig";
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 
-const store = createStore(reducer);
+// Initialize firebase instance
+initFirebase();
+const store = configureStore({});
 
-ReactDOM.render(
+render(
   <Provider store={store}>
-    <App />
+    <ReactReduxFirebaseProvider
+      firebase={firebase}
+      config={rrfConfig}
+      dispatch={store.dispatch}
+    >
+      <App />
+    </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById("root")
 );

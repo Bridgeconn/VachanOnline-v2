@@ -1,9 +1,10 @@
 import React from "react";
+import firebase from "firebase";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(1, 0, 1),
   },
   button: {
     margin: theme.spacing(1.5),
@@ -45,45 +46,122 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+const Login = (props) => {
   const classes = useStyles();
   const [anchorSignIn, setAnchorSignIn] = React.useState(null);
-  const [signIn, setSignIn] = React.useState(false);
-  const [signUp, setSignUp] = React.useState(false);
+  const [signInOpen, setSignInOpen] = React.useState(false);
+  const [signUpOpen, setSignUpOpen] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [buttonLabel, setButtonLabel] = React.useState("Sign In");
+  const { login, setValue } = props;
 
   const openSignIn = (event) => {
     if (anchorSignIn === null) {
       setAnchorSignIn(event.currentTarget);
     }
-    setSignIn(true);
-    setSignUp(false);
+    setSignInOpen(true);
+    setSignUpOpen(false);
   };
 
   const closeSignIn = () => {
-    setSignIn(false);
+    setSignInOpen(false);
   };
 
-  const id1 = signIn ? "sign-in" : undefined;
+  const id1 = signInOpen ? "sign-in" : undefined;
 
   const openSignUp = (event) => {
-    setSignIn(false);
-    setSignUp(true);
+    setSignInOpen(false);
+    setSignUpOpen(true);
   };
 
   const closeSignUp = () => {
-    setSignUp(false);
+    setSignUpOpen(false);
   };
 
-  const id2 = signUp ? "sign-up" : undefined;
+  const id2 = signUpOpen ? "sign-up" : undefined;
 
+  const signUp = (e) => {
+    e.preventDefault();
+    console.log(email);
+    console.log(password);
+    setSignUpOpen(false);
+    setButtonLabel("Sign Out");
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((res) => {
+        console.log("signup user");
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
+  const signIn = (e) => {
+    e.preventDefault();
+    console.log(email);
+    console.log(password);
+    setSignInOpen(false);
+    setButtonLabel("Sign Out");
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((res) => {
+        console.log("signin user");
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
+  const signOut = (e) => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        setValue("login", false);
+        setValue("userDetails", {});
+        console.log("Sign Out Successful");
+      })
+      .catch(function (error) {
+        console.log("Error Signing Out");
+      });
+  };
+  React.useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        console.log(login);
+        if (login === true) {
+          console.log("user alread logged in ");
+          return;
+        }
+        console.log(user.email);
+        setValue("login", true);
+        setValue("userDetails", {
+          uid: user.uid,
+          email: user.email,
+        });
+      } else {
+        console.log("No signed in user");
+      }
+    });
+  }, [login, setValue]);
+  if (login) {
+    console.log("logged in, need to show signout button");
+    return (
+      <Button aria-describedby={id1} variant="contained" onClick={signOut}>
+        Sign Out
+      </Button>
+    );
+  }
   return (
     <>
       <Button aria-describedby={id1} variant="contained" onClick={openSignIn}>
-        Sign In
+        {buttonLabel}
       </Button>
       <Popover
         id={id1}
-        open={signIn}
+        open={signInOpen}
         anchorEl={anchorSignIn}
         onClose={closeSignIn}
         anchorOrigin={{
@@ -101,7 +179,11 @@ export default function SignIn() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <form className={classes.form} noValidate>
+            <form
+              onSubmit={(e) => signIn(e)}
+              className={classes.form}
+              noValidate
+            >
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -112,6 +194,8 @@ export default function SignIn() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 variant="outlined"
@@ -123,10 +207,8 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <Button
                 type="submit"
@@ -136,6 +218,24 @@ export default function SignIn() {
                 className={classes.submit}
               >
                 Sign In
+              </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in with Google
+              </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in with Facebook
               </Button>
               <Grid container>
                 <Grid item xs>
@@ -155,7 +255,7 @@ export default function SignIn() {
       </Popover>
       <Popover
         id={id2}
-        open={signUp}
+        open={signUpOpen}
         anchorEl={anchorSignIn}
         onClose={closeSignUp}
         anchorOrigin={{
@@ -173,7 +273,11 @@ export default function SignIn() {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <form className={classes.form} noValidate>
+            <form
+              onSubmit={(e) => signUp(e)}
+              className={classes.form}
+              noValidate
+            >
               <Grid container spacing={2}>
                 {/* <Grid item xs={12} sm={6}>
                   <TextField
@@ -207,6 +311,8 @@ export default function SignIn() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -219,6 +325,8 @@ export default function SignIn() {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -230,6 +338,24 @@ export default function SignIn() {
                 className={classes.submit}
               >
                 Sign Up
+              </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in with Google
+              </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in with Facebook
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>
@@ -244,4 +370,16 @@ export default function SignIn() {
       </Popover>
     </>
   );
-}
+};
+const mapStateToProps = (state) => {
+  return {
+    login: state.local.login,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

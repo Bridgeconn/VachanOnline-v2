@@ -15,17 +15,17 @@ import {
   getCommentaries,
   getDictionaries,
   getAudioBibles,
-  getVideos
+  getVideos,
 } from "../common/utillity";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   biblePane1: {
     position: "absolute",
     width: "100%",
     height: "100%",
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
-    overflow: "hidden"
+    overflow: "hidden",
   },
   biblePane2: {
     position: "absolute",
@@ -36,18 +36,18 @@ const useStyles = makeStyles(theme => ({
     overflow: "hidden",
     "&:nth-child(2)": {
       right: 0,
-      backgroundColor: "#fff"
-    }
+      backgroundColor: "#fff",
+    },
   },
   biblePane: {
     position: "absolute",
     height: "100%",
     [theme.breakpoints.only("xs")]: {
-      width: "100%"
+      width: "100%",
     },
     [theme.breakpoints.up("sm")]: {
-      width: "calc(100% - 65px)"
-    }
+      width: "calc(100% - 65px)",
+    },
   },
   rightMenu: {
     width: 65,
@@ -61,11 +61,11 @@ const useStyles = makeStyles(theme => ({
     overflow: "hidden",
     textAlign: "center",
     [theme.breakpoints.only("xs")]: {
-      display: "none"
-    }
-  }
+      display: "none",
+    },
+  },
 }));
-const ReadBible = props => {
+const ReadBible = (props) => {
   const classes = useStyles();
   //ref to get bible panes 1 & 2
   const bibleText1 = React.useRef();
@@ -121,7 +121,9 @@ const ReadBible = props => {
     setDictionary,
     audioBible,
     video,
-    parallelScroll
+    parallelScroll,
+    login,
+    userDetails,
   } = props;
   function menuClick(view) {
     //if closing commentary then reset selected commentary
@@ -299,7 +301,7 @@ const ReadBible = props => {
     setValue,
     setValue1,
     setValue2,
-    video
+    video,
   ]);
   return (
     <>
@@ -307,6 +309,8 @@ const ReadBible = props => {
         pScroll={parallelScroll}
         setValue={setValue}
         parallelView={parallelView}
+        login={login}
+        userDetails={userDetails}
       />
       <div>
         <div className={classes.biblePane}>{pane}</div>
@@ -318,21 +322,23 @@ const ReadBible = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    versions: state.versions,
-    panel1: state.panel1,
-    panel2: state.panel2,
-    parallelScroll: state.parallelScroll,
-    commentaries: state.commentaries,
-    dictionaries: state.dictionary.dictionaries,
-    infographics: state.infographics,
-    audioBible: state.audioBible,
-    video: state.video
+    versions: state.local.versions,
+    panel1: state.local.panel1,
+    panel2: state.local.panel2,
+    parallelScroll: state.local.parallelScroll,
+    commentaries: state.local.commentaries,
+    dictionaries: state.local.dictionary.dictionaries,
+    infographics: state.local.infographics,
+    audioBible: state.local.audioBible,
+    video: state.local.video,
+    login: state.local.login,
+    userDetails: state.local.userDetails,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setValue1: (name, value) => {
       dispatch({ type: actions.SETVALUE1, name: name, value: value });
@@ -343,7 +349,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
     setDictionary: (name, value) =>
       dispatch({ type: actions.SETDICTIONARY, name: name, value: value }),
-    copyPanel1: () => dispatch({ type: actions.COPYPANEL1 })
+    copyPanel1: () => dispatch({ type: actions.COPYPANEL1 }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ReadBible);

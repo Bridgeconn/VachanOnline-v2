@@ -4,7 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import logo from "../common/images/logo.png";
-import SignIn from "../login/SignIn";
+import Login from "../login/Login";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +51,7 @@ const PageHeader = ({ toggleDrawer }) => {
           >
             <img src={logo} alt={"logo"} />
           </Link>
-          <SignIn />
+          <Login />
         </Toolbar>
       </AppBar>
     </div>

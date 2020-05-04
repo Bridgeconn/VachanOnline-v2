@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { getBookbyCode } from "../common/utillity";
 import ReactPlayer from "react-player";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   biblePanel: {
     lineHeight: 1.7,
     position: "absolute",
@@ -15,12 +15,12 @@ const useStyles = makeStyles(theme => ({
     "& p": {
       textAlign: "justify",
       color: "#464545",
-      marginBottom: 5
+      marginBottom: 5,
     },
     "& span": {
       textAlign: "justify",
-      color: "#464545"
-    }
+      color: "#464545",
+    },
   },
   bibleReadingPane: {
     position: "absolute",
@@ -32,41 +32,41 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     overflow: "scroll",
     "&::-webkit-scrollbar": {
-      width: "0.45em"
+      width: "0.45em",
     },
     "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey"
-    }
+      outline: "1px solid slategrey",
+    },
   },
   audio: {
-    height: "calc(100% - 55px)"
+    height: "calc(100% - 55px)",
   },
   prevChapter: {
     position: "absolute",
     top: "45%",
     left: 3,
-    cursor: "pointer"
+    cursor: "pointer",
   },
   nextChapter: {
     position: "absolute",
     top: "45%",
     right: 6,
-    cursor: "pointer"
+    cursor: "pointer",
   },
   loading: {
-    padding: 20
+    padding: 20,
   },
   player: {
     position: "absolute",
     bottom: "16px",
-    left: "2%"
-  }
+    left: "2%",
+  },
 }));
-const Bible = props => {
+const Bible = (props) => {
   const fontFamily =
     props.fontFamily === "Sans" ? "Roboto,Noto Sans" : "Roboto Slab,Martel";
   const [verses, setVerses] = React.useState([]);
@@ -86,7 +86,7 @@ const Bible = props => {
     paneNo,
     parallelScroll,
     setSync,
-    fontSize
+    fontSize,
   } = props;
   React.useEffect(() => {
     if (sourceId && bookCode && chapter) {
@@ -96,7 +96,7 @@ const Bible = props => {
       API.get(
         "bibles/" + sourceId + "/books/" + bookCode + "/chapter/" + chapter
       )
-        .then(function(response) {
+        .then(function (response) {
           setPrevious(response.data.previous);
           setNext(response.data.next);
           if (response.data.chapterContent === undefined) {
@@ -106,7 +106,7 @@ const Bible = props => {
           }
           setIsLoading(false);
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     }
@@ -147,7 +147,7 @@ const Bible = props => {
       className={classes.biblePanel}
       style={{
         fontFamily: fontFamily,
-        fontSize: fontSize
+        fontSize: fontSize,
       }}
     >
       {!isLoading && loadingText !== "Book not uploaded" ? (
@@ -163,7 +163,7 @@ const Bible = props => {
                 : classes.bibleReadingPane
             }
           >
-            {verses.map(item => (
+            {verses.map((item) => (
               <span key={item.number}>
                 <span>
                   {item.number}. {item.text}
@@ -216,10 +216,10 @@ const Bible = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    versionBooks: state.versionBooks,
-    parallelScroll: state.parallelScroll
+    versionBooks: state.local.versionBooks,
+    parallelScroll: state.local.parallelScroll,
   };
 };
 export default connect(mapStateToProps)(Bible);
