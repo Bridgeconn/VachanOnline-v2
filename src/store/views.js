@@ -4,3 +4,6 @@ export const DICTIONARY = "DICTIONARY";
 export const INFOGRAPHICS = "INFOGRAPHICS";
 export const AUDIO = "AUDIO";
 export const VIDEO = "VIDEO";
+export const BOOKMARK = "BOOKMARK";
+export const HIGHLIGHT = "HIGHLIGHT";
+export const NOTES = "NOTES";

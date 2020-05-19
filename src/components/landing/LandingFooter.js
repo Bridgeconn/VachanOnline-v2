@@ -5,7 +5,7 @@ import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   landingFooter: {
     bottom: 0,
     position: "fixed",
@@ -16,12 +16,12 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     "&div": {
       display: "inline-block",
-      paddingTop: theme.spacing(3)
-    }
+      paddingTop: theme.spacing(3),
+    },
   },
   text: {
     padding: theme.spacing(1),
-    textAlign: "center"
+    textAlign: "center",
   },
   link: {
     color: "inherit",
@@ -32,17 +32,17 @@ const useStyles = makeStyles(theme => ({
     fontSize: 18,
     marginTop: 8,
     "&:hover": {
-      color: "inherit"
+      color: "inherit",
     },
     "&:last-child": {
-      borderRight: 0
-    }
+      borderRight: 0,
+    },
   },
   button: {
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 }));
-const LandingFooter = props => {
+const LandingFooter = (props) => {
   const classes = useStyles();
   return (
     <Grid container className={classes.landingFooter}>

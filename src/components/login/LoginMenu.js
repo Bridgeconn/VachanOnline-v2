@@ -1,5 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
+import firebase from "firebase/app";
 import Menu from "@material-ui/core/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -16,18 +19,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginMenu({ userDetails }) {
+const LoginMenu = (props) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { userDetails, setValue } = props;
+  const [menuOpen, setMenuOpen] = React.useState(null);
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    setMenuOpen(event.currentTarget);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setMenuOpen(null);
   };
-  console.log(userDetails.email);
+  const signOut = (e) => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        setValue("login", false);
+        setValue("userDetails", {});
+        console.log("Sign Out Successful");
+      })
+      .catch(function (error) {
+        console.log("Error Signing Out");
+      });
+  };
   return (
     <>
       <IconButton
@@ -51,9 +68,9 @@ export default function LoginMenu({ userDetails }) {
           vertical: "top",
           horizontal: "center",
         }}
-        anchorEl={anchorEl}
+        anchorEl={menuOpen}
         keepMounted
-        open={Boolean(anchorEl)}
+        open={Boolean(menuOpen)}
         onClose={handleClose}
         classes={{
           paper: classes.paper,
@@ -67,16 +84,18 @@ export default function LoginMenu({ userDetails }) {
         <Divider />
         <List component="nav" aria-label="secondary mailbox folders">
           <ListItem button>
-            <ListItemText primary="Bookmarks" />
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="Highlights" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Sign Out" />
+            <ListItemText primary="Sign Out" onClick={signOut} />
           </ListItem>
         </List>
       </Menu>
     </>
   );
-}
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+  };
+};
+export default connect(null, mapDispatchToProps)(LoginMenu);

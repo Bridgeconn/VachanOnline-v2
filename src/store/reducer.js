@@ -16,7 +16,10 @@ const defaultState = {
   versionBooks: {},
   parallelScroll: true,
   login: false,
-  userDetails: {},
+  userDetails: {
+    uid: null,
+    email: null,
+  },
   panel1: {
     version: "Loading...",
     sourceId: "",
@@ -26,6 +29,7 @@ const defaultState = {
     chapter: "",
     fontSize: 16,
     fontFamily: "Sans",
+    lineView: true,
     audio: false,
     audioBible: {},
   },
@@ -38,6 +42,7 @@ const defaultState = {
     chapter: "",
     fontSize: 16,
     fontFamily: "Sans",
+    lineView: true,
     audio: false,
     audioBible: {},
   },

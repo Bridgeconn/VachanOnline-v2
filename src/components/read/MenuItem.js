@@ -4,24 +4,24 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 300
+    maxWidth: 300,
   },
   popover: {
     pointerEvents: "none",
     marginTop: -2,
-    marginLeft: -10
+    marginLeft: -10,
   },
   paper: {
     padding: "10px 15px",
-    backgroundColor: "#2e639a"
+    backgroundColor: "#3E4095",
   },
   menu: {
     fontSize: "18px",
-    color: "#fff"
-  }
+    color: "#fff",
+  },
 }));
 
 export default function MenuItem(props) {
@@ -56,17 +56,17 @@ export default function MenuItem(props) {
             id="mouse-over-popover"
             className={classes.popover}
             classes={{
-              paper: classes.paper
+              paper: classes.paper,
             }}
             open={open}
             anchorEl={popover}
             anchorOrigin={{
               vertical: "top",
-              horizontal: "left"
+              horizontal: "left",
             }}
             transformOrigin={{
               vertical: "top",
-              horizontal: "right"
+              horizontal: "right",
             }}
             onClose={handlePopoverClose}
             disableRestoreFocus

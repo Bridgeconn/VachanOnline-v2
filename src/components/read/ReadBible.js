@@ -10,6 +10,8 @@ import Dictionary from "../dictionary/Dictionary";
 import Infographics from "../infographics/Infographics";
 import Audio from "../audio/Audio";
 import Video from "../video/Video";
+import Bookmarks from "../bookmark/Bookmarks";
+import Highlights from "../highlight/Highlights";
 import BibleMenu from "./BibleMenu";
 import {
   getCommentaries,
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rightMenu: {
     width: 65,
-    backgroundColor: "#2e639a",
+    backgroundColor: "#3E4095",
     position: "absolute",
     height: "100vh",
     paddingTop: "60px",
@@ -72,42 +74,6 @@ const ReadBible = (props) => {
   const bibleText2 = React.useRef();
   //used to sync bibles in paralle bibles on scroll
   const [sync, setSync] = React.useState(0);
-  //flag to prevent looping of on scroll event
-  let ignoreScrollEvents = false;
-  //function to implement parallel scroll
-  const getScroll = React.useCallback((paneNo, parallelScroll, setSync) => {
-    //check flag to prevent looping of on scroll event
-    if (ignoreScrollEvents) {
-      ignoreScrollEvents = false;
-      return;
-    }
-    if (!parallelScroll) {
-      return;
-    }
-    let text1 = bibleText1.current;
-    let text2 = bibleText2.current;
-    if (
-      text1 !== undefined &&
-      text2 !== undefined &&
-      text1 !== null &&
-      text2 !== null
-    ) {
-      //if parallel scroll on scroll proportinal to scroll window
-      if (paneNo === 1) {
-        ignoreScrollEvents = true;
-        text2.scrollTop =
-          (text1.scrollTop / (text1.scrollHeight - text1.offsetHeight)) *
-          (text2.scrollHeight - text2.offsetHeight);
-        setSync(1);
-      } else if (paneNo === 2) {
-        ignoreScrollEvents = true;
-        text1.scrollTop =
-          (text2.scrollTop / (text2.scrollHeight - text2.offsetHeight)) *
-          (text1.scrollHeight - text1.offsetHeight);
-        setSync(2);
-      }
-    }
-  }, []);
   const [parallelView, setParallelView] = React.useState("");
   let {
     setValue,
@@ -124,6 +90,7 @@ const ReadBible = (props) => {
     parallelScroll,
     login,
     userDetails,
+    versions,
   } = props;
   function menuClick(view) {
     //if closing commentary then reset selected commentary
@@ -132,6 +99,37 @@ const ReadBible = (props) => {
     }
     setParallelView(parallelView === view ? "" : view);
   }
+  //flag to prevent looping of on scroll event
+  let ignoreScrollEvents = false;
+  //function to implement parallel scroll
+  const getScroll = React.useCallback((paneNo, parallelScroll, setSync) => {
+    //check flag to prevent looping of on scroll event
+    if (ignoreScrollEvents) {
+      ignoreScrollEvents = false;
+      return;
+    }
+    if (!parallelScroll) {
+      return;
+    }
+    let text1 = bibleText1.current;
+    let text2 = bibleText2.current;
+    if (text1 && text2) {
+      //if parallel scroll on scroll proportinal to scroll window
+      if (paneNo === 1) {
+        ignoreScrollEvents = true;
+        text2.scrollTop =
+          (text1.scrollTop / (text1.scrollHeight - text1.offsetHeight)) *
+          (text2.scrollHeight - text2.offsetHeight);
+        setSync(1);
+      } else if (paneNo === 2) {
+        ignoreScrollEvents = true;
+        text1.scrollTop =
+          (text2.scrollTop / (text2.scrollHeight - text2.offsetHeight)) *
+          (text1.scrollHeight - text1.offsetHeight);
+        setSync(2);
+      }
+    }
+  }, []);
   //sync bible on scroll if parallel scroll on
   React.useEffect(() => {
     if (sync === 1) {
@@ -282,10 +280,46 @@ const ReadBible = (props) => {
           </>
         );
         break;
+      case views.BOOKMARK:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={setValue1} paneData={panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Bookmarks
+                uid={userDetails.uid}
+                versions={versions}
+                setValue={setValue1}
+              />
+            </div>
+          </>
+        );
+        break;
+      case views.HIGHLIGHT:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={setValue1} paneData={panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Highlights
+                uid={userDetails.uid}
+                versions={versions}
+                setValue={setValue1}
+              />
+            </div>
+          </>
+        );
+        break;
       default:
         setPane(
           <div className={classes.biblePane1}>
-            <BiblePane setValue={setValue1} paneData={panel1} />
+            <BiblePane
+              setValue={setValue1}
+              paneData={panel1}
+              singlePane={true}
+            />
           </div>
         );
     }
@@ -302,6 +336,8 @@ const ReadBible = (props) => {
     setValue1,
     setValue2,
     video,
+    userDetails.uid,
+    versions,
   ]);
   return (
     <>

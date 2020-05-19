@@ -1,5 +1,5 @@
 import React from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import Button from "@material-ui/core/Button";
@@ -83,8 +83,6 @@ const Login = (props) => {
 
   const signUp = (e) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
     setSignUpOpen(false);
     setButtonLabel("Sign Out");
     firebase
@@ -99,8 +97,6 @@ const Login = (props) => {
   };
   const signIn = (e) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
     setSignInOpen(false);
     setButtonLabel("Sign Out");
     firebase
@@ -127,15 +123,43 @@ const Login = (props) => {
         console.log("Error Signing Out");
       });
   };
+  const signInGoogle = (e) => {
+    e.preventDefault();
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function (result) {
+        console.log("Signin Google User");
+      })
+      .catch(function (error) {
+        console.log("Google Signin Error");
+      });
+  };
+  const signInFacebook = (e) => {
+    e.preventDefault();
+    console.log("Facebook login");
+    var provider = new firebase.auth.FacebookAuthProvider();
+    provider.setCustomParameters({
+      display: "popup",
+    });
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function (result) {
+        console.log("Signin Facebook User");
+      })
+      .catch(function (error) {
+        console.log("Facebook Signin Error");
+      });
+  };
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        console.log(login);
         if (login === true) {
           console.log("user alread logged in ");
           return;
         }
-        console.log(user.email);
         setValue("login", true);
         setValue("userDetails", {
           uid: user.uid,
@@ -147,7 +171,6 @@ const Login = (props) => {
     });
   }, [login, setValue]);
   if (login) {
-    console.log("logged in, need to show signout button");
     return (
       <Button aria-describedby={id1} variant="contained" onClick={signOut}>
         Sign Out
@@ -224,6 +247,7 @@ const Login = (props) => {
                 fullWidth
                 variant="contained"
                 color="primary"
+                onClick={signInGoogle}
                 className={classes.submit}
               >
                 Sign in with Google
@@ -233,6 +257,7 @@ const Login = (props) => {
                 fullWidth
                 variant="contained"
                 color="primary"
+                onClick={signInFacebook}
                 className={classes.submit}
               >
                 Sign in with Facebook
@@ -338,24 +363,6 @@ const Login = (props) => {
                 className={classes.submit}
               >
                 Sign Up
-              </Button>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign in with Google
-              </Button>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign in with Facebook
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>

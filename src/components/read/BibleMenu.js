@@ -3,11 +3,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 300
-  }
+    maxWidth: 300,
+  },
 }));
 
 export default function BibleMenu(props) {
@@ -48,8 +48,20 @@ export default function BibleMenu(props) {
         <MenuItem
           onClick={props.menuClick}
           icon="videocam"
-          title=" Videos"
+          title="Videos"
           item={views.VIDEO}
+        />
+        <MenuItem
+          onClick={props.menuClick}
+          icon="bookmark"
+          title="Bookmarks"
+          item={views.BOOKMARK}
+        />
+        <MenuItem
+          onClick={props.menuClick}
+          icon="edit"
+          title="Highlights"
+          item={views.HIGHLIGHT}
         />
         {/* <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="rate_review" title="Articles" />

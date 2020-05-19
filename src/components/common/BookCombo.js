@@ -10,7 +10,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters } from "../../store/bibleData";
 import { getBookByName } from "../common/utillity";
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
     margin: 9,
@@ -19,26 +19,26 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "60%"
-    }
+      width: "60%",
+    },
   },
   icon: {
     left: 15,
-    position: "relative"
+    position: "relative",
   },
   root: {
     width: "100%",
     maxWidth: 680,
     backgroundColor: "#eaeaea",
     textTransform: "capitalize",
-    maxHeight: "calc(100vh - 150px)"
+    maxHeight: "calc(100vh - 150px)",
   },
   paper: {
     position: "relative",
     maxHeight: "calc(100vh - 150px)",
     width: 380,
     backgroundColor: "#eaeaea",
-    color: "#2a2a2a"
+    color: "#2a2a2a",
   },
   book: {
     marginRight: theme.spacing(1),
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     padding: "0px 0px",
     fontSize: "11px",
-    border: "1px solid #d2d2d2c9"
+    border: "1px solid #d2d2d2c9",
   },
   openBook: {
     border: "1px solid #ccc",
@@ -60,8 +60,8 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       border: "1px solid #ccc",
       backgroundColor: "#3f7ad2",
-      color: "#fff"
-    }
+      color: "#fff",
+    },
   },
   chapter: {
     marginRight: 7,
@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #ccc",
     backgroundColor: "#ffffff",
     textAlign: "center",
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
   openChapter: {
     border: "1px solid #ccc",
@@ -82,15 +82,15 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       border: "1px solid #ccc",
       backgroundColor: "#3f7ad2",
-      color: "#fff"
-    }
+      color: "#fff",
+    },
   },
   bookName: {
     whiteSpace: "nowrap",
     width: 100,
     overflow: "hidden",
-    textOverflow: "ellipsis"
-  }
+    textOverflow: "ellipsis",
+  },
 }));
 export default function BookCombo({
   book,
@@ -98,7 +98,7 @@ export default function BookCombo({
   chapter,
   setValue,
   minimal,
-  landingPage
+  landingPage,
 }) {
   //classes for styling
   const classes = useStyles();
@@ -138,7 +138,7 @@ export default function BookCombo({
           number: number,
           bibleBookCode: bookCode,
           reference: bookOpened + " " + number,
-          chapterId: bookCode + "." + number
+          chapterId: bookCode + "." + number,
         };
       }
       setSelectedChapterList(chapters);
@@ -180,7 +180,7 @@ export default function BookCombo({
     setBookOpen(typeof bookOpen == "number" ? bookOpen : selectedBookIndex);
   }
   //function to handle click chapter event
-  const clickChapter = event => {
+  const clickChapter = (event) => {
     setSelectedBookIndex(bookOpen);
     closeMenu(bookOpen);
     let reference = event.currentTarget
@@ -222,11 +222,11 @@ export default function BookCombo({
           getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "center"
+            horizontal: "center",
           }}
           id="customized-menu"
           anchorEl={bookDropdown.current}
@@ -253,7 +253,7 @@ export default function BookCombo({
                     data-sourceid={item.sourceId}
                     data-count={i + 1}
                     button
-                    onClick={event => bookClicked(event)}
+                    onClick={(event) => bookClicked(event)}
                     className={`${classes.book} ${open}`}
                   >
                     <ListItemText primary={item.bibleBookFullName} />

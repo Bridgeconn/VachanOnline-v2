@@ -10,6 +10,7 @@ import * as views from "../../store/views";
 import Login from "../login/Login";
 /* import SerachBox from "../common/SearchBox"; */
 import logo from "../common/images/logo.png";
+import favicon from "../common/images/favicon.png";
 import LoginMenu from "../login/LoginMenu";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     height: 74,
   },
   appBar: {
-    background: "#089de3",
+    background: "#3E4095",
     padding: "0px 10px",
     marginBottom: "10px",
   },
@@ -92,6 +93,12 @@ const useStyles = makeStyles((theme) => ({
     float: "right",
     lineHeight: "72px",
   },
+  icon: {
+    display: "inline-block",
+    position: "relative",
+    right: 250,
+    paddingLeft: "50%",
+  },
 }));
 
 export default function TopBar({
@@ -126,6 +133,9 @@ export default function TopBar({
               {" "}
               <img src={logo} alt={"logo"} />{" "}
             </Link>
+            <div className={classes.icon}>
+              <img src={favicon} alt={"icon"} />
+            </div>
             {parallelView === views.PARALLELBIBLE ? (
               <FormGroup className={classes.form}>
                 <FormControlLabel

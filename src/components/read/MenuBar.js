@@ -7,6 +7,7 @@ import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import Metadata from "../common/Metadata";
+import Bookmark from "../bookmark/Bookmark";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -57,9 +58,10 @@ const MenuBar = (props) => {
     chapter,
     versionBooks,
     fontSize,
-    fontFamily,
+    lineView,
     bookCode,
     audio,
+    userDetails,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -68,6 +70,20 @@ const MenuBar = (props) => {
   const [metadataList, setMetadataList] = React.useState(null);
   const [audioBible, setAudioBible] = React.useState({});
   const [audioIcon, setAudioIcon] = React.useState("");
+  const [bookmarkIcon, setBookmarkIcon] = React.useState("");
+
+  React.useEffect(() => {
+    if (Object.keys(userDetails).length !== 0) {
+      setBookmarkIcon(
+        <Bookmark
+          uid={userDetails.uid}
+          sourceId={sourceId}
+          bookCode={bookCode}
+          chapter={chapter}
+        />
+      );
+    }
+  }, [userDetails, sourceId, bookCode, chapter]);
   //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -111,7 +127,7 @@ const MenuBar = (props) => {
   }, [audio, audioBible, bookCode, classes.info, setValue]);
   return (
     <Grid container className={classes.read}>
-      <Grid item xs={10}>
+      <Grid item xs={8}>
         <Version setValue={setValue} version={version} />
         <BookCombo
           book={book}
@@ -123,13 +139,14 @@ const MenuBar = (props) => {
       </Grid>
       <Grid
         item
-        xs={2}
+        xs={4}
         className={classes.items}
         container
         alignItems="flex-start"
         justify="flex-end"
         direction="row"
       >
+        {bookmarkIcon}
         <Metadata
           metadataList={metadataList}
           title="Version Name (in Eng)"
@@ -150,7 +167,7 @@ const MenuBar = (props) => {
         </div>
         <Setting
           fontSize={fontSize}
-          fontFamily={fontFamily}
+          lineView={lineView}
           setValue={setValue}
           settingsAnchor={settingsAnchor}
           handleClose={closeSettings}
@@ -171,6 +188,7 @@ const mapStateToProps = (state) => {
   return {
     versions: state.local.versions,
     versionBooks: state.local.versionBooks,
+    userDetails: state.local.userDetails,
   };
 };
 export default connect(mapStateToProps)(MenuBar);

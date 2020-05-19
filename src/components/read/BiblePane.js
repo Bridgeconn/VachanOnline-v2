@@ -6,7 +6,7 @@ import Fullscreen from "react-full-screen";
 import MenuBar from "./MenuBar";
 import Bible from "./Bible";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   bible: {
     display: "flex",
     width: "100%",
@@ -15,14 +15,22 @@ const useStyles = makeStyles(theme => ({
     top: 135,
     bottom: 0,
     overflow: "auto",
-    marginBottom: -15
+    marginBottom: -15,
   },
   fullscreen: {
-    backgroundColor: "#fff"
-  }
+    backgroundColor: "#fff",
+  },
 }));
 
-const BiblePane = ({ setValue, paneData, ref1, scroll, setSync, paneNo }) => {
+const BiblePane = ({
+  setValue,
+  paneData,
+  ref1,
+  scroll,
+  setSync,
+  paneNo,
+  singlePane,
+}) => {
   const classes = useStyles();
   const [fullscreen, setFullscreen] = React.useState(false);
   //edit this function to show the menu at a later stage
@@ -42,7 +50,7 @@ const BiblePane = ({ setValue, paneData, ref1, scroll, setSync, paneNo }) => {
           <Grid item xs={12}>
             <Fullscreen
               enabled={fullscreen}
-              onChange={fullscreen => setFullscreen(fullscreen)}
+              onChange={(fullscreen) => setFullscreen(fullscreen)}
               className={classes.fullscreen}
             >
               <Bible
@@ -52,6 +60,7 @@ const BiblePane = ({ setValue, paneData, ref1, scroll, setSync, paneNo }) => {
                 scroll={scroll}
                 setSync={setSync}
                 paneNo={paneNo}
+                singlePane={singlePane}
               />
             </Fullscreen>
           </Grid>

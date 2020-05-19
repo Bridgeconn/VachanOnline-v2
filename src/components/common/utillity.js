@@ -3,7 +3,7 @@ import { bibleBooks } from "../../store/bibleData";
 //Function to get the bible versions
 export const getVersions = (setVersions, setValue, setVersionBooks) => {
   API.get("bibles")
-    .then(function(response) {
+    .then(function (response) {
       const versions = response.data;
       setVersions(versions);
       if (versions.length > 0) {
@@ -23,14 +23,14 @@ export const getVersions = (setVersions, setValue, setVersionBooks) => {
         }
       }
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the bible books
 export const getBooks = (setValue, setVersionBooks, sourceId, setValues) => {
   API.get("bibles/" + sourceId + "/books")
-    .then(function(response) {
+    .then(function (response) {
       var books = response.data[0].books.sort(
         (a, b) => a.bibleBookID - b.bibleBookID
       );
@@ -41,86 +41,86 @@ export const getBooks = (setValue, setVersionBooks, sourceId, setValues) => {
         setValue("chapter", "1");
       }
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the bible book name
-export const getBookbyCode = abbreviation => {
-  return bibleBooks.find(element => element.abbreviation === abbreviation);
+export const getBookbyCode = (abbreviation) => {
+  return bibleBooks.find((element) => element.abbreviation === abbreviation);
 };
-export const getBookByName = name => {
-  return bibleBooks.find(element => element.book === name);
+export const getBookByName = (name) => {
+  return bibleBooks.find((element) => element.book === name);
 };
 //Function to get the list of commentaries
-export const getCommentaries = setValue => {
+export const getCommentaries = (setValue) => {
   API.get("commentaries")
-    .then(function(response) {
+    .then(function (response) {
       setValue("commentaries", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the commentary for a chaper
 export const getCommentaryForChaper = (sourceId, book, chapter, setText) => {
   API.get("commentaries/" + sourceId + "/" + book + "/" + chapter)
-    .then(function(response) {
+    .then(function (response) {
       setText(response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the list of dictionaries
-export const getDictionaries = setDictionaries => {
+export const getDictionaries = (setDictionaries) => {
   API.get("dictionaries")
-    .then(function(response) {
+    .then(function (response) {
       setDictionaries("dictionaries", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the dictionary index
 export const getDictionaryIndex = (sourceId, setDictionary) => {
   API.get("dictionaries/" + sourceId)
-    .then(function(response) {
+    .then(function (response) {
       setDictionary("dictionaryIndex", response.data);
       setDictionary("dictionaryWord", response.data[0]["words"][0]);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the dictionary word meaning
 export const getDictionaryWord = (sourceId, wordId, setDictionary) => {
   API.get("dictionaries/" + sourceId + "/" + wordId)
-    .then(function(response) {
+    .then(function (response) {
       setDictionary("wordMeaning", response.data.meaning);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the infographics index
 export const getInfographics = (languageCode, setValue) => {
   API.get("infographics/" + languageCode)
-    .then(function(response) {
+    .then(function (response) {
       setValue("infographics", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 
 //Function to get the audiobibles
-export const getAudioBibles = setValue => {
+export const getAudioBibles = (setValue) => {
   API.get("audiobibles")
-    .then(function(response) {
+    .then(function (response) {
       setValue("audioBible", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
@@ -141,12 +141,18 @@ export const getAudioBibleObject = (versions, sourceId) => {
 };
 
 //Function to get the videos
-export const getVideos = setValue => {
+export const getVideos = (setValue) => {
   API.get("videos")
-    .then(function(response) {
+    .then(function (response) {
       setValue("video", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
+};
+
+//Function to capitalize word
+export const capitalize = (string) => {
+  if (typeof string !== "string") return "";
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };

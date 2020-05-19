@@ -8,15 +8,15 @@ import LandingMenu from "./LandingMenu";
 import "./Landing.css";
 import LandingAboutUs from "./LandingAboutUs";
 
-const Landing = props => {
+const Landing = (props) => {
   let footerData = {
     links: ["About us", "Contact us", "Feedback"],
     copyright: "© 2019 Bridge Connectivity Solutions",
-    subscribe: "Subscribe"
+    subscribe: "Subscribe",
   };
 
   const [menu, setMenu] = React.useState(false);
-  const toggleDrawer = open => event => {
+  const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -30,7 +30,7 @@ const Landing = props => {
     aboutUs: false,
     contactUs: false,
     feedback: false,
-    subscribe: false
+    subscribe: false,
   };
   const toggleModal = (name, value) => () => {
     //uncomment below lines to start using modals for about us etc
