@@ -123,9 +123,9 @@ const Highlights = (props) => {
     let sourceId = element.getAttribute("data-sourceid");
     setValue("sourceId", sourceId);
     setValue("version", versionData[sourceId][1]);
-    setValue("book", element.getAttribute("data-book"));
     setValue("bookCode", element.getAttribute("data-bookcode"));
     setValue("chapter", parseInt(element.getAttribute("data-chapter")));
+    setValue("versesSelected", []);
   };
 
   //Delete highlight
@@ -153,6 +153,7 @@ const Highlights = (props) => {
           console.log("highlight delete error");
         } else {
           console.log("highlight deleted succesfully");
+          setValue("versesSelected", []);
         }
       });
   };
@@ -167,16 +168,20 @@ const Highlights = (props) => {
           <List component="nav">
             {highlightList.map((highlight, i) => {
               return (
-                <ListItem key={i} className={classes.listItem} button>
+                <ListItem
+                  key={i}
+                  className={classes.listItem}
+                  data-sourceid={highlight.sourceId}
+                  data-bookcode={highlight.bookCode}
+                  data-chapter={highlight.chapter}
+                  data-book={highlight.book}
+                  onClick={openHighlight}
+                  button
+                >
                   <ListItemText
                     primary={`${versionData[highlight.sourceId][0]} ${
                       highlight.book
                     } ${highlight.chapter}:${highlight.verse}`}
-                    data-sourceid={highlight.sourceId}
-                    data-bookcode={highlight.bookCode}
-                    data-chapter={highlight.chapter}
-                    data-book={highlight.book}
-                    onClick={openHighlight}
                   />
                   <ListItemSecondaryAction>
                     <IconButton

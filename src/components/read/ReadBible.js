@@ -12,6 +12,7 @@ import Audio from "../audio/Audio";
 import Video from "../video/Video";
 import Bookmarks from "../bookmark/Bookmarks";
 import Highlights from "../highlight/Highlights";
+import Notes from "../note/Notes";
 import BibleMenu from "./BibleMenu";
 import {
   getCommentaries,
@@ -75,6 +76,7 @@ const ReadBible = (props) => {
   //used to sync bibles in paralle bibles on scroll
   const [sync, setSync] = React.useState(0);
   const [parallelView, setParallelView] = React.useState("");
+  const [bookObject, setBookObject] = React.useState({});
   let {
     setValue,
     setValue1,
@@ -91,6 +93,8 @@ const ReadBible = (props) => {
     login,
     userDetails,
     versions,
+    versionBooks,
+    versionSource,
   } = props;
   function menuClick(view) {
     //if closing commentary then reset selected commentary
@@ -184,6 +188,16 @@ const ReadBible = (props) => {
     }
   }, [parallelView, copyPanel1]);
   const [pane, setPane] = React.useState("");
+  //Set book object on change  of pane 1 for display in notes
+  React.useEffect(() => {
+    let bookList = versionBooks[versionSource[panel1.sourceId]];
+    if (bookList && panel1.bookCode) {
+      let selectedBook = bookList.find(
+        (element) => element.book_code === panel1.bookCode
+      );
+      setBookObject(selectedBook);
+    }
+  }, [panel1.bookCode, panel1.sourceId, versionBooks, versionSource]);
   React.useEffect(() => {
     switch (parallelView) {
       case views.PARALLELBIBLE:
@@ -312,6 +326,27 @@ const ReadBible = (props) => {
           </>
         );
         break;
+      case views.NOTE:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={setValue1} paneData={panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Notes
+                uid={userDetails.uid}
+                versions={versions}
+                setValue={setValue1}
+                sourceId={panel1.sourceId}
+                bookCode={panel1.bookCode}
+                chapter={panel1.chapter}
+                versesSelected={panel1.versesSelected}
+                book={bookObject.short}
+              />
+            </div>
+          </>
+        );
+        break;
       default:
         setPane(
           <div className={classes.biblePane1}>
@@ -338,6 +373,7 @@ const ReadBible = (props) => {
     video,
     userDetails.uid,
     versions,
+    bookObject,
   ]);
   return (
     <>
@@ -361,6 +397,8 @@ const ReadBible = (props) => {
 const mapStateToProps = (state) => {
   return {
     versions: state.local.versions,
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
     panel1: state.local.panel1,
     panel2: state.local.panel2,
     parallelScroll: state.local.parallelScroll,

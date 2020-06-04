@@ -116,7 +116,10 @@ const Login = (props) => {
       .signOut()
       .then(function () {
         setValue("login", false);
-        setValue("userDetails", {});
+        setValue("userDetails", {
+          uid: null,
+          email: null,
+        });
         console.log("Sign Out Successful");
       })
       .catch(function (error) {

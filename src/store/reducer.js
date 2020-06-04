@@ -14,6 +14,7 @@ const defaultState = {
   audioBible: [],
   video: [],
   versionBooks: {},
+  versionSource: {},
   parallelScroll: true,
   login: false,
   userDetails: {
@@ -23,8 +24,6 @@ const defaultState = {
   panel1: {
     version: "Loading...",
     sourceId: "",
-    bookList: [],
-    book: "Loading...",
     bookCode: "",
     chapter: "",
     fontSize: 16,
@@ -32,12 +31,11 @@ const defaultState = {
     lineView: true,
     audio: false,
     audioBible: {},
+    versesSelected: [],
   },
   panel2: {
     version: "Loading...",
     sourceId: "",
-    bookList: [],
-    book: "Loading...",
     bookCode: "",
     chapter: "",
     fontSize: 16,
@@ -70,9 +68,10 @@ const reducer = (state = defaultState, action) => {
         panel2: { ...state.panel2, [action.name]: action.value },
       };
     case actions.COPYPANEL1:
+      let { versesSelected, ...panel2 } = state.panel1;
       return {
         ...state,
-        panel2: { ...state.panel1 },
+        panel2: { ...panel2, versesSelected: [] },
       };
     case actions.SETVALUE:
       return {

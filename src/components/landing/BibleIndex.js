@@ -51,7 +51,8 @@ const useStyles = makeStyles((theme) => ({
 const BibleIndex = (props) => {
   let label = "Read";
   const classes = useStyles();
-  const { book, sourceId, chapter } = props.panel1;
+  const {panel1,setValue,versionBooks,versionSource} = props;
+  const { version,book,bookCode, sourceId, chapter } = panel1;
   return (
     <div className={classes.container}>
       <Paper className={classes.bibleIndex}>
@@ -60,17 +61,19 @@ const BibleIndex = (props) => {
         </Typography>
         <Version
           setValue={props.setValue}
-          version={props.panel1.version}
+          version={version}
           landingPage={true}
         />
-        <BookCombo
+         {bookCode !=="" && bookCode !==undefined?<BookCombo
           book={book}
-          bookList={props.versionBooks[sourceId]}
+          bookCode={bookCode}
+          bookList={versionBooks[versionSource[sourceId]]}
           chapter={chapter}
-          setValue={props.setValue}
+          setValue={setValue}
           minimal={false}
+          sourceId={sourceId}
           landingPage={true}
-        />
+        />:""}
         <Link
           to={{
             pathname: "/read",
@@ -92,6 +95,7 @@ const mapStateToProps = (state) => {
   return {
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource
   };
 };
 

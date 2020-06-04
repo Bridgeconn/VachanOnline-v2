@@ -59,13 +59,17 @@ export default function BibleMenu(props) {
         />
         <MenuItem
           onClick={props.menuClick}
-          icon="edit"
+          icon="border_color"
           title="Highlights"
           item={views.HIGHLIGHT}
         />
+        <MenuItem
+          onClick={props.menuClick}
+          icon="note"
+          title="Notes"
+          item={views.NOTE}
+        />
         {/* <MenuItem icon="functions" title="Interlinear" />
-        <MenuItem icon="rate_review" title="Articles" />
-        <MenuItem icon="sort_by_alpha" title="Dictionary" />
         <MenuItem icon="more_horiz" title="More" /> */}
       </List>
     </div>

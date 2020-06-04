@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
+import Tooltip from "@material-ui/core/Tooltip";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     width: "30px",
     marginTop: 20,
-    marginRight: "8px",
+    marginRight: 4,
     color: "#1976D2",
     cursor: "pointer",
   },
@@ -56,9 +57,13 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
   return (
     <div onClick={toggleBookmark} className={classes.info}>
       {bookmarked ? (
-        <BookmarkIcon fontSize="small" />
+        <Tooltip title="Bookmarked">
+          <BookmarkIcon style={{ color: "#ff0000" }} fontSize="small" />
+        </Tooltip>
       ) : (
-        <BookmarkBorderIcon fontSize="small" />
+        <Tooltip title="Add Bookmark">
+          <BookmarkBorderIcon fontSize="small" />
+        </Tooltip>
       )}
     </div>
   );

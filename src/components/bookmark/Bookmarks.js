@@ -115,9 +115,9 @@ const Bookmarks = (props) => {
     let sourceId = element.getAttribute("data-sourceid");
     setValue("sourceId", sourceId);
     setValue("version", versionData[sourceId][1]);
-    setValue("book", element.getAttribute("data-book"));
     setValue("bookCode", element.getAttribute("data-bookcode"));
     setValue("chapter", parseInt(element.getAttribute("data-chapter")));
+    setValue("versesSelected", []);
   };
 
   //Delete bookmark

@@ -7,12 +7,13 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
 import Paper from "@material-ui/core/Paper";
+import Tooltip from '@material-ui/core/Tooltip';
 const useStyles = makeStyles((theme) => ({
   info: {
     padding: 0,
     width: "30px",
     marginTop: 20,
-    marginRight: "8px",
+    marginRight: 4,
     color: "#1976D2",
     cursor: "pointer",
   },
@@ -77,13 +78,15 @@ export default function Metadata({ metadataList, title, abbreviation }) {
     <div>
       {metadataList ? (
         <>
-          <div
-            aria-describedby={id}
-            onClick={handleClick}
-            className={classes.info}
-          >
-            <i className="material-icons md-23">info_outline</i>
-          </div>
+          <Tooltip title="Information">
+            <div
+              aria-describedby={id}
+              onClick={handleClick}
+              className={classes.info}
+            >
+              <i className="material-icons md-23">info_outline</i>
+            </div>
+          </Tooltip>
           <Popover
             id={id}
             className={classes.paper}

@@ -8,6 +8,11 @@ import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import Metadata from "../common/Metadata";
 import Bookmark from "../bookmark/Bookmark";
+import Highlight from "../highlight/Highlight";
+import NoteIcon from "@material-ui/icons/NoteOutlined";
+import BorderColor from "@material-ui/icons/BorderColor";
+import Note from "../note/Note";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -29,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     width: "30px",
     marginTop: 20,
-    marginRight: "8px",
+    marginRight: 4,
     color: "#1976D2",
     cursor: "pointer",
   },
@@ -54,14 +59,18 @@ const MenuBar = (props) => {
     versions,
     version,
     sourceId,
-    book,
     chapter,
     versionBooks,
+    versionSource,
     fontSize,
     lineView,
     bookCode,
     audio,
     userDetails,
+    highlighted,
+    highlightClick,
+    selectedVerses,
+    setSelectedVerses,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -71,9 +80,11 @@ const MenuBar = (props) => {
   const [audioBible, setAudioBible] = React.useState({});
   const [audioIcon, setAudioIcon] = React.useState("");
   const [bookmarkIcon, setBookmarkIcon] = React.useState("");
-
+  const [highlightIcon, setHighlightIcon] = React.useState("");
+  const [noteIcon, setNoteIcon] = React.useState("");
+  //Set bookmark icon
   React.useEffect(() => {
-    if (Object.keys(userDetails).length !== 0) {
+    if (userDetails.uid !== null) {
       setBookmarkIcon(
         <Bookmark
           uid={userDetails.uid}
@@ -82,8 +93,68 @@ const MenuBar = (props) => {
           chapter={chapter}
         />
       );
+      return;
     }
+    setBookmarkIcon("");
   }, [userDetails, sourceId, bookCode, chapter]);
+
+  //Set highlight icon
+  React.useEffect(() => {
+    if (userDetails.uid !== null) {
+      if (selectedVerses && selectedVerses.length > 0) {
+        setHighlightIcon(
+          <Highlight
+            highlighted={highlighted}
+            highlightClick={highlightClick}
+          />
+        );
+        return;
+      } else {
+        setHighlightIcon(
+          <div className={classes.info}>
+            <BorderColor fontSize="small" color="disabled" />
+          </div>
+        );
+      }
+    } else {
+      setHighlightIcon("");
+    }
+  }, [userDetails, selectedVerses, highlighted, highlightClick, classes.info]);
+
+  //Set note icon
+  React.useEffect(() => {
+    if (userDetails.uid !== null) {
+      if (selectedVerses && selectedVerses.length > 0) {
+        setNoteIcon(
+          <Note
+            uid={userDetails.uid}
+            selectedVerses={selectedVerses}
+            setSelectedVerses={setSelectedVerses}
+            sourceId={sourceId}
+            bookCode={bookCode}
+            chapter={chapter}
+          />
+        );
+        return;
+      } else {
+        setNoteIcon(
+          <div className={classes.info}>
+            <NoteIcon fontSize="small" color="disabled" />
+          </div>
+        );
+      }
+    } else {
+      setNoteIcon("");
+    }
+  }, [
+    userDetails,
+    selectedVerses,
+    setSelectedVerses,
+    sourceId,
+    bookCode,
+    chapter,
+    classes.info,
+  ]);
   //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -129,13 +200,18 @@ const MenuBar = (props) => {
     <Grid container className={classes.read}>
       <Grid item xs={8}>
         <Version setValue={setValue} version={version} />
-        <BookCombo
-          book={book}
-          bookList={versionBooks[sourceId]}
-          chapter={chapter}
-          setValue={setValue}
-          minimal={true}
-        />
+        {bookCode ? (
+          <BookCombo
+            bookCode={bookCode}
+            bookList={versionBooks[versionSource[sourceId]]}
+            chapter={chapter}
+            setValue={setValue}
+            minimal={true}
+            sourceId={sourceId}
+          />
+        ) : (
+          ""
+        )}
       </Grid>
       <Grid
         item
@@ -146,6 +222,8 @@ const MenuBar = (props) => {
         justify="flex-end"
         direction="row"
       >
+        {noteIcon}
+        {highlightIcon}
         {bookmarkIcon}
         <Metadata
           metadataList={metadataList}
@@ -153,18 +231,22 @@ const MenuBar = (props) => {
           abbreviation="Abbreviation"
         ></Metadata>
         {audioIcon}
-        <div className={classes.info} onClick={goFull}>
-          <i className="material-icons md-23">zoom_out_map</i>
-        </div>
-        <div
-          className={classes.settings}
-          aria-label="More"
-          aria-controls="long-menu"
-          aria-haspopup="true"
-          onClick={openSettings}
-        >
-          <i className="material-icons md-23">more_vert</i>
-        </div>
+        <Tooltip title="Fullscreen">
+          <div className={classes.info} onClick={goFull}>
+            <i className="material-icons md-23">zoom_out_map</i>
+          </div>
+        </Tooltip>
+        <Tooltip title="Settings">
+          <div
+            className={classes.settings}
+            aria-label="More"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={openSettings}
+          >
+            <i className="material-icons md-23">more_vert</i>
+          </div>
+        </Tooltip>
         <Setting
           fontSize={fontSize}
           lineView={lineView}
@@ -189,6 +271,7 @@ const mapStateToProps = (state) => {
     versions: state.local.versions,
     versionBooks: state.local.versionBooks,
     userDetails: state.local.userDetails,
+    versionSource: state.local.versionSource,
   };
 };
 export default connect(mapStateToProps)(MenuBar);

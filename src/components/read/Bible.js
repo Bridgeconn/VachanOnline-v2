@@ -1,17 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import ReactPlayer from "react-player";
 import API from "../../store/api";
-import { getBookbyCode } from "../common/utillity";
-import { useFirebase } from "react-redux-firebase";
-import { useFirebaseConnect } from "react-redux-firebase";
-import { useSelector } from "react-redux";
-import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   biblePanel: {
     position: "absolute",
     backgroundColor: "#fff",
@@ -74,16 +67,18 @@ const useStyles = makeStyles({
   },
   verseText: {
     padding: "4px 0 2px 4px",
-    // "&:hover": {
-    //   backgroundColor: "#d9e8ef",
-    // },
   },
   verseNumber: {
     fontWeight: 600,
     paddingLeft: 6,
+    bottom: 3,
+    position: "relative",
   },
   highlight: {
     backgroundColor: "#feff3b",
+  },
+  selectedVerse: {
+    backgroundColor: "#d9e8ef",
   },
   lineView: {
     display: "table",
@@ -91,7 +86,15 @@ const useStyles = makeStyles({
   firstVerse: {
     fontSize: "1.5em",
   },
-});
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
 const Bible = (props) => {
   const fontFamily =
     props.fontFamily === "Sans" ? "Roboto,Noto Sans" : "Roboto Slab,Martel";
@@ -101,14 +104,10 @@ const Bible = (props) => {
   const [previous, setPrevious] = React.useState({});
   const [next, setNext] = React.useState({});
   const [audioUrl, setAudioUrl] = React.useState("");
-  const [clickedVerse, setClickedVerse] = React.useState(null);
-  const [contextMenu, setContextMenu] = React.useState(false);
-  const [mouseX, setMouseX] = React.useState(null);
-  const [mouseY, setMouseY] = React.useState(null);
   const [padding, setPadding] = React.useState(
     window.innerWidth > 1200 ? (window.innerWidth - 1200) / 2 : 20
   );
-  const firebase = useFirebase();
+
   let {
     sourceId,
     bookCode,
@@ -122,48 +121,16 @@ const Bible = (props) => {
     setSync,
     fontSize,
     lineView,
-    uid,
     singlePane,
+    selectedVerses,
+    setSelectedVerses,
+    highlights,
+    userDetails,
   } = props;
-  useFirebaseConnect(
-    `users/${uid}/highlights/${sourceId}/${bookCode}/${chapter}`
-  );
-  const highlights =
-    useSelector(
-      ({ firebase: { data } }) =>
-        data.users &&
-        data.users[uid] &&
-        data.users[uid].highlights &&
-        data.users[uid].highlights[sourceId] &&
-        data.users[uid].highlights[sourceId][bookCode] &&
-        data.users[uid].highlights[sourceId][bookCode][chapter]
-    ) || [];
-  function toogleHighlight(add) {
-    setContextMenu(false);
-    const newHighlights = add
-      ? highlights.concat([parseInt(clickedVerse)])
-      : highlights.filter((a) => parseInt(a) !== parseInt(clickedVerse));
-    return firebase
-      .ref(
-        "users/" +
-          uid +
-          "/highlights/" +
-          sourceId +
-          "/" +
-          bookCode +
-          "/" +
-          chapter
-      )
-      .set(newHighlights, function (error) {
-        if (error) {
-          console.log("Highlight update error");
-        } else {
-          console.log("Highlight updated succesfully");
-        }
-      });
-  }
+  const styleProps = { padding: padding, singlePane: singlePane };
+  const classes = useStyles(styleProps);
+
   React.useEffect(() => {
-    handleClose();
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
       setIsLoading(true);
@@ -186,6 +153,7 @@ const Bible = (props) => {
         });
     }
   }, [sourceId, bookCode, chapter]);
+  //if audio bible show icon
   React.useEffect(() => {
     if (audio) {
       setAudioUrl(
@@ -198,8 +166,7 @@ const Bible = (props) => {
     if (!isLoading && Object.keys(previous).length > 0) {
       setValue("chapter", previous.chapterId);
       setValue("bookCode", previous.bibleBookCode);
-      let book = getBookbyCode(previous.bibleBookCode);
-      setValue("book", book.book);
+      setValue("versesSelected", []);
     }
   };
   //Function to load next chapter
@@ -207,8 +174,7 @@ const Bible = (props) => {
     if (!isLoading && Object.keys(next).length > 0) {
       setValue("chapter", next.chapterId);
       setValue("bookCode", next.bibleBookCode);
-      let book = getBookbyCode(next.bibleBookCode);
-      setValue("book", book.book);
+      setValue("versesSelected", []);
     }
   };
   const scrollText = () => {
@@ -216,20 +182,18 @@ const Bible = (props) => {
       scroll(paneNo, parallelScroll, setSync);
     }
   };
-  const handleClick = (event) => {
+  const handleVerseClick = (event) => {
     event.preventDefault();
-    let element = event.currentTarget;
-    let verseId = element.getAttribute("data-verse");
-    setContextMenu(true);
-    setClickedVerse(verseId);
-    setMouseX(event.clientX - 2);
-    setMouseY(event.clientY - 4);
+    if (Object.keys(userDetails).length !== 0 && userDetails.uid !== null) {
+      let verseId = event.currentTarget.getAttribute("data-verse");
+      let verses =
+        selectedVerses.indexOf(parseInt(verseId)) > -1
+          ? selectedVerses.filter((a) => parseInt(a) !== parseInt(verseId))
+          : selectedVerses.concat([parseInt(verseId)]);
+      setSelectedVerses(verses);
+      setValue("versesSelected", verses);
+    }
   };
-  const handleClose = () => {
-    setContextMenu(false);
-  };
-  const styleProps = { padding: padding, singlePane: singlePane };
-  const classes = useStyles(styleProps);
   React.useEffect(() => {
     function handleResize() {
       let width = window.innerWidth;
@@ -269,7 +233,9 @@ const Bible = (props) => {
           >
             {verses.map((item) => {
               const verseClass =
-                highlights.indexOf(parseInt(item.number)) > -1
+                selectedVerses.indexOf(parseInt(item.number)) > -1
+                  ? `${classes.verseText} ${classes.selectedVerse}`
+                  : highlights.indexOf(parseInt(item.number)) > -1
                   ? `${classes.verseText} ${classes.highlight}`
                   : `${classes.verseText}`;
               const verseNumberClass =
@@ -280,7 +246,7 @@ const Bible = (props) => {
                 <span
                   key={item.number}
                   className={lineViewClass}
-                  onClick={handleClick}
+                  onClick={handleVerseClick}
                   data-verse={item.number}
                 >
                   <span className={verseNumberClass}>{item.number}</span>
@@ -288,27 +254,6 @@ const Bible = (props) => {
                 </span>
               );
             })}
-            <Menu
-              keepMounted
-              open={contextMenu}
-              onClose={handleClose}
-              anchorReference="anchorPosition"
-              anchorPosition={
-                mouseY !== null && mouseX !== null
-                  ? { top: mouseY, left: mouseX }
-                  : undefined
-              }
-            >
-              {highlights.indexOf(parseInt(clickedVerse)) === -1 ? (
-                <MenuItem onClick={() => toogleHighlight(true)}>
-                  Highlight
-                </MenuItem>
-              ) : (
-                <MenuItem onClick={() => toogleHighlight(false)}>
-                  <CancelPresentationIcon />
-                </MenuItem>
-              )}
-            </Menu>
           </div>
           {audio ? (
             <ReactPlayer
@@ -357,9 +302,8 @@ const Bible = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    versionBooks: state.local.versionBooks,
     parallelScroll: state.local.parallelScroll,
-    uid: state.local.userDetails.uid,
+    userDetails: state.local.userDetails,
   };
 };
 export default connect(mapStateToProps)(Bible);

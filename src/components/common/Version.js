@@ -96,7 +96,7 @@ const Version = (props) => {
   React.useEffect(() => {
     //if versions not loaded fetch versions and books for the versions
     if (props.versions.length === 0) {
-      getVersions(props.setVersions, props.setValue, props.setVersionBooks);
+      getVersions(props.setVersions, props.setValue, props.setVersionBooks, props.setVersionSource);
     }
   });
 
@@ -228,6 +228,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVERSIONS, value: value }),
     setVersionBooks: (name, value) =>
       dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
+    setVersionSource:(value) =>
+      dispatch({type:actions.SETVALUE,name:"versionSource",value:value})
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Version);

@@ -1,26 +1,32 @@
 import API from "../../store/api";
 import { bibleBooks } from "../../store/bibleData";
 //Function to get the bible versions
-export const getVersions = (setVersions, setValue, setVersionBooks) => {
+export const getVersions = (
+  setVersions,
+  setValue,
+  setVersionBooks,
+  setVersionSource
+) => {
   API.get("bibles")
     .then(function (response) {
       const versions = response.data;
       setVersions(versions);
       if (versions.length > 0) {
+        let version = versions[0].languageVersions[0];
         setValue(
           "version",
-          versions[0].languageVersions[0].language.name +
-            "-" +
-            versions[0].languageVersions[0].version.code.toUpperCase()
+          version.language.name + "-" + version.version.code.toUpperCase()
         );
-        setValue("sourceId", versions[0].languageVersions[0].sourceId);
-        let setFirst = true;
+        setValue("sourceId", version.sourceId);
+        getAllBooks(setVersionBooks, setValue, version.language.id);
+        let versionSource = {};
         for (let lang of versions) {
           for (let ver of lang.languageVersions) {
-            getBooks(setValue, setVersionBooks, ver.sourceId, setFirst);
-            setFirst = false;
+            //getBooks(setValue, setVersionBooks, ver.sourceId, setFirst);
+            versionSource[ver.sourceId] = ver.language.id;
           }
         }
+        setVersionSource(versionSource);
       }
     })
     .catch(function (error) {
@@ -28,16 +34,16 @@ export const getVersions = (setVersions, setValue, setVersionBooks) => {
     });
 };
 //Function to get the bible books
-export const getBooks = (setValue, setVersionBooks, sourceId, setValues) => {
-  API.get("bibles/" + sourceId + "/books")
+export const getAllBooks = (setVersionBooks, setValue, langaugeId) => {
+  API.get("booknames")
     .then(function (response) {
-      var books = response.data[0].books.sort(
-        (a, b) => a.bibleBookID - b.bibleBookID
-      );
-      setVersionBooks(sourceId, books);
-      if (setValues) {
-        setValue("book", books[0].bibleBookFullName);
-        setValue("bookCode", books[0].abbreviation);
+      for (let item of response.data) {
+        setVersionBooks(item.language.id, item.bookNames);
+      }
+      if (response.data && response.data.length > 0) {
+        let book = response.data.find((a) => (a.language.id = langaugeId))
+          .bookNames[0];
+        setValue("bookCode", book.book_code);
         setValue("chapter", "1");
       }
     })
@@ -50,7 +56,7 @@ export const getBookbyCode = (abbreviation) => {
   return bibleBooks.find((element) => element.abbreviation === abbreviation);
 };
 export const getBookByName = (name) => {
-  return bibleBooks.find((element) => element.book === name);
+  return bibleBooks.find((element) => element.short === name);
 };
 //Function to get the list of commentaries
 export const getCommentaries = (setValue) => {
