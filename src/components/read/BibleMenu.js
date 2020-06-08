@@ -10,65 +10,71 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BibleMenu(props) {
+export default function BibleMenu({ menuClick, uid }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
         <MenuItem
-          onClick={props.menuClick}
+          onClick={menuClick}
           icon="import_contacts"
           title="Parallel Bible"
           item={views.PARALLELBIBLE}
         />
         <MenuItem
-          onClick={props.menuClick}
+          onClick={menuClick}
           icon="comment"
           title="Commentaries"
           item={views.COMMENTARY}
         />
         <MenuItem
-          onClick={props.menuClick}
+          onClick={menuClick}
           icon="format_shapes"
           title="Dictionaries"
           item={views.DICTIONARY}
         />
         <MenuItem
-          onClick={props.menuClick}
+          onClick={menuClick}
           icon="image"
           title="Infographics"
           item={views.INFOGRAPHICS}
         />
         <MenuItem
-          onClick={props.menuClick}
+          onClick={menuClick}
           icon="volume_up"
           title="Audio Bible"
           item={views.AUDIO}
         />
         <MenuItem
-          onClick={props.menuClick}
+          onClick={menuClick}
           icon="videocam"
           title="Videos"
           item={views.VIDEO}
         />
-        <MenuItem
-          onClick={props.menuClick}
-          icon="bookmark"
-          title="Bookmarks"
-          item={views.BOOKMARK}
-        />
-        <MenuItem
-          onClick={props.menuClick}
-          icon="border_color"
-          title="Highlights"
-          item={views.HIGHLIGHT}
-        />
-        <MenuItem
-          onClick={props.menuClick}
-          icon="note"
-          title="Notes"
-          item={views.NOTE}
-        />
+        {uid !== null ? (
+          <>
+            <MenuItem
+              onClick={menuClick}
+              icon="bookmark"
+              title="Bookmarks"
+              item={views.BOOKMARK}
+            />
+            <MenuItem
+              onClick={menuClick}
+              icon="border_color"
+              title="Highlights"
+              item={views.HIGHLIGHT}
+            />
+            <MenuItem
+              onClick={menuClick}
+              icon="note"
+              title="Notes"
+              item={views.NOTE}
+            />
+          </>
+        ) : (
+          ""
+        )}
         {/* <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="more_horiz" title="More" /> */}
       </List>

@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BorderColor from "@material-ui/icons/BorderColor";
 import Tooltip from "@material-ui/core/Tooltip";
+import { BLUETRANSPARENT } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -9,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: "#1976D2",
+    color: BLUETRANSPARENT,
     cursor: "pointer",
   },
 }));

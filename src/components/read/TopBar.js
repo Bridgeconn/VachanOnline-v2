@@ -12,6 +12,7 @@ import Login from "../login/Login";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
 import LoginMenu from "../login/LoginMenu";
+import { BLUEGRADIENT } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     height: 74,
   },
   appBar: {
-    background: "#3E4095",
+    background: BLUEGRADIENT,
     padding: "0px 10px",
     marginBottom: "10px",
   },
@@ -144,7 +145,7 @@ export default function TopBar({
                       checked={pScroll}
                       onChange={handleChange()}
                       value="checked"
-                      color="primary"
+                      color="default"
                     />
                   }
                   label="Parallel Scroll"

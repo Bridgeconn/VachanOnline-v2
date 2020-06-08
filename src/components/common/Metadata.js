@@ -7,14 +7,16 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
 import Paper from "@material-ui/core/Paper";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from "@material-ui/core/Tooltip";
+import { BLUETRANSPARENT } from "../../store/colorCode";
+
 const useStyles = makeStyles((theme) => ({
   info: {
     padding: 0,
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: "#1976D2",
+    color: BLUETRANSPARENT,
     cursor: "pointer",
   },
   paper: {
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "5px 0 0 12px",
   },
   metadataTitleBar: {
-    backgroundColor: "#2e639a",
+    backgroundColor: BLUETRANSPARENT,
     color: "#fff",
   },
   metadataHeading: {

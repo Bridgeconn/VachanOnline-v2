@@ -13,6 +13,7 @@ import NoteIcon from "@material-ui/icons/NoteOutlined";
 import BorderColor from "@material-ui/icons/BorderColor";
 import Note from "../note/Note";
 import Tooltip from "@material-ui/core/Tooltip";
+import { BLUETRANSPARENT } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: "#1976D2",
+    color: BLUETRANSPARENT,
     cursor: "pointer",
   },
   settings: {
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
     marginLeft: "-10px",
     marginRight: "-5px",
-    color: "#1976D2",
+    color: BLUETRANSPARENT,
     cursor: "pointer",
   },
   items: {

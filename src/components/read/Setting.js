@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Slider from "@material-ui/core/Slider";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import { BLUETRANSPARENT } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -70,7 +71,7 @@ const Setting = ({
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
             width: 250,
-            backgroundColor: "#286dab",
+            backgroundColor: BLUETRANSPARENT,
             color: "#fff",
           },
         }}

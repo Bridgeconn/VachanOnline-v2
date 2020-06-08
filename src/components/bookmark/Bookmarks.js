@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
   message: {
     margin: 18,
   },
+  listItem: {
+    borderBottom: "1px solid lightgray",
+  },
 }));
 const Bookmarks = (props) => {
   const classes = useStyles();
@@ -149,7 +152,7 @@ const Bookmarks = (props) => {
           <List component="nav">
             {bookmarkList.map((bookmark, i) => {
               return (
-                <ListItem key={i} button>
+                <ListItem key={i} className={classes.listItem} button>
                   <ListItemText
                     primary={`${versionData[bookmark.sourceId][0]} ${
                       bookmark.book

@@ -74,6 +74,11 @@ const useStyles = makeStyles((theme) => ({
     bottom: 3,
     position: "relative",
   },
+  sectionHeading: {
+    fontSize: "1.6em",
+    display: "block",
+    paddingTop: 12,
+  },
   highlight: {
     backgroundColor: "#feff3b",
   },
@@ -99,6 +104,7 @@ const Bible = (props) => {
   const fontFamily =
     props.fontFamily === "Sans" ? "Roboto,Noto Sans" : "Roboto Slab,Martel";
   const [verses, setVerses] = React.useState([]);
+  const [chapterHeading, setChapterHeading] = React.useState("");
   const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
   const [previous, setPrevious] = React.useState({});
@@ -130,6 +136,15 @@ const Bible = (props) => {
   const styleProps = { padding: padding, singlePane: singlePane };
   const classes = useStyles(styleProps);
 
+  const getHeading = (metadata) => {
+    if (metadata) {
+      for (let value of metadata) {
+        if (value.hasOwnProperty("section")) {
+          return value.section.text;
+        }
+      }
+    }
+  };
   React.useEffect(() => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
@@ -145,6 +160,9 @@ const Bible = (props) => {
             setLoadingText("Book not uploaded");
           } else {
             setVerses(response.data.chapterContent.verses);
+            setChapterHeading(
+              getHeading(response.data.chapterContent.metadata)
+            );
           }
           setIsLoading(false);
         })
@@ -153,6 +171,7 @@ const Bible = (props) => {
         });
     }
   }, [sourceId, bookCode, chapter]);
+
   //if audio bible show icon
   React.useEffect(() => {
     if (audio) {
@@ -231,6 +250,11 @@ const Bible = (props) => {
                 : classes.bibleReadingPane
             }
           >
+            {chapterHeading !== "" ? (
+              <span className={classes.sectionHeading}>{chapterHeading}</span>
+            ) : (
+              ""
+            )}
             {verses.map((item) => {
               const verseClass =
                 selectedVerses.indexOf(parseInt(item.number)) > -1
@@ -242,15 +266,24 @@ const Bible = (props) => {
                 parseInt(item.number) === 1
                   ? `${classes.verseNumber} ${classes.firstVerse}`
                   : `${classes.verseNumber}`;
+              const sectionHeading = getHeading(item.metadata);
               return (
-                <span
-                  key={item.number}
-                  className={lineViewClass}
-                  onClick={handleVerseClick}
-                  data-verse={item.number}
-                >
-                  <span className={verseNumberClass}>{item.number}</span>
-                  <span className={verseClass}> {item.text}</span>
+                <span key={item.number}>
+                  <span
+                    className={lineViewClass}
+                    onClick={handleVerseClick}
+                    data-verse={item.number}
+                  >
+                    <span className={verseNumberClass}>{item.number}</span>
+                    <span className={verseClass}> {item.text}</span>
+                  </span>
+                  {sectionHeading && sectionHeading !== "" ? (
+                    <span className={classes.sectionHeading}>
+                      {sectionHeading}
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </span>
               );
             })}

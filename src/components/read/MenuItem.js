@@ -4,6 +4,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { BLUE } from "../../store/colorCode";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: "10px 15px",
-    backgroundColor: "#3E4095",
+    backgroundColor: BLUE,
   },
   menu: {
     fontSize: "18px",
