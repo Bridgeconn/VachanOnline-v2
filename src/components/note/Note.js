@@ -98,10 +98,10 @@ export default function Note({
 
   const saveNote = () => {
     let noteObject = {
-      createdDate: Date.now(),
-      modifiedDate: Date.now(),
+      createdTime: Date.now(),
+      modifiedTime: Date.now(),
       body: noteText,
-      verses: selectedVerses.sort(),
+      verses: selectedVerses.sort((a, b) => parseInt(a) - parseInt(b)),
     };
     let notesArray =
       notes && notes[sourceId] && notes[sourceId][bookCode]

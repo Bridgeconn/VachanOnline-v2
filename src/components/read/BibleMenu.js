@@ -17,6 +17,12 @@ export default function BibleMenu({ menuClick, uid }) {
       <List component="nav" aria-label="main mailbox folders">
         <MenuItem
           onClick={menuClick}
+          icon="search"
+          title="Search Bible"
+          item={views.SEARCH}
+        />
+        <MenuItem
+          onClick={menuClick}
           icon="import_contacts"
           title="Parallel Bible"
           item={views.PARALLELBIBLE}

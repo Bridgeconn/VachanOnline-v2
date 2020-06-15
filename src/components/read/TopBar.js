@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
     position: "relative",
     right: 250,
-    paddingLeft: "50%",
+    marginLeft: "50%",
   },
 }));
 

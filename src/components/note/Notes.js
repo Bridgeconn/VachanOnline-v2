@@ -142,16 +142,16 @@ export default function Notes(props) {
     }
     let noteObject = edit
       ? {
-          createdDate: editObject.createdDate,
-          modifiedDate: Date.now(),
+          createdTime: editObject.createdTime,
+          modifiedTime: Date.now(),
           body: noteText,
-          verses: versesSelected.sort(),
+          verses: versesSelected.sort((a, b) => parseInt(a) - parseInt(b)),
         }
       : {
-          createdDate: Date.now(),
-          modifiedDate: Date.now(),
+          createdTime: Date.now(),
+          modifiedTime: Date.now(),
           body: noteText,
-          verses: versesSelected.sort(),
+          verses: versesSelected.sort((a, b) => parseInt(a) - parseInt(b)),
         };
     let notesArray =
       notes && notes[sourceId] && notes[sourceId][bookCode]

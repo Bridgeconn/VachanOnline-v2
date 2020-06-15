@@ -7,3 +7,4 @@ export const VIDEO = "VIDEO";
 export const BOOKMARK = "BOOKMARK";
 export const HIGHLIGHT = "HIGHLIGHT";
 export const NOTE = "NOTE";
+export const SEARCH = "SEARCH";

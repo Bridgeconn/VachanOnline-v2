@@ -162,3 +162,21 @@ export const capitalize = (string) => {
   if (typeof string !== "string") return "";
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+//Function to search Bible
+export const searchBible = (sourceId, keyword, bookNames, setResult) => {
+  API.get("search/" + sourceId + "?keyword=" + keyword)
+    .then(function (response) {
+      response.data.keyword = response.data.keyword || keyword;
+      response.data.result =
+        response.data.result &&
+        response.data.result.map((a) => {
+          a.book = bookNames[a.bookCode];
+          return a;
+        });
+      setResult(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};

@@ -13,6 +13,7 @@ import Video from "../video/Video";
 import Bookmarks from "../bookmark/Bookmarks";
 import Highlights from "../highlight/Highlights";
 import Notes from "../note/Notes";
+import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 import {
@@ -97,6 +98,7 @@ const ReadBible = (props) => {
     versionBooks,
     versionSource,
   } = props;
+  const { uid } = userDetails;
   function menuClick(view) {
     //if closing commentary then reset selected commentary
     if (parallelView === view && view === views.COMMENTARY) {
@@ -188,6 +190,11 @@ const ReadBible = (props) => {
       copyPanel1();
     }
   }, [parallelView, copyPanel1]);
+  React.useEffect(() => {
+    if (uid === null) {
+      setParallelView("");
+    }
+  }, [uid]);
   const [pane, setPane] = React.useState("");
   //Set book object on change  of pane 1 for display in notes
   React.useEffect(() => {
@@ -201,6 +208,18 @@ const ReadBible = (props) => {
   }, [panel1.bookCode, panel1.sourceId, versionBooks, versionSource]);
   React.useEffect(() => {
     switch (parallelView) {
+      case views.SEARCH:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={setValue1} paneData={panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Search />
+            </div>
+          </>
+        );
+        break;
       case views.PARALLELBIBLE:
         setPane(
           <>
@@ -302,11 +321,7 @@ const ReadBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Bookmarks
-                uid={userDetails.uid}
-                versions={versions}
-                setValue={setValue1}
-              />
+              <Bookmarks uid={uid} versions={versions} setValue={setValue1} />
             </div>
           </>
         );
@@ -318,11 +333,7 @@ const ReadBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Highlights
-                uid={userDetails.uid}
-                versions={versions}
-                setValue={setValue1}
-              />
+              <Highlights uid={uid} versions={versions} setValue={setValue1} />
             </div>
           </>
         );
@@ -335,7 +346,7 @@ const ReadBible = (props) => {
             </div>
             <div className={classes.biblePane2}>
               <Notes
-                uid={userDetails.uid}
+                uid={uid}
                 versions={versions}
                 setValue={setValue1}
                 sourceId={panel1.sourceId}
@@ -372,7 +383,7 @@ const ReadBible = (props) => {
     setValue1,
     setValue2,
     video,
-    userDetails.uid,
+    uid,
     versions,
     bookObject,
   ]);
@@ -388,7 +399,7 @@ const ReadBible = (props) => {
       <div>
         <div className={classes.biblePane}>{pane}</div>
         <div className={classes.rightMenu}>
-          <BibleMenu menuClick={menuClick} uid={userDetails.uid} />
+          <BibleMenu menuClick={menuClick} uid={uid} />
         </div>
       </div>
     </>

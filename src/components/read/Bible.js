@@ -73,11 +73,13 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 6,
     bottom: 3,
     position: "relative",
+    color: "#262662",
   },
   sectionHeading: {
     fontSize: "1.6em",
     display: "block",
     paddingTop: 12,
+    fontStyle: "italic",
   },
   highlight: {
     backgroundColor: "#feff3b",
