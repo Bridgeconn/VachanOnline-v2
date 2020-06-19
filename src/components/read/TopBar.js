@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { fade, makeStyles, withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -8,7 +8,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import * as views from "../../store/views";
 import Login from "../login/Login";
-/* import SerachBox from "../common/SearchBox"; */
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
 import LoginMenu from "../login/LoginMenu";
@@ -102,6 +101,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const ParallelSwitch = withStyles({
+  switchBase: {
+    "&$checked": {
+      "& + $track": {
+        backgroundColor: "white",
+      },
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+
 export default function TopBar({
   pScroll,
   setValue,
@@ -141,7 +152,7 @@ export default function TopBar({
               <FormGroup className={classes.form}>
                 <FormControlLabel
                   control={
-                    <Switch
+                    <ParallelSwitch
                       checked={pScroll}
                       onChange={handleChange()}
                       value="checked"

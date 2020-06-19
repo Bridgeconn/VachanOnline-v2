@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
 import API from "../../store/api";
 
@@ -126,7 +127,6 @@ const Bible = (props) => {
     scroll,
     paneNo,
     parallelScroll,
-    setSync,
     fontSize,
     lineView,
     singlePane,
@@ -134,6 +134,7 @@ const Bible = (props) => {
     setSelectedVerses,
     highlights,
     userDetails,
+    syncPanel,
   } = props;
   const styleProps = { padding: padding, singlePane: singlePane };
   const classes = useStyles(styleProps);
@@ -188,6 +189,9 @@ const Bible = (props) => {
       setValue("chapter", previous.chapterId);
       setValue("bookCode", previous.bibleBookCode);
       setValue("versesSelected", []);
+      if (parallelScroll && paneNo) {
+        syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+      }
     }
   };
   //Function to load next chapter
@@ -196,11 +200,14 @@ const Bible = (props) => {
       setValue("chapter", next.chapterId);
       setValue("bookCode", next.bibleBookCode);
       setValue("versesSelected", []);
+      if (parallelScroll && paneNo) {
+        syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+      }
     }
   };
   const scrollText = () => {
     if (scroll) {
-      scroll(paneNo, parallelScroll, setSync);
+      scroll(paneNo);
     }
   };
   const handleVerseClick = (event) => {
@@ -341,4 +348,11 @@ const mapStateToProps = (state) => {
     userDetails: state.local.userDetails,
   };
 };
-export default connect(mapStateToProps)(Bible);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    syncPanel: (from, to) => {
+      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Bible);

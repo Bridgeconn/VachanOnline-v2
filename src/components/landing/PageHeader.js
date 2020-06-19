@@ -4,7 +4,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import logo from "../common/images/logo.png";
-import Login from "../login/Login";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,22 +24,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PageHeader = ({ toggleDrawer }) => {
+const PageHeader = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
         <Toolbar>
-          {/*<IconButton
-            onClick={toggleDrawer(true)}
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="Open drawer"
-          >
-             <MenuIcon /> 
-          </IconButton>*/}
-
           <Link
             className={classes.title}
             to={{
@@ -51,7 +40,6 @@ const PageHeader = ({ toggleDrawer }) => {
           >
             <img src={logo} alt={"logo"} />
           </Link>
-          <Login />
         </Toolbar>
       </AppBar>
     </div>

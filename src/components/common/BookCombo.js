@@ -9,6 +9,8 @@ import Collapse from "@material-ui/core/Collapse";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters } from "../../store/bibleData";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
@@ -91,7 +93,8 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
   },
 }));
-export default function BookCombo({
+const BookCombo = ({
+  paneNo,
   bookCode,
   bookList,
   chapter,
@@ -99,7 +102,9 @@ export default function BookCombo({
   minimal,
   landingPage,
   sourceId,
-}) {
+  parallelScroll,
+  syncPanel,
+}) => {
   //classes for styling
   const classes = useStyles();
   const theme = useTheme();
@@ -197,6 +202,9 @@ export default function BookCombo({
     setValue("chapter", element.getAttribute("data-chapter"));
     setValue("bookCode", element.getAttribute("data-bookcode").toLowerCase());
     setValue("versesSelected", []);
+    if (parallelScroll && paneNo) {
+      syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+    }
   };
   const classesI = `material-icons ${classes.icon}`;
   return (
@@ -305,4 +313,17 @@ export default function BookCombo({
       )}
     </>
   );
-}
+};
+const mapStateToProps = (state) => {
+  return {
+    parallelScroll: state.local.parallelScroll,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    syncPanel: (from, to) => {
+      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(BookCombo);

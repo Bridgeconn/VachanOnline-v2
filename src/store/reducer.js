@@ -20,6 +20,7 @@ const defaultState = {
   userDetails: {
     uid: null,
     email: null,
+    photoURL: null,
   },
   panel1: {
     version: "Loading...",
@@ -72,6 +73,18 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         panel2: { ...panel2, versesSelected: [] },
+      };
+    case actions.SYNCPANEL:
+      let { book, bookCode, chapterList, chapter } = state[action.from];
+      return {
+        ...state,
+        [action.to]: {
+          ...state[action.to],
+          book: book,
+          bookCode: bookCode,
+          chapterList: chapterList,
+          chapter: chapter,
+        },
       };
     case actions.SETVALUE:
       return {

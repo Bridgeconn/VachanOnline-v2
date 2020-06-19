@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
     width: 500,
@@ -12,13 +12,13 @@ const useStyles = makeStyles(theme => ({
     outline: "none",
     top: "50%",
     left: "50%",
-    transform: "translate(-50%, -50%)"
-  }
+    transform: "translate(-50%, -50%)",
+  },
 }));
 
-const ContactUs = ({ contactUs }) => {
+const ContactUs = () => {
   const classes = useStyles();
-
+  const contactUs = "Address Email Mobile No";
   return (
     <div className={classes.paper}>
       <Typography variant="h4" id="modal-title">

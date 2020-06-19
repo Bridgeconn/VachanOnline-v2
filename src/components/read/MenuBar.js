@@ -56,6 +56,7 @@ const MenuBar = (props) => {
   const classes = useStyles();
   let {
     setValue,
+    paneNo,
     setFullscreen,
     versions,
     version,
@@ -203,6 +204,7 @@ const MenuBar = (props) => {
         <Version setValue={setValue} version={version} />
         {bookCode ? (
           <BookCombo
+            paneNo={paneNo}
             bookCode={bookCode}
             bookList={versionBooks[versionSource[sourceId]]}
             chapter={chapter}

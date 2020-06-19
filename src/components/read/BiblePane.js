@@ -29,7 +29,6 @@ const BiblePane = ({
   paneData,
   ref1,
   scroll,
-  setSync,
   paneNo,
   singlePane,
   userDetails,
@@ -117,6 +116,7 @@ const BiblePane = ({
         {fetchHighlights}
         <MenuBar
           {...paneData}
+          paneNo={paneNo}
           setFullscreen={setFullscreen}
           setValue={setValue}
           highlighted={highlighted}
@@ -136,7 +136,6 @@ const BiblePane = ({
                 setValue={setValue}
                 ref1={ref1}
                 scroll={scroll}
-                setSync={setSync}
                 paneNo={paneNo}
                 singlePane={singlePane}
                 selectedVerses={selectedVerses}
@@ -157,4 +156,5 @@ const mapStateToProps = (state) => {
     userDetails: state.local.userDetails,
   };
 };
+
 export default connect(mapStateToProps)(BiblePane);

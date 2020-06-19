@@ -165,7 +165,7 @@ export const capitalize = (string) => {
 
 //Function to search Bible
 export const searchBible = (sourceId, keyword, bookNames, setResult) => {
-  API.get("search/" + sourceId + "?keyword=" + keyword)
+  API.get("search/" + sourceId + "?keyword=" + encodeURIComponent(keyword))
     .then(function (response) {
       response.data.keyword = response.data.keyword || keyword;
       response.data.result =

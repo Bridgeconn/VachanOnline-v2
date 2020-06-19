@@ -160,11 +160,16 @@ export default function Note({
           />
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={saveNote} color="primary">
-            Save
-          </Button>
-          <Button autoFocus onClick={handleClose}>
+          <Button className={classes.button} onClick={handleClose}>
             Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={saveNote}
+          >
+            Save
           </Button>
         </DialogActions>
       </Dialog>

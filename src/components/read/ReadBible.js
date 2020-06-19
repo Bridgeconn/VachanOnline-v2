@@ -76,7 +76,6 @@ const ReadBible = (props) => {
   const bibleText1 = React.useRef();
   const bibleText2 = React.useRef();
   //used to sync bibles in paralle bibles on scroll
-  const [sync, setSync] = React.useState(0);
   const [parallelView, setParallelView] = React.useState("");
   const [bookObject, setBookObject] = React.useState({});
   let {
@@ -99,6 +98,7 @@ const ReadBible = (props) => {
     versionSource,
   } = props;
   const { uid } = userDetails;
+  //Function to handle right menu click
   function menuClick(view) {
     //if closing commentary then reset selected commentary
     if (parallelView === view && view === views.COMMENTARY) {
@@ -108,8 +108,8 @@ const ReadBible = (props) => {
   }
   //flag to prevent looping of on scroll event
   let ignoreScrollEvents = false;
-  //function to implement parallel scroll
-  const getScroll = React.useCallback((paneNo, parallelScroll, setSync) => {
+  //function for moving parallel bibles scroll together
+  const scroll = React.useCallback((paneNo) => {
     //check flag to prevent looping of on scroll event
     if (ignoreScrollEvents) {
       ignoreScrollEvents = false;
@@ -127,40 +127,15 @@ const ReadBible = (props) => {
         text2.scrollTop =
           (text1.scrollTop / (text1.scrollHeight - text1.offsetHeight)) *
           (text2.scrollHeight - text2.offsetHeight);
-        setSync(1);
       } else if (paneNo === 2) {
         ignoreScrollEvents = true;
         text1.scrollTop =
           (text2.scrollTop / (text2.scrollHeight - text2.offsetHeight)) *
           (text1.scrollHeight - text1.offsetHeight);
-        setSync(2);
       }
     }
   }, []);
-  //sync bible on scroll if parallel scroll on
-  React.useEffect(() => {
-    if (sync === 1) {
-      if (panel2.book !== panel1.book) {
-        setValue2("book", panel1.book);
-        setValue2("bookCode", panel1.bookCode);
-        setValue2("chapterList", panel1.chapterList);
-      }
-      if (panel2.chapter !== panel1.chapter) {
-        setValue2("chapter", panel1.chapter);
-      }
-    }
-    if (sync === 2) {
-      if (panel1.book !== panel2.book) {
-        setValue1("book", panel2.book);
-        setValue1("bookCode", panel2.bookCode);
-        setValue1("chapterList", panel2.chapterList);
-      }
-      if (panel1.chapter !== panel2.chapter) {
-        setValue1("chapter", panel2.chapter);
-      }
-    }
-    setSync(0);
-  }, [panel1, panel2, setValue1, setValue2, sync]);
+  //Fetch data from APIs
   React.useEffect(() => {
     //if commentaries not loaded fetch list of commentaries
     if (commentaries.length === 0) {
@@ -228,8 +203,7 @@ const ReadBible = (props) => {
                 setValue={setValue1}
                 paneData={panel1}
                 ref1={bibleText1}
-                scroll={getScroll}
-                setSync={setSync}
+                scroll={scroll}
                 paneNo={1}
               />
             </div>
@@ -238,8 +212,7 @@ const ReadBible = (props) => {
                 setValue={setValue2}
                 paneData={panel2}
                 ref1={bibleText2}
-                scroll={getScroll}
-                setSync={setSync}
+                scroll={scroll}
                 paneNo={2}
               />
             </div>
@@ -374,7 +347,7 @@ const ReadBible = (props) => {
     audioBible,
     classes.biblePane1,
     classes.biblePane2,
-    getScroll,
+    scroll,
     panel1,
     panel2,
     parallelView,

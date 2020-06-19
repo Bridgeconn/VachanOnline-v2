@@ -11,6 +11,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Popover from "@material-ui/core/Popover";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,71 +46,93 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
+  links: {
+    marginTop: 10,
+  },
 }));
 
 const Login = (props) => {
   const classes = useStyles();
-  const [anchorSignIn, setAnchorSignIn] = React.useState(null);
-  const [signInOpen, setSignInOpen] = React.useState(false);
-  const [signUpOpen, setSignUpOpen] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [buttonLabel, setButtonLabel] = React.useState("Sign In");
   const { login, setValue } = props;
 
-  const openSignIn = (event) => {
-    if (anchorSignIn === null) {
-      setAnchorSignIn(event.currentTarget);
-    }
-    setSignInOpen(true);
-    setSignUpOpen(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [form, setForm] = React.useState(1);
+  const [alert, setAlert] = React.useState(false);
+  const [message, setMessage] = React.useState("");
+
+  const open = Boolean(anchorEl);
+
+  const openForm = (event) => {
+    setAnchorEl(event.currentTarget);
+    setForm(1);
   };
 
-  const closeSignIn = () => {
-    setSignInOpen(false);
+  const closeForm = () => {
+    setAnchorEl(null);
   };
-
-  const id1 = signInOpen ? "sign-in" : undefined;
 
   const openSignUp = (event) => {
-    setSignInOpen(false);
-    setSignUpOpen(true);
+    setForm(2);
+  };
+  const openSignIn = (event) => {
+    setForm(1);
+  };
+  const openForgot = (event) => {
+    setForm(3);
   };
 
-  const closeSignUp = () => {
-    setSignUpOpen(false);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlert("");
+    setMessage("");
   };
 
-  const id2 = signUpOpen ? "sign-up" : undefined;
-
+  //Function to Sign up
   const signUp = (e) => {
     e.preventDefault();
-    setSignUpOpen(false);
-    setButtonLabel("Sign Out");
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        console.log("signup user");
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
+    if (email && password) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((res) => {
+          setAlert("success");
+          setMessage(`Sign up with ${email} successful!`);
+        })
+        .catch((error) => {
+          setAlert("error");
+          setMessage(error.message);
+        });
+    }
   };
+
+  //Function to sign In
   const signIn = (e) => {
     e.preventDefault();
-    setSignInOpen(false);
-    setButtonLabel("Sign Out");
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        console.log("signin user");
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
+    if (email && password) {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((res) => {
+          console.log("Sign In Successful!");
+        })
+        .catch((error) => {
+          setAlert("error");
+          if (error.code === "auth/user-not-found") {
+            setMessage("There is no user record corresponding to this e-mail.");
+          } else if (error.code === "auth/wrong-password") {
+            setMessage("Invalid Password.");
+          } else {
+            setMessage(error.message);
+          }
+        });
+    }
   };
+
+  //Function to sign out
   const signOut = (e) => {
     e.preventDefault();
     firebase
@@ -119,13 +143,38 @@ const Login = (props) => {
         setValue("userDetails", {
           uid: null,
           email: null,
+          photoURL: null,
         });
-        console.log("Sign Out Successful");
+        console.log("Sign Out Successful!");
       })
       .catch(function (error) {
         console.log("Error Signing Out");
       });
   };
+
+  //Function to reset password
+  const resetPassword = (e) => {
+    e.preventDefault();
+    if (email) {
+      firebase
+        .auth()
+        .sendPasswordResetEmail(email)
+        .then(function () {
+          setAlert("success");
+          setMessage(`Reset password Email Sent to ${email}`);
+          setForm(1);
+        })
+        .catch(function (error) {
+          setAlert("error");
+          if (error.code === "auth/user-not-found") {
+            setMessage("There is no user record corresponding to this e-mail.");
+          } else {
+            setMessage(error.message);
+          }
+        });
+    }
+  };
+  //Function to sign into Google
   const signInGoogle = (e) => {
     e.preventDefault();
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -139,9 +188,10 @@ const Login = (props) => {
         console.log("Google Signin Error");
       });
   };
+
+  //Function to sign into Facebook
   const signInFacebook = (e) => {
     e.preventDefault();
-    console.log("Facebook login");
     var provider = new firebase.auth.FacebookAuthProvider();
     provider.setCustomParameters({
       display: "popup",
@@ -156,6 +206,8 @@ const Login = (props) => {
         console.log("Facebook Signin Error");
       });
   };
+
+  //Check if user logged in
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
@@ -167,217 +219,266 @@ const Login = (props) => {
         setValue("userDetails", {
           uid: user.uid,
           email: user.email,
+          photoURL: user.photoURL,
         });
-      } else {
-        console.log("No signed in user");
       }
     });
   }, [login, setValue]);
-  if (login) {
-    return (
-      <Button aria-describedby={id1} variant="contained" onClick={signOut}>
-        Sign Out
-      </Button>
-    );
-  }
+
   return (
     <>
-      <Button aria-describedby={id1} variant="contained" onClick={openSignIn}>
-        {buttonLabel}
-      </Button>
-      <Popover
-        id={id1}
-        open={signInOpen}
-        anchorEl={anchorSignIn}
-        onClose={closeSignIn}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <form
-              onSubmit={(e) => signIn(e)}
-              className={classes.form}
-              noValidate
+      {login ? (
+        <Button
+          aria-describedby="sign-in"
+          variant="contained"
+          onClick={signOut}
+        >
+          Sign Out
+        </Button>
+      ) : (
+        <>
+          {alert ? (
+            <Snackbar
+              open={Boolean(alert)}
+              autoHideDuration={8000}
+              onClose={handleClose}
             >
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
+              <Alert
+                elevation={6}
+                variant="filled"
+                onClose={handleClose}
+                severity={alert}
               >
-                Sign In
-              </Button>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={signInGoogle}
-                className={classes.submit}
-              >
-                Sign in with Google
-              </Button>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={signInFacebook}
-                className={classes.submit}
-              >
-                Sign in with Facebook
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2" onClick={openSignUp}>
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
-          </div>
-        </Container>
-      </Popover>
-      <Popover
-        id={id2}
-        open={signUpOpen}
-        anchorEl={anchorSignIn}
-        onClose={closeSignUp}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-      >
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
-            <form
-              onSubmit={(e) => signUp(e)}
-              className={classes.form}
-              noValidate
-            >
-              <Grid container spacing={2}>
-                {/* <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="lname"
-                  />
-                </Grid> */}
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign Up
-              </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="#" variant="body2" onClick={openSignIn}>
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
-          </div>
-        </Container>
-      </Popover>
+                {message}
+              </Alert>
+            </Snackbar>
+          ) : (
+            ""
+          )}
+          <Button
+            aria-describedby="sign-in"
+            variant="contained"
+            onClick={openForm}
+          >
+            Sign In
+          </Button>
+          <Popover
+            id="sign-in"
+            open={open}
+            anchorEl={anchorEl}
+            onClose={closeForm}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              {form === 1 ? (
+                <div className={classes.paper}>
+                  <Typography component="h1" variant="h5">
+                    Sign in
+                  </Typography>
+                  <form
+                    onSubmit={(e) => signIn(e)}
+                    className={classes.form}
+                    noValidate
+                  >
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      autoFocus
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                    >
+                      Sign In
+                    </Button>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={signInGoogle}
+                      className={classes.submit}
+                    >
+                      Sign in with Google
+                    </Button>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={signInFacebook}
+                      className={classes.submit}
+                    >
+                      Sign in with Facebook
+                    </Button>
+                    <Grid container className={classes.links}>
+                      <Grid item xs>
+                        <Link href="#" variant="body2" onClick={openForgot}>
+                          Forgot password?
+                        </Link>
+                      </Grid>
+                      <Grid item>
+                        <Link href="#" variant="body2" onClick={openSignUp}>
+                          Don't have an account? Sign Up
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </div>
+              ) : form === 2 ? (
+                <div className={classes.paper}>
+                  <Typography component="h1" variant="h5">
+                    Sign up
+                  </Typography>
+                  <form
+                    onSubmit={(e) => signUp(e)}
+                    className={classes.form}
+                    noValidate
+                  >
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                    >
+                      Sign Up
+                    </Button>
+                    <Grid
+                      container
+                      justify="flex-end"
+                      className={classes.links}
+                    >
+                      <Grid item xs>
+                        <Link href="#" variant="body2" onClick={openForgot}>
+                          Forgot password?
+                        </Link>
+                      </Grid>
+                      <Grid item>
+                        <Link href="#" variant="body2" onClick={openSignIn}>
+                          Already have an account? Sign in
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </div>
+              ) : (
+                <div className={classes.paper}>
+                  <Typography component="h1" variant="h5" gutterBottom={true}>
+                    Forgot Password
+                  </Typography>
+                  <Typography component="p" variant="subtitle2" align="center">
+                    Enter your e-mail address and we'll send you a link to reset
+                    your password
+                  </Typography>
+                  <form
+                    onSubmit={(e) => resetPassword(e)}
+                    className={classes.form}
+                    noValidate
+                  >
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                    >
+                      Submit
+                    </Button>
+                    <Grid
+                      container
+                      justify="flex-end"
+                      className={classes.links}
+                    >
+                      <Grid item>
+                        <Link href="#" variant="body2" onClick={openSignIn}>
+                          Back to Sign in
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </div>
+              )}
+            </Container>
+          </Popover>
+        </>
+      )}
     </>
   );
 };
