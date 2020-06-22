@@ -207,7 +207,7 @@ const Bible = (props) => {
   };
   const scrollText = () => {
     if (scroll) {
-      scroll(paneNo);
+      scroll(paneNo, parallelScroll);
     }
   };
   const handleVerseClick = (event) => {

@@ -96,6 +96,7 @@ const ReadBible = (props) => {
     versions,
     versionBooks,
     versionSource,
+    syncPanel,
   } = props;
   const { uid } = userDetails;
   //Function to handle right menu click
@@ -109,7 +110,7 @@ const ReadBible = (props) => {
   //flag to prevent looping of on scroll event
   let ignoreScrollEvents = false;
   //function for moving parallel bibles scroll together
-  const scroll = React.useCallback((paneNo) => {
+  const scroll = React.useCallback((paneNo, parallelScroll) => {
     //check flag to prevent looping of on scroll event
     if (ignoreScrollEvents) {
       ignoreScrollEvents = false;
@@ -368,6 +369,7 @@ const ReadBible = (props) => {
         parallelView={parallelView}
         login={login}
         userDetails={userDetails}
+        syncPanel={syncPanel}
       />
       <div>
         <div className={classes.biblePane}>{pane}</div>
@@ -409,6 +411,9 @@ const mapDispatchToProps = (dispatch) => {
     setDictionary: (name, value) =>
       dispatch({ type: actions.SETDICTIONARY, name: name, value: value }),
     copyPanel1: () => dispatch({ type: actions.COPYPANEL1 }),
+    syncPanel: (from, to) => {
+      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ReadBible);

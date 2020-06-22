@@ -119,6 +119,7 @@ export default function TopBar({
   parallelView,
   login,
   userDetails,
+  syncPanel,
 }) {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
@@ -127,6 +128,9 @@ export default function TopBar({
   }, [login, userDetails]);
   const handleChange = () => (event) => {
     setValue("parallelScroll", event.target.checked);
+    if (event.target.checked) {
+      syncPanel("panel1", "panel2");
+    }
   };
   return (
     <div className={classes.root}>
