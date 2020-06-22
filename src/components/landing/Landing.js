@@ -14,11 +14,21 @@ const useStyles = makeStyles((theme) => ({
   imageContainer: {
     width: "100%",
     position: "relative",
-    height: 330,
+    height: 400,
     top: -20,
+    [theme.breakpoints.down("md")]: {
+      minHeight: 180,
+      marginBottom: 40,
+      height: "unset",
+    },
+    [theme.breakpoints.down("sm")]: {
+      top: "unset",
+      marginBottom: 80,
+      marginTop: 20,
+    },
     "& img": {
       verticalAlign: "top",
-      height: 300,
+      height: 370,
       border: 0,
       position: "absolute",
       top: 0,
@@ -26,6 +36,15 @@ const useStyles = makeStyles((theme) => ({
       right: 0,
       bottom: 0,
       margin: "0 auto",
+      [theme.breakpoints.down("md")]: {
+        height: "unset",
+        position: "unset",
+        width: "100%",
+      },
+      [theme.breakpoints.only("md")]: {
+        width: "80%",
+        marginLeft: "10%",
+      },
     },
   },
 }));
