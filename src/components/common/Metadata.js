@@ -20,11 +20,16 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   paper: {
-    width: "80%",
+    width: "40%",
+    minWidth: 550,
+    [theme.breakpoints.only("xs")]: {
+      width: "95%",
+      minWidth: "unset",
+    },
   },
   metadataTitle: {
-    fontSize: 26,
-    padding: "5px 0 0 12px",
+    fontSize: "1.3em",
+    padding: "11px 0 0 12px",
   },
   metadataTitleBar: {
     backgroundColor: BLUETRANSPARENT,
@@ -34,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 17,
     lineHeight: "28px",
     display: "block",
-    textAlign: "end",
+    paddingLeft: 5,
     fontWeight: 600,
   },
   metadataText: {
@@ -47,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 2,
     },
     "&:nth-child(even)": {
-      backgroundColor: "#cfd9e6",
+      backgroundColor: "#eaeaea",
     },
   },
   closeButton: {
@@ -91,7 +96,6 @@ export default function Metadata({ metadataList, title, abbreviation }) {
           </Tooltip>
           <Popover
             id={id}
-            className={classes.paper}
             open={open}
             anchorEl={anchorEl}
             onClose={handleClose}
@@ -101,7 +105,10 @@ export default function Metadata({ metadataList, title, abbreviation }) {
             }}
             transformOrigin={{
               vertical: "top",
-              horizontal: "center",
+              horizontal: "right",
+            }}
+            classes={{
+              paper: classes.paper,
             }}
           >
             <Paper>
@@ -149,10 +156,10 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                         justify="flex-end"
                         className={classes.metadataRow}
                       >
-                        <Grid item sm={4} className={classes.metadataHeading}>
+                        <Grid item xs={4} className={classes.metadataHeading}>
                           {item}:
                         </Grid>
-                        <Grid item sm={8} className={classes.metadataText}>
+                        <Grid item xs={8} className={classes.metadataText}>
                           {metadataList[item].split(" ").map(checkLink)}
                         </Grid>
                       </Grid>

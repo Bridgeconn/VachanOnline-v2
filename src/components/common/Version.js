@@ -33,17 +33,22 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   menuRoot: {
-    backgroundColor: "#3970a7",
-    color: "#fff",
+    backgroundColor: "#eaeaea",
     boxShadow: "none",
+    border: "1px solid #00000020",
+    "&:not(:last-child)": {
+      borderBottom: 0,
+    },
+    "&:before": {
+      display: "none",
+    },
     "&$expanded": {
-      margin: 0,
+      margin: "auto",
     },
   },
   expanded: {},
   expansionDetails: {
-    backgroundColor: "#4e7aa7",
-    color: "#fff",
+    backgroundColor: "#ffffff",
     boxShadow: "none",
     padding: "0 0 0 20px",
     width: "100%",
@@ -68,9 +73,6 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     maxHeight: "calc(100vh - 150px)",
     width: 300,
-    border: "1px solid #d3d4d5",
-    backgroundColor: "#3970a7",
-    color: "#fff",
   },
   language: {
     fontSize: "1rem",
@@ -90,13 +92,19 @@ const Version = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [expanded, setExpanded] = React.useState("hindi");
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
   React.useEffect(() => {
     //if versions not loaded fetch versions and books for the versions
     if (props.versions.length === 0) {
-      getVersions(props.setVersions, props.setValue, props.setVersionBooks, props.setVersionSource);
+      getVersions(
+        props.setVersions,
+        props.setValue,
+        props.setVersionBooks,
+        props.setVersionSource
+      );
     }
   });
 
@@ -121,7 +129,9 @@ const Version = (props) => {
     props.setValue("version", selectedVersion.getAttribute("value"));
     props.setValue("sourceId", selectedVersion.getAttribute("data-sourceid"));
   };
-  const classesI = `material-icons ${classes.icon}`;
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
   return (
     <>
       <Button
@@ -141,7 +151,7 @@ const Version = (props) => {
         {mobile && !props.landingPage
           ? props.version.split("-")[1]
           : props.version}
-        <i className={classesI}>keyboard_arrow_down</i>
+        <i className={`material-icons ${classes.icon}`}>keyboard_arrow_down</i>
       </Button>
       {props.versions.length === 0 ? (
         ""
@@ -170,7 +180,9 @@ const Version = (props) => {
           >
             {props.versions.sort(sortVersionLanguages).map((version, i) => (
               <ExpansionPanel
-                defaultExpanded={true}
+                square
+                expanded={expanded === version.language}
+                onChange={handleChange(version.language)}
                 classes={{
                   root: classes.menuRoot,
                   expanded: classes.expanded,
@@ -228,8 +240,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVERSIONS, value: value }),
     setVersionBooks: (name, value) =>
       dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
-    setVersionSource:(value) =>
-      dispatch({type:actions.SETVALUE,name:"versionSource",value:value})
+    setVersionSource: (value) =>
+      dispatch({ type: actions.SETVALUE, name: "versionSource", value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Version);

@@ -13,6 +13,13 @@ export const getVersions = (
       setVersions(versions);
       if (versions.length > 0) {
         let version = versions[0].languageVersions[0];
+        try {
+          version = versions
+            .find((e) => e.language === "hindi")
+            .languageVersions.find((e) => e.version.code === "IRV");
+        } catch (e) {
+          //hindi IRV version not available use first versions
+        }
         setValue(
           "version",
           version.language.name + "-" + version.version.code.toUpperCase()
@@ -22,7 +29,6 @@ export const getVersions = (
         let versionSource = {};
         for (let lang of versions) {
           for (let ver of lang.languageVersions) {
-            //getBooks(setValue, setVersionBooks, ver.sourceId, setFirst);
             versionSource[ver.sourceId] = ver.language.id;
           }
         }
@@ -41,9 +47,7 @@ export const getAllBooks = (setVersionBooks, setValue, langaugeId) => {
         setVersionBooks(item.language.id, item.bookNames);
       }
       if (response.data && response.data.length > 0) {
-        let book = response.data.find((a) => (a.language.id = langaugeId))
-          .bookNames[0];
-        setValue("bookCode", book.book_code);
+        setValue("bookCode", "jhn");
         setValue("chapter", "1");
       }
     })
@@ -54,9 +58,6 @@ export const getAllBooks = (setVersionBooks, setValue, langaugeId) => {
 //Function to get the bible book name
 export const getBookbyCode = (abbreviation) => {
   return bibleBooks.find((element) => element.abbreviation === abbreviation);
-};
-export const getBookByName = (name) => {
-  return bibleBooks.find((element) => element.short === name);
 };
 //Function to get the list of commentaries
 export const getCommentaries = (setValue) => {
@@ -179,4 +180,19 @@ export const searchBible = (sourceId, keyword, bookNames, setResult) => {
     .catch(function (error) {
       console.log(error);
     });
+};
+export const detectMob = () => {
+  const toMatch = [
+    /Android/i,
+    /webOS/i,
+    /iPhone/i,
+    /iPad/i,
+    /iPod/i,
+    /BlackBerry/i,
+    /Windows Phone/i,
+  ];
+
+  return toMatch.some((toMatchItem) => {
+    return navigator.userAgent.match(toMatchItem);
+  });
 };

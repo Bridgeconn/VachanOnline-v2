@@ -77,10 +77,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#262662",
   },
   sectionHeading: {
-    fontSize: "1.6em",
+    fontSize: "1.3em",
     display: "block",
     paddingTop: 12,
-    fontStyle: "italic",
+    color: "#3E4095",
   },
   highlight: {
     backgroundColor: "#feff3b",
@@ -92,7 +92,8 @@ const useStyles = makeStyles((theme) => ({
     display: "table",
   },
   firstVerse: {
-    fontSize: "1.5em",
+    fontSize: "1.8em",
+    bottom: -2,
   },
   paper: {
     position: "absolute",
@@ -275,6 +276,8 @@ const Bible = (props) => {
                 parseInt(item.number) === 1
                   ? `${classes.verseNumber} ${classes.firstVerse}`
                   : `${classes.verseNumber}`;
+              const verseNo =
+                parseInt(item.number) === 1 ? chapter : item.number;
               const sectionHeading = getHeading(item.metadata);
               return (
                 <span key={item.number}>
@@ -283,7 +286,7 @@ const Bible = (props) => {
                     onClick={handleVerseClick}
                     data-verse={item.number}
                   >
-                    <span className={verseNumberClass}>{item.number}</span>
+                    <span className={verseNumberClass}>{verseNo}</span>
                     <span className={verseClass}> {item.text}</span>
                   </span>
                   {sectionHeading && sectionHeading !== "" ? (

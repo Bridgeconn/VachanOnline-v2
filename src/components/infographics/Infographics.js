@@ -111,7 +111,7 @@ const Infographics = (props) => {
             {/*Iterate over infographics for the book and show thumbnails in cards*/}
             {bookData.map((pic, index) => {
               return (
-                <RViewerTrigger index={index}>
+                <RViewerTrigger index={index} key={index}>
                   <Card className={classes.card}>
                     <CardMedia
                       component="img"

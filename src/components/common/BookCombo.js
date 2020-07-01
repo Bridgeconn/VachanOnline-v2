@@ -11,6 +11,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters } from "../../store/bibleData";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import { BLUETRANSPARENT } from "../../store/colorCode";
+
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
@@ -37,14 +39,12 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "relative",
     maxHeight: "calc(100vh - 150px)",
-    width: 380,
+    width: 355,
     backgroundColor: "#eaeaea",
     color: "#2a2a2a",
   },
   book: {
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    marginLeft: theme.spacing(2),
+    margin: "4px 8px 4px 16px",
     paddingBottom: 1,
     display: "inline-block",
     width: 140,
@@ -56,33 +56,34 @@ const useStyles = makeStyles((theme) => ({
   },
   openBook: {
     border: "1px solid #ccc",
-    backgroundColor: "#3f7ad2",
+    backgroundColor: BLUETRANSPARENT,
     color: "#fff",
     "&:hover": {
       border: "1px solid #ccc",
-      backgroundColor: "#3f7ad2",
+      backgroundColor: BLUETRANSPARENT,
       color: "#fff",
     },
   },
+  chapterList: {
+    paddingTop: 5,
+    border: "1px solid #d8d8d8",
+    backgroundColor: "white",
+  },
   chapter: {
-    marginRight: 7,
-    marginLeft: 15,
-    marginBottom: theme.spacing(1),
-    marginTop: theme.spacing(0),
+    margin: "0 0 5px 5px",
     display: "inline-block",
     width: 50,
     border: "1px solid #ccc",
-    backgroundColor: "#ffffff",
     textAlign: "center",
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
   openChapter: {
     border: "1px solid #ccc",
-    backgroundColor: "#3f7ad2",
+    backgroundColor: BLUETRANSPARENT,
     color: "#fff",
     "&:hover": {
       border: "1px solid #ccc",
-      backgroundColor: "#3f7ad2",
+      backgroundColor: BLUETRANSPARENT,
       color: "#fff",
     },
   },
@@ -137,7 +138,6 @@ const BookCombo = ({
       bookList !== undefined &&
       bookList.length > 0
     ) {
-      //let bookObject = getBookByName(bookOpened);
       let bookObject = bookList.find(
         (element) => element.book_code === bookOpened
       );
@@ -281,7 +281,12 @@ const BookCombo = ({
                       unmountOnExit
                     >
                       {/*List of chapters*/}
-                      <List component="div" disablePadding ref={chapterCombo}>
+                      <List
+                        component="div"
+                        disablePadding
+                        ref={chapterCombo}
+                        className={classes.chapterList}
+                      >
                         {selectedChapterList.map((chapterObject, i) => {
                           var chapterActive =
                             chapterObject.number === chapter

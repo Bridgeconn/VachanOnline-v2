@@ -1,13 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import banner from "./images/3.jpg";
 
 const useStyles = makeStyles((theme) => ({
   legend: {
     position: "absolute",
     bottom: "30%",
-    left: "26%",
-    marginLeft: "-20%",
-    width: "90%",
+    width: "100%",
     borderRadius: 10,
     color: "#ffffff",
     padding: 10,
@@ -24,25 +23,16 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     width: "100%",
     paddingTop: "25%",
-    minHeight: "300px",
-    "& img": {
-      width: "100%",
-      verticalAlign: "top",
-      height: "100%",
-      border: 0,
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    },
+    height: "300px",
+    backgroundImage: `url(${banner})`,
+    backgroundRepeat: "round",
+    backgroundSize: "cover",
   },
 }));
 export default function Banner() {
   const classes = useStyles();
   return (
     <div className={classes.imageContainer}>
-      <img src={require("./images/3.jpg")} alt="" />
       <p className={classes.legend}>
         Your word is a lamp to my feet,
         <br />

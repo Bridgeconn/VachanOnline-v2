@@ -1,18 +1,20 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
+import Button from "@material-ui/core/Button";
 import AboutUs from "./AboutUs";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
+import { BLUEGRADIENT } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   landingFooter: {
     bottom: 0,
     position: "fixed",
-    backgroundColor: "#2275bb",
+    background: BLUEGRADIENT,
     color: "#fff",
-    padding: "5px 20px",
+    padding: "5px 15px",
     marginTop: 40,
     textAlign: "center",
     "&div": {
@@ -22,7 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     padding: theme.spacing(1),
-    textAlign: "center",
+    textAlign: "right",
+    [theme.breakpoints.only("xs")]: {
+      textAlign: "center",
+    },
   },
   link: {
     color: "inherit",
@@ -40,7 +45,16 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    marginTop: 5,
+    marginTop: 3,
+    textTransform: "unset",
+    padding: "2px 10px",
+    fontSize: 16,
+  },
+  rightLinks: {
+    textAlign: "left",
+    [theme.breakpoints.only("xs")]: {
+      textAlign: "center",
+    },
   },
 }));
 const LandingFooter = (props) => {
@@ -56,24 +70,8 @@ const LandingFooter = (props) => {
   return (
     <>
       <Grid container className={classes.landingFooter}>
-        <Grid item xs={12} md={3}></Grid>
-        <Grid item xs={12} md={6}>
-          <Link>
-            <Typography className={classes.text}>
-              © 2019 Bridge Connectivity Solutions
-            </Typography>
-          </Link>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          {/* <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            className={classes.button}
-            onClick={openModal}
-          >
-            About us
-          </Button> */}
+        <Grid item xs={12} sm={6} className={classes.rightLinks}>
+          {/* 
           <Link
             href="#"
             className={classes.link}
@@ -81,6 +79,22 @@ const LandingFooter = (props) => {
             onClick={openModal}
           >
             {"About us "}
+          </Link>*/}
+          <Button
+            variant="outlined"
+            size="small"
+            color="inherit"
+            className={classes.button}
+            onClick={openModal}
+          >
+            About us
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Link>
+            <Typography className={classes.text}>
+              © 2020 Bridge Connectivity Solutions
+            </Typography>
           </Link>
         </Grid>
       </Grid>

@@ -8,6 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
+import { BLUETRANSPARENT } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,9 +23,10 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
     padding: "15px 30px",
     boxShadow: "2px 2px 3px #968e8e",
-    backgroundColor: "#0f3c5f",
+    backgroundColor: BLUETRANSPARENT,
     [theme.breakpoints.down("xs")]: {
       bottom: 25,
+      width: "100%",
     },
   },
   button: {

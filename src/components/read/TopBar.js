@@ -94,10 +94,13 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "72px",
   },
   icon: {
-    display: "inline-block",
-    position: "relative",
-    right: 250,
+    position: "absolute",
+    left: -32,
     marginLeft: "50%",
+    lineHeight: "75px",
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
+    },
   },
 }));
 
@@ -149,9 +152,9 @@ export default function TopBar({
               {" "}
               <img src={logo} alt={"logo"} />{" "}
             </Link>
-            <div className={classes.icon}>
+            <span className={classes.icon}>
               <img src={favicon} alt={"icon"} />
-            </div>
+            </span>
             {parallelView === views.PARALLELBIBLE ? (
               <FormGroup className={classes.form}>
                 <FormControlLabel

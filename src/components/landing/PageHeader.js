@@ -4,6 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import logo from "../common/images/logo.png";
+import favicon from "../common/images/favicon.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +21,17 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     "& img": {
       height: 50,
+    },
+  },
+  favicon: {
+    left: -29,
+    position: "absolute",
+    marginLeft: "50%",
+    "& img": {
+      height: 50,
+    },
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
     },
   },
 }));
@@ -40,6 +52,9 @@ const PageHeader = () => {
           >
             <img src={logo} alt={"logo"} />
           </Link>
+          <span className={classes.favicon}>
+            <img src={favicon} alt="logo" />
+          </span>
         </Toolbar>
       </AppBar>
     </div>

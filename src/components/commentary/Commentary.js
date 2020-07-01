@@ -76,8 +76,9 @@ const Commentary = (props) => {
   const [commentaryText, setCommentaryText] = React.useState("");
   const [commentaryObject, setCommentaryObject] = React.useState([]);
   const [verseLabel, setVerseLabel] = React.useState("Verse");
-  let { panel1, commentaries, setCommentary, commentary } = props;
-  let { version, book, bookCode, chapter } = panel1;
+  let { panel1, commentaries, setCommentary, commentary, book } = props;
+  let { version, bookCode, chapter } = panel1;
+
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary

@@ -227,7 +227,7 @@ const ReadBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Commentary />
+              <Commentary book={bookObject.short} />
             </div>
           </>
         );
