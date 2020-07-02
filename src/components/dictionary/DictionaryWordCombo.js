@@ -10,65 +10,61 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "30%"
+      width: "30%",
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
-      marginRight: 10
-    }
+      marginRight: 10,
+    },
   },
   list: {
-    padding: 0
+    padding: 0,
   },
   menuRoot: {
-    backgroundColor: "#3970a7",
-    color: "#fff",
+    backgroundColor: "#eaeaea",
     boxShadow: "none",
     "&$expanded": {
-      margin: 0
-    }
+      margin: 0,
+    },
   },
   expanded: {},
   expansionDetails: {
-    backgroundColor: "#4e7aa7",
-    color: "#fff",
+    backgroundColor: "white",
     boxShadow: "none",
     padding: "0 0 0 20px",
-    width: "100%"
+    width: "100%",
   },
   summaryPanel: {
     textTransform: "capitalize",
     borderBottom: "1px solid #b7b7b726",
     "&$expanded": {
-      minHeight: 50
-    }
+      minHeight: 50,
+    },
   },
   content: {
     margin: "10px 0",
     "&$expanded": {
-      margin: "12px 0"
-    }
+      margin: "12px 0",
+    },
   },
   icon: {
     left: 15,
-    position: "relative"
+    position: "relative",
   },
   paper: {
     maxHeight: "calc(100vh - 150px)",
     width: 500,
     border: "1px solid #d3d4d5",
-    backgroundColor: "#3970a7",
-    color: "#fff"
   },
   letter: {
-    fontSize: "1rem"
+    fontSize: "1rem",
   },
   dictionary: {
     textTransform: "capitalize",
@@ -77,10 +73,10 @@ const useStyles = makeStyles(theme => ({
     padding: "8px 4px",
     display: "inline-block",
     width: "33%",
-    verticalAlign: "top"
-  }
+    verticalAlign: "top",
+  },
 }));
-const DictionaryWordCombo = props => {
+const DictionaryWordCombo = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   function handleClick(event) {
@@ -91,7 +87,7 @@ const DictionaryWordCombo = props => {
     setAnchorEl(null);
   }
   //function to set the dictionary word when clicked
-  const setWord = event => {
+  const setWord = (event) => {
     handleClose();
     setDictionary(
       "dictionaryWord",
@@ -120,11 +116,11 @@ const DictionaryWordCombo = props => {
           getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "center"
+            horizontal: "center",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "center"
+            horizontal: "center",
           }}
           id="dictionaryWord-menu"
           anchorEl={anchorEl}
@@ -133,7 +129,7 @@ const DictionaryWordCombo = props => {
           onClose={handleClose}
           classes={{
             list: classes.list,
-            paper: classes.paper
+            paper: classes.paper,
           }}
         >
           {dictionaryIndex.map((letters, i) => (
@@ -141,7 +137,7 @@ const DictionaryWordCombo = props => {
               defaultExpanded={i === 0 ? true : false}
               classes={{
                 root: classes.menuRoot,
-                expanded: classes.expanded
+                expanded: classes.expanded,
               }}
               key={i}
             >
@@ -150,7 +146,7 @@ const DictionaryWordCombo = props => {
                 classes={{
                   root: classes.summaryPanel,
                   expanded: classes.expanded,
-                  content: classes.content
+                  content: classes.content,
                 }}
               >
                 <Typography className={classes.letter}>

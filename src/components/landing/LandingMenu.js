@@ -15,17 +15,29 @@ import ContactUs from "./ContactUs";
 import Feedback from "./Feedback";
 import Subscribe from "./Subscribe";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   list: {
-    width: 250
+    width: 250,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
-  }
+    marginRight: theme.spacing(2),
+  },
 }));
 
-const LandingMenu = props => {
+const LandingMenu = (props) => {
   const classes = useStyles();
+
+  const menus = ["About us", "Contact us", "Feedback", "Subscribe"];
+
+  const [modal, setMenuModal] = React.useState({
+    aboutUs: false,
+    contactUs: false,
+    feedback: false,
+    subscribe: false,
+  });
+  const toggleModal = (name, value) => () => {
+    setMenuModal({ ...modal, [name]: value });
+  };
   return (
     <>
       <Drawer open={props.menu} onClose={props.toggleDrawer(false)}>
@@ -36,62 +48,49 @@ const LandingMenu = props => {
           onKeyDown={props.toggleDrawer(false)}
         >
           <List>
-            <ListItem button onClick={props.toggleModal("aboutUs", true)}>
+            <ListItem button onClick={toggleModal("aboutUs", true)}>
               <ListItemIcon>
                 <BuildIcon />
               </ListItemIcon>
-              <ListItemText primary={props.menus[0]} />
+              <ListItemText primary={menus[0]} />
             </ListItem>
-            <ListItem button onClick={props.toggleModal("contactUs", true)}>
+            <ListItem button onClick={toggleModal("contactUs", true)}>
               <ListItemIcon>
                 <RoomIcon />
               </ListItemIcon>
-              <ListItemText primary={props.menus[1]} />
+              <ListItemText primary={menus[1]} />
             </ListItem>
-            <ListItem button onClick={props.toggleModal("feedback", true)}>
+            <ListItem button onClick={toggleModal("feedback", true)}>
               <ListItemIcon>
                 <FeedbackIcon />
               </ListItemIcon>
-              <ListItemText primary={props.menus[2]} />
+              <ListItemText primary={menus[2]} />
             </ListItem>
-            <ListItem button onClick={props.toggleModal("subscribe", true)}>
+            <ListItem button onClick={toggleModal("subscribe", true)}>
               <ListItemIcon>
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText primary={props.menus[3]} />
+              <ListItemText primary={menus[3]} />
             </ListItem>
           </List>
         </div>
       </Drawer>
-      <Modal
-        open={props.modal.aboutUs}
-        onClose={props.toggleModal("aboutUs", false)}
-      >
+      <Modal open={modal.aboutUs} onClose={toggleModal("aboutUs", false)}>
         <div>
-          <AboutUs aboutUs={props.aboutUs} />
+          <AboutUs />
         </div>
       </Modal>
-      <Modal
-        open={props.modal.contactUs}
-        onClose={props.toggleModal("contactUs", false)}
-      >
+      <Modal open={modal.contactUs} onClose={toggleModal("contactUs", false)}>
         <div>
-          <ContactUs contactUs={props.contactUs} />
+          <ContactUs />
         </div>
       </Modal>
-
-      <Modal
-        open={props.modal.feedback}
-        onClose={props.toggleModal("feedback", false)}
-      >
+      <Modal open={modal.feedback} onClose={toggleModal("feedback", false)}>
         <div>
           <Feedback />
         </div>
       </Modal>
-      <Modal
-        open={props.modal.subscribe}
-        onClose={props.toggleModal("subscribe", false)}
-      >
+      <Modal open={modal.subscribe} onClose={toggleModal("subscribe", false)}>
         <div>
           <Subscribe />
         </div>

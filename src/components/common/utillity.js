@@ -1,126 +1,133 @@
 import API from "../../store/api";
 import { bibleBooks } from "../../store/bibleData";
 //Function to get the bible versions
-export const getVersions = (setVersions, setValue, setVersionBooks) => {
+export const getVersions = (
+  setVersions,
+  setValue,
+  setVersionBooks,
+  setVersionSource
+) => {
   API.get("bibles")
-    .then(function(response) {
+    .then(function (response) {
       const versions = response.data;
       setVersions(versions);
       if (versions.length > 0) {
+        let version = versions[0].languageVersions[0];
+        try {
+          version = versions
+            .find((e) => e.language === "hindi")
+            .languageVersions.find((e) => e.version.code === "IRV");
+        } catch (e) {
+          //hindi IRV version not available use first versions
+        }
         setValue(
           "version",
-          versions[0].languageVersions[0].language.name +
-            "-" +
-            versions[0].languageVersions[0].version.code.toUpperCase()
+          version.language.name + "-" + version.version.code.toUpperCase()
         );
-        setValue("sourceId", versions[0].languageVersions[0].sourceId);
-        let setFirst = true;
+        setValue("sourceId", version.sourceId);
+        getAllBooks(setVersionBooks, setValue, version.language.id);
+        let versionSource = {};
         for (let lang of versions) {
           for (let ver of lang.languageVersions) {
-            getBooks(setValue, setVersionBooks, ver.sourceId, setFirst);
-            setFirst = false;
+            versionSource[ver.sourceId] = ver.language.id;
           }
         }
+        setVersionSource(versionSource);
       }
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the bible books
-export const getBooks = (setValue, setVersionBooks, sourceId, setValues) => {
-  API.get("bibles/" + sourceId + "/books")
-    .then(function(response) {
-      var books = response.data[0].books.sort(
-        (a, b) => a.bibleBookID - b.bibleBookID
-      );
-      setVersionBooks(sourceId, books);
-      if (setValues) {
-        setValue("book", books[0].bibleBookFullName);
-        setValue("bookCode", books[0].abbreviation);
+export const getAllBooks = (setVersionBooks, setValue, langaugeId) => {
+  API.get("booknames")
+    .then(function (response) {
+      for (let item of response.data) {
+        setVersionBooks(item.language.id, item.bookNames);
+      }
+      if (response.data && response.data.length > 0) {
+        setValue("bookCode", "jhn");
         setValue("chapter", "1");
       }
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the bible book name
-export const getBookbyCode = abbreviation => {
-  return bibleBooks.find(element => element.abbreviation === abbreviation);
-};
-export const getBookByName = name => {
-  return bibleBooks.find(element => element.book === name);
+export const getBookbyCode = (abbreviation) => {
+  return bibleBooks.find((element) => element.abbreviation === abbreviation);
 };
 //Function to get the list of commentaries
-export const getCommentaries = setValue => {
+export const getCommentaries = (setValue) => {
   API.get("commentaries")
-    .then(function(response) {
+    .then(function (response) {
       setValue("commentaries", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the commentary for a chaper
 export const getCommentaryForChaper = (sourceId, book, chapter, setText) => {
   API.get("commentaries/" + sourceId + "/" + book + "/" + chapter)
-    .then(function(response) {
+    .then(function (response) {
       setText(response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the list of dictionaries
-export const getDictionaries = setDictionaries => {
+export const getDictionaries = (setDictionaries) => {
   API.get("dictionaries")
-    .then(function(response) {
+    .then(function (response) {
       setDictionaries("dictionaries", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the dictionary index
 export const getDictionaryIndex = (sourceId, setDictionary) => {
   API.get("dictionaries/" + sourceId)
-    .then(function(response) {
+    .then(function (response) {
       setDictionary("dictionaryIndex", response.data);
       setDictionary("dictionaryWord", response.data[0]["words"][0]);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the dictionary word meaning
 export const getDictionaryWord = (sourceId, wordId, setDictionary) => {
   API.get("dictionaries/" + sourceId + "/" + wordId)
-    .then(function(response) {
+    .then(function (response) {
       setDictionary("wordMeaning", response.data.meaning);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 //Function to get the infographics index
 export const getInfographics = (languageCode, setValue) => {
   API.get("infographics/" + languageCode)
-    .then(function(response) {
+    .then(function (response) {
       setValue("infographics", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
 
 //Function to get the audiobibles
-export const getAudioBibles = setValue => {
+export const getAudioBibles = (setValue) => {
   API.get("audiobibles")
-    .then(function(response) {
+    .then(function (response) {
       setValue("audioBible", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 };
@@ -141,12 +148,51 @@ export const getAudioBibleObject = (versions, sourceId) => {
 };
 
 //Function to get the videos
-export const getVideos = setValue => {
+export const getVideos = (setValue) => {
   API.get("videos")
-    .then(function(response) {
+    .then(function (response) {
       setValue("video", response.data);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
+};
+
+//Function to capitalize word
+export const capitalize = (string) => {
+  if (typeof string !== "string") return "";
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+//Function to search Bible
+export const searchBible = (sourceId, keyword, bookNames, setResult) => {
+  API.get("search/" + sourceId + "?keyword=" + encodeURIComponent(keyword))
+    .then(function (response) {
+      response.data.keyword = response.data.keyword || keyword;
+      response.data.result =
+        response.data.result &&
+        response.data.result.map((a) => {
+          a.book = bookNames[a.bookCode];
+          return a;
+        });
+      setResult(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export const detectMob = () => {
+  const toMatch = [
+    /Android/i,
+    /webOS/i,
+    /iPhone/i,
+    /iPad/i,
+    /iPod/i,
+    /BlackBerry/i,
+    /Windows Phone/i,
+  ];
+
+  return toMatch.some((toMatchItem) => {
+    return navigator.userAgent.match(toMatchItem);
+  });
 };

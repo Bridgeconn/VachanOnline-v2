@@ -8,11 +8,13 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
-const useStyles = makeStyles(theme => ({
+import { BLUETRANSPARENT } from "../../store/colorCode";
+
+const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     display: "flex",
-    marginBottom: -30
+    marginBottom: -30,
   },
   bibleIndex: {
     margin: "auto",
@@ -21,36 +23,38 @@ const useStyles = makeStyles(theme => ({
     height: "auto",
     padding: "15px 30px",
     boxShadow: "2px 2px 3px #968e8e",
-    backgroundColor: "#0f3c5f",
+    backgroundColor: BLUETRANSPARENT,
     [theme.breakpoints.down("xs")]: {
-      bottom: 25
-    }
+      bottom: 25,
+      width: "100%",
+    },
   },
   button: {
     margin: theme.spacing(1.5),
     backgroundColor: "#fff",
     border: "1px solid #fff",
     "& hover": {
-      textDecoration: "none"
+      textDecoration: "none",
     },
     [theme.breakpoints.only("xs")]: {
       marginLeft: "20%",
       width: "60%",
-      marginTop: 0
-    }
+      marginTop: 0,
+    },
   },
   heading: {
     color: "#fff",
     textAlign: "center",
     fontSize: 20,
-    paddingTop: 10
-  }
+    paddingTop: 10,
+  },
 }));
 
-const BibleIndex = props => {
+const BibleIndex = (props) => {
   let label = "Read";
   const classes = useStyles();
-  const { book, sourceId, chapter } = props.panel1;
+  const { panel1, setValue, versionBooks, versionSource } = props;
+  const { version, book, bookCode, sourceId, chapter } = panel1;
   return (
     <div className={classes.container}>
       <Paper className={classes.bibleIndex}>
@@ -59,22 +63,28 @@ const BibleIndex = props => {
         </Typography>
         <Version
           setValue={props.setValue}
-          version={props.panel1.version}
+          version={version}
           landingPage={true}
         />
-        <BookCombo
-          book={book}
-          bookList={props.versionBooks[sourceId]}
-          chapter={chapter}
-          setValue={props.setValue}
-          minimal={false}
-          landingPage={true}
-        />
+        {bookCode !== "" && bookCode !== undefined ? (
+          <BookCombo
+            book={book}
+            bookCode={bookCode}
+            bookList={versionBooks[versionSource[sourceId]]}
+            chapter={chapter}
+            setValue={setValue}
+            minimal={false}
+            sourceId={sourceId}
+            landingPage={true}
+          />
+        ) : (
+          ""
+        )}
         <Link
           to={{
             pathname: "/read",
-            hash: "#book",
-            search: "?search=term"
+            // hash: "#book",
+            // search: "?search=term",
           }}
         >
           <Button variant="contained" className={classes.button}>
@@ -87,17 +97,18 @@ const BibleIndex = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    panel1: state.panel1,
-    versionBooks: state.versionBooks
+    panel1: state.local.panel1,
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE1, name: name, value: value })
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(BibleIndex);

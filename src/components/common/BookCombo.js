@@ -9,8 +9,11 @@ import Collapse from "@material-ui/core/Collapse";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters } from "../../store/bibleData";
-import { getBookByName } from "../common/utillity";
-const useStyles = makeStyles(theme => ({
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
+import { BLUETRANSPARENT } from "../../store/colorCode";
+
+const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
     margin: 9,
@@ -19,31 +22,29 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "60%"
-    }
+      width: "60%",
+    },
   },
   icon: {
     left: 15,
-    position: "relative"
+    position: "relative",
   },
   root: {
     width: "100%",
     maxWidth: 680,
     backgroundColor: "#eaeaea",
     textTransform: "capitalize",
-    maxHeight: "calc(100vh - 150px)"
+    maxHeight: "calc(100vh - 150px)",
   },
   paper: {
     position: "relative",
     maxHeight: "calc(100vh - 150px)",
-    width: 380,
+    width: 355,
     backgroundColor: "#eaeaea",
-    color: "#2a2a2a"
+    color: "#2a2a2a",
   },
   book: {
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    marginLeft: theme.spacing(2),
+    margin: "4px 8px 4px 16px",
     paddingBottom: 1,
     display: "inline-block",
     width: 140,
@@ -51,66 +52,73 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     padding: "0px 0px",
     fontSize: "11px",
-    border: "1px solid #d2d2d2c9"
+    border: "1px solid #d2d2d2c9",
   },
   openBook: {
     border: "1px solid #ccc",
-    backgroundColor: "#3f7ad2",
+    backgroundColor: BLUETRANSPARENT,
     color: "#fff",
     "&:hover": {
       border: "1px solid #ccc",
-      backgroundColor: "#3f7ad2",
-      color: "#fff"
-    }
+      backgroundColor: BLUETRANSPARENT,
+      color: "#fff",
+    },
+  },
+  chapterList: {
+    paddingTop: 5,
+    border: "1px solid #d8d8d8",
+    backgroundColor: "white",
   },
   chapter: {
-    marginRight: 7,
-    marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(1),
-    marginTop: theme.spacing(0),
+    margin: "0 0 5px 5px",
     display: "inline-block",
     width: 50,
     border: "1px solid #ccc",
-    backgroundColor: "#ffffff",
     textAlign: "center",
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
   openChapter: {
     border: "1px solid #ccc",
-    backgroundColor: "#3f7ad2",
+    backgroundColor: BLUETRANSPARENT,
     color: "#fff",
     "&:hover": {
       border: "1px solid #ccc",
-      backgroundColor: "#3f7ad2",
-      color: "#fff"
-    }
+      backgroundColor: BLUETRANSPARENT,
+      color: "#fff",
+    },
   },
   bookName: {
     whiteSpace: "nowrap",
     width: 100,
     overflow: "hidden",
-    textOverflow: "ellipsis"
-  }
+    textOverflow: "ellipsis",
+  },
 }));
-export default function BookCombo({
-  book,
+const BookCombo = ({
+  paneNo,
+  bookCode,
   bookList,
   chapter,
   setValue,
   minimal,
-  landingPage
-}) {
+  landingPage,
+  sourceId,
+  parallelScroll,
+  syncPanel,
+}) => {
   //classes for styling
   const classes = useStyles();
   const theme = useTheme();
   //if mobile then true, used to change layout
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
+  //book to display
+  const [book, setBook] = React.useState("");
   //book combo button ref
   const bookDropdown = React.useRef(null);
   //last book count in book drop down to show list of chapters in
   const [bookOpen, setBookOpen] = React.useState(1);
   //book to highlight on clicking
-  const [bookOpened, setBookOpened] = React.useState(book);
+  const [bookOpened, setBookOpened] = React.useState(bookCode);
   //Selected chapter list
   const [selectedChapterList, setSelectedChapterList] = React.useState([]);
   //Preserve chapter list on opening menu in this varible
@@ -120,31 +128,38 @@ export default function BookCombo({
   const bookCombo = React.useRef();
   const chapterCombo = React.useRef();
   React.useEffect(() => {
-    setBookOpened(book);
-  }, [book]);
+    setBookOpened(bookCode);
+  }, [bookCode]);
   //initialize chapter list when book opened changed
   React.useEffect(() => {
     if (
+      bookOpened !== undefined &&
       bookOpened !== "Loading..." &&
       bookList !== undefined &&
       bookList.length > 0
     ) {
-      let bookObject = getBookByName(bookOpened);
-      let bookCode = bookObject.abbreviation;
+      let bookObject = bookList.find(
+        (element) => element.book_code === bookOpened
+      );
+      let bookCode = bookObject.book_code;
       let chapters = new Array(bibleChapters[bookCode]);
       for (let i = 0; i < chapters.length; i++) {
         let number = i + 1;
         chapters[i] = {
           number: number,
           bibleBookCode: bookCode,
-          reference: bookOpened + " " + number,
-          chapterId: bookCode + "." + number
         };
       }
       setSelectedChapterList(chapters);
-      setBookOpen(bookObject.bookId);
+      setBookOpen(bookObject.book_id);
     }
   }, [bookOpened, bookList]);
+  React.useEffect(() => {
+    if (bookList) {
+      let book = bookList.find((element) => element.book_code === bookCode);
+      setBook(book.short);
+    }
+  }, [bookList, bookCode, setValue]);
   //function to set book once its clicked and open the chapter list for it
   function bookClicked(event) {
     let index = parseInt(event.currentTarget.getAttribute("data-count"));
@@ -160,7 +175,7 @@ export default function BookCombo({
     //if opened book clicked, close it else open it
     if (bookOpen !== index) {
       setBookOpen(index);
-      setBookOpened(event.currentTarget.getAttribute("value"));
+      setBookOpened(event.currentTarget.getAttribute("data-bookcode"));
     } else {
       setBookOpen("");
     }
@@ -173,25 +188,23 @@ export default function BookCombo({
   }
   //function to handle close combo/menu
   function closeMenu(bookOpen) {
-    setBookOpened(book);
+    setBookOpened(bookCode);
     setSelectedChapterList(prevChapterList);
     setOpenCombo(false);
     //set bookopen variable from clickChapter else already selectedBookIndex
     setBookOpen(typeof bookOpen == "number" ? bookOpen : selectedBookIndex);
   }
   //function to handle click chapter event
-  const clickChapter = event => {
+  const clickChapter = (event) => {
     setSelectedBookIndex(bookOpen);
     closeMenu(bookOpen);
-    let reference = event.currentTarget
-      .getAttribute("data-reference")
-      .split(" ");
-    setValue("chapter", reference.pop());
-    setValue("book", reference.join(" "));
-    setValue(
-      "bookCode",
-      event.currentTarget.getAttribute("data-bookcode").toLowerCase()
-    );
+    let element = event.currentTarget;
+    setValue("chapter", element.getAttribute("data-chapter"));
+    setValue("bookCode", element.getAttribute("data-bookcode").toLowerCase());
+    setValue("versesSelected", []);
+    if (parallelScroll && paneNo) {
+      syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+    }
   };
   const classesI = `material-icons ${classes.icon}`;
   return (
@@ -222,11 +235,11 @@ export default function BookCombo({
           getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "left"
+            horizontal: "left",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "center"
+            horizontal: "center",
           }}
           id="customized-menu"
           anchorEl={bookDropdown.current}
@@ -243,20 +256,19 @@ export default function BookCombo({
             ref={bookCombo}
           >
             {bookList.map((item, i) => {
-              let open =
-                bookOpened === item.bibleBookFullName ? classes.openBook : "";
+              let open = bookOpened === item.book_code ? classes.openBook : "";
               return (
-                <React.Fragment key={item.bibleBookID}>
+                <React.Fragment key={item.book_id}>
                   <ListItem
-                    value={item.bibleBookFullName}
-                    data-bookcode={item.abbreviation}
-                    data-sourceid={item.sourceId}
+                    value={item.short}
+                    data-bookcode={item.book_code}
+                    data-sourceid={sourceId}
                     data-count={i + 1}
                     button
-                    onClick={event => bookClicked(event)}
+                    onClick={(event) => bookClicked(event)}
                     className={`${classes.book} ${open}`}
                   >
-                    <ListItemText primary={item.bibleBookFullName} />
+                    <ListItemText primary={item.short} />
                   </ListItem>
                   {/*Book to open*/}
                   {(bookOpen % 2 ? bookOpen + 1 : bookOpen) === i + 1 &&
@@ -269,23 +281,27 @@ export default function BookCombo({
                       unmountOnExit
                     >
                       {/*List of chapters*/}
-                      <List component="div" disablePadding ref={chapterCombo}>
-                        {selectedChapterList.map((item, i) => {
+                      <List
+                        component="div"
+                        disablePadding
+                        ref={chapterCombo}
+                        className={classes.chapterList}
+                      >
+                        {selectedChapterList.map((chapterObject, i) => {
                           var chapterActive =
-                            item.reference === book + " " + chapter
+                            chapterObject.number === chapter
                               ? classes.openChapter
                               : "";
                           return (
                             <ListItem
-                              value={item.number}
-                              key={item.chapterId}
-                              data-reference={item.reference}
-                              data-bookcode={item.bibleBookCode}
                               button
+                              key={chapterObject.number}
+                              data-bookcode={chapterObject.bibleBookCode}
+                              data-chapter={chapterObject.number}
                               className={`${classes.chapter} ${chapterActive}`}
                               onClick={clickChapter}
                             >
-                              {item.number}
+                              {chapterObject.number}
                             </ListItem>
                           );
                         })}
@@ -302,4 +318,17 @@ export default function BookCombo({
       )}
     </>
   );
-}
+};
+const mapStateToProps = (state) => {
+  return {
+    parallelScroll: state.local.parallelScroll,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    syncPanel: (from, to) => {
+      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(BookCombo);

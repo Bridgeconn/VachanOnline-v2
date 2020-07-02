@@ -5,53 +5,59 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import Slider from "@material-ui/core/Slider";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import { BLUETRANSPARENT } from "../../store/colorCode";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   btn: {
     marginRight: theme.spacing(1),
     display: "inline-block",
     textTransform: "none",
     textAlign: "center",
-    fontSize: 16
+    fontSize: 16,
   },
   serif: {
     fontFamily: '"Roboto Slab", "serif"',
     textTransform: "none",
-    fontSize: 16
+    fontSize: 16,
   },
   sans: {
     fontFamily: '"Roboto", "sans-serif"',
     textTransform: "none",
-    fontSize: 16
+    fontSize: 16,
   },
   menu: {
     textAlign: "center",
     width: "100%",
     display: "inline-block",
-    fontSize: 18
+    fontSize: 18,
   },
   margin: {
-    height: theme.spacing(5)
+    height: theme.spacing(5),
   },
   slider: {
-    color: "#bfbfbf"
-  }
+    color: "#bfbfbf",
+  },
 }));
 const ITEM_HEIGHT = 68;
 const Setting = ({
   fontSize,
-  fontFaily,
+  lineView,
   setValue,
   settingsAnchor,
-  handleClose
+  handleClose,
 }) => {
   const classes = useStyles();
   const open = Boolean(settingsAnchor);
   const setFontSize = (event, value) => {
     setValue("fontSize", value);
   };
-  const setFontFamily = event => {
+  const setFontFamily = (event) => {
     setValue("fontFamily", event.currentTarget.getAttribute("value"));
+  };
+  const setLineView = (event) => {
+    setValue("lineView", event.target.checked);
   };
   return (
     <>
@@ -65,9 +71,9 @@ const Setting = ({
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
             width: 250,
-            backgroundColor: "#286dab",
-            color: "#fff"
-          }
+            backgroundColor: BLUETRANSPARENT,
+            color: "#fff",
+          },
         }}
       >
         <MenuItem className={classes.menu}>Font Family</MenuItem>
@@ -103,6 +109,19 @@ const Setting = ({
             min={12}
             max={20}
             classes={{ root: classes.slider }}
+          />
+        </MenuItem>
+        <MenuItem className={classes.menu}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={lineView}
+                onChange={setLineView}
+                name="lineView"
+                color="default"
+              />
+            }
+            label="Line View"
           />
         </MenuItem>
       </Menu>

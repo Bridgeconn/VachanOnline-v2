@@ -6,10 +6,10 @@ import DictionaryCombo from "./DictionaryCombo";
 import DictionaryWordCombo from "./DictionaryWordCombo";
 import Metadata from "../common/Metadata";
 import { getDictionaryIndex, getDictionaryWord } from "../common/utillity";
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: 82
+    marginTop: 82,
   },
   title: {
     paddingLeft: 35,
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 20,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
-    width: "100%"
+    width: "100%",
   },
   text: {
     position: "absolute",
@@ -37,39 +37,39 @@ const useStyles = makeStyles(theme => ({
     marginBottom: -15,
     "& span": {
       fontWeight: 600,
-      display: "block"
+      display: "block",
     },
     "& p": {
-      marginBottom: 10
+      marginBottom: 10,
     },
     "&::-webkit-scrollbar": {
-      width: "0.45em"
+      width: "0.45em",
     },
     "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey"
-    }
+      outline: "1px solid slategrey",
+    },
   },
   heading: {
     fontWeight: "bold",
     fontSize: "1.2em",
     padding: "10px 0",
-    textTransform: "capitalize"
+    textTransform: "capitalize",
   },
   loading: {
-    paddingLeft: 20
+    paddingLeft: 20,
   },
   metadata: {
-    marginTop: -8
+    marginTop: -8,
   },
   seeAlso: {
-    textTransform: "capitalize"
-  }
+    textTransform: "capitalize",
+  },
 }));
-const Dictionary = props => {
+const Dictionary = (props) => {
   const classes = useStyles();
   const [dictionaryText, setDictionaryText] = React.useState("");
   let { dictionary, version, setDictionary } = props;
@@ -78,7 +78,7 @@ const Dictionary = props => {
     selectedDictionary,
     dictionaryIndex,
     dictionaryWord,
-    wordMeaning
+    wordMeaning,
   } = dictionary;
   //console.log("Dictionary");
   //Need to improve the performance of the component
@@ -86,7 +86,7 @@ const Dictionary = props => {
     //if no dictionary selected set current language dictionary
     if (Object.entries(selectedDictionary).length === 0 && dictionaries[0]) {
       let language = version.split("-")[0];
-      let dict = dictionaries.find(d => {
+      let dict = dictionaries.find((d) => {
         return d.language === language;
       });
       if (dict === undefined) {
@@ -114,20 +114,20 @@ const Dictionary = props => {
       );
     }
   }, [selectedDictionary.sourceId, dictionaryWord, setDictionary]);
-  const clean1 = str => {
+  const clean1 = (str) => {
     str = str.split(" (Translation suggestions")[0];
     str = str.split(" (अनुवाद के सुझाव")[0];
     return String(str).replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1");
   };
-  const clean2 = str => {
+  const clean2 = (str) => {
     str = String(str).replace(/{|}/gm, "");
     return String(str).replace(/,/gm, ", ");
   };
-  const clean3 = str => {
+  const clean3 = (str) => {
     str = String(str).replace(/\)\)/gm, ")");
     return String(str).replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1");
   };
-  const clean4 = str => {
+  const clean4 = (str) => {
     str = String(str).replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1");
     return String(str).replace(/(:\d+) |(-\d+) /g, "$1, ");
   };
@@ -184,10 +184,10 @@ const Dictionary = props => {
     </div>
   );
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    dictionary: state.dictionary,
-    version: state.panel1.version
+    dictionary: state.local.dictionary,
+    version: state.local.panel1.version,
   };
 };
 export default connect(mapStateToProps)(Dictionary);

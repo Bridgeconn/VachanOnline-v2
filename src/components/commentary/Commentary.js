@@ -9,10 +9,10 @@ import Metadata from "../common/Metadata";
 import { getCommentaryForChaper } from "../common/utillity";
 import parse from "html-react-parser";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: 82
+    marginTop: 82,
   },
   title: {
     paddingLeft: 35,
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 20,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
-    width: "100%"
+    width: "100%",
   },
   text: {
     position: "absolute",
@@ -41,49 +41,50 @@ const useStyles = makeStyles(theme => ({
     marginBottom: -15,
     "& span": {
       fontWeight: 600,
-      display: "block"
+      display: "block",
     },
     "& p": {
-      marginBottom: 10
+      marginBottom: 10,
     },
     "&::-webkit-scrollbar": {
-      width: "0.45em"
+      width: "0.45em",
     },
     "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey"
-    }
+      outline: "1px solid slategrey",
+    },
   },
   loading: {
-    paddingLeft: 20
+    paddingLeft: 20,
   },
   bookLabel: {
     paddingLeft: 20,
     verticalAlign: "middle",
     fontSize: 20,
-    display: "inline-block"
+    display: "inline-block",
   },
   metadata: {
-    marginTop: -8
-  }
+    marginTop: -8,
+  },
 }));
 
-const Commentary = props => {
+const Commentary = (props) => {
   const classes = useStyles();
   const [commentaryText, setCommentaryText] = React.useState("");
   const [commentaryObject, setCommentaryObject] = React.useState([]);
   const [verseLabel, setVerseLabel] = React.useState("Verse");
-  let { panel1, commentaries, setCommentary, commentary } = props;
-  let { version, book, bookCode, chapter } = panel1;
+  let { panel1, commentaries, setCommentary, commentary, book } = props;
+  let { version, bookCode, chapter } = panel1;
+
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
     if (Object.entries(commentary).length === 0 && commentaries[0]) {
       let language = version.split("-")[0];
-      let comm = commentaries.find(c => {
+      let comm = commentaries.find((c) => {
         return c.language === language;
       });
       if (comm === undefined) {
@@ -113,7 +114,7 @@ const Commentary = props => {
     if (textRef.current !== undefined) textRef.current.scrollTo(0, 0);
   }, [commentary, bookCode, chapter]);
   //Remove leading break line
-  const removeBr = str => {
+  const removeBr = (str) => {
     str = str.trim();
     return str.startsWith("<br>") ? str.slice(4) : str;
   };
@@ -167,17 +168,17 @@ const Commentary = props => {
     </div>
   );
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    commentaries: state.commentaries,
-    commentary: state.commentary,
-    panel1: state.panel1
+    commentaries: state.local.commentaries,
+    commentary: state.local.commentary,
+    panel1: state.local.panel1,
   };
 };
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setCommentary: value =>
-      dispatch({ type: actions.SETVALUE, name: "commentary", value: value })
+    setCommentary: (value) =>
+      dispatch({ type: actions.SETVALUE, name: "commentary", value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);

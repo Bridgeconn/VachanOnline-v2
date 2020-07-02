@@ -7,49 +7,57 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
 import Paper from "@material-ui/core/Paper";
-const useStyles = makeStyles(theme => ({
+import Tooltip from "@material-ui/core/Tooltip";
+import { BLUETRANSPARENT } from "../../store/colorCode";
+
+const useStyles = makeStyles((theme) => ({
   info: {
     padding: 0,
     width: "30px",
     marginTop: 20,
-    marginRight: "8px",
-    color: "#1976D2",
-    cursor: "pointer"
+    marginRight: 4,
+    color: BLUETRANSPARENT,
+    cursor: "pointer",
   },
   paper: {
-    width: "80%"
+    width: "40%",
+    minWidth: 550,
+    [theme.breakpoints.only("xs")]: {
+      width: "95%",
+      minWidth: "unset",
+    },
   },
   metadataTitle: {
-    fontSize: 26,
-    padding: "5px 0 0 12px"
+    fontSize: "1.3em",
+    padding: "11px 0 0 12px",
   },
   metadataTitleBar: {
-    backgroundColor: "#2e639a",
-    color: "#fff"
+    backgroundColor: BLUETRANSPARENT,
+    color: "#fff",
   },
   metadataHeading: {
     fontSize: 17,
     lineHeight: "28px",
     display: "block",
-    textAlign: "end",
-    fontWeight: 600
+    paddingLeft: 5,
+    fontWeight: 600,
   },
   metadataText: {
     lineHeight: "28px",
     fontSize: 16,
-    paddingLeft: 14
+    paddingLeft: 14,
   },
   metadataRow: {
     "&:last-child": {
-      marginBottom: 2
+      marginBottom: 2,
     },
     "&:nth-child(even)": {
-      backgroundColor: "#cfd9e6"
-    }
+      backgroundColor: "#eaeaea",
+    },
   },
   closeButton: {
-    color: "inherit"
-  }
+    color: "inherit",
+  },
 }));
 export default function Metadata({ metadataList, title, abbreviation }) {
   const classes = useStyles();
@@ -64,7 +72,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-  const checkLink = text => {
+  const checkLink = (text) => {
     return text.startsWith("http") ? (
       <Link href={text} key={text} target="_blank">
         {text + " "}
@@ -77,26 +85,30 @@ export default function Metadata({ metadataList, title, abbreviation }) {
     <div>
       {metadataList ? (
         <>
-          <div
-            aria-describedby={id}
-            onClick={handleClick}
-            className={classes.info}
-          >
-            <i className="material-icons md-23">info_outline</i>
-          </div>
+          <Tooltip title="Information">
+            <div
+              aria-describedby={id}
+              onClick={handleClick}
+              className={classes.info}
+            >
+              <i className="material-icons md-23">info_outline</i>
+            </div>
+          </Tooltip>
           <Popover
             id={id}
-            className={classes.paper}
             open={open}
             anchorEl={anchorEl}
             onClose={handleClose}
             anchorOrigin={{
               vertical: "bottom",
-              horizontal: "center"
+              horizontal: "center",
             }}
             transformOrigin={{
               vertical: "top",
-              horizontal: "center"
+              horizontal: "right",
+            }}
+            classes={{
+              paper: classes.paper,
             }}
           >
             <Paper>
@@ -144,10 +156,10 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                         justify="flex-end"
                         className={classes.metadataRow}
                       >
-                        <Grid item sm={4} className={classes.metadataHeading}>
+                        <Grid item xs={4} className={classes.metadataHeading}>
                           {item}:
                         </Grid>
-                        <Grid item sm={8} className={classes.metadataText}>
+                        <Grid item xs={8} className={classes.metadataText}>
                           {metadataList[item].split(" ").map(checkLink)}
                         </Grid>
                       </Grid>

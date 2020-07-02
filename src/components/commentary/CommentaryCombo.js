@@ -10,74 +10,78 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "30%"
+      width: "30%",
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
-      marginRight: 10
-    }
+      marginRight: 10,
+    },
   },
   list: {
-    padding: 0
+    padding: 0,
   },
   menuRoot: {
-    backgroundColor: "#3970a7",
-    color: "#fff",
+    backgroundColor: "#eaeaea",
     boxShadow: "none",
+    border: "1px solid #00000020",
+    "&:not(:last-child)": {
+      borderBottom: 0,
+    },
+    "&:before": {
+      display: "none",
+    },
     "&$expanded": {
-      margin: 0
-    }
+      margin: "auto",
+    },
   },
   expanded: {},
   expansionDetails: {
-    backgroundColor: "#4e7aa7",
-    color: "#fff",
+    backgroundColor: "#ffffff",
     boxShadow: "none",
     padding: "0 0 0 20px",
-    width: "100%"
+    width: "100%",
   },
   summaryPanel: {
     textTransform: "capitalize",
     borderBottom: "1px solid #b7b7b726",
     "&$expanded": {
-      minHeight: 50
-    }
+      minHeight: 50,
+    },
   },
   content: {
     margin: "10px 0",
     "&$expanded": {
-      margin: "12px 0"
-    }
+      margin: "12px 0",
+    },
   },
   icon: {
     left: 15,
-    position: "relative"
+    position: "relative",
   },
   paper: {
     maxHeight: "calc(100vh - 150px)",
     width: 300,
     border: "1px solid #d3d4d5",
-    backgroundColor: "#3970a7",
-    color: "#fff"
   },
   language: {
-    fontSize: "1rem"
+    fontSize: "1rem",
   },
   commentary: {
     fontSize: "1rem",
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 }));
-const CommentaryCombo = props => {
+const CommentaryCombo = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [expanded, setExpanded] = React.useState("hindi");
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -85,11 +89,14 @@ const CommentaryCombo = props => {
     setAnchorEl(null);
   }
   //function to set the bible commentary when clicked
-  const setCommentary = event => {
+  const setCommentary = (event) => {
     handleClose();
     props.setCommentary(
       JSON.parse(decodeURIComponent(event.currentTarget.getAttribute("value")))
     );
+  };
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
   };
   const classesI = `material-icons ${classes.icon}`;
   return (
@@ -112,11 +119,10 @@ const CommentaryCombo = props => {
           getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "center"
+            horizontal: "left",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "center"
           }}
           id="commentary-menu"
           anchorEl={anchorEl}
@@ -125,15 +131,16 @@ const CommentaryCombo = props => {
           onClose={handleClose}
           classes={{
             list: classes.list,
-            paper: classes.paper
+            paper: classes.paper,
           }}
         >
           {props.commentaries.map((languages, i) => (
             <ExpansionPanel
-              defaultExpanded={true}
+              expanded={expanded === languages.language}
+              onChange={handleChange(languages.language)}
               classes={{
                 root: classes.menuRoot,
-                expanded: classes.expanded
+                expanded: classes.expanded,
               }}
               key={i}
             >
@@ -142,7 +149,7 @@ const CommentaryCombo = props => {
                 classes={{
                   root: classes.summaryPanel,
                   expanded: classes.expanded,
-                  content: classes.content
+                  content: classes.content,
                 }}
               >
                 <Typography className={classes.language}>

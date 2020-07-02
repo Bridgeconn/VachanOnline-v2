@@ -1,13 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import API from "../../store/api";
 import { connect } from "react-redux";
-import { getBookbyCode } from "../common/utillity";
+import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
+import API from "../../store/api";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   biblePanel: {
-    lineHeight: 1.7,
     position: "absolute",
     backgroundColor: "#fff",
     width: "100%",
@@ -15,66 +14,110 @@ const useStyles = makeStyles(theme => ({
     "& p": {
       textAlign: "justify",
       color: "#464545",
-      marginBottom: 5
+      marginBottom: 5,
     },
-    "& span": {
-      textAlign: "justify",
-      color: "#464545"
-    }
   },
   bibleReadingPane: {
     position: "absolute",
     right: 0,
     left: 44,
-    paddingRight: 42,
+    paddingRight: (props) =>
+      props.singlePane || props.padding > 60 ? props.padding : 60,
+    paddingLeft: (props) =>
+      props.singlePane || props.padding > 20 ? props.padding : 20,
     textAlign: "justify",
     paddingTop: 20,
     height: "100%",
     overflow: "scroll",
+    lineHeight: "2em",
     "&::-webkit-scrollbar": {
-      width: "0.45em"
+      width: "0.45em",
     },
     "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey"
-    }
+      outline: "1px solid slategrey",
+    },
   },
   audio: {
-    height: "calc(100% - 55px)"
+    height: "calc(100% - 55px)",
   },
   prevChapter: {
     position: "absolute",
     top: "45%",
-    left: 3,
-    cursor: "pointer"
+    left: (props) =>
+      props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
+    cursor: "pointer",
   },
   nextChapter: {
     position: "absolute",
     top: "45%",
-    right: 6,
-    cursor: "pointer"
+    right: (props) =>
+      props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
+    cursor: "pointer",
   },
   loading: {
-    padding: 20
+    padding: 20,
   },
   player: {
     position: "absolute",
     bottom: "16px",
-    left: "2%"
-  }
+    left: "2%",
+  },
+  verseText: {
+    padding: "4px 0 2px 4px",
+  },
+  verseNumber: {
+    fontWeight: 600,
+    paddingLeft: 6,
+    bottom: 3,
+    position: "relative",
+    color: "#262662",
+  },
+  sectionHeading: {
+    fontSize: "1.3em",
+    display: "block",
+    paddingTop: 12,
+    color: "#3E4095",
+  },
+  highlight: {
+    backgroundColor: "#feff3b",
+  },
+  selectedVerse: {
+    backgroundColor: "#d9e8ef",
+  },
+  lineView: {
+    display: "table",
+  },
+  firstVerse: {
+    fontSize: "1.8em",
+    bottom: -2,
+  },
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
-const Bible = props => {
+const Bible = (props) => {
   const fontFamily =
     props.fontFamily === "Sans" ? "Roboto,Noto Sans" : "Roboto Slab,Martel";
   const [verses, setVerses] = React.useState([]);
+  const [chapterHeading, setChapterHeading] = React.useState("");
   const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
   const [previous, setPrevious] = React.useState({});
   const [next, setNext] = React.useState({});
   const [audioUrl, setAudioUrl] = React.useState("");
+  const [padding, setPadding] = React.useState(
+    window.innerWidth > 1200 ? (window.innerWidth - 1200) / 2 : 20
+  );
+
   let {
     sourceId,
     bookCode,
@@ -85,9 +128,27 @@ const Bible = props => {
     scroll,
     paneNo,
     parallelScroll,
-    setSync,
-    fontSize
+    fontSize,
+    lineView,
+    singlePane,
+    selectedVerses,
+    setSelectedVerses,
+    highlights,
+    userDetails,
+    syncPanel,
   } = props;
+  const styleProps = { padding: padding, singlePane: singlePane };
+  const classes = useStyles(styleProps);
+
+  const getHeading = (metadata) => {
+    if (metadata) {
+      for (let value of metadata) {
+        if (value.hasOwnProperty("section")) {
+          return value.section.text;
+        }
+      }
+    }
+  };
   React.useEffect(() => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
@@ -96,21 +157,26 @@ const Bible = props => {
       API.get(
         "bibles/" + sourceId + "/books/" + bookCode + "/chapter/" + chapter
       )
-        .then(function(response) {
+        .then(function (response) {
           setPrevious(response.data.previous);
           setNext(response.data.next);
           if (response.data.chapterContent === undefined) {
             setLoadingText("Book not uploaded");
           } else {
             setVerses(response.data.chapterContent.verses);
+            setChapterHeading(
+              getHeading(response.data.chapterContent.metadata)
+            );
           }
           setIsLoading(false);
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     }
   }, [sourceId, bookCode, chapter]);
+
+  //if audio bible show icon
   React.useEffect(() => {
     if (audio) {
       setAudioUrl(
@@ -123,8 +189,10 @@ const Bible = props => {
     if (!isLoading && Object.keys(previous).length > 0) {
       setValue("chapter", previous.chapterId);
       setValue("bookCode", previous.bibleBookCode);
-      let book = getBookbyCode(previous.bibleBookCode);
-      setValue("book", book.book);
+      setValue("versesSelected", []);
+      if (parallelScroll && paneNo) {
+        syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+      }
     }
   };
   //Function to load next chapter
@@ -132,22 +200,51 @@ const Bible = props => {
     if (!isLoading && Object.keys(next).length > 0) {
       setValue("chapter", next.chapterId);
       setValue("bookCode", next.bibleBookCode);
-      let book = getBookbyCode(next.bibleBookCode);
-      setValue("book", book.book);
+      setValue("versesSelected", []);
+      if (parallelScroll && paneNo) {
+        syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+      }
     }
   };
   const scrollText = () => {
     if (scroll) {
-      scroll(paneNo, parallelScroll, setSync);
+      scroll(paneNo, parallelScroll);
     }
   };
-  const classes = useStyles();
+  const handleVerseClick = (event) => {
+    event.preventDefault();
+    if (Object.keys(userDetails).length !== 0 && userDetails.uid !== null) {
+      let verseId = event.currentTarget.getAttribute("data-verse");
+      let verses =
+        selectedVerses.indexOf(parseInt(verseId)) > -1
+          ? selectedVerses.filter((a) => parseInt(a) !== parseInt(verseId))
+          : selectedVerses.concat([parseInt(verseId)]);
+      setSelectedVerses(verses);
+      setValue("versesSelected", verses);
+    }
+  };
+  React.useEffect(() => {
+    function handleResize() {
+      let width = window.innerWidth;
+      if (singlePane && width > 1200) {
+        setPadding((width - 1200) / 2);
+      } else {
+        setPadding(20);
+      }
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [singlePane]);
+  const lineViewClass = lineView ? classes.lineView : "";
   return (
     <div
       className={classes.biblePanel}
       style={{
         fontFamily: fontFamily,
-        fontSize: fontSize
+        fontSize: fontSize,
       }}
     >
       {!isLoading && loadingText !== "Book not uploaded" ? (
@@ -163,13 +260,45 @@ const Bible = props => {
                 : classes.bibleReadingPane
             }
           >
-            {verses.map(item => (
-              <span key={item.number}>
-                <span>
-                  {item.number}. {item.text}
+            {chapterHeading !== "" ? (
+              <span className={classes.sectionHeading}>{chapterHeading}</span>
+            ) : (
+              ""
+            )}
+            {verses.map((item) => {
+              const verseClass =
+                selectedVerses.indexOf(parseInt(item.number)) > -1
+                  ? `${classes.verseText} ${classes.selectedVerse}`
+                  : highlights.indexOf(parseInt(item.number)) > -1
+                  ? `${classes.verseText} ${classes.highlight}`
+                  : `${classes.verseText}`;
+              const verseNumberClass =
+                parseInt(item.number) === 1
+                  ? `${classes.verseNumber} ${classes.firstVerse}`
+                  : `${classes.verseNumber}`;
+              const verseNo =
+                parseInt(item.number) === 1 ? chapter : item.number;
+              const sectionHeading = getHeading(item.metadata);
+              return (
+                <span key={item.number}>
+                  <span
+                    className={lineViewClass}
+                    onClick={handleVerseClick}
+                    data-verse={item.number}
+                  >
+                    <span className={verseNumberClass}>{verseNo}</span>
+                    <span className={verseClass}> {item.text}</span>
+                  </span>
+                  {sectionHeading && sectionHeading !== "" ? (
+                    <span className={classes.sectionHeading}>
+                      {sectionHeading}
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </span>
-              </span>
-            ))}
+              );
+            })}
           </div>
           {audio ? (
             <ReactPlayer
@@ -216,10 +345,17 @@ const Bible = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    versionBooks: state.versionBooks,
-    parallelScroll: state.parallelScroll
+    parallelScroll: state.local.parallelScroll,
+    userDetails: state.local.userDetails,
   };
 };
-export default connect(mapStateToProps)(Bible);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    syncPanel: (from, to) => {
+      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Bible);

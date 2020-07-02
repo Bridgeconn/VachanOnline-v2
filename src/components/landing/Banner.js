@@ -1,14 +1,12 @@
 import React from "react";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
 import { makeStyles } from "@material-ui/core/styles";
-const useStyles = makeStyles(theme => ({
+import banner from "./images/3.jpg";
+
+const useStyles = makeStyles((theme) => ({
   legend: {
     position: "absolute",
     bottom: "30%",
-    left: "26%",
-    marginLeft: "-20%",
-    width: "90%",
+    width: "100%",
     borderRadius: 10,
     color: "#ffffff",
     padding: 10,
@@ -18,41 +16,28 @@ const useStyles = makeStyles(theme => ({
     background: "none",
     opacity: 1,
     [theme.breakpoints.only("xs")]: {
-      bottom: "15%"
-    }
-  }
+      bottom: "3%",
+    },
+  },
+  imageContainer: {
+    position: "relative",
+    width: "100%",
+    paddingTop: "25%",
+    height: "300px",
+    backgroundImage: `url(${banner})`,
+    backgroundRepeat: "round",
+    backgroundSize: "cover",
+  },
 }));
 export default function Banner() {
   const classes = useStyles();
   return (
-    <Carousel
-      autoPlay
-      emulateTouch
-      useKeyboardArrows
-      infiniteLoop
-      showThumbs={false}
-      showArrows={true}
-      showStatus={false}
-      transitionTime={500}
-    >
-      <div className="imageContainer">
-        <img src={require("./images/1.jpg")} alt="" />
-        <p className={classes.legend}>
-          Your word is lamp of my feet ,<br />A light on my path
-        </p>
-      </div>
-      <div className="imageContainer">
-        <img src={require("./images/2.jpg")} alt="" />
-        <p className={classes.legend}>
-          Your word is lamp of my feet ,<br />A light on my path
-        </p>
-      </div>
-      <div className="imageContainer">
-        <img src={require("./images/3.jpg")} alt="" />
-        <p className={classes.legend}>
-          Your word is lamp of my feet ,<br />A light on my path
-        </p>
-      </div>
-    </Carousel>
+    <div className={classes.imageContainer}>
+      <p className={classes.legend}>
+        Your word is a lamp to my feet,
+        <br />
+        and a light to my path.
+      </p>
+    </div>
   );
 }
