@@ -47,13 +47,7 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
       : bookmarks.concat([parseInt(chapter)]);
     return firebase
       .ref("users/" + uid + "/bookmarks/" + sourceId + "/" + bookCode)
-      .set(newBookmarks, function (error) {
-        if (error) {
-          console.log("bookmark update error");
-        } else {
-          console.log("bookmark updated succesfully");
-        }
-      });
+      .set(newBookmarks, function (error) {});
   }
   return (
     <div onClick={toggleBookmark} className={classes.info}>

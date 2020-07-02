@@ -46,8 +46,6 @@ const PageHeader = () => {
             className={classes.title}
             to={{
               pathname: "/read",
-              // hash: "#submit",
-              // search: "?quick-search=true",
             }}
           >
             <img src={logo} alt={"logo"} />
