@@ -11,7 +11,7 @@ import Login from "../login/Login";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
 import LoginMenu from "../login/LoginMenu";
-import { BLUEGRADIENT } from "../../store/colorCode";
+import { BLUE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     height: 74,
   },
   appBar: {
-    background: BLUEGRADIENT,
+    background: BLUE,
     padding: "0px 10px",
     marginBottom: "10px",
   },

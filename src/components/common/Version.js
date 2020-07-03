@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   icon: {
-    left: 15,
+    left: 5,
     position: "relative",
   },
   paper: {

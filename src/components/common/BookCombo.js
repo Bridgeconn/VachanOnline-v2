@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
     margin: 9,
-    padding: "6px 0 6px 19px",
+    padding: "6px 0 6px 12px",
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
@@ -26,8 +26,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   icon: {
-    left: 15,
+    left: 3,
     position: "relative",
+    width: 30,
   },
   root: {
     width: "100%",
@@ -44,15 +45,21 @@ const useStyles = makeStyles((theme) => ({
     color: "#2a2a2a",
   },
   book: {
-    margin: "4px 8px 4px 16px",
+    margin: "4px 4px 4px 12px",
     paddingBottom: 1,
     display: "inline-block",
-    width: 140,
+    width: 150,
     transition: "width 500ms ease-out, height 500ms ease-out",
     textAlign: "center",
     padding: "0px 0px",
     fontSize: "11px",
     border: "1px solid #d2d2d2c9",
+  },
+  bookText: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: 140,
   },
   openBook: {
     border: "1px solid #ccc",
@@ -89,7 +96,8 @@ const useStyles = makeStyles((theme) => ({
   },
   bookName: {
     whiteSpace: "nowrap",
-    width: 100,
+    minWidth: 100,
+    maxWidth: 130,
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
@@ -206,7 +214,6 @@ const BookCombo = ({
       syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
     }
   };
-  const classesI = `material-icons ${classes.icon}`;
   return (
     <>
       <Button
@@ -219,12 +226,11 @@ const BookCombo = ({
         classes={{ root: classes.button }}
       >
         {minimal === true ? (
-          <div className={classes.bookName}>{book}</div>
+          <div className={classes.bookName}>{`${book}  ${chapter}`}</div>
         ) : (
-          book
-        )}{" "}
-        {chapter}
-        <i className={classesI}>keyboard_arrow_downn</i>
+          `${book}  ${chapter}`
+        )}
+        <i className={`material-icons ${classes.icon}`}>keyboard_arrow_downn</i>
       </Button>
       {/* If no book list dont render menu */}
       {bookList === undefined || bookList.length === 0 ? (
@@ -268,7 +274,10 @@ const BookCombo = ({
                     onClick={(event) => bookClicked(event)}
                     className={`${classes.book} ${open}`}
                   >
-                    <ListItemText primary={item.short} />
+                    <ListItemText
+                      primary={item.short}
+                      classes={{ primary: classes.bookText }}
+                    />
                   </ListItem>
                   {/*Book to open*/}
                   {(bookOpen % 2 ? bookOpen + 1 : bookOpen) === i + 1 &&
