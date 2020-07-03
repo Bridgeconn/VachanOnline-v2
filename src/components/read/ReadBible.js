@@ -15,7 +15,7 @@ import Highlights from "../highlight/Highlights";
 import Notes from "../note/Notes";
 import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { BLUE } from "../../store/colorCode";
 import {
   getCommentaries,
   getDictionaries,
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rightMenu: {
     width: 65,
-    backgroundColor: BLUETRANSPARENT,
+    backgroundColor: BLUE,
     position: "absolute",
     height: "100vh",
     paddingTop: "60px",
@@ -374,7 +374,11 @@ const ReadBible = (props) => {
       <div>
         <div className={classes.biblePane}>{pane}</div>
         <div className={classes.rightMenu}>
-          <BibleMenu menuClick={menuClick} uid={uid} />
+          <BibleMenu
+            menuClick={menuClick}
+            uid={uid}
+            parallelView={parallelView}
+          />
         </div>
       </div>
     </>

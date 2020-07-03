@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BibleMenu({ menuClick, uid }) {
+export default function BibleMenu({ parallelView, menuClick, uid }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -20,42 +20,49 @@ export default function BibleMenu({ menuClick, uid }) {
           icon="search"
           title="Search Bible"
           item={views.SEARCH}
+          parallelView={parallelView}
         />
         <MenuItem
           onClick={menuClick}
           icon="import_contacts"
           title="Parallel Bible"
           item={views.PARALLELBIBLE}
+          parallelView={parallelView}
         />
         <MenuItem
           onClick={menuClick}
           icon="comment"
           title="Commentaries"
           item={views.COMMENTARY}
+          parallelView={parallelView}
         />
         <MenuItem
           onClick={menuClick}
           icon="format_shapes"
           title="Dictionaries"
           item={views.DICTIONARY}
+          parallelView={parallelView}
         />
         <MenuItem
           onClick={menuClick}
           icon="image"
           title="Infographics"
           item={views.INFOGRAPHICS}
+          parallelView={parallelView}
         />
         <MenuItem
           onClick={menuClick}
           icon="volume_up"
           title="Audio Bible"
           item={views.AUDIO}
+          parallelView={parallelView}
         />
         <MenuItem
           onClick={menuClick}
           icon="videocam"
           title="Videos"
           item={views.VIDEO}
+          parallelView={parallelView}
         />
         {uid !== null ? (
           <>
@@ -64,18 +71,21 @@ export default function BibleMenu({ menuClick, uid }) {
               icon="bookmark"
               title="Bookmarks"
               item={views.BOOKMARK}
+              parallelView={parallelView}
             />
             <MenuItem
               onClick={menuClick}
               icon="border_color"
               title="Highlights"
               item={views.HIGHLIGHT}
+              parallelView={parallelView}
             />
             <MenuItem
               onClick={menuClick}
               icon="note"
               title="Notes"
               item={views.NOTE}
+              parallelView={parallelView}
             />
           </>
         ) : (

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   popover: {
     pointerEvents: "none",
-    marginTop: -2,
+    marginTop: -6,
     marginLeft: -10,
   },
   paper: {
@@ -23,10 +23,26 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "18px",
     color: "#fff",
   },
+  selected: {
+    backgroundColor: "rgba(255,255,255,0.2)",
+    paddingTop: 11,
+    paddingBottom: 5,
+    "&:hover": {
+      backgroundColor: "rgba(255,255,255,0.1)",
+    },
+  },
+  button: {
+    paddingTop: 11,
+    paddingBottom: 5,
+    "&:hover": {
+      backgroundColor: "rgba(255,255,255,0.1)",
+    },
+  },
 }));
 
 export default function MenuItem(props) {
   const classes = useStyles();
+  const { onClick, icon, title, item, parallelView } = props;
   const [popover, setPopover] = React.useState(null);
 
   function handlePopoverOpen(event) {
@@ -38,20 +54,21 @@ export default function MenuItem(props) {
   }
 
   const open = Boolean(popover);
+  const buttonClass = parallelView === item ? classes.selected : classes.button;
   return (
-    <ListItem button>
+    <ListItem button className={buttonClass}>
       <ListItemIcon
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
-        <div onClick={() => props.onClick(props.item)}>
+        <div onClick={() => onClick(item)}>
           <i
             className="material-icons"
             style={{ fontSize: "38px", color: "#fff" }}
           >
-            {props.icon}
+            {icon}
           </i>
           <Popover
             id="mouse-over-popover"
@@ -72,7 +89,7 @@ export default function MenuItem(props) {
             onClose={handlePopoverClose}
             disableRestoreFocus
           >
-            <Typography className={classes.menu}>{props.title}</Typography>
+            <Typography className={classes.menu}>{title}</Typography>
           </Popover>
         </div>
       </ListItemIcon>

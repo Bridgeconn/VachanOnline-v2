@@ -6,13 +6,13 @@ import AboutUs from "./AboutUs";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
-import { BLUEGRADIENT } from "../../store/colorCode";
+import { BLUE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   landingFooter: {
     bottom: 0,
     position: "fixed",
-    background: BLUEGRADIENT,
+    background: BLUE,
     color: "#fff",
     padding: "5px 15px",
     marginTop: 40,

@@ -45,13 +45,12 @@ const AboutUs = ({ handleClose }) => {
           Vachan Online
         </Typography>
         <Typography variant="body1" gutterBottom>
-          {addLink("VachanOnline.com", "https://")} is the premier Bible study
-          website in Indian languages. It is part of The Vachan Project to
-          provide free access to digital scripture engagement resources. It is
-          an initiative of Friends of Agape (FOA), USA. The content herein is
-          not for reuse or redistribution in any other format or platform
-          without explicit permission as multiple licensing strategies are
-          involved.
+          VachanOnline is the premier Bible study website in Indian languages.
+          It is part of The Vachan Project to provide free access to digital
+          scripture engagement resources. It is an initiative of Friends of
+          Agape (FOA), USA. The content herein is not for reuse or
+          redistribution in any other format or platform without explicit
+          permission as multiple licensing strategies are involved.
         </Typography>
         <Typography variant="h6" className={classes.subheading} gutterBottom>
           Translation Partners
@@ -74,7 +73,7 @@ const AboutUs = ({ handleClose }) => {
           made available for many products please contact us at
           {addLink("thevachanproject@gmail.com", "mailto:")}. Also visit our
           company website
-          {addLink("www.bridgeconn.com", "https://")}
+          {addLink("www.bridgeconn.com", "https://")}.
         </Typography>
         <Typography variant="h6" className={classes.subheading} gutterBottom>
           Source Code
@@ -83,20 +82,20 @@ const AboutUs = ({ handleClose }) => {
           Current Code On GitHub: <br />
           {addLink("https://github.com/Bridgeconn/VachanOnline-v2", "")} <br />
           <span className={classes.space}>
-            Previous versions Forked from Digital Bible Society’s Browser
-            Bible-3 (InScript) by John Dyer on GitHub.
+            Previous versions used code forked from Digital Bible Society’s
+            Browser Bible-3 (InScript) by John Dyer on GitHub.
           </span>
         </Typography>
         <Typography variant="h6" className={classes.subheading} gutterBottom>
-          Release Notes (1/06/2020) v1.0
+          Release Notes (3/7/2020) v1.0
         </Typography>
         <Typography variant="body1" gutterBottom>
           <span className={classes.bold}>Platform Update:</span> We are making a
           major technology change in this release. Code from Browser Bible-3
           (InScript) is now replaced with a brand new web application in ReactJS
-          powered by Postgres APIs (VachanEngine) in the back-end. A companion
-          mobile app written in ReactNative is also being released. The older
-          legacy site will still be available for sometime on
+          powered by Postgres and Python APIs (VachanEngine) in the back-end. A
+          companion mobile app written in ReactNative is also being released.
+          The older legacy site will still be available for sometime on
           {addLink("www.vachanonline.net", "https://")}.
         </Typography>
         <Typography variant="h6" className={classes.subheading} gutterBottom>
@@ -105,18 +104,23 @@ const AboutUs = ({ handleClose }) => {
         <Typography variant="body1" component="div" gutterBottom>
           <ul>
             <li>
-              Bibles: Updated versions of IRV Bibles in available Indian Gateway
-              Languages + ESV English Bible
+              Bibles: Updated versions of IRV Bibles in all available Indian
+              Gateway Languages
             </li>
             <li>
-              Commentary: Hindi IRV Notes + Bridgeway Bible Commentary (English)
-              + ESV Global Study Bible Notes (English)
+              Commentary: IRV Notes (Hindi) + Mathew Henry Concise Bible
+              Commentary (English) + Bridgeway Bible Commentary (English) + ESV
+              Global Study Bible Notes (English)
             </li>
-            <li>Dictionary: Hindi IRV Dictionary</li>
-            <li>Infographics: VisualUnit - Hindi</li>
-            <li>Audio: Hindi IRV NT Bible</li>
-            <li>Video: BibleProject - English + Hindi + Telugu</li>
+            <li>Dictionary: IRV Dictionary (Hindi)</li>
+            <li>Infographics: VisualUnit (Hindi) *</li>
+            <li>Audio: IRV NT Bible (Hindi)</li>
+            <li>Video: BibleProject (English, Hindi & Telugu) *</li>
           </ul>
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          <span className={classes.bold}>*</span> Not available on the Vachan Go
+          companion mobile app
         </Typography>
         <Typography variant="h6" className={classes.subheading} gutterBottom>
           Feature Additions:
@@ -125,14 +129,14 @@ const AboutUs = ({ handleClose }) => {
           <ul>
             <li>Cleaner Bible reading pane with section-headings.</li>
             <li>
-              Parallel 2-pane feature to display Bibles and other content.
+              Parallel 2-pane feature to display Bibles, Commentaries etc.
             </li>
-            <li>Added Commentary, Dictionary, & Infographics</li>
+            <li>Added Commentary, Dictionary & Infographics</li>
             <li>Added Audio Player.</li>
             <li>Embedded YouTube Video Player.</li>
             <li>Personalisation and sync using simple login.</li>
             <li>Bookmarks, Highlights & Notes.</li>
-            <li>Simple Bible search.</li>
+            <li>Basic Bible search.</li>
             <li>Changed website colors.</li>
             <li>Dynamic Data powered by VachanEngine</li>
           </ul>
@@ -145,6 +149,12 @@ const AboutUs = ({ handleClose }) => {
             <li>Added DigitalOcean Spaces with CDN to serve Audio & Video</li>
             <li>Added Firebase for personalisation and synchronisation</li>
           </ul>
+        </Typography>
+        <Typography variant="h6" className={classes.subheading} gutterBottom>
+          Contact Us
+        </Typography>
+        <Typography variant="body1" component="div" gutterBottom>
+          thevachanproject@gmail.com
         </Typography>
       </DialogContent>
       <DialogActions>
