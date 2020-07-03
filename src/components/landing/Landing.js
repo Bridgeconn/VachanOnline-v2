@@ -4,6 +4,7 @@ import PageHeader from "./PageHeader";
 import Banner from "./Banner";
 import LandingFooter from "./LandingFooter";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import Link from "@material-ui/core/Link";
@@ -16,37 +17,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
   },
   wordCloud: {
-    width: "100%",
     position: "relative",
-    height: 400,
     top: -20,
-    [theme.breakpoints.down("md")]: {
-      minHeight: 180,
-      height: "unset",
-    },
     [theme.breakpoints.down("sm")]: {
       top: "unset",
       marginTop: 20,
+      marginBottom: 20,
     },
     "& img": {
-      verticalAlign: "top",
-      height: 350,
-      border: 0,
-      position: "absolute",
-      top: 0,
-      left: 20,
-      right: 0,
-      bottom: 0,
-      margin: "0 auto",
-      [theme.breakpoints.down("md")]: {
-        height: "unset",
-        position: "unset",
-        width: "100%",
-      },
-      [theme.breakpoints.only("md")]: {
-        width: "80%",
-        marginLeft: "10%",
-      },
+      width: "90%",
+      margin: "0 5%",
     },
   },
   website: {
@@ -76,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 5,
   },
   mobileDiv: {
-    marginBottom: 90,
+    marginBottom: 120,
     textAlign: "center",
   },
 }));
@@ -107,9 +87,9 @@ const Landing = (props) => {
                 alt="Website"
                 className={classes.website}
               />
-              <div className={classes.websiteText}>
+              <Typography variant="h6" className={classes.websiteText}>
                 Website VachanOnline.net
-              </div>
+              </Typography>
             </div>
           </Grid>
         )}
@@ -138,10 +118,9 @@ const Landing = (props) => {
                 className={classes.playStore}
               />
             </Link>
-
-            <div className={classes.mobileText}>
+            <Typography variant="h6" className={classes.mobileText}>
               Companion Mobile App VachanGo
-            </div>
+            </Typography>
           </div>
         </Grid>
       </Grid>
