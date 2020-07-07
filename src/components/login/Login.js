@@ -185,27 +185,29 @@ const Login = (props) => {
         console.log("Signin Google User");
       })
       .catch(function (error) {
-        console.log("Google Signin Error");
+        setAlert("error");
+        setMessage(error.message);
       });
   };
 
   //Function to sign into Facebook
-  const signInFacebook = (e) => {
-    e.preventDefault();
-    var provider = new firebase.auth.FacebookAuthProvider();
-    provider.setCustomParameters({
-      display: "popup",
-    });
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then(function (result) {
-        console.log("Signin Facebook User");
-      })
-      .catch(function (error) {
-        console.log("Facebook Signin Error");
-      });
-  };
+  // const signInFacebook = (e) => {
+  //   e.preventDefault();
+  //   var provider = new firebase.auth.FacebookAuthProvider();
+  //   provider.setCustomParameters({
+  //     display: "popup",
+  //   });
+  //   firebase
+  //     .auth()
+  //     .signInWithPopup(provider)
+  //     .then(function (result) {
+  //       console.log("Signin Facebook User");
+  //     })
+  //     .catch(function (error) {
+  //       setAlert("error");
+  //       setMessage(error.message);
+  //     });
+  // };
 
   //Check if user logged in
   React.useEffect(() => {
@@ -333,7 +335,7 @@ const Login = (props) => {
                     >
                       Sign in with Google
                     </Button>
-                    <Button
+                    {/* <Button
                       type="submit"
                       fullWidth
                       variant="contained"
@@ -342,7 +344,7 @@ const Login = (props) => {
                       className={classes.submit}
                     >
                       Sign in with Facebook
-                    </Button>
+                    </Button> */}
                     <Grid container className={classes.links}>
                       <Grid item xs>
                         <Link href="#" variant="body2" onClick={openForgot}>

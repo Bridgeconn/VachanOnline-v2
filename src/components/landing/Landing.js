@@ -5,6 +5,12 @@ import Banner from "./Banner";
 import LandingFooter from "./LandingFooter";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import mobileLogo from "../common/images/mobileLogo.png";
+import logoBlue from "../common/images/logoBlue.png";
+import website from "./images/website.png";
+import wordCloud from "./images/wordCloud.png";
+import mobileImage from "./images/mobile.png";
+import playStore from "./images/playStore.png";
 import Snackbar from "@material-ui/core/Snackbar";
 import Link from "@material-ui/core/Link";
 import Alert from "@material-ui/lab/Alert";
@@ -16,33 +22,21 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
   },
   wordCloud: {
-    width: "100%",
     position: "relative",
-    height: 400,
     top: -20,
-    [theme.breakpoints.down("md")]: {
-      minHeight: 180,
-      height: "unset",
+    left: 20,
+    [theme.breakpoints.up("md")]: {
+      marginBottom: 55,
     },
     [theme.breakpoints.down("sm")]: {
       top: "unset",
+      left: "unset",
       marginTop: 20,
+      marginBottom: 20,
     },
     "& img": {
-      verticalAlign: "top",
-      height: 350,
-      border: 0,
-      position: "absolute",
-      top: 0,
-      left: 20,
-      right: 0,
-      bottom: 0,
-      margin: "0 auto",
-      [theme.breakpoints.down("md")]: {
-        height: "unset",
-        position: "unset",
-        width: "100%",
-      },
+      width: "95%",
+      marginLeft: "3%",
       [theme.breakpoints.only("md")]: {
         width: "80%",
         marginLeft: "10%",
@@ -55,10 +49,13 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #000000a1",
     boxShadow: "2px 2px 3px #968e8e",
   },
-  websiteText: {
-    fontSize: "1.3em",
-    textAlign: "center",
-    paddingTop: 5,
+  websiteLogo: {
+    width: "80%",
+    margin: "auto",
+    display: "block",
+    [theme.breakpoints.down("sm")]: {
+      width: "60%",
+    },
   },
   mobile: {
     width: "25%",
@@ -66,14 +63,18 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "2px 2px 3px #968e8e",
     display: "inline-block",
   },
+  mobileLogo: {
+    width: "53%",
+    margin: "auto",
+    display: "block",
+    [theme.breakpoints.down("sm")]: {
+      width: "50%",
+    },
+  },
   playStore: {
     width: "25%",
     margin: "0 10%",
     display: "inline-block",
-  },
-  mobileText: {
-    fontSize: "1.3em",
-    paddingTop: 5,
   },
   mobileDiv: {
     marginBottom: 90,
@@ -102,46 +103,38 @@ const Landing = (props) => {
         ) : (
           <Grid item xs={12} md={3} className={classes.rightLinks}>
             <div>
+              <img src={website} alt="Website" className={classes.website} />
               <img
-                src={require("./images/website.png")}
-                alt="Website"
-                className={classes.website}
+                src={logoBlue}
+                alt="Website Logo"
+                className={classes.websiteLogo}
               />
-              <div className={classes.websiteText}>
-                Website VachanOnline.net
-              </div>
             </div>
           </Grid>
         )}
         <Grid item xs={12} md={6} className={classes.rightLinks}>
           <div className={classes.wordCloud}>
-            <img
-              src={require("./images/wordCloud.png")}
-              alt="words in 12 gateway languages"
-            />
+            <img src={wordCloud} alt="words in 12 gateway languages" />
           </div>
         </Grid>
         <Grid item xs={12} md={3} className={classes.rightLinks}>
           <div className={classes.mobileDiv}>
-            <img
-              src={require("./images/mobile.png")}
-              alt="Mobile"
-              className={classes.mobile}
-            />
+            <img src={mobileImage} alt="Mobile" className={classes.mobile} />
             <Link
               href="https://play.google.com/store/apps/details?id=com.bridgeconn.autographago"
               target="_blank"
             >
               <img
-                src={require("./images/playStore.png")}
+                src={playStore}
                 alt="Get it on play store"
                 className={classes.playStore}
               />
             </Link>
-
-            <div className={classes.mobileText}>
-              Companion Mobile App VachanGo
-            </div>
+            <img
+              src={mobileLogo}
+              alt="Mobile Logo"
+              className={classes.mobileLogo}
+            />
           </div>
         </Grid>
       </Grid>

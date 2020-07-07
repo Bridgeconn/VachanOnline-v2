@@ -3,6 +3,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import Login from "../login/Login";
+import LoginMenu from "../login/LoginMenu";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
 
@@ -36,8 +39,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PageHeader = () => {
+const PageHeader = ({ login, userDetails }) => {
   const classes = useStyles();
+  const [loginButton, setLoginButton] = React.useState();
+  React.useEffect(() => {
+    setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
+  }, [login, userDetails]);
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
@@ -53,9 +60,17 @@ const PageHeader = () => {
           <span className={classes.favicon}>
             <img src={favicon} alt="logo" />
           </span>
+          {loginButton}
         </Toolbar>
       </AppBar>
     </div>
   );
 };
-export default PageHeader;
+const mapStateToProps = (state) => {
+  return {
+    login: state.local.login,
+    userDetails: state.local.userDetails,
+  };
+};
+
+export default connect(mapStateToProps)(PageHeader);

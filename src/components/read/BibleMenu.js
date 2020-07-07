@@ -7,6 +7,18 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 300,
+    height: "calc(100vh - 50px)",
+    overflow: "scroll",
+    "&::-webkit-scrollbar": {
+      width: "0.3em",
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.4)",
+      outline: "1px solid slategrey",
+    },
   },
 }));
 
