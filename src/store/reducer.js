@@ -17,6 +17,7 @@ const defaultState = {
   versionSource: {},
   parallelScroll: true,
   login: false,
+  openLogin: false,
   userDetails: {
     uid: null,
     email: null,

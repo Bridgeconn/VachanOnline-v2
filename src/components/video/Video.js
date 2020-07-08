@@ -13,13 +13,13 @@ import Typography from "@material-ui/core/Typography";
 //import { getInfographics } from "../common/utillity";
 import ModalVideo from "react-modal-video";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     position: "absolute",
     top: 94,
     bottom: 0,
-    paddingLeft: 15
+    paddingLeft: 15,
   },
   container: {
     top: 40,
@@ -27,22 +27,24 @@ const useStyles = makeStyles(theme => ({
     overflow: "scroll",
     position: "absolute",
     paddingTop: 12,
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
-      width: "0.45em"
+      width: "0.45em",
     },
     "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)"
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey"
-    }
+      outline: "1px solid slategrey",
+    },
   },
   heading: {
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2em"
+    height: "2em",
   },
   card: {
     minWidth: 170,
@@ -50,31 +52,31 @@ const useStyles = makeStyles(theme => ({
     display: "inline-block",
     marginRight: 20,
     marginTop: 10,
-    cursor: "pointer"
+    cursor: "pointer",
   },
   video: {
     width: "48%",
     padding: 0,
     margin: "0 2% 2% 0",
     display: "inline-block",
-    verticalAlign: "top"
+    verticalAlign: "top",
   },
   title: {
     overflow: "hidden",
     textOverflow: "ellipsis",
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
   },
   image: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   description: {
     whiteSpace: "nowrap",
     overflow: "hidden",
-    textOverflow: "ellipsis"
-  }
+    textOverflow: "ellipsis",
+  },
 }));
-const Video = props => {
+const Video = (props) => {
   const classes = useStyles();
   let { video, bookCode, languageCode } = props;
   const [message, setMessage] = React.useState("");
@@ -88,7 +90,7 @@ const Video = props => {
   React.useEffect(() => {
     if (video && bookCode && languageCode) {
       const found = video.find(
-        element => element.language.code === languageCode
+        (element) => element.language.code === languageCode
       );
       if (found) {
         if (found.books && found.books.hasOwnProperty(bookCode)) {
