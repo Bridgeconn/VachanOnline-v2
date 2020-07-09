@@ -378,6 +378,7 @@ const ReadBible = (props) => {
             menuClick={menuClick}
             uid={uid}
             parallelView={parallelView}
+            setValue={setValue}
           />
         </div>
       </div>

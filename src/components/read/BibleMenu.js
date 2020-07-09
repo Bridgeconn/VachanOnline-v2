@@ -3,14 +3,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 300,
     height: "calc(100vh - 50px)",
-    overflow: "scroll",
+    overflow: "auto",
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(0,0,0,.4) rgba(0,0,0,.1)",
     "&::-webkit-scrollbar": {
-      width: "0.3em",
+      width: "0.4em",
     },
     "&::-webkit-scrollbar-track": {
       "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
@@ -22,8 +24,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BibleMenu({ parallelView, menuClick, uid }) {
+export default function BibleMenu({ parallelView, menuClick, uid, setValue }) {
   const classes = useStyles();
+  const onClick = (view, uid) => {
+    //if user not logged in then open sign in popup for personalized features
+    if (
+      [views.NOTE, views.BOOKMARK, views.HIGHLIGHT].includes(view) &&
+      uid === null
+    ) {
+      setValue("openLogin", true);
+      return;
+    }
+    menuClick(view);
+  };
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
@@ -76,33 +89,30 @@ export default function BibleMenu({ parallelView, menuClick, uid }) {
           item={views.VIDEO}
           parallelView={parallelView}
         />
-        {uid !== null ? (
-          <>
-            <MenuItem
-              onClick={menuClick}
-              icon="bookmark"
-              title="Bookmarks"
-              item={views.BOOKMARK}
-              parallelView={parallelView}
-            />
-            <MenuItem
-              onClick={menuClick}
-              icon="border_color"
-              title="Highlights"
-              item={views.HIGHLIGHT}
-              parallelView={parallelView}
-            />
-            <MenuItem
-              onClick={menuClick}
-              icon="note"
-              title="Notes"
-              item={views.NOTE}
-              parallelView={parallelView}
-            />
-          </>
-        ) : (
-          ""
-        )}
+        <MenuItem
+          onClick={onClick}
+          icon="bookmark"
+          title="Bookmarks"
+          item={views.BOOKMARK}
+          parallelView={parallelView}
+          uid={uid}
+        />
+        <MenuItem
+          onClick={onClick}
+          icon="border_color"
+          title="Highlights"
+          item={views.HIGHLIGHT}
+          parallelView={parallelView}
+          uid={uid}
+        />
+        <MenuItem
+          onClick={onClick}
+          icon="note"
+          title="Notes"
+          item={views.NOTE}
+          parallelView={parallelView}
+          uid={uid}
+        />
         {/* <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="more_horiz" title="More" /> */}
       </List>

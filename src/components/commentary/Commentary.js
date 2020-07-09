@@ -39,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 1.5,
     letterSpacing: "0.00938em",
     marginBottom: -15,
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "& span": {
       fontWeight: 600,
       display: "block",

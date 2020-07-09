@@ -31,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     overflow: "scroll",
     marginBottom: -15,
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
       width: "0.45em",
     },

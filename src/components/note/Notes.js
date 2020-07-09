@@ -39,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     overflow: "scroll",
     marginBottom: -15,
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
       width: "0.45em",
     },
@@ -59,6 +61,8 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     borderBottom: "1px solid lightgray",
+    paddingTop: 4,
+    paddingBottom: 4,
   },
   form: {
     padding: "0 10px",
@@ -73,6 +77,11 @@ const useStyles = makeStyles((theme) => ({
   },
   addNote: {
     padding: theme.spacing(1),
+  },
+  noteBody: {
+    "& textarea": {
+      maxHeight: 114,
+    },
   },
 }));
 
@@ -166,9 +175,8 @@ export default function Notes(props) {
       )
       .set(notesArray, function (error) {
         if (error) {
-          console.log("Note added error");
+          console.log("Note add error");
         } else {
-          console.log("Note added succesfully");
           setValue("versesSelected", []);
           resetForm();
         }
@@ -266,6 +274,7 @@ export default function Notes(props) {
                     book: book.book,
                     bookId: book.bookId,
                     index: index,
+                    modifiedTime: verseNote.modifiedTime,
                   });
                 });
               }
@@ -326,8 +335,6 @@ export default function Notes(props) {
       .set(newVerseList, function (error) {
         if (error) {
           console.log("Note delete error");
-        } else {
-          console.log("Note deleted succesfully");
         }
       });
   };
@@ -370,6 +377,7 @@ export default function Notes(props) {
             variant="outlined"
             value={noteText}
             onChange={handleNoteTextChange}
+            className={classes.noteBody}
           />
           <div className={classes.formButtons}>
             <Button className={classes.button} onClick={resetForm}>
@@ -421,6 +429,7 @@ export default function Notes(props) {
                         primary={`${versionData[note.sourceId][0]} ${
                           note.book
                         } ${note.chapter}:${note.verse}`}
+                        secondary={new Date(note.modifiedTime).toLocaleString()}
                       />
                       <ListItemSecondaryAction>
                         <IconButton
@@ -461,6 +470,7 @@ export default function Notes(props) {
                     primary={`${versionData[note.sourceId][0]} ${note.book} ${
                       note.chapter
                     }:${note.verse}`}
+                    secondary={new Date(note.modifiedTime).toLocaleString()}
                   />
                   <ListItemSecondaryAction>
                     <IconButton
@@ -480,7 +490,9 @@ export default function Notes(props) {
             })}
           </List>
         ) : (
-          <Typography className={classes.message}>No Notes added</Typography>
+          <Typography className={classes.message}>
+            Select a verse to start making Notes
+          </Typography>
         )}
       </div>
     </div>

@@ -53,8 +53,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
   const classes = useStyles();
-  const { login, setValue } = props;
-
+  const { login, openLogin, setValue } = props;
+  const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -64,8 +64,8 @@ const Login = (props) => {
 
   const open = Boolean(anchorEl);
 
-  const openForm = (event) => {
-    setAnchorEl(event.currentTarget);
+  const openForm = () => {
+    setAnchorEl(menuRef.current);
     setForm(1);
   };
 
@@ -226,7 +226,14 @@ const Login = (props) => {
       }
     });
   }, [login, setValue]);
-
+  React.useEffect(() => {
+    if (openLogin) {
+      openForm();
+      setAlert("info");
+      setMessage("Sign in to use this feature");
+      setValue("openLogin", false);
+    }
+  }, [openLogin, setValue]);
   return (
     <>
       {login ? (
@@ -260,6 +267,7 @@ const Login = (props) => {
           <Button
             aria-describedby="sign-in"
             variant="contained"
+            ref={menuRef}
             onClick={openForm}
           >
             Sign In
@@ -487,6 +495,7 @@ const Login = (props) => {
 const mapStateToProps = (state) => {
   return {
     login: state.local.login,
+    openLogin: state.local.openLogin,
   };
 };
 const mapDispatchToProps = (dispatch) => {
