@@ -142,12 +142,14 @@ const Commentary = (props) => {
   return (
     <div className={classes.root}>
       <Grid container className={classes.title}>
-        <Grid item xs={11}>
+        <Grid item xs={12} md={6}>
           <CommentaryCombo
             commentaries={props.commentaries}
             commentary={props.commentary}
             setCommentary={props.setCommentary}
           />
+        </Grid>
+        <Grid item xs={11} md={5}>
           <Typography className={classes.bookLabel}>
             {book} {chapter}
           </Typography>

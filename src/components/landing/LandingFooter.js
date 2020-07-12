@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import AboutUs from "./AboutUs";
+import FeedbackIcon from "@material-ui/icons/Feedback";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
@@ -50,6 +51,15 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px 10px",
     fontSize: 16,
   },
+  feedback: {
+    marginTop: 3,
+    textTransform: "unset",
+    padding: "2px 10px",
+    fontSize: 16,
+    "&:hover": {
+      color: "inherit",
+    },
+  },
   rightLinks: {
     textAlign: "left",
     [theme.breakpoints.only("xs")]: {
@@ -70,7 +80,7 @@ const LandingFooter = (props) => {
   return (
     <>
       <Grid container className={classes.landingFooter}>
-        <Grid item xs={12} sm={6} className={classes.rightLinks}>
+        <Grid item xs={6} sm={4} className={classes.rightLinks}>
           {/* 
           <Link
             href="#"
@@ -90,7 +100,21 @@ const LandingFooter = (props) => {
             About us
           </Button>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={6} sm={4}>
+          <Button
+            variant="outlined"
+            size="small"
+            color="inherit"
+            className={classes.feedback}
+            startIcon={<FeedbackIcon />}
+            href="https://docs.google.com/forms/d/e/1FAIpQLSd75swOEtsvWrzcQrynmCsu-ZZYktWbeeJXVxH7zNz-JIlEdA/viewform?usp=sf_link"
+            target="_blank"
+            rel="noopener"
+          >
+            Feedback
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={4}>
           <Link>
             <Typography className={classes.text}>
               © 2020 Bridge Connectivity Solutions

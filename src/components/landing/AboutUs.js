@@ -104,7 +104,7 @@ const AboutUs = ({ handleClose }) => {
         </Typography>
         <div className={classes.releaseNotes}>
           <Typography variant="h6" className={classes.subheading}>
-            Release Note (3/7/2020) v1.0
+            Release Note (13/07/2020) v1.0
           </Typography>
           {addStyle(" ", "space")}
           <Typography variant="body1" gutterBottom>

@@ -68,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
     bottom: "16px",
     left: "2%",
   },
+  text: {
+    paddingBottom: 30,
+  },
   verseText: {
     padding: "4px 0 2px 4px",
   },
@@ -262,45 +265,47 @@ const Bible = (props) => {
                 : classes.bibleReadingPane
             }
           >
-            {chapterHeading !== "" ? (
-              <span className={classes.sectionHeading}>{chapterHeading}</span>
-            ) : (
-              ""
-            )}
-            {verses.map((item) => {
-              const verseClass =
-                selectedVerses.indexOf(parseInt(item.number)) > -1
-                  ? `${classes.verseText} ${classes.selectedVerse}`
-                  : highlights.indexOf(parseInt(item.number)) > -1
-                  ? `${classes.verseText} ${classes.highlight}`
-                  : `${classes.verseText}`;
-              const verseNumberClass =
-                parseInt(item.number) === 1
-                  ? `${classes.verseNumber} ${classes.firstVerse}`
-                  : `${classes.verseNumber}`;
-              const verseNo =
-                parseInt(item.number) === 1 ? chapter : item.number;
-              const sectionHeading = getHeading(item.metadata);
-              return (
-                <span key={item.number}>
-                  <span
-                    className={lineViewClass}
-                    onClick={handleVerseClick}
-                    data-verse={item.number}
-                  >
-                    <span className={verseNumberClass}>{verseNo}</span>
-                    <span className={verseClass}> {item.text}</span>
-                  </span>
-                  {sectionHeading && sectionHeading !== "" ? (
-                    <span className={classes.sectionHeading}>
-                      {sectionHeading}
+            <div className={classes.text}>
+              {chapterHeading !== "" ? (
+                <span className={classes.sectionHeading}>{chapterHeading}</span>
+              ) : (
+                ""
+              )}
+              {verses.map((item) => {
+                const verseClass =
+                  selectedVerses.indexOf(parseInt(item.number)) > -1
+                    ? `${classes.verseText} ${classes.selectedVerse}`
+                    : highlights.indexOf(parseInt(item.number)) > -1
+                    ? `${classes.verseText} ${classes.highlight}`
+                    : `${classes.verseText}`;
+                const verseNumberClass =
+                  parseInt(item.number) === 1
+                    ? `${classes.verseNumber} ${classes.firstVerse}`
+                    : `${classes.verseNumber}`;
+                const verseNo =
+                  parseInt(item.number) === 1 ? chapter : item.number;
+                const sectionHeading = getHeading(item.metadata);
+                return (
+                  <span key={item.number}>
+                    <span
+                      className={lineViewClass}
+                      onClick={handleVerseClick}
+                      data-verse={item.number}
+                    >
+                      <span className={verseNumberClass}>{verseNo}</span>
+                      <span className={verseClass}> {item.text}</span>
                     </span>
-                  ) : (
-                    ""
-                  )}
-                </span>
-              );
-            })}
+                    {sectionHeading && sectionHeading !== "" ? (
+                      <span className={classes.sectionHeading}>
+                        {sectionHeading}
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                  </span>
+                );
+              })}
+            </div>
           </div>
           {audio ? (
             <ReactPlayer
@@ -309,6 +314,13 @@ const Bible = (props) => {
               width="96%"
               height="50px"
               className={classes.player}
+              config={{
+                file: {
+                  attributes: {
+                    controlsList: "nodownload",
+                  },
+                },
+              }}
             />
           ) : (
             ""

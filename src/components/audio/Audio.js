@@ -167,6 +167,13 @@ const Audio = (props) => {
                               width="100%"
                               height="50px"
                               className={classes.player}
+                              config={{
+                                file: {
+                                  attributes: {
+                                    controlsList: "nodownload",
+                                  },
+                                },
+                              }}
                             />
                           </ListItem>
                         ) : (
