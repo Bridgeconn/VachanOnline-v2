@@ -92,6 +92,23 @@ const Landing = (props) => {
     }
     setMessage(false);
   };
+  const addLink = () => {
+    return process.env.REACT_APP_DOWNLOAD_URL ? (
+      <Link href={process.env.REACT_APP_DOWNLOAD_URL} target="_blank">
+        <img
+          src={playStore}
+          alt="Get it on play store"
+          className={classes.playStore}
+        />
+      </Link>
+    ) : (
+      <img
+        src={playStore}
+        alt="Get it on play store"
+        className={classes.playStore}
+      />
+    );
+  };
   return (
     <Grid className={classes.body}>
       <PageHeader />
@@ -120,16 +137,7 @@ const Landing = (props) => {
         <Grid item xs={12} md={3} className={classes.rightLinks}>
           <div className={classes.mobileDiv}>
             <img src={mobileImage} alt="Mobile" className={classes.mobile} />
-            <Link
-              href="https://play.google.com/store/apps/details?id=com.bridgeconn.autographago"
-              target="_blank"
-            >
-              <img
-                src={playStore}
-                alt="Get it on play store"
-                className={classes.playStore}
-              />
-            </Link>
+            {addLink()}
             <img
               src={mobileLogo}
               alt="Mobile Logo"

@@ -108,7 +108,11 @@ const Dictionary = (props) => {
   React.useEffect(() => {
     //if word changed, get word meaning
     setDictionaryText("");
-    if (dictionaryWord !== undefined) {
+    if (
+      selectedDictionary.sourceId !== undefined &&
+      dictionaryWord !== undefined &&
+      dictionaryWord.wordId !== undefined
+    ) {
       getDictionaryWord(
         selectedDictionary.sourceId,
         dictionaryWord.wordId,

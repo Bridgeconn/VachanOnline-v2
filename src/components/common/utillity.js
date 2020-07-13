@@ -44,6 +44,9 @@ export const getAllBooks = (setVersionBooks, setValue, langaugeId) => {
   API.get("booknames")
     .then(function (response) {
       for (let item of response.data) {
+        item.bookNames.sort(function (a, b) {
+          return a.book_id - b.book_id;
+        });
         setVersionBooks(item.language.id, item.bookNames);
       }
       if (response.data && response.data.length > 0) {

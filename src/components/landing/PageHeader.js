@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     background: "rgba(0,0,0,0.5)",
+    paddingLeft: 10,
   },
   title: {
     flexGrow: 1,

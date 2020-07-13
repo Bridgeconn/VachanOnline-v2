@@ -123,6 +123,7 @@ const CommentaryCombo = (props) => {
           }}
           transformOrigin={{
             vertical: "top",
+            horizontal: "left",
           }}
           id="commentary-menu"
           anchorEl={anchorEl}
