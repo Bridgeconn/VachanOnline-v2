@@ -171,7 +171,7 @@ const MenuBar = (props) => {
       const languageVersions = versions.find((e) => e.language === language[0]);
       if (languageVersions !== undefined) {
         const version = languageVersions.languageVersions.find(
-          (e) => (e.version.code = language[1])
+          (e) => e.version.code === language[1]
         );
         setValue("languageCode", version.language.code);
         setMetadataList(version.metadata);

@@ -26,8 +26,10 @@ const useStyles = makeStyles((theme) => ({
   text: {
     padding: theme.spacing(1),
     textAlign: "right",
+    display: "inline-block",
+    float: "right",
     [theme.breakpoints.only("xs")]: {
-      textAlign: "center",
+      float: "unset",
     },
   },
   link: {
@@ -43,6 +45,13 @@ const useStyles = makeStyles((theme) => ({
     },
     "&:last-child": {
       borderRight: 0,
+    },
+  },
+  companyLink: {
+    color: "inherit",
+    "&:hover": {
+      color: "inherit",
+      textDecoration: "none",
     },
   },
   button: {
@@ -80,7 +89,7 @@ const LandingFooter = (props) => {
   return (
     <>
       <Grid container className={classes.landingFooter}>
-        <Grid item xs={6} sm={4} className={classes.rightLinks}>
+        <Grid item xs={6} sm={5} className={classes.rightLinks}>
           {/* 
           <Link
             href="#"
@@ -100,7 +109,7 @@ const LandingFooter = (props) => {
             About us
           </Button>
         </Grid>
-        <Grid item xs={6} sm={4}>
+        <Grid item xs={6} sm={2}>
           <Button
             variant="outlined"
             size="small"
@@ -114,8 +123,12 @@ const LandingFooter = (props) => {
             Feedback
           </Button>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Link>
+        <Grid item xs={12} sm={5}>
+          <Link
+            href="https://www.bridgeconn.com/"
+            target="_blank"
+            className={classes.companyLink}
+          >
             <Typography className={classes.text}>
               © 2020 Bridge Connectivity Solutions
             </Typography>

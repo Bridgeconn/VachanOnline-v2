@@ -93,18 +93,22 @@ const Version = (props) => {
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
+  const {
+    setVersions,
+    setValue,
+    setVersionBooks,
+    setVersionSource,
+    versions,
+    version,
+    landingPage,
+  } = props;
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
   React.useEffect(() => {
     //if versions not loaded fetch versions and books for the versions
-    if (props.versions.length === 0) {
-      getVersions(
-        props.setVersions,
-        props.setValue,
-        props.setVersionBooks,
-        props.setVersionSource
-      );
+    if (versions.length === 0) {
+      getVersions(setVersions, setValue, setVersionBooks, setVersionSource);
     }
   });
 
@@ -126,8 +130,8 @@ const Version = (props) => {
   const setVersion = (event) => {
     handleClose();
     let selectedVersion = event.currentTarget;
-    props.setValue("version", selectedVersion.getAttribute("value"));
-    props.setValue("sourceId", selectedVersion.getAttribute("data-sourceid"));
+    setValue("version", selectedVersion.getAttribute("value"));
+    setValue("sourceId", selectedVersion.getAttribute("data-sourceid"));
   };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -139,21 +143,17 @@ const Version = (props) => {
         aria-haspopup="true"
         onClick={handleClick}
         variant="contained"
-        style={
-          props.landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}
-        }
+        style={landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}}
         classes={
-          props.landingPage
+          landingPage
             ? { root: classes.button }
             : { root: classes.button, label: classes.label }
         }
       >
-        {mobile && !props.landingPage
-          ? props.version.split("-")[1]
-          : props.version}
+        {mobile && !landingPage ? version.split("-")[1] : version}
         <i className={`material-icons ${classes.icon}`}>keyboard_arrow_down</i>
       </Button>
-      {props.versions.length === 0 ? (
+      {versions.length === 0 ? (
         ""
       ) : (
         <>
@@ -178,7 +178,7 @@ const Version = (props) => {
               paper: classes.paper,
             }}
           >
-            {props.versions.sort(sortVersionLanguages).map((version, i) => (
+            {versions.sort(sortVersionLanguages).map((version, i) => (
               <ExpansionPanel
                 square
                 expanded={expanded === version.language}
