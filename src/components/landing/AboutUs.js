@@ -59,9 +59,9 @@ const AboutUs = ({ handleClose }) => {
           The Vachan Project
         </Typography>
         <Typography variant="body1" gutterBottom>
-          The Vachan Project is the technology umbrella under which access to
-          free digital scripture engagement resources is being made available to
-          all. As part of this project the
+          The Vachan Project is the technology umbrella under which free access
+          to digital scripture engagement resources is made available to all. As
+          part of this project the
           {addStyle("Vachan Online (www.vachanonline.net)", "bold")} website and
           the {addStyle("Vachan Go", "bold")} companion mobile app have been
           developed for public use. The Vachan Project is an initiative of the

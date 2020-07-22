@@ -28,12 +28,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   favicon: {
-    left: -29,
-    position: "absolute",
-    marginLeft: "50%",
-    "& img": {
-      height: 50,
-    },
     [theme.breakpoints.only("xs")]: {
       display: "none",
     },
@@ -56,11 +50,9 @@ const PageHeader = ({ login, userDetails }) => {
               pathname: "/read",
             }}
           >
+            <img src={favicon} alt="logo" className={classes.favicon} />
             <img src={logo} alt={"logo"} />
           </Link>
-          <span className={classes.favicon}>
-            <img src={favicon} alt="logo" />
-          </span>
           {loginButton}
         </Toolbar>
       </AppBar>

@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import banner from "./images/3.jpg";
+import banner from "../common/images/3.jpg";
 
 const useStyles = makeStyles((theme) => ({
   legend: {

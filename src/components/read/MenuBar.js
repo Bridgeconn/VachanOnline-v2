@@ -113,9 +113,11 @@ const MenuBar = (props) => {
         return;
       } else {
         setHighlightIcon(
-          <div className={classes.info}>
-            <BorderColor fontSize="small" color="disabled" />
-          </div>
+          <Tooltip title="Select Verses">
+            <div className={classes.info}>
+              <BorderColor fontSize="small" color="disabled" />
+            </div>
+          </Tooltip>
         );
       }
     } else {
@@ -140,9 +142,11 @@ const MenuBar = (props) => {
         return;
       } else {
         setNoteIcon(
-          <div className={classes.info}>
-            <NoteIcon fontSize="small" color="disabled" />
-          </div>
+          <Tooltip title="Select Verses">
+            <div className={classes.info}>
+              <NoteIcon fontSize="small" color="disabled" />
+            </div>
+          </Tooltip>
         );
       }
     } else {
@@ -189,9 +193,11 @@ const MenuBar = (props) => {
     };
     if (audioBible && audioBible.url && bookCode in audioBible.books) {
       setAudioIcon(
-        <div className={classes.info} onClick={openAudioBible}>
-          <i className="material-icons md-23">volume_up</i>
-        </div>
+        <Tooltip title="Audio Bible">
+          <div className={classes.info} onClick={openAudioBible}>
+            <i className="material-icons md-23">volume_up</i>
+          </div>
+        </Tooltip>
       );
     } else {
       setValue("audio", false);
