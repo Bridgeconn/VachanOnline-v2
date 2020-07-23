@@ -64,7 +64,9 @@ export const getBookbyCode = (abbreviation) => {
 };
 //Function to get the list of commentaries
 export const getCommentaries = (setValue) => {
-  API.get("commentaries")
+  let key = process.env.REACT_APP_COMMENTARY_KEY;
+  key = key ? "?key=" + key : "";
+  API.get("commentaries" + key)
     .then(function (response) {
       setValue("commentaries", response.data);
     })
@@ -74,7 +76,9 @@ export const getCommentaries = (setValue) => {
 };
 //Function to get the commentary for a chaper
 export const getCommentaryForChaper = (sourceId, book, chapter, setText) => {
-  API.get("commentaries/" + sourceId + "/" + book + "/" + chapter)
+  let key = process.env.REACT_APP_COMMENTARY_KEY;
+  key = key ? "?key=" + key : "";
+  API.get("commentaries/" + sourceId + "/" + book + "/" + chapter + key)
     .then(function (response) {
       setText(response.data);
     })

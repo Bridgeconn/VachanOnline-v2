@@ -110,7 +110,9 @@ const Commentary = (props) => {
     }
     //if MHCC set verse label in english else hindi, needs generic solution
     if (commentary && commentary.code) {
-      setVerseLabel(commentary.code === "MHCC" ? "Verse" : "पद");
+      setVerseLabel(
+        commentary.code === "MHCC" || commentary.code === "BBC" ? "Verse" : "पद"
+      );
     }
     //Scroll to top on text change
     if (textRef.current !== undefined) textRef.current.scrollTo(0, 0);
