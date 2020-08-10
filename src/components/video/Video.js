@@ -4,13 +4,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
-//import { RViewer, RViewerTrigger } from "react-viewerjs";
 import Typography from "@material-ui/core/Typography";
-//import Card from "@material-ui/core/Card";
-//import CardContent from "@material-ui/core/CardContent";
-//import CardMedia from "@material-ui/core/CardMedia";
-//import { connect } from "react-redux";
-//import { getInfographics } from "../common/utillity";
 import ModalVideo from "react-modal-video";
 
 const useStyles = makeStyles((theme) => ({

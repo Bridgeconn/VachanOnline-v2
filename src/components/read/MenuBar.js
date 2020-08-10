@@ -113,9 +113,11 @@ const MenuBar = (props) => {
         return;
       } else {
         setHighlightIcon(
-          <div className={classes.info}>
-            <BorderColor fontSize="small" color="disabled" />
-          </div>
+          <Tooltip title="Select Verses">
+            <div className={classes.info}>
+              <BorderColor fontSize="small" color="disabled" />
+            </div>
+          </Tooltip>
         );
       }
     } else {
@@ -140,9 +142,11 @@ const MenuBar = (props) => {
         return;
       } else {
         setNoteIcon(
-          <div className={classes.info}>
-            <NoteIcon fontSize="small" color="disabled" />
-          </div>
+          <Tooltip title="Select Verses">
+            <div className={classes.info}>
+              <NoteIcon fontSize="small" color="disabled" />
+            </div>
+          </Tooltip>
         );
       }
     } else {
@@ -171,7 +175,7 @@ const MenuBar = (props) => {
       const languageVersions = versions.find((e) => e.language === language[0]);
       if (languageVersions !== undefined) {
         const version = languageVersions.languageVersions.find(
-          (e) => (e.version.code = language[1])
+          (e) => e.version.code === language[1]
         );
         setValue("languageCode", version.language.code);
         setMetadataList(version.metadata);
@@ -189,9 +193,11 @@ const MenuBar = (props) => {
     };
     if (audioBible && audioBible.url && bookCode in audioBible.books) {
       setAudioIcon(
-        <div className={classes.info} onClick={openAudioBible}>
-          <i className="material-icons md-23">volume_up</i>
-        </div>
+        <Tooltip title="Audio Bible">
+          <div className={classes.info} onClick={openAudioBible}>
+            <i className="material-icons md-23">volume_up</i>
+          </div>
+        </Tooltip>
       );
     } else {
       setValue("audio", false);

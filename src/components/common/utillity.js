@@ -25,11 +25,11 @@ export const getVersions = (
           version.language.name + "-" + version.version.code.toUpperCase()
         );
         setValue("sourceId", version.sourceId);
-        getAllBooks(setVersionBooks, setValue, version.language.id);
+        getAllBooks(setVersionBooks, setValue);
         let versionSource = {};
         for (let lang of versions) {
           for (let ver of lang.languageVersions) {
-            versionSource[ver.sourceId] = ver.language.id;
+            versionSource[ver.sourceId] = ver.language.code;
           }
         }
         setVersionSource(versionSource);
@@ -40,14 +40,14 @@ export const getVersions = (
     });
 };
 //Function to get the bible books
-export const getAllBooks = (setVersionBooks, setValue, langaugeId) => {
+export const getAllBooks = (setVersionBooks, setValue) => {
   API.get("booknames")
     .then(function (response) {
       for (let item of response.data) {
         item.bookNames.sort(function (a, b) {
           return a.book_id - b.book_id;
         });
-        setVersionBooks(item.language.id, item.bookNames);
+        setVersionBooks(item.language.code, item.bookNames);
       }
       if (response.data && response.data.length > 0) {
         setValue("bookCode", "jhn");
@@ -64,7 +64,9 @@ export const getBookbyCode = (abbreviation) => {
 };
 //Function to get the list of commentaries
 export const getCommentaries = (setValue) => {
-  API.get("commentaries")
+  let key = process.env.REACT_APP_COMMENTARY_KEY;
+  key = key ? "?key=" + key : "";
+  API.get("commentaries" + key)
     .then(function (response) {
       setValue("commentaries", response.data);
     })
@@ -74,7 +76,9 @@ export const getCommentaries = (setValue) => {
 };
 //Function to get the commentary for a chaper
 export const getCommentaryForChaper = (sourceId, book, chapter, setText) => {
-  API.get("commentaries/" + sourceId + "/" + book + "/" + chapter)
+  let key = process.env.REACT_APP_COMMENTARY_KEY;
+  key = key ? "?key=" + key : "";
+  API.get("commentaries/" + sourceId + "/" + book + "/" + chapter + key)
     .then(function (response) {
       setText(response.data);
     })

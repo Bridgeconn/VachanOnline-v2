@@ -23,17 +23,12 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    "& img": {
-      height: 50,
-    },
+  },
+  logo: {
+    height: 60,
   },
   favicon: {
-    left: -29,
-    position: "absolute",
-    marginLeft: "50%",
-    "& img": {
-      height: 50,
-    },
+    height: 50,
     [theme.breakpoints.only("xs")]: {
       display: "none",
     },
@@ -56,11 +51,9 @@ const PageHeader = ({ login, userDetails }) => {
               pathname: "/read",
             }}
           >
-            <img src={logo} alt={"logo"} />
+            <img src={favicon} alt="logo" className={classes.favicon} />
+            <img src={logo} alt={"logo"} className={classes.logo} />
           </Link>
-          <span className={classes.favicon}>
-            <img src={favicon} alt="logo" />
-          </span>
           {loginButton}
         </Toolbar>
       </AppBar>

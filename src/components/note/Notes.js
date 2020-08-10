@@ -12,6 +12,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddBox from "@material-ui/icons/AddBox";
+import Grid from "@material-ui/core/Grid";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
@@ -68,8 +69,11 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 10px",
     borderBottom: "1px solid gray",
   },
+  lastModified: {
+    color: "#0000008a",
+    paddingTop: 18,
+  },
   formButtons: {
-    margin: "0 10px",
     textAlign: "right",
   },
   button: {
@@ -100,6 +104,7 @@ export default function Notes(props) {
   const [chapterNoteList, setChapterNoteList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
   const [noteText, setNoteText] = React.useState("");
+  const [modifiedTime, setModifiedTime] = React.useState("");
   const [editObject, setEditObject] = React.useState({});
   const [noteReference, setNoteReference] = React.useState({});
   const [addNote, setAddNote] = React.useState(false);
@@ -127,6 +132,7 @@ export default function Notes(props) {
 
   const resetForm = React.useCallback(() => {
     setNoteText("");
+    setModifiedTime("");
     setEditObject({});
     setAddNote(false);
     if (edit) {
@@ -302,6 +308,7 @@ export default function Notes(props) {
     let index = parseInt(element.getAttribute("data-index"));
     let note = notes[sourceId][bookCode][chapter][index];
     setNoteText(note.body);
+    setModifiedTime(note.modifiedTime);
     setEditObject(note);
     let noteReference = {
       sourceId: sourceId,
@@ -379,19 +386,24 @@ export default function Notes(props) {
             onChange={handleNoteTextChange}
             className={classes.noteBody}
           />
-          <div className={classes.formButtons}>
-            <Button className={classes.button} onClick={resetForm}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={saveNote}
-            >
-              Save
-            </Button>
-          </div>
+          <Grid container>
+            <Grid item xs={7} className={classes.lastModified}>
+              Last Modified: {new Date(modifiedTime).toLocaleString()}
+            </Grid>
+            <Grid item xs={5} className={classes.formButtons}>
+              <Button className={classes.button} onClick={resetForm}>
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={saveNote}
+              >
+                Save
+              </Button>
+            </Grid>
+          </Grid>
           <Snackbar
             severity="warning"
             open={alert}

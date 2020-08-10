@@ -107,6 +107,11 @@ const ReadBible = (props) => {
     }
     setParallelView(parallelView === view ? "" : view);
   }
+  const useMountEffect = (func) => React.useEffect(func, []);
+  useMountEffect(() => {
+    //set function in redux to use in Bible.js to open notes pane
+    setValue("setParallelView", setParallelView);
+  });
   //flag to prevent looping of on scroll event
   let ignoreScrollEvents = false;
   //function for moving parallel bibles scroll together
@@ -227,7 +232,7 @@ const ReadBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Commentary book={bookObject.short} />
+              <Commentary />
             </div>
           </>
         );

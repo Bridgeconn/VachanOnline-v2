@@ -2,15 +2,13 @@ import React from "react";
 import BibleIndex from "../landing/BibleIndex";
 import PageHeader from "./PageHeader";
 import Banner from "./Banner";
+import LanguageBar from "./LanguageBar";
 import LandingFooter from "./LandingFooter";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-import mobileLogo from "../common/images/mobileLogo.png";
-import logoBlue from "../common/images/logoBlue.png";
-import website from "./images/website.png";
-import wordCloud from "./images/wordCloud.png";
-import mobileImage from "./images/mobile.png";
-import playStore from "./images/playStore.png";
+import wordCloud from "../common/images/wordCloud.png";
+import mobileImage from "../common/images/mobile.png";
+import playStore from "../common/images/playStore.png";
 import Snackbar from "@material-ui/core/Snackbar";
 import Link from "@material-ui/core/Link";
 import Alert from "@material-ui/lab/Alert";
@@ -35,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 20,
     },
     "& img": {
-      width: "95%",
-      marginLeft: "3%",
+      width: "90%",
+      marginLeft: "5%",
       [theme.breakpoints.only("md")]: {
         width: "80%",
         marginLeft: "10%",
@@ -63,29 +61,35 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "2px 2px 3px #968e8e",
     display: "inline-block",
   },
-  mobileLogo: {
-    width: "53%",
-    margin: "auto",
-    display: "block",
-    [theme.breakpoints.down("sm")]: {
-      width: "50%",
-    },
-  },
   playStore: {
     width: "25%",
-    margin: "0 10%",
+    margin: "0 7%",
     display: "inline-block",
   },
   mobileDiv: {
-    marginBottom: 90,
+    marginBottom: 110,
     textAlign: "center",
+  },
+  points: {
+    marginTop: 15,
+    margin: "auto",
+    maxWidth: 500,
+    listStyleType: "none",
+    "& li": {
+      paddingTop: 10,
+      fontSize: "1.3rem",
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "1.3em",
+      },
+    },
   },
 }));
 
-const Landing = (props) => {
+const Landing = () => {
   const classes = useStyles();
   const mobile = detectMob();
   const [message, setMessage] = React.useState(mobile);
+  const [language, setLanguage] = React.useState("English");
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -112,23 +116,18 @@ const Landing = (props) => {
   return (
     <Grid className={classes.body}>
       <PageHeader />
-      <Banner mobile={mobile} />
+      {!mobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
+      <Banner language={language} />
       <BibleIndex />
       <Grid container className={classes.landingFooter}>
-        {mobile ? (
-          ""
-        ) : (
-          <Grid item xs={12} md={3} className={classes.rightLinks}>
-            <div>
-              <img src={website} alt="Website" className={classes.website} />
-              <img
-                src={logoBlue}
-                alt="Website Logo"
-                className={classes.websiteLogo}
-              />
-            </div>
-          </Grid>
-        )}
+        <Grid item xs={12} md={3} className={classes.rightLinks}>
+          <ul className={classes.points}>
+            <li>Access Bible Resources in Indian Languages</li>
+            <li>Highlight, Bookmark and Journal your meditation</li>
+            <li>Personalize, Search and Share</li>
+            <li>Seamlessly integrate with companion app</li>
+          </ul>
+        </Grid>
         <Grid item xs={12} md={6} className={classes.rightLinks}>
           <div className={classes.wordCloud}>
             <img src={wordCloud} alt="words in 12 gateway languages" />
@@ -138,11 +137,6 @@ const Landing = (props) => {
           <div className={classes.mobileDiv}>
             <img src={mobileImage} alt="Mobile" className={classes.mobile} />
             {addLink()}
-            <img
-              src={mobileLogo}
-              alt="Mobile Logo"
-              className={classes.mobileLogo}
-            />
           </div>
         </Grid>
       </Grid>

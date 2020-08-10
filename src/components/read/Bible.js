@@ -3,7 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
+import NoteIcon from "@material-ui/icons/NoteOutlined";
+import { NOTE } from "../../store/views";
 import API from "../../store/api";
+import GetChapterNotes from "../note/GetChapterNotes";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -122,6 +125,8 @@ const Bible = (props) => {
   const [padding, setPadding] = React.useState(
     window.innerWidth > 1200 ? (window.innerWidth - 1200) / 2 : 20
   );
+  const [notes, setNotes] = React.useState([]);
+  const [fetchData, setFetchData] = React.useState();
 
   let {
     sourceId,
@@ -141,6 +146,7 @@ const Bible = (props) => {
     highlights,
     userDetails,
     syncPanel,
+    setParallelView,
   } = props;
   const styleProps = { padding: padding, singlePane: singlePane };
   const classes = useStyles(styleProps);
@@ -243,6 +249,27 @@ const Bible = (props) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [singlePane]);
+  React.useEffect(() => {
+    //If user Logged in fetch data using GetChapterNotes
+    if (
+      userDetails.uid !== null &&
+      sourceId !== "" &&
+      bookCode !== "" &&
+      chapter !== ""
+    ) {
+      setFetchData(
+        <GetChapterNotes
+          uid={userDetails.uid}
+          sourceId={sourceId}
+          bookCode={bookCode}
+          chapter={chapter}
+          setNotes={setNotes}
+        />
+      );
+    } else {
+      setNotes([]);
+    }
+  }, [bookCode, chapter, sourceId, userDetails]);
   const lineViewClass = lineView ? classes.lineView : "";
   return (
     <div
@@ -254,6 +281,7 @@ const Bible = (props) => {
     >
       {!isLoading && loadingText !== "Book not uploaded" ? (
         <div>
+          {fetchData}
           <div
             onScroll={() => {
               scrollText();
@@ -287,13 +315,21 @@ const Bible = (props) => {
                 const sectionHeading = getHeading(item.metadata);
                 return (
                   <span key={item.number}>
-                    <span
-                      className={lineViewClass}
-                      onClick={handleVerseClick}
-                      data-verse={item.number}
-                    >
-                      <span className={verseNumberClass}>{verseNo}</span>
-                      <span className={verseClass}> {item.text}</span>
+                    <span className={lineViewClass}>
+                      <span onClick={handleVerseClick} data-verse={item.number}>
+                        <span className={verseNumberClass}>{verseNo}</span>
+                        <span className={verseClass}> {item.text}</span>
+                      </span>
+                      {/*If verse has note then show note icon to open notes pane */}
+                      {notes && notes.includes(parseInt(verseNo)) ? (
+                        <NoteIcon
+                          fontSize="small"
+                          color="disabled"
+                          onClick={() => setParallelView(NOTE)}
+                        />
+                      ) : (
+                        ""
+                      )}
                     </span>
                     {sectionHeading && sectionHeading !== "" ? (
                       <span className={classes.sectionHeading}>
@@ -363,6 +399,7 @@ const mapStateToProps = (state) => {
   return {
     parallelScroll: state.local.parallelScroll,
     userDetails: state.local.userDetails,
+    setParallelView: state.local.setParallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -23,6 +23,7 @@ const defaultState = {
     email: null,
     photoURL: null,
   },
+  setParallelView: null,
   panel1: {
     version: "Loading...",
     sourceId: "",

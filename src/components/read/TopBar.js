@@ -11,6 +11,9 @@ import Login from "../login/Login";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
 import LoginMenu from "../login/LoginMenu";
+import IconButton from "@material-ui/core/IconButton";
+import FeedbackIcon from "@material-ui/icons/Feedback";
+import Tooltip from "@material-ui/core/Tooltip";
 import { BLUE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,9 +41,15 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "none",
       lineHeight: "75px",
     },
-    "& img": {
-      height: 50,
+  },
+  icon: {
+    height: 50,
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
     },
+  },
+  logo: {
+    height: 60,
   },
   search: {
     position: "relative",
@@ -86,20 +95,18 @@ const useStyles = makeStyles((theme) => ({
     borderColor: "white",
     backgroundColor: "#007bff",
   },
-
   form: {
     display: "inline-block",
     marginTop: 7,
     float: "right",
     lineHeight: "72px",
   },
-  icon: {
-    position: "absolute",
-    left: -32,
-    marginLeft: "50%",
-    lineHeight: "75px",
-    [theme.breakpoints.only("xs")]: {
-      display: "none",
+  feedback: {
+    color: "#e0e0e0",
+    marginRight: 4,
+    marginTop: 2,
+    "&:hover": {
+      color: "#d0d0d0",
     },
   },
 }));
@@ -150,11 +157,9 @@ export default function TopBar({
           <div className={classes.title}>
             <Link to="/">
               {" "}
-              <img src={logo} alt={"logo"} />{" "}
+              <img src={favicon} alt={"icon"} className={classes.icon} />
+              <img src={logo} alt={"logo"} className={classes.logo} />{" "}
             </Link>
-            <span className={classes.icon}>
-              <img src={favicon} alt={"icon"} />
-            </span>
             {parallelView === views.PARALLELBIBLE ? (
               <FormGroup className={classes.form}>
                 <FormControlLabel
@@ -174,6 +179,17 @@ export default function TopBar({
             )}
             {/* <SerachBox /> */}
           </div>
+          <Tooltip title="Feedback">
+            <IconButton
+              aria-label="feedback"
+              className={classes.feedback}
+              href="https://docs.google.com/forms/d/e/1FAIpQLSd75swOEtsvWrzcQrynmCsu-ZZYktWbeeJXVxH7zNz-JIlEdA/viewform?usp=sf_link"
+              target="_blank"
+              rel="noopener"
+            >
+              <FeedbackIcon />
+            </IconButton>
+          </Tooltip>
           {loginButton}
         </Toolbar>
       </AppBar>

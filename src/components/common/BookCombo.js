@@ -167,7 +167,7 @@ const BookCombo = ({
       let book = bookList.find((element) => element.book_code === bookCode);
       setBook(book.short);
     }
-  }, [bookList, bookCode, setValue]);
+  }, [bookList, bookCode]);
   //function to set book once its clicked and open the chapter list for it
   function bookClicked(event) {
     let index = parseInt(event.currentTarget.getAttribute("data-count"));

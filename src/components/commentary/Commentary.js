@@ -78,7 +78,9 @@ const Commentary = (props) => {
   const [commentaryText, setCommentaryText] = React.useState("");
   const [commentaryObject, setCommentaryObject] = React.useState([]);
   const [verseLabel, setVerseLabel] = React.useState("Verse");
-  let { panel1, commentaries, setCommentary, commentary, book } = props;
+  const [book, setBook] = React.useState("");
+  const [bookNames, setBookNames] = React.useState([]);
+  let { panel1, commentaries, setCommentary, commentary, versionBooks } = props;
   let { version, bookCode, chapter } = panel1;
 
   const textRef = React.useRef();
@@ -97,6 +99,33 @@ const Commentary = (props) => {
       setCommentary(comm);
     }
   }, [version, commentary, commentaries, setCommentary]);
+  React.useEffect(() => {
+    if (bookNames) {
+      let bookObject = bookNames.find(
+        (element) => element.book_code === bookCode
+      );
+      if (bookObject) {
+        setBook(bookObject.short);
+      }
+    }
+  }, [bookCode, bookNames]);
+  React.useEffect(() => {
+    //Set bookNames based on commentary language
+    if (Object.entries(commentary).length !== 0 && commentaries) {
+      let langObject = commentaries.find((lang) => {
+        let bool = lang.commentaries.some((c) => {
+          return c.code === commentary.code;
+        });
+        return bool;
+      });
+      setBookNames(versionBooks[langObject.languageCode]);
+      //Set verse label
+      let label = "Verse";
+      const verseLabels = { english: "Verse", hindi: "पद" };
+      label = verseLabels[langObject.language] || label;
+      setVerseLabel(label);
+    }
+  }, [commentaries, commentary, versionBooks]);
 
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
@@ -107,10 +136,6 @@ const Commentary = (props) => {
         chapter,
         setCommentaryObject
       );
-    }
-    //if MHCC set verse label in english else hindi, needs generic solution
-    if (commentary && commentary.code) {
-      setVerseLabel(commentary.code === "MHCC" ? "Verse" : "पद");
     }
     //Scroll to top on text change
     if (textRef.current !== undefined) textRef.current.scrollTo(0, 0);
@@ -177,6 +202,7 @@ const mapStateToProps = (state) => {
     commentaries: state.local.commentaries,
     commentary: state.local.commentary,
     panel1: state.local.panel1,
+    versionBooks: state.local.versionBooks,
   };
 };
 const mapDispatchToProps = (dispatch) => {
