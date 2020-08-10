@@ -106,7 +106,7 @@ const LandingFooter = (props) => {
             className={classes.button}
             onClick={openModal}
           >
-            About us
+            About Us
           </Button>
         </Grid>
         <Grid item xs={6} sm={2}>

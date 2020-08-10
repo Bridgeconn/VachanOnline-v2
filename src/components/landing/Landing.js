@@ -2,6 +2,7 @@ import React from "react";
 import BibleIndex from "../landing/BibleIndex";
 import PageHeader from "./PageHeader";
 import Banner from "./Banner";
+import LanguageBar from "./LanguageBar";
 import LandingFooter from "./LandingFooter";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -84,10 +85,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Landing = (props) => {
+const Landing = () => {
   const classes = useStyles();
   const mobile = detectMob();
   const [message, setMessage] = React.useState(mobile);
+  const [language, setLanguage] = React.useState("English");
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -114,7 +116,8 @@ const Landing = (props) => {
   return (
     <Grid className={classes.body}>
       <PageHeader />
-      <Banner mobile={mobile} />
+      {!mobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
+      <Banner language={language} />
       <BibleIndex />
       <Grid container className={classes.landingFooter}>
         <Grid item xs={12} md={3} className={classes.rightLinks}>

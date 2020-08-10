@@ -59,7 +59,7 @@ const BibleIndex = (props) => {
     <div className={classes.container}>
       <Paper className={classes.bibleIndex}>
         <Typography variant="h5" gutterBottom className={classes.heading}>
-          Read Bible
+          Read the Bible in your Language
         </Typography>
         <Version
           setValue={props.setValue}
