@@ -4,10 +4,10 @@ import PageHeader from "./PageHeader";
 import Banner from "./Banner";
 import LanguageBar from "./LanguageBar";
 import LandingFooter from "./LandingFooter";
+import ImageSlider from "./ImageSlider";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-import wordCloud from "../common/images/wordCloud.png";
-import mobileImage from "../common/images/mobile.png";
+import screenshot from "../common/images/screenshot.png";
 import playStore from "../common/images/playStore.png";
 import Snackbar from "@material-ui/core/Snackbar";
 import Link from "@material-ui/core/Link";
@@ -18,28 +18,6 @@ import "./Landing.css";
 const useStyles = makeStyles((theme) => ({
   body: {
     backgroundColor: "white",
-  },
-  wordCloud: {
-    position: "relative",
-    top: -20,
-    left: 20,
-    [theme.breakpoints.up("md")]: {
-      marginBottom: 55,
-    },
-    [theme.breakpoints.down("sm")]: {
-      top: "unset",
-      left: "unset",
-      marginTop: 20,
-      marginBottom: 20,
-    },
-    "& img": {
-      width: "90%",
-      marginLeft: "5%",
-      [theme.breakpoints.only("md")]: {
-        width: "80%",
-        marginLeft: "10%",
-      },
-    },
   },
   website: {
     width: "85%",
@@ -55,18 +33,17 @@ const useStyles = makeStyles((theme) => ({
       width: "60%",
     },
   },
-  mobile: {
-    width: "25%",
-    border: "1px solid #000000a1",
-    boxShadow: "2px 2px 3px #968e8e",
+  screenshot: {
+    width: "90%",
     display: "inline-block",
+    marginBottom: 30,
   },
   playStore: {
     width: "25%",
     margin: "0 7%",
     display: "inline-block",
   },
-  mobileDiv: {
+  screenshotDiv: {
     marginBottom: 110,
     textAlign: "center",
   },
@@ -120,22 +97,17 @@ const Landing = () => {
       <Banner language={language} />
       <BibleIndex />
       <Grid container className={classes.landingFooter}>
-        <Grid item xs={12} md={3} className={classes.rightLinks}>
-          <ul className={classes.points}>
-            <li>Access Bible Resources in Indian Languages</li>
-            <li>Highlight, Bookmark and Journal your meditation</li>
-            <li>Personalize, Search and Share</li>
-            <li>Seamlessly integrate with companion app</li>
-          </ul>
+        <Grid item xs={12} md={5} className={classes.rightLinks}>
+          <ImageSlider />
         </Grid>
-        <Grid item xs={12} md={6} className={classes.rightLinks}>
-          <div className={classes.wordCloud}>
-            <img src={wordCloud} alt="words in 12 gateway languages" />
-          </div>
-        </Grid>
-        <Grid item xs={12} md={3} className={classes.rightLinks}>
-          <div className={classes.mobileDiv}>
-            <img src={mobileImage} alt="Mobile" className={classes.mobile} />
+        <Grid item xs={12} md={2} className={classes.rightLinks}></Grid>
+        <Grid item xs={12} md={5} className={classes.rightLinks}>
+          <div className={classes.screenshotDiv}>
+            <img
+              src={screenshot}
+              alt="Screenshot"
+              className={classes.screenshot}
+            />
             {addLink()}
           </div>
         </Grid>

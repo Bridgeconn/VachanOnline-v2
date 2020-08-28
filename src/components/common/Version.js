@@ -50,20 +50,17 @@ const useStyles = makeStyles((theme) => ({
   expansionDetails: {
     backgroundColor: "#ffffff",
     boxShadow: "none",
-    padding: "0 0 0 20px",
+    padding: "0 0 0 8px",
     width: "100%",
   },
   summaryPanel: {
     textTransform: "capitalize",
     borderBottom: "1px solid #b7b7b726",
+    minHeight: 40,
+    maxHeight: 40,
     "&$expanded": {
-      minHeight: 50,
-    },
-  },
-  content: {
-    margin: "10px 0",
-    "&$expanded": {
-      margin: "12px 0",
+      minHeight: 40,
+      maxHeight: 40,
     },
   },
   icon: {
@@ -85,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       justifyContent: "unset",
     },
+  },
+  expansionDetailsRoot: {
+    padding: 0,
   },
 }));
 const Version = (props) => {
@@ -194,14 +194,17 @@ const Version = (props) => {
                   classes={{
                     root: classes.summaryPanel,
                     expanded: classes.expanded,
-                    content: classes.content,
                   }}
                 >
                   <Typography className={classes.language}>
                     {version.language}
                   </Typography>
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails style={{ padding: 0 }}>
+                <ExpansionPanelDetails
+                  classes={{
+                    root: classes.expansionDetailsRoot,
+                  }}
+                >
                   <List className={classes.expansionDetails}>
                     {version.languageVersions.map((item, i) => (
                       <ListItem

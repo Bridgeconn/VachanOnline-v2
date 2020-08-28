@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
+import Tooltip from "@material-ui/core/Tooltip";
 import { NOTE } from "../../store/views";
 import API from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
@@ -365,32 +366,36 @@ const Bible = (props) => {
       ) : (
         <h3 className={classes.loading}>{loadingText}</h3>
       )}
-      <div
-        color="default"
-        aria-label="Add"
-        className={classes.prevChapter}
-        onClick={prevClick}
-      >
-        <i
-          className="material-icons material"
-          style={{ fontSize: "38px", color: "#555555", opacity: 0.7 }}
+      <Tooltip title="Previous Chapter">
+        <div
+          color="default"
+          aria-label="Add"
+          className={classes.prevChapter}
+          onClick={prevClick}
         >
-          navigate_before
-        </i>
-      </div>
-      <div
-        color="default"
-        aria-label="Add"
-        className={classes.nextChapter}
-        onClick={nextClick}
-      >
-        <i
-          className="material-icons material"
-          style={{ fontSize: "38px", color: "#555555", opacity: 0.7 }}
+          <i
+            className="material-icons material"
+            style={{ fontSize: "38px", color: "#555555", opacity: 0.7 }}
+          >
+            navigate_before
+          </i>
+        </div>
+      </Tooltip>
+      <Tooltip title="Next Chapter">
+        <div
+          color="default"
+          aria-label="Add"
+          className={classes.nextChapter}
+          onClick={nextClick}
         >
-          keyboard_arrow_right
-        </i>
-      </div>
+          <i
+            className="material-icons material"
+            style={{ fontSize: "38px", color: "#555555", opacity: 0.7 }}
+          >
+            keyboard_arrow_right
+          </i>
+        </div>
+      </Tooltip>
     </div>
   );
 };
