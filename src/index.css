@@ -1,3 +1,98 @@
+@font-face {
+  font-family: "Baloo Bhaina2";
+  src: local("BalooBhaina2"), url(./fonts/BalooBhaina2.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0B00-0B7F;
+}
+@font-face {
+  font-family: "Gautami";
+  src: local("Gautami"), url(./fonts/Gautami.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0C00-0C7F;
+}
+@font-face {
+  font-family: "Gurbani Lipi";
+  src: local("GurbaniLipi"), url(./fonts/GurbaniLipi.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0A00-0A7F;
+}
+@font-face {
+  font-family: "Kalinga";
+  src: local("Kalinga"), url(./fonts/Kalinga.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0B00-0B7F;
+}
+@font-face {
+  font-family: "Kartika";
+  src: local("Kartika"), url(./fonts/Kartika.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0CD00-0D7F;
+}
+@font-face {
+  font-family: "Kedage";
+  src: local("Kedage"), url(./fonts/Kedage.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0C80-0CFF;
+}
+@font-face {
+  font-family: "Kruti Dev";
+  src: local("KrutiDev"), url(./fonts/KrutiDev.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0900-097F;
+}
+@font-face {
+  font-family: "Latha";
+  src: local("Latha"), url(./fonts/Latha.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0B80-0BFF;
+}
+@font-face {
+  font-family: "Mukti";
+  src: local("Mukti"), url(./fonts/Mukti.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0980-09FF;
+}
+@font-face {
+  font-family: "Nikosh";
+  src: local("Nikosh"), url(./fonts/Nikosh.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0980-09FF;
+}
+@font-face {
+  font-family: "Noto Serif Devanagari";
+  src: local("NotoSerifDevanagari"),
+    url(./fonts/NotoSerifDevanagari.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0900-097F;
+}
+@font-face {
+  font-family: "Noto Serif Malayalam";
+  src: local("NotoSerifMalayalam"),
+    url(./fonts/NotoSerifMalayalam.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0D00-0D7F;
+}
+@font-face {
+  font-family: "Noto Serif Tamil";
+  src: local("NotoSerifTamil"),
+    url(./fonts/NotoSerifTamil.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0B80-0BFF;
+}
+@font-face {
+  font-family: "Noto Serif Telugu";
+  src: local("NotoSerifTelugu"),
+    url(./fonts/NotoSerifTelugu.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0C00-0C7F;
+}
+@font-face {
+  font-family: "Raavi";
+  src: local("Raavi"), url(./fonts/Raavi.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0A00-0A7F;
+}
+@font-face {
+  font-family: "Rekha";
+  src: local("Rekha"), url(./fonts/Rekha.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0A80-0AFF;
+}
+@font-face {
+  font-family: "Shruti";
+  src: local("Shruti"), url(./fonts/Shruti.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0A80-0AFF;
+}
+@font-face {
+  font-family: "Tunga";
+  src: local("Tunga"), url(./fonts/Tunga.ttf) format("truetype");
+  unicode-range: U+00-FF, U+0C80-0CFF;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

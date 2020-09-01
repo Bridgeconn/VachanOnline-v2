@@ -114,8 +114,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Bible = (props) => {
-  const fontFamily =
-    props.fontFamily === "Sans" ? "Roboto,Noto Sans" : "Roboto Slab,Martel";
   const [verses, setVerses] = React.useState([]);
   const [chapterHeading, setChapterHeading] = React.useState("");
   const [loadingText, setLoadingText] = React.useState("Loading");
@@ -128,11 +126,14 @@ const Bible = (props) => {
   );
   const [notes, setNotes] = React.useState([]);
   const [fetchData, setFetchData] = React.useState();
+  const [font, setFont] = React.useState("");
 
   let {
     sourceId,
     bookCode,
     chapter,
+    version,
+    fontFamily,
     audio,
     audioBible,
     setValue,
@@ -161,6 +162,44 @@ const Bible = (props) => {
       }
     }
   };
+  React.useEffect(() => {
+    if (version !== "Loading...") {
+      let language = version.split("-")[0];
+      console.log(language);
+      const sans = {
+        assamese: "Mukti",
+        bengali: "Mukti",
+        gujarati: "Shruti",
+        hindi: "Kruti Dev",
+        kannada: "Tunga",
+        malayalam: "Kartika",
+        marathi: "Kruti Dev",
+        punjabi: "Raavi",
+        odia: "Kalinga",
+        tamil: "Latha",
+        telugu: "Gautami",
+        urdu: "Kruti Dev",
+        english: "Roboto,Noto Sans",
+      };
+      const serif = {
+        assamese: "Nikosh",
+        bengali: "Nikosh",
+        gujarati: "Rekha",
+        hindi: "Noto Serif Devanagari",
+        kannada: "Kedage",
+        malayalam: "Noto Serif Malayalam",
+        marathi: "Noto Serif Devanagari",
+        punjabi: "Gurbani Lipi",
+        odia: "Baloo Bhaina2",
+        tamil: "Noto Serif Tamil",
+        telugu: "Noto Serif Telugu",
+        urdu: "Noto Serif Devanagari",
+        english: "Roboto Slab,Martel",
+      };
+      console.log(fontFamily === "Sans" ? sans[language] : serif[language]);
+      setFont(fontFamily === "Sans" ? sans[language] : serif[language]);
+    }
+  }, [version, fontFamily]);
   React.useEffect(() => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
@@ -276,7 +315,7 @@ const Bible = (props) => {
     <div
       className={classes.biblePanel}
       style={{
-        fontFamily: fontFamily,
+        fontFamily: font,
         fontSize: fontSize,
       }}
     >
