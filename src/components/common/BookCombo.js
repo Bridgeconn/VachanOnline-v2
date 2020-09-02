@@ -40,15 +40,15 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "relative",
     maxHeight: "calc(100vh - 150px)",
-    width: 355,
+    width: 358,
     backgroundColor: "#eaeaea",
     color: "#2a2a2a",
   },
   book: {
-    margin: "4px 4px 4px 12px",
+    margin: "3px 3px 4px 6px",
     paddingBottom: 1,
     display: "inline-block",
-    width: 150,
+    width: 160,
     transition: "width 500ms ease-out, height 500ms ease-out",
     textAlign: "center",
     padding: "0px 0px",
@@ -77,11 +77,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
   },
   chapter: {
-    margin: "0 0 5px 5px",
+    margin: "0 0 3px 3px",
     display: "inline-block",
-    width: 50,
+    width: 45,
     border: "1px solid #ccc",
     textAlign: "center",
+    padding: "8px 0",
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
   openChapter: {
@@ -298,7 +299,8 @@ const BookCombo = ({
                       >
                         {selectedChapterList.map((chapterObject, i) => {
                           var chapterActive =
-                            chapterObject.number === chapter
+                            bookOpened === bookCode &&
+                            chapterObject.number === parseInt(chapter)
                               ? classes.openChapter
                               : "";
                           return (

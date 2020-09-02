@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "5px 15px",
     marginTop: 40,
     textAlign: "center",
+    zIndex: 1000,
     "&div": {
       display: "inline-block",
       paddingTop: theme.spacing(3),

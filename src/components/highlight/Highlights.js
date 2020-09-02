@@ -87,7 +87,7 @@ const Highlights = (props) => {
   );
   //When data comes from firebase put in highlightList
   React.useEffect(() => {
-    if (isLoaded(highlights)) {
+    if (isLoaded(highlights) && versionData) {
       if (!isEmpty(highlights)) {
         let list = [];
         for (let [sourceId, books] of Object.entries(highlights)) {
@@ -109,15 +109,17 @@ const Highlights = (props) => {
             }
           }
         }
-        list.sort(function (a, b) {
+        //remove sources which are no longer there
+        let result = list.filter((a) => versionData[a.sourceId]);
+        result.sort(function (a, b) {
           return (
             a.bookId - b.bookId || a.chapter - b.chapter || a.verse - b.verse
           );
         });
-        setHighlightList(list);
+        setHighlightList(result);
       }
     }
-  }, [highlights]);
+  }, [highlights, versionData]);
 
   //Open highlight reference
   const openHighlight = (event) => {

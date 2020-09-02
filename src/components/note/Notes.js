@@ -287,17 +287,19 @@ export default function Notes(props) {
             }
           }
         }
-        list.sort(function (a, b) {
+        //remove sources which are no longer there
+        let result = list.filter((a) => versionData[a.sourceId]);
+        result.sort(function (a, b) {
           return (
             a.bookId - b.bookId ||
             a.chapter - b.chapter ||
             a.verse.split(",")[0] - b.verse.split(",")[0]
           );
         });
-        setNoteList(list);
+        setNoteList(result);
       }
     }
-  }, [notes]);
+  }, [notes, versionData]);
 
   //Edit Note
   const editNote = (event) => {

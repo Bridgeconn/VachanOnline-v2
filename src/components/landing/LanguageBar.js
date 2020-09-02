@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarSecondary: {
     color: "#fff",
-    backgroundColor: "#3f3f3f50",
+    backgroundColor: "#02020279",
     minHeight: 40,
   },
   toolbarLink: {

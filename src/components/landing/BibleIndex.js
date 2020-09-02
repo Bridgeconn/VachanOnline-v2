@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     marginBottom: -30,
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: -10,
+    },
   },
   bibleIndex: {
     margin: "auto",
@@ -22,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     bottom: 70,
     height: "auto",
     padding: "15px 30px",
-    boxShadow: "2px 2px 3px #968e8e",
     backgroundColor: BLUE,
     [theme.breakpoints.down("xs")]: {
       bottom: 25,
@@ -59,7 +61,7 @@ const BibleIndex = (props) => {
     <div className={classes.container}>
       <Paper className={classes.bibleIndex}>
         <Typography variant="h5" gutterBottom className={classes.heading}>
-          Read the Bible in your Language
+          Study the Bible in your Language
         </Typography>
         <Version
           setValue={props.setValue}

@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Popover from "@material-ui/core/Popover";
 import Snackbar from "@material-ui/core/Snackbar";
+import Collapse from "@material-ui/core/Collapse";
 import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
   links: {
     marginTop: 10,
   },
+  message: {
+    position: "relative",
+    bottom: 20,
+  },
 }));
 
 const Login = (props) => {
@@ -61,6 +66,7 @@ const Login = (props) => {
   const [form, setForm] = React.useState(1);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
+  const [messageOpen, setMessageOpen] = React.useState(false);
 
   const open = Boolean(anchorEl);
 
@@ -229,8 +235,9 @@ const Login = (props) => {
   React.useEffect(() => {
     if (openLogin) {
       openForm();
-      setAlert("info");
-      setMessage("Sign in to use this feature");
+      //show alert message in login popup for 5 seconds and hide
+      setMessageOpen(true);
+      window.setTimeout(() => setMessageOpen(false), 5000);
       setValue("openLogin", false);
     }
   }, [openLogin, setValue]);
@@ -290,6 +297,15 @@ const Login = (props) => {
               <CssBaseline />
               {form === 1 ? (
                 <div className={classes.paper}>
+                  <Collapse in={messageOpen} className={classes.message}>
+                    <Alert
+                      variant="filled"
+                      onClose={() => setMessageOpen(false)}
+                      severity="error"
+                    >
+                      Sign in to use this feature
+                    </Alert>
+                  </Collapse>
                   <Typography component="h1" variant="h5">
                     Sign in
                   </Typography>
