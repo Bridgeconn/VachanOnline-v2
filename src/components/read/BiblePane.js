@@ -88,7 +88,7 @@ const BiblePane = ({
   }, [userDetails, sourceId, bookCode, chapter, setHighlights]);
   function highlightClick() {
     const newHighlights = !highlighted
-      ? highlights.concat(selectedVerses)
+      ? Array.from(new Set(highlights.concat(selectedVerses))).sort()
       : highlights.filter((a) => selectedVerses.indexOf(parseInt(a)) === -1);
     return firebase
       .ref(
