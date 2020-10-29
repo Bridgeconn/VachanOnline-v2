@@ -51,7 +51,7 @@ export default function Banner({ language }) {
     हिंदी: [
       "तेरा वचन मेरे पाँव के लिये दीपक,",
       "और मेरे मार्ग के लिये उजियाला है।",
-      "Kruti Dev",
+      "Noto Sans Devanagari",
     ],
     ಕನ್ನಡ: [
       "ನಿನ್ನ ವಾಕ್ಯವು ನನ್ನ ಕಾಲಿಗೆ ದೀಪವೂ,",
@@ -66,7 +66,7 @@ export default function Banner({ language }) {
     मराठी: [
       "तुझे वचन माझ्या पावलाकरता दिवा आहे,",
       "आणि माझ्या मार्गासाठी प्रकाश आहे.",
-      "Kruti Dev",
+      "Noto Sans Devanagari",
     ],
     ଓଡିଆ: [
       "ତୁମ୍ଭ ବାକ୍ୟ ମୋ’ ଚରଣ ପାଇଁ ପ୍ରଦୀପ",
@@ -87,7 +87,7 @@ export default function Banner({ language }) {
     اردو: [
       "तेरा कलाम मेरे क़दमों के लिए चराग़,",
       "और मेरी राह के लिए रोशनी है।",
-      "Kruti Dev",
+      "Noto Sans Devanagari",
     ],
   };
   return (

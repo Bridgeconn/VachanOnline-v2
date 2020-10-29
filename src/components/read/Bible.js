@@ -165,20 +165,19 @@ const Bible = (props) => {
   React.useEffect(() => {
     if (version !== "Loading...") {
       let language = version.split("-")[0];
-      console.log(language);
       const sans = {
         assamese: "Mukti",
         bengali: "Mukti",
         gujarati: "Shruti",
-        hindi: "Kruti Dev",
+        hindi: "Noto Sans Devanagari",
         kannada: "Tunga",
         malayalam: "Kartika",
-        marathi: "Kruti Dev",
+        marathi: "Noto Sans Devanagari",
         punjabi: "Raavi",
         odia: "Kalinga",
         tamil: "Latha",
         telugu: "Gautami",
-        urdu: "Kruti Dev",
+        urdu: "Noto Sans Devanagari",
         english: "Roboto,Noto Sans",
       };
       const serif = {
@@ -196,7 +195,6 @@ const Bible = (props) => {
         urdu: "Noto Serif Devanagari",
         english: "Roboto Slab,Martel",
       };
-      console.log(fontFamily === "Sans" ? sans[language] : serif[language]);
       setFont(fontFamily === "Sans" ? sans[language] : serif[language]);
     }
   }, [version, fontFamily]);

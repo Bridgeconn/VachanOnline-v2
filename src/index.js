@@ -6,7 +6,7 @@ import "./fonts/GurbaniLipi.ttf";
 import "./fonts/Kalinga.ttf";
 import "./fonts/Kartika.ttf";
 import "./fonts/Kedage.ttf";
-import "./fonts/KrutiDev.ttf";
+import "./fonts/NotoSans.ttf";
 import "./fonts/Latha.ttf";
 import "./fonts/Mukti.ttf";
 import "./fonts/Nikosh.ttf";

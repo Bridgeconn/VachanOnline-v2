@@ -82,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
   addNote: {
     padding: theme.spacing(1),
   },
+  addNoteDisabled: {
+    position: "relative",
+    bottom: 5,
+  },
   noteBody: {
     "& textarea": {
       maxHeight: 114,
@@ -169,9 +173,12 @@ export default function Notes(props) {
           verses: versesSelected.sort((a, b) => parseInt(a) - parseInt(b)),
         };
     let notesArray =
-      notes && notes[sourceId] && notes[sourceId][bookCode]
+      notes &&
+      notes[sourceId] &&
+      notes[sourceId][bookCode] &&
+      notes[sourceId][bookCode][chapter]
         ? notes[sourceId][bookCode][chapter]
-        : [] || [];
+        : [];
     edit
       ? (notesArray[noteReference.index] = noteObject)
       : notesArray.push(noteObject);
@@ -363,9 +370,13 @@ export default function Notes(props) {
             </IconButton>
           </Tooltip>
         ) : (
-          <IconButton aria-label="add" className={classes.addNote} disabled>
-            <AddBox />
-          </IconButton>
+          <Tooltip title="Select Verses">
+            <div className={classes.addNoteDisabled}>
+              <IconButton aria-label="add" className={classes.addNote} disabled>
+                <AddBox />
+              </IconButton>
+            </div>
+          </Tooltip>
         )}
       </Typography>
       {addNote ? (

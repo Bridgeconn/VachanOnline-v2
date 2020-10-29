@@ -29,8 +29,8 @@
   unicode-range: U+00-FF, U+0C80-0CFF;
 }
 @font-face {
-  font-family: "Kruti Dev";
-  src: local("KrutiDev"), url(./fonts/KrutiDev.ttf) format("truetype");
+  font-family: "Noto Sans Devanagari";
+  src: local("NotoSans"), url(./fonts/NotoSans.ttf) format("truetype");
   unicode-range: U+00-FF, U+0900-097F;
 }
 @font-face {
