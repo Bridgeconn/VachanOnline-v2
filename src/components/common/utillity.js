@@ -9,7 +9,20 @@ export const getVersions = (
 ) => {
   API.get("bibles")
     .then(function (response) {
-      const versions = response.data;
+      const versions = response.data
+        .map((obj) => {
+          let langauage = { language: obj.language, languageVersions: [] };
+          for (let i in obj.languageVersions) {
+            let metadata = obj.languageVersions[i].metadata;
+            if (metadata && metadata.Latest === "True") {
+              delete obj.languageVersions[i].metadata.Latest;
+              langauage.languageVersions.push(obj.languageVersions[i]);
+            } else {
+            }
+          }
+          return langauage;
+        })
+        .filter((obj) => obj.languageVersions.length > 0);
       setVersions(versions);
       if (versions.length > 0) {
         let version = versions[0].languageVersions[0];
