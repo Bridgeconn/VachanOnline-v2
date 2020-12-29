@@ -6,6 +6,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import Button from "@material-ui/core/Button";
+import ReplyIcon from "@material-ui/icons/Reply";
 import * as views from "../../store/views";
 import Login from "../login/Login";
 import logo from "../common/images/logo.png";
@@ -109,6 +111,14 @@ const useStyles = makeStyles((theme) => ({
       color: "#d0d0d0",
     },
   },
+  legacySite: {
+    textTransform: "unset",
+    fontSize: "1.2rem",
+    margin: "3px 0 0 15px",
+    "&:hover": {
+      color: "inherit",
+    },
+  },
 }));
 
 const ParallelSwitch = withStyles({
@@ -160,6 +170,16 @@ export default function TopBar({
               <img src={favicon} alt={"icon"} className={classes.icon} />
               <img src={logo} alt={"logo"} className={classes.logo} />{" "}
             </Link>
+            <Button
+              color="inherit"
+              className={classes.legacySite}
+              startIcon={<ReplyIcon />}
+              href="https://legacy.vachanonline.com/"
+              target="_blank"
+              rel="noopener"
+            >
+              Back to classic site
+            </Button>
             {parallelView === views.PARALLELBIBLE ? (
               <FormGroup className={classes.form}>
                 <FormControlLabel
