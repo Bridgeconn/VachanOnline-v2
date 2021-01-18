@@ -150,6 +150,10 @@ const BookCombo = ({
       let bookObject = bookList.find(
         (element) => element.book_code === bookOpened
       );
+      if (!bookObject) {
+        //If current book not available set first available book, fallback mechanism, actual check in versions
+        bookObject = bookList[0];
+      }
       let bookCode = bookObject.book_code;
       let chapters = new Array(bibleChapters[bookCode]);
       for (let i = 0; i < chapters.length; i++) {
@@ -166,9 +170,16 @@ const BookCombo = ({
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
+      if (!book) {
+        //If current book not available set first available book, fallback mechanism, actual check in versions
+        book = bookList[0];
+        setValue("chapter", 1);
+        setValue("bookCode", bookList[0].book_code);
+        setValue("versesSelected", []);
+      }
       setBook(book.short);
     }
-  }, [bookList, bookCode]);
+  }, [bookList, bookCode, setValue]);
   //function to set book once its clicked and open the chapter list for it
   function bookClicked(event) {
     let index = parseInt(event.currentTarget.getAttribute("data-count"));
@@ -231,7 +242,7 @@ const BookCombo = ({
         ) : (
           `${book}  ${chapter}`
         )}
-        <i className={`material-icons ${classes.icon}`}>keyboard_arrow_downn</i>
+        <i className={`material-icons ${classes.icon}`}>keyboard_arrow_down</i>
       </Button>
       {/* If no book list dont render menu */}
       {bookList === undefined || bookList.length === 0 ? (

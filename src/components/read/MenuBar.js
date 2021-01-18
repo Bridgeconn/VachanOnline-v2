@@ -207,7 +207,7 @@ const MenuBar = (props) => {
   return (
     <Grid container className={classes.read}>
       <Grid item xs={8}>
-        <Version setValue={setValue} version={version} />
+        <Version setValue={setValue} version={version} bookCode={bookCode} />
         {bookCode ? (
           <BookCombo
             paneNo={paneNo}

@@ -77,15 +77,26 @@ const reducer = (state = defaultState, action) => {
         panel2: { ...panel2, versesSelected: [] },
       };
     case actions.SYNCPANEL:
-      let { book, bookCode, chapterList, chapter } = state[action.from];
+      let { bookCode, chapter } = state[action.from];
+      let bookList =
+        state.versionBooks[state.versionSource[state[action.to].sourceId]];
+      let parallelScroll = state.parallelScroll;
+      let message = "";
+      if (bookList.findIndex((e) => e.book_code === bookCode) === -1) {
+        //If current book not available set first available book
+        chapter = 1;
+        bookCode = bookList[0].book_code;
+        parallelScroll = false;
+        message = "Current Bible book not available, disabling Parallel Scroll";
+      }
       return {
         ...state,
+        parallelScroll: parallelScroll,
         [action.to]: {
           ...state[action.to],
-          book: book,
           bookCode: bookCode,
-          chapterList: chapterList,
           chapter: chapter,
+          message: message,
         },
       };
     case actions.SETVALUE:
