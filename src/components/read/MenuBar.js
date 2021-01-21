@@ -216,7 +216,6 @@ const MenuBar = (props) => {
             chapter={chapter}
             setValue={setValue}
             minimal={true}
-            sourceId={sourceId}
           />
         ) : (
           ""

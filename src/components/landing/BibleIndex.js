@@ -76,7 +76,6 @@ const BibleIndex = (props) => {
             chapter={chapter}
             setValue={setValue}
             minimal={false}
-            sourceId={sourceId}
             landingPage={true}
           />
         ) : (
