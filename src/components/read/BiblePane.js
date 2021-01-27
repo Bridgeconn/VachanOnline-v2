@@ -41,22 +41,39 @@ const BiblePane = ({
   const [highlighted, setHighlighted] = React.useState(false);
   const [highlights, setHighlights] = React.useState([]);
   const [fetchHighlights, setFetchHighlights] = React.useState("");
+  const [alertMessage, setAlertMessage] = React.useState("");
 
   const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
-  const [alert, setAlert] = React.useState(false);
   const firebase = useFirebase();
 
-  const closeAlert = () => {
-    //After showing message remove it
-    setAlert(false);
-    setValue("message", "");
-  };
   React.useEffect(() => {
-    if (message && message !== "") {
-      //If message set show alert
-      setAlert(true);
-    }
-  }, [message]);
+    const closeAlert = () => {
+      //After showing message remove it
+      setValue("message", "");
+    };
+    //If message not empty show alert Message
+    setAlertMessage(
+      message && message !== "" ? (
+        <Snackbar
+          open={true}
+          autoHideDuration={8000}
+          onClose={closeAlert}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            elevation={6}
+            variant="filled"
+            onClose={closeAlert}
+            severity="warning"
+          >
+            {message}
+          </Alert>
+        </Snackbar>
+      ) : (
+        ""
+      )
+    );
+  }, [message, setValue]);
   React.useEffect(() => {
     if (
       highlights &&
@@ -155,21 +172,7 @@ const BiblePane = ({
                 setSelectedVerses={setSelectedVerses}
                 highlights={highlights}
               />
-              <Snackbar
-                open={alert}
-                autoHideDuration={8000}
-                onClose={closeAlert}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              >
-                <Alert
-                  elevation={6}
-                  variant="filled"
-                  onClose={closeAlert}
-                  severity="warning"
-                >
-                  {message}
-                </Alert>
-              </Snackbar>
+              {alertMessage}
             </Fullscreen>
           </Grid>
         </Grid>

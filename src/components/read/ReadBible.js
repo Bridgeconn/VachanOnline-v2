@@ -1,5 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import ParallelScroll from "@material-ui/icons/Link";
+import ParallelScrollOff from "@material-ui/icons/LinkOff";
+import Tooltip from "@material-ui/core/Tooltip";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import * as views from "../../store/views";
@@ -15,7 +18,7 @@ import Highlights from "../highlight/Highlights";
 import Notes from "../note/Notes";
 import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
-import { BLUE } from "../../store/colorCode";
+import { BLUE, BLUETRANSPARENT } from "../../store/colorCode";
 import {
   getCommentaries,
   getDictionaries,
@@ -68,6 +71,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       display: "none",
     },
+  },
+  parallelScroll: {
+    position: "absolute",
+    top: 86,
+    left: "calc(50% - 18px)",
+    zIndex: 1,
   },
 }));
 const ReadBible = (props) => {
@@ -188,6 +197,13 @@ const ReadBible = (props) => {
     }
   }, [panel1.bookCode, panel1.sourceId, versionBooks, versionSource]);
   React.useEffect(() => {
+    const toggleParallelScroll = () => {
+      setValue("parallelScroll", !parallelScroll);
+      if (!parallelScroll) {
+        syncPanel("panel1", "panel2");
+      }
+    };
+
     switch (parallelView) {
       case views.SEARCH:
         setPane(
@@ -213,14 +229,35 @@ const ReadBible = (props) => {
                 paneNo={1}
               />
             </div>
-            <div className={classes.biblePane2}>
-              <BiblePane
-                setValue={setValue2}
-                paneData={panel2}
-                ref1={bibleText2}
-                scroll={scroll}
-                paneNo={2}
-              />
+            <div>
+              <div className={classes.info} onClick={toggleParallelScroll}>
+                {parallelScroll ? (
+                  <Tooltip title="Parallel Scroll">
+                    <ParallelScroll
+                      fontSize="large"
+                      style={{ color: BLUETRANSPARENT }}
+                      className={classes.parallelScroll}
+                    />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Parallel Scroll Disabled">
+                    <ParallelScrollOff
+                      fontSize="large"
+                      color="disabled"
+                      className={classes.parallelScroll}
+                    />
+                  </Tooltip>
+                )}
+              </div>
+              <div className={classes.biblePane2}>
+                <BiblePane
+                  setValue={setValue2}
+                  paneData={panel2}
+                  ref1={bibleText2}
+                  scroll={scroll}
+                  paneNo={2}
+                />
+              </div>
             </div>
           </>
         );
@@ -353,6 +390,7 @@ const ReadBible = (props) => {
     audioBible,
     classes.biblePane1,
     classes.biblePane2,
+    classes.parallelScroll,
     scroll,
     panel1,
     panel2,
@@ -365,17 +403,13 @@ const ReadBible = (props) => {
     uid,
     versions,
     bookObject,
+    parallelScroll,
+    classes.info,
+    syncPanel,
   ]);
   return (
     <>
-      <TopBar
-        pScroll={parallelScroll}
-        setValue={setValue}
-        parallelView={parallelView}
-        login={login}
-        userDetails={userDetails}
-        syncPanel={syncPanel}
-      />
+      <TopBar login={login} userDetails={userDetails} />
       <div>
         <div className={classes.biblePane}>{pane}</div>
         <div className={classes.rightMenu}>

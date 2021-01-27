@@ -1,14 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { fade, makeStyles, withStyles } from "@material-ui/core/styles";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import ReplyIcon from "@material-ui/icons/Reply";
-import * as views from "../../store/views";
 import Login from "../login/Login";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
@@ -97,12 +93,6 @@ const useStyles = makeStyles((theme) => ({
     borderColor: "white",
     backgroundColor: "#007bff",
   },
-  form: {
-    display: "inline-block",
-    marginTop: 7,
-    float: "right",
-    lineHeight: "72px",
-  },
   feedback: {
     color: "#e0e0e0",
     marginRight: 4,
@@ -121,37 +111,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ParallelSwitch = withStyles({
-  switchBase: {
-    "&$checked": {
-      "& + $track": {
-        backgroundColor: "white",
-      },
-    },
-  },
-  checked: {},
-  track: {},
-})(Switch);
-
-export default function TopBar({
-  pScroll,
-  setValue,
-  parallelView,
-  login,
-  userDetails,
-  syncPanel,
-}) {
+export default function TopBar({ login, userDetails }) {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
-  const handleChange = () => (event) => {
-    setValue("parallelScroll", event.target.checked);
-    if (event.target.checked) {
-      syncPanel("panel1", "panel2");
-    }
-  };
+
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
@@ -180,23 +146,6 @@ export default function TopBar({
             >
               Back to classic site
             </Button>
-            {parallelView === views.PARALLELBIBLE ? (
-              <FormGroup className={classes.form}>
-                <FormControlLabel
-                  control={
-                    <ParallelSwitch
-                      checked={pScroll}
-                      onChange={handleChange()}
-                      value="checked"
-                      color="default"
-                    />
-                  }
-                  label="Parallel Scroll"
-                />
-              </FormGroup>
-            ) : (
-              ""
-            )}
             {/* <SerachBox /> */}
           </div>
           <Tooltip title="Feedback">

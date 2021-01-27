@@ -83,11 +83,12 @@ const reducer = (state = defaultState, action) => {
       let parallelScroll = state.parallelScroll;
       let message = "";
       if (bookList.findIndex((e) => e.book_code === bookCode) === -1) {
-        //If current book not available set first available book
-        chapter = 1;
-        bookCode = bookList[0].book_code;
+        //If parallell book not available don't change it
+        chapter = state[action.to].chapter;
+        bookCode = state[action.to].bookCode;
         parallelScroll = false;
-        message = "Current Bible book not available, disabling Parallel Scroll";
+        message =
+          "Current book not available in parallel view, Parallel Scroll disabled";
       }
       return {
         ...state,
