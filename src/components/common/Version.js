@@ -223,7 +223,7 @@ const Version = (props) => {
                       <ListItem
                         key={i}
                         value={
-                          item.language.name +
+                          item.language.code +
                           "-" +
                           item.version.code.toUpperCase()
                         }

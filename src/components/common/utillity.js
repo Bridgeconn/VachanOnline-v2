@@ -35,7 +35,7 @@ export const getVersions = (
         }
         setValue(
           "version",
-          version.language.name + "-" + version.version.code.toUpperCase()
+          version.language.code + "-" + version.version.code.toUpperCase()
         );
         setValue("sourceId", version.sourceId);
         getAllBooks(setVersionBooks, setValue);

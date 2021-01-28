@@ -82,14 +82,13 @@ const Dictionary = (props) => {
     dictionaryWord,
     wordMeaning,
   } = dictionary;
-  //console.log("Dictionary");
   //Need to improve the performance of the component
   React.useEffect(() => {
     //if no dictionary selected set current language dictionary
     if (Object.entries(selectedDictionary).length === 0 && dictionaries[0]) {
       let language = version.split("-")[0];
       let dict = dictionaries.find((d) => {
-        return d.language === language;
+        return d.languageCode === language;
       });
       if (dict === undefined) {
         dict = dictionaries[0].dictionaries[0];
