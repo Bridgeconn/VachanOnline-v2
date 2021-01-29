@@ -34,6 +34,8 @@ export default function GetChapterNotes({
         list.sort();
         list = [...new Set(list)];
         setNotes(list);
+      }else{
+        setNotes([])
       }
     }
   }, [notes, setNotes]);
