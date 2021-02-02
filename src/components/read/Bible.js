@@ -360,7 +360,7 @@ const Bible = (props) => {
                         <span className={verseClass}> {item.text}</span>
                       </span>
                       {/*If verse has note then show note icon to open notes pane */}
-                      {notes && notes.includes(parseInt(verseNo)) ? (
+                      {notes && notes.includes(parseInt(item.number)) ? (
                         <NoteIcon
                           fontSize="small"
                           color="disabled"

@@ -125,7 +125,7 @@ const Highlights = (props) => {
     let element = event.currentTarget;
     let sourceId = element.getAttribute("data-sourceid");
     setValue("sourceId", sourceId);
-    setValue("version", versionData[sourceId][1]);
+    setValue("version", versionData[sourceId][0]);
     setValue("bookCode", element.getAttribute("data-bookcode"));
     setValue("chapter", parseInt(element.getAttribute("data-chapter")));
     setValue("versesSelected", []);

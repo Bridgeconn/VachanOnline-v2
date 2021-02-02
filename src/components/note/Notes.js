@@ -330,7 +330,7 @@ export default function Notes(props) {
     setAddNote(true);
     setEdit(true);
     setValue("sourceId", sourceId);
-    setValue("version", versionData[sourceId][1]);
+    setValue("version", versionData[sourceId][0]);
     setValue("bookCode", bookCode);
     setValue("chapter", chapter);
   };

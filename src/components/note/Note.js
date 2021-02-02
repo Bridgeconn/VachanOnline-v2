@@ -114,7 +114,10 @@ export default function Note({
       verses: selectedVerses.sort((a, b) => parseInt(a) - parseInt(b)),
     };
     let notesArray =
-      notes && notes[sourceId] && notes[sourceId][bookCode]
+      notes &&
+      notes[sourceId] &&
+      notes[sourceId][bookCode] &&
+      notes[sourceId][bookCode][chapter]
         ? notes[sourceId][bookCode][chapter]
         : [] || [];
     notesArray.push(noteObject);
