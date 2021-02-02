@@ -24,6 +24,7 @@ import {
   getDictionaries,
   getAudioBibles,
   getVideos,
+  getBookbyCode,
 } from "../common/utillity";
 
 const useStyles = makeStyles((theme) => ({
@@ -196,6 +197,17 @@ const ReadBible = (props) => {
       setBookObject(selectedBook);
     }
   }, [panel1.bookCode, panel1.sourceId, versionBooks, versionSource]);
+  //Get Regional book name
+  const getRegionalBookName = React.useCallback(
+    (bookCode, sourceId) => {
+      const bookList = versionBooks[versionSource[sourceId]];
+      let bookObject = bookList
+        ? bookList.find((element) => element.book_code === bookCode)
+        : null;
+      return bookObject ? bookObject.short : getBookbyCode(bookCode).book;
+    },
+    [versionBooks, versionSource]
+  );
   React.useEffect(() => {
     const toggleParallelScroll = () => {
       setValue("parallelScroll", !parallelScroll);
@@ -337,7 +349,12 @@ const ReadBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Bookmarks uid={uid} versions={versions} setValue={setValue1} />
+              <Bookmarks
+                uid={uid}
+                versions={versions}
+                setValue={setValue1}
+                getRegionalBookName={getRegionalBookName}
+              />
             </div>
           </>
         );
@@ -349,7 +366,12 @@ const ReadBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Highlights uid={uid} versions={versions} setValue={setValue1} />
+              <Highlights
+                uid={uid}
+                versions={versions}
+                setValue={setValue1}
+                getRegionalBookName={getRegionalBookName}
+              />
             </div>
           </>
         );
@@ -370,6 +392,7 @@ const ReadBible = (props) => {
                 chapter={panel1.chapter}
                 versesSelected={panel1.versesSelected}
                 book={bookObject.short}
+                getRegionalBookName={getRegionalBookName}
               />
             </div>
           </>
@@ -406,6 +429,7 @@ const ReadBible = (props) => {
     parallelScroll,
     classes.info,
     syncPanel,
+    getRegionalBookName,
   ]);
   return (
     <>

@@ -103,6 +103,7 @@ export default function Notes(props) {
     chapter,
     versesSelected,
     book,
+    getRegionalBookName,
   } = props;
   const [noteList, setNoteList] = React.useState([]);
   const [chapterNoteList, setChapterNoteList] = React.useState([]);
@@ -277,15 +278,14 @@ export default function Notes(props) {
           for (let [bookCode, chapters] of Object.entries(books)) {
             for (let [chapter, verseNotes] of Object.entries(chapters)) {
               if (verseNotes) {
-                let book = getBookbyCode(bookCode);
                 verseNotes.forEach((verseNote, index) => {
                   list.push({
                     sourceId: sourceId,
                     bookCode: bookCode,
                     chapter: chapter,
                     verse: verseNote.verses.join(", "),
-                    book: book.book,
-                    bookId: book.bookId,
+                    book: getRegionalBookName(bookCode, sourceId),
+                    bookId: getBookbyCode(bookCode).bookId,
                     index: index,
                     modifiedTime: verseNote.modifiedTime,
                   });
@@ -306,7 +306,7 @@ export default function Notes(props) {
         setNoteList(result);
       }
     }
-  }, [notes, versionData]);
+  }, [notes, versionData, getRegionalBookName]);
 
   //Edit Note
   const editNote = (event) => {

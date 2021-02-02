@@ -11,6 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import Snackbar from "@material-ui/core/Snackbar";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
@@ -82,7 +83,12 @@ export default function Note({
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [noteText, setNoteText] = React.useState("");
+  const [alert, setAlert] = React.useState(false);
   const firebase = useFirebase();
+
+  const closeAlert = () => {
+    setAlert(false);
+  };
 
   const handleNoteTextChange = (e) => {
     setNoteText(e.target.value);
@@ -97,6 +103,10 @@ export default function Note({
   };
 
   const saveNote = () => {
+    if (noteText === "") {
+      setAlert(true);
+      return;
+    }
     let noteObject = {
       createdTime: Date.now(),
       modifiedTime: Date.now(),
@@ -138,6 +148,13 @@ export default function Note({
           <NoteIcon fontSize="small" />
         </Tooltip>
       </div>
+      <Snackbar
+        severity="warning"
+        open={alert}
+        autoHideDuration={5000}
+        onClose={closeAlert}
+        message="Please enter note text"
+      />
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
