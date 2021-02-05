@@ -77,15 +77,27 @@ const reducer = (state = defaultState, action) => {
         panel2: { ...panel2, versesSelected: [] },
       };
     case actions.SYNCPANEL:
-      let { book, bookCode, chapterList, chapter } = state[action.from];
+      let { bookCode, chapter } = state[action.from];
+      let bookList =
+        state.versionBooks[state.versionSource[state[action.to].sourceId]];
+      let parallelScroll = state.parallelScroll;
+      let message = "";
+      if (bookList.findIndex((e) => e.book_code === bookCode) === -1) {
+        //If parallell book not available don't change it
+        chapter = state[action.to].chapter;
+        bookCode = state[action.to].bookCode;
+        parallelScroll = false;
+        message =
+          "Current book not available in parallel view, Parallel Scroll disabled";
+      }
       return {
         ...state,
+        parallelScroll: parallelScroll,
         [action.to]: {
           ...state[action.to],
-          book: book,
           bookCode: bookCode,
-          chapterList: chapterList,
           chapter: chapter,
+          message: message,
         },
       };
     case actions.SETVALUE:

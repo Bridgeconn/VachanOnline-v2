@@ -89,7 +89,7 @@ const Commentary = (props) => {
     if (Object.entries(commentary).length === 0 && commentaries[0]) {
       let language = version.split("-")[0];
       let comm = commentaries.find((c) => {
-        return c.language === language;
+        return c.languageCode === language;
       });
       if (comm === undefined) {
         comm = commentaries[0].commentaries[0];

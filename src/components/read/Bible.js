@@ -210,8 +210,9 @@ const Bible = (props) => {
           setPrevious(response.data.previous);
           setNext(response.data.next);
           if (response.data.chapterContent === undefined) {
-            setLoadingText("Book not uploaded");
+            setLoadingText("Book will be uploaded soon");
           } else {
+            setLoadingText("");
             setVerses(response.data.chapterContent.verses);
             setChapterHeading(
               getHeading(response.data.chapterContent.metadata)
@@ -246,7 +247,7 @@ const Bible = (props) => {
   };
   //Function to load next chapter
   const nextClick = () => {
-    if (!isLoading && Object.keys(next).length > 0) {
+    if (!isLoading && Object && Object.keys(next).length > 0) {
       setValue("chapter", next.chapterId);
       setValue("bookCode", next.bibleBookCode);
       setValue("versesSelected", []);
@@ -317,7 +318,7 @@ const Bible = (props) => {
         fontSize: fontSize,
       }}
     >
-      {!isLoading && loadingText !== "Book not uploaded" ? (
+      {!isLoading && loadingText !== "Book will be uploaded soon" ? (
         <div>
           {fetchData}
           <div
@@ -359,7 +360,7 @@ const Bible = (props) => {
                         <span className={verseClass}> {item.text}</span>
                       </span>
                       {/*If verse has note then show note icon to open notes pane */}
-                      {notes && notes.includes(parseInt(verseNo)) ? (
+                      {notes && notes.includes(parseInt(item.number)) ? (
                         <NoteIcon
                           fontSize="small"
                           color="disabled"

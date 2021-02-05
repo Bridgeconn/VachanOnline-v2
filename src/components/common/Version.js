@@ -99,7 +99,10 @@ const Version = (props) => {
     setVersionBooks,
     setVersionSource,
     versions,
+    versionBooks,
+    versionSource,
     version,
+    bookCode,
     landingPage,
   } = props;
   function handleClick(event) {
@@ -130,8 +133,18 @@ const Version = (props) => {
   const setVersion = (event) => {
     handleClose();
     let selectedVersion = event.currentTarget;
+    let sourceId = selectedVersion.getAttribute("data-sourceid");
+    let bookList = versionBooks[versionSource[sourceId]];
+    if (bookList.findIndex((e) => e.book_code === bookCode) === -1) {
+      //If current book not available set first available book
+      //Using bookname api call for now, will fail in case a langauge has full and NT bible
+      //In that case will need to update bible API with books present and see actual book present in bible or not
+      setValue("chapter", 1);
+      setValue("bookCode", bookList[0].book_code);
+      setValue("versesSelected", []);
+    }
     setValue("version", selectedVersion.getAttribute("value"));
-    setValue("sourceId", selectedVersion.getAttribute("data-sourceid"));
+    setValue("sourceId", sourceId);
   };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -210,7 +223,7 @@ const Version = (props) => {
                       <ListItem
                         key={i}
                         value={
-                          item.language.name +
+                          item.language.code +
                           "-" +
                           item.version.code.toUpperCase()
                         }
@@ -235,6 +248,8 @@ const Version = (props) => {
 const mapStateToProps = (state) => {
   return {
     versions: state.local.versions,
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
   };
 };
 const mapDispatchToProps = (dispatch) => {

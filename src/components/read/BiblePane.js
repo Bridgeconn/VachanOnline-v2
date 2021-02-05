@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import Fullscreen from "react-full-screen";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import MenuBar from "./MenuBar";
 import Bible from "./Bible";
@@ -39,11 +41,39 @@ const BiblePane = ({
   const [highlighted, setHighlighted] = React.useState(false);
   const [highlights, setHighlights] = React.useState([]);
   const [fetchHighlights, setFetchHighlights] = React.useState("");
+  const [alertMessage, setAlertMessage] = React.useState("");
 
-  const { sourceId, bookCode, chapter, versesSelected } = paneData;
-
+  const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
   const firebase = useFirebase();
 
+  React.useEffect(() => {
+    const closeAlert = () => {
+      //After showing message remove it
+      setValue("message", "");
+    };
+    //If message not empty show alert Message
+    setAlertMessage(
+      message && message !== "" ? (
+        <Snackbar
+          open={true}
+          autoHideDuration={8000}
+          onClose={closeAlert}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            elevation={6}
+            variant="filled"
+            onClose={closeAlert}
+            severity="warning"
+          >
+            {message}
+          </Alert>
+        </Snackbar>
+      ) : (
+        ""
+      )
+    );
+  }, [message, setValue]);
   React.useEffect(() => {
     if (
       highlights &&
@@ -142,6 +172,7 @@ const BiblePane = ({
                 setSelectedVerses={setSelectedVerses}
                 highlights={highlights}
               />
+              {alertMessage}
             </Fullscreen>
           </Grid>
         </Grid>

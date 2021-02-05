@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Bookmarks = (props) => {
   const classes = useStyles();
-  const { uid, versions, setValue } = props;
+  const { uid, versions, setValue, getRegionalBookName } = props;
   const [bookmarkList, setBookmarkList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
   const firebase = useFirebase();
@@ -94,13 +94,12 @@ const Bookmarks = (props) => {
           for (let [bookCode, chapters] of Object.entries(books)) {
             if (chapters) {
               chapters.forEach((chapter) => {
-                let book = getBookbyCode(bookCode);
                 list.push({
                   sourceId: sourceId,
                   bookCode: bookCode,
                   chapter: chapter,
-                  book: book.book,
-                  bookId: book.bookId,
+                  book: getRegionalBookName(bookCode, sourceId),
+                  bookId: getBookbyCode(bookCode).bookId,
                 });
               });
             }
@@ -112,14 +111,14 @@ const Bookmarks = (props) => {
         setBookmarkList(list);
       }
     }
-  }, [bookmarks]);
+  }, [bookmarks, getRegionalBookName]);
 
   //Open bookmark reference
   const openBookmark = (event) => {
     let element = event.currentTarget;
     let sourceId = element.getAttribute("data-sourceid");
     setValue("sourceId", sourceId);
-    setValue("version", versionData[sourceId][1]);
+    setValue("version", versionData[sourceId][0]);
     setValue("bookCode", element.getAttribute("data-bookcode"));
     setValue("chapter", parseInt(element.getAttribute("data-chapter")));
     setValue("versesSelected", []);

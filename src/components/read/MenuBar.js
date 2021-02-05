@@ -172,7 +172,9 @@ const MenuBar = (props) => {
   React.useEffect(() => {
     if (versions !== undefined) {
       const language = version.split("-");
-      const languageVersions = versions.find((e) => e.language === language[0]);
+      const languageVersions = versions.find(
+        (e) => e.languageVersions[0].language.code === language[0]
+      );
       if (languageVersions !== undefined) {
         const version = languageVersions.languageVersions.find(
           (e) => e.version.code === language[1]
@@ -206,8 +208,8 @@ const MenuBar = (props) => {
   }, [audio, audioBible, bookCode, classes.info, setValue]);
   return (
     <Grid container className={classes.read}>
-      <Grid item xs={8}>
-        <Version setValue={setValue} version={version} />
+      <Grid item xs={7}>
+        <Version setValue={setValue} version={version} bookCode={bookCode} />
         {bookCode ? (
           <BookCombo
             paneNo={paneNo}
@@ -216,7 +218,6 @@ const MenuBar = (props) => {
             chapter={chapter}
             setValue={setValue}
             minimal={true}
-            sourceId={sourceId}
           />
         ) : (
           ""
@@ -224,7 +225,7 @@ const MenuBar = (props) => {
       </Grid>
       <Grid
         item
-        xs={4}
+        xs={5}
         className={classes.items}
         container
         alignItems="flex-start"

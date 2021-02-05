@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Highlights = (props) => {
   const classes = useStyles();
-  const { uid, versions, setValue } = props;
+  const { uid, versions, setValue, getRegionalBookName } = props;
   const [highlightList, setHighlightList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
   const firebase = useFirebase();
@@ -95,14 +95,13 @@ const Highlights = (props) => {
             for (let [chapter, verses] of Object.entries(chapters)) {
               if (verses) {
                 verses.forEach((verse) => {
-                  let book = getBookbyCode(bookCode);
                   list.push({
                     sourceId: sourceId,
                     bookCode: bookCode,
                     chapter: chapter,
                     verse: verse,
-                    book: book.book,
-                    bookId: book.bookId,
+                    book: getRegionalBookName(bookCode, sourceId),
+                    bookId: getBookbyCode(bookCode).bookId,
                   });
                 });
               }
@@ -119,14 +118,14 @@ const Highlights = (props) => {
         setHighlightList(result);
       }
     }
-  }, [highlights, versionData]);
+  }, [highlights, versionData, getRegionalBookName]);
 
   //Open highlight reference
   const openHighlight = (event) => {
     let element = event.currentTarget;
     let sourceId = element.getAttribute("data-sourceid");
     setValue("sourceId", sourceId);
-    setValue("version", versionData[sourceId][1]);
+    setValue("version", versionData[sourceId][0]);
     setValue("bookCode", element.getAttribute("data-bookcode"));
     setValue("chapter", parseInt(element.getAttribute("data-chapter")));
     setValue("versesSelected", []);
