@@ -225,15 +225,15 @@ const Bible = (props) => {
       setHighlightVerses(
         highlights.map((a) => parseInt(a.toString().split(":")[0]))
       );
-      //make verse to color class map
+      //make verse to color map
       let map = {};
       highlights.forEach((highlight) => {
         let verse = highlight.toString().split(":");
-        map[verse[0]] = colorClasses[verse[1] || "a"];
+        map[verse[0]] = verse[1] || "a";
       });
       setHighlighMap(map);
     }
-  }, [colorClasses, highlights]);
+  }, [highlights]);
   React.useEffect(() => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
@@ -380,7 +380,7 @@ const Bible = (props) => {
                   selectedVerses.indexOf(verse) > -1
                     ? `${classes.verseText} ${classes.selectedVerse}`
                     : highlightVerses.indexOf(verse) > -1
-                    ? `${classes.verseText} ${highlighMap[verse]}`
+                    ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
                     : `${classes.verseText}`;
                 const verseNumberClass =
                   verse === 1
