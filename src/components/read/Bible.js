@@ -8,6 +8,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { NOTE } from "../../store/views";
 import API from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
+import * as color from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -91,8 +92,20 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 12,
     color: "#3E4095",
   },
-  highlight: {
-    backgroundColor: "#feff3b",
+  yellow: {
+    backgroundColor: color.YELLOW,
+  },
+  green: {
+    backgroundColor: color.GREEN,
+  },
+  cyan: {
+    backgroundColor: color.CYAN,
+  },
+  pink: {
+    backgroundColor: color.PINK,
+  },
+  orange: {
+    backgroundColor: color.ORANGE,
   },
   selectedVerse: {
     backgroundColor: "#d9e8ef",
@@ -127,6 +140,8 @@ const Bible = (props) => {
   const [notes, setNotes] = React.useState([]);
   const [fetchData, setFetchData] = React.useState();
   const [font, setFont] = React.useState("");
+  const [highlightVerses, setHighlightVerses] = React.useState([]);
+  const [highlighMap, setHighlighMap] = React.useState();
 
   let {
     sourceId,
@@ -198,6 +213,27 @@ const Bible = (props) => {
       setFont(fontFamily === "Sans" ? sans[language] : serif[language]);
     }
   }, [version, fontFamily]);
+  const colorClasses = {
+    a: classes.yellow,
+    b: classes.green,
+    c: classes.cyan,
+    d: classes.pink,
+    e: classes.orange,
+  };
+  React.useEffect(() => {
+    if (highlights) {
+      setHighlightVerses(
+        highlights.map((a) => parseInt(a.toString().split(":")[0]))
+      );
+      //make verse to color class map
+      let map = {};
+      highlights.forEach((highlight) => {
+        let verse = highlight.toString().split(":");
+        map[verse[0]] = colorClasses[verse[1] || "a"];
+      });
+      setHighlighMap(map);
+    }
+  }, [colorClasses, highlights]);
   React.useEffect(() => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
@@ -339,18 +375,18 @@ const Bible = (props) => {
                 ""
               )}
               {verses.map((item) => {
+                const verse = parseInt(item.number);
                 const verseClass =
-                  selectedVerses.indexOf(parseInt(item.number)) > -1
+                  selectedVerses.indexOf(verse) > -1
                     ? `${classes.verseText} ${classes.selectedVerse}`
-                    : highlights.indexOf(parseInt(item.number)) > -1
-                    ? `${classes.verseText} ${classes.highlight}`
+                    : highlightVerses.indexOf(verse) > -1
+                    ? `${classes.verseText} ${highlighMap[verse]}`
                     : `${classes.verseText}`;
                 const verseNumberClass =
-                  parseInt(item.number) === 1
+                  verse === 1
                     ? `${classes.verseNumber} ${classes.firstVerse}`
                     : `${classes.verseNumber}`;
-                const verseNo =
-                  parseInt(item.number) === 1 ? chapter : item.number;
+                const verseNo = verse === 1 ? chapter : item.number;
                 const sectionHeading = getHeading(item.metadata);
                 return (
                   <span key={item.number}>
@@ -360,7 +396,7 @@ const Bible = (props) => {
                         <span className={verseClass}> {item.text}</span>
                       </span>
                       {/*If verse has note then show note icon to open notes pane */}
-                      {notes && notes.includes(parseInt(item.number)) ? (
+                      {notes && notes.includes(verse) ? (
                         <NoteIcon
                           fontSize="small"
                           color="disabled"

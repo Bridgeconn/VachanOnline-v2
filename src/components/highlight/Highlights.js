@@ -99,7 +99,7 @@ const Highlights = (props) => {
                     sourceId: sourceId,
                     bookCode: bookCode,
                     chapter: chapter,
-                    verse: verse,
+                    verse: verse.toString().split(":")[0],
                     book: getRegionalBookName(bookCode, sourceId),
                     bookId: getBookbyCode(bookCode).bookId,
                   });

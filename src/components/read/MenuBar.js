@@ -69,10 +69,10 @@ const MenuBar = (props) => {
     bookCode,
     audio,
     userDetails,
-    highlighted,
-    highlightClick,
     selectedVerses,
     setSelectedVerses,
+    refUrl,
+    highlights,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -106,8 +106,10 @@ const MenuBar = (props) => {
       if (selectedVerses && selectedVerses.length > 0) {
         setHighlightIcon(
           <Highlight
-            highlighted={highlighted}
-            highlightClick={highlightClick}
+            selectedVerses={selectedVerses}
+            setSelectedVerses={setSelectedVerses}
+            refUrl={refUrl}
+            highlights={highlights}
           />
         );
         return;
@@ -123,7 +125,14 @@ const MenuBar = (props) => {
     } else {
       setHighlightIcon("");
     }
-  }, [userDetails, selectedVerses, highlighted, highlightClick, classes.info]);
+  }, [
+    userDetails,
+    selectedVerses,
+    classes.info,
+    setSelectedVerses,
+    refUrl,
+    highlights,
+  ]);
 
   //Set note icon
   React.useEffect(() => {
