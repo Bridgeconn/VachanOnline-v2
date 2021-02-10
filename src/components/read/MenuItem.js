@@ -56,7 +56,7 @@ const MenuItem = (props) => {
   function handlePopoverClose() {
     setPopover(null);
   }
-  //Function to handle right menu click
+  //Function to handle menu click
   const onClick = (view, uid) => {
     //if user not logged in then open sign in popup for personalized features
     if (
