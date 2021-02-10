@@ -24,95 +24,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BibleMenu({ parallelView, menuClick, uid, setValue }) {
+export default function BibleMenu() {
   const classes = useStyles();
-  const onClick = (view, uid) => {
-    //if user not logged in then open sign in popup for personalized features
-    if (
-      [views.NOTE, views.BOOKMARK, views.HIGHLIGHT].includes(view) &&
-      uid === null
-    ) {
-      setValue("openLogin", true);
-      return;
-    }
-    menuClick(view);
-  };
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
+        <MenuItem icon="search" title="Search Bible" item={views.SEARCH} />
         <MenuItem
-          onClick={menuClick}
-          icon="search"
-          title="Search Bible"
-          item={views.SEARCH}
-          parallelView={parallelView}
-        />
-        <MenuItem
-          onClick={menuClick}
           icon="import_contacts"
           title="Parallel Bible"
           item={views.PARALLELBIBLE}
-          parallelView={parallelView}
         />
+        <MenuItem icon="comment" title="Commentaries" item={views.COMMENTARY} />
         <MenuItem
-          onClick={menuClick}
-          icon="comment"
-          title="Commentaries"
-          item={views.COMMENTARY}
-          parallelView={parallelView}
-        />
-        <MenuItem
-          onClick={menuClick}
           icon="format_shapes"
           title="Dictionaries"
           item={views.DICTIONARY}
-          parallelView={parallelView}
         />
+        <MenuItem icon="image" title="Infographics" item={views.INFOGRAPHICS} />
+        <MenuItem icon="volume_up" title="Audio Bible" item={views.AUDIO} />
+        <MenuItem icon="videocam" title="Videos" item={views.VIDEO} />
+        <MenuItem icon="bookmark" title="Bookmarks" item={views.BOOKMARK} />
         <MenuItem
-          onClick={menuClick}
-          icon="image"
-          title="Infographics"
-          item={views.INFOGRAPHICS}
-          parallelView={parallelView}
-        />
-        <MenuItem
-          onClick={menuClick}
-          icon="volume_up"
-          title="Audio Bible"
-          item={views.AUDIO}
-          parallelView={parallelView}
-        />
-        <MenuItem
-          onClick={menuClick}
-          icon="videocam"
-          title="Videos"
-          item={views.VIDEO}
-          parallelView={parallelView}
-        />
-        <MenuItem
-          onClick={onClick}
-          icon="bookmark"
-          title="Bookmarks"
-          item={views.BOOKMARK}
-          parallelView={parallelView}
-          uid={uid}
-        />
-        <MenuItem
-          onClick={onClick}
           icon="border_color"
           title="Highlights"
           item={views.HIGHLIGHT}
-          parallelView={parallelView}
-          uid={uid}
         />
-        <MenuItem
-          onClick={onClick}
-          icon="note"
-          title="Notes"
-          item={views.NOTE}
-          parallelView={parallelView}
-          uid={uid}
-        />
+        <MenuItem icon="note" title="Notes" item={views.NOTE} />
         {/* <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="more_horiz" title="More" /> */}
       </List>

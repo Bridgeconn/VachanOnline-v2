@@ -4,7 +4,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 import { BLUE } from "../../store/colorCode";
+import * as views from "../../store/views";
+import { SETVALUE } from "../../store/actions";
 const useStyles = makeStyles((theme) => ({
   popover: {
     pointerEvents: "none",
@@ -41,9 +44,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuItem(props) {
+const MenuItem = (props) => {
   const classes = useStyles();
-  const { onClick, icon, title, item, parallelView, uid } = props;
+  const { icon, title, item, parallelView, uid, setValue } = props;
   const [popover, setPopover] = React.useState(null);
 
   function handlePopoverOpen(event) {
@@ -53,6 +56,22 @@ export default function MenuItem(props) {
   function handlePopoverClose() {
     setPopover(null);
   }
+  //Function to handle right menu click
+  const onClick = (view, uid) => {
+    //if user not logged in then open sign in popup for personalized features
+    if (
+      [views.NOTE, views.BOOKMARK, views.HIGHLIGHT].includes(view) &&
+      uid === null
+    ) {
+      setValue("openLogin", true);
+      return;
+    }
+    //if closing commentary then reset selected commentary
+    if (parallelView === view && view === views.COMMENTARY) {
+      setValue("commentary", {});
+    }
+    setValue("parallelView", parallelView === view ? "" : view);
+  };
 
   const open = Boolean(popover);
   const buttonClass = parallelView === item ? classes.selected : classes.button;
@@ -97,4 +116,18 @@ export default function MenuItem(props) {
       </ListItemIcon>
     </ListItem>
   );
-}
+};
+const mapStateToProps = (state) => {
+  return {
+    parallelView: state.local.parallelView,
+    uid: state.local.userDetails.uid,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: SETVALUE, name: name, value: value }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuItem);

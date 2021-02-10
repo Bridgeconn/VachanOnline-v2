@@ -6,7 +6,7 @@ import ReactPlayer from "react-player";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
 import { NOTE } from "../../store/views";
-import API from "../../store/api";
+import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
 
@@ -142,6 +142,7 @@ const Bible = (props) => {
   const [font, setFont] = React.useState("");
   const [highlightVerses, setHighlightVerses] = React.useState([]);
   const [highlighMap, setHighlighMap] = React.useState();
+  const cancelToken = React.useRef();
 
   let {
     sourceId,
@@ -239,9 +240,15 @@ const Bible = (props) => {
       //code to get chapter content if version(sourceId), book or chapter changed
       setIsLoading(true);
       setLoadingText("Loading");
-      API.get(
-        "bibles/" + sourceId + "/books/" + bookCode + "/chapter/" + chapter
-      )
+      //Check if there are any previous pending requests
+      if (typeof cancelToken.current != typeof undefined) {
+        cancelToken.current.cancel("Operation canceled due to new request.");
+      }
+      //Save the cancel token for the current request
+      cancelToken.current = CancelToken.source();
+      API.get(`bibles/${sourceId}/books/${bookCode}/chapter/${chapter}`, {
+        cancelToken: cancelToken.current.token,
+      })
         .then(function (response) {
           setPrevious(response.data.previous);
           setNext(response.data.next);
@@ -478,7 +485,6 @@ const mapStateToProps = (state) => {
   return {
     parallelScroll: state.local.parallelScroll,
     userDetails: state.local.userDetails,
-    setParallelView: state.local.setParallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -486,6 +492,8 @@ const mapDispatchToProps = (dispatch) => {
     syncPanel: (from, to) => {
       dispatch({ type: actions.SYNCPANEL, from: from, to: to });
     },
+    setParallelView: (value) =>
+      dispatch({ type: actions.SETVALUE, name: "parallelView", value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Bible);

@@ -185,10 +185,10 @@ const MenuBar = (props) => {
         (e) => e.languageVersions[0].language.code === language[0]
       );
       if (languageVersions !== undefined) {
-        const version = languageVersions.languageVersions.find(
+        const versionObject = languageVersions.languageVersions.find(
           (e) => e.version.code === language[1]
         );
-        setValue("languageCode", version.language.code);
+        setValue("languageCode", versionObject.language.code);
         setMetadataList(version.metadata);
       }
     }

@@ -13,7 +13,8 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { getVersions } from "../common/utillity";
+import { getVersions, capitalize } from "../common/utillity";
+import { PARALLELBIBLE } from "../../store/views";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -104,6 +105,8 @@ const Version = (props) => {
     version,
     bookCode,
     landingPage,
+    parallelView,
+    setMainValue,
   } = props;
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
@@ -142,6 +145,13 @@ const Version = (props) => {
       setValue("chapter", 1);
       setValue("bookCode", bookList[0].book_code);
       setValue("versesSelected", []);
+      //if parallel bible view, disable parallel scroll, show message
+      if (parallelView === PARALLELBIBLE) {
+        setMainValue("parallelScroll", false);
+        const ver = capitalize(selectedVersion.getAttribute("value"));
+        const message = `Current book not available in ${ver}, Parallel Scroll disabled`;
+        setValue("message", message);
+      }
     }
     setValue("version", selectedVersion.getAttribute("value"));
     setValue("sourceId", sourceId);
@@ -250,6 +260,7 @@ const mapStateToProps = (state) => {
     versions: state.local.versions,
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
+    parallelView: state.local.parallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -260,6 +271,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
     setVersionSource: (value) =>
       dispatch({ type: actions.SETVALUE, name: "versionSource", value: value }),
+    setMainValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Version);
