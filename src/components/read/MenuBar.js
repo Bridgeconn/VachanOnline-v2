@@ -189,7 +189,7 @@ const MenuBar = (props) => {
           (e) => e.version.code === language[1]
         );
         setValue("languageCode", versionObject.language.code);
-        setMetadataList(version.metadata);
+        setMetadataList(versionObject.metadata);
       }
     }
   }, [setValue, version, versions]);

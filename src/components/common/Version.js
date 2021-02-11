@@ -106,6 +106,7 @@ const Version = (props) => {
     bookCode,
     landingPage,
     parallelView,
+    parallelScroll,
     setMainValue,
   } = props;
   function handleClick(event) {
@@ -145,8 +146,8 @@ const Version = (props) => {
       setValue("chapter", 1);
       setValue("bookCode", bookList[0].book_code);
       setValue("versesSelected", []);
-      //if parallel bible view, disable parallel scroll, show message
-      if (parallelView === PARALLELBIBLE) {
+      //if parallel bible view and parallel sCroll, disable parallel scroll, show message
+      if (parallelView === PARALLELBIBLE && parallelScroll) {
         setMainValue("parallelScroll", false);
         const ver = capitalize(selectedVersion.getAttribute("value"));
         const message = `Current book not available in ${ver}, Parallel Scroll disabled`;
@@ -261,6 +262,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
     parallelView: state.local.parallelView,
+    parallelScroll: state.local.parallelScroll,
   };
 };
 const mapDispatchToProps = (dispatch) => {
