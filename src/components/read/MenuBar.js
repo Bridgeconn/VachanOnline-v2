@@ -65,6 +65,7 @@ const MenuBar = (props) => {
     versionBooks,
     versionSource,
     fontSize,
+    fontFamily,
     lineView,
     bookCode,
     audio,
@@ -268,6 +269,7 @@ const MenuBar = (props) => {
         </Tooltip>
         <Setting
           fontSize={fontSize}
+          fontFamily={fontFamily}
           lineView={lineView}
           setValue={setValue}
           settingsAnchor={settingsAnchor}

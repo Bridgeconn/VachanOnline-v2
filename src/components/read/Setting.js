@@ -39,10 +39,15 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     color: "#bfbfbf",
   },
+  selected: {
+    background: "#c7c7c7",
+    boxShadow: "inset 1px 1px 5px #9a9a9a",
+  },
 }));
 const ITEM_HEIGHT = 68;
 const Setting = ({
   fontSize,
+  fontFamily,
   lineView,
   setValue,
   settingsAnchor,
@@ -83,14 +88,22 @@ const Setting = ({
             aria-label="Large contained secondary button group"
           >
             <Button
-              className={classes.sans}
+              className={
+                fontFamily === "Sans"
+                  ? `${classes.sans} ${classes.selected}`
+                  : classes.sans
+              }
               onClick={setFontFamily}
               value="Sans"
             >
               Sans
             </Button>
             <Button
-              className={classes.serif}
+              className={
+                fontFamily === "Serif"
+                  ? `${classes.serif} ${classes.selected}`
+                  : classes.serif
+              }
               onClick={setFontFamily}
               value="Serif"
             >
