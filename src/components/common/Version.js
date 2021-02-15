@@ -139,7 +139,11 @@ const Version = (props) => {
     let selectedVersion = event.currentTarget;
     let sourceId = selectedVersion.getAttribute("data-sourceid");
     let bookList = versionBooks[versionSource[sourceId]];
-    if (bookList.findIndex((e) => e.book_code === bookCode) === -1) {
+    if (
+      bookList &&
+      bookCode &&
+      bookList.findIndex((e) => e.book_code === bookCode) === -1
+    ) {
       //If current book not available set first available book
       //Using bookname api call for now, will fail in case a langauge has full and NT bible
       //In that case will need to update bible API with books present and see actual book present in bible or not
