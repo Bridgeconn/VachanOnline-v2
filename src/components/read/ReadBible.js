@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import ParallelScroll from "@material-ui/icons/Link";
-import ParallelScrollOff from "@material-ui/icons/LinkOff";
+import ParallelScroll from "@material-ui/icons/ImportExport";
 import Tooltip from "@material-ui/core/Tooltip";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -240,7 +239,7 @@ const ReadBible = (props) => {
                   </Tooltip>
                 ) : (
                   <Tooltip title="Parallel Scroll Disabled">
-                    <ParallelScrollOff
+                    <ParallelScroll
                       fontSize="large"
                       color="disabled"
                       className={classes.parallelScroll}
