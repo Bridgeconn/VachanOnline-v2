@@ -6,6 +6,8 @@ import DictionaryCombo from "./DictionaryCombo";
 import DictionaryWordCombo from "./DictionaryWordCombo";
 import Metadata from "../common/Metadata";
 import { getDictionaryIndex, getDictionaryWord } from "../common/utillity";
+import Close from "../common/Close";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -13,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     paddingLeft: 35,
-    paddingBottom: 10,
+    paddingBottom: 8,
     marginBottom: 20,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
@@ -64,8 +66,19 @@ const useStyles = makeStyles((theme) => ({
   loading: {
     paddingLeft: 20,
   },
+  icons: {
+    display: "flex",
+    marginTop: -10,
+    float: "right",
+  },
   metadata: {
-    marginTop: -8,
+    marginLeft: "auto",
+    display: "inline-block",
+    marginTop: -14,
+  },
+  closeButton: {
+    marginTop: 8,
+    marginRight: 15,
   },
   seeAlso: {
     textTransform: "capitalize",
@@ -161,7 +174,7 @@ const Dictionary = (props) => {
   return (
     <div className={classes.root}>
       <Grid container className={classes.title}>
-        <Grid item xs={11}>
+        <Grid item xs={10}>
           <DictionaryCombo
             dictionaries={dictionaries}
             selectedDictionary={selectedDictionary}
@@ -173,12 +186,20 @@ const Dictionary = (props) => {
             setDictionary={setDictionary}
           ></DictionaryWordCombo>
         </Grid>
-        <Grid className={classes.metadata} item xs={1}>
+        <Grid
+          className={classes.icons}
+          item
+          xs={2}
+          justify="flex-end"
+          direction="row"
+        >
           <Metadata
+            className={classes.metadata}
             metadataList={selectedDictionary.metadata}
             title="Version Name (in Eng)"
             abbreviation="Abbreviation"
           ></Metadata>
+          <Close className={classes.closeButton} />
         </Grid>
       </Grid>
       {dictionaryText.length === 0 ? (

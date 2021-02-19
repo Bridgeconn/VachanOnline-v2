@@ -12,6 +12,8 @@ import Pagination from "@material-ui/lab/Pagination";
 import { searchBible } from "../common/utillity";
 import * as actions from "../../store/actions";
 import { connect } from "react-redux";
+import Close from "../common/Close";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 78,
   },
   heading: {
-    paddingBottom: 8,
+    display: "flex",
+    paddingBottom: 6,
     paddingLeft: 15,
     borderBottom: "1px solid #f1ecec",
   },
@@ -95,6 +98,10 @@ const useStyles = makeStyles((theme) => ({
   },
   pageCount: {
     display: "inline-block",
+  },
+  closeButton: {
+    marginRight: 15,
+    marginTop: 11,
   },
 }));
 
@@ -212,25 +219,34 @@ const Search = (props) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.heading}>
-        <Paper component="form" className={classes.searchBox} onSubmit={search}>
-          <InputBase
-            className={classes.searchField}
-            placeholder="Enter search text"
-            inputProps={{ "aria-label": "enter search text" }}
-            value={searchText}
-            onChange={handleSearchTextChange}
-          />
-          <IconButton
-            type="submit"
-            className={classes.searchButton}
-            aria-label="search"
-            onClick={search}
+      <Box className={classes.heading}>
+        <Box flexGrow={1}>
+          <Paper
+            component="form"
+            className={classes.searchBox}
+            onSubmit={search}
           >
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-      </div>
+            <InputBase
+              className={classes.searchField}
+              placeholder="Enter search text"
+              inputProps={{ "aria-label": "enter search text" }}
+              value={searchText}
+              onChange={handleSearchTextChange}
+            />
+            <IconButton
+              type="submit"
+              className={classes.searchButton}
+              aria-label="search"
+              onClick={search}
+            >
+              <SearchIcon />
+            </IconButton>
+          </Paper>
+        </Box>
+        <Box>
+          <Close className={classes.closeButton} />
+        </Box>
+      </Box>
       <div className={classes.list}>
         {pageData && pageData.length ? (
           <List component="nav">

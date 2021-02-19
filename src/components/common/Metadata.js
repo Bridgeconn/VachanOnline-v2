@@ -82,7 +82,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
     );
   };
   return (
-    <div>
+    <>
       {metadataList ? (
         <>
           <Tooltip title="Information">
@@ -174,6 +174,6 @@ export default function Metadata({ metadataList, title, abbreviation }) {
       ) : (
         ""
       )}
-    </div>
+    </>
   );
 }
