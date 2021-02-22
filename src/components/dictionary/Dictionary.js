@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import DictionaryCombo from "./DictionaryCombo";
+import Box from "@material-ui/core/Box";
 import DictionaryWordCombo from "./DictionaryWordCombo";
 import Metadata from "../common/Metadata";
 import { getDictionaryIndex, getDictionaryWord } from "../common/utillity";
@@ -66,18 +66,11 @@ const useStyles = makeStyles((theme) => ({
   loading: {
     paddingLeft: 20,
   },
-  icons: {
-    display: "flex",
-    marginTop: -10,
-    float: "right",
-  },
   metadata: {
-    marginLeft: "auto",
-    display: "inline-block",
-    marginTop: -14,
+    marginTop: -10,
   },
   closeButton: {
-    marginTop: 8,
+    marginTop: 7,
     marginRight: 15,
   },
   seeAlso: {
@@ -173,8 +166,8 @@ const Dictionary = (props) => {
   }, [classes.heading, classes.seeAlso, dictionaryWord.word, wordMeaning]);
   return (
     <div className={classes.root}>
-      <Grid container className={classes.title}>
-        <Grid item xs={10}>
+      <Box className={classes.title}>
+        <Box flexGrow={1}>
           <DictionaryCombo
             dictionaries={dictionaries}
             selectedDictionary={selectedDictionary}
@@ -185,23 +178,18 @@ const Dictionary = (props) => {
             dictionaryWord={dictionaryWord}
             setDictionary={setDictionary}
           ></DictionaryWordCombo>
-        </Grid>
-        <Grid
-          className={classes.icons}
-          item
-          xs={2}
-          justify="flex-end"
-          direction="row"
-        >
+        </Box>
+        <Box className={classes.metadata}>
           <Metadata
-            className={classes.metadata}
             metadataList={selectedDictionary.metadata}
             title="Version Name (in Eng)"
             abbreviation="Abbreviation"
           ></Metadata>
+        </Box>
+        <Box>
           <Close className={classes.closeButton} />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       {dictionaryText.length === 0 ? (
         <h3 className={classes.loading}>Loading</h3>
       ) : (
