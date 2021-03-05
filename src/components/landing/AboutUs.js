@@ -110,10 +110,12 @@ const AboutUs = ({ handleClose }) => {
           Source Code
         </Typography>
         <Typography variant="body1">
-          The Source Code available on GitHub:
-        </Typography>
-        <Typography variant="body1">
-          {addLink("github.com/Bridgeconn/VachanOnline-v2", "https://")}
+          The Source Code available on
+          {addHyperLink(
+            "Github",
+            "https://github.com/Bridgeconn/VachanOnline-v2"
+          )}
+          .
         </Typography>
 
         <div className={classes.releaseNotes}>
@@ -127,10 +129,10 @@ const AboutUs = ({ handleClose }) => {
             <ul className={classes.list}>
               <li>Bibles: Nagamese NT</li>
               <li>
-                Commentary: : Bridgeway Bible Commentary (Marathi & Gujarati)
+                Commentary: Bridgeway Bible Commentary (Marathi & Gujarati)
               </li>
               <li>Dictionary: Easton’s Bible Dictionary (English)</li>
-              <li>Video: BibleProject (Bengali & Malayalam)</li>
+              <li>Videos: BibleProject (Bengali & Malayalam)</li>
             </ul>
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
@@ -178,7 +180,7 @@ const AboutUs = ({ handleClose }) => {
           </Typography>
 
           <Typography variant="h6" className={classes.subheading}>
-            Release Note (30/09/2020) v1.0
+            Release Notes (30/09/2020) v1.0
           </Typography>
           {addStyle(" ", "space")}
           <Typography variant="body1" gutterBottom>
@@ -196,7 +198,7 @@ const AboutUs = ({ handleClose }) => {
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
               <li>
-                Bibles: Updated versions of IRV Bibles in all available Indian
+                Bibles: Latest versions of IRV Bibles in all available Indian
                 Gateway languages
               </li>
               <li>
@@ -207,7 +209,7 @@ const AboutUs = ({ handleClose }) => {
               <li>Dictionary: IRV Dictionary (Hindi)</li>
               <li>Infographics: VisualUnit (Hindi)</li>
               <li>Audio: IRV NT Bible (Hindi)</li>
-              <li>Video: BibleProject (English, Hindi & Telugu)</li>
+              <li>Videos: BibleProject (English, Hindi & Telugu)</li>
             </ul>
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
