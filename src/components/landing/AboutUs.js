@@ -110,7 +110,7 @@ const AboutUs = ({ handleClose }) => {
           Source Code
         </Typography>
         <Typography variant="body1">
-          The Source Code available on
+          The Source Code is available on
           {addHyperLink(
             "Github",
             "https://github.com/Bridgeconn/VachanOnline-v2"
