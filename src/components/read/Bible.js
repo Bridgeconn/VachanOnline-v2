@@ -6,8 +6,9 @@ import ReactPlayer from "react-player";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
 import { NOTE } from "../../store/views";
-import API from "../../store/api";
+import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
+import * as color from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -91,8 +92,20 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 12,
     color: "#3E4095",
   },
-  highlight: {
-    backgroundColor: "#feff3b",
+  yellow: {
+    backgroundColor: color.YELLOW,
+  },
+  green: {
+    backgroundColor: color.GREEN,
+  },
+  cyan: {
+    backgroundColor: color.CYAN,
+  },
+  pink: {
+    backgroundColor: color.PINK,
+  },
+  orange: {
+    backgroundColor: color.ORANGE,
   },
   selectedVerse: {
     backgroundColor: "#d9e8ef",
@@ -127,6 +140,9 @@ const Bible = (props) => {
   const [notes, setNotes] = React.useState([]);
   const [fetchData, setFetchData] = React.useState();
   const [font, setFont] = React.useState("");
+  const [highlightVerses, setHighlightVerses] = React.useState([]);
+  const [highlighMap, setHighlighMap] = React.useState();
+  const cancelToken = React.useRef();
 
   let {
     sourceId,
@@ -166,46 +182,75 @@ const Bible = (props) => {
     if (version !== "Loading...") {
       let language = version.split("-")[0];
       const sans = {
-        assamese: "Mukti",
-        bengali: "Mukti",
-        gujarati: "Shruti",
-        hindi: "Noto Sans Devanagari",
-        kannada: "Tunga",
-        malayalam: "Kartika",
-        marathi: "Noto Sans Devanagari",
-        punjabi: "Raavi",
-        odia: "Kalinga",
-        tamil: "Latha",
-        telugu: "Gautami",
-        urdu: "Noto Sans Devanagari",
-        english: "Roboto,Noto Sans",
+        asm: "Mukti",
+        ben: "Mukti",
+        guj: "Shruti",
+        hin: "Noto Sans Devanagari",
+        kan: "Tunga",
+        mal: "sans-serif",
+        mar: "Noto Sans Devanagari",
+        pan: "Raavi",
+        ory: "Kalinga",
+        tam: "Latha",
+        tel: "Gautami",
+        urd: "Noto Sans Devanagari",
+        eng: "Roboto,Noto Sans",
+        nag: "Roboto,Noto Sans",
       };
       const serif = {
-        assamese: "Nikosh",
-        bengali: "Nikosh",
-        gujarati: "Rekha",
-        hindi: "Noto Serif Devanagari",
-        kannada: "Kedage",
-        malayalam: "Noto Serif Malayalam",
-        marathi: "Noto Serif Devanagari",
-        punjabi: "Gurbani Lipi",
-        odia: "Baloo Bhaina2",
-        tamil: "Noto Serif Tamil",
-        telugu: "Noto Serif Telugu",
-        urdu: "Noto Serif Devanagari",
-        english: "Roboto Slab,Martel",
+        asm: "Nikosh",
+        ben: "Nikosh",
+        guj: "Rekha",
+        hin: "Noto Serif Devanagari",
+        kan: "Kedage",
+        mal: "Noto Serif Malayalam",
+        mar: "Noto Serif Devanagari",
+        pan: "Gurbani Lipi",
+        ory: "Baloo Bhaina2",
+        tam: "Noto Serif Tamil",
+        tel: "Noto Serif Telugu",
+        urd: "Noto Serif Devanagari",
+        eng: "Roboto Slab,Martel",
+        nag: "Roboto Slab,Martel",
       };
       setFont(fontFamily === "Sans" ? sans[language] : serif[language]);
     }
   }, [version, fontFamily]);
+  const colorClasses = {
+    a: classes.yellow,
+    b: classes.green,
+    c: classes.cyan,
+    d: classes.pink,
+    e: classes.orange,
+  };
+  React.useEffect(() => {
+    if (highlights) {
+      setHighlightVerses(
+        highlights.map((a) => parseInt(a.toString().split(":")[0]))
+      );
+      //make verse to color map
+      let map = {};
+      highlights.forEach((highlight) => {
+        let verse = highlight.toString().split(":");
+        map[verse[0]] = verse[1] || "a";
+      });
+      setHighlighMap(map);
+    }
+  }, [highlights]);
   React.useEffect(() => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
       setIsLoading(true);
       setLoadingText("Loading");
-      API.get(
-        "bibles/" + sourceId + "/books/" + bookCode + "/chapter/" + chapter
-      )
+      //Check if there are any previous pending requests
+      if (typeof cancelToken.current != typeof undefined) {
+        cancelToken.current.cancel("Operation canceled due to new request.");
+      }
+      //Save the cancel token for the current request
+      cancelToken.current = CancelToken.source();
+      API.get(`bibles/${sourceId}/books/${bookCode}/chapter/${chapter}`, {
+        cancelToken: cancelToken.current.token,
+      })
         .then(function (response) {
           setPrevious(response.data.previous);
           setNext(response.data.next);
@@ -339,18 +384,18 @@ const Bible = (props) => {
                 ""
               )}
               {verses.map((item) => {
+                const verse = parseInt(item.number);
                 const verseClass =
-                  selectedVerses.indexOf(parseInt(item.number)) > -1
+                  selectedVerses.indexOf(verse) > -1
                     ? `${classes.verseText} ${classes.selectedVerse}`
-                    : highlights.indexOf(parseInt(item.number)) > -1
-                    ? `${classes.verseText} ${classes.highlight}`
+                    : highlightVerses.indexOf(verse) > -1
+                    ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
                     : `${classes.verseText}`;
                 const verseNumberClass =
-                  parseInt(item.number) === 1
+                  verse === 1
                     ? `${classes.verseNumber} ${classes.firstVerse}`
                     : `${classes.verseNumber}`;
-                const verseNo =
-                  parseInt(item.number) === 1 ? chapter : item.number;
+                const verseNo = verse === 1 ? chapter : item.number;
                 const sectionHeading = getHeading(item.metadata);
                 return (
                   <span key={item.number}>
@@ -360,7 +405,7 @@ const Bible = (props) => {
                         <span className={verseClass}> {item.text}</span>
                       </span>
                       {/*If verse has note then show note icon to open notes pane */}
-                      {notes && notes.includes(parseInt(item.number)) ? (
+                      {notes && notes.includes(verse) ? (
                         <NoteIcon
                           fontSize="small"
                           color="disabled"
@@ -442,7 +487,6 @@ const mapStateToProps = (state) => {
   return {
     parallelScroll: state.local.parallelScroll,
     userDetails: state.local.userDetails,
-    setParallelView: state.local.setParallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -450,6 +494,8 @@ const mapDispatchToProps = (dispatch) => {
     syncPanel: (from, to) => {
       dispatch({ type: actions.SYNCPANEL, from: from, to: to });
     },
+    setParallelView: (value) =>
+      dispatch({ type: actions.SETVALUE, name: "parallelView", value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Bible);

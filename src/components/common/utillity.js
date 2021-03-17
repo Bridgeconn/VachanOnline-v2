@@ -1,4 +1,4 @@
-import API from "../../store/api";
+import { API } from "../../store/api";
 import { bibleBooks } from "../../store/bibleData";
 //Function to get the bible versions
 export const getVersions = (

@@ -67,6 +67,7 @@ const BibleIndex = (props) => {
           setValue={props.setValue}
           version={version}
           landingPage={true}
+          bookCode={bookCode}
         />
         {bookCode !== "" && bookCode !== undefined ? (
           <BookCombo

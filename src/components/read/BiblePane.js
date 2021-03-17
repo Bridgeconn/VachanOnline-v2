@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import Fullscreen from "react-full-screen";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
-import { useFirebase } from "react-redux-firebase";
 import MenuBar from "./MenuBar";
 import Bible from "./Bible";
 import FetchHighlights from "../highlight/FetchHighlights";
@@ -38,13 +37,12 @@ const BiblePane = ({
   const classes = useStyles();
   const [fullscreen, setFullscreen] = React.useState(false);
   const [selectedVerses, setSelectedVerses] = React.useState([]);
-  const [highlighted, setHighlighted] = React.useState(false);
   const [highlights, setHighlights] = React.useState([]);
   const [fetchHighlights, setFetchHighlights] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");
+  const [refUrl, setRefUrl] = React.useState("");
 
   const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
-  const firebase = useFirebase();
 
   React.useEffect(() => {
     const closeAlert = () => {
@@ -74,22 +72,6 @@ const BiblePane = ({
       )
     );
   }, [message, setValue]);
-  React.useEffect(() => {
-    if (
-      highlights &&
-      Array.isArray(selectedVerses) &&
-      selectedVerses.length > 0
-    ) {
-      if (highlights && highlights.length > 0) {
-        const newHighlighted = selectedVerses.every(
-          (a) => highlights.indexOf(parseInt(a)) !== -1
-        );
-        setHighlighted(newHighlighted);
-      } else {
-        setHighlighted(false);
-      }
-    }
-  }, [selectedVerses, highlights]);
   //if no uesr logged in reset selected verses
   React.useEffect(() => {
     if (Object.keys(userDetails).length === 0 || userDetails.uid === null) {
@@ -112,34 +94,13 @@ const BiblePane = ({
           setHighlights={setHighlights}
         />
       );
+      setRefUrl(
+        `users/${userDetails.uid}/highlights/${sourceId}/${bookCode}/${chapter}`
+      );
     } else {
       setFetchHighlights("");
     }
   }, [userDetails, sourceId, bookCode, chapter, setHighlights]);
-  function highlightClick() {
-    const newHighlights = !highlighted
-      ? Array.from(new Set(highlights.concat(selectedVerses))).sort()
-      : highlights.filter((a) => selectedVerses.indexOf(parseInt(a)) === -1);
-    return firebase
-      .ref(
-        "users/" +
-          userDetails.uid +
-          "/highlights/" +
-          sourceId +
-          "/" +
-          bookCode +
-          "/" +
-          chapter
-      )
-      .set(newHighlights, function (error) {
-        if (error) {
-          console.log("Highlight update error");
-        } else {
-          console.log("Highlight updated succesfully");
-          setSelectedVerses([]);
-        }
-      });
-  }
   return (
     <>
       <div>
@@ -149,10 +110,10 @@ const BiblePane = ({
           paneNo={paneNo}
           setFullscreen={setFullscreen}
           setValue={setValue}
-          highlighted={highlighted}
-          highlightClick={highlightClick}
           selectedVerses={selectedVerses}
           setSelectedVerses={setSelectedVerses}
+          highlights={highlights}
+          refUrl={refUrl}
         />
         <Grid container className={classes.bible}>
           <Grid item xs={12}>

@@ -65,14 +65,15 @@ const MenuBar = (props) => {
     versionBooks,
     versionSource,
     fontSize,
+    fontFamily,
     lineView,
     bookCode,
     audio,
     userDetails,
-    highlighted,
-    highlightClick,
     selectedVerses,
     setSelectedVerses,
+    refUrl,
+    highlights,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -106,8 +107,10 @@ const MenuBar = (props) => {
       if (selectedVerses && selectedVerses.length > 0) {
         setHighlightIcon(
           <Highlight
-            highlighted={highlighted}
-            highlightClick={highlightClick}
+            selectedVerses={selectedVerses}
+            setSelectedVerses={setSelectedVerses}
+            refUrl={refUrl}
+            highlights={highlights}
           />
         );
         return;
@@ -123,7 +126,14 @@ const MenuBar = (props) => {
     } else {
       setHighlightIcon("");
     }
-  }, [userDetails, selectedVerses, highlighted, highlightClick, classes.info]);
+  }, [
+    userDetails,
+    selectedVerses,
+    classes.info,
+    setSelectedVerses,
+    refUrl,
+    highlights,
+  ]);
 
   //Set note icon
   React.useEffect(() => {
@@ -176,11 +186,11 @@ const MenuBar = (props) => {
         (e) => e.languageVersions[0].language.code === language[0]
       );
       if (languageVersions !== undefined) {
-        const version = languageVersions.languageVersions.find(
+        const versionObject = languageVersions.languageVersions.find(
           (e) => e.version.code === language[1]
         );
-        setValue("languageCode", version.language.code);
-        setMetadataList(version.metadata);
+        setValue("languageCode", versionObject.language.code);
+        setMetadataList(versionObject.metadata);
       }
     }
   }, [setValue, version, versions]);
@@ -259,6 +269,7 @@ const MenuBar = (props) => {
         </Tooltip>
         <Setting
           fontSize={fontSize}
+          fontFamily={fontFamily}
           lineView={lineView}
           setValue={setValue}
           settingsAnchor={settingsAnchor}

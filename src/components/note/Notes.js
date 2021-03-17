@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddBox from "@material-ui/icons/AddBox";
 import Grid from "@material-ui/core/Grid";
+import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
@@ -418,12 +419,20 @@ export default function Notes(props) {
             </Grid>
           </Grid>
           <Snackbar
-            severity="warning"
             open={alert}
             autoHideDuration={5000}
             onClose={closeAlert}
-            message={alertMessage}
-          />
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <Alert
+              elevation={6}
+              variant="filled"
+              onClose={closeAlert}
+              severity="warning"
+            >
+              {alertMessage}
+            </Alert>
+          </Snackbar>
         </div>
       ) : (
         ""

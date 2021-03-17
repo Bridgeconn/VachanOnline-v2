@@ -1,20 +1,3 @@
-.searchIcon {
-  display: inline;
-}
-
-.searchBox input {
-  width: 280px;
-  border: none;
-  padding-top: 9px;
-  padding-left: 12px;
-  outline: none;
-}
-.searchBox {
-  float: right;
-  width: 300px;
-  background-color: #fff;
-  margin-top: 5px;
-}
 button:focus {
   outline: none;
 }
@@ -45,8 +28,8 @@ button:hover {
   font-size: 36px;
 }
 
-.material:hover{
+.material:hover {
   background-color: #e0e0e0;
   border-radius: 50%;
-  color:#000
+  color: #000;
 }

@@ -1,4 +1,5 @@
 import * as actions from "./actions";
+import { capitalize } from "../components/common/utillity";
 const defaultState = {
   versions: [],
   commentaries: [],
@@ -23,7 +24,7 @@ const defaultState = {
     email: null,
     photoURL: null,
   },
-  setParallelView: null,
+  parallelView: null,
   panel1: {
     version: "Loading...",
     sourceId: "",
@@ -87,8 +88,8 @@ const reducer = (state = defaultState, action) => {
         chapter = state[action.to].chapter;
         bookCode = state[action.to].bookCode;
         parallelScroll = false;
-        message =
-          "Current book not available in parallel view, Parallel Scroll disabled";
+        const ver = capitalize(state[action.to].version);
+        message = `Current book not available in ${ver}, Parallel Scroll disabled`;
       }
       return {
         ...state,

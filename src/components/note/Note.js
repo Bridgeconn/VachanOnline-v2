@@ -12,6 +12,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
@@ -152,12 +153,20 @@ export default function Note({
         </Tooltip>
       </div>
       <Snackbar
-        severity="warning"
         open={alert}
         autoHideDuration={5000}
         onClose={closeAlert}
-        message="Please enter note text"
-      />
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          elevation={6}
+          variant="filled"
+          onClose={closeAlert}
+          severity="warning"
+        >
+          Please enter note text
+        </Alert>
+      </Snackbar>
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import ParallelScroll from "@material-ui/icons/Link";
-import ParallelScrollOff from "@material-ui/icons/LinkOff";
+import ParallelScroll from "@material-ui/icons/ImportExport";
 import Tooltip from "@material-ui/core/Tooltip";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -86,8 +85,9 @@ const ReadBible = (props) => {
   const bibleText1 = React.useRef();
   const bibleText2 = React.useRef();
   //used to sync bibles in paralle bibles on scroll
-  const [parallelView, setParallelView] = React.useState("");
   const [bookObject, setBookObject] = React.useState({});
+  //flag to prevent looping of on scroll event
+  const ignoreScrollEvents = React.useRef(false);
   let {
     setValue,
     setValue1,
@@ -107,28 +107,14 @@ const ReadBible = (props) => {
     versionBooks,
     versionSource,
     syncPanel,
+    parallelView,
   } = props;
   const { uid } = userDetails;
-  //Function to handle right menu click
-  function menuClick(view) {
-    //if closing commentary then reset selected commentary
-    if (parallelView === view && view === views.COMMENTARY) {
-      setValue("commentary", {});
-    }
-    setParallelView(parallelView === view ? "" : view);
-  }
-  const useMountEffect = (func) => React.useEffect(func, []);
-  useMountEffect(() => {
-    //set function in redux to use in Bible.js to open notes pane
-    setValue("setParallelView", setParallelView);
-  });
-  //flag to prevent looping of on scroll event
-  let ignoreScrollEvents = false;
   //function for moving parallel bibles scroll together
   const scroll = React.useCallback((paneNo, parallelScroll) => {
     //check flag to prevent looping of on scroll event
-    if (ignoreScrollEvents) {
-      ignoreScrollEvents = false;
+    if (ignoreScrollEvents.current) {
+      ignoreScrollEvents.current = false;
       return;
     }
     if (!parallelScroll) {
@@ -139,12 +125,12 @@ const ReadBible = (props) => {
     if (text1 && text2) {
       //if parallel scroll on scroll proportinal to scroll window
       if (paneNo === 1) {
-        ignoreScrollEvents = true;
+        ignoreScrollEvents.current = true;
         text2.scrollTop =
           (text1.scrollTop / (text1.scrollHeight - text1.offsetHeight)) *
           (text2.scrollHeight - text2.offsetHeight);
       } else if (paneNo === 2) {
-        ignoreScrollEvents = true;
+        ignoreScrollEvents.current = true;
         text1.scrollTop =
           (text2.scrollTop / (text2.scrollHeight - text2.offsetHeight)) *
           (text1.scrollHeight - text1.offsetHeight);
@@ -183,9 +169,9 @@ const ReadBible = (props) => {
   }, [parallelView, copyPanel1]);
   React.useEffect(() => {
     if (uid === null) {
-      setParallelView("");
+      setValue("parallelView", "");
     }
-  }, [uid]);
+  }, [setValue, uid]);
   const [pane, setPane] = React.useState("");
   //Set book object on change  of pane 1 for display in notes
   React.useEffect(() => {
@@ -253,7 +239,7 @@ const ReadBible = (props) => {
                   </Tooltip>
                 ) : (
                   <Tooltip title="Parallel Scroll Disabled">
-                    <ParallelScrollOff
+                    <ParallelScroll
                       fontSize="large"
                       color="disabled"
                       className={classes.parallelScroll}
@@ -437,12 +423,7 @@ const ReadBible = (props) => {
       <div>
         <div className={classes.biblePane}>{pane}</div>
         <div className={classes.rightMenu}>
-          <BibleMenu
-            menuClick={menuClick}
-            uid={uid}
-            parallelView={parallelView}
-            setValue={setValue}
-          />
+          <BibleMenu />
         </div>
       </div>
     </>
@@ -464,6 +445,7 @@ const mapStateToProps = (state) => {
     video: state.local.video,
     login: state.local.login,
     userDetails: state.local.userDetails,
+    parallelView: state.local.parallelView,
   };
 };
 
