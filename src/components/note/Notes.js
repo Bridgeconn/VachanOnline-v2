@@ -18,6 +18,8 @@ import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { getBookbyCode, capitalize } from "../common/utillity";
+import Close from "../common/Close";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,8 +33,12 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2em",
+    height: "2.75em",
   },
+  notesHeading: {
+    display: "flex",
+  },
+
   list: {
     position: "absolute",
     right: 0,
@@ -91,6 +97,10 @@ const useStyles = makeStyles((theme) => ({
     "& textarea": {
       maxHeight: 114,
     },
+  },
+  closeButton: {
+    marginRight: 15,
+    marginTop: -6,
   },
 }));
 
@@ -358,28 +368,39 @@ export default function Notes(props) {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h6" className={classes.heading}>
-        Notes
-        {Array.isArray(versesSelected) && versesSelected.length && !edit ? (
-          <Tooltip title="Add Note">
-            <IconButton
-              aria-label="add"
-              className={classes.addNote}
-              onClick={clickAddNote}
-            >
-              <AddBox />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Select Verses">
-            <div className={classes.addNoteDisabled}>
-              <IconButton aria-label="add" className={classes.addNote} disabled>
-                <AddBox />
-              </IconButton>
-            </div>
-          </Tooltip>
-        )}
-      </Typography>
+      <Box className={classes.heading}>
+        <Box flexGrow={1}>
+          <Typography variant="h6" className={classes.notesHeading}>
+            Notes
+            {Array.isArray(versesSelected) && versesSelected.length && !edit ? (
+              <Tooltip title="Add Note">
+                <IconButton
+                  aria-label="add"
+                  className={classes.addNote}
+                  onClick={clickAddNote}
+                >
+                  <AddBox />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Select Verses">
+                <div className={classes.addNoteDisabled}>
+                  <IconButton
+                    aria-label="add"
+                    className={classes.addNote}
+                    disabled
+                  >
+                    <AddBox />
+                  </IconButton>
+                </div>
+              </Tooltip>
+            )}
+          </Typography>
+        </Box>
+        <Box>
+          <Close className={classes.closeButton} />
+        </Box>
+      </Box>
       {addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>

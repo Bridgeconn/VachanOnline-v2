@@ -8,6 +8,7 @@ import CommentaryCombo from "./CommentaryCombo";
 import Metadata from "../common/Metadata";
 import { getCommentaryForChaper } from "../common/utillity";
 import parse from "html-react-parser";
+import Close from "../common/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     paddingLeft: 35,
-    paddingBottom: 10,
+    paddingBottom: 8,
     marginBottom: 20,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
@@ -68,8 +69,19 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     display: "inline-block",
   },
+  icons: {
+    display: "flex",
+    marginTop: 4,
+    marginLeft: -5,
+  },
   metadata: {
-    marginTop: -8,
+    marginLeft: "auto",
+    display: "inline-block",
+    marginTop: -14,
+  },
+  closeButton: {
+    marginRight: 10,
+    marginTop: -6,
   },
 }));
 
@@ -174,17 +186,20 @@ const Commentary = (props) => {
             setCommentary={props.setCommentary}
           />
         </Grid>
-        <Grid item xs={11} md={5}>
+        <Grid item xs={8} md={4}>
           <Typography className={classes.bookLabel}>
             {book} {chapter}
           </Typography>
         </Grid>
-        <Grid className={classes.metadata} item xs={1}>
-          <Metadata
-            metadataList={commentary.metadata}
-            title="Version Name (in Eng)"
-            abbreviation="Abbreviation"
-          ></Metadata>
+        <Grid className={classes.icons} item xs={4} md={2}>
+          <div className={classes.metadata}>
+            <Metadata
+              metadataList={commentary.metadata}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+            ></Metadata>
+          </div>
+          <Close className={classes.closeButton} />
         </Grid>
       </Grid>
       {commentaryText.length === 0 ? (

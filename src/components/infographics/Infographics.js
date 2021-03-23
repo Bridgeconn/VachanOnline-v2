@@ -7,6 +7,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { connect } from "react-redux";
 import { getInfographics } from "../common/utillity";
+import Close from "../common/Close";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 94,
     bottom: 0,
-    paddingLeft: 15,
   },
   container: {
     top: 40,
@@ -22,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "scroll",
     position: "absolute",
     paddingTop: 12,
-    width: "calc(100% - 15px)",
+    width: "100%",
+    paddingLeft: 15,
     height: "calc(100% - 40px)",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
@@ -41,7 +43,8 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2em",
+    height: "2.75em",
+    paddingLeft: 15,
   },
   title: {
     paddingTop: 4,
@@ -56,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 20,
     marginTop: 10,
     cursor: "pointer",
+  },
+  closeButton: {
+    marginRight: 15,
+    marginTop: -6,
   },
 }));
 const Infographics = (props) => {
@@ -101,9 +108,15 @@ const Infographics = (props) => {
   }, [infographics]);
   return (
     <div className={classes.root}>
-      <Typography variant="h6" className={classes.heading}>
-        Infographics
-      </Typography>
+      <Box className={classes.heading}>
+        <Box flexGrow={1}>
+          <Typography variant="h6">Infographics</Typography>
+        </Box>
+        <Box>
+          <Close className={classes.closeButton} />
+        </Box>
+      </Box>
+
       {message !== "" ? (
         message
       ) : (
