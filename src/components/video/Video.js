@@ -6,6 +6,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ModalVideo from "react-modal-video";
+import Close from "../common/Close";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 94,
     bottom: 0,
-    paddingLeft: 15,
   },
   container: {
     top: 40,
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "scroll",
     position: "absolute",
     paddingTop: 12,
+    paddingLeft: 15,
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
@@ -38,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2em",
+    height: "2.75em",
+    paddingLeft: 15,
   },
   card: {
     minWidth: 170,
@@ -68,6 +71,10 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+  },
+  closeButton: {
+    marginRight: 15,
+    marginTop: -6,
   },
 }));
 const Video = (props) => {
@@ -102,9 +109,15 @@ const Video = (props) => {
   }, [video, bookCode, languageCode]);
   return (
     <div className={classes.root}>
-      <Typography variant="h6" className={classes.heading}>
-        Videos
-      </Typography>
+      <Box className={classes.heading}>
+        <Box flexGrow={1}>
+          <Typography variant="h6">Videos</Typography>
+        </Box>
+        <Box>
+          <Close className={classes.closeButton} />
+        </Box>
+      </Box>
+
       <div className={classes.container}>
         {videos && videos.length > 0 ? (
           <div>

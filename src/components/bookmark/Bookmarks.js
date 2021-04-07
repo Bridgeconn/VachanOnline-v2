@@ -11,6 +11,8 @@ import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { getBookbyCode, capitalize } from "../common/utillity";
+import Close from "../common/Close";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2em",
+    height: "2.75em",
   },
   list: {
     position: "absolute",
@@ -52,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     borderBottom: "1px solid lightgray",
+  },
+  closeButton: {
+    marginRight: 15,
+    marginTop: -6,
   },
 }));
 const Bookmarks = (props) => {
@@ -145,9 +151,14 @@ const Bookmarks = (props) => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h6" className={classes.heading}>
-        Bookmarks
-      </Typography>
+      <Box className={classes.heading}>
+        <Box flexGrow={1}>
+          <Typography variant="h6">Bookmarks</Typography>
+        </Box>
+        <Box>
+          <Close className={classes.closeButton} />
+        </Box>
+      </Box>
       <div className={classes.list}>
         {bookmarks && Object.keys(bookmarks).length !== 0 ? (
           <List component="nav">

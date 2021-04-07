@@ -1,11 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import DictionaryCombo from "./DictionaryCombo";
+import Box from "@material-ui/core/Box";
 import DictionaryWordCombo from "./DictionaryWordCombo";
 import Metadata from "../common/Metadata";
 import { getDictionaryIndex, getDictionaryWord } from "../common/utillity";
+import Close from "../common/Close";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -13,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     paddingLeft: 35,
-    paddingBottom: 10,
+    paddingBottom: 8,
     marginBottom: 20,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
@@ -65,7 +67,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
   },
   metadata: {
-    marginTop: -8,
+    marginTop: -10,
+  },
+  closeButton: {
+    marginTop: 7,
+    marginRight: 15,
   },
   seeAlso: {
     textTransform: "capitalize",
@@ -160,8 +166,8 @@ const Dictionary = (props) => {
   }, [classes.heading, classes.seeAlso, dictionaryWord.word, wordMeaning]);
   return (
     <div className={classes.root}>
-      <Grid container className={classes.title}>
-        <Grid item xs={11}>
+      <Box className={classes.title}>
+        <Box flexGrow={1}>
           <DictionaryCombo
             dictionaries={dictionaries}
             selectedDictionary={selectedDictionary}
@@ -172,15 +178,18 @@ const Dictionary = (props) => {
             dictionaryWord={dictionaryWord}
             setDictionary={setDictionary}
           ></DictionaryWordCombo>
-        </Grid>
-        <Grid className={classes.metadata} item xs={1}>
+        </Box>
+        <Box className={classes.metadata}>
           <Metadata
             metadataList={selectedDictionary.metadata}
             title="Version Name (in Eng)"
             abbreviation="Abbreviation"
           ></Metadata>
-        </Grid>
-      </Grid>
+        </Box>
+        <Box>
+          <Close className={classes.closeButton} />
+        </Box>
+      </Box>
       {dictionaryText.length === 0 ? (
         <h3 className={classes.loading}>Loading</h3>
       ) : (

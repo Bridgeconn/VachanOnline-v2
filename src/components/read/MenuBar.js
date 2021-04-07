@@ -14,15 +14,16 @@ import BorderColor from "@material-ui/icons/BorderColor";
 import Note from "../note/Note";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLUETRANSPARENT } from "../../store/colorCode";
+import Close from "../common/Close";
 
 const useStyles = makeStyles((theme) => ({
   read: {
-    padding: "0 15px 0 44px",
+    padding: "0 10px 0 44px",
     width: "100%",
     borderBottom: "1px solid #f1ecec",
     position: "absolute",
     height: 61,
-    top: 74,
+    top: 72,
     [theme.breakpoints.only("xs")]: {
       padding: "0 15px 0 15px",
     },
@@ -50,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
   },
   items: {
     float: "right",
+  },
+  closeButton: {
+    marginRight: 5,
+    marginTop: 17,
   },
 }));
 const MenuBar = (props) => {
@@ -218,7 +223,7 @@ const MenuBar = (props) => {
   }, [audio, audioBible, bookCode, classes.info, setValue]);
   return (
     <Grid container className={classes.read}>
-      <Grid item xs={7}>
+      <Grid item xs={6}>
         <Version setValue={setValue} version={version} bookCode={bookCode} />
         {bookCode ? (
           <BookCombo
@@ -235,7 +240,7 @@ const MenuBar = (props) => {
       </Grid>
       <Grid
         item
-        xs={5}
+        xs={6}
         className={classes.items}
         container
         alignItems="flex-start"
@@ -275,6 +280,7 @@ const MenuBar = (props) => {
           settingsAnchor={settingsAnchor}
           handleClose={closeSettings}
         />
+        {paneNo === 2 ? <Close className={classes.closeButton} /> : ""}
         {/* <div className={classes.info}>
           <i
             className="material-icons"
