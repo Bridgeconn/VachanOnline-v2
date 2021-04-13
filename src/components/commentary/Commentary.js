@@ -59,6 +59,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    "& img": {
+      float: "right",
+      marginLeft: 30,
+      maxWidth: "70%",
+      margin: "30px 0px",
+    },
   },
   loading: {
     paddingLeft: 20,
@@ -91,6 +97,7 @@ const Commentary = (props) => {
   const [commentaryObject, setCommentaryObject] = React.useState([]);
   const [verseLabel, setVerseLabel] = React.useState("Verse");
   const [book, setBook] = React.useState("");
+  const [baseUrl, setBaseUrl] = React.useState("");
   const [bookNames, setBookNames] = React.useState([]);
   let { panel1, commentaries, setCommentary, commentary, versionBooks } = props;
   let { version, bookCode, chapter } = panel1;
@@ -137,7 +144,15 @@ const Commentary = (props) => {
       label = verseLabels[langObject.language] || label;
       setVerseLabel(label);
     }
-  }, [commentaries, commentary, versionBooks]);
+    if (
+      commentary.metadata !== undefined &&
+      commentary.metadata.baseUrl !== undefined
+    ) {
+      setBaseUrl(commentary.metadata.baseUrl);
+    } else {
+      setBaseUrl("");
+    }
+  }, [commentaries, commentary, versionBooks, setBaseUrl]);
 
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
@@ -158,11 +173,19 @@ const Commentary = (props) => {
     return str.startsWith("<br>") ? str.slice(4) : str;
   };
   React.useEffect(() => {
+    const changeBaseUrl = (str) => {
+      if (typeof str === "string" && baseUrl !== "") {
+        return str.replaceAll("base_url", baseUrl);
+      } else {
+        return str;
+      }
+    };
+
     //If commentary object then set commentary text to show on UI
     if (commentaryObject) {
       let commText = "";
       if (commentaryObject.bookIntro) {
-        commText += "<p>" + commentaryObject.bookIntro + "</p>";
+        commText += "<p>" + changeBaseUrl(commentaryObject.bookIntro) + "</p>";
       }
       if (commentaryObject.commentaries) {
         let item;
@@ -170,12 +193,12 @@ const Commentary = (props) => {
           if (item.verse !== "0") {
             commText += "<span>" + verseLabel + " " + item.verse + "</span>";
           }
-          commText += "<p>" + removeBr(item.text) + "</p>";
+          commText += "<p>" + changeBaseUrl(removeBr(item.text)) + "</p>";
         }
       }
       setCommentaryText(commText);
     }
-  }, [commentaryObject, verseLabel]);
+  }, [baseUrl, commentaryObject, verseLabel]);
   return (
     <div className={classes.root}>
       <Grid container className={classes.title}>
