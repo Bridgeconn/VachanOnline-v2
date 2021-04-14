@@ -7,7 +7,7 @@ import LandingFooter from "./LandingFooter";
 import ImageSlider from "./ImageSlider";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-import screenshot from "../common/images/screenshot.png";
+import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
 import Snackbar from "@material-ui/core/Snackbar";
 import Link from "@material-ui/core/Link";
