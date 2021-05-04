@@ -146,8 +146,44 @@ export default function TopBar({ login, userDetails }) {
             >
               Back to classic site
             </Button>
-            {/* <SerachBox /> */}
           </div>
+
+          {window.location.pathname.startsWith("/read") ? (
+            process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
+              <Link to="/biblestories">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.feedback}
+                  title="Bible Stories"
+                  aria-label="bible stories"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Bible Stories
+                </Button>
+              </Link>
+            ) : (
+              ""
+            )
+          ) : (
+            <Link to="/read">
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                className={classes.feedback}
+                title="Study Bible"
+                aria-label="bible"
+                target="_blank"
+                rel="noopener"
+              >
+                Study Bible
+              </Button>
+            </Link>
+          )}
+
           <Tooltip title="Feedback">
             <IconButton
               aria-label="feedback"
