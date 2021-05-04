@@ -15,6 +15,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-full-screen": "^0.2.4",
+    "react-markdown": "^6.0.0",
     "react-modal-video": "^1.2.3",
     "react-player": "^1.15.2",
     "react-redux": "^7.1.0",
@@ -26,7 +27,8 @@
     "react-swipeable": "^5.4.0",
     "react-viewerjs": "^0.1.9",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "rehype-highlight": "^4.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
