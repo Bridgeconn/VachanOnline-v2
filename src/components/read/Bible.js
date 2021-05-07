@@ -196,6 +196,8 @@ const Bible = (props) => {
         urd: "Noto Sans Devanagari",
         eng: "Roboto,Noto Sans",
         nag: "Roboto,Noto Sans",
+        har: "Noto Sans Devanagari",
+        bil: "Noto Sans Devanagari",
       };
       const serif = {
         asm: "Nikosh",
@@ -212,6 +214,8 @@ const Bible = (props) => {
         urd: "Noto Serif Devanagari",
         eng: "Roboto Slab,Martel",
         nag: "Roboto Slab,Martel",
+        har: "Noto Serif Devanagari",
+        bil: "Noto Serif Devanagari",
       };
       setFont(fontFamily === "Sans" ? sans[language] : serif[language]);
     }

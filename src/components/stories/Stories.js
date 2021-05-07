@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   stories: {
     paddingLeft: 20,
     paddingRight: 30,
-    marginTop: 120,
+    marginTop: 90,
     fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
 
     "& img": {

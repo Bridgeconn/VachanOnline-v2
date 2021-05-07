@@ -133,14 +133,19 @@ const Commentary = (props) => {
     if (Object.entries(commentary).length !== 0 && commentaries) {
       let langObject = commentaries.find((lang) => {
         let bool = lang.commentaries.some((c) => {
-          return c.code === commentary.code;
+          return c.sourceId === commentary.sourceId;
         });
         return bool;
       });
       setBookNames(versionBooks[langObject.languageCode]);
       //Set verse label
       let label = "Verse";
-      const verseLabels = { english: "Verse", hindi: "पद" };
+      const verseLabels = {
+        english: "Verse",
+        hindi: "पद",
+        marathi: "वचन",
+        gujarati: "કલામ",
+      };
       label = verseLabels[langObject.language] || label;
       setVerseLabel(label);
     }
