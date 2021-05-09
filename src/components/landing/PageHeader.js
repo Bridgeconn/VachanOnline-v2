@@ -35,6 +35,14 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  stories: {
+    color: "#e0e0e0",
+    marginRight: 4,
+    marginTop: 2,
+    "&:hover": {
+      color: "#d0d0d0",
+    },
+  },
   legacySite: {
     textTransform: "unset",
     fontSize: "1.2rem",
@@ -71,6 +79,24 @@ const PageHeader = ({ login, userDetails }) => {
               Back to classic site
             </Button>
           </div>
+          {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
+            <Link to="/biblestories">
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                className={classes.stories}
+                title="Bible Stories"
+                aria-label="bible stories"
+                target="_blank"
+                rel="noopener"
+              >
+                Bible Stories
+              </Button>
+            </Link>
+          ) : (
+            ""
+          )}
           {loginButton}
         </Toolbar>
       </AppBar>
