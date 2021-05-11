@@ -169,11 +169,15 @@ const Bible = (props) => {
   const styleProps = { padding: padding, singlePane: singlePane };
   const classes = useStyles(styleProps);
 
-  const getHeading = (metadata) => {
-    if (metadata) {
-      for (let value of metadata) {
-        if (value.hasOwnProperty("section")) {
-          return value.section.text;
+  //new usfm json structure
+  const getHeading = (contents) => {
+    if (contents) {
+      let data = contents.find((item) => Array.isArray(item));
+      if (data) {
+        for (let section of data) {
+          if (Object.keys(section)[0].startsWith("s")) {
+            return section[Object.keys(section)[0]][0];
+          }
         }
       }
     }
@@ -241,6 +245,7 @@ const Bible = (props) => {
       setHighlighMap(map);
     }
   }, [highlights]);
+
   React.useEffect(() => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
@@ -262,10 +267,16 @@ const Bible = (props) => {
             setLoadingText("Book will be uploaded soon");
           } else {
             setLoadingText("");
-            setVerses(response.data.chapterContent.verses);
-            setChapterHeading(
-              getHeading(response.data.chapterContent.metadata)
-            );
+            const isVerse = (content) => {
+              return (
+                typeof content === "object" &&
+                content !== null &&
+                "verseNumber" in content
+              );
+            };
+            let contents = response.data.chapterContent.contents;
+            setVerses(contents ? contents.filter(isVerse) : []);
+            setChapterHeading(getHeading(contents));
           }
           setIsLoading(false);
         })
@@ -388,7 +399,7 @@ const Bible = (props) => {
                 ""
               )}
               {verses.map((item) => {
-                const verse = parseInt(item.number);
+                const verse = parseInt(item.verseNumber);
                 const verseClass =
                   selectedVerses.indexOf(verse) > -1
                     ? `${classes.verseText} ${classes.selectedVerse}`
@@ -399,14 +410,17 @@ const Bible = (props) => {
                   verse === 1
                     ? `${classes.verseNumber} ${classes.firstVerse}`
                     : `${classes.verseNumber}`;
-                const verseNo = verse === 1 ? chapter : item.number;
-                const sectionHeading = getHeading(item.metadata);
+                const verseNo = verse === 1 ? chapter : item.verseNumber;
+                const sectionHeading = getHeading(item.contents);
                 return (
-                  <span key={item.number}>
+                  <span key={item.verseNumber}>
                     <span className={lineViewClass}>
-                      <span onClick={handleVerseClick} data-verse={item.number}>
+                      <span
+                        onClick={handleVerseClick}
+                        data-verse={item.verseNumber}
+                      >
                         <span className={verseNumberClass}>{verseNo}</span>
-                        <span className={verseClass}> {item.text}</span>
+                        <span className={verseClass}> {item.verseText}</span>
                       </span>
                       {/*If verse has note then show note icon to open notes pane */}
                       {notes && notes.includes(verse) ? (
@@ -462,7 +476,11 @@ const Bible = (props) => {
         >
           <i
             className="material-icons material"
-            style={{ fontSize: "38px", color: "#555555", opacity: 0.7 }}
+            style={{
+              fontSize: "38px",
+              color: "#555555",
+              opacity: 0.7,
+            }}
           >
             navigate_before
           </i>
@@ -477,7 +495,11 @@ const Bible = (props) => {
         >
           <i
             className="material-icons material"
-            style={{ fontSize: "38px", color: "#555555", opacity: 0.7 }}
+            style={{
+              fontSize: "38px",
+              color: "#555555",
+              opacity: 0.7,
+            }}
           >
             keyboard_arrow_right
           </i>
@@ -499,7 +521,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SYNCPANEL, from: from, to: to });
     },
     setParallelView: (value) =>
-      dispatch({ type: actions.SETVALUE, name: "parallelView", value: value }),
+      dispatch({
+        type: actions.SETVALUE,
+        name: "parallelView",
+        value: value,
+      }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Bible);
