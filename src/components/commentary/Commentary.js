@@ -8,6 +8,7 @@ import CommentaryCombo from "./CommentaryCombo";
 import Metadata from "../common/Metadata";
 import { getCommentaryForChaper } from "../common/utillity";
 import parse from "html-react-parser";
+import Close from "../common/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     paddingLeft: 35,
-    paddingBottom: 10,
+    paddingBottom: 8,
     marginBottom: 20,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
@@ -58,6 +59,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    "& img": {
+      float: "right",
+      marginLeft: 30,
+      maxWidth: "70%",
+      margin: "30px 0px",
+    },
   },
   loading: {
     paddingLeft: 20,
@@ -68,8 +75,19 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     display: "inline-block",
   },
+  icons: {
+    display: "flex",
+    marginTop: 4,
+    marginLeft: -5,
+  },
   metadata: {
-    marginTop: -8,
+    marginLeft: "auto",
+    display: "inline-block",
+    marginTop: -14,
+  },
+  closeButton: {
+    marginRight: 10,
+    marginTop: -6,
   },
 }));
 
@@ -79,6 +97,7 @@ const Commentary = (props) => {
   const [commentaryObject, setCommentaryObject] = React.useState([]);
   const [verseLabel, setVerseLabel] = React.useState("Verse");
   const [book, setBook] = React.useState("");
+  const [baseUrl, setBaseUrl] = React.useState("");
   const [bookNames, setBookNames] = React.useState([]);
   let { panel1, commentaries, setCommentary, commentary, versionBooks } = props;
   let { version, bookCode, chapter } = panel1;
@@ -114,18 +133,31 @@ const Commentary = (props) => {
     if (Object.entries(commentary).length !== 0 && commentaries) {
       let langObject = commentaries.find((lang) => {
         let bool = lang.commentaries.some((c) => {
-          return c.code === commentary.code;
+          return c.sourceId === commentary.sourceId;
         });
         return bool;
       });
       setBookNames(versionBooks[langObject.languageCode]);
       //Set verse label
       let label = "Verse";
-      const verseLabels = { english: "Verse", hindi: "पद" };
+      const verseLabels = {
+        english: "Verse",
+        hindi: "पद",
+        marathi: "वचन",
+        gujarati: "કલામ",
+      };
       label = verseLabels[langObject.language] || label;
       setVerseLabel(label);
     }
-  }, [commentaries, commentary, versionBooks]);
+    if (
+      commentary.metadata !== undefined &&
+      commentary.metadata.baseUrl !== undefined
+    ) {
+      setBaseUrl(commentary.metadata.baseUrl);
+    } else {
+      setBaseUrl("");
+    }
+  }, [commentaries, commentary, versionBooks, setBaseUrl]);
 
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
@@ -146,11 +178,19 @@ const Commentary = (props) => {
     return str.startsWith("<br>") ? str.slice(4) : str;
   };
   React.useEffect(() => {
+    const changeBaseUrl = (str) => {
+      if (typeof str === "string" && baseUrl !== "") {
+        return str.replaceAll("base_url", baseUrl);
+      } else {
+        return str;
+      }
+    };
+
     //If commentary object then set commentary text to show on UI
     if (commentaryObject) {
       let commText = "";
       if (commentaryObject.bookIntro) {
-        commText += "<p>" + commentaryObject.bookIntro + "</p>";
+        commText += "<p>" + changeBaseUrl(commentaryObject.bookIntro) + "</p>";
       }
       if (commentaryObject.commentaries) {
         let item;
@@ -158,12 +198,12 @@ const Commentary = (props) => {
           if (item.verse !== "0") {
             commText += "<span>" + verseLabel + " " + item.verse + "</span>";
           }
-          commText += "<p>" + removeBr(item.text) + "</p>";
+          commText += "<p>" + changeBaseUrl(removeBr(item.text)) + "</p>";
         }
       }
       setCommentaryText(commText);
     }
-  }, [commentaryObject, verseLabel]);
+  }, [baseUrl, commentaryObject, verseLabel]);
   return (
     <div className={classes.root}>
       <Grid container className={classes.title}>
@@ -174,17 +214,20 @@ const Commentary = (props) => {
             setCommentary={props.setCommentary}
           />
         </Grid>
-        <Grid item xs={11} md={5}>
+        <Grid item xs={8} md={4}>
           <Typography className={classes.bookLabel}>
             {book} {chapter}
           </Typography>
         </Grid>
-        <Grid className={classes.metadata} item xs={1}>
-          <Metadata
-            metadataList={commentary.metadata}
-            title="Version Name (in Eng)"
-            abbreviation="Abbreviation"
-          ></Metadata>
+        <Grid className={classes.icons} item xs={4} md={2}>
+          <div className={classes.metadata}>
+            <Metadata
+              metadataList={commentary.metadata}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+            ></Metadata>
+          </div>
+          <Close className={classes.closeButton} />
         </Grid>
       </Grid>
       {commentaryText.length === 0 ? (

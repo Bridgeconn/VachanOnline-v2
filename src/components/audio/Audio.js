@@ -8,6 +8,8 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ReactPlayer from "react-player";
+import Close from "../common/Close";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,15 +17,15 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 94,
     bottom: 0,
-    paddingLeft: 15,
   },
   container: {
     top: 40,
     bottom: 0,
     overflow: "scroll",
     position: "absolute",
-    width: "calc(100% - 15px)",
+    width: "100%",
     paddingTop: 12,
+    paddingLeft: 15,
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
@@ -41,7 +43,8 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2em",
+    height: "2.75em",
+    paddingLeft: 15,
   },
   language: {
     fontSize: "1.1rem",
@@ -85,6 +88,13 @@ const useStyles = makeStyles((theme) => ({
       outlineWidth: 0,
     },
   },
+  closeButton: {
+    marginRight: 15,
+    marginTop: -6,
+  },
+  subContainer: {
+    paddingRight: 4,
+  },
 }));
 const Audio = (props) => {
   const classes = useStyles();
@@ -109,12 +119,18 @@ const Audio = (props) => {
   }, [audioBible, bookCode]);
   return (
     <div className={classes.root}>
-      <Typography variant="h6" className={classes.heading}>
-        Audio Bibles
-      </Typography>
+      <Box className={classes.heading}>
+        <Box flexGrow={1}>
+          <Typography variant="h6">Audio Bibles</Typography>
+        </Box>
+        <Box>
+          <Close className={classes.closeButton} />
+        </Box>
+      </Box>
+
       <div className={classes.container}>
         {message || audioBible.success === false || (
-          <div>
+          <div className={classes.subContainer}>
             {audioBible.map((language, i) => {
               //Assume that the whole book is there, not searching for chapter
               let bookIndex = language.audioBibles.findIndex((a) =>
