@@ -120,6 +120,44 @@ const AboutUs = ({ handleClose }) => {
 
         <div className={classes.releaseNotes}>
           <Typography variant="h6" className={classes.subheading}>
+            Release Notes (24/05/2021) v1.2.0
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Content Additions (using Vachan API’s):", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Bibles: ESV Bible, Haryanvi NT, Bilaspuri NT</li>
+              <li>
+                Audio Bible: Hindi IRV OT, Punjabi IRV, Bilaspuri NT, Haryanvi
+                NT
+              </li>
+              <li>
+                More Resources: Open Bible Stories (OBS) - English, Nagamese,
+                Hindi, Assamese, Bengali, Odiya, Gujarati, Punjabi, Kannada,
+                Malayalam, Marathi, Tamil, Telugu and Urdu
+              </li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Feature Additions:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Added OBS as a separate resource content</li>
+            </ul>
+          </Typography>
+
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Operations Update:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>usfm-grammar version upgrade to 2.0.0</li>
+            </ul>
+          </Typography>
+
+          <Typography variant="h6" className={classes.subheading}>
             Release Notes (05/03/2021) v1.1
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
