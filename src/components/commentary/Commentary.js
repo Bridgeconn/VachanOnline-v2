@@ -170,7 +170,8 @@ const Commentary = (props) => {
       );
     }
     //Scroll to top on text change
-    if (textRef.current !== undefined) textRef.current.scrollTo(0, 0);
+    if (textRef.current !== undefined && textRef.current !== null)
+      textRef.current.scrollTo(0, 0);
   }, [commentary, bookCode, chapter]);
   //Remove leading break line
   const removeBr = (str) => {
