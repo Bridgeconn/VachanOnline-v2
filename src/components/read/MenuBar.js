@@ -17,16 +17,9 @@ import { BLUETRANSPARENT } from "../../store/colorCode";
 import Close from "../common/Close";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 82,
-  },
-
   read: {
-    marginBottom: 20,
     display: "flex",
     width: "100%",
-    float: "left",
     padding: "0 10px 0 44px",
     borderBottom: "1px solid #f1ecec",
     position: "absolute",
@@ -227,7 +220,7 @@ const MenuBar = (props) => {
     }
   }, [audio, audioBible, bookCode, classes.info, setValue]);
   return (
-    <div className={classes.root}>
+    <div>
       <Box className={classes.read}>
         <Box flexGrow={1}>
           <Version setValue={setValue} version={version} bookCode={bookCode} />
