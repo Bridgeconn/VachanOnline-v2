@@ -18,6 +18,9 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import TopBar from "../read/TopBar";
 import { BLUETRANSPARENT } from "../../store/colorCode";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Box } from "@material-ui/core";
 
 const drawerWidth = 400;
 
@@ -47,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     display: "flex",
+    [theme.breakpoints.down("sm")]: { display: "block" },
   },
   drawer: {
     width: drawerWidth,
@@ -62,7 +66,8 @@ const useStyles = makeStyles((theme) => ({
   stories: {
     paddingLeft: 20,
     paddingRight: 30,
-    marginTop: 90,
+    [theme.breakpoints.up("md")]: { marginTop: 90 },
+
     fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
 
     "& img": {
@@ -78,6 +83,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     fontSize: "1.2rem",
   },
+  mobile: {
+    display: "flex",
+    marginTop: "65px",
+  },
 }));
 
 const Stories = (props) => {
@@ -87,7 +96,6 @@ const Stories = (props) => {
   );
   let { login, userDetails } = props;
   const classes = useStyles();
-
   const [storyId, setStoryId] = React.useState("01");
   const [lang, setLang] = React.useState("");
   const [stories, setStories] = React.useState();
@@ -97,6 +105,8 @@ const Stories = (props) => {
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const open = Boolean(settingsAnchor);
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -110,11 +120,19 @@ const Stories = (props) => {
 
   const getStory = (event) => {
     event.preventDefault();
+
     let storyNum = event.currentTarget.getAttribute("data-id");
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
   };
 
+  const storySetter = (event) => {
+    let storyNum = event.target.value;
+    console.log(storyNum);
+    if (storyNum.length < 2) storyNum = "0" + storyNum;
+
+    setStoryId(storyNum);
+  };
   const getLang = (event) => {
     setLang(event.target.value);
   };
@@ -151,31 +169,44 @@ const Stories = (props) => {
       </AppBar>
 
       <div className={classes.root}>
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <Select value={lang} onChange={getLang}>
-                {languages.map((text, y) => (
-                  <MenuItem key={y} value={text}>
-                    {languageJson[text]}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <div>
+        {mobile === true ? (
+          <Box className={classes.mobile} p={1}>
+            <Box p={1} flexGrow={1}>
+              <FormControl variant="outlined" style={{ minWidth: 100 }}>
+                <Select value={lang} onChange={getLang}>
+                  {languages.map((text, y) => (
+                    <MenuItem key={y} value={text}>
+                      {languageJson[text]}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl
+                variant="outlined"
+                style={{ marginLeft: 20, maxWidth: "40%" }}
+              >
+                {manifest.length > 0 && (
+                  <Select
+                    value={String(parseInt(storyId))}
+                    onChange={storySetter}
+                  >
+                    {manifest.map((text, y) => (
+                      <MenuItem key={y} value={String(y + 1)}>
+                        {y + 1 + ". " + text}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </FormControl>
+            </Box>
+            <Box p={1}>
               <Tooltip
                 title="Settings"
-                className={classes.settings}
                 aria-label="More"
                 aria-controls="long-menu"
                 aria-haspopup="true"
                 onClick={openSettings}
+                style={{ marginTop: 15 }}
               >
                 <i className="material-icons md-23">more_vert</i>
               </Tooltip>
@@ -192,7 +223,7 @@ const Stories = (props) => {
                   },
                 }}
               >
-                <MenuItem className={classes.menu}>Font Size</MenuItem>
+                <MenuItem>Font Size</MenuItem>
                 <Divider />
                 <MenuItem className={classes.menu}>
                   <div className={classes.margin} />
@@ -207,21 +238,81 @@ const Stories = (props) => {
                   />
                 </MenuItem>
               </Menu>
+            </Box>
+          </Box>
+        ) : (
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <div className={classes.drawerHeader}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <Select value={lang} onChange={getLang}>
+                  {languages.map((text, y) => (
+                    <MenuItem key={y} value={text}>
+                      {languageJson[text]}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <div>
+                <Tooltip
+                  title="Settings"
+                  className={classes.settings}
+                  aria-label="More"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={openSettings}
+                >
+                  <i className="material-icons md-23">more_vert</i>
+                </Tooltip>
+                <Menu
+                  id="long-menu"
+                  anchorEl={settingsAnchor}
+                  keepMounted
+                  open={open}
+                  onClose={closeSettings}
+                  PaperProps={{
+                    style: {
+                      maxHeight: 68 * 4.5,
+                      width: 250,
+                    },
+                  }}
+                >
+                  <MenuItem className={classes.menu}>Font Size</MenuItem>
+                  <Divider />
+                  <MenuItem className={classes.menu}>
+                    <div className={classes.margin} />
+                    <Slider
+                      defaultValue={20}
+                      value={fontSize}
+                      onChange={handleSliderChange}
+                      valueLabelDisplay="on"
+                      min={12}
+                      max={30}
+                      classes={{ root: classes.slider }}
+                    />
+                  </MenuItem>
+                </Menu>
+              </div>
             </div>
-          </div>
-          <Divider />
-          <div className={classes.drawerContainer}>
-            <List className={classes.List}>
-              {manifest.map((text, y) => (
-                <ListItem className={classes.listItem} key={y} value={text}>
-                  <Link href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
-                    {y + 1 + ". " + text}
-                  </Link>
-                </ListItem>
-              ))}
-            </List>
-          </div>
-        </Drawer>
+            <Divider />
+            <div className={classes.drawerContainer}>
+              <List className={classes.List}>
+                {manifest.map((text, y) => (
+                  <ListItem className={classes.listItem} key={y} value={text}>
+                    <Link href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
+                      {y + 1 + ". " + text}
+                    </Link>
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          </Drawer>
+        )}
         <main>
           <div
             className={classes.stories}
