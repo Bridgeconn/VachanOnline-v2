@@ -163,7 +163,7 @@ const Bookmarks = (props) => {
         {bookmarks && Object.keys(bookmarks).length !== 0 ? (
           <List component="nav">
             {bookmarkList.map((bookmark, i) => {
-              return (
+              return versionData[bookmark.sourceId] !== undefined ? (
                 <ListItem key={i} className={classes.listItem} button>
                   <ListItemText
                     primary={`${versionData[bookmark.sourceId][0]} ${
@@ -188,6 +188,8 @@ const Bookmarks = (props) => {
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
+              ) : (
+                ""
               );
             })}
           </List>
