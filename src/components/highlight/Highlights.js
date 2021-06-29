@@ -181,7 +181,7 @@ const Highlights = (props) => {
         {highlights && Object.keys(highlights).length !== 0 ? (
           <List component="nav">
             {highlightList.map((highlight, i) => {
-              return versionData[highlight.sourceId] !== undefined ? (
+              return (
                 <ListItem
                   key={i}
                   className={classes.listItem}
@@ -211,8 +211,6 @@ const Highlights = (props) => {
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
-              ) : (
-                ""
               );
             })}
           </List>

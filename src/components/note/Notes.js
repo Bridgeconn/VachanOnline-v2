@@ -469,7 +469,7 @@ export default function Notes(props) {
                   </Typography>
                 </ListItem>
                 {chapterNoteList.map((note, i) => {
-                  return versionData[note.sourceId] !== undefined ? (
+                  return (
                     <ListItem
                       key={i}
                       className={classes.listItem}
@@ -500,8 +500,6 @@ export default function Notes(props) {
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
-                  ) : (
-                    ""
                   );
                 })}
               </>
@@ -512,7 +510,7 @@ export default function Notes(props) {
               <Typography variant="h5">All Notes</Typography>
             </ListItem>
             {noteList.map((note, i) => {
-              return versionData[note.sourceId] !== undefined ? (
+              return (
                 <ListItem
                   key={i}
                   className={classes.listItem}
@@ -543,8 +541,6 @@ export default function Notes(props) {
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
-              ) : (
-                ""
               );
             })}
           </List>

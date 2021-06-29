@@ -13,8 +13,6 @@ import IconButton from "@material-ui/core/IconButton";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLUE } from "../../store/colorCode";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     height: 50,
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
+    },
   },
   logo: {
     height: 60,
@@ -107,18 +108,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "inherit",
     },
-    [theme.breakpoints.only("xs")]: {
-      display: "none",
-    },
   },
 }));
 
 export default function TopBar({ login, userDetails }) {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
@@ -127,14 +122,19 @@ export default function TopBar({ login, userDetails }) {
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
         <Toolbar>
+          {/* <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Open drawer"
+          >
+            <MenuIcon />
+          </IconButton> */}
           <div className={classes.title}>
             <Link to="/">
+              {" "}
               <img src={favicon} alt={"icon"} className={classes.icon} />
-              {mobile === true ? (
-                ""
-              ) : (
-                <img src={logo} alt={"logo"} className={classes.logo} />
-              )}
+              <img src={logo} alt={"logo"} className={classes.logo} />{" "}
             </Link>
             <Button
               color="inherit"
@@ -144,9 +144,10 @@ export default function TopBar({ login, userDetails }) {
               target="_blank"
               rel="noopener"
             >
-              {mobile === true ? "Classic" : "Back to classic site"}
+              Back to classic site
             </Button>
           </div>
+
           {window.location.pathname.startsWith("/read") ? (
             process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
               <Link to="/biblestories">
@@ -160,7 +161,7 @@ export default function TopBar({ login, userDetails }) {
                   target="_blank"
                   rel="noopener"
                 >
-                  {mobile === true ? "Stories" : "Bible Stories"}
+                  Bible Stories
                 </Button>
               </Link>
             ) : (
@@ -178,25 +179,22 @@ export default function TopBar({ login, userDetails }) {
                 target="_blank"
                 rel="noopener"
               >
-                {mobile === true ? "Bible" : "Study Bible"}
+                Study Bible
               </Button>
             </Link>
           )}
-          {mobile === true ? (
-            ""
-          ) : (
-            <Tooltip title="Feedback">
-              <IconButton
-                aria-label="feedback"
-                className={classes.feedback}
-                href="https://docs.google.com/forms/d/e/1FAIpQLSd75swOEtsvWrzcQrynmCsu-ZZYktWbeeJXVxH7zNz-JIlEdA/viewform?usp=sf_link"
-                target="_blank"
-                rel="noopener"
-              >
-                <FeedbackIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+
+          <Tooltip title="Feedback">
+            <IconButton
+              aria-label="feedback"
+              className={classes.feedback}
+              href="https://docs.google.com/forms/d/e/1FAIpQLSd75swOEtsvWrzcQrynmCsu-ZZYktWbeeJXVxH7zNz-JIlEdA/viewform?usp=sf_link"
+              target="_blank"
+              rel="noopener"
+            >
+              <FeedbackIcon />
+            </IconButton>
+          </Tooltip>
           {loginButton}
         </Toolbar>
       </AppBar>

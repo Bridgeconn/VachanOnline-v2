@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 import { getAudioBibleObject } from "../common/utillity";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
@@ -18,9 +18,8 @@ import Close from "../common/Close";
 
 const useStyles = makeStyles((theme) => ({
   read: {
-    display: "flex",
-    width: "100%",
     padding: "0 10px 0 44px",
+    width: "100%",
     borderBottom: "1px solid #f1ecec",
     position: "absolute",
     height: 61,
@@ -29,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
       padding: "0 15px 0 15px",
     },
   },
-
   select: {
     marginTop: "-8px",
     backgroundColor: "red",
@@ -52,7 +50,11 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   items: {
-    display: "flex",
+    float: "right",
+  },
+  closeButton: {
+    marginRight: 5,
+    marginTop: 17,
   },
 }));
 const MenuBar = (props) => {
@@ -220,61 +222,75 @@ const MenuBar = (props) => {
     }
   }, [audio, audioBible, bookCode, classes.info, setValue]);
   return (
-    <div>
-      <Box className={classes.read}>
-        <Box flexGrow={1}>
-          <Version setValue={setValue} version={version} bookCode={bookCode} />
-          {bookCode ? (
-            <BookCombo
-              paneNo={paneNo}
-              bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
-              chapter={chapter}
-              setValue={setValue}
-              minimal={true}
-            />
-          ) : (
-            ""
-          )}
-        </Box>
-        <Box className={classes.items}>
-          {noteIcon}
-          {highlightIcon}
-          {bookmarkIcon}
-          <Metadata
-            metadataList={metadataList}
-            title="Version Name (in Eng)"
-            abbreviation="Abbreviation"
-          ></Metadata>
-          {audioIcon}
-          <Tooltip title="Fullscreen">
-            <div onClick={goFull} className={classes.info}>
-              <i className="material-icons md-23">zoom_out_map</i>
-            </div>
-          </Tooltip>
-          <Tooltip title="Settings">
-            <div
-              className={classes.settings}
-              aria-label="More"
-              aria-controls="long-menu"
-              aria-haspopup="true"
-              onClick={openSettings}
-            >
-              <i className="material-icons md-23">more_vert</i>
-            </div>
-          </Tooltip>
-          <Setting
-            fontSize={fontSize}
-            fontFamily={fontFamily}
-            lineView={lineView}
+    <Grid container className={classes.read}>
+      <Grid item xs={6}>
+        <Version setValue={setValue} version={version} bookCode={bookCode} />
+        {bookCode ? (
+          <BookCombo
+            paneNo={paneNo}
+            bookCode={bookCode}
+            bookList={versionBooks[versionSource[sourceId]]}
+            chapter={chapter}
             setValue={setValue}
-            settingsAnchor={settingsAnchor}
-            handleClose={closeSettings}
+            minimal={true}
           />
-          {paneNo === 2 ? <Close /> : ""}
-        </Box>
-      </Box>
-    </div>
+        ) : (
+          ""
+        )}
+      </Grid>
+      <Grid
+        item
+        xs={6}
+        className={classes.items}
+        container
+        alignItems="flex-start"
+        justify="flex-end"
+        direction="row"
+      >
+        {noteIcon}
+        {highlightIcon}
+        {bookmarkIcon}
+        <Metadata
+          metadataList={metadataList}
+          title="Version Name (in Eng)"
+          abbreviation="Abbreviation"
+        ></Metadata>
+        {audioIcon}
+        <Tooltip title="Fullscreen">
+          <div className={classes.info} onClick={goFull}>
+            <i className="material-icons md-23">zoom_out_map</i>
+          </div>
+        </Tooltip>
+        <Tooltip title="Settings">
+          <div
+            className={classes.settings}
+            aria-label="More"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={openSettings}
+          >
+            <i className="material-icons md-23">more_vert</i>
+          </div>
+        </Tooltip>
+        <Setting
+          fontSize={fontSize}
+          fontFamily={fontFamily}
+          lineView={lineView}
+          setValue={setValue}
+          settingsAnchor={settingsAnchor}
+          handleClose={closeSettings}
+        />
+        {paneNo === 2 ? <Close className={classes.closeButton} /> : ""}
+        {/* <div className={classes.info}>
+          <i
+            className="material-icons"
+            style={{ fontSize: "24px", marginTop: "-2px" }}
+          >
+            close
+          </i>
+        </div> */}
+      </Grid>
+    </Grid>
   );
 };
 const mapStateToProps = (state) => {

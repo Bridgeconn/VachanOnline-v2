@@ -9,6 +9,7 @@ import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
+
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
     position: "absolute",
@@ -466,53 +467,44 @@ const Bible = (props) => {
       ) : (
         <h3 className={classes.loading}>{loadingText}</h3>
       )}
-
-      {Object.values(previous).length !== 0 ? (
-        <Tooltip title="Previous Chapter">
-          <div
-            color="default"
-            aria-label="Add"
-            className={classes.prevChapter}
-            onClick={prevClick}
+      <Tooltip title="Previous Chapter">
+        <div
+          color="default"
+          aria-label="Add"
+          className={classes.prevChapter}
+          onClick={prevClick}
+        >
+          <i
+            className="material-icons material"
+            style={{
+              fontSize: "38px",
+              color: "#555555",
+              opacity: 0.7,
+            }}
           >
-            <i
-              className="material-icons material"
-              style={{
-                fontSize: "38px",
-                color: "#555555",
-                opacity: 0.7,
-              }}
-            >
-              navigate_before
-            </i>
-          </div>
-        </Tooltip>
-      ) : (
-        ""
-      )}
-      {Object.values(next).length !== 0 ? (
-        <Tooltip title="Next Chapter">
-          <div
-            color="default"
-            aria-label="Add"
-            className={classes.nextChapter}
-            onClick={nextClick}
+            navigate_before
+          </i>
+        </div>
+      </Tooltip>
+      <Tooltip title="Next Chapter">
+        <div
+          color="default"
+          aria-label="Add"
+          className={classes.nextChapter}
+          onClick={nextClick}
+        >
+          <i
+            className="material-icons material"
+            style={{
+              fontSize: "38px",
+              color: "#555555",
+              opacity: 0.7,
+            }}
           >
-            <i
-              className="material-icons material"
-              style={{
-                fontSize: "38px",
-                color: "#555555",
-                opacity: 0.7,
-              }}
-            >
-              keyboard_arrow_right
-            </i>
-          </div>
-        </Tooltip>
-      ) : (
-        ""
-      )}
+            keyboard_arrow_right
+          </i>
+        </div>
+      </Tooltip>
     </div>
   );
 };
