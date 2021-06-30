@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "inherit",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
@@ -59,7 +59,7 @@ const PageHeader = ({ login, userDetails }) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
@@ -85,7 +85,7 @@ const PageHeader = ({ login, userDetails }) => {
               target="_blank"
               rel="noopener"
             >
-              {mobile === true ? "Classic" : "Back to classic site"}
+              Back to classic site
             </Button>
           </div>
           {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (

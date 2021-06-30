@@ -86,6 +86,11 @@ const useStyles = makeStyles((theme) => ({
   mobile: {
     display: "flex",
     marginTop: "65px",
+    position: "-webkit-sticky",
+    // eslint-disable-next-line no-dupe-keys
+    position: "sticky",
+    top: 60,
+    backgroundColor: "white",
   },
 }));
 
@@ -128,7 +133,6 @@ const Stories = (props) => {
 
   const storySetter = (event) => {
     let storyNum = event.target.value;
-    console.log(storyNum);
     if (storyNum.length < 2) storyNum = "0" + storyNum;
 
     setStoryId(storyNum);
@@ -171,7 +175,7 @@ const Stories = (props) => {
       <div className={classes.root}>
         {mobile === true ? (
           <Box className={classes.mobile} p={1}>
-            <Box p={1} flexGrow={1}>
+            <Box p={1} flexGrow={1} stye={{ maxWidth: "90%" }}>
               <FormControl variant="outlined" style={{ minWidth: 100 }}>
                 <Select value={lang} onChange={getLang}>
                   {languages.map((text, y) => (
@@ -183,7 +187,7 @@ const Stories = (props) => {
               </FormControl>
               <FormControl
                 variant="outlined"
-                style={{ marginLeft: 20, maxWidth: "40%" }}
+                style={{ marginLeft: 20, maxWidth: "50%" }}
               >
                 {manifest.length > 0 && (
                   <Select
