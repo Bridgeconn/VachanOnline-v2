@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
   stories: {
     paddingLeft: 20,
     paddingRight: 30,
+    marginTop: 155,
     [theme.breakpoints.up("md")]: { marginTop: 90 },
 
     fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
@@ -85,10 +86,8 @@ const useStyles = makeStyles((theme) => ({
   },
   mobile: {
     display: "flex",
-    marginTop: "65px",
-    position: "-webkit-sticky",
-    // eslint-disable-next-line no-dupe-keys
-    position: "sticky",
+    position: "fixed",
+    width: "100%",
     top: 60,
     backgroundColor: "white",
   },
@@ -112,6 +111,7 @@ const Stories = (props) => {
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const smallScreen = useMediaQuery("(max-width:319px)");
 
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -185,9 +185,13 @@ const Stories = (props) => {
                   ))}
                 </Select>
               </FormControl>
+
               <FormControl
                 variant="outlined"
-                style={{ marginLeft: 20, maxWidth: "50%" }}
+                style={{
+                  marginLeft: 20,
+                  maxWidth: smallScreen === true ? "90px" : "50%",
+                }}
               >
                 {manifest.length > 0 && (
                   <Select
