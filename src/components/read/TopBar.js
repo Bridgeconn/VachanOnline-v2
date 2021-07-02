@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "inherit",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
@@ -117,7 +117,7 @@ export default function TopBar({ login, userDetails }) {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
@@ -144,7 +144,7 @@ export default function TopBar({ login, userDetails }) {
               target="_blank"
               rel="noopener"
             >
-              {mobile === true ? "Classic" : "Back to classic site"}
+              Back to classic site
             </Button>
           </div>
           {window.location.pathname.startsWith("/read") ? (
