@@ -10,6 +10,8 @@ import Login from "../login/Login";
 import LoginMenu from "../login/LoginMenu";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
   favicon: {
     height: 50,
-    [theme.breakpoints.only("xs")]: {
-      display: "none",
-    },
   },
   stories: {
     color: "#e0e0e0",
@@ -50,12 +49,18 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "inherit",
     },
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
 }));
 
 const PageHeader = ({ login, userDetails }) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
+
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
@@ -66,7 +71,11 @@ const PageHeader = ({ login, userDetails }) => {
           <div className={classes.links}>
             <Link to={{ pathname: "/read" }}>
               <img src={favicon} alt="logo" className={classes.favicon} />
-              <img src={logo} alt={"logo"} className={classes.logo} />
+              {mobile === true ? (
+                ""
+              ) : (
+                <img src={logo} alt={"logo"} className={classes.logo} />
+              )}
             </Link>
             <Button
               color="inherit"
@@ -91,7 +100,7 @@ const PageHeader = ({ login, userDetails }) => {
                 target="_blank"
                 rel="noopener"
               >
-                Bible Stories
+                {mobile === true ? "Stories" : "Bible Stories"}{" "}
               </Button>
             </Link>
           ) : (
