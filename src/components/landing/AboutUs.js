@@ -120,6 +120,36 @@ const AboutUs = ({ handleClose }) => {
 
         <div className={classes.releaseNotes}>
           <Typography variant="h6" className={classes.subheading}>
+            Release Notes (06/07/2021) v1.2.1
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Content Additions (using Vachan API’s):", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Bibles: Dogri NT</li>
+              <li>Audio Bible: Dogri NT, Odia IRV</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Bug Fixes:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Added check for corrupt user data</li>
+              <li>
+                Made better use of space in bible panel to support smaller
+                screens
+              </li>
+              <li>Made Landing page mobile friendly</li>
+              <li>Made Bible stories mobile friendly</li>
+              <li>
+                Hide previous and next arrows on first and last chapters of
+                bible
+              </li>
+            </ul>
+          </Typography>
+          <Typography variant="h6" className={classes.subheading}>
             Release Notes (24/05/2021) v1.2.0
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
