@@ -136,13 +136,10 @@ const AboutUs = ({ handleClose }) => {
           </Typography>
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
-              <li>Added check for corrupt user data</li>
               <li>
-                Made better use of space in bible panel to support smaller
-                screens
+                Added support for mobile - Bible panel, Bible stories, Landing
+                page header
               </li>
-              <li>Made Landing page mobile friendly</li>
-              <li>Made Bible stories mobile friendly</li>
               <li>
                 Hide previous and next arrows on first and last chapters of
                 bible
