@@ -10,6 +10,7 @@ import BiblePane from "./BiblePane";
 import Commentary from "../commentary/Commentary";
 import Dictionary from "../dictionary/Dictionary";
 import Infographics from "../infographics/Infographics";
+import Plans from "../readingplans/Readingplans";
 import Audio from "../audio/Audio";
 import Video from "../video/Video";
 import Bookmarks from "../bookmark/Bookmarks";
@@ -384,6 +385,22 @@ const ReadBible = (props) => {
           </>
         );
         break;
+      case views.READINGPLANS:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={setValue1} paneData={panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <Plans
+                bookList={versionBooks[versionSource[panel1.sourceId]]}
+                setValue1={setValue1}
+              />
+            </div>
+          </>
+        );
+        break;
+
       default:
         setPane(
           <div className={classes.biblePane1}>
@@ -416,6 +433,8 @@ const ReadBible = (props) => {
     classes.info,
     syncPanel,
     getRegionalBookName,
+    versionBooks,
+    versionSource,
   ]);
   return (
     <>
@@ -443,6 +462,7 @@ const mapStateToProps = (state) => {
     infographics: state.local.infographics,
     audioBible: state.local.audioBible,
     video: state.local.video,
+    plans: state.local.plans,
     login: state.local.login,
     userDetails: state.local.userDetails,
     parallelView: state.local.parallelView,
