@@ -10,11 +10,32 @@ import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Select from "react-select";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
+  },
+  main: {
+    top: 134,
+    bottom: 0,
+    paddingTop: 30,
+    overflow: "scroll",
+    position: "absolute",
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+    "&::-webkit-scrollbar": {
+      width: "0.45em",
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.4)",
+      outline: "1px solid slategrey",
+    },
   },
   container: {
     width: "100%",
@@ -33,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
     width: "50%",
+    [theme.breakpoints.down("sm")]: { width: "80%" },
   },
   message: {
     margin: 18,
@@ -65,6 +87,9 @@ const Plans = (props) => {
   const [plan, setPlan] = useState("");
   const [planData, setPlanData] = useState("");
   const [readingList, setReadingList] = useState([]);
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const months = [
     "Jan",
     "Feb",
@@ -91,9 +116,9 @@ const Plans = (props) => {
     let element = event.currentTarget;
     let ref = element.getAttribute("data-ref").split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
-    const message =
-      "Selected book not available in this bible, please select another bible";
     if (!book) {
+      const message =
+        "Selected book not available in this bible, please select another bible";
       setValue1("message", message);
     } else {
       setValue1("bookCode", ref[0]);
@@ -142,7 +167,7 @@ const Plans = (props) => {
     <div className={classes.root}>
       <Box className={classes.title}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Reading Plans</Typography>
+          <Typography variant="h6"> {mobile ? "" : "Reading Plans"}</Typography>
         </Box>
         <Box flexGrow={1}>
           {plan ? (
@@ -160,17 +185,18 @@ const Plans = (props) => {
           <Close className={classes.closeButton} />
         </Box>
       </Box>
-      <Calendar
-        className={classes.calendar}
-        onChange={(date) => setSelectedDate(date)}
-        value={selectedDate}
-      />
-      <Box>
+      <Box className={classes.main}>
+        <Calendar
+          className={classes.calendar}
+          onChange={(date) => setSelectedDate(date)}
+          value={selectedDate}
+        />
         <div className={classes.container}>
           <Box className={classes.heading}>
             <Box flexGrow={1}>
               <Typography variant="h6">
-                {"Bible readings for " +
+                {(mobile ? "Readings" : "Bible readings") +
+                  " for " +
                   selectedDate.getDate() +
                   "-" +
                   months[selectedDate.getMonth()] +
@@ -179,7 +205,7 @@ const Plans = (props) => {
               </Typography>
             </Box>
           </Box>
-          <div className={classes.list}>
+          <div>
             {readingList.length !== 0 ? (
               <List component="nav">
                 {readingList.map((reading, i) => {
