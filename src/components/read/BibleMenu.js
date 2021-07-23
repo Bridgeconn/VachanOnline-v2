@@ -51,6 +51,12 @@ export default function BibleMenu() {
           item={views.HIGHLIGHT}
         />
         <MenuItem icon="note" title="Notes" item={views.NOTE} />
+        <MenuItem
+          icon="event"
+          title="Reading Plans"
+          item={views.READINGPLANS}
+        />
+
         {/* <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="more_horiz" title="More" /> */}
       </List>
