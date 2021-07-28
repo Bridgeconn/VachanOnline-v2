@@ -44,6 +44,11 @@ export default function BibleMenu() {
         <MenuItem icon="image" title="Infographics" item={views.INFOGRAPHICS} />
         <MenuItem icon="volume_up" title="Audio Bible" item={views.AUDIO} />
         <MenuItem icon="videocam" title="Videos" item={views.VIDEO} />
+        <MenuItem
+          icon="event"
+          title="Reading Plans"
+          item={views.READINGPLANS}
+        />
         <MenuItem icon="bookmark" title="Bookmarks" item={views.BOOKMARK} />
         <MenuItem
           icon="border_color"
@@ -51,11 +56,6 @@ export default function BibleMenu() {
           item={views.HIGHLIGHT}
         />
         <MenuItem icon="note" title="Notes" item={views.NOTE} />
-        <MenuItem
-          icon="event"
-          title="Reading Plans"
-          item={views.READINGPLANS}
-        />
 
         {/* <MenuItem icon="functions" title="Interlinear" />
         <MenuItem icon="more_horiz" title="More" /> */}
