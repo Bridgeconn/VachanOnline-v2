@@ -105,10 +105,17 @@ const Plans = (props) => {
     "Dec",
   ];
 
-  const getBookText = (dataRef) => {
+  const getBookText = (dataRef, text) => {
     let ref = dataRef.split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
-    return book ? book.short + " " + ref[1] : "";
+    let verse = text.split(":")[1];
+
+    if (verse) {
+      verse = ":" + verse;
+    } else {
+      verse = "";
+    }
+    return book ? book.short + " " + ref[1] + verse : "";
   };
 
   //Open reference
@@ -118,7 +125,7 @@ const Plans = (props) => {
     let book = bookList.find((element) => element.book_code === ref[0]);
     if (!book) {
       const message =
-        "Selected book not available in this bible, please select another bible";
+        "The book you selected is not available in this language, please select another language";
       setValue1("message", message);
     } else {
       setValue1("bookCode", ref[0]);
@@ -176,6 +183,7 @@ const Plans = (props) => {
               defaultValue={plan}
               onChange={(data) => setPlan(data)}
               options={plans}
+              isSearchable={false}
             />
           ) : (
             ""
@@ -195,7 +203,7 @@ const Plans = (props) => {
           <Box className={classes.heading}>
             <Box flexGrow={1}>
               <Typography variant="h6">
-                {(mobile ? "Readings" : "Bible readings") +
+                {(mobile ? "References" : "Bible references") +
                   " for " +
                   selectedDate.getDate() +
                   "-" +
@@ -212,7 +220,9 @@ const Plans = (props) => {
                   return (
                     <ListItem key={i} className={classes.listItem} button>
                       <ListItemText
-                        primary={getBookText(reading.ref) || reading.text}
+                        primary={
+                          getBookText(reading.ref, reading.text) || reading.text
+                        }
                         data-ref={reading.ref}
                         onClick={(e) => openChapter(e)}
                       />
