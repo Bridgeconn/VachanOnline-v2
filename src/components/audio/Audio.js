@@ -100,7 +100,11 @@ const Audio = (props) => {
   const classes = useStyles();
   const [message, setMessage] = React.useState("");
   let { audioBible, bookCode, chapter, book } = props;
+  const [playing, setPlaying] = React.useState("");
 
+  const onPlay = (value) => {
+    setPlaying(value);
+  };
   const getBook = (code) => {
     return book[code][book[code].findIndex((x) => x.book_code === bookCode)]
       .short;
@@ -178,6 +182,7 @@ const Audio = (props) => {
                           chapter +
                           "." +
                           audio.format;
+                        let id = language.language.code + i;
                         return audio.books.hasOwnProperty(bookCode) ? (
                           <ListItem
                             key={i}
@@ -187,7 +192,9 @@ const Audio = (props) => {
                             {audio.name}
                             <ReactPlayer
                               key={i}
+                              playing={playing === id}
                               url={url}
+                              onPlay={() => onPlay(id)}
                               controls
                               width="100%"
                               height="50px"

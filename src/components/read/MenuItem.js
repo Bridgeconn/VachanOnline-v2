@@ -5,9 +5,10 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { BLUE } from "../../store/colorCode";
+import { BLUE, LIGHTBLUE } from "../../store/colorCode";
 import * as views from "../../store/views";
 import { SETVALUE } from "../../store/actions";
+
 const useStyles = makeStyles((theme) => ({
   popover: {
     pointerEvents: "none",
@@ -23,12 +24,13 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
   },
   selected: {
-    backgroundColor: "rgba(255,255,255,0.2)",
+    backgroundColor: "#fff",
     paddingTop: 11,
     paddingBottom: 5,
     paddingLeft: 13,
+    borderLeft: "2px solid " + LIGHTBLUE,
     "&:hover": {
-      backgroundColor: "rgba(255,255,255,0.1)",
+      backgroundColor: LIGHTBLUE,
     },
   },
   button: {
@@ -41,6 +43,11 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     minWidth: 44,
+    color: "#fff",
+  },
+  listItemSelected: {
+    minWidth: 44,
+    color: BLUE,
   },
 }));
 
@@ -82,13 +89,12 @@ const MenuItem = (props) => {
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
-        className={classes.listItem}
+        className={
+          parallelView === item ? classes.listItemSelected : classes.listItem
+        }
       >
         <div onClick={() => onClick(item, uid)}>
-          <i
-            className="material-icons"
-            style={{ fontSize: "36px", color: "#fff" }}
-          >
+          <i className="material-icons" style={{ fontSize: "36px" }}>
             {icon}
           </i>
           <Popover

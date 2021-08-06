@@ -12,6 +12,7 @@ import Highlight from "../highlight/Highlight";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
 import BorderColor from "@material-ui/icons/BorderColor";
 import Note from "../note/Note";
+import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 import Close from "../common/Close";
@@ -77,6 +78,7 @@ const MenuBar = (props) => {
     setSelectedVerses,
     refUrl,
     highlights,
+    parallelView,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -206,7 +208,13 @@ const MenuBar = (props) => {
       setValue("audio", !audio);
       setValue("audioBible", audioBible);
     };
-    if (audioBible && audioBible.url && bookCode in audioBible.books) {
+    console.log(parallelView);
+    if (
+      audioBible &&
+      audioBible.url &&
+      bookCode in audioBible.books &&
+      parallelView !== AUDIO
+    ) {
       setAudioIcon(
         <Tooltip title="Audio Bible">
           <div className={classes.info} onClick={openAudioBible}>
@@ -218,7 +226,7 @@ const MenuBar = (props) => {
       setValue("audio", false);
       setAudioIcon("");
     }
-  }, [audio, audioBible, bookCode, classes.info, setValue]);
+  }, [audio, audioBible, bookCode, classes.info, setValue, parallelView]);
   return (
     <div>
       <Box className={classes.read}>
@@ -283,6 +291,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     userDetails: state.local.userDetails,
     versionSource: state.local.versionSource,
+    parallelView: state.local.parallelView,
   };
 };
 export default connect(mapStateToProps)(MenuBar);
