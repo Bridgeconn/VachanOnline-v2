@@ -99,7 +99,12 @@ const useStyles = makeStyles((theme) => ({
 const Audio = (props) => {
   const classes = useStyles();
   const [message, setMessage] = React.useState("");
-  let { audioBible, bookCode, chapter } = props;
+  let { audioBible, bookCode, chapter, book } = props;
+
+  const getBook = (code) => {
+    return book[code][book[code].findIndex((x) => x.book_code === bookCode)]
+      .short;
+  };
   React.useEffect(() => {
     if (audioBible.length === 0 || audioBible.success === false) {
       setMessage("No audio bibles available");
@@ -156,7 +161,11 @@ const Audio = (props) => {
                     }}
                   >
                     <Typography className={classes.language}>
-                      {language.language.name}
+                      {language.language.name +
+                        " " +
+                        getBook(language.language.code) +
+                        " " +
+                        chapter}
                     </Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails style={{ padding: 0 }}>

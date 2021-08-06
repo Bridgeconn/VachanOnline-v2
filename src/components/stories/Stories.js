@@ -322,12 +322,7 @@ const Stories = (props) => {
           </Drawer>
         )}
         <main>
-          <div
-            className={classes.stories}
-            style={{
-              fontSize: fontSize,
-            }}
-          >
+          <div className={classes.stories} style={{ fontSize: fontSize }}>
             <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
           </div>
         </main>

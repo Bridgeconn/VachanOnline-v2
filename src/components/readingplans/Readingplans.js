@@ -12,6 +12,9 @@ import ListItem from "@material-ui/core/ListItem";
 import Select from "react-select";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -123,11 +126,7 @@ const Plans = (props) => {
     let element = event.currentTarget;
     let ref = element.getAttribute("data-ref").split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
-    if (!book) {
-      const message =
-        "The book you selected is not available in this language, please select another language";
-      setValue1("message", message);
-    } else {
+    if (book) {
       setValue1("bookCode", ref[0]);
       setValue1("chapter", parseInt(ref[1]));
     }
@@ -221,7 +220,20 @@ const Plans = (props) => {
                     <ListItem key={i} className={classes.listItem} button>
                       <ListItemText
                         primary={
-                          getBookText(reading.ref, reading.text) || reading.text
+                          getBookText(reading.ref, reading.text) || (
+                            <Tooltip title="The book you selected is not available in this language, please select another language">
+                              <span>
+                                <Button
+                                  aria-label="Book not available"
+                                  style={{ textTransform: "none" }}
+                                  disabled
+                                  endIcon={<ErrorOutlineIcon />}
+                                >
+                                  {reading.text}
+                                </Button>
+                              </span>
+                            </Tooltip>
+                          )
                         }
                         data-ref={reading.ref}
                         onClick={(e) => openChapter(e)}
