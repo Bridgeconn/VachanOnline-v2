@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 11,
     paddingBottom: 5,
     paddingLeft: 13,
-    borderLeft: "2px solid " + LIGHTBLUE,
+    boxShadow: "inset 1px 0px 3px 1px" + LIGHTBLUE,
     "&:hover": {
       backgroundColor: LIGHTBLUE,
     },
