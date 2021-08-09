@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import axios from "axios";
@@ -12,6 +12,18 @@ import ListItem from "@material-ui/core/ListItem";
 import Select from "react-select";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+
+const BigTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[4],
+    fontSize: 16,
+  },
+}))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Plans = (props) => {
   const classes = useStyles();
-  const { setValue1, bookList } = props;
+  const { setValue1, bookList, readingPlans } = props;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [plans, setPlans] = useState([]);
   const [plan, setPlan] = useState("");
@@ -104,7 +116,6 @@ const Plans = (props) => {
     "Nov",
     "Dec",
   ];
-
   const getBookText = (dataRef, text) => {
     let ref = dataRef.split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
@@ -123,11 +134,7 @@ const Plans = (props) => {
     let element = event.currentTarget;
     let ref = element.getAttribute("data-ref").split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
-    if (!book) {
-      const message =
-        "The book you selected is not available in this language, please select another language";
-      setValue1("message", message);
-    } else {
+    if (book) {
       setValue1("bookCode", ref[0]);
       setValue1("chapter", parseInt(ref[1]));
     }
@@ -137,20 +144,12 @@ const Plans = (props) => {
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_PLANS_URL }),
     []
   );
-
   useEffect(() => {
-    let mounted = true;
-    API.get("manifest.json").then(function (response) {
-      const temp = response.data.map((plan) => {
-        return { value: plan.file, label: plan.name };
-      });
-      if (mounted) {
-        setPlans(temp);
-        setPlan(temp[0]);
-      }
-    });
-    return () => (mounted = false);
-  }, [API]);
+    if (readingPlans) {
+      setPlans(readingPlans);
+      setPlan(readingPlans[0]);
+    }
+  }, [readingPlans]);
 
   useEffect(() => {
     if (plan) {
@@ -217,16 +216,36 @@ const Plans = (props) => {
             {readingList.length !== 0 ? (
               <List component="nav">
                 {readingList.map((reading, i) => {
-                  return (
+                  const bookText = getBookText(reading.ref, reading.text);
+                  return bookText ? (
                     <ListItem key={i} className={classes.listItem} button>
                       <ListItemText
-                        primary={
-                          getBookText(reading.ref, reading.text) || reading.text
-                        }
+                        primary={bookText}
                         data-ref={reading.ref}
                         onClick={(e) => openChapter(e)}
                       />
                     </ListItem>
+                  ) : (
+                    <BigTooltip
+                      title="The book you selected is not available in this language, please select another language"
+                      placement="top-start"
+                    >
+                      <span>
+                        <ListItem key={i} className={classes.listItem} button>
+                          <Button
+                            aria-label="Book not available"
+                            style={{
+                              textTransform: "none",
+                              marginLeft: "-8px",
+                            }}
+                            disabled
+                            endIcon={<ErrorOutlineIcon />}
+                          >
+                            {reading.text}
+                          </Button>
+                        </ListItem>
+                      </span>
+                    </BigTooltip>
                   );
                 })}
               </List>

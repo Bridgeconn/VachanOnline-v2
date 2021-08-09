@@ -80,6 +80,12 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
+  storyDirection: {
+    direction: "rtl",
+    textAlign: "right",
+    paddingRight: 50,
+  },
+
   drawerContainer: {
     overflow: "auto",
     fontSize: "1.2rem",
@@ -112,6 +118,11 @@ const Stories = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
+  const storyClass =
+    lang === "urd"
+      ? `${classes.stories} ${classes.storyDirection}`
+      : classes.stories;
+  const listClass = lang === "urd" ? classes.storyDirection : "";
 
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -195,11 +206,16 @@ const Stories = (props) => {
               >
                 {manifest.length > 0 && (
                   <Select
+                    className={listClass}
                     value={String(parseInt(storyId))}
                     onChange={storySetter}
                   >
                     {manifest.map((text, y) => (
-                      <MenuItem key={y} value={String(y + 1)}>
+                      <MenuItem
+                        className={listClass}
+                        key={y}
+                        value={String(y + 1)}
+                      >
                         {y + 1 + ". " + text}
                       </MenuItem>
                     ))}
@@ -309,9 +325,9 @@ const Stories = (props) => {
             </div>
             <Divider />
             <div className={classes.drawerContainer}>
-              <List className={classes.List}>
+              <List className={listClass}>
                 {manifest.map((text, y) => (
-                  <ListItem className={classes.listItem} key={y} value={text}>
+                  <ListItem key={y} value={text}>
                     <Link href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
                       {y + 1 + ". " + text}
                     </Link>
@@ -322,12 +338,7 @@ const Stories = (props) => {
           </Drawer>
         )}
         <main>
-          <div
-            className={classes.stories}
-            style={{
-              fontSize: fontSize,
-            }}
-          >
+          <div className={storyClass} style={{ fontSize: fontSize }}>
             <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
           </div>
         </main>

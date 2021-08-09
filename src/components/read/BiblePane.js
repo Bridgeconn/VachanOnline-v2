@@ -99,6 +99,7 @@ const BiblePane = ({
       );
     } else {
       setFetchHighlights("");
+      setHighlights([]);
     }
   }, [userDetails, sourceId, bookCode, chapter, setHighlights]);
   return (

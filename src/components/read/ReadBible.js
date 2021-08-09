@@ -24,6 +24,7 @@ import {
   getDictionaries,
   getAudioBibles,
   getVideos,
+  getReadingPlans,
   getBookbyCode,
 } from "../common/utillity";
 
@@ -101,6 +102,7 @@ const ReadBible = (props) => {
     setDictionary,
     audioBible,
     video,
+    readingPlans,
     parallelScroll,
     login,
     userDetails,
@@ -163,6 +165,12 @@ const ReadBible = (props) => {
       getVideos(setValue);
     }
   }, [video.length, setValue]);
+  React.useEffect(() => {
+    //if reading plans not loaded fetch reading plans
+    if (readingPlans.length === 0) {
+      getReadingPlans(setValue);
+    }
+  }, [readingPlans.length, setValue]);
   React.useEffect(() => {
     if (parallelView === views.PARALLELBIBLE) {
       copyPanel1();
@@ -307,6 +315,7 @@ const ReadBible = (props) => {
               <Audio
                 audioBible={audioBible}
                 bookCode={panel1.bookCode}
+                book={versionBooks}
                 chapter={panel1.chapter}
               />
             </div>
@@ -393,6 +402,7 @@ const ReadBible = (props) => {
             </div>
             <div className={classes.biblePane2}>
               <Plans
+                readingPlans={readingPlans}
                 bookList={versionBooks[versionSource[panel1.sourceId]]}
                 setValue1={setValue1}
               />
@@ -426,6 +436,7 @@ const ReadBible = (props) => {
     setValue1,
     setValue2,
     video,
+    readingPlans,
     uid,
     versions,
     bookObject,
@@ -462,7 +473,7 @@ const mapStateToProps = (state) => {
     infographics: state.local.infographics,
     audioBible: state.local.audioBible,
     video: state.local.video,
-    plans: state.local.plans,
+    readingPlans: state.local.readingPlans,
     login: state.local.login,
     userDetails: state.local.userDetails,
     parallelView: state.local.parallelView,
