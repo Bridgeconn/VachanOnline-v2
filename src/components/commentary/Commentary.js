@@ -209,7 +209,7 @@ const Commentary = (props) => {
     <div className={classes.root}>
       <Box className={classes.title}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Commentary</Typography>
+          <Typography variant="h6">Commentaries</Typography>
         </Box>
         <Box flexGrow={1}>
           <CommentaryCombo

@@ -1,4 +1,4 @@
-import { API } from "../../store/api";
+import { readingPlanAPI, API } from "../../store/api";
 import { bibleBooks } from "../../store/bibleData";
 //Function to get the bible versions
 export const getVersions = (
@@ -215,4 +215,18 @@ export const detectMob = () => {
   return toMatch.some((toMatchItem) => {
     return navigator.userAgent.match(toMatchItem);
   });
+};
+
+export const getReadingPlans = (setValue) => {
+  readingPlanAPI
+    .get("manifest.json")
+    .then(function (response) {
+      const temp = response.data.map((plan) => {
+        return { value: plan.file, label: plan.name };
+      });
+      setValue("readingPlans", temp);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 };

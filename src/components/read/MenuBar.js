@@ -208,7 +208,6 @@ const MenuBar = (props) => {
       setValue("audio", !audio);
       setValue("audioBible", audioBible);
     };
-    console.log(parallelView);
     if (
       audioBible &&
       audioBible.url &&

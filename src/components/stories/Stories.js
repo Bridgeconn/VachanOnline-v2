@@ -63,9 +63,6 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     marginTop: 60,
   },
-  storyDirection: {
-    direction: "rtl",
-  },
   stories: {
     paddingLeft: 20,
     paddingRight: 30,
@@ -83,6 +80,12 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
+  storyDirection: {
+    direction: "rtl",
+    textAlign: "right",
+    paddingRight: 50,
+  },
+
   drawerContainer: {
     overflow: "auto",
     fontSize: "1.2rem",
@@ -117,7 +120,7 @@ const Stories = (props) => {
   const smallScreen = useMediaQuery("(max-width:319px)");
   const storyClass =
     lang === "urd"
-      ? `${classes.storyDirection} ${classes.stories}`
+      ? `${classes.stories} ${classes.storyDirection}`
       : classes.stories;
   const listClass = lang === "urd" ? classes.storyDirection : "";
 
