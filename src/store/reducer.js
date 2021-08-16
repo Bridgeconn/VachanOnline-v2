@@ -15,6 +15,7 @@ const defaultState = {
   audioBible: [],
   video: [],
   readingPlans: [],
+  playing: "",
   versionBooks: {},
   versionSource: {},
   parallelScroll: true,

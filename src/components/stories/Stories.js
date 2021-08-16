@@ -20,7 +20,7 @@ import TopBar from "../read/TopBar";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 const drawerWidth = 400;
 
@@ -64,13 +64,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 60,
   },
   stories: {
+    marginTop: 200,
     paddingLeft: 20,
     paddingRight: 30,
-    marginTop: 155,
-    [theme.breakpoints.up("md")]: { marginTop: 90 },
-
+    [theme.breakpoints.up("md")]: { marginTop: 140 },
     fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
-
     "& img": {
       margin: "auto",
       display: "flex",
@@ -83,7 +81,11 @@ const useStyles = makeStyles((theme) => ({
   storyDirection: {
     direction: "rtl",
     textAlign: "right",
-    paddingRight: 50,
+    paddingRight: "50px",
+  },
+  listDirection: {
+    direction: "rtl",
+    textAlign: "right",
   },
 
   drawerContainer: {
@@ -91,11 +93,25 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2rem",
   },
   mobile: {
-    display: "flex",
-    position: "fixed",
     width: "100%",
-    top: 60,
+    position: "fixed",
+    top: 66,
     backgroundColor: "white",
+    borderBottom: "1px solid #f1ecec",
+  },
+  mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
+  heading: {
+    backgroundColor: "white",
+    position: "fixed",
+    marginTop: 62,
+    textAlign: "center",
+    paddingTop: 10,
+    paddingBottom: 2,
+    [theme.breakpoints.down("sm")]: { display: "none" },
+    width: "calc(100% - 400px)",
+  },
+  text: {
+    lineHeight: "1.267",
   },
 }));
 
@@ -122,7 +138,7 @@ const Stories = (props) => {
     lang === "urd"
       ? `${classes.stories} ${classes.storyDirection}`
       : classes.stories;
-  const listClass = lang === "urd" ? classes.storyDirection : "";
+  const listClass = lang === "urd" ? classes.listDirection : "";
 
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -182,86 +198,92 @@ const Stories = (props) => {
       <AppBar position="fixed">
         <TopBar login={login} userDetails={userDetails} />
       </AppBar>
-
       <div className={classes.root}>
         {mobile === true ? (
-          <Box className={classes.mobile} p={1}>
-            <Box p={1} flexGrow={1} stye={{ maxWidth: "90%" }}>
-              <FormControl variant="outlined" style={{ minWidth: 100 }}>
-                <Select value={lang} onChange={getLang}>
-                  {languages.map((text, y) => (
-                    <MenuItem key={y} value={text}>
-                      {languageJson[text]}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl
-                variant="outlined"
-                style={{
-                  marginLeft: 20,
-                  maxWidth: smallScreen === true ? "90px" : "50%",
-                }}
+          <Box className={classes.mobile}>
+            <Box className={classes.mobileHeading}>
+              <Typography variant="h4">Bible Stories</Typography>
+            </Box>
+            <Box style={{ display: "flex" }}>
+              <Box
+                p={1}
+                flexGrow={1}
+                style={{ maxWidth: "90%", display: "flex" }}
               >
-                {manifest.length > 0 && (
-                  <Select
-                    className={listClass}
-                    value={String(parseInt(storyId))}
-                    onChange={storySetter}
-                  >
-                    {manifest.map((text, y) => (
-                      <MenuItem
-                        className={listClass}
-                        key={y}
-                        value={String(y + 1)}
-                      >
-                        {y + 1 + ". " + text}
+                <FormControl variant="outlined" style={{ minWidth: 100 }}>
+                  <Select value={lang} onChange={getLang}>
+                    {languages.map((text, y) => (
+                      <MenuItem key={y} value={text}>
+                        {languageJson[text]}
                       </MenuItem>
                     ))}
                   </Select>
-                )}
-              </FormControl>
-            </Box>
-            <Box p={1}>
-              <Tooltip
-                title="Settings"
-                aria-label="More"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={openSettings}
-                style={{ marginTop: 15 }}
-              >
-                <i className="material-icons md-23">more_vert</i>
-              </Tooltip>
-              <Menu
-                id="long-menu"
-                anchorEl={settingsAnchor}
-                keepMounted
-                open={open}
-                onClose={closeSettings}
-                PaperProps={{
-                  style: {
-                    maxHeight: 68 * 4.5,
-                    width: 250,
-                  },
-                }}
-              >
-                <MenuItem>Font Size</MenuItem>
-                <Divider />
-                <MenuItem className={classes.menu}>
-                  <div className={classes.margin} />
-                  <Slider
-                    defaultValue={20}
-                    value={fontSize}
-                    onChange={handleSliderChange}
-                    valueLabelDisplay="on"
-                    min={12}
-                    max={30}
-                    classes={{ root: classes.slider }}
-                  />
-                </MenuItem>
-              </Menu>
+                </FormControl>
+                <FormControl
+                  variant="outlined"
+                  style={{
+                    marginLeft: 20,
+                    maxWidth: smallScreen === true ? "90px" : "50%",
+                  }}
+                >
+                  {manifest.length > 0 && (
+                    <Select
+                      value={String(parseInt(storyId))}
+                      onChange={storySetter}
+                    >
+                      {manifest.map((text, y) => (
+                        <MenuItem
+                          className={listClass}
+                          key={y}
+                          value={String(y + 1)}
+                        >
+                          {y + 1 + ". " + text}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                </FormControl>
+              </Box>
+              <Box p={1}>
+                <Tooltip
+                  title="Settings"
+                  aria-label="More"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={openSettings}
+                  style={{ marginTop: 15 }}
+                >
+                  <i className="material-icons md-23">more_vert</i>
+                </Tooltip>
+                <Menu
+                  id="long-menu"
+                  anchorEl={settingsAnchor}
+                  keepMounted
+                  open={open}
+                  onClose={closeSettings}
+                  PaperProps={{
+                    style: {
+                      maxHeight: 68 * 4.5,
+                      width: 250,
+                    },
+                  }}
+                >
+                  <MenuItem>Font Size</MenuItem>
+                  <Divider />
+                  <MenuItem className={classes.menu}>
+                    <div className={classes.margin} />
+                    <Slider
+                      defaultValue={20}
+                      value={fontSize}
+                      onChange={handleSliderChange}
+                      valueLabelDisplay="on"
+                      min={12}
+                      max={30}
+                      classes={{ root: classes.slider }}
+                    />
+                  </MenuItem>
+                </Menu>
+              </Box>
             </Box>
           </Box>
         ) : (
@@ -276,7 +298,11 @@ const Stories = (props) => {
               <FormControl variant="outlined" className={classes.formControl}>
                 <Select value={lang} onChange={getLang}>
                   {languages.map((text, y) => (
-                    <MenuItem key={y} value={text}>
+                    <MenuItem
+                      key={y}
+                      value={text}
+                      className={text === "urd" ? classes.listDirection : ""}
+                    >
                       {languageJson[text]}
                     </MenuItem>
                   ))}
@@ -325,9 +351,9 @@ const Stories = (props) => {
             </div>
             <Divider />
             <div className={classes.drawerContainer}>
-              <List className={listClass}>
+              <List>
                 {manifest.map((text, y) => (
-                  <ListItem key={y} value={text}>
+                  <ListItem key={y} value={text} className={listClass}>
                     <Link href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
                       {y + 1 + ". " + text}
                     </Link>
@@ -338,6 +364,12 @@ const Stories = (props) => {
           </Drawer>
         )}
         <main>
+          <div className={classes.heading}>
+            <Typography variant="h3" className={classes.text}>
+              Bible Stories
+            </Typography>
+            <Divider />
+          </div>
           <div className={storyClass} style={{ fontSize: fontSize }}>
             <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
           </div>
