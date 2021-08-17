@@ -164,6 +164,8 @@ const Bible = (props) => {
     userDetails,
     syncPanel,
     setParallelView,
+    playing,
+    setMainValue,
   } = props;
   const styleProps = { padding: padding, singlePane: singlePane };
   const classes = useStyles(styleProps);
@@ -369,6 +371,10 @@ const Bible = (props) => {
     }
   }, [bookCode, chapter, sourceId, userDetails]);
   const lineViewClass = lineView ? classes.lineView : "";
+
+  React.useEffect(() => {
+    setMainValue("playing", "");
+  }, [sourceId, bookCode, chapter, setMainValue]);
   return (
     <div
       className={classes.biblePanel}
@@ -447,6 +453,10 @@ const Bible = (props) => {
           {audio ? (
             <ReactPlayer
               url={audioUrl}
+              playing={playing === paneNo}
+              onPlay={() => {
+                setMainValue("playing", paneNo);
+              }}
               controls
               width="96%"
               height="50px"
@@ -521,6 +531,7 @@ const mapStateToProps = (state) => {
   return {
     parallelScroll: state.local.parallelScroll,
     userDetails: state.local.userDetails,
+    playing: state.local.playing,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -534,6 +545,8 @@ const mapDispatchToProps = (dispatch) => {
         name: "parallelView",
         value: value,
       }),
+    setMainValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Bible);

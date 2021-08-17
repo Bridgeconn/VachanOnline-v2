@@ -18,9 +18,10 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: "#ffd580",
     color: "rgba(0, 0, 0, 0.87)",
     boxShadow: theme.shadows[4],
+    border: "1px solid orange",
     fontSize: 16,
   },
 }))(Tooltip);
@@ -89,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 7,
     marginRight: 15,
   },
+  loading: {
+    paddingLeft: 20,
+  },
 }));
 
 const Plans = (props) => {
@@ -101,6 +105,7 @@ const Plans = (props) => {
   const [readingList, setReadingList] = useState([]);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [loading, setLoading] = React.useState(false);
 
   const months = [
     "Jan",
@@ -153,8 +158,10 @@ const Plans = (props) => {
 
   useEffect(() => {
     if (plan) {
+      setLoading(true);
       API.get(plan.value).then(function (response) {
         setPlanData(response.data);
+        setLoading(false);
       });
     }
   }, [API, plan]);
@@ -213,7 +220,9 @@ const Plans = (props) => {
             </Box>
           </Box>
           <div>
-            {readingList.length !== 0 ? (
+            {loading ? (
+              <h3 className={classes.loading}>Loading</h3>
+            ) : readingList.length !== 0 ? (
               <List component="nav">
                 {readingList.map((reading, i) => {
                   const bookText = getBookText(reading.ref, reading.text);
