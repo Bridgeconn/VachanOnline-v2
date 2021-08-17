@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
   mobile: {
     width: "100%",
     position: "fixed",
-    top: 66,
+    top: 64,
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
   },
@@ -112,6 +112,23 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     lineHeight: "1.267",
+  },
+  mobileBox: {
+    display: "flex",
+  },
+  mobileLangCombo: {
+    minWidth: 100,
+  },
+  mobileComboBox: {
+    maxWidth: "90%",
+    display: "flex",
+  },
+  mobileTooltip: {
+    marginTop: 15,
+  },
+  settingsMenu: {
+    maxHeight: 68 * 4.5,
+    width: 250,
   },
 }));
 
@@ -204,13 +221,12 @@ const Stories = (props) => {
             <Box className={classes.mobileHeading}>
               <Typography variant="h4">Bible Stories</Typography>
             </Box>
-            <Box style={{ display: "flex" }}>
-              <Box
-                p={1}
-                flexGrow={1}
-                style={{ maxWidth: "90%", display: "flex" }}
-              >
-                <FormControl variant="outlined" style={{ minWidth: 100 }}>
+            <Box className={classes.mobileBox}>
+              <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.mobileLangCombo}
+                >
                   <Select value={lang} onChange={getLang}>
                     {languages.map((text, y) => (
                       <MenuItem key={y} value={text}>
@@ -251,7 +267,7 @@ const Stories = (props) => {
                   aria-controls="long-menu"
                   aria-haspopup="true"
                   onClick={openSettings}
-                  style={{ marginTop: 15 }}
+                  className={classes.mobileTooltip}
                 >
                   <i className="material-icons md-23">more_vert</i>
                 </Tooltip>
@@ -262,10 +278,7 @@ const Stories = (props) => {
                   open={open}
                   onClose={closeSettings}
                   PaperProps={{
-                    style: {
-                      maxHeight: 68 * 4.5,
-                      width: 250,
-                    },
+                    className: classes.settingsMenu,
                   }}
                 >
                   <MenuItem>Font Size</MenuItem>
@@ -326,10 +339,7 @@ const Stories = (props) => {
                   open={open}
                   onClose={closeSettings}
                   PaperProps={{
-                    style: {
-                      maxHeight: 68 * 4.5,
-                      width: 250,
-                    },
+                    className: classes.settingsMenu,
                   }}
                 >
                   <MenuItem className={classes.menu}>Font Size</MenuItem>
