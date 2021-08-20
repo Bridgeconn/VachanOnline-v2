@@ -131,21 +131,30 @@ const AboutUs = ({ handleClose }) => {
             </ul>
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
-            {addStyle("Bug Fixes:", "bold")}
+            {addStyle("Enhancements:", "bold")}
           </Typography>
+
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
               <li>
                 Added titles for Commentary and Dictionary panels for easy user
                 navigation
               </li>
-              <li>Allow playing of only one Audio Bible at a time</li>
               <li>
                 Added support for Urdu script, direction - right to left for
                 Bible Stories
               </li>
             </ul>
           </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Bug Fixes:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Allow playing of only one Audio Bible at a time</li>
+            </ul>
+          </Typography>
+
           <Typography variant="h6" className={classes.subheading}>
             Release Notes (06/07/2021) v1.2.1
           </Typography>
