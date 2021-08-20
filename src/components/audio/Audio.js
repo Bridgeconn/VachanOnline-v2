@@ -99,7 +99,13 @@ const useStyles = makeStyles((theme) => ({
 const Audio = (props) => {
   const classes = useStyles();
   const [message, setMessage] = React.useState("");
-  let { audioBible, bookCode, chapter } = props;
+  let { audioBible, bookCode, chapter, book } = props;
+  const [playing, setPlaying] = React.useState("");
+
+  const getBook = (code) => {
+    return book[code][book[code].findIndex((x) => x.book_code === bookCode)]
+      .short;
+  };
   React.useEffect(() => {
     if (audioBible.length === 0 || audioBible.success === false) {
       setMessage("No audio bibles available");
@@ -156,7 +162,11 @@ const Audio = (props) => {
                     }}
                   >
                     <Typography className={classes.language}>
-                      {language.language.name}
+                      {language.language.name +
+                        " " +
+                        getBook(language.language.code) +
+                        " " +
+                        chapter}
                     </Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails style={{ padding: 0 }}>
@@ -169,6 +179,7 @@ const Audio = (props) => {
                           chapter +
                           "." +
                           audio.format;
+                        let id = language.language.code + i;
                         return audio.books.hasOwnProperty(bookCode) ? (
                           <ListItem
                             key={i}
@@ -178,7 +189,9 @@ const Audio = (props) => {
                             {audio.name}
                             <ReactPlayer
                               key={i}
+                              playing={playing === id}
                               url={url}
+                              onPlay={() => setPlaying(id)}
                               controls
                               width="100%"
                               height="50px"

@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import CommentaryCombo from "./CommentaryCombo";
@@ -207,20 +207,22 @@ const Commentary = (props) => {
   }, [baseUrl, commentaryObject, verseLabel]);
   return (
     <div className={classes.root}>
-      <Grid container className={classes.title}>
-        <Grid item xs={12} md={6}>
+      <Box className={classes.title}>
+        <Box flexGrow={1}>
+          <Typography variant="h6">Commentaries</Typography>
+        </Box>
+        <Box flexGrow={1}>
           <CommentaryCombo
             commentaries={props.commentaries}
             commentary={props.commentary}
             setCommentary={props.setCommentary}
           />
-        </Grid>
-        <Grid item xs={8} md={4}>
           <Typography className={classes.bookLabel}>
             {book} {chapter}
           </Typography>
-        </Grid>
-        <Grid className={classes.icons} item xs={4} md={2}>
+        </Box>
+
+        <Box className={classes.icons}>
           <div className={classes.metadata}>
             <Metadata
               metadataList={commentary.metadata}
@@ -229,8 +231,8 @@ const Commentary = (props) => {
             ></Metadata>
           </div>
           <Close className={classes.closeButton} />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       {commentaryText.length === 0 ? (
         <h3 className={classes.loading}>Loading</h3>
       ) : (
