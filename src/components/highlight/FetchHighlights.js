@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useFirebaseConnect } from "react-redux-firebase";
 
@@ -22,6 +22,8 @@ export default function FetchHighlights({
         data.users[uid].highlights[sourceId][bookCode] &&
         data.users[uid].highlights[sourceId][bookCode][chapter]
     ) || [];
-  setHighlights(data);
+  useEffect(() => {
+    setHighlights(data);
+  }, [data, setHighlights]);
   return <></>;
 }

@@ -5,9 +5,9 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import ListItem from "@material-ui/core/ListItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
@@ -136,7 +136,7 @@ const CommentaryCombo = (props) => {
           }}
         >
           {props.commentaries.map((languages, i) => (
-            <ExpansionPanel
+            <Accordion
               expanded={expanded === languages.language}
               onChange={handleChange(languages.language)}
               classes={{
@@ -145,7 +145,7 @@ const CommentaryCombo = (props) => {
               }}
               key={i}
             >
-              <ExpansionPanelSummary
+              <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 classes={{
                   root: classes.summaryPanel,
@@ -156,8 +156,8 @@ const CommentaryCombo = (props) => {
                 <Typography className={classes.language}>
                   {languages.language}
                 </Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails style={{ padding: 0 }}>
+              </AccordionSummary>
+              <AccordionDetails style={{ padding: 0 }}>
                 <List className={classes.expansionDetails}>
                   {languages.commentaries.map((item, i) => (
                     <ListItem
@@ -170,8 +170,8 @@ const CommentaryCombo = (props) => {
                     </ListItem>
                   ))}
                 </List>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
+              </AccordionDetails>
+            </Accordion>
           ))}
         </Menu>
       )}

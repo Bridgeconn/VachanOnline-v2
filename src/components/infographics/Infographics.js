@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { getInfographics } from "../common/utillity";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
+import Viewer from "react-viewer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,12 +72,7 @@ const Infographics = (props) => {
   const [message, setMessage] = React.useState("");
   const [url, setUrl] = React.useState("");
   const [bookData, setBookData] = React.useState([]);
-  let options = {
-    toolbar: {
-      flipHorizontal: false,
-      flipVertical: false,
-    },
-  };
+  const [visible, setVisible] = React.useState(false);
   //If language code changed get infographics for language
   React.useEffect(() => {
     getInfographics(languageCode, setValue);
@@ -121,32 +117,24 @@ const Infographics = (props) => {
         message
       ) : (
         <div className={classes.container}>
-          <RViewer
-            options={options}
-            imageUrls={bookData.map((i) => url + "/" + i.fileName)}
-          >
-            {/*Iterate over infographics for the book and show thumbnails in cards*/}
-            {bookData.map((pic, index) => {
-              return (
-                <RViewerTrigger index={index} key={index}>
-                  <Card className={classes.card}>
-                    <CardMedia
-                      component="img"
-                      alt={pic.title}
-                      height="200"
-                      image={url + "/thumbs/" + pic.fileName}
-                      title={pic.title}
-                    />
-                    <CardContent>
-                      <Typography className={classes.title} gutterBottom>
-                        {pic.title}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </RViewerTrigger>
-              );
-            })}
-          </RViewer>
+          {bookData.map((pic, index) => {
+            return (
+              <Card className={classes.card}>
+                <CardMedia
+                  component="img"
+                  alt={pic.title}
+                  height="200"
+                  image={url + "/thumbs/" + pic.fileName}
+                  title={pic.title}
+                />
+                <CardContent>
+                  <Typography className={classes.title} gutterBottom>
+                    {pic.title}
+                  </Typography>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>

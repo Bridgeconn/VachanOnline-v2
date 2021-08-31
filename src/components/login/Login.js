@@ -433,7 +433,7 @@ const Login = (props) => {
                     </Button>
                     <Grid
                       container
-                      justify="flex-end"
+                      justifyContent="flex-end"
                       className={classes.links}
                     >
                       <Grid item xs>
@@ -489,7 +489,7 @@ const Login = (props) => {
                     </Button>
                     <Grid
                       container
-                      justify="flex-end"
+                      justifyContent="flex-end"
                       className={classes.links}
                     >
                       <Grid item>
