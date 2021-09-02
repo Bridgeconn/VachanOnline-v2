@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     background: BLUE,
     padding: "0px 10px",
     marginBottom: "10px",
+    zIndex: 900,
   },
   title: {
     flexGrow: 1,

@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { RViewer, RViewerTrigger } from "react-viewerjs";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -73,6 +72,7 @@ const Infographics = (props) => {
   const [url, setUrl] = React.useState("");
   const [bookData, setBookData] = React.useState([]);
   const [visible, setVisible] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(0);
   //If language code changed get infographics for language
   React.useEffect(() => {
     getInfographics(languageCode, setValue);
@@ -84,14 +84,20 @@ const Infographics = (props) => {
         (element) => element.bookCode === bookCode
       );
       if (found) {
-        setBookData(found.infographics);
+        setBookData(
+          found.infographics.map((item, index) => {
+            item.src = url + item.fileName;
+            item.alt = item.title;
+            return item;
+          })
+        );
         setMessage("");
       } else {
         setBookData([]);
         setMessage("No infographics available for this book");
       }
     }
-  }, [bookCode, infographics]);
+  }, [bookCode, infographics, url]);
   //If infographics updated updated url to fetch from
   React.useEffect(() => {
     if (infographics.message && infographics.message !== "") {
@@ -112,14 +118,20 @@ const Infographics = (props) => {
           <Close className={classes.closeButton} />
         </Box>
       </Box>
-
       {message !== "" ? (
         message
       ) : (
         <div className={classes.container}>
           {bookData.map((pic, index) => {
             return (
-              <Card className={classes.card}>
+              <Card
+                key={index}
+                className={classes.card}
+                onClick={() => {
+                  setVisible(true);
+                  setActiveIndex(index);
+                }}
+              >
                 <CardMedia
                   component="img"
                   alt={pic.title}
@@ -135,6 +147,15 @@ const Infographics = (props) => {
               </Card>
             );
           })}
+          <Viewer
+            visible={visible}
+            onClose={() => {
+              setVisible(false);
+            }}
+            images={bookData}
+            activeIndex={activeIndex}
+            scalable={false}
+          />
         </div>
       )}
     </div>
