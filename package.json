@@ -28,7 +28,6 @@
     "react-slideshow-image": "^3.5.0",
     "react-swipeable": "^5.5.1",
     "react-viewer": "^3.2.2",
-    "react-viewerjs": "^0.1.9",
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
     "rehype-highlight": "^4.1.0"

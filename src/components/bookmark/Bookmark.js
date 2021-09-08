@@ -22,17 +22,20 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
   const classes = useStyles();
   const firebase = useFirebase();
   const [bookmarked, setBookmarked] = React.useState(false);
+  const [bookmarks, setBookmarks] = React.useState([]);
 
   useFirebaseConnect(`users/${uid}/bookmarks/${sourceId}/${bookCode}`);
-  const bookmarks =
-    useSelector(
-      ({ firebase: { data } }) =>
-        data.users &&
-        data.users[uid] &&
-        data.users[uid].bookmarks &&
-        data.users[uid].bookmarks[sourceId] &&
-        data.users[uid].bookmarks[sourceId][bookCode]
-    ) || [];
+  const firebaseData = useSelector(
+    ({ firebase: { data } }) =>
+      data.users &&
+      data.users[uid] &&
+      data.users[uid].bookmarks &&
+      data.users[uid].bookmarks[sourceId] &&
+      data.users[uid].bookmarks[sourceId][bookCode]
+  );
+  React.useEffect(() => {
+    setBookmarks(firebaseData || []);
+  }, [firebaseData]);
 
   React.useEffect(() => {
     if (Object.keys(bookmarks).length !== 0) {
@@ -41,6 +44,7 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
       setBookmarked(false);
     }
   }, [bookmarks, chapter]);
+
   function toggleBookmark() {
     const newBookmarks = bookmarked
       ? bookmarks.filter((a) => parseInt(a) !== parseInt(chapter))
