@@ -113,7 +113,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
           >
             <Paper>
               <Grid
-                justify="space-between" // Add it here :)
+                justifyContent="space-between" // Add it here :)
                 container
                 className={classes.metadataTitleBar}
               >
@@ -153,7 +153,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                         xs={12}
                         key={i}
                         alignItems="flex-start"
-                        justify="flex-end"
+                        justifyContent="flex-end"
                         className={classes.metadataRow}
                       >
                         <Grid item xs={4} className={classes.metadataHeading}>

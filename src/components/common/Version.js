@@ -7,9 +7,9 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import ListItem from "@material-ui/core/ListItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -207,7 +207,7 @@ const Version = (props) => {
             }}
           >
             {versions.sort(sortVersionLanguages).map((version, i) => (
-              <ExpansionPanel
+              <Accordion
                 square
                 expanded={expanded === version.language}
                 onChange={handleChange(version.language)}
@@ -217,7 +217,7 @@ const Version = (props) => {
                 }}
                 key={i}
               >
-                <ExpansionPanelSummary
+                <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   classes={{
                     root: classes.summaryPanel,
@@ -227,8 +227,8 @@ const Version = (props) => {
                   <Typography className={classes.language}>
                     {version.language}
                   </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails
+                </AccordionSummary>
+                <AccordionDetails
                   classes={{
                     root: classes.expansionDetailsRoot,
                   }}
@@ -250,8 +250,8 @@ const Version = (props) => {
                       </ListItem>
                     ))}
                   </List>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
+                </AccordionDetails>
+              </Accordion>
             ))}
           </Menu>
         </>
