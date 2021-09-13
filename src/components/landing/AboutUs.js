@@ -120,6 +120,18 @@ const AboutUs = ({ handleClose }) => {
 
         <div className={classes.releaseNotes}>
           <Typography variant="h6" className={classes.subheading}>
+            Release Notes (10/09/2021) v1.3.1
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Operations Update:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>React version upgrade to 17.0.2</li>
+            </ul>
+          </Typography>
+
+          <Typography variant="h6" className={classes.subheading}>
             Release Notes (19/08/2021) v1.3.0
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
