@@ -56,7 +56,11 @@ const LanguageBar = ({ setLanguage }) => {
     <Grid container className={classes.root}>
       <Grid item xs={12}>
         <Paper>
-          <Grid container justify="center" className={classes.languageBar}>
+          <Grid
+            container
+            justifyContent="center"
+            className={classes.languageBar}
+          >
             <Toolbar variant="dense" className={classes.toolbarSecondary}>
               {Object.keys(languages).map((key) => (
                 <Link

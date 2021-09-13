@@ -4,9 +4,9 @@ import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ReactPlayer from "react-player";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
@@ -145,7 +145,7 @@ const Audio = (props) => {
               return bookIndex === -1 ? (
                 ""
               ) : (
-                <ExpansionPanel
+                <Accordion
                   defaultExpanded={true}
                   classes={{
                     root: classes.menuRoot,
@@ -153,7 +153,7 @@ const Audio = (props) => {
                   }}
                   key={i}
                 >
-                  <ExpansionPanelSummary
+                  <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     classes={{
                       root: classes.summaryPanel,
@@ -168,8 +168,8 @@ const Audio = (props) => {
                         " " +
                         chapter}
                     </Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails style={{ padding: 0 }}>
+                  </AccordionSummary>
+                  <AccordionDetails style={{ padding: 0 }}>
                     <List className={classes.expansionDetails}>
                       {language.audioBibles.map((audio, i) => {
                         let url =
@@ -210,8 +210,8 @@ const Audio = (props) => {
                         );
                       })}
                     </List>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
+                  </AccordionDetails>
+                </Accordion>
               );
             })}
           </div>
