@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
   mobile: {
     width: "100%",
     position: "fixed",
-    top: 66,
+    top: 64,
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
   },
@@ -106,12 +106,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 62,
     textAlign: "center",
     paddingTop: 10,
-    paddingBottom: 2,
     [theme.breakpoints.down("sm")]: { display: "none" },
     width: "calc(100% - 400px)",
   },
   text: {
-    lineHeight: "1.267",
+    lineHeight: "1.255",
   },
 }));
 

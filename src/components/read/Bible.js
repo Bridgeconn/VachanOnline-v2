@@ -176,13 +176,21 @@ const Bible = (props) => {
       let data = contents.find((item) => Array.isArray(item));
       if (data) {
         for (let section of data) {
-          if (Object.keys(section)[0].startsWith("s")) {
+          if (
+            Object.keys(section)[0].startsWith("s") &&
+            typeof section[Object.keys(section)[0]][0] === "string"
+          ) {
             return section[Object.keys(section)[0]][0];
           }
         }
+      } else {
+        return null;
       }
+    } else {
+      return null;
     }
   };
+
   React.useEffect(() => {
     if (version !== "Loading...") {
       let language = version.split("-")[0];

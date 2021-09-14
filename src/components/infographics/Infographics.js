@@ -9,6 +9,7 @@ import { getInfographics } from "../common/utillity";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import Viewer from "react-viewer";
+import Metadata from "../common/Metadata";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -115,6 +116,14 @@ const Infographics = (props) => {
           <Typography variant="h6">Infographics</Typography>
         </Box>
         <Box>
+          <div className={classes.metadata}>
+            <Metadata
+              metadataList={infographics.metadata}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+            ></Metadata>
+          </div>
+
           <Close className={classes.closeButton} />
         </Box>
       </Box>
