@@ -79,6 +79,11 @@ const MenuBar = (props) => {
     refUrl,
     highlights,
     parallelView,
+    printRef,
+    printNotes,
+    setPrintNotes,
+    printHighlights,
+    setPrintHighlights,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -277,6 +282,11 @@ const MenuBar = (props) => {
             setValue={setValue}
             settingsAnchor={settingsAnchor}
             handleClose={closeSettings}
+            printRef={printRef}
+            printNotes={printNotes}
+            setPrintNotes={setPrintNotes}
+            printHighlights={printHighlights}
+            setPrintHighlights={setPrintHighlights}
           />
           {paneNo === 2 ? <Close /> : ""}
         </Box>
