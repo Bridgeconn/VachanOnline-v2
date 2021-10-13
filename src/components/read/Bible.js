@@ -9,7 +9,7 @@ import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
-import { Typography } from "@material-ui/core";
+import { Divider, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -164,6 +164,23 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
+  footNotes: {
+    display: "none",
+    [`@media print`]: {
+      display: (props) => (props.printNotes ? "block" : "none"),
+      marginTop: 200,
+    },
+  },
+  underline: {
+    color: "grey",
+    textDecoration: "underline",
+  },
+  noteTitle: {
+    paddingBottom: 20,
+  },
+  noteList: {
+    paddingTop: 20,
+  },
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
@@ -177,6 +194,7 @@ const Bible = (props) => {
     window.innerWidth > 1200 ? (window.innerWidth - 1200) / 2 : 20
   );
   const [notes, setNotes] = React.useState([]);
+  const [noteText, setNoteText] = React.useState([]);
   const [fetchData, setFetchData] = React.useState();
   const [font, setFont] = React.useState("");
   const [highlightVerses, setHighlightVerses] = React.useState([]);
@@ -423,6 +441,7 @@ const Bible = (props) => {
           bookCode={bookCode}
           chapter={chapter}
           setNotes={setNotes}
+          setNoteText={setNoteText}
         />
       );
     } else {
@@ -446,7 +465,9 @@ const Bible = (props) => {
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };
-
+  const addStyle = (text, style) => {
+    return <span className={classes[style]}>{" " + text}</span>;
+  };
   return (
     <div
       className={classes.biblePanel}
@@ -525,6 +546,25 @@ const Bible = (props) => {
                   </span>
                 );
               })}
+              <div className={classes.footNotes}>
+                <Typography className={classes.noteTitle} variant="h4">
+                  Notes :
+                </Typography>
+                <Divider />
+                <div className={classes.noteList}>
+                  {noteText.map((item) => {
+                    return (
+                      <ul>
+                        {addStyle(
+                          bookDisplay + " " + chapter + ":" + item.verses,
+                          "underline"
+                        )}
+                        {" " + item.body}
+                      </ul>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
           {audio ? (
