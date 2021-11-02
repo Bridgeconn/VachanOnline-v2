@@ -456,9 +456,7 @@ const Bible = (props) => {
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
-      if (!book) {
-        book = bookList[0];
-      }
+
       if (book) {
         setBookDisplay(book.short);
       }
