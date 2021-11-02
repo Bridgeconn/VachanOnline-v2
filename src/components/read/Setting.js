@@ -170,10 +170,10 @@ const Setting = ({
             variant="contained"
             aria-label="Large contained secondary button group"
           >
-            <Button style={{ fontSize: 12 }} onClick={decreaseFontSize}>
+            <Button style={{ fontSize: 13 }} onClick={decreaseFontSize}>
               A -
             </Button>
-            <Button style={{ fontSize: 14 }} onClick={increaseFontSize}>
+            <Button style={{ fontSize: 16 }} onClick={increaseFontSize}>
               A +
             </Button>
           </ButtonGroup>
