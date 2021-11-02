@@ -8,6 +8,7 @@ export default function GetChapterNotes({
   bookCode,
   chapter,
   setNotes,
+  setNoteText,
 }) {
   //Get notes for this chapter from firebase
   useFirebaseConnect(`users/${uid}/notes/${sourceId}/${bookCode}/${chapter}`);
@@ -34,10 +35,12 @@ export default function GetChapterNotes({
         list.sort();
         list = [...new Set(list)];
         setNotes(list);
-      }else{
-        setNotes([])
+        setNoteText(notes);
+      } else {
+        setNotes([]);
+        setNoteText([]);
       }
     }
-  }, [notes, setNotes]);
+  }, [notes, setNotes, setNoteText]);
   return <div></div>;
 }
