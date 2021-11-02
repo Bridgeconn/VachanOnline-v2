@@ -459,9 +459,11 @@ const Bible = (props) => {
       if (!book) {
         book = bookList[0];
       }
-      setBookDisplay(book.short);
+      if (book) {
+        setBookDisplay(book.short);
+      }
     }
-  }, [bookList, bookCode, setValue]);
+  }, [bookList, bookCode, setBookDisplay]);
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };

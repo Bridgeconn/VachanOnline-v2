@@ -53,9 +53,6 @@ const useStyles = makeStyles((theme) => ({
   printIcon: {
     marginRight: 20,
   },
-  dialog: {
-    width: 250,
-  },
   buttonGroup1: {
     marginLeft: 15,
   },
@@ -174,9 +171,11 @@ const Setting = ({
             aria-label="Large contained secondary button group"
           >
             <Button style={{ fontSize: 12 }} onClick={decreaseFontSize}>
-              A-
+              A -
             </Button>
-            <Button onClick={increaseFontSize}>A+</Button>
+            <Button style={{ fontSize: 14 }} onClick={increaseFontSize}>
+              A +
+            </Button>
           </ButtonGroup>
         </MenuItem>
         <MenuItem className={classes.menu}>
@@ -197,9 +196,9 @@ const Setting = ({
             }
           />
         </MenuItem>
-        <MenuItem className={classes.menu}>
+        <MenuItem className={classes.menu} onClick={handleDialogOpen}>
           <span className={classes.printIcon}>Print/Save</span>
-          <PrintIcon onClick={handleDialogOpen} />
+          <PrintIcon />
         </MenuItem>
       </Menu>
       <Dialog
