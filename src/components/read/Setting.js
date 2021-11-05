@@ -74,6 +74,8 @@ const Setting = ({
   setPrintNotes,
   printHighlights,
   setPrintHighlights,
+  bookDisplay,
+  chapter
 }) => {
   const classes = useStyles();
   const open = Boolean(settingsAnchor);
@@ -231,6 +233,8 @@ const Setting = ({
           <Button onClick={handleDialogClose}>Cancel</Button>
           <ReactToPrint
             trigger={linkToPrint}
+            documentTitle={`VachanOnline-${bookDisplay}-${chapter}`}
+            onAfterPrint={handleDialogClose}
             content={() => printRef.current}
           />
         </DialogActions>
