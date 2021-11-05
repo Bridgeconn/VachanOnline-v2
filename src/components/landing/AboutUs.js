@@ -119,6 +119,17 @@ const AboutUs = ({ handleClose }) => {
         </Typography>
 
         <div className={classes.releaseNotes}>
+        <Typography variant="h6" className={classes.subheading}>
+            Release Notes (06/11/2021) v1.3.2
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Feature Additions:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Bible chapter can be printed or downloaded as PDF</li>
+            </ul>
+          </Typography>
           <Typography variant="h6" className={classes.subheading}>
             Release Notes (10/09/2021) v1.3.1
           </Typography>

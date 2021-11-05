@@ -140,6 +140,7 @@ const Plans = (props) => {
     let ref = element.getAttribute("data-ref").split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
     if (book) {
+      setValue1("versesSelected", []);
       setValue1("bookCode", ref[0]);
       setValue1("chapter", parseInt(ref[1]));
     }

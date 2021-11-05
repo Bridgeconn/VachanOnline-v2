@@ -135,6 +135,9 @@ const useStyles = makeStyles((theme) => ({
   },
   selectedVerse: {
     backgroundColor: "#d9e8ef",
+    [`@media print`]: {
+      backgroundColor: "unset"
+    },
   },
   lineView: {
     display: "table",
@@ -552,9 +555,9 @@ const Bible = (props) => {
                 </Typography>
                 <Divider />
                 <div className={classes.noteList}>
-                  {noteText.map((item) => {
+                  {noteText.map((item, i) => {
                     return (
-                      <ul>
+                      <ul key={i}>
                         {addStyle(
                           bookDisplay + " " + chapter + ":" + item.verses,
                           "underline"

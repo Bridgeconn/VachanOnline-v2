@@ -405,6 +405,7 @@ const ReadBible = (props) => {
                 readingPlans={readingPlans}
                 bookList={versionBooks[versionSource[panel1.sourceId]]}
                 setValue1={setValue1}
+                versesSelected={panel1.versesSelected}
               />
             </div>
           </>
