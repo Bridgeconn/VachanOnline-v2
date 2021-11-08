@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
       props.singlePane || props.padding > 60 ? props.padding : 60,
     paddingLeft: (props) =>
       props.singlePane || props.padding > 20 ? props.padding : 20,
-    textAlign: "justify",
     paddingTop: 20,
     height: "100%",
     overflow: "scroll",
@@ -76,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     paddingBottom: 30,
+    textAlign: "justify",
     [`@media print`]: {
       fontSize: "1.2rem",
     },
