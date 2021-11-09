@@ -22,12 +22,10 @@ export default function FetchHighlights({
       data.users[uid].highlights[sourceId][bookCode][chapter]
   );
   useEffect(() => {
-    if (isLoaded(data)) {
-      if (!isEmpty(data)) {
-        setHighlights(data);
-      } else {
-        setHighlights([]);
-      }
+    if (isLoaded(data) && !isEmpty(data)) {
+      setHighlights(data);
+    } else {
+      setHighlights([]);
     }
   }, [data, setHighlights]);
   return <></>;

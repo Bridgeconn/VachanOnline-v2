@@ -24,8 +24,7 @@ export default function GetChapterNotes({
 
   //When data comes from firebase put in noteList
   React.useEffect(() => {
-    if (isLoaded(notes)) {
-      if (!isEmpty(notes)) {
+    if (isLoaded(notes) && !isEmpty(notes)) {
         let list = [];
         if (notes) {
           notes.forEach((note) => {
@@ -36,10 +35,9 @@ export default function GetChapterNotes({
         list = [...new Set(list)];
         setNotes(list);
         setNoteText(notes);
-      } else {
-        setNotes([]);
-        setNoteText([]);
-      }
+    } else {
+      setNotes([]);
+      setNoteText([]);
     }
   }, [notes, setNotes, setNoteText]);
   return <div></div>;

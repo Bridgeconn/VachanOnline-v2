@@ -127,7 +127,7 @@ const AboutUs = ({ handleClose }) => {
           </Typography>
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
-              <li>Bible chapter can be printed or downloaded as PDF</li>
+              <li>Bible chapters can be printed or downloaded as PDF</li>
             </ul>
           </Typography>
           <Typography variant="h6" className={classes.subheading}>
