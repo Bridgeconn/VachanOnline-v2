@@ -9,6 +9,8 @@ import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
+import { Divider, Typography } from "@material-ui/core";
+
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
     position: "absolute",
@@ -29,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
       props.singlePane || props.padding > 60 ? props.padding : 60,
     paddingLeft: (props) =>
       props.singlePane || props.padding > 20 ? props.padding : 20,
-    textAlign: "justify",
     paddingTop: 20,
     height: "100%",
     overflow: "scroll",
@@ -74,6 +75,10 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     paddingBottom: 30,
+    textAlign: "justify",
+    [`@media print`]: {
+      fontSize: "1.2rem",
+    },
   },
   verseText: {
     padding: "4px 0 2px 4px",
@@ -106,8 +111,33 @@ const useStyles = makeStyles((theme) => ({
   orange: {
     backgroundColor: color.ORANGE,
   },
+  [`@media print`]: {
+    yellow: {
+      backgroundColor: (props) =>
+        props.printHighlights ? color.YELLOW : "unset",
+    },
+    green: {
+      backgroundColor: (props) =>
+        props.printHighlights ? color.GREEN : "unset",
+    },
+    cyan: {
+      backgroundColor: (props) =>
+        props.printHighlights ? color.CYAN : "unset",
+    },
+    pink: {
+      backgroundColor: (props) =>
+        props.printHighlights ? color.PINK : "unset",
+    },
+    orange: {
+      backgroundColor: (props) =>
+        props.printHighlights ? color.ORANGE : "unset",
+    },
+  },
   selectedVerse: {
     backgroundColor: "#d9e8ef",
+    [`@media print`]: {
+      backgroundColor: "unset"
+    },
   },
   lineView: {
     display: "table",
@@ -124,6 +154,36 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  noteIcon: {
+    [`@media print`]: {
+      display: (props) => (props.printNotes ? "inline-block" : "none"),
+    },
+  },
+  bookRef: {
+    display: "none",
+    [`@media print`]: {
+      textTransform: "capitalize",
+      display: "block",
+      textAlign: "center",
+    },
+  },
+  footNotes: {
+    display: "none",
+    [`@media print`]: {
+      display: (props) => (props.printNotes ? "block" : "none"),
+      marginTop: 200,
+    },
+  },
+  underline: {
+    color: "grey",
+    textDecoration: "underline",
+  },
+  noteTitle: {
+    paddingBottom: 20,
+  },
+  noteList: {
+    paddingTop: 20,
+  },
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
@@ -137,6 +197,7 @@ const Bible = (props) => {
     window.innerWidth > 1200 ? (window.innerWidth - 1200) / 2 : 20
   );
   const [notes, setNotes] = React.useState([]);
+  const [noteText, setNoteText] = React.useState([]);
   const [fetchData, setFetchData] = React.useState();
   const [font, setFont] = React.useState("");
   const [highlightVerses, setHighlightVerses] = React.useState([]);
@@ -166,23 +227,42 @@ const Bible = (props) => {
     setParallelView,
     playing,
     setMainValue,
+    printRef,
+    printNotes,
+    printHighlights,
+    versionBooks,
+    versionSource,
   } = props;
-  const styleProps = { padding: padding, singlePane: singlePane };
+  const styleProps = {
+    padding: padding,
+    singlePane: singlePane,
+    printNotes: printNotes,
+    printHighlights: printHighlights,
+  };
   const classes = useStyles(styleProps);
-
+  const [bookDisplay, setBookDisplay] = React.useState("");
+  const bookList = versionBooks[versionSource[sourceId]];
   //new usfm json structure
   const getHeading = (contents) => {
     if (contents) {
       let data = contents.find((item) => Array.isArray(item));
       if (data) {
         for (let section of data) {
-          if (Object.keys(section)[0].startsWith("s")) {
+          if (
+            Object.keys(section)[0].startsWith("s") &&
+            typeof section[Object.keys(section)[0]][0] === "string"
+          ) {
             return section[Object.keys(section)[0]][0];
           }
         }
+      } else {
+        return null;
       }
+    } else {
+      return null;
     }
   };
+
   React.useEffect(() => {
     if (version !== "Loading...") {
       let language = version.split("-")[0];
@@ -364,6 +444,7 @@ const Bible = (props) => {
           bookCode={bookCode}
           chapter={chapter}
           setNotes={setNotes}
+          setNoteText={setNoteText}
         />
       );
     } else {
@@ -371,10 +452,25 @@ const Bible = (props) => {
     }
   }, [bookCode, chapter, sourceId, userDetails]);
   const lineViewClass = lineView ? classes.lineView : "";
-
   React.useEffect(() => {
     setMainValue("playing", "");
   }, [sourceId, bookCode, chapter, setMainValue]);
+
+  React.useEffect(() => {
+    if (bookList) {
+      let book = bookList.find((element) => element.book_code === bookCode);
+
+      if (book) {
+        setBookDisplay(book.short);
+      }
+    }
+  }, [bookList, bookCode, setBookDisplay]);
+  const getPageMargins = () => {
+    return `@page { margin: 20mm !important; }`;
+  };
+  const addStyle = (text, style) => {
+    return <span className={classes[style]}>{" " + text}</span>;
+  };
   return (
     <div
       className={classes.biblePanel}
@@ -397,7 +493,11 @@ const Bible = (props) => {
                 : classes.bibleReadingPane
             }
           >
-            <div className={classes.text}>
+            <div className={classes.text} ref={printRef}>
+              <style>{getPageMargins()}</style>
+              <Typography className={classes.bookRef} variant="h4">
+                {version + " " + bookDisplay + " " + chapter}{" "}
+              </Typography>
               {chapterHeading !== "" ? (
                 <span className={classes.sectionHeading}>{chapterHeading}</span>
               ) : (
@@ -430,6 +530,7 @@ const Bible = (props) => {
                       {/*If verse has note then show note icon to open notes pane */}
                       {notes && notes.includes(verse) ? (
                         <NoteIcon
+                          className={classes.noteIcon}
                           fontSize="small"
                           color="disabled"
                           onClick={() => setParallelView(NOTE)}
@@ -448,6 +549,25 @@ const Bible = (props) => {
                   </span>
                 );
               })}
+              <div className={classes.footNotes}>
+                <Typography className={classes.noteTitle} variant="h4">
+                  Notes :
+                </Typography>
+                <Divider />
+                <div className={classes.noteList}>
+                  {noteText.map((item, i) => {
+                    return (
+                      <ul key={i}>
+                        {addStyle(
+                          bookDisplay + " " + chapter + ":" + item.verses,
+                          "underline"
+                        )}
+                        {" " + item.body}
+                      </ul>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
           {audio ? (
@@ -532,6 +652,8 @@ const mapStateToProps = (state) => {
     parallelScroll: state.local.parallelScroll,
     userDetails: state.local.userDetails,
     playing: state.local.playing,
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
   };
 };
 const mapDispatchToProps = (dispatch) => {

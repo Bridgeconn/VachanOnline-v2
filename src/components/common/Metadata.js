@@ -145,27 +145,32 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                 {Object.keys(metadataList)
                   .sort()
                   .map((item, i) => {
-                    return item.trim() !== "" &&
-                      metadataList[item].trim() !== "" ? (
-                      <Grid
-                        container
-                        item
-                        xs={12}
-                        key={i}
-                        alignItems="flex-start"
-                        justifyContent="flex-end"
-                        className={classes.metadataRow}
-                      >
-                        <Grid item xs={4} className={classes.metadataHeading}>
-                          {item}:
+                    const ignoredKeys = ["baseUrl", "Latest"];
+                    if (ignoredKeys.includes(item)) {
+                      return null;
+                    } else {
+                      return item.trim() !== "" &&
+                        metadataList[item].trim() !== "" ? (
+                        <Grid
+                          container
+                          item
+                          xs={12}
+                          key={i}
+                          alignItems="flex-start"
+                          justifyContent="flex-end"
+                          className={classes.metadataRow}
+                        >
+                          <Grid item xs={4} className={classes.metadataHeading}>
+                            {item}:
+                          </Grid>
+                          <Grid item xs={8} className={classes.metadataText}>
+                            {metadataList[item].split(" ").map(checkLink)}
+                          </Grid>
                         </Grid>
-                        <Grid item xs={8} className={classes.metadataText}>
-                          {metadataList[item].split(" ").map(checkLink)}
-                        </Grid>
-                      </Grid>
-                    ) : (
-                      ""
-                    );
+                      ) : (
+                        ""
+                      );
+                    }
                   })}
               </Grid>
             </Paper>

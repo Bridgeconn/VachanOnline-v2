@@ -144,7 +144,6 @@ export default function Note({
     ({ firebase: { data } }) =>
       data.users && data.users[uid] && data.users[uid].notes
   );
-
   return (
     <div>
       <div className={classes.info} onClick={openNoteDialog}>
@@ -189,15 +188,8 @@ export default function Note({
           />
         </DialogContent>
         <DialogActions>
-          <Button className={classes.button} onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={saveNote}
-          >
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button variant="contained" color="primary" onClick={saveNote}>
             Save
           </Button>
         </DialogActions>

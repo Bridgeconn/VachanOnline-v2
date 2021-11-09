@@ -79,6 +79,11 @@ const MenuBar = (props) => {
     refUrl,
     highlights,
     parallelView,
+    printRef,
+    printNotes,
+    setPrintNotes,
+    printHighlights,
+    setPrintHighlights,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -90,6 +95,18 @@ const MenuBar = (props) => {
   const [bookmarkIcon, setBookmarkIcon] = React.useState("");
   const [highlightIcon, setHighlightIcon] = React.useState("");
   const [noteIcon, setNoteIcon] = React.useState("");
+  const [bookDisplay, setBookDisplay] = React.useState("");
+  const bookList = versionBooks[versionSource[sourceId]];
+
+  React.useEffect(() => {
+    if (bookList) {
+      let book = bookList.find((element) => element.book_code === bookCode);
+      if (book) {
+        setBookDisplay(book.short);
+      }
+    }
+  }, [bookList, bookCode, setBookDisplay]);
+
   //Set bookmark icon
   React.useEffect(() => {
     if (userDetails.uid !== null) {
@@ -277,6 +294,13 @@ const MenuBar = (props) => {
             setValue={setValue}
             settingsAnchor={settingsAnchor}
             handleClose={closeSettings}
+            printRef={printRef}
+            printNotes={printNotes}
+            setPrintNotes={setPrintNotes}
+            printHighlights={printHighlights}
+            setPrintHighlights={setPrintHighlights}
+            bookDisplay={bookDisplay}
+            chapter={chapter}
           />
           {paneNo === 2 ? <Close /> : ""}
         </Box>
