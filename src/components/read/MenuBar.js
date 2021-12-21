@@ -209,7 +209,7 @@ const MenuBar = (props) => {
       );
       if (languageVersions !== undefined) {
         const versionObject = languageVersions.languageVersions.find(
-          (e) => e.version.code === language[1]
+          (e) => e.version.code.toUpperCase() === language[1].toUpperCase()
         );
         setValue("languageCode", versionObject.language.code);
         setMetadataList(versionObject.metadata);

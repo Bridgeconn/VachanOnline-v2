@@ -4,7 +4,6 @@ import PageHeader from "./PageHeader";
 import Banner from "./Banner";
 import LanguageBar from "./LanguageBar";
 import LandingFooter from "./LandingFooter";
-import ImageSlider from "./ImageSlider";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import screenshot from "../common/images/screenshot.jpg";
@@ -14,6 +13,11 @@ import Link from "@material-ui/core/Link";
 import Alert from "@material-ui/lab/Alert";
 import { detectMob } from "../common/utillity";
 import "./Landing.css";
+import listen from "../common/images/listen.jpg";
+import read from "../common/images/read.jpg";
+import watch from "../common/images/watch.jpg";
+import Box  from "@material-ui/core/Box";
+import Typography  from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -97,11 +101,22 @@ const Landing = () => {
       <Banner language={language} />
       <BibleIndex />
       <Grid container className={classes.landingFooter}>
-        <Grid item xs={12} md={5} className={classes.rightLinks}>
-          <ImageSlider />
-        </Grid>
-        <Grid item xs={12} md={2} className={classes.rightLinks}></Grid>
-        <Grid item xs={12} md={5} className={classes.rightLinks}>
+  <Box style={{display:"flex", width:"100%"}}>
+              <img src={read} alt="read" style={{width:"33%", height:"100%"}}/>
+              <img src={watch} alt="watch" style={{width:"33%", height:"100%"}}/>
+              <img src={listen} alt="listen" style={{width:"33%", height:"100%", paddingRight:"1%"}}/>
+ </Box>
+ <Grid item xs={12} md={6}>
+    <Typography variant="h6" style={{fontSize:24, marginTop: 50, paddingLeft:30}}><p><b>Welcome to VachanOnline.com</b></p>
+
+<p>VachanOnline.com and the companion VachanGo app is a premier Scripture Engagement website in Indian Languages!</p>
+
+<p>So what is Scripture engagement? It is a way of studying the Bible with resources and tools to assist you understand the Bible. With a host of commentaries, videos, audio Bibles and reading plans in your heart language, our desire is that you will find this website to be a place where you can interact with Scripture, find resources to understand it, journal your spiritual growth and enjoy developing a growing relationship with God.</p>
+
+<p>The VachanGo companion app enables you take your Bible and your Notes with you wherever you go!</p> </Typography>
+     
+ </Grid>
+ <Grid item xs={12} md={6}>
           <div className={classes.screenshotDiv}>
             <img
               src={screenshot}
@@ -110,7 +125,7 @@ const Landing = () => {
             />
             {addLink()}
           </div>
-        </Grid>
+          </Grid>
       </Grid>
       <LandingFooter />
       {message ? (

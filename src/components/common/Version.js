@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import List from "@material-ui/core/List";
@@ -15,6 +15,17 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVersions, capitalize } from "../common/utillity";
 import { PARALLELBIBLE } from "../../store/views";
+import Tooltip from "@material-ui/core/Tooltip";
+
+const BigTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "#66a3ff",
+    color: "#00003d",
+    boxShadow: theme.shadows[4],
+    border: "1px solid #103f87" ,
+    fontSize: 16,
+  },
+}))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -94,6 +105,7 @@ const Version = (props) => {
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
+  const [languageName, setLanguageName] = React.useState("Hindi")
   const {
     setVersions,
     setValue,
@@ -109,6 +121,7 @@ const Version = (props) => {
     parallelScroll,
     setMainValue,
   } = props;
+
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -164,8 +177,23 @@ const Version = (props) => {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
+
+  React.useEffect(()=> {
+    let langCode = version.split("-")[0];
+    for (let lang in versions) {
+         let v = versions[lang];
+         let not = v["languageVersions"];
+        for (let li in not){
+          if (langCode === not[li]['language']["code"]){
+            setLanguageName(not[li]["language"]["name"])
+          }
+        }
+        }
+  }, [version, versions])
+
   return (
-    <>
+    <> 
+    <BigTooltip title = "Select a Bible in your language and version">
       <Button
         aria-controls="simple-menu"
         aria-haspopup="true"
@@ -178,9 +206,10 @@ const Version = (props) => {
             : { root: classes.button, label: classes.label }
         }
       >
-        {mobile && !landingPage ? version.split("-")[1] : version}
+        {mobile && !landingPage ? version.split("-")[1] : !version.split("-")[1] ? "Loading...": languageName +"-" +version.split("-")[1]}
         <i className={`material-icons ${classes.icon}`}>keyboard_arrow_down</i>
       </Button>
+      </BigTooltip>
       {versions.length === 0 ? (
         ""
       ) : (
