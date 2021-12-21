@@ -181,11 +181,11 @@ const Version = (props) => {
   React.useEffect(()=> {
     let langCode = version.split("-")[0];
     for (let lang in versions) {
-         let v = versions[lang];
-         let not = v["languageVersions"];
-        for (let li in not){
-          if (langCode === not[li]['language']["code"]){
-            setLanguageName(not[li]["language"]["name"])
+         let languageNames = versions[lang];
+         let langVersions = languageNames["languageVersions"];
+        for (let versionNames in langVersions){
+          if (langCode === langVersions[versionNames]['language']["code"]){
+            setLanguageName(langVersions[versionNames]["language"]["name"])
           }
         }
         }
