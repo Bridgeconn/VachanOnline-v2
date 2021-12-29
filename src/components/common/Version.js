@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import List from "@material-ui/core/List";
@@ -7,14 +7,25 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import ListItem from "@material-ui/core/ListItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVersions, capitalize } from "../common/utillity";
 import { PARALLELBIBLE } from "../../store/views";
+import Tooltip from "@material-ui/core/Tooltip";
+
+const BigTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "#66a3ff",
+    color: "#00003d",
+    boxShadow: theme.shadows[4],
+    border: "1px solid #103f87" ,
+    fontSize: 16,
+  },
+}))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -94,6 +105,7 @@ const Version = (props) => {
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
+  const [languageName, setLanguageName] = React.useState("Hindi")
   const {
     setVersions,
     setValue,
@@ -109,6 +121,7 @@ const Version = (props) => {
     parallelScroll,
     setMainValue,
   } = props;
+
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -164,8 +177,23 @@ const Version = (props) => {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
+
+  React.useEffect(()=> {
+    let langCode = version.split("-")[0];
+    for (let lang in versions) {
+         let languageNames = versions[lang];
+         let langVersions = languageNames["languageVersions"];
+        for (let versionNames in langVersions){
+          if (langCode === langVersions[versionNames]['language']["code"]){
+            setLanguageName(langVersions[versionNames]["language"]["name"])
+          }
+        }
+        }
+  }, [version, versions])
+
   return (
-    <>
+    <> 
+    <BigTooltip title = "Select a Bible in your language and version">
       <Button
         aria-controls="simple-menu"
         aria-haspopup="true"
@@ -178,9 +206,10 @@ const Version = (props) => {
             : { root: classes.button, label: classes.label }
         }
       >
-        {mobile && !landingPage ? version.split("-")[1] : version}
+        {mobile && !landingPage ? version.split("-")[1] : !version.split("-")[1] ? "Loading...": languageName +"-" +version.split("-")[1]}
         <i className={`material-icons ${classes.icon}`}>keyboard_arrow_down</i>
       </Button>
+      </BigTooltip>
       {versions.length === 0 ? (
         ""
       ) : (
@@ -207,7 +236,7 @@ const Version = (props) => {
             }}
           >
             {versions.sort(sortVersionLanguages).map((version, i) => (
-              <ExpansionPanel
+              <Accordion
                 square
                 expanded={expanded === version.language}
                 onChange={handleChange(version.language)}
@@ -217,7 +246,7 @@ const Version = (props) => {
                 }}
                 key={i}
               >
-                <ExpansionPanelSummary
+                <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   classes={{
                     root: classes.summaryPanel,
@@ -227,8 +256,8 @@ const Version = (props) => {
                   <Typography className={classes.language}>
                     {version.language}
                   </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails
+                </AccordionSummary>
+                <AccordionDetails
                   classes={{
                     root: classes.expansionDetailsRoot,
                   }}
@@ -250,8 +279,8 @@ const Version = (props) => {
                       </ListItem>
                     ))}
                   </List>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
+                </AccordionDetails>
+              </Accordion>
             ))}
           </Menu>
         </>

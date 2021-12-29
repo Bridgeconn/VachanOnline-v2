@@ -12,6 +12,7 @@ import Highlight from "../highlight/Highlight";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
 import BorderColor from "@material-ui/icons/BorderColor";
 import Note from "../note/Note";
+import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 import Close from "../common/Close";
@@ -77,6 +78,12 @@ const MenuBar = (props) => {
     setSelectedVerses,
     refUrl,
     highlights,
+    parallelView,
+    printRef,
+    printNotes,
+    setPrintNotes,
+    printHighlights,
+    setPrintHighlights,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -88,6 +95,18 @@ const MenuBar = (props) => {
   const [bookmarkIcon, setBookmarkIcon] = React.useState("");
   const [highlightIcon, setHighlightIcon] = React.useState("");
   const [noteIcon, setNoteIcon] = React.useState("");
+  const [bookDisplay, setBookDisplay] = React.useState("");
+  const bookList = versionBooks[versionSource[sourceId]];
+
+  React.useEffect(() => {
+    if (bookList) {
+      let book = bookList.find((element) => element.book_code === bookCode);
+      if (book) {
+        setBookDisplay(book.short);
+      }
+    }
+  }, [bookList, bookCode, setBookDisplay]);
+
   //Set bookmark icon
   React.useEffect(() => {
     if (userDetails.uid !== null) {
@@ -190,7 +209,7 @@ const MenuBar = (props) => {
       );
       if (languageVersions !== undefined) {
         const versionObject = languageVersions.languageVersions.find(
-          (e) => e.version.code === language[1]
+          (e) => e.version.code.toUpperCase() === language[1].toUpperCase()
         );
         setValue("languageCode", versionObject.language.code);
         setMetadataList(versionObject.metadata);
@@ -206,7 +225,12 @@ const MenuBar = (props) => {
       setValue("audio", !audio);
       setValue("audioBible", audioBible);
     };
-    if (audioBible && audioBible.url && bookCode in audioBible.books) {
+    if (
+      audioBible &&
+      audioBible.url &&
+      bookCode in audioBible.books &&
+      parallelView !== AUDIO
+    ) {
       setAudioIcon(
         <Tooltip title="Audio Bible">
           <div className={classes.info} onClick={openAudioBible}>
@@ -218,7 +242,7 @@ const MenuBar = (props) => {
       setValue("audio", false);
       setAudioIcon("");
     }
-  }, [audio, audioBible, bookCode, classes.info, setValue]);
+  }, [audio, audioBible, bookCode, classes.info, setValue, parallelView]);
   return (
     <div>
       <Box className={classes.read}>
@@ -270,6 +294,13 @@ const MenuBar = (props) => {
             setValue={setValue}
             settingsAnchor={settingsAnchor}
             handleClose={closeSettings}
+            printRef={printRef}
+            printNotes={printNotes}
+            setPrintNotes={setPrintNotes}
+            printHighlights={printHighlights}
+            setPrintHighlights={setPrintHighlights}
+            bookDisplay={bookDisplay}
+            chapter={chapter}
           />
           {paneNo === 2 ? <Close /> : ""}
         </Box>
@@ -283,6 +314,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     userDetails: state.local.userDetails,
     versionSource: state.local.versionSource,
+    parallelView: state.local.parallelView,
   };
 };
 export default connect(mapStateToProps)(MenuBar);

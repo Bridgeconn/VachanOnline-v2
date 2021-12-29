@@ -20,7 +20,7 @@ import TopBar from "../read/TopBar";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 const drawerWidth = 400;
 
@@ -64,13 +64,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 60,
   },
   stories: {
+    marginTop: 200,
     paddingLeft: 20,
     paddingRight: 30,
-    marginTop: 155,
-    [theme.breakpoints.up("md")]: { marginTop: 90 },
-
+    [theme.breakpoints.up("md")]: { marginTop: 140 },
     fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
-
     "& img": {
       margin: "auto",
       display: "flex",
@@ -80,16 +78,56 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
+  storyDirection: {
+    direction: "rtl",
+    textAlign: "right",
+    paddingRight: "50px",
+  },
+  listDirection: {
+    direction: "rtl",
+    textAlign: "right",
+  },
+
   drawerContainer: {
     overflow: "auto",
     fontSize: "1.2rem",
   },
   mobile: {
-    display: "flex",
-    position: "fixed",
     width: "100%",
-    top: 60,
+    position: "fixed",
+    top: 64,
     backgroundColor: "white",
+    borderBottom: "1px solid #f1ecec",
+  },
+  mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
+  heading: {
+    backgroundColor: "white",
+    position: "fixed",
+    marginTop: 62,
+    textAlign: "center",
+    paddingTop: 10,
+    [theme.breakpoints.down("sm")]: { display: "none" },
+    width: "calc(100% - 400px)",
+  },
+  text: {
+    lineHeight: "1.255",
+  },
+  mobileBox: {
+    display: "flex",
+  },
+  mobileLangCombo: {
+    minWidth: 100,
+  },
+  mobileComboBox: {
+    maxWidth: "90%",
+    display: "flex",
+  },
+  mobileTooltip: {
+    marginTop: 15,
+  },
+  settingsMenu: {
+    maxHeight: 68 * 4.5,
+    width: 250,
   },
 }));
 
@@ -112,6 +150,11 @@ const Stories = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
+  const storyClass =
+    lang === "urd"
+      ? `${classes.stories} ${classes.storyDirection}`
+      : classes.stories;
+  const listClass = lang === "urd" ? classes.listDirection : "";
 
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -171,81 +214,88 @@ const Stories = (props) => {
       <AppBar position="fixed">
         <TopBar login={login} userDetails={userDetails} />
       </AppBar>
-
       <div className={classes.root}>
         {mobile === true ? (
-          <Box className={classes.mobile} p={1}>
-            <Box p={1} flexGrow={1} stye={{ maxWidth: "90%" }}>
-              <FormControl variant="outlined" style={{ minWidth: 100 }}>
-                <Select value={lang} onChange={getLang}>
-                  {languages.map((text, y) => (
-                    <MenuItem key={y} value={text}>
-                      {languageJson[text]}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl
-                variant="outlined"
-                style={{
-                  marginLeft: 20,
-                  maxWidth: smallScreen === true ? "90px" : "50%",
-                }}
-              >
-                {manifest.length > 0 && (
-                  <Select
-                    value={String(parseInt(storyId))}
-                    onChange={storySetter}
-                  >
-                    {manifest.map((text, y) => (
-                      <MenuItem key={y} value={String(y + 1)}>
-                        {y + 1 + ". " + text}
+          <Box className={classes.mobile}>
+            <Box className={classes.mobileHeading}>
+              <Typography variant="h4">Bible Stories</Typography>
+            </Box>
+            <Box className={classes.mobileBox}>
+              <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.mobileLangCombo}
+                >
+                  <Select value={lang} onChange={getLang}>
+                    {languages.map((text, y) => (
+                      <MenuItem key={y} value={text}>
+                        {languageJson[text]}
                       </MenuItem>
                     ))}
                   </Select>
-                )}
-              </FormControl>
-            </Box>
-            <Box p={1}>
-              <Tooltip
-                title="Settings"
-                aria-label="More"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={openSettings}
-                style={{ marginTop: 15 }}
-              >
-                <i className="material-icons md-23">more_vert</i>
-              </Tooltip>
-              <Menu
-                id="long-menu"
-                anchorEl={settingsAnchor}
-                keepMounted
-                open={open}
-                onClose={closeSettings}
-                PaperProps={{
-                  style: {
-                    maxHeight: 68 * 4.5,
-                    width: 250,
-                  },
-                }}
-              >
-                <MenuItem>Font Size</MenuItem>
-                <Divider />
-                <MenuItem className={classes.menu}>
-                  <div className={classes.margin} />
-                  <Slider
-                    defaultValue={20}
-                    value={fontSize}
-                    onChange={handleSliderChange}
-                    valueLabelDisplay="on"
-                    min={12}
-                    max={30}
-                    classes={{ root: classes.slider }}
-                  />
-                </MenuItem>
-              </Menu>
+                </FormControl>
+                <FormControl
+                  variant="outlined"
+                  style={{
+                    marginLeft: 20,
+                    maxWidth: smallScreen === true ? "90px" : "50%",
+                  }}
+                >
+                  {manifest.length > 0 && (
+                    <Select
+                      value={String(parseInt(storyId))}
+                      onChange={storySetter}
+                    >
+                      {manifest.map((text, y) => (
+                        <MenuItem
+                          className={listClass}
+                          key={y}
+                          value={String(y + 1)}
+                        >
+                          {y + 1 + ". " + text}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                </FormControl>
+              </Box>
+              <Box p={1}>
+                <Tooltip
+                  title="Settings"
+                  aria-label="More"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={openSettings}
+                  className={classes.mobileTooltip}
+                >
+                  <i className="material-icons md-23">more_vert</i>
+                </Tooltip>
+                <Menu
+                  id="long-menu"
+                  anchorEl={settingsAnchor}
+                  keepMounted
+                  open={open}
+                  onClose={closeSettings}
+                  PaperProps={{
+                    className: classes.settingsMenu,
+                  }}
+                >
+                  <MenuItem>Font Size</MenuItem>
+                  <Divider />
+                  <MenuItem className={classes.menu}>
+                    <div className={classes.margin} />
+                    <Slider
+                      defaultValue={20}
+                      value={fontSize}
+                      onChange={handleSliderChange}
+                      valueLabelDisplay="on"
+                      min={12}
+                      max={30}
+                      classes={{ root: classes.slider }}
+                    />
+                  </MenuItem>
+                </Menu>
+              </Box>
             </Box>
           </Box>
         ) : (
@@ -260,7 +310,11 @@ const Stories = (props) => {
               <FormControl variant="outlined" className={classes.formControl}>
                 <Select value={lang} onChange={getLang}>
                   {languages.map((text, y) => (
-                    <MenuItem key={y} value={text}>
+                    <MenuItem
+                      key={y}
+                      value={text}
+                      className={text === "urd" ? classes.listDirection : ""}
+                    >
                       {languageJson[text]}
                     </MenuItem>
                   ))}
@@ -284,10 +338,7 @@ const Stories = (props) => {
                   open={open}
                   onClose={closeSettings}
                   PaperProps={{
-                    style: {
-                      maxHeight: 68 * 4.5,
-                      width: 250,
-                    },
+                    className: classes.settingsMenu,
                   }}
                 >
                   <MenuItem className={classes.menu}>Font Size</MenuItem>
@@ -309,9 +360,9 @@ const Stories = (props) => {
             </div>
             <Divider />
             <div className={classes.drawerContainer}>
-              <List className={classes.List}>
+              <List>
                 {manifest.map((text, y) => (
-                  <ListItem className={classes.listItem} key={y} value={text}>
+                  <ListItem key={y} value={text} className={listClass}>
                     <Link href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
                       {y + 1 + ". " + text}
                     </Link>
@@ -322,12 +373,13 @@ const Stories = (props) => {
           </Drawer>
         )}
         <main>
-          <div
-            className={classes.stories}
-            style={{
-              fontSize: fontSize,
-            }}
-          >
+          <div className={classes.heading}>
+            <Typography variant="h3" className={classes.text}>
+              Bible Stories
+            </Typography>
+            <Divider />
+          </div>
+          <div className={storyClass} style={{ fontSize: fontSize }}>
             <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
           </div>
         </main>

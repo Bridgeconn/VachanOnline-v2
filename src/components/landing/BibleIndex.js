@@ -5,10 +5,22 @@ import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import { BLUE } from "../../store/colorCode";
+import Tooltip  from "@material-ui/core/Tooltip";
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+
+const BigTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "#66a3ff",
+    color: "#00003d",
+    boxShadow: theme.shadows[4],
+    border: "1px solid #103f87" ,
+    fontSize: 16,
+  },
+}))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -53,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BibleIndex = (props) => {
-  let label = "Read";
   const classes = useStyles();
   const { panel1, setValue, versionBooks, versionSource } = props;
   const { version, book, bookCode, sourceId, chapter } = panel1;
@@ -89,10 +100,11 @@ const BibleIndex = (props) => {
             // search: "?search=term",
           }}
         >
-          <Button variant="contained" className={classes.button}>
-            {" "}
-            {label}
-          </Button>
+        <BigTooltip title = "Click here to read the Bible">
+        <Button variant="contained" className={classes.button}>
+          <ArrowForwardIosIcon />
+        </Button>
+          </BigTooltip>
         </Link>
       </Paper>
     </div>

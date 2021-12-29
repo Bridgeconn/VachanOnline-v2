@@ -119,6 +119,65 @@ const AboutUs = ({ handleClose }) => {
         </Typography>
 
         <div className={classes.releaseNotes}>
+        <Typography variant="h6" className={classes.subheading}>
+            Release Notes (06/11/2021) v1.3.2
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Feature Additions:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Print / Save to pdf of Bible chapters along with the notes and highlights</li>
+            </ul>
+          </Typography>
+          <Typography variant="h6" className={classes.subheading}>
+            Release Notes (10/09/2021) v1.3.1
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Operations Update:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>React version upgrade to 17.0.2</li>
+            </ul>
+          </Typography>
+
+          <Typography variant="h6" className={classes.subheading}>
+            Release Notes (19/08/2021) v1.3.0
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Feature Additions:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>M’Cheyne Bible Reading Plan</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Enhancements:", "bold")}
+          </Typography>
+
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>
+                Added titles for Commentary and Dictionary panels for easy user
+                navigation
+              </li>
+              <li>
+                Added support for Urdu script, direction - right to left for
+                Bible Stories
+              </li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Bug Fixes:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Allow playing of only one Audio Bible at a time</li>
+            </ul>
+          </Typography>
+
           <Typography variant="h6" className={classes.subheading}>
             Release Notes (06/07/2021) v1.2.1
           </Typography>

@@ -4,9 +4,9 @@ import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ReactPlayer from "react-player";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
@@ -99,7 +99,13 @@ const useStyles = makeStyles((theme) => ({
 const Audio = (props) => {
   const classes = useStyles();
   const [message, setMessage] = React.useState("");
-  let { audioBible, bookCode, chapter } = props;
+  let { audioBible, bookCode, chapter, book } = props;
+  const [playing, setPlaying] = React.useState("");
+
+  const getBook = (code) => {
+    return book[code][book[code].findIndex((x) => x.book_code === bookCode)]
+      .short;
+  };
   React.useEffect(() => {
     if (audioBible.length === 0 || audioBible.success === false) {
       setMessage("No audio bibles available");
@@ -139,7 +145,7 @@ const Audio = (props) => {
               return bookIndex === -1 ? (
                 ""
               ) : (
-                <ExpansionPanel
+                <Accordion
                   defaultExpanded={true}
                   classes={{
                     root: classes.menuRoot,
@@ -147,7 +153,7 @@ const Audio = (props) => {
                   }}
                   key={i}
                 >
-                  <ExpansionPanelSummary
+                  <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     classes={{
                       root: classes.summaryPanel,
@@ -156,10 +162,14 @@ const Audio = (props) => {
                     }}
                   >
                     <Typography className={classes.language}>
-                      {language.language.name}
+                      {language.language.name +
+                        " " +
+                        getBook(language.language.code) +
+                        " " +
+                        chapter}
                     </Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails style={{ padding: 0 }}>
+                  </AccordionSummary>
+                  <AccordionDetails style={{ padding: 0 }}>
                     <List className={classes.expansionDetails}>
                       {language.audioBibles.map((audio, i) => {
                         let url =
@@ -169,6 +179,7 @@ const Audio = (props) => {
                           chapter +
                           "." +
                           audio.format;
+                        let id = language.language.code + i;
                         return audio.books.hasOwnProperty(bookCode) ? (
                           <ListItem
                             key={i}
@@ -178,7 +189,9 @@ const Audio = (props) => {
                             {audio.name}
                             <ReactPlayer
                               key={i}
+                              playing={playing === id}
                               url={url}
+                              onPlay={() => setPlaying(id)}
                               controls
                               width="100%"
                               height="50px"
@@ -197,8 +210,8 @@ const Audio = (props) => {
                         );
                       })}
                     </List>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
+                  </AccordionDetails>
+                </Accordion>
               );
             })}
           </div>

@@ -14,6 +14,8 @@ const defaultState = {
   infographics: {},
   audioBible: [],
   video: [],
+  readingPlans: [],
+  playing: "",
   versionBooks: {},
   versionSource: {},
   parallelScroll: true,

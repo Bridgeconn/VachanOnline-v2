@@ -8,6 +8,7 @@ export default function GetChapterNotes({
   bookCode,
   chapter,
   setNotes,
+  setNoteText,
 }) {
   //Get notes for this chapter from firebase
   useFirebaseConnect(`users/${uid}/notes/${sourceId}/${bookCode}/${chapter}`);
@@ -23,8 +24,7 @@ export default function GetChapterNotes({
 
   //When data comes from firebase put in noteList
   React.useEffect(() => {
-    if (isLoaded(notes)) {
-      if (!isEmpty(notes)) {
+    if (isLoaded(notes) && !isEmpty(notes)) {
         let list = [];
         if (notes) {
           notes.forEach((note) => {
@@ -34,10 +34,11 @@ export default function GetChapterNotes({
         list.sort();
         list = [...new Set(list)];
         setNotes(list);
-      }else{
-        setNotes([])
-      }
+        setNoteText(notes);
+    } else {
+      setNotes([]);
+      setNoteText([]);
     }
-  }, [notes, setNotes]);
+  }, [notes, setNotes, setNoteText]);
   return <div></div>;
 }

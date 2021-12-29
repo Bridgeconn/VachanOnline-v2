@@ -7,6 +7,7 @@ import DictionaryWordCombo from "./DictionaryWordCombo";
 import Metadata from "../common/Metadata";
 import { getDictionaryIndex, getDictionaryWord } from "../common/utillity";
 import Close from "../common/Close";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -167,6 +168,9 @@ const Dictionary = (props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
+        <Box flexGrow={1}>
+          <Typography variant="h6">Dictionary</Typography>
+        </Box>
         <Box flexGrow={1}>
           <DictionaryCombo
             dictionaries={dictionaries}

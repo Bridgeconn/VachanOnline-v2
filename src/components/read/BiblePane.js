@@ -41,8 +41,10 @@ const BiblePane = ({
   const [fetchHighlights, setFetchHighlights] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");
   const [refUrl, setRefUrl] = React.useState("");
-
   const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
+  const printRef = React.useRef();
+  const [printNotes, setPrintNotes] = React.useState(true);
+  const [printHighlights, setPrintHighlights] = React.useState(true);
 
   React.useEffect(() => {
     const closeAlert = () => {
@@ -99,6 +101,7 @@ const BiblePane = ({
       );
     } else {
       setFetchHighlights("");
+      setHighlights([]);
     }
   }, [userDetails, sourceId, bookCode, chapter, setHighlights]);
   return (
@@ -114,6 +117,11 @@ const BiblePane = ({
           setSelectedVerses={setSelectedVerses}
           highlights={highlights}
           refUrl={refUrl}
+          printRef={printRef}
+          printNotes={printNotes}
+          setPrintNotes={setPrintNotes}
+          printHighlights={printHighlights}
+          setPrintHighlights={setPrintHighlights}
         />
         <Grid container className={classes.bible}>
           <Grid item xs={12}>
@@ -132,6 +140,9 @@ const BiblePane = ({
                 selectedVerses={selectedVerses}
                 setSelectedVerses={setSelectedVerses}
                 highlights={highlights}
+                printRef={printRef}
+                printNotes={printNotes}
+                printHighlights={printHighlights}
               />
               {alertMessage}
             </Fullscreen>
