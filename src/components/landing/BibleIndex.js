@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1.5),
     backgroundColor: "#fff",
     border: "1px solid #fff",
+    height: "42px",
     "& hover": {
       textDecoration: "none",
     },

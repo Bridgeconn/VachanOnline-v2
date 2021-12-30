@@ -22,7 +22,7 @@ const BigTooltip = withStyles((theme) => ({
     backgroundColor: "#66a3ff",
     color: "#00003d",
     boxShadow: theme.shadows[4],
-    border: "1px solid #103f87" ,
+    border: "1px solid #103f87",
     fontSize: 16,
   },
 }))(Tooltip);
@@ -105,7 +105,7 @@ const Version = (props) => {
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
-  const [languageName, setLanguageName] = React.useState("Hindi")
+  const [displayVersion, setDisplayVersion] = React.useState("Loading...");
   const {
     setVersions,
     setValue,
@@ -178,37 +178,49 @@ const Version = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  React.useEffect(()=> {
+  React.useEffect(() => {
     let langCode = version.split("-")[0];
-    for (let lang in versions) {
-         let languageNames = versions[lang];
-         let langVersions = languageNames["languageVersions"];
-        for (let versionNames in langVersions){
-          if (langCode === langVersions[versionNames]['language']["code"]){
-            setLanguageName(langVersions[versionNames]["language"]["name"])
+    if (mobile && !landingPage) {
+      setDisplayVersion(version.split("-")[1]);
+    } else {
+      for (let lang in versions) {
+        let languageNames = versions[lang];
+        let langVersions = languageNames["languageVersions"];
+        for (let versionNames in langVersions) {
+          if (langCode === langVersions[versionNames]["language"]["code"]) {
+            setDisplayVersion(
+              langVersions[versionNames]["language"]["name"] +
+                "-" +
+                version.split("-")[1]
+            );
           }
         }
-        }
-  }, [version, versions])
+      }
+    }
+  }, [version, versions]);
 
   return (
-    <> 
-    <BigTooltip title = "Select a Bible in your language and version">
-      <Button
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        variant="contained"
-        style={landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}}
-        classes={
-          landingPage
-            ? { root: classes.button }
-            : { root: classes.button, label: classes.label }
-        }
-      >
-        {mobile && !landingPage ? version.split("-")[1] : !version.split("-")[1] ? "Loading...": languageName +"-" +version.split("-")[1]}
-        <i className={`material-icons ${classes.icon}`}>keyboard_arrow_down</i>
-      </Button>
+    <>
+      <BigTooltip title="Select a Bible in your language and version">
+        <Button
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+          variant="contained"
+          style={
+            landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}
+          }
+          classes={
+            landingPage
+              ? { root: classes.button }
+              : { root: classes.button, label: classes.label }
+          }
+        >
+          {displayVersion}
+          <i className={`material-icons ${classes.icon}`}>
+            keyboard_arrow_down
+          </i>
+        </Button>
       </BigTooltip>
       {versions.length === 0 ? (
         ""
