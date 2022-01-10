@@ -92,6 +92,10 @@
   src: local("Tunga"), url(./fonts/Tunga.ttf) format("truetype");
   unicode-range: U+00-FF, U+0C80-0CFF;
 }
+@font-face {
+  font-family: "samarkan";
+  src: local("samarkan"), url(./fonts/Samarkan.ttf) format("truetype");
+}
 
 body {
   margin: 0;
