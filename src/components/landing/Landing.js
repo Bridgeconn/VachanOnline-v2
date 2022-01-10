@@ -16,7 +16,7 @@ import "./Landing.css";
 import listen from "../common/images/listen.jpg";
 import read from "../common/images/read.jpg";
 import watch from "../common/images/watch.jpg";
-import Box from "@material-ui/core/Box";
+import ImageCard from "./ImageCard";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
   },
   screenshotDiv: {
-    marginBottom: 110,
     textAlign: "center",
   },
   points: {
@@ -64,14 +63,19 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  imageBox: {
-    display: "flex",
-    width: "100%",
-    paddingRight: 10,
+  textRow: {
+    margin: 15,
+    marginBottom: 30,
+    width: "calc(100% - 30px)",
   },
-  images: {
-    width: "33.33%",
-    height: "100%",
+  imageRow: {
+    margin: "0 12px 90px",
+    width: "calc(100% - 30px)",
+  },
+  text: {
+    fontSize: 20,
+    marginTop: 50,
+    paddingLeft: 30,
   },
 }));
 
@@ -109,17 +113,9 @@ const Landing = () => {
       {!mobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
       <Banner language={language} />
       <BibleIndex />
-      <Grid container className={classes.imageBox}>
-        <Box style={{ display: "flex", width: "100%" }}>
-          <img src={read} alt="read" className={classes.images} />
-          <img src={watch} alt="watch" className={classes.images} />
-          <img src={listen} alt="listen" className={classes.images} />
-        </Box>
+      <Grid container spacing={2} className={classes.textRow}>
         <Grid item xs={12} md={6}>
-          <Typography
-            variant="h6"
-            style={{ fontSize: 24, marginTop: 50, paddingLeft: 30 }}
-          >
+          <Typography variant="h6" className={classes.text}>
             <p>
               <b>Welcome to VachanOnline.com</b>
             </p>
@@ -153,6 +149,17 @@ const Landing = () => {
           </div>
         </Grid>
       </Grid>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={2}
+        className={classes.imageRow}
+      >
+        <ImageCard src={read} text="read" />
+        <ImageCard src={watch} text="watch" />
+        <ImageCard src={listen} text="listen" />
+      </Grid>
+
       <LandingFooter />
       {message ? (
         <Snackbar open={Boolean(alert)} onClose={handleClose}>

@@ -197,7 +197,7 @@ const Version = (props) => {
         }
       }
     }
-  }, [version, versions]);
+  }, [landingPage, mobile, version, versions]);
 
   return (
     <>
