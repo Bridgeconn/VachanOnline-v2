@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import List from "@material-ui/core/List";
@@ -7,10 +7,21 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { bibleChapters } from "../../store/bibleData";
+import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { BLUETRANSPARENT } from "../../store/colorCode";
+import Tooltip from "@material-ui/core/Tooltip";
+
+const BigTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "#66a3ff",
+    color: "#00003d",
+    boxShadow: theme.shadows[4],
+    border: "1px solid #103f87" ,
+    fontSize: 16,
+  },
+}))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -247,6 +258,7 @@ const BookCombo = ({
   };
   return (
     <>
+<BigTooltip title="Choose a Bible book and chapter to read">
       <Button
         aria-controls="customized-menu"
         aria-haspopup="true"
@@ -263,6 +275,7 @@ const BookCombo = ({
         )}
         <i className={`material-icons ${classes.icon}`}>keyboard_arrow_down</i>
       </Button>
+      </BigTooltip>
       {/* If no book list dont render menu */}
       {bookList === undefined || bookList.length === 0 ? (
         ""
@@ -307,6 +320,7 @@ const BookCombo = ({
                     onClick={(event) => bookClicked(event)}
                     className={`${classes.book} ${open}`}
                     ref={open === "" ? null : openBookRef}
+                    style = {{borderLeft:"5px solid" + colorGroup[item.book_code]}}
                   >
                     <ListItemText
                       primary={item.short}

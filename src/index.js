@@ -19,6 +19,7 @@ import "./fonts/Rekha.ttf";
 import "./fonts/BalooBhaina2.ttf";
 import "./fonts/Shruti.ttf";
 import "./fonts/Tunga.ttf";
+import "./fonts/Samarkan.ttf";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
