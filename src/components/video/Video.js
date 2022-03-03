@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
   container: {
     top: 40,
     bottom: 0,
+    left:0,
+    right:0,
     overflow: "scroll",
     position: "absolute",
     paddingTop: 12,
@@ -59,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "top",
   },
   title: {
+    paddingTop:4,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -84,9 +87,7 @@ const Video = (props) => {
   const [videoId, setVideoId] = React.useState("");
   const [videos, setVideos] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
-  const truncate = (string, length) =>
-    string.length < length ? string : string.substring(0, length) + "...";
-
+  
   //If language or book changed update videos and message to show
   React.useEffect(() => {
     if (video && bookCode && languageCode) {
@@ -157,14 +158,7 @@ const Video = (props) => {
                       >
                         {video.title}
                       </Typography>
-                      <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                        title={video.description}
-                      >
-                        {truncate(video.description, 100)}
-                      </Typography>
+                     
                     </CardContent>
                   </CardActionArea>
                 </Card>
