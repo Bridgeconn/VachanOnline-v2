@@ -87,6 +87,7 @@ const Video = (props) => {
   const [videoId, setVideoId] = React.useState("");
   const [videos, setVideos] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [vidLink,setVidLink] = React.useState("")
   
   //If language or book changed update videos and message to show
   React.useEffect(() => {
@@ -108,6 +109,12 @@ const Video = (props) => {
       }
     }
   }, [video, bookCode, languageCode]);
+
+  React.useEffect(()=>{
+    videos.forEach((video)=>{
+      video.url.split("/")[2]==="vimeo.com"?setVidLink("vimeo"):setVidLink("youtube")
+    })
+  },[video.url, videos])
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -120,16 +127,16 @@ const Video = (props) => {
       </Box>
 
       <div className={classes.container}>
-        {videos && videos.length > 0 ? (
+        {videos && videos.length > 0 ? (         
           <div>
             <ModalVideo
-              channel="youtube"
+              channel={vidLink==="vimeo"?"vimeo":"youtube"}
               isOpen={isOpen}
               videoId={videoId}
               onClose={() => setIsOpen(false)}
             />
             {videos.map((video, i) => {
-              let videoId = video.url.split("https://youtu.be/")[1];
+              let videoId = vidLink==="vimeo"?video.url.split("https://vimeo.com/")[1]:video.url.split("https://youtu.be/")[1];
               return (
                 <Card
                   key={i}
@@ -145,7 +152,7 @@ const Video = (props) => {
                       alt="Video"
                       height="244"
                       className={classes.media}
-                      image={"https://img.youtube.com/vi/" + videoId + "/0.jpg"}
+                      image={vidLink==="vimeo"?"https://vumbnail.com/"+ videoId + ".jpg":"https://img.youtube.com/vi/" + videoId + "/0.jpg"}
                       title="Video"
                     />
                     <CardContent>
@@ -157,8 +164,7 @@ const Video = (props) => {
                         className={classes.title}
                       >
                         {video.title}
-                      </Typography>
-                     
+                      </Typography>     
                     </CardContent>
                   </CardActionArea>
                 </Card>
