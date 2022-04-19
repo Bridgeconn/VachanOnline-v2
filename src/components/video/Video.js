@@ -8,7 +8,6 @@ import Typography from "@material-ui/core/Typography";
 import ModalVideo from "react-modal-video";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
-import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,7 +88,7 @@ const Video = (props) => {
   const [videos, setVideos] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const [vidLink,setVidLink] = React.useState("")
-
+ 
   //If language or book changed update videos and message to show
   React.useEffect(() => {
     if (video && bookCode && languageCode) {
@@ -111,16 +110,9 @@ const Video = (props) => {
     }
   }, [video, bookCode, languageCode]);  
 
-const getThumb=(videoId)=> {  
-  axios.get("https://vimeo.com/api/oembed.json?url=http%3A//vimeo.com/"+videoId)
-  .then(function(response){
-    console.log(response.data["thumbnail_url"])
-  })
-}
-
 return (
     <div className={classes.root}>
-      <Box className={classes.heading}>
+       <Box className={classes.heading}>
         <Box flexGrow={1}>
           <Typography variant="h6">Videos</Typography>
         </Box>
@@ -138,25 +130,28 @@ return (
               onClose={() => setIsOpen(false)}
             />
             {videos.map((video, i) => {   
-              let videoAdd = video.url.split("/")[2].replace('.com','');
-              let videoId = videoAdd==="vimeo"?video.url.split("https://vimeo.com/")[1]:video.url.split("https://youtu.be/")[1];
+              const videoSource= video.url.includes("vimeo")?"vimeo":"youtube";
+              const videoId = videoSource==="vimeo"?video.url.split("https://vimeo.com/")[1]:video.url.split("https://youtu.be/")[1];
+              const vimeoUrl = "https://raw.githubusercontent.com/Bridgeconn/vachancontentrepository/master/video/vimeo/";
+              const youtubeUrl = "https://img.youtube.com/vi/";
+              const thumbUrl = videoSource==="vimeo"?vimeoUrl:youtubeUrl; 
               return (
                 <Card
                   key={i}
                   onClick={() => {
-                    setVidLink(videoAdd)
+                    setVidLink(videoSource)
                     setVideoId(videoId);
                     setIsOpen(true);
                   }}
                   className={classes.video}
                 >
-                  <CardActionArea> 
-                    <CardMedia
+                  <CardActionArea>
+                  <CardMedia
                       component="img"
                       alt="Video"
                       height="244"
                       className={classes.media}
-                      image={videoAdd==="vimeo"?getThumb(videoId):"https://img.youtube.com/vi/" + videoId + "/0.jpg"}
+                      image={thumbUrl+videoId+"/0.jpg"}
                       title="Video"
                     />
                     <CardContent>
