@@ -87,7 +87,8 @@ const Video = (props) => {
   const [videoId, setVideoId] = React.useState("");
   const [videos, setVideos] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
-  
+  const [vidLink,setVidLink] = React.useState("")
+ 
   //If language or book changed update videos and message to show
   React.useEffect(() => {
     if (video && bookCode && languageCode) {
@@ -107,10 +108,11 @@ const Video = (props) => {
         setMessage("No videos available for this language");
       }
     }
-  }, [video, bookCode, languageCode]);
-  return (
+  }, [video, bookCode, languageCode]);  
+
+return (
     <div className={classes.root}>
-      <Box className={classes.heading}>
+       <Box className={classes.heading}>
         <Box flexGrow={1}>
           <Typography variant="h6">Videos</Typography>
         </Box>
@@ -118,34 +120,38 @@ const Video = (props) => {
           <Close className={classes.closeButton} />
         </Box>
       </Box>
-
       <div className={classes.container}>
-        {videos && videos.length > 0 ? (
+        {videos && videos.length > 0 ? (         
           <div>
             <ModalVideo
-              channel="youtube"
+              channel={vidLink}
               isOpen={isOpen}
               videoId={videoId}
               onClose={() => setIsOpen(false)}
             />
-            {videos.map((video, i) => {
-              let videoId = video.url.split("https://youtu.be/")[1];
+            {videos.map((video, i) => {   
+              const videoSource= video.url.includes("vimeo")?"vimeo":"youtube";
+              const videoId = videoSource==="vimeo"?video.url.split("https://vimeo.com/")[1]:video.url.split("https://youtu.be/")[1];
+              const vimeoUrl = "https://raw.githubusercontent.com/Bridgeconn/vachancontentrepository/master/video/vimeo/";
+              const youtubeUrl = "https://img.youtube.com/vi/";
+              const thumbUrl = videoSource==="vimeo"?vimeoUrl:youtubeUrl; 
               return (
                 <Card
                   key={i}
                   onClick={() => {
+                    setVidLink(videoSource)
                     setVideoId(videoId);
                     setIsOpen(true);
                   }}
                   className={classes.video}
                 >
                   <CardActionArea>
-                    <CardMedia
+                  <CardMedia
                       component="img"
                       alt="Video"
                       height="244"
                       className={classes.media}
-                      image={"https://img.youtube.com/vi/" + videoId + "/0.jpg"}
+                      image={thumbUrl+videoId+"/0.jpg"}
                       title="Video"
                     />
                     <CardContent>
@@ -157,8 +163,7 @@ const Video = (props) => {
                         className={classes.title}
                       >
                         {video.title}
-                      </Typography>
-                     
+                      </Typography>     
                     </CardContent>
                   </CardActionArea>
                 </Card>
