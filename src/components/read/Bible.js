@@ -596,8 +596,7 @@ const Bible = (props) => {
       ) : (
         <h3 className={classes.loading}>{loadingText}</h3>
       )}
-
-      {Object.values(previous).length !== 0 ? (
+      {previous&&Object.values(previous).length !== 0 ? (
         <Tooltip title="Previous Chapter">
           <div
             color="default"
@@ -620,7 +619,7 @@ const Bible = (props) => {
       ) : (
         ""
       )}
-      {Object.values(next).length !== 0 ? (
+      {next&&Object.values(next).length !== 0 ? (
         <Tooltip title="Next Chapter">
           <div
             color="default"
