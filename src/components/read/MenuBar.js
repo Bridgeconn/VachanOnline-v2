@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import Box from "@material-ui/core/Box";
-import { getAudioBibleObject } from "../common/utillity";
+import { getAudioBibleObject } from "../common/utility";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";

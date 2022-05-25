@@ -11,7 +11,7 @@ import playStore from "../common/images/playStore.png";
 import Snackbar from "@material-ui/core/Snackbar";
 import Link from "@material-ui/core/Link";
 import Alert from "@material-ui/lab/Alert";
-import { detectMob } from "../common/utillity";
+import { detectMob } from "../common/utility";
 import "./Landing.css";
 import listen from "../common/images/listen.jpg";
 import read from "../common/images/read.jpg";

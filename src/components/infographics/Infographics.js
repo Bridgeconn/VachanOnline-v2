@@ -5,7 +5,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { connect } from "react-redux";
-import { getInfographics } from "../common/utillity";
+import { getInfographics } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import Viewer from "react-viewer";

@@ -13,7 +13,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { getVersions, capitalize } from "../common/utillity";
+import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -192,7 +192,7 @@ const Version = (props) => {
               langVersions[versionNames]["language"]["name"] +
                 "-" +
                 version.split("-")[1]
-            );
+            );     
           }
         }
       }

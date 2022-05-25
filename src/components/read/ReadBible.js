@@ -26,7 +26,7 @@ import {
   getVideos,
   getReadingPlans,
   getBookbyCode,
-} from "../common/utillity";
+} from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   biblePane1: {
