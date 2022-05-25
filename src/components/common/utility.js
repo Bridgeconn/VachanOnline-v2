@@ -86,8 +86,8 @@ export const getCommentaries = (setValue) => {
       console.log(error);
     });
 };
-//Function to get the commentary for a chaper
-export const getCommentaryForChaper = (sourceId, book, chapter, setText) => {
+//Function to get the commentary for a chapter
+export const getCommentaryForChapter = (sourceId, book, chapter, setText) => {
   let key = process.env.REACT_APP_COMMENTARY_KEY;
   key = key ? "?key=" + key : "";
   API.get("commentaries/" + sourceId + "/" + book + "/" + chapter + key)
