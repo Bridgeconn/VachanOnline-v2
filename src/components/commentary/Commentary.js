@@ -151,7 +151,7 @@ const Commentary = (props) => {
     }
     if (
       commentary.metadata !== undefined &&
-      commentary.metadata.baseUrl !== undefined
+      commentary.metadata?.baseUrl !== undefined
     ) {
       setBaseUrl(commentary.metadata.baseUrl);
     } else {
@@ -196,7 +196,7 @@ const Commentary = (props) => {
       if (commentaryObject.commentaries) {
         let item;
         for (item of commentaryObject.commentaries) {
-          if (item.verse !== "0" && commentary.metadata.VerseLabel !== "False"){
+          if (item.verse !== "0" && commentary.metadata?.VerseLabel !== "False"){
             commText += "<span>" + verseLabel + " " + item.verse + "</span>";
           }
           commText += "<p>" + changeBaseUrl(removeBr(item.text)) + "</p>";
