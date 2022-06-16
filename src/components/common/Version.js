@@ -187,7 +187,7 @@ const Version = (props) => {
         let languageNames = versions[lang];
         let langVersions = languageNames["languageVersions"];
         for (let versionNames in langVersions) {
-          if (langCode === langVersions[versionNames]["language"]["code"]) {
+          if (langCode.toLowerCase() === langVersions[versionNames]["language"]["code"]) {
             setDisplayVersion(
               langVersions[versionNames]["language"]["name"] +
                 "-" +
