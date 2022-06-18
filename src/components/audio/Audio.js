@@ -1,31 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Select from "react-select";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
 import ReactPlayer from "react-player";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
+import { capitalize } from "../common/utillity";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     position: "absolute",
-    top: 94,
+    top: 82,
     bottom: 0,
   },
   container: {
-    top: 40,
+    top: 52,
     bottom: 0,
     overflow: "scroll",
     position: "absolute",
     width: "100%",
-    paddingTop: 12,
-    paddingLeft: 15,
+    padding: "12px 4px 0 15px",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
@@ -43,44 +43,39 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2.75em",
-    paddingLeft: 15,
+    paddingBottom: 12,
+    paddingLeft: 35,
+    marginBottom: 20,
+    minHeight: 51,
   },
   language: {
     fontSize: "1.1rem",
     textTransform: "capitalize",
   },
-  menuRoot: {
+  cardRoot: {
     border: "1px solid #dddddd",
     boxShadow: "none",
-    "&$expanded": {
-      margin: 0,
-    },
+    marginRight: 4,
   },
-  expanded: {},
-  expansionDetails: {
-    boxShadow: "none",
-    padding: "0 0 0 20px",
-    width: "100%",
-  },
-  summaryPanel: {
+  cardHeader: {
     textTransform: "capitalize",
     borderBottom: "1px solid #b7b7b785",
     backgroundColor: "#efefef",
-    "&$expanded": {
-      minHeight: 50,
-    },
+    minHeight: 50,
+    padding: "0 15px",
   },
-  content: {
-    margin: "10px 0",
-    "&$expanded": {
-      margin: "12px 0",
-    },
+  cardContent: {
+    padding: 0,
   },
   audioBible: {
     display: "block",
-    paddingLeft: 0,
-    fontSize: "1rem",
+    padding: 16,
+    fontSize: "1.1rem",
+    borderBottom: "1px solid #b7b7b785",
+    "&:last-child": {
+      borderBottom: "none",
+      paddingBottom: 0,
+    },
   },
   player: {
     marginTop: 5,
@@ -90,132 +85,119 @@ const useStyles = makeStyles((theme) => ({
   },
   closeButton: {
     marginRight: 15,
-    marginTop: -6,
+    marginTop: 7,
   },
-  subContainer: {
-    paddingRight: 4,
+  select: {
+    width: 200,
+  },
+  message: {
+    paddingLeft: 20,
   },
 }));
 const Audio = (props) => {
   const classes = useStyles();
-  const [message, setMessage] = React.useState("");
-  let { audioBible, bookCode, chapter, book } = props;
-  const [playing, setPlaying] = React.useState("");
+  const { audioBible, bookCode, chapter, book } = props;
+  const [languages, setLanguages] = useState([]);
+  const [language, setLanguage] = useState("");
+  const [languageObject, setLanguageObject] = useState(null);
+  const [playing, setPlaying] = useState("");
 
   const getBook = (code) => {
-    return book[code][book[code].findIndex((x) => x.book_code === bookCode)]
-      .short;
+    return book[code][book[code]?.findIndex((x) => x.book_code === bookCode)]
+      ?.short;
   };
-  React.useEffect(() => {
-    if (audioBible.length === 0 || audioBible.success === false) {
-      setMessage("No audio bibles available");
-    } else {
-      let index = audioBible.findIndex((language) => {
-        let bookIndex = language.audioBibles.findIndex((a) =>
-          a.books.hasOwnProperty(bookCode)
-        );
-        return bookIndex !== -1;
+  useEffect(() => {
+    //Get list of languages
+    if (audioBible) {
+      const languageList = audioBible.map((item) => {
+        const lang = capitalize(item?.language?.name);
+        return { value: lang, label: lang };
       });
-      if (index === -1) {
-        setMessage("No audio bibles available for this book");
-      } else {
-        setMessage("");
-      }
+      setLanguages(languageList);
+      setLanguage(languageList[0]);
     }
-  }, [audioBible, bookCode]);
+  }, [audioBible]);
+  useEffect(() => {
+    if (language) {
+      const lang = language?.value?.toLowerCase();
+      setLanguageObject(audioBible.find((obj) => obj?.language?.name === lang));
+    }
+  }, [language, audioBible]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
           <Typography variant="h6">Audio Bibles</Typography>
         </Box>
-        <Box>
+        <Box flexGrow={1}>
+          {languages && languages?.length !== 0 && (
+            <Select
+              className={classes.select}
+              value={language}
+              onChange={(data) => setLanguage(data)}
+              options={languages}
+            />
+          )}
+        </Box>
+        <Box className={classes.icons}>
           <Close className={classes.closeButton} />
         </Box>
       </Box>
-
       <div className={classes.container}>
-        {message || audioBible.success === false || (
-          <div className={classes.subContainer}>
-            {audioBible.map((language, i) => {
-              //Assume that the whole book is there, not searching for chapter
-              let bookIndex = language.audioBibles.findIndex((a) =>
-                a.books.hasOwnProperty(bookCode)
-              );
-              return bookIndex === -1 ? (
-                ""
-              ) : (
-                <Accordion
-                  defaultExpanded={true}
-                  classes={{
-                    root: classes.menuRoot,
-                    expanded: classes.expanded,
-                  }}
-                  key={i}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    classes={{
-                      root: classes.summaryPanel,
-                      expanded: classes.expanded,
-                      content: classes.content,
-                    }}
-                  >
-                    <Typography className={classes.language}>
-                      {language.language.name +
-                        " " +
-                        getBook(language.language.code) +
-                        " " +
-                        chapter}
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails style={{ padding: 0 }}>
-                    <List className={classes.expansionDetails}>
-                      {language.audioBibles.map((audio, i) => {
-                        let url =
-                          audio.url +
-                          bookCode +
-                          "/" +
-                          chapter +
-                          "." +
-                          audio.format;
-                        let id = language.language.code + i;
-                        return audio.books.hasOwnProperty(bookCode) ? (
-                          <ListItem
-                            key={i}
-                            value={audio.name}
-                            className={classes.audioBible}
-                          >
-                            {audio.name}
-                            <ReactPlayer
-                              key={i}
-                              playing={playing === id}
-                              url={url}
-                              onPlay={() => setPlaying(id)}
-                              controls
-                              width="100%"
-                              height="50px"
-                              className={classes.player}
-                              config={{
-                                file: {
-                                  attributes: {
-                                    controlsList: "nodownload",
-                                  },
-                                },
-                              }}
-                            />
-                          </ListItem>
-                        ) : (
-                          ""
-                        );
-                      })}
-                    </List>
-                  </AccordionDetails>
-                </Accordion>
-              );
-            })}
-          </div>
+        {(audioBible.length === 0 || audioBible?.success === false) && (
+          <h5 className={classes.message}>No audio bibles available</h5>
         )}
+        {languageObject &&
+          (getBook(languageObject?.language?.code) ? (
+            <Card className={classes.cardRoot}>
+              <CardHeader
+                title={getBook(languageObject?.language?.code) + " " + chapter}
+                className={classes.cardHeader}
+              />
+              <CardContent className={classes.cardContent}>
+                <List>
+                  {languageObject.audioBibles.map((audio, i) => {
+                    const { url, format, books, name } = audio;
+                    const audioUrl =
+                      url + bookCode + "/" + chapter + "." + format;
+                    //Using id to play one player at a time
+                    const id = languageObject.language.code + i;
+                    return books.hasOwnProperty(bookCode) ? (
+                      <ListItem
+                        key={name}
+                        value={name}
+                        className={classes.audioBible}
+                      >
+                        {name}
+                        <ReactPlayer
+                          playing={playing === id}
+                          url={audioUrl}
+                          onPlay={() => setPlaying(id)}
+                          controls
+                          width="100%"
+                          height="50px"
+                          className={classes.player}
+                          config={{
+                            file: {
+                              attributes: {
+                                controlsList: "nodownload",
+                              },
+                            },
+                          }}
+                        />
+                      </ListItem>
+                    ) : (
+                      ""
+                    );
+                  })}
+                </List>
+              </CardContent>
+            </Card>
+          ) : (
+            <h5 className={classes.message}>
+              Audio bible not available in {language.value} for this book
+            </h5>
+          ))}
       </div>
     </div>
   );
