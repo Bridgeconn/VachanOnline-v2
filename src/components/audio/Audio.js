@@ -10,7 +10,7 @@ import CardContent from "@material-ui/core/CardContent";
 import ReactPlayer from "react-player";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
-import { capitalize } from "../common/utillity";
+import { capitalize } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Audio = (props) => {
   const classes = useStyles();
-  const { audioBible, bookCode, chapter, book } = props;
+  const { audioBible, bookCode, chapter, book, version } = props;
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
   const [languageObject, setLanguageObject] = useState(null);
@@ -106,6 +106,19 @@ const Audio = (props) => {
     return book[code][book[code]?.findIndex((x) => x.book_code === bookCode)]
       ?.short;
   };
+  React.useEffect(() => {
+    if (languages.length) {
+      let bibleLang = version?.split("-")[0];
+      let lang = audioBible?.find((l) => l?.language?.code === bibleLang);
+      //If audio bible not available for bible set first language
+      if (lang === undefined) {
+        setLanguage(languages[0]);
+      } else {
+        const name = capitalize(lang?.language?.name);
+        setLanguage({ value: name, label: name });
+      }
+    }
+  }, [version, languages, audioBible, setLanguage]);
   useEffect(() => {
     //Get list of languages
     if (audioBible) {
@@ -114,7 +127,6 @@ const Audio = (props) => {
         return { value: lang, label: lang };
       });
       setLanguages(languageList);
-      setLanguage(languageList[0]);
     }
   }, [audioBible]);
   useEffect(() => {
