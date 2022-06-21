@@ -317,6 +317,7 @@ const ReadBible = (props) => {
                 bookCode={panel1.bookCode}
                 book={versionBooks}
                 chapter={panel1.chapter}
+                version={panel1.version}
               />
             </div>
           </>
