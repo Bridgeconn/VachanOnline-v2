@@ -1,5 +1,5 @@
 import * as actions from "./actions";
-import { capitalize } from "../components/common/utillity";
+import { capitalize } from "../components/common/utility";
 const defaultState = {
   versions: [],
   commentaries: [],

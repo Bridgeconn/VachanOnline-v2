@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import CommentaryCombo from "./CommentaryCombo";
 import Metadata from "../common/Metadata";
-import { getCommentaryForChaper } from "../common/utillity";
+import { getCommentaryForChapter } from "../common/utility";
 import parse from "html-react-parser";
 import Close from "../common/Close";
 
@@ -151,7 +151,7 @@ const Commentary = (props) => {
     }
     if (
       commentary.metadata !== undefined &&
-      commentary.metadata.baseUrl !== undefined
+      commentary.metadata?.baseUrl !== undefined
     ) {
       setBaseUrl(commentary.metadata.baseUrl);
     } else {
@@ -162,7 +162,7 @@ const Commentary = (props) => {
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
-      getCommentaryForChaper(
+      getCommentaryForChapter(
         commentary.sourceId,
         bookCode,
         chapter,
@@ -196,7 +196,7 @@ const Commentary = (props) => {
       if (commentaryObject.commentaries) {
         let item;
         for (item of commentaryObject.commentaries) {
-          if (item.verse !== "0") {
+          if (item.verse !== "0" && commentary.metadata?.VerseLabel !== "False"){
             commText += "<span>" + verseLabel + " " + item.verse + "</span>";
           }
           commText += "<p>" + changeBaseUrl(removeBr(item.text)) + "</p>";
@@ -204,7 +204,7 @@ const Commentary = (props) => {
       }
       setCommentaryText(commText);
     }
-  }, [baseUrl, commentaryObject, verseLabel]);
+  }, [baseUrl, commentary, commentaryObject, verseLabel]);
   return (
     <div className={classes.root}>
       <Box className={classes.title}>

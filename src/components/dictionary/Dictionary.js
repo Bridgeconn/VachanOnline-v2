@@ -5,7 +5,7 @@ import DictionaryCombo from "./DictionaryCombo";
 import Box from "@material-ui/core/Box";
 import DictionaryWordCombo from "./DictionaryWordCombo";
 import Metadata from "../common/Metadata";
-import { getDictionaryIndex, getDictionaryWord } from "../common/utillity";
+import { getDictionaryIndex, getDictionaryWord } from "../common/utility";
 import Close from "../common/Close";
 import Typography from "@material-ui/core/Typography";
 
