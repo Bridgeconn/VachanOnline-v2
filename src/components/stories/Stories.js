@@ -150,12 +150,12 @@ const Stories = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
+  const rtlList = ["urd","fas"]
   const storyClass =
-    lang === "urd"
+    rtlList.includes(lang)
       ? `${classes.stories} ${classes.storyDirection}`
       : classes.stories;
-  const listClass = lang === "urd" ? classes.listDirection : "";
-
+  const listClass = rtlList.includes(lang) ? classes.listDirection : "";
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
   }
@@ -313,7 +313,7 @@ const Stories = (props) => {
                     <MenuItem
                       key={y}
                       value={text}
-                      className={text === "urd" ? classes.listDirection : ""}
+                      className={rtlList.includes(text) ? classes.listDirection : ""}
                     >
                       {languageJson[text]}
                     </MenuItem>
