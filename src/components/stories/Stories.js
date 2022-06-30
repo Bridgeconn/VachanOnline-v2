@@ -146,16 +146,16 @@ const Stories = (props) => {
   const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+  const [rtlList,setRtlList] = React.useState([])
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
   const storyClass =
-    lang === "urd"
+    rtlList.includes(lang)
       ? `${classes.stories} ${classes.storyDirection}`
       : classes.stories;
-  const listClass = lang === "urd" ? classes.listDirection : "";
-
+  const listClass = rtlList.includes(lang) ? classes.listDirection : "";
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
   }
@@ -206,6 +206,12 @@ const Stories = (props) => {
       setLanguages(languageArray);
       setLanguageJson(response.data);
       setLang(languageArray[0] || "");
+    });
+  }, [API]);
+
+  useEffect(() => {
+    API.get("rtl.json").then(function (response) {
+      setRtlList(response.data)
     });
   }, [API]);
 
@@ -313,7 +319,7 @@ const Stories = (props) => {
                     <MenuItem
                       key={y}
                       value={text}
-                      className={text === "urd" ? classes.listDirection : ""}
+                      className={rtlList.includes(text) ? classes.listDirection : ""}
                     >
                       {languageJson[text]}
                     </MenuItem>
