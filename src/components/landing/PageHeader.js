@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
-import ReplyIcon from "@material-ui/icons/Reply";
 import Login from "../login/Login";
 import LoginMenu from "../login/LoginMenu";
 import logo from "../common/images/logo.png";
@@ -77,16 +76,6 @@ const PageHeader = ({ login, userDetails }) => {
                 <img src={logo} alt={"logo"} className={classes.logo} />
               )}
             </Link>
-            <Button
-              color="inherit"
-              className={classes.legacySite}
-              startIcon={<ReplyIcon />}
-              href="https://legacy.vachanonline.com/"
-              target="_blank"
-              rel="noopener"
-            >
-              Back to classic site
-            </Button>
           </div>
           {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
             <Link to="/biblestories">
