@@ -99,6 +99,7 @@ const Audio = (props) => {
   const { audioBible, bookCode, chapter, book, version } = props;
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
+  const [hasAudio, setHasAudio] = useState(false);
   const [languageObject, setLanguageObject] = useState(null);
   const [playing, setPlaying] = useState("");
 
@@ -108,7 +109,7 @@ const Audio = (props) => {
   };
   React.useEffect(() => {
     if (languages.length) {
-      let bibleLang = version?.split("-")[0];
+      let bibleLang = version?.split("-")[0]?.toLowerCase();
       let lang = audioBible?.find((l) => l?.language?.code === bibleLang);
       //If audio bible not available for bible set first language
       if (lang === undefined) {
@@ -132,9 +133,11 @@ const Audio = (props) => {
   useEffect(() => {
     if (language) {
       const lang = language?.value?.toLowerCase();
-      setLanguageObject(audioBible.find((obj) => obj?.language?.name === lang));
+      const obj = audioBible.find((obj) => obj?.language?.name === lang);
+      setLanguageObject(obj);
+      setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
     }
-  }, [language, audioBible]);
+  }, [language, audioBible, bookCode]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -159,57 +162,56 @@ const Audio = (props) => {
         {(audioBible.length === 0 || audioBible?.success === false) && (
           <h5 className={classes.message}>No audio bibles available</h5>
         )}
-        {languageObject &&
-          (getBook(languageObject?.language?.code) ? (
-            <Card className={classes.cardRoot}>
-              <CardHeader
-                title={getBook(languageObject?.language?.code) + " " + chapter}
-                className={classes.cardHeader}
-              />
-              <CardContent className={classes.cardContent}>
-                <List>
-                  {languageObject.audioBibles.map((audio, i) => {
-                    const { url, format, books, name } = audio;
-                    const audioUrl =
-                      url + bookCode + "/" + chapter + "." + format;
-                    //Using id to play one player at a time
-                    const id = languageObject.language.code + i;
-                    return books.hasOwnProperty(bookCode) ? (
-                      <ListItem
-                        key={name}
-                        value={name}
-                        className={classes.audioBible}
-                      >
-                        {name}
-                        <ReactPlayer
-                          playing={playing === id}
-                          url={audioUrl}
-                          onPlay={() => setPlaying(id)}
-                          controls
-                          width="100%"
-                          height="50px"
-                          className={classes.player}
-                          config={{
-                            file: {
-                              attributes: {
-                                controlsList: "nodownload",
-                              },
+        {hasAudio ? (
+          <Card className={classes.cardRoot}>
+            <CardHeader
+              title={getBook(languageObject?.language?.code) + " " + chapter}
+              className={classes.cardHeader}
+            />
+            <CardContent className={classes.cardContent}>
+              <List>
+                {languageObject.audioBibles.map((audio, i) => {
+                  const { url, format, books, name } = audio;
+                  const audioUrl =
+                    url + bookCode + "/" + chapter + "." + format;
+                  //Using id to play one player at a time
+                  const id = languageObject.language.code + i;
+                  return books.hasOwnProperty(bookCode) ? (
+                    <ListItem
+                      key={name}
+                      value={name}
+                      className={classes.audioBible}
+                    >
+                      {name}
+                      <ReactPlayer
+                        playing={playing === id}
+                        url={audioUrl}
+                        onPlay={() => setPlaying(id)}
+                        controls
+                        width="100%"
+                        height="50px"
+                        className={classes.player}
+                        config={{
+                          file: {
+                            attributes: {
+                              controlsList: "nodownload",
                             },
-                          }}
-                        />
-                      </ListItem>
-                    ) : (
-                      ""
-                    );
-                  })}
-                </List>
-              </CardContent>
-            </Card>
-          ) : (
-            <h5 className={classes.message}>
-              Audio bible not available in {language.value} for this book
-            </h5>
-          ))}
+                          },
+                        }}
+                      />
+                    </ListItem>
+                  ) : (
+                    ""
+                  );
+                })}
+              </List>
+            </CardContent>
+          </Card>
+        ) : (
+          <h5 className={classes.message}>
+            Audio bible not available in {language.value} for this book
+          </h5>
+        )}
       </div>
     </div>
   );
