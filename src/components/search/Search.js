@@ -9,7 +9,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Pagination from "@material-ui/lab/Pagination";
-import { searchBible } from "../common/utillity";
+import { searchBible } from "../common/utility";
 import * as actions from "../../store/actions";
 import { connect } from "react-redux";
 import Close from "../common/Close";

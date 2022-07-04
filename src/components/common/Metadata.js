@@ -145,7 +145,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                 {Object.keys(metadataList)
                   .sort()
                   .map((item, i) => {
-                    const ignoredKeys = ["baseUrl", "Latest"];
+                    const ignoredKeys = ["baseUrl", "Latest","VerseLabel"];
                     if (ignoredKeys.includes(item)) {
                       return null;
                     } else {

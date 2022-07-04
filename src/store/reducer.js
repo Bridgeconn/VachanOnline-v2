@@ -1,5 +1,5 @@
 import * as actions from "./actions";
-import { capitalize } from "../components/common/utillity";
+import { capitalize } from "../components/common/utility";
 const defaultState = {
   versions: [],
   commentaries: [],
@@ -34,7 +34,7 @@ const defaultState = {
     chapter: "",
     fontSize: 16,
     fontFamily: "Sans",
-    lineView: true,
+    lineView: false,
     audio: false,
     audioBible: {},
     versesSelected: [],
@@ -46,7 +46,7 @@ const defaultState = {
     chapter: "",
     fontSize: 16,
     fontFamily: "Sans",
-    lineView: true,
+    lineView: false,
     audio: false,
     audioBible: {},
   },

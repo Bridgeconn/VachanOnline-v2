@@ -26,7 +26,7 @@ import {
   getVideos,
   getReadingPlans,
   getBookbyCode,
-} from "../common/utillity";
+} from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   biblePane1: {
@@ -317,6 +317,7 @@ const ReadBible = (props) => {
                 bookCode={panel1.bookCode}
                 book={versionBooks}
                 chapter={panel1.chapter}
+                version={panel1.version}
               />
             </div>
           </>
