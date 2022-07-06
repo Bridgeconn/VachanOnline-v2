@@ -315,9 +315,9 @@ const ReadBible = (props) => {
               <Audio
                 audioBible={audioBible}
                 bookCode={panel1.bookCode}
-                book={versionBooks}
+                books={versionBooks}
                 chapter={panel1.chapter}
-                version={panel1.version}
+                languageCode={panel1.languageCode}
               />
             </div>
           </>
@@ -331,6 +331,7 @@ const ReadBible = (props) => {
             </div>
             <div className={classes.biblePane2}>
               <Video
+                books={versionBooks}
                 video={video}
                 bookCode={panel1.bookCode}
                 languageCode={panel1.languageCode}
