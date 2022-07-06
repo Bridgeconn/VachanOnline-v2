@@ -89,6 +89,9 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     width: 200,
+    [theme.breakpoints.down("sm")]: {
+      width: 130,
+    },
   },
   message: {
     paddingLeft: 20,
@@ -96,21 +99,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Audio = (props) => {
   const classes = useStyles();
-  const { audioBible, bookCode, chapter, book, version } = props;
+  const { audioBible, bookCode, chapter, books, languageCode } = props;
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
   const [hasAudio, setHasAudio] = useState(false);
   const [languageObject, setLanguageObject] = useState(null);
   const [playing, setPlaying] = useState("");
 
-  const getBook = (code) => {
-    return book[code][book[code]?.findIndex((x) => x.book_code === bookCode)]
+  const getBook = (books, code) => {
+    return books[code][books[code]?.findIndex((x) => x.book_code === bookCode)]
       ?.short;
   };
   React.useEffect(() => {
     if (languages.length) {
-      let bibleLang = version?.split("-")[0]?.toLowerCase();
-      let lang = audioBible?.find((l) => l?.language?.code === bibleLang);
+      let lang = audioBible?.find((l) => l?.language?.code === languageCode);
       //If audio bible not available for bible set first language
       if (lang === undefined) {
         setLanguage(languages[0]);
@@ -119,14 +121,16 @@ const Audio = (props) => {
         setLanguage({ value: name, label: name });
       }
     }
-  }, [version, languages, audioBible, setLanguage]);
+  }, [languageCode, languages, audioBible, setLanguage]);
   useEffect(() => {
     //Get list of languages
     if (audioBible) {
-      const languageList = audioBible.map((item) => {
-        const lang = capitalize(item?.language?.name);
-        return { value: lang, label: lang };
-      });
+      const languageList = audioBible
+        .map((item) => {
+          const lang = capitalize(item?.language?.name);
+          return { value: lang, label: lang };
+        })
+        .sort((a, b) => a.value.localeCompare(b.value));
       setLanguages(languageList);
     }
   }, [audioBible]);
@@ -154,7 +158,7 @@ const Audio = (props) => {
             />
           )}
         </Box>
-        <Box className={classes.icons}>
+        <Box>
           <Close className={classes.closeButton} />
         </Box>
       </Box>
@@ -165,7 +169,9 @@ const Audio = (props) => {
         {hasAudio ? (
           <Card className={classes.cardRoot}>
             <CardHeader
-              title={getBook(languageObject?.language?.code) + " " + chapter}
+              title={
+                getBook(books, languageObject?.language?.code) + " " + chapter
+              }
               className={classes.cardHeader}
             />
             <CardContent className={classes.cardContent}>

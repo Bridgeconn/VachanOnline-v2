@@ -183,6 +183,11 @@ export const capitalize = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+export const getShortBook = (books, lang, bookCode) => {
+  const id = books[lang]?.findIndex((x) => x.book_code === bookCode);
+  return books[lang][id]?.short;
+};
+
 //Function to search Bible
 export const searchBible = (sourceId, keyword, bookNames, setResult) => {
   API.get("search/" + sourceId + "?keyword=" + encodeURIComponent(keyword))
