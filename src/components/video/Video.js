@@ -134,7 +134,7 @@ const Video = (props) => {
   React.useEffect(() => {
     if (language) {
       const lang = video.find((obj) => obj?.language?.code === language?.value);
-      if (!lang?.books?.hasOwnProperty(bookCode)) {
+      if (lang?.books?.hasOwnProperty(bookCode)) {
         setVideos(lang.books[bookCode]);
         setMessage("");
       } else {
