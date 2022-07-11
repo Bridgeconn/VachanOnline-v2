@@ -10,7 +10,7 @@ import CardContent from "@material-ui/core/CardContent";
 import ReactPlayer from "react-player";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
-import { capitalize } from "../common/utility";
+import { capitalize, getShortBook } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,6 +89,9 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     width: 200,
+    [theme.breakpoints.down("sm")]: {
+      width: 130,
+    },
   },
   message: {
     paddingLeft: 20,
@@ -96,21 +99,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Audio = (props) => {
   const classes = useStyles();
-  const { audioBible, bookCode, chapter, book, version } = props;
+  const { audioBible, bookCode, chapter, books, languageCode } = props;
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
   const [hasAudio, setHasAudio] = useState(false);
-  const [languageObject, setLanguageObject] = useState(null);
+  const [audios, setAudios] = useState(null);
   const [playing, setPlaying] = useState("");
+  const [book, setBook] = useState("");
 
-  const getBook = (code) => {
-    return book[code][book[code]?.findIndex((x) => x.book_code === bookCode)]
-      ?.short;
-  };
   React.useEffect(() => {
     if (languages.length) {
-      let bibleLang = version?.split("-")[0]?.toLowerCase();
-      let lang = audioBible?.find((l) => l?.language?.code === bibleLang);
+      let lang = audioBible?.find((l) => l?.language?.code === languageCode);
       //If audio bible not available for bible set first language
       if (lang === undefined) {
         setLanguage(languages[0]);
@@ -119,14 +118,16 @@ const Audio = (props) => {
         setLanguage({ value: name, label: name });
       }
     }
-  }, [version, languages, audioBible, setLanguage]);
+  }, [languageCode, languages, audioBible, setLanguage]);
   useEffect(() => {
     //Get list of languages
     if (audioBible) {
-      const languageList = audioBible.map((item) => {
-        const lang = capitalize(item?.language?.name);
-        return { value: lang, label: lang };
-      });
+      const languageList = audioBible
+        .map((item) => {
+          const lang = capitalize(item?.language?.name);
+          return { value: lang, label: lang };
+        })
+        .sort((a, b) => a.value.localeCompare(b.value));
       setLanguages(languageList);
     }
   }, [audioBible]);
@@ -134,10 +135,11 @@ const Audio = (props) => {
     if (language) {
       const lang = language?.value?.toLowerCase();
       const obj = audioBible.find((obj) => obj?.language?.name === lang);
-      setLanguageObject(obj);
+      setAudios(obj?.audioBibles);
+      setBook(getShortBook(books, obj?.language?.code, bookCode));
       setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
     }
-  }, [language, audioBible, bookCode]);
+  }, [language, audioBible, bookCode, books]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -154,28 +156,26 @@ const Audio = (props) => {
             />
           )}
         </Box>
-        <Box className={classes.icons}>
+        <Box>
           <Close className={classes.closeButton} />
         </Box>
       </Box>
       <div className={classes.container}>
-        {(audioBible.length === 0 || audioBible?.success === false) && (
+        {(audioBible?.length === 0 || audioBible?.success === false) && (
           <h5 className={classes.message}>No audio bibles available</h5>
         )}
         {hasAudio ? (
           <Card className={classes.cardRoot}>
             <CardHeader
-              title={getBook(languageObject?.language?.code) + " " + chapter}
+              title={book + " " + chapter}
               className={classes.cardHeader}
             />
             <CardContent className={classes.cardContent}>
               <List>
-                {languageObject.audioBibles.map((audio, i) => {
-                  const { url, format, books, name } = audio;
+                {audios.map((audio) => {
+                  const { url, format, books, name, sourceId } = audio;
                   const audioUrl =
                     url + bookCode + "/" + chapter + "." + format;
-                  //Using id to play one player at a time
-                  const id = languageObject.language.code + i;
                   return books.hasOwnProperty(bookCode) ? (
                     <ListItem
                       key={name}
@@ -184,9 +184,9 @@ const Audio = (props) => {
                     >
                       {name}
                       <ReactPlayer
-                        playing={playing === id}
+                        playing={playing === sourceId}
                         url={audioUrl}
-                        onPlay={() => setPlaying(id)}
+                        onPlay={() => setPlaying(sourceId)}
                         controls
                         width="100%"
                         height="50px"
