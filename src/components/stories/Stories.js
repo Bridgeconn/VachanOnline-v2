@@ -168,20 +168,20 @@ const Stories = (props) => {
 
   const getStory = (event) => {
     event.preventDefault();
-
     let storyNum = event.currentTarget.getAttribute("data-id");
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
+    window.scrollTo(0,0)
   };
 
   const storySetter = (event) => {
     let storyNum = event.target.value;
     if (storyNum.length < 2) storyNum = "0" + storyNum;
-
     setStoryId(storyNum);
   };
   const getLang = (event) => {
     setLang(event.target.value);
+    window.scrollTo(0,0)
   };
 
   useEffect(() => {

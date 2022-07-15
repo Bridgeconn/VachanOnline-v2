@@ -344,6 +344,7 @@ export default function Notes(props) {
     setValue("version", versionData[sourceId][0]);
     setValue("bookCode", bookCode);
     setValue("chapter", chapter);
+    setValue("languageCode",versionData[sourceId][0].split('-')[0].toLowerCase())
   };
 
   //Delete Note

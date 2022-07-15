@@ -135,6 +135,7 @@ const Highlights = (props) => {
     setValue("bookCode", element.getAttribute("data-bookcode"));
     setValue("chapter", parseInt(element.getAttribute("data-chapter")));
     setValue("versesSelected", []);
+    setValue("languageCode",versionData[sourceId][0].split('-')[0].toLowerCase())
   };
 
   //Delete highlight
