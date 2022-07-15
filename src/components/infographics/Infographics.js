@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Infographics = (props) => {
   const classes = useStyles();
-  let { infographics, languageCode, bookCode, books } = props;
+  let { infographics, languageCode, bookCode, versionBooks } = props;
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
   const [bookData, setBookData] = useState([]);
@@ -130,12 +130,12 @@ const Infographics = (props) => {
       } else {
         setBookData([]);
         setUrl("");
-        const book = getShortBook(books, language.value, bookCode);
+        const book = getShortBook(versionBooks, language.value, bookCode);
         const lang = language?.label;
         setMessage(`No Infographics available in ${lang} for ${book}`);
       }
     }
-  }, [infographics, bookCode, language, books]);
+  }, [infographics, bookCode, language, versionBooks]);
 
   return (
     <div className={classes.root}>
@@ -203,6 +203,7 @@ const mapStateToProps = (state) => {
     infographics: state.local.infographics,
     languageCode: state.local.panel1.languageCode,
     bookCode: state.local.panel1.bookCode,
+    versionBooks: state.local.versionBooks,
   };
 };
 export default connect(mapStateToProps)(Infographics);

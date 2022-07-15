@@ -193,8 +193,10 @@ export const capitalize = (string) => {
 };
 
 export const getShortBook = (books, lang, bookCode) => {
-  const id = books[lang]?.findIndex((x) => x.book_code === bookCode);
-  return books[lang][id]?.short;
+  if (books) {
+    const id = books[lang]?.findIndex((x) => x?.book_code === bookCode);
+    return books[lang][id]?.short;
+  }
 };
 
 //Function to search Bible
