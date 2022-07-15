@@ -300,7 +300,7 @@ const ReadBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Infographics setValue={setValue} />
+              <Infographics />
             </div>
           </>
         );
@@ -473,7 +473,6 @@ const mapStateToProps = (state) => {
     parallelScroll: state.local.parallelScroll,
     commentaries: state.local.commentaries,
     dictionaries: state.local.dictionary.dictionaries,
-    infographics: state.local.infographics,
     audioBible: state.local.audioBible,
     video: state.local.video,
     readingPlans: state.local.readingPlans,

@@ -3,9 +3,9 @@ import { bibleBooks } from "../../store/bibleData";
 //Function to get the bible versions
 export const getVersions = (
   setVersions,
-  setValue,
+  setPaneValue,
   setVersionBooks,
-  setVersionSource
+  setValue
 ) => {
   API.get("bibles")
     .then(function (response) {
@@ -32,19 +32,19 @@ export const getVersions = (
         } catch (e) {
           //hindi IRV version not available use first versions
         }
-        setValue(
+        setPaneValue(
           "version",
           version.language.code + "-" + version.version.code.toUpperCase()
         );
-        setValue("sourceId", version.sourceId);
-        getAllBooks(setVersionBooks, setValue);
+        setPaneValue("sourceId", version.sourceId);
+        getAllBooks(setVersionBooks, setPaneValue, setValue);
         let versionSource = {};
         for (let lang of versions) {
           for (let ver of lang.languageVersions) {
             versionSource[ver.sourceId] = ver.language.code;
           }
         }
-        setVersionSource(versionSource);
+        setValue("versionSource", versionSource);
       }
     })
     .catch(function (error) {
@@ -52,7 +52,7 @@ export const getVersions = (
     });
 };
 //Function to get the bible books
-export const getAllBooks = (setVersionBooks, setValue) => {
+export const getAllBooks = (setVersionBooks, setPaneValue, setValue) => {
   API.get("booknames")
     .then(function (response) {
       for (let item of response.data) {
@@ -61,9 +61,11 @@ export const getAllBooks = (setVersionBooks, setValue) => {
         });
         setVersionBooks(item.language.code, item.bookNames);
       }
+      const languages = response.data.map((a) => a.language);
+      getAllInfographics(languages, setValue);
       if (response.data && response.data.length > 0) {
-        setValue("bookCode", "jhn");
-        setValue("chapter", "1");
+        setPaneValue("bookCode", "jhn");
+        setPaneValue("chapter", "1");
       }
     })
     .catch(function (error) {
@@ -129,11 +131,18 @@ export const getDictionaryWord = (sourceId, wordId, setDictionary) => {
       console.log(error);
     });
 };
-//Function to get the infographics index
-export const getInfographics = (languageCode, setValue) => {
-  API.get("infographics/" + languageCode)
-    .then(function (response) {
-      setValue("infographics", response.data);
+//function to get all infographics
+export const getAllInfographics = (languages, setValue) => {
+  Promise.all(languages.map((l) => API.get("infographics/" + l.code)))
+    .then((results) => {
+      const info = results
+        .filter((i) => i.data.url !== undefined)
+        .map((a) => {
+          const { languageCode, ...b } = a.data;
+          b.language = languages.find((i) => i.code === languageCode);
+          return b;
+        });
+      setValue("infographics", info);
     })
     .catch(function (error) {
       console.log(error);
@@ -184,8 +193,10 @@ export const capitalize = (string) => {
 };
 
 export const getShortBook = (books, lang, bookCode) => {
-  const id = books[lang]?.findIndex((x) => x.book_code === bookCode);
-  return books[lang][id]?.short;
+  if (books) {
+    const id = books[lang]?.findIndex((x) => x?.book_code === bookCode);
+    return books[lang][id]?.short;
+  }
 };
 
 //Function to search Bible
