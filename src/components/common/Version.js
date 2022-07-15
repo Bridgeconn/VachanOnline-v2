@@ -110,7 +110,6 @@ const Version = (props) => {
     setVersions,
     setValue,
     setVersionBooks,
-    setVersionSource,
     versions,
     versionBooks,
     versionSource,
@@ -128,7 +127,7 @@ const Version = (props) => {
   React.useEffect(() => {
     //if versions not loaded fetch versions and books for the versions
     if (versions.length === 0) {
-      getVersions(setVersions, setValue, setVersionBooks, setVersionSource);
+      getVersions(setVersions, setValue, setVersionBooks, setMainValue);
     }
   });
 
@@ -187,8 +186,13 @@ const Version = (props) => {
         let languageNames = versions[lang];
         let langVersions = languageNames["languageVersions"];
         for (let versionNames in langVersions) {
-          if (langCode.toLowerCase() === langVersions[versionNames]["language"]["code"]) {
-            setDisplayVersion(langVersions[versionNames]["language"]["name"] + "-" + versionCode);     
+          if (
+            langCode.toLowerCase() ===
+            langVersions[versionNames]["language"]["code"]
+          ) {
+            setDisplayVersion(
+              langVersions[versionNames]["language"]["name"] + "-" + versionCode
+            );
           }
         }
       }
@@ -312,8 +316,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVERSIONS, value: value }),
     setVersionBooks: (name, value) =>
       dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
-    setVersionSource: (value) =>
-      dispatch({ type: actions.SETVALUE, name: "versionSource", value: value }),
     setMainValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
