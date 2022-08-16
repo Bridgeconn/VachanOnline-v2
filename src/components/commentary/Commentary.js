@@ -233,13 +233,18 @@ const Commentary = (props) => {
           <Close className={classes.closeButton} />
         </Box>
       </Box>
-      {commentaryText.length === 0 ? (
+      {commentaryObject?.commentaries?.length !==0 ?
+      (commentaryText?.length === 0 ? (
         <h3 className={classes.loading}>Loading</h3>
       ) : (
         <div className={classes.text} ref={textRef}>
           {parse(commentaryText)}
         </div>
-      )}
+      ))
+      :
+      (<h3 className={classes.loading}>No commentary available for chapter {chapter}</h3>)
+       }
+      
     </div>
   );
 };
