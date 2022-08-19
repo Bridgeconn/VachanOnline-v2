@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
       margin: "30px 0px",
     },
   },
-  loading: {
+  message: {
     paddingLeft: 20,
   },
   bookLabel: {
@@ -94,9 +94,10 @@ const useStyles = makeStyles((theme) => ({
 const Commentary = (props) => {
   const classes = useStyles();
   const [commentaryText, setCommentaryText] = React.useState("");
-  const [commentaryObject, setCommentaryObject] = React.useState([]);
+  const [commentaryObject, setCommentaryObject] = React.useState();
   const [verseLabel, setVerseLabel] = React.useState("Verse");
   const [book, setBook] = React.useState("");
+  const [message, setMessage] = React.useState("");
   const [baseUrl, setBaseUrl] = React.useState("");
   const [bookNames, setBookNames] = React.useState([]);
   let { panel1, commentaries, setCommentary, commentary, versionBooks } = props;
@@ -162,6 +163,7 @@ const Commentary = (props) => {
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
+      setMessage("loading");
       getCommentaryForChapter(
         commentary.sourceId,
         bookCode,
@@ -193,14 +195,21 @@ const Commentary = (props) => {
       if (commentaryObject.bookIntro) {
         commText += "<p>" + changeBaseUrl(commentaryObject.bookIntro) + "</p>";
       }
-      if (commentaryObject.commentaries) {
+      if (commentaryObject?.commentaries?.length > 0) {
         let item;
         for (item of commentaryObject.commentaries) {
-          if (item.verse !== "0" && commentary.metadata?.VerseLabel !== "False"){
+          if (
+            item.verse !== "0" &&
+            commentary.metadata?.VerseLabel !== "False"
+          ) {
             commText += "<span>" + verseLabel + " " + item.verse + "</span>";
           }
           commText += "<p>" + changeBaseUrl(removeBr(item.text)) + "</p>";
         }
+        setMessage("");
+      } else {
+        setCommentaryText("");
+        setMessage("unavailable");
       }
       setCommentaryText(commText);
     }
@@ -233,18 +242,18 @@ const Commentary = (props) => {
           <Close className={classes.closeButton} />
         </Box>
       </Box>
-      {commentaryObject?.commentaries?.length !==0 ?
-      (commentaryText?.length === 0 ? (
-        <h3 className={classes.loading}>Loading</h3>
-      ) : (
+      {message && (
+        <h5 className={classes.message}>
+          {message === "loading"
+            ? "Loading"
+            : `No commentary available for ${book} ${chapter}`}
+        </h5>
+      )}
+      {!message && commentaryText && (
         <div className={classes.text} ref={textRef}>
           {parse(commentaryText)}
         </div>
-      ))
-      :
-      (<h3 className={classes.loading}>No commentary available for chapter {chapter}</h3>)
-       }
-      
+      )}
     </div>
   );
 };
