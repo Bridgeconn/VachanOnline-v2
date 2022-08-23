@@ -10,7 +10,8 @@ import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
 import { Divider, Typography } from "@material-ui/core";
-
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
     position: "absolute",
@@ -25,12 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
   bibleReadingPane: {
     position: "absolute",
-    right: 0,
-    left: 44,
     paddingRight: (props) =>
-      props.singlePane || props.padding > 60 ? props.padding : 60,
+      props.singlePane || props.padding > 40 ? props.padding : 40,
     paddingLeft: (props) =>
-      props.singlePane || props.padding > 20 ? props.padding : 20,
+      props.singlePane || props.padding > 40 ? props.padding : 40,
     paddingTop: 20,
     height: "100%",
     overflow: "scroll",
@@ -53,17 +52,27 @@ const useStyles = makeStyles((theme) => ({
   },
   prevChapter: {
     position: "absolute",
-    top: "45%",
+    top: "50%",
     left: (props) =>
       props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
     cursor: "pointer",
-  },
+    boxShadow: "rgb(0 0 0 / 20%) 0px 3px 10px 0px",
+    borderRadius: "50%",
+    backgroundColor: "rgb(255, 255, 255)",
+    border: "1px white",
+    padding: 7,
+    },
   nextChapter: {
     position: "absolute",
-    top: "45%",
+    top: "50%",
     right: (props) =>
       props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
     cursor: "pointer",
+    boxShadow: "rgb(0 0 0 / 20%) 0px 3px 10px 0px",
+    borderRadius: "50%",
+    backgroundColor: "rgb(255, 255, 255)",
+    border: "1px white",
+    padding: 7,
   },
   loading: {
     padding: 20,
@@ -79,6 +88,9 @@ const useStyles = makeStyles((theme) => ({
     [`@media print`]: {
       fontSize: "1.2rem",
     },
+    maxWidth: "1366px",
+    boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 30%)",
+    padding: 25,
   },
   verseText: {
     padding: "4px 0 2px 4px",
@@ -136,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
   selectedVerse: {
     backgroundColor: "#d9e8ef",
     [`@media print`]: {
-      backgroundColor: "unset"
+      backgroundColor: "unset",
     },
   },
   lineView: {
@@ -242,6 +254,8 @@ const Bible = (props) => {
   const classes = useStyles(styleProps);
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
+  const [previousBook, setPreviousBook] = React.useState("");
+  const [nextBook, setNextBook] = React.useState("");
   //new usfm json structure
   const getHeading = (contents) => {
     if (contents) {
@@ -459,17 +473,50 @@ const Bible = (props) => {
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
-
+      let previousBible = bookList.find(
+        (element) => element.book_code === previous.bibleBookCode
+      );
+      let nextBible = bookList.find(
+        (element) => element.book_code === next.bibleBookCode
+      );
       if (book) {
         setBookDisplay(book.short);
       }
+      if (previousBible) {
+        setPreviousBook(previousBible.short);
+      }
+      if (nextBible) {
+        setNextBook(nextBible.short);
+      }
     }
-  }, [bookList, bookCode, setBookDisplay]);
+  }, [bookList, bookCode, setBookDisplay, previous, next]);
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };
   const addStyle = (text, style) => {
     return <span className={classes[style]}>{" " + text}</span>;
+  };
+  const getPrevious = () => {
+    return previous && Object.values(previous).length !== 0 ? (
+      <Tooltip title={previousBook + " " + previous.chapterId}>
+        <ArrowBackIosIcon fontSize="large" className={classes.prevChapter} onClick={prevClick} />
+      </Tooltip>
+    ) : (
+      ""
+    );
+  };
+  const getNext = () => {
+    return next && Object.values(next).length !== 0 ? (
+      <Tooltip title={nextBook + " " + next.chapterId}>
+        <ArrowForwardIosIcon
+         fontSize="large"
+          className={classes.nextChapter}
+          onClick={nextClick}
+        />
+      </Tooltip>
+    ) : (
+      ""
+    );
   };
   return (
     <div
@@ -479,94 +526,93 @@ const Bible = (props) => {
         fontSize: fontSize,
       }}
     >
+    {getPrevious()}
       {!isLoading && loadingText !== "Book will be uploaded soon" ? (
-        <div>
+        <div
+          onScroll={() => {
+            scrollText();
+          }}
+          ref={props.ref1}
+          className={
+            audio
+              ? `${classes.bibleReadingPane} ${classes.audio}`
+              : classes.bibleReadingPane
+          }
+        >
           {fetchData}
-          <div
-            onScroll={() => {
-              scrollText();
-            }}
-            ref={props.ref1}
-            className={
-              audio
-                ? `${classes.bibleReadingPane} ${classes.audio}`
-                : classes.bibleReadingPane
-            }
-          >
-            <div className={classes.text} ref={printRef}>
-              <style>{getPageMargins()}</style>
-              <Typography className={classes.bookRef} variant="h4">
-                {version + " " + bookDisplay + " " + chapter}{" "}
-              </Typography>
-              {chapterHeading !== "" ? (
-                <span className={classes.sectionHeading}>{chapterHeading}</span>
-              ) : (
-                ""
-              )}
-              {verses.map((item) => {
-                const verse = parseInt(item.verseNumber);
-                const verseClass =
-                  selectedVerses.indexOf(verse) > -1
-                    ? `${classes.verseText} ${classes.selectedVerse}`
-                    : highlightVerses.indexOf(verse) > -1
-                    ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
-                    : `${classes.verseText}`;
-                const verseNumberClass =
-                  verse === 1
-                    ? `${classes.verseNumber} ${classes.firstVerse}`
-                    : `${classes.verseNumber}`;
-                const verseNo = verse === 1 ? chapter : item.verseNumber;
-                const sectionHeading = getHeading(item.contents);
-                return (
-                  <span key={item.verseNumber}>
-                    <span className={lineViewClass}>
-                      <span
-                        onClick={handleVerseClick}
-                        data-verse={item.verseNumber}
-                      >
-                        <span className={verseNumberClass}>{verseNo}</span>
-                        <span className={verseClass}> {item.verseText}</span>
-                      </span>
-                      {/*If verse has note then show note icon to open notes pane */}
-                      {notes && notes.includes(verse) ? (
-                        <NoteIcon
-                          className={classes.noteIcon}
-                          fontSize="small"
-                          color="disabled"
-                          onClick={() => setParallelView(NOTE)}
-                        />
-                      ) : (
-                        ""
-                      )}
+          <div className={classes.text} ref={printRef}>
+            <style>{getPageMargins()}</style>
+            <Typography className={classes.bookRef} variant="h4">
+              {version + " " + bookDisplay + " " + chapter}{" "}
+            </Typography>
+            {chapterHeading !== "" ? (
+              <span className={classes.sectionHeading}>{chapterHeading}</span>
+            ) : (
+              ""
+            )}
+            {verses.map((item) => {
+              const verse = parseInt(item.verseNumber);
+              const verseClass =
+                selectedVerses.indexOf(verse) > -1
+                  ? `${classes.verseText} ${classes.selectedVerse}`
+                  : highlightVerses.indexOf(verse) > -1
+                  ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
+                  : `${classes.verseText}`;
+              const verseNumberClass =
+                verse === 1
+                  ? `${classes.verseNumber} ${classes.firstVerse}`
+                  : `${classes.verseNumber}`;
+              const verseNo = verse === 1 ? chapter : item.verseNumber;
+              const sectionHeading = getHeading(item.contents);
+              return (
+                <span key={item.verseNumber}>
+                  <span className={lineViewClass}>
+                    <span
+                      onClick={handleVerseClick}
+                      data-verse={item.verseNumber}
+                    >
+                      <span className={verseNumberClass}>{verseNo}</span>
+                      <span className={verseClass}> {item.verseText}</span>
                     </span>
-                    {sectionHeading && sectionHeading !== "" ? (
-                      <span className={classes.sectionHeading}>
-                        {sectionHeading}
-                      </span>
+                    {/*If verse has note then show note icon to open notes pane */}
+                    {notes && notes.includes(verse) ? (
+                      <NoteIcon
+                        className={classes.noteIcon}
+                        fontSize="small"
+                        color="disabled"
+                        onClick={() => setParallelView(NOTE)}
+                      />
                     ) : (
                       ""
                     )}
                   </span>
-                );
-              })}
-              <div className={classes.footNotes}>
-                <Typography className={classes.noteTitle} variant="h4">
-                  Notes :
-                </Typography>
-                <Divider />
-                <div className={classes.noteList}>
-                  {noteText.map((item, i) => {
-                    return (
-                      <ul key={i}>
-                        {addStyle(
-                          bookDisplay + " " + chapter + ":" + item.verses,
-                          "underline"
-                        )}
-                        {" " + item.body}
-                      </ul>
-                    );
-                  })}
-                </div>
+                  {sectionHeading && sectionHeading !== "" ? (
+                    <span className={classes.sectionHeading}>
+                      {sectionHeading}
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </span>
+              );
+            })}
+            <div className={classes.footNotes}>
+              <Typography className={classes.noteTitle} variant="h4">
+                Notes :
+              </Typography>
+              <Divider />
+              <div className={classes.noteList}>
+                {noteText.map((item, i) => {
+                  return (
+                    <ul key={i}>
+                      {addStyle(
+                        bookDisplay + " " + chapter + ":" + item.verses,
+                        "underline"
+                      )}
+                      {" " + item.body}
+                    </ul>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -592,57 +638,12 @@ const Bible = (props) => {
           ) : (
             ""
           )}
+          
         </div>
       ) : (
         <h3 className={classes.loading}>{loadingText}</h3>
       )}
-
-      {previous && Object.values(previous).length !== 0 ? (
-        <Tooltip title="Previous Chapter">
-          <div
-            color="default"
-            aria-label="Add"
-            className={classes.prevChapter}
-            onClick={prevClick}
-          >
-            <i
-              className="material-icons material"
-              style={{
-                fontSize: "38px",
-                color: "#555555",
-                opacity: 0.7,
-              }}
-            >
-              navigate_before
-            </i>
-          </div>
-        </Tooltip>
-      ) : (
-        ""
-      )}
-      {next && Object.values(next).length !== 0 ? (
-        <Tooltip title="Next Chapter">
-          <div
-            color="default"
-            aria-label="Add"
-            className={classes.nextChapter}
-            onClick={nextClick}
-          >
-            <i
-              className="material-icons material"
-              style={{
-                fontSize: "38px",
-                color: "#555555",
-                opacity: 0.7,
-              }}
-            >
-              keyboard_arrow_right
-            </i>
-          </div>
-        </Tooltip>
-      ) : (
-        ""
-      )}
+      {getNext()}
     </div>
   );
 };
