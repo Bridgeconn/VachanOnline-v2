@@ -526,9 +526,8 @@ const Bible = (props) => {
         fontSize: fontSize,
       }}
     >
-    {getPrevious()}
       {!isLoading && loadingText !== "Book will be uploaded soon" ? (
-        <div
+       <div
           onScroll={() => {
             scrollText();
           }}
@@ -643,6 +642,7 @@ const Bible = (props) => {
       ) : (
         <h3 className={classes.loading}>{loadingText}</h3>
       )}
+      {getPrevious()}
       {getNext()}
     </div>
   );
