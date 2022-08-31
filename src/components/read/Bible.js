@@ -56,19 +56,19 @@ const useStyles = makeStyles((theme) => ({
     left: (props) =>
       props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
     cursor: "pointer",
-    boxShadow: "rgb(0 0 0 / 20%) 0px 3px 10px 0px",
+    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
     borderRadius: "50%",
     backgroundColor: "rgb(255, 255, 255)",
     border: "1px white",
     padding: 7,
-    },
+  },
   nextChapter: {
     position: "absolute",
     top: "50%",
     right: (props) =>
       props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
     cursor: "pointer",
-    boxShadow: "rgb(0 0 0 / 20%) 0px 3px 10px 0px",
+    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
     borderRadius: "50%",
     backgroundColor: "rgb(255, 255, 255)",
     border: "1px white",
@@ -84,12 +84,15 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     paddingBottom: 30,
+    marginBottom: 20,
     textAlign: "justify",
     [`@media print`]: {
       fontSize: "1.2rem",
     },
     maxWidth: "1366px",
-    boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 30%)",
+    [theme.breakpoints.up("sm")]: {
+      boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
+    },
     padding: 25,
   },
   verseText: {
@@ -473,15 +476,20 @@ const Bible = (props) => {
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
+      if (book) {
+        setBookDisplay(book.short);
+      }
+    }
+  }, [bookList, bookCode, setBookDisplay]);
+
+  React.useEffect(() => {
+    if (bookList) {
       let previousBible = bookList.find(
         (element) => element.book_code === previous.bibleBookCode
       );
       let nextBible = bookList.find(
         (element) => element.book_code === next.bibleBookCode
       );
-      if (book) {
-        setBookDisplay(book.short);
-      }
       if (previousBible) {
         setPreviousBook(previousBible.short);
       }
@@ -489,7 +497,8 @@ const Bible = (props) => {
         setNextBook(nextBible.short);
       }
     }
-  }, [bookList, bookCode, setBookDisplay, previous, next]);
+  }, [bookList, next, previous]);
+
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };
@@ -499,7 +508,11 @@ const Bible = (props) => {
   const getPrevious = () => {
     return previous && Object.values(previous).length !== 0 ? (
       <Tooltip title={previousBook + " " + previous.chapterId}>
-        <ArrowBackIosIcon fontSize="large" className={classes.prevChapter} onClick={prevClick} />
+        <ArrowBackIosIcon
+          fontSize="large"
+          className={classes.prevChapter}
+          onClick={prevClick}
+        />
       </Tooltip>
     ) : (
       ""
@@ -509,7 +522,7 @@ const Bible = (props) => {
     return next && Object.values(next).length !== 0 ? (
       <Tooltip title={nextBook + " " + next.chapterId}>
         <ArrowForwardIosIcon
-         fontSize="large"
+          fontSize="large"
           className={classes.nextChapter}
           onClick={nextClick}
         />
@@ -518,6 +531,7 @@ const Bible = (props) => {
       ""
     );
   };
+  
   return (
     <div
       className={classes.biblePanel}
@@ -527,7 +541,7 @@ const Bible = (props) => {
       }}
     >
       {!isLoading && loadingText !== "Book will be uploaded soon" ? (
-       <div
+        <div
           onScroll={() => {
             scrollText();
           }}
@@ -637,7 +651,6 @@ const Bible = (props) => {
           ) : (
             ""
           )}
-          
         </div>
       ) : (
         <h3 className={classes.loading}>{loadingText}</h3>
