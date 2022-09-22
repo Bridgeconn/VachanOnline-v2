@@ -369,7 +369,7 @@ const AboutUs = ({ handleClose }) => {
           Contact Us
         </Typography>
         <Typography variant="body1" component="div" gutterBottom>
-          {addLink("thevachanproject@gmail.com", "mailto:")}
+          {addLink("thevachanproject@bridgeconn.com", "mailto:")}
         </Typography>
       </DialogContent>
       <DialogActions>
