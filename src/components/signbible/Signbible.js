@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 51,
   },
   video: {
-    // width: "48%",
     padding: 0,
     margin: "0 2% 2% 0",
     display: "inline-block",
@@ -59,12 +58,6 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: 7,
-  },
-  select: {
-    width: 200,
-    [theme.breakpoints.down("sm")]: {
-      width: 130,
-    },
   },
   message: {
     paddingLeft: 20,
@@ -100,7 +93,7 @@ const Signbible = (props) => {
             {book} {chapter}
           </Typography>
         </Box>
-        <Box className={classes.icons}>
+        <Box>
           <Close className={classes.closeButton} />
         </Box>
       </Box>
