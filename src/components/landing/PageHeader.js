@@ -11,6 +11,8 @@ import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { SIGNBIBLE } from "../../store/views";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,12 +56,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PageHeader = ({ login, userDetails }) => {
+const PageHeader = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-
+  let { login, userDetails,setParallelView } = props;
+  
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
@@ -77,6 +80,23 @@ const PageHeader = ({ login, userDetails }) => {
               )}
             </Link>
           </div>
+          <Link to = {{
+            pathname: "/read",
+          }}>
+          <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                className={classes.stories}
+                title="Sign Language Bible"
+                aria-label="sign language bible"
+                target="_blank"
+                rel="noopener"
+                onClick={()=>setParallelView(SIGNBIBLE)}
+              >
+                {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+              </Button>
+              </Link>
           {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
             <Link to="/biblestories">
               <Button
@@ -108,4 +128,15 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(PageHeader);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setParallelView: (value) =>
+      dispatch({
+        type: actions.SETVALUE,
+        name: "parallelView",
+        value: value,
+      }),
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(PageHeader);

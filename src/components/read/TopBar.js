@@ -14,6 +14,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { BLUE } from "../../store/colorCode";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { SIGNBIBLE } from "../../store/views";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,14 +76,22 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  stories: {
+    color: "#e0e0e0",
+    marginRight: 4,
+    marginTop: 2,
+    "&:hover": {
+      color: "#d0d0d0",
+    },
+  },
 }));
 
-export default function TopBar({ login, userDetails }) {
+const TopBar = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-
+  let { login, userDetails,setParallelView } = props;
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
@@ -99,6 +110,19 @@ export default function TopBar({ login, userDetails }) {
               )}
             </Link>
           </div>
+          <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                className={classes.stories}
+                title="Sign Language Bible"
+                aria-label="sign language bible"
+                target="_blank"
+                rel="noopener"
+                onClick={()=>setParallelView(SIGNBIBLE)}
+              >
+                {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+              </Button>
           {window.location.pathname.startsWith("/read") ? (
             process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
               <Link to="/biblestories">
@@ -154,4 +178,18 @@ export default function TopBar({ login, userDetails }) {
       </AppBar>
     </div>
   );
-}
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setParallelView: (value) =>
+      dispatch({
+        type: actions.SETVALUE,
+        name: "parallelView",
+        value: value,
+      }),
+  };
+};
+
+
+export default connect(null,mapDispatchToProps)(TopBar);

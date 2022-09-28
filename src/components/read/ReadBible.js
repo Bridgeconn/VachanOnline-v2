@@ -19,6 +19,7 @@ import Notes from "../note/Notes";
 import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
 import { BLUE, BLUETRANSPARENT } from "../../store/colorCode";
+import Signbible from "../signbible/Signbible";
 import {
   getCommentaries,
   getDictionaries,
@@ -26,6 +27,7 @@ import {
   getVideos,
   getReadingPlans,
   getBookbyCode,
+  getSignBible,
 } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
@@ -103,6 +105,7 @@ const ReadBible = (props) => {
     audioBible,
     video,
     readingPlans,
+    signBible,
     parallelScroll,
     login,
     userDetails,
@@ -171,6 +174,12 @@ const ReadBible = (props) => {
       getReadingPlans(setValue);
     }
   }, [readingPlans.length, setValue]);
+  React.useEffect(() => {
+    //if sign bible not loaded fetch sign bible
+    if (signBible.length === 0) {
+      getSignBible(setValue);
+    }
+  }, [signBible.length, setValue]);
   React.useEffect(() => {
     if (parallelView === views.PARALLELBIBLE) {
       copyPanel1();
@@ -413,6 +422,24 @@ const ReadBible = (props) => {
           </>
         );
         break;
+        case views.SIGNBIBLE:
+          setPane(
+              <>
+                <div className={classes.biblePane2}>
+                  <BiblePane setValue={setValue1} paneData={panel1} />
+                </div>
+                <div className={classes.biblePane2}>
+                  <Signbible
+                    signBible={signBible}
+                    bookCode={panel1.bookCode}
+                    chapter={panel1.chapter}
+                    book={bookObject.short}
+                  />
+                </div>
+            </>
+          );
+          break;
+  
 
       default:
         setPane(
@@ -440,6 +467,7 @@ const ReadBible = (props) => {
     setValue2,
     video,
     readingPlans,
+    signBible,
     uid,
     versions,
     bookObject,
@@ -476,6 +504,7 @@ const mapStateToProps = (state) => {
     audioBible: state.local.audioBible,
     video: state.local.video,
     readingPlans: state.local.readingPlans,
+    signBible: state.local.signBible,   
     login: state.local.login,
     userDetails: state.local.userDetails,
     parallelView: state.local.parallelView,
