@@ -8,9 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
-import Snackbar from "@material-ui/core/Snackbar";
 import Link from "@material-ui/core/Link";
-import Alert from "@material-ui/lab/Alert";
 import { detectMob } from "../common/utility";
 import "./Landing.css";
 import listen from "../common/images/listen.jpg";
@@ -77,19 +75,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     paddingLeft: 30,
   },
+  storeLink:{
+    textAlign:"center",
+    [theme.breakpoints.up("sm")]: {
+      display:"none",
+    },
+  },
+  storeLink2:{
+    [theme.breakpoints.down("sm")]: {
+      display:"none",
+    },
+  }
 }));
 
 const Landing = () => {
   const classes = useStyles();
   const mobile = detectMob();
-  const [message, setMessage] = React.useState(mobile);
   const [language, setLanguage] = React.useState("English");
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setMessage(false);
-  };
   const addLink = () => {
     return process.env.REACT_APP_DOWNLOAD_URL ? (
       <Link href={process.env.REACT_APP_DOWNLOAD_URL} target="_blank">
@@ -113,6 +115,7 @@ const Landing = () => {
       {!mobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
       <Banner language={language} />
       <BibleIndex />
+      <div className={classes.storeLink}>{addLink()}</div>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item xs={12} md={6}>
           <Typography variant="h6" className={classes.text}>
@@ -145,7 +148,7 @@ const Landing = () => {
               alt="Screenshot"
               className={classes.screenshot}
             />
-            {addLink()}
+          <div className={classes.storeLink2}>{addLink()}</div>
           </div>
         </Grid>
       </Grid>
@@ -161,20 +164,6 @@ const Landing = () => {
       </Grid>
 
       <LandingFooter />
-      {message ? (
-        <Snackbar open={Boolean(alert)} onClose={handleClose}>
-          <Alert
-            elevation={6}
-            variant="filled"
-            onClose={handleClose}
-            severity="info"
-          >
-            For a better user experience use our Android App
-          </Alert>
-        </Snackbar>
-      ) : (
-        ""
-      )}
     </Grid>
   );
 };

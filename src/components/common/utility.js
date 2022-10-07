@@ -248,7 +248,7 @@ export const getReadingPlans = (setValue) => {
 
 export const getSignBible = (setValue) => {
   signBibleAPI
-  .get('signbible/ISL.json')
+  .get('ISL.json')
   .then(function(response){
     setValue("signBible", response.data)
   })

@@ -110,6 +110,8 @@ const TopBar = (props) => {
               )}
             </Link>
           </div>
+          {window.location.pathname.startsWith("/biblestories") ? (
+          <Link to="/read">
           <Button
                 variant="outlined"
                 size="small"
@@ -122,7 +124,20 @@ const TopBar = (props) => {
                 onClick={()=>setParallelView(SIGNBIBLE)}
               >
                 {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+              </Button></Link>):(<Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                className={classes.stories}
+                title="Sign Language Bible"
+                aria-label="sign language bible"
+                target="_blank"
+                rel="noopener"
+                onClick={()=>setParallelView(SIGNBIBLE)}
+              >
+                {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
               </Button>
+              )}
           {window.location.pathname.startsWith("/read") ? (
             process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
               <Link to="/biblestories">
@@ -165,7 +180,7 @@ const TopBar = (props) => {
               <IconButton
                 aria-label="feedback"
                 className={classes.feedback}
-                href="https://docs.google.com/forms/d/e/1FAIpQLSd75swOEtsvWrzcQrynmCsu-ZZYktWbeeJXVxH7zNz-JIlEdA/viewform?usp=sf_link"
+                href="https://forms.office.com/r/qiV0Ym335M"
                 target="_blank"
                 rel="noopener"
               >

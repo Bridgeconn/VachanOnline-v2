@@ -10,7 +10,7 @@ import BiblePane from "./BiblePane";
 import Commentary from "../commentary/Commentary";
 import Dictionary from "../dictionary/Dictionary";
 import Infographics from "../infographics/Infographics";
-import Plans from "../readingplans/Readingplans";
+import Plans from "../readingplans/ReadingPlans";
 import Audio from "../audio/Audio";
 import Video from "../video/Video";
 import Bookmarks from "../bookmark/Bookmarks";
@@ -19,7 +19,7 @@ import Notes from "../note/Notes";
 import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
 import { BLUE, BLUETRANSPARENT } from "../../store/colorCode";
-import Signbible from "../signbible/Signbible";
+import SignBible from "../signbible/SignBible";
 import {
   getCommentaries,
   getDictionaries,
@@ -429,7 +429,7 @@ const ReadBible = (props) => {
                   <BiblePane setValue={setValue1} paneData={panel1} />
                 </div>
                 <div className={classes.biblePane2}>
-                  <Signbible
+                  <SignBible
                     signBible={signBible}
                     bookCode={panel1.bookCode}
                     chapter={panel1.chapter}

@@ -63,23 +63,23 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
   },
 }));
-const Signbible = (props) => {
+const SignBible = (props) => {
   const classes = useStyles();
   let { bookCode, book, chapter, signBible } = props;
   const [message, setMessage] = useState("");
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState();
   useEffect(() => {
     if (signBible && bookCode) {
       let books = signBible["books"];
-      if (books && books.hasOwnProperty(bookCode)) {
+      if (books && books.hasOwnProperty(bookCode) && books[bookCode].hasOwnProperty(chapter)) {
         setVideos(books[bookCode][chapter]);
         setMessage("");
       } else {
-        setVideos([]);
-        setMessage("No sign bible available for this Book");
+        setVideos();
+        setMessage(`No sign bible available for ${book} ${chapter}`);
       }
     }
-  }, [signBible, bookCode, chapter]);
+  }, [signBible, bookCode, chapter, book]);
 
   
   return (
@@ -98,9 +98,8 @@ const Signbible = (props) => {
         </Box>
       </Box>
       <div className={classes.container}>
-        {videos && videos.length > 0 ? (
-          <div>
-            {videos?.map((video, i) => {
+      <>
+            {videos && videos?.map((video, i) => {
               return (
                 <Card className={classes.video} key={i}>
                   <ReactPlayer url={video["url"]} controls={true} />
@@ -117,13 +116,14 @@ const Signbible = (props) => {
                   </CardContent>
                 </Card>
               );
-            })}
-          </div>
-        ) : (
+            })
+            }
+            {
             message && <h5 className={classes.message}>{message}</h5>
-        )}
+        }
+          </>
       </div>
     </div>
   );
 };
-export default Signbible;
+export default SignBible;
