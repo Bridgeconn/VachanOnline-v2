@@ -43,7 +43,15 @@ const useStyles = makeStyles((theme) => ({
   playStore: {
     width: "25%",
     margin: "0 7%",
+    maxWidth: 280,
     display: "inline-block",
+    [theme.breakpoints.down("sm")]: {
+      width: "50%",
+      margin: "15px 7%",
+    },
+    [theme.breakpoints.down("md")]: {
+      width: "30%",
+    },
   },
   screenshotDiv: {
     textAlign: "center",
@@ -56,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     "& li": {
       paddingTop: 10,
       fontSize: "1.3rem",
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("md")]: {
         fontSize: "1.3em",
       },
     },
@@ -65,6 +73,9 @@ const useStyles = makeStyles((theme) => ({
     margin: 15,
     marginBottom: 30,
     width: "calc(100% - 30px)",
+    [theme.breakpoints.down("md")]: {
+      marginTop: -30,
+    },
   },
   imageRow: {
     margin: "0 12px 90px",
@@ -75,17 +86,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     paddingLeft: 30,
   },
-  storeLink:{
-    textAlign:"center",
-    [theme.breakpoints.up("sm")]: {
-      display:"none",
+  storeLinkMobile: {
+    textAlign: "center",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
     },
   },
-  storeLink2:{
+  storeLinkPC: {
     [theme.breakpoints.down("sm")]: {
-      display:"none",
+      display: "none",
     },
-  }
+  },
 }));
 
 const Landing = () => {
@@ -115,7 +126,7 @@ const Landing = () => {
       {!mobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
       <Banner language={language} />
       <BibleIndex />
-      <div className={classes.storeLink}>{addLink()}</div>
+      <div className={classes.storeLinkMobile}>{addLink()}</div>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item xs={12} md={6}>
           <Typography variant="h6" className={classes.text}>
@@ -148,7 +159,7 @@ const Landing = () => {
               alt="Screenshot"
               className={classes.screenshot}
             />
-          <div className={classes.storeLink2}>{addLink()}</div>
+            <div className={classes.storeLinkPC}>{addLink()}</div>
           </div>
         </Grid>
       </Grid>

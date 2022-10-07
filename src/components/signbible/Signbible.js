@@ -68,20 +68,26 @@ const SignBible = (props) => {
   let { bookCode, book, chapter, signBible } = props;
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
+  const [playing, setPlaying] = useState("");
+
   useEffect(() => {
     if (signBible && bookCode) {
       let books = signBible["books"];
-      if (books && books.hasOwnProperty(bookCode) && books[bookCode].hasOwnProperty(chapter)) {
+      if (
+        books &&
+        books.hasOwnProperty(bookCode) &&
+        books[bookCode].hasOwnProperty(chapter)
+      ) {
         setVideos(books[bookCode][chapter]);
         setMessage("");
       } else {
         setVideos();
         setMessage(`No sign bible available for ${book} ${chapter}`);
       }
+      setPlaying();
     }
   }, [signBible, bookCode, chapter, book]);
 
-  
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -98,11 +104,17 @@ const SignBible = (props) => {
         </Box>
       </Box>
       <div className={classes.container}>
-      <>
-            {videos && videos?.map((video, i) => {
+        <>
+          {videos &&
+            videos?.map((video, i) => {
               return (
                 <Card className={classes.video} key={i}>
-                  <ReactPlayer url={video["url"]} controls={true} />
+                  <ReactPlayer
+                    playing={playing === video["url"]}
+                    onPlay={() => setPlaying(video["url"])}
+                    url={video["url"]}
+                    controls={true}
+                  />
                   <CardContent>
                     <Typography
                       gutterBottom
@@ -116,12 +128,9 @@ const SignBible = (props) => {
                   </CardContent>
                 </Card>
               );
-            })
-            }
-            {
-            message && <h5 className={classes.message}>{message}</h5>
-        }
-          </>
+            })}
+          {message && <h5 className={classes.message}>{message}</h5>}
+        </>
       </div>
     </div>
   );
