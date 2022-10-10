@@ -176,7 +176,7 @@ const ReadBible = (props) => {
   }, [readingPlans.length, setValue]);
   React.useEffect(() => {
     //if sign bible not loaded fetch sign bible
-    if (signBible.length === 0) {
+    if (signBible.length === 0 ) {
       getSignBible(setValue);
     }
   }, [signBible.length, setValue]);
@@ -186,10 +186,10 @@ const ReadBible = (props) => {
     }
   }, [parallelView, copyPanel1]);
   React.useEffect(() => {
-    if (uid === null) {
+    if (uid === null && parallelView !== views.SIGNBIBLE) {
       setValue("parallelView", "");
     }
-  }, [setValue, uid]);
+  }, [parallelView, setValue, uid]);
   const [pane, setPane] = React.useState("");
   //Set book object on change  of pane 1 for display in notes
   React.useEffect(() => {

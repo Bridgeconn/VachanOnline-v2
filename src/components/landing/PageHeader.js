@@ -73,6 +73,7 @@ const PageHeader = (props) => {
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   let { login, userDetails, setParallelView } = props;
 
 
@@ -93,7 +94,7 @@ const PageHeader = (props) => {
               )}
             </Link>
           </div>
-          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined && mobile === false ? (
             <Badge
               className={classes.islBadge}
               color="secondary"
@@ -116,7 +117,7 @@ const PageHeader = (props) => {
                   rel="noopener"
                   onClick={() => setParallelView(SIGNBIBLE)}
                 >
-                  {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+                  {mobileLandscape === true ? "ISL" : "Sign Language (ISL) Bible"}
                 </Button>
               </Link>
             </Badge>
@@ -135,7 +136,7 @@ const PageHeader = (props) => {
                 target="_blank"
                 rel="noopener"
               >
-                {mobile === true ? "Stories" : "Bible Stories"}{" "}
+                {mobileLandscape === true ? "Stories" : "Bible Stories"}{" "}
               </Button>
             </Link>
           ) : (

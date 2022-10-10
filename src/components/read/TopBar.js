@@ -103,6 +103,7 @@ const TopBar = (props) => {
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   let { login, userDetails, setParallelView } = props;
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
@@ -121,7 +122,7 @@ const TopBar = (props) => {
               )}
             </Link>
           </div>
-          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined && mobile === false ? (
             <Badge className = {classes.islBadge} color="secondary" variant="dot" badgeContent={isFeatureNew('12-01-2022')}>
               {window.location.pathname.startsWith("/biblestories") ? (
                 <Link to="/read">
@@ -136,7 +137,7 @@ const TopBar = (props) => {
                     rel="noopener"
                     onClick={() => setParallelView(SIGNBIBLE)}
                   >
-                    {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+                    {mobileLandscape === true ? "ISL" : "Sign Language (ISL) Bible"}
                   </Button>
                 </Link>
               ) : (
@@ -151,7 +152,7 @@ const TopBar = (props) => {
                   rel="noopener"
                   onClick={() => setParallelView(SIGNBIBLE)}
                 >
-                  {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+                  {mobileLandscape === true ? "ISL" : "Sign Language (ISL) Bible"}
                 </Button>
               )}
             </Badge>
@@ -171,7 +172,7 @@ const TopBar = (props) => {
                   target="_blank"
                   rel="noopener"
                 >
-                  {mobile === true ? "Stories" : "Bible Stories"}
+                  {mobileLandscape === true ? "Stories" : "Bible Stories"}
                 </Button>
               </Link>
             ) : (
@@ -193,7 +194,7 @@ const TopBar = (props) => {
               </Button>
             </Link>
           )}
-          {mobile === true ? (
+          {mobileLandscape === true ? (
             ""
           ) : (
             <Tooltip title="Feedback">
