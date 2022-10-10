@@ -17,6 +17,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import Badge from "@material-ui/core/Badge";
+import { isFeatureNew } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,6 +86,16 @@ const useStyles = makeStyles((theme) => ({
       color: "#d0d0d0",
     },
   },
+  signBible: {
+    color: "#e0e0e0",
+    marginTop: 2,
+    "&:hover": {
+      color: "#d0d0d0",
+    },
+  },
+  islBadge:{
+    marginRight:8,
+  }
 }));
 
 const TopBar = (props) => {
@@ -91,11 +103,10 @@ const TopBar = (props) => {
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  let { login, userDetails,setParallelView } = props;
+  let { login, userDetails, setParallelView } = props;
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
-
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
@@ -110,34 +121,43 @@ const TopBar = (props) => {
               )}
             </Link>
           </div>
-          {window.location.pathname.startsWith("/biblestories") ? (
-          <Link to="/read">
-          <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                className={classes.stories}
-                title="Sign Language Bible"
-                aria-label="sign language bible"
-                target="_blank"
-                rel="noopener"
-                onClick={()=>setParallelView(SIGNBIBLE)}
-              >
-                {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
-              </Button></Link>):(<Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                className={classes.stories}
-                title="Sign Language Bible"
-                aria-label="sign language bible"
-                target="_blank"
-                rel="noopener"
-                onClick={()=>setParallelView(SIGNBIBLE)}
-              >
-                {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
-              </Button>
+          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+            <Badge className = {classes.islBadge} color="secondary" variant="dot" badgeContent={isFeatureNew('12-01-2022')}>
+              {window.location.pathname.startsWith("/biblestories") ? (
+                <Link to="/read">
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    className={classes.signBible}
+                    title="Sign Language Bible"
+                    aria-label="sign language bible"
+                    target="_blank"
+                    rel="noopener"
+                    onClick={() => setParallelView(SIGNBIBLE)}
+                  >
+                    {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.signBible}
+                  title="Sign Language Bible"
+                  aria-label="sign language bible"
+                  target="_blank"
+                  rel="noopener"
+                  onClick={() => setParallelView(SIGNBIBLE)}
+                >
+                  {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+                </Button>
               )}
+            </Badge>
+          ) : (
+            ""
+          )}
           {window.location.pathname.startsWith("/read") ? (
             process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
               <Link to="/biblestories">
@@ -206,5 +226,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-
-export default connect(null,mapDispatchToProps)(TopBar);
+export default connect(null, mapDispatchToProps)(TopBar);

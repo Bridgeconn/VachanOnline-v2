@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Login from "../login/Login";
+import Badge from "@material-ui/core/Badge";
 import LoginMenu from "../login/LoginMenu";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
@@ -13,6 +14,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import * as actions from "../../store/actions";
+import { isFeatureNew } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +45,16 @@ const useStyles = makeStyles((theme) => ({
       color: "#d0d0d0",
     },
   },
+  signBible: {
+    color: "#e0e0e0",
+    marginTop: 2,
+    "&:hover": {
+      color: "#d0d0d0",
+    },
+  },
+  islBadge: {
+    marginRight: 8,
+  },
   legacySite: {
     textTransform: "unset",
     fontSize: "1.2rem",
@@ -61,8 +73,9 @@ const PageHeader = (props) => {
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  let { login, userDetails,setParallelView } = props;
-  
+  let { login, userDetails, setParallelView } = props;
+
+
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
@@ -80,23 +93,36 @@ const PageHeader = (props) => {
               )}
             </Link>
           </div>
-          <Link to = {{
-            pathname: "/read",
-          }}>
-          <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                className={classes.stories}
-                title="Sign Language Bible"
-                aria-label="sign language bible"
-                target="_blank"
-                rel="noopener"
-                onClick={()=>setParallelView(SIGNBIBLE)}
+          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+            <Badge
+              className={classes.islBadge}
+              color="secondary"
+              variant="dot"
+              badgeContent={isFeatureNew('12-01-2022')}
+            >
+              <Link
+                to={{
+                  pathname: "/read",
+                }}
               >
-                {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
-              </Button>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.signBible}
+                  title="Sign Language Bible"
+                  aria-label="sign language bible"
+                  target="_blank"
+                  rel="noopener"
+                  onClick={() => setParallelView(SIGNBIBLE)}
+                >
+                  {mobile === true ? "ISL" : "Sign Language (ISL) Bible"}
+                </Button>
               </Link>
+            </Badge>
+          ) : (
+            ""
+          )}
           {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
             <Link to="/biblestories">
               <Button

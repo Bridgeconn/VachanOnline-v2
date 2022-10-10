@@ -37,9 +37,9 @@ export default function BibleMenu() {
         />
         <MenuItem icon="comment" title="Commentaries" item={views.COMMENTARY} />
         <MenuItem
-          icon="format_shapes"
-          title="Dictionaries"
-          item={views.DICTIONARY}
+          icon="sign_language"
+          title="ISL Bible"
+          item={views.SIGNBIBLE}
         />
         <MenuItem icon="image" title="Infographics" item={views.INFOGRAPHICS} />
         <MenuItem icon="volume_up" title="Audio Bible" item={views.AUDIO} />
@@ -49,6 +49,11 @@ export default function BibleMenu() {
           title="Reading Plans"
           item={views.READINGPLANS}
         />
+        <MenuItem
+          icon="format_shapes"
+          title="Dictionaries"
+          item={views.DICTIONARY}
+        />
         <MenuItem icon="bookmark" title="Bookmarks" item={views.BOOKMARK} />
         <MenuItem
           icon="border_color"
@@ -56,13 +61,6 @@ export default function BibleMenu() {
           item={views.HIGHLIGHT}
         />
         <MenuItem icon="note" title="Notes" item={views.NOTE} />
-        <MenuItem
-          icon="sign_language"
-          title="ISL Bible"
-          item={views.SIGNBIBLE}
-        />
-        {/* <MenuItem icon="functions" title="Interlinear" />
-        <MenuItem icon="more_horiz" title="More" /> */}
       </List>
     </div>
   );

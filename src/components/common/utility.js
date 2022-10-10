@@ -256,3 +256,9 @@ export const getSignBible = (setValue) => {
     console.log(error);
   });
 }
+
+export const isFeatureNew = (featureDate) => {
+  let varDate = new Date(featureDate);
+  let today = new Date();
+  return varDate >= today ? 1 : 0;
+};
