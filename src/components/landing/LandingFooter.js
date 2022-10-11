@@ -117,7 +117,7 @@ const LandingFooter = (props) => {
             color="inherit"
             className={classes.feedback}
             startIcon={<FeedbackIcon />}
-            href="https://docs.google.com/forms/d/e/1FAIpQLSd75swOEtsvWrzcQrynmCsu-ZZYktWbeeJXVxH7zNz-JIlEdA/viewform?usp=sf_link"
+            href="https://forms.office.com/r/qiV0Ym335M"
             target="_blank"
             rel="noopener"
           >

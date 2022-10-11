@@ -14,6 +14,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { BLUE } from "../../store/colorCode";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { SIGNBIBLE } from "../../store/views";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
+import Badge from "@material-ui/core/Badge";
+import { isFeatureNew } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,18 +78,36 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  stories: {
+    color: "#e0e0e0",
+    marginRight: 4,
+    marginTop: 2,
+    "&:hover": {
+      color: "#d0d0d0",
+    },
+  },
+  signBible: {
+    color: "#e0e0e0",
+    marginTop: 2,
+    "&:hover": {
+      color: "#d0d0d0",
+    },
+  },
+  islBadge:{
+    marginRight:8,
+  }
 }));
 
-export default function TopBar({ login, userDetails }) {
+const TopBar = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
+  let { login, userDetails, setParallelView } = props;
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
-
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
@@ -99,6 +122,43 @@ export default function TopBar({ login, userDetails }) {
               )}
             </Link>
           </div>
+          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined && mobile === false ? (
+            <Badge className = {classes.islBadge} color="secondary" variant="dot" badgeContent={isFeatureNew('12-01-2022')}>
+              {window.location.pathname.startsWith("/biblestories") ? (
+                <Link to="/read">
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    className={classes.signBible}
+                    title="Sign Language Bible"
+                    aria-label="sign language bible"
+                    target="_blank"
+                    rel="noopener"
+                    onClick={() => setParallelView(SIGNBIBLE)}
+                  >
+                    {mobileLandscape === true ? "ISL" : "Sign Language (ISL) Bible"}
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.signBible}
+                  title="Sign Language Bible"
+                  aria-label="sign language bible"
+                  target="_blank"
+                  rel="noopener"
+                  onClick={() => setParallelView(SIGNBIBLE)}
+                >
+                  {mobileLandscape === true ? "ISL" : "Sign Language (ISL) Bible"}
+                </Button>
+              )}
+            </Badge>
+          ) : (
+            ""
+          )}
           {window.location.pathname.startsWith("/read") ? (
             process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
               <Link to="/biblestories">
@@ -112,7 +172,7 @@ export default function TopBar({ login, userDetails }) {
                   target="_blank"
                   rel="noopener"
                 >
-                  {mobile === true ? "Stories" : "Bible Stories"}
+                  {mobileLandscape === true ? "Stories" : "Bible Stories"}
                 </Button>
               </Link>
             ) : (
@@ -134,14 +194,14 @@ export default function TopBar({ login, userDetails }) {
               </Button>
             </Link>
           )}
-          {mobile === true ? (
+          {mobileLandscape === true ? (
             ""
           ) : (
             <Tooltip title="Feedback">
               <IconButton
                 aria-label="feedback"
                 className={classes.feedback}
-                href="https://docs.google.com/forms/d/e/1FAIpQLSd75swOEtsvWrzcQrynmCsu-ZZYktWbeeJXVxH7zNz-JIlEdA/viewform?usp=sf_link"
+                href="https://forms.office.com/r/qiV0Ym335M"
                 target="_blank"
                 rel="noopener"
               >
@@ -154,4 +214,17 @@ export default function TopBar({ login, userDetails }) {
       </AppBar>
     </div>
   );
-}
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setParallelView: (value) =>
+      dispatch({
+        type: actions.SETVALUE,
+        name: "parallelView",
+        value: value,
+      }),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(TopBar);

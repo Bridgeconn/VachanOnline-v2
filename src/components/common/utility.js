@@ -1,4 +1,4 @@
-import { readingPlanAPI, API } from "../../store/api";
+import { readingPlanAPI,signBibleAPI, API } from "../../store/api";
 import { bibleBooks } from "../../store/bibleData";
 //Function to get the bible versions
 export const getVersions = (
@@ -244,4 +244,21 @@ export const getReadingPlans = (setValue) => {
     .catch(function (error) {
       console.log(error);
     });
+};
+
+export const getSignBible = (setValue) => {
+  signBibleAPI
+  .get('ISL.json')
+  .then(function(response){
+    setValue("signBible", response.data)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
+
+export const isFeatureNew = (featureDate) => {
+  let varDate = new Date(featureDate);
+  let today = new Date();
+  return varDate >= today ? 1 : 0;
 };

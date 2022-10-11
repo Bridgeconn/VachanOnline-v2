@@ -107,7 +107,7 @@ const Audio = (props) => {
   const [playing, setPlaying] = useState("");
   const [book, setBook] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (languages.length) {
       let lang = audioBible?.find((l) => l?.language?.code === languageCode);
       //If audio bible not available for bible set first language
@@ -140,6 +140,10 @@ const Audio = (props) => {
       setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
     }
   }, [language, audioBible, bookCode, books]);
+  useEffect(() => {
+    setPlaying("");
+  }, [bookCode, chapter, languageCode]);
+
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
