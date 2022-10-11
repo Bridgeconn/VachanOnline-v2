@@ -6,6 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import ReactPlayer from "react-player";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +71,9 @@ const SignBible = (props) => {
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
   const [playing, setPlaying] = useState("");
-
+  const theme = useTheme();
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
+  const heading = mobileLandscape ? "ISL" : "Sign Language Bible (ISL)";
   useEffect(() => {
     if (signBible && bookCode) {
       let books = signBible["books"];
@@ -92,7 +96,7 @@ const SignBible = (props) => {
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Sign Bible (ISL)</Typography>
+          <Typography variant="h6">{heading}</Typography>
         </Box>
         <Box flexGrow={1}>
           <Typography variant="h6">
