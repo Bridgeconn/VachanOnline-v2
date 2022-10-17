@@ -15,6 +15,7 @@ const defaultState = {
   audioBible: [],
   video: [],
   readingPlans: [],
+  signBible:[],
   playing: "",
   versionBooks: {},
   versionSource: {},

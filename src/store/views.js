@@ -9,3 +9,4 @@ export const HIGHLIGHT = "HIGHLIGHT";
 export const NOTE = "NOTE";
 export const SEARCH = "SEARCH";
 export const READINGPLANS = "READINGPLANS";
+export const SIGNBIBLE = "SIGNBIBLE";

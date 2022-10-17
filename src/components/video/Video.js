@@ -88,10 +88,8 @@ const Video = (props) => {
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
     const youtu = "https://youtu.be/";
-    const vimeoUrl =
-      "https://raw.githubusercontent.com/Bridgeconn/vachancontentrepository/master/video/vimeo/";
+    const vimeoUrl = process.env.REACT_APP_VIDEO_URL +"vimeo/";
     const youtubeUrl = "https://img.youtube.com/vi/";
-
     const source = url.includes("vimeo") ? "vimeo" : "youtube";
     const id = source === "vimeo" ? url.split(vimeo)[1] : url.split(youtu)[1];
     const thumbUrl = source === "vimeo" ? vimeoUrl : youtubeUrl;
@@ -160,7 +158,7 @@ const Video = (props) => {
             />
           )}
         </Box>
-        <Box className={classes.icons}>
+        <Box>
           <Close className={classes.closeButton} />
         </Box>
       </Box>
