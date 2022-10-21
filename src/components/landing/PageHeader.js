@@ -76,7 +76,6 @@ const PageHeader = (props) => {
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   let { login, userDetails, setParallelView } = props;
 
-
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
@@ -94,12 +93,13 @@ const PageHeader = (props) => {
               )}
             </Link>
           </div>
-          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined && mobile === false ? (
+          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined &&
+          mobile === false ? (
             <Badge
               className={classes.islBadge}
               color="secondary"
               variant="dot"
-              badgeContent={isFeatureNew('12-01-2022')}
+              badgeContent={isFeatureNew("12-01-2022")}
             >
               <Link
                 to={{
@@ -117,7 +117,9 @@ const PageHeader = (props) => {
                   rel="noopener"
                   onClick={() => setParallelView(SIGNBIBLE)}
                 >
-                  {mobileLandscape === true ? "ISLV" : "Sign Language (ISLV) Bible"}
+                  {mobileLandscape === true
+                    ? "ISLV"
+                    : "Sign Language Bible (ISLV)"}
                 </Button>
               </Link>
             </Badge>
@@ -166,4 +168,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(PageHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(PageHeader);

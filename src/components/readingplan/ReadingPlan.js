@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Plans = (props) => {
+const ReadingPlan = (props) => {
   const classes = useStyles();
   const { setValue1, bookList, readingPlans } = props;
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -146,10 +146,7 @@ const Plans = (props) => {
     }
   };
 
-  const API = useMemo(
-    () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_PLANS_URL }),
-    []
-  );
+  const API = useMemo(() => axios.create({ baseURL: process.env.REACT_APP_BIBLE_PLANS_URL }), []);
   useEffect(() => {
     if (readingPlans) {
       setPlans(readingPlans);
@@ -271,4 +268,4 @@ const Plans = (props) => {
     </div>
   );
 };
-export default Plans;
+export default ReadingPlan;
