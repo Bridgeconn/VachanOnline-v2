@@ -73,7 +73,7 @@ const SignBible = (props) => {
   const [playing, setPlaying] = useState("");
   const theme = useTheme();
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  const heading = mobileLandscape ? "ISL" : "Sign Language Bible (ISL)";
+  const heading = mobileLandscape ? "ISLV" : "Sign Language Bible (ISLV)";
   useEffect(() => {
     if (signBible && bookCode) {
       let books = signBible["books"];

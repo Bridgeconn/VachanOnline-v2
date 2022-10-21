@@ -118,8 +118,8 @@ const PageHeader = (props) => {
                   onClick={() => setParallelView(SIGNBIBLE)}
                 >
                   {mobileLandscape === true
-                    ? "ISL"
-                    : "Sign Language Bible (ISL)"}
+                    ? "ISLV"
+                    : "Sign Language Bible (ISLV)"}
                 </Button>
               </Link>
             </Badge>
