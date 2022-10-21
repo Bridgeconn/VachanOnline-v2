@@ -92,7 +92,7 @@ const SignBible = (props) => {
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Sign Bible (ISL)</Typography>
+          <Typography variant="h6">Sign Bible (ISLV)</Typography>
         </Box>
         <Box flexGrow={1}>
           <Typography variant="h6">
