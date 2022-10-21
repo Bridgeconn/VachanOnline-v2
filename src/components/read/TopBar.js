@@ -112,7 +112,7 @@ const TopBar = (props) => {
           rel="noopener"
           onClick={() => setParallelView(SIGNBIBLE)}
         >
-          {mobileLandscape === true ? "ISL" : "Sign Language Bible (ISL)"}
+          {mobileLandscape === true ? "ISLV" : "Sign Language Bible (ISLV)"}
         </Button>
       );
     };
