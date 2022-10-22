@@ -36,11 +36,15 @@ export default function BibleMenu() {
           item={views.PARALLELBIBLE}
         />
         <MenuItem icon="comment" title="Commentaries" item={views.COMMENTARY} />
-        {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? <MenuItem
-          icon="sign_language"
-          title="ISL Bible"
-          item={views.SIGNBIBLE}
-        />:""}
+        {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+          <MenuItem
+            icon="sign_language"
+            title="ISLV Bible"
+            item={views.SIGNBIBLE}
+          />
+        ) : (
+          ""
+        )}
         <MenuItem icon="image" title="Infographics" item={views.INFOGRAPHICS} />
         <MenuItem icon="volume_up" title="Audio Bible" item={views.AUDIO} />
         <MenuItem icon="videocam" title="Videos" item={views.VIDEO} />
