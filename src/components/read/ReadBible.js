@@ -439,6 +439,8 @@ const ReadBible = (props) => {
                 bookCode={panel1.bookCode}
                 chapter={panel1.chapter}
                 book={bookObject.short}
+                setValue={setValue1}
+                versions={versions}
               />
             </div>
           </>

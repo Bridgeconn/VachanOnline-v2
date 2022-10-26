@@ -116,6 +116,7 @@ const PageHeader = (props) => {
                   target="_blank"
                   rel="noopener"
                   onClick={() => setParallelView(SIGNBIBLE)}
+                  startIcon={<i className="material-icons">sign_language</i>}
                 >
                   {mobileLandscape === true
                     ? "ISLV"
