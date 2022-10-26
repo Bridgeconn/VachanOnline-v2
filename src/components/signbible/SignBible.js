@@ -47,9 +47,12 @@ const useStyles = makeStyles((theme) => ({
   },
   video: {
     padding: 0,
-    margin: "0 2% 2% 0",
     display: "inline-block",
     verticalAlign: "top",
+    width: "100%",
+    marginBlockStart: 10,
+    maxHeight: "80vh",
+    boxSizing: "content-box",
   },
   title: {
     paddingTop: 4,
@@ -67,13 +70,38 @@ const useStyles = makeStyles((theme) => ({
 }));
 const SignBible = (props) => {
   const classes = useStyles();
-  let { bookCode, book, chapter, signBible } = props;
+  let { bookCode, book, chapter, signBible, setValue, versions } = props;
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
   const [playing, setPlaying] = useState("");
   const theme = useTheme();
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   const heading = mobileLandscape ? "ISLV" : "Sign Language Bible (ISLV)";
+
+  useEffect(() => {
+    if (versions.length > 0) {
+      //Set default version to english for ISL
+      let version = versions[0].languageVersions[0];
+      try {
+        version = versions
+          .find((e) => e.language === "english")
+          .languageVersions.find((e) => e.version.code === "ESV");
+        if (version) {
+          setValue(
+            "version",
+            version.language.code + "-" + version.version.code.toUpperCase()
+          );
+          setValue("sourceId", version.sourceId);
+          setValue("languageCode", version.version.code.toLowerCase());
+        }
+      } catch (e) {
+        //English ESV version not available
+      }
+    }
+    //Set to mark 1 as only Mark and Titus are available now
+    setValue("bookCode", "mrk");
+    setValue("chapter", 1);
+  }, [setValue, versions]);
   useEffect(() => {
     if (signBible && bookCode) {
       let books = signBible["books"];
@@ -86,7 +114,9 @@ const SignBible = (props) => {
         setMessage("");
       } else {
         setVideos();
-        setMessage(`No sign bible available for ${book} ${chapter}`);
+        setMessage(
+          `Sign Language Bible available for Mark and Titus. Use the book dropdown in the left panel to navigate.`
+        );
       }
       setPlaying();
     }
@@ -118,6 +148,8 @@ const SignBible = (props) => {
                     onPlay={() => setPlaying(video["url"])}
                     url={video["url"]}
                     controls={true}
+                    width="100%"
+                    style={{ maxHeight: "calc(100vh - 150px)" }}
                   />
                   <CardContent>
                     <Typography
