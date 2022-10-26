@@ -115,7 +115,7 @@ const SignBible = (props) => {
       } else {
         setVideos();
         setMessage(
-          `Sign Language Bible available for Mark and Titus. Use the book dropdown in the left panel to navigate.`
+          `Sign Language Bible available only for Mark and Titus. Use the book dropdown in the left panel to navigate.`
         );
       }
       setPlaying();
