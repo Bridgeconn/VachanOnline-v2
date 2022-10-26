@@ -10,7 +10,7 @@ import BiblePane from "./BiblePane";
 import Commentary from "../commentary/Commentary";
 import Dictionary from "../dictionary/Dictionary";
 import Infographics from "../infographics/Infographics";
-import Plans from "../readingplans/Readingplans";
+import ReadingPlan from "../readingplan/ReadingPlan";
 import Audio from "../audio/Audio";
 import Video from "../video/Video";
 import Bookmarks from "../bookmark/Bookmarks";
@@ -19,6 +19,7 @@ import Notes from "../note/Notes";
 import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
 import { BLUE, BLUETRANSPARENT } from "../../store/colorCode";
+import SignBible from "../signbible/SignBible";
 import {
   getCommentaries,
   getDictionaries,
@@ -26,6 +27,7 @@ import {
   getVideos,
   getReadingPlans,
   getBookbyCode,
+  getSignBible,
 } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
@@ -103,6 +105,7 @@ const ReadBible = (props) => {
     audioBible,
     video,
     readingPlans,
+    signBible,
     parallelScroll,
     login,
     userDetails,
@@ -172,15 +175,26 @@ const ReadBible = (props) => {
     }
   }, [readingPlans.length, setValue]);
   React.useEffect(() => {
+    //if sign bible not loaded fetch sign bible
+    if (
+      signBible.length === 0 &&
+      process.env.REACT_APP_SIGNBIBLE_URL !== undefined
+    ) {
+      getSignBible(setValue);
+    }
+  }, [signBible.length, setValue]);
+  React.useEffect(() => {
     if (parallelView === views.PARALLELBIBLE) {
       copyPanel1();
     }
   }, [parallelView, copyPanel1]);
   React.useEffect(() => {
-    if (uid === null) {
+    const userPanels = [views.BOOKMARK, views.HIGHLIGHT, views.NOTE];
+    //if user is on these pages and logs out, close parallel view
+    if (uid === null && userPanels.includes(parallelView)) {
       setValue("parallelView", "");
     }
-  }, [setValue, uid]);
+  }, [parallelView, setValue, uid]);
   const [pane, setPane] = React.useState("");
   //Set book object on change  of pane 1 for display in notes
   React.useEffect(() => {
@@ -403,11 +417,28 @@ const ReadBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.biblePane2}>
-              <Plans
+              <ReadingPlan
                 readingPlans={readingPlans}
                 bookList={versionBooks[versionSource[panel1.sourceId]]}
                 setValue1={setValue1}
                 versesSelected={panel1.versesSelected}
+              />
+            </div>
+          </>
+        );
+        break;
+      case views.SIGNBIBLE:
+        setPane(
+          <>
+            <div className={classes.biblePane2}>
+              <BiblePane setValue={setValue1} paneData={panel1} />
+            </div>
+            <div className={classes.biblePane2}>
+              <SignBible
+                signBible={signBible}
+                bookCode={panel1.bookCode}
+                chapter={panel1.chapter}
+                book={bookObject.short}
               />
             </div>
           </>
@@ -440,6 +471,7 @@ const ReadBible = (props) => {
     setValue2,
     video,
     readingPlans,
+    signBible,
     uid,
     versions,
     bookObject,
@@ -476,6 +508,7 @@ const mapStateToProps = (state) => {
     audioBible: state.local.audioBible,
     video: state.local.video,
     readingPlans: state.local.readingPlans,
+    signBible: state.local.signBible,
     login: state.local.login,
     userDetails: state.local.userDetails,
     parallelView: state.local.parallelView,

@@ -119,7 +119,48 @@ const AboutUs = ({ handleClose }) => {
         </Typography>
 
         <div className={classes.releaseNotes}>
-        <Typography variant="h6" className={classes.subheading}>
+          <Typography variant="h6" className={classes.subheading}>
+            Release Notes (17/10/2022) v1.3.3
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Feature Addition:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Sign Language Bible</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Enhancements:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Group bible book names by colour in dropdown</li>
+              <li>Landing page and mobile view UX improvements</li>
+              <li>
+                Add language dropdown in Infographics, audio bible, video panel
+              </li>
+              <li>Improve Bible panel styling</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Bug Fixes:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>UI Bug fixes</li>
+              <li>Show appropriate messages when content unavailable</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Operational Update:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Support Vimeo videos</li>
+            </ul>
+          </Typography>
+          <Typography variant="h6" className={classes.subheading}>
             Release Notes (06/11/2021) v1.3.2
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
@@ -127,7 +168,10 @@ const AboutUs = ({ handleClose }) => {
           </Typography>
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
-              <li>Print / Save to pdf of Bible chapters along with the notes and highlights</li>
+              <li>
+                Print / Save to pdf of Bible chapters along with the notes and
+                highlights
+              </li>
             </ul>
           </Typography>
           <Typography variant="h6" className={classes.subheading}>
@@ -369,7 +413,7 @@ const AboutUs = ({ handleClose }) => {
           Contact Us
         </Typography>
         <Typography variant="body1" component="div" gutterBottom>
-          {addLink("thevachanproject@gmail.com", "mailto:")}
+          {addLink("thevachanproject@bridgeconn.com", "mailto:")}
         </Typography>
       </DialogContent>
       <DialogActions>

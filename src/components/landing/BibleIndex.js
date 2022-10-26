@@ -10,7 +10,6 @@ import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import { BLUE } from "../../store/colorCode";
 import Tooltip  from "@material-ui/core/Tooltip";
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -103,7 +102,7 @@ const BibleIndex = (props) => {
         >
         <BigTooltip title = "Click here to read the Bible">
         <Button variant="contained" className={classes.button}>
-          <ArrowForwardIosIcon />
+          READ
         </Button>
           </BigTooltip>
         </Link>

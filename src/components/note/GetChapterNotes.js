@@ -40,5 +40,5 @@ export default function GetChapterNotes({
       setNoteText([]);
     }
   }, [notes, setNotes, setNoteText]);
-  return <div></div>;
+  return <></>;
 }
