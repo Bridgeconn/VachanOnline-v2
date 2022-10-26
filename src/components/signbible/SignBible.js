@@ -98,9 +98,12 @@ const SignBible = (props) => {
         //English ESV version not available
       }
     }
-    //Set to mark 1 as only Mark and Titus are available now
-    setValue("bookCode", "mrk");
-    setValue("chapter", 1);
+    if (!["mrk", "tit"].includes(bookCode)) {
+      //Set to mark 1 on page load as only Mark and Titus are available now
+      setValue("bookCode", "mrk");
+      setValue("chapter", 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue, versions]);
   useEffect(() => {
     if (signBible && bookCode) {
