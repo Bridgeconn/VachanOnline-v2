@@ -84,6 +84,7 @@ const MenuBar = (props) => {
     setPrintNotes,
     printHighlights,
     setPrintHighlights,
+    mobileView,
   } = props;
   function goFull() {
     setFullscreen(true);
@@ -262,31 +263,35 @@ const MenuBar = (props) => {
           )}
         </Box>
         <Box className={classes.items}>
-          {noteIcon}
-          {highlightIcon}
+          {mobileView ? null : noteIcon}
+          {mobileView ? null : highlightIcon}
           {bookmarkIcon}
           <Metadata
             metadataList={metadataList}
             title="Version Name (in Eng)"
             abbreviation="Abbreviation"
           ></Metadata>
-          {audioIcon}
-          <Tooltip title="Fullscreen">
-            <div onClick={goFull} className={classes.info}>
-              <i className="material-icons md-23">zoom_out_map</i>
-            </div>
-          </Tooltip>
-          <Tooltip title="Settings">
-            <div
-              className={classes.settings}
-              aria-label="More"
-              aria-controls="long-menu"
-              aria-haspopup="true"
-              onClick={openSettings}
-            >
-              <i className="material-icons md-23">more_vert</i>
-            </div>
-          </Tooltip>
+          {mobileView ? null : audioIcon}
+          {mobileView ? null : (
+            <Tooltip title="Fullscreen">
+              <div onClick={goFull} className={classes.info}>
+                <i className="material-icons md-23">zoom_out_map</i>
+              </div>
+            </Tooltip>
+          )}
+          {mobileView ? null : (
+            <Tooltip title="Settings">
+              <div
+                className={classes.settings}
+                aria-label="More"
+                aria-controls="long-menu"
+                aria-haspopup="true"
+                onClick={openSettings}
+              >
+                <i className="material-icons md-23">more_vert</i>
+              </div>
+            </Tooltip>
+          )}
           <Setting
             fontSize={fontSize}
             fontFamily={fontFamily}
@@ -315,6 +320,7 @@ const mapStateToProps = (state) => {
     userDetails: state.local.userDetails,
     versionSource: state.local.versionSource,
     parallelView: state.local.parallelView,
+    mobileView: state.local.mobileView,
   };
 };
 export default connect(mapStateToProps)(MenuBar);

@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import ParallelScroll from "@material-ui/icons/ImportExport";
 import Tooltip from "@material-ui/core/Tooltip";
 import { connect } from "react-redux";
@@ -29,6 +29,8 @@ import {
   getBookbyCode,
   getSignBible,
 } from "../common/utility";
+import { useMediaQuery } from "@material-ui/core";
+import BottomBar from "./BottomBar";
 
 const useStyles = makeStyles((theme) => ({
   biblePane1: {
@@ -84,6 +86,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const ReadBible = (props) => {
+  const theme = useTheme();
+  //if mobile then true, used to change layout
   const classes = useStyles();
   //ref to get bible panes 1 & 2
   const bibleText1 = React.useRef();
@@ -114,6 +118,7 @@ const ReadBible = (props) => {
     versionSource,
     syncPanel,
     parallelView,
+    mobileView,
   } = props;
   const { uid } = userDetails;
   //function for moving parallel bibles scroll together
@@ -143,6 +148,12 @@ const ReadBible = (props) => {
       }
     }
   }, []);
+
+  if (useMediaQuery(theme.breakpoints.only("xs"))) {
+    setValue("mobileView", true);
+  } else {
+    setValue("mobileView", false);
+  }
   //Fetch data from APIs
   React.useEffect(() => {
     //if commentaries not loaded fetch list of commentaries
@@ -150,6 +161,7 @@ const ReadBible = (props) => {
       getCommentaries(setValue);
     }
   }, [commentaries.length, setValue]);
+
   React.useEffect(() => {
     //if dictionaries not loaded fetch list of dictionaries
     if (dictionaries.length === 0) {
@@ -493,6 +505,7 @@ const ReadBible = (props) => {
           <BibleMenu />
         </div>
       </div>
+      {mobileView ? <BottomBar /> : null}
     </>
   );
 };
@@ -512,6 +525,7 @@ const mapStateToProps = (state) => {
     readingPlans: state.local.readingPlans,
     signBible: state.local.signBible,
     login: state.local.login,
+    mobileView: state.local.mobileView,
     userDetails: state.local.userDetails,
     parallelView: state.local.parallelView,
   };

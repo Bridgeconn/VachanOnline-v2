@@ -17,8 +17,11 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import * as views from "../../store/views";
+
 import Badge from "@material-ui/core/Badge";
 import { isFeatureNew } from "../common/utility";
+import MenuItem from "./MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,6 +88,9 @@ const useStyles = makeStyles((theme) => ({
   islBadge: {
     marginRight: 8,
   },
+  iconMobileContainer: {
+    display: "flex",
+  },
 }));
 
 const TopBar = (props) => {
@@ -93,7 +99,7 @@ const TopBar = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  let { login, userDetails, setParallelView } = props;
+  let { login, userDetails, setParallelView, mobileView } = props;
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
@@ -199,17 +205,43 @@ const TopBar = (props) => {
             </Link>
           </div>
           {ISLButton()}
-          {window.location.pathname.startsWith("/read")
+          <div>
+            {mobileView ? (
+              process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+                <div className={classes.iconMobileContainer}>
+                  <MenuItem
+                    icon="sign_language"
+                    title="ISLV Bible"
+                    item={views.SIGNBIBLE}
+                  />
+                  <MenuItem
+                    icon="volume_up"
+                    title="Audio Bible"
+                    item={views.AUDIO}
+                  />
+                </div>
+              ) : (
+                ""
+              )
+            ) : null}
+          </div>
+          {mobileView
+            ? null
+            : window.location.pathname.startsWith("/read")
             ? BibleStoriesButton()
             : StudyBibleButton()}
           {FeedbackButton()}
-          {loginButton}
+          {mobileView ? BibleStoriesButton() : loginButton}
         </Toolbar>
       </AppBar>
     </div>
   );
 };
-
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: (value) =>
@@ -221,4 +253,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(TopBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
