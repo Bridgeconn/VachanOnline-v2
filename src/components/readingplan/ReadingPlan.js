@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
+import DateCalendar from "react-date-picker";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
@@ -49,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.only("xs")]: {
+      width: "100%",
+      padding: 10,
+    },
   },
   container: {
     width: "100%",
@@ -97,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ReadingPlan = (props) => {
   const classes = useStyles();
-  const { setValue1, bookList, readingPlans } = props;
+  const { setValue1, bookList, mobileView, readingPlans } = props;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [plans, setPlans] = useState([]);
   const [plan, setPlan] = useState("");
@@ -146,7 +151,10 @@ const ReadingPlan = (props) => {
     }
   };
 
-  const API = useMemo(() => axios.create({ baseURL: process.env.REACT_APP_BIBLE_PLANS_URL }), []);
+  const API = useMemo(
+    () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_PLANS_URL }),
+    []
+  );
   useEffect(() => {
     if (readingPlans) {
       setPlans(readingPlans);
@@ -198,11 +206,19 @@ const ReadingPlan = (props) => {
         </Box>
       </Box>
       <Box className={classes.main}>
-        <Calendar
-          className={classes.calendar}
-          onChange={(date) => setSelectedDate(date)}
-          value={selectedDate}
-        />
+        {mobileView ? (
+          <DateCalendar
+            className={classes.calendar}
+            onChange={(date) => setSelectedDate(date)}
+            value={selectedDate}
+          />
+        ) : (
+          <Calendar
+            className={classes.calendar}
+            onChange={(date) => setSelectedDate(date)}
+            value={selectedDate}
+          />
+        )}
         <div className={classes.container}>
           <Box className={classes.heading}>
             <Box flexGrow={1}>

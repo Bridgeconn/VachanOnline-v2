@@ -41,10 +41,23 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
   },
-  biblePane2: {
+  splitPane1: {
     position: "absolute",
-    width: "50%",
-    height: "100%",
+    top: (props) => (props.mobileView ? "40vh" : 0),
+    width: (props) => (props.mobileView ? "100%" : "50%"),
+    height: (props) => (props.mobileView ? "50%" : "100%"),
+    backgroundColor: "#fff",
+    borderRight: "1px solid #f7f7f7",
+    overflow: "hidden",
+    "&:nth-child(2)": {
+      right: 0,
+      backgroundColor: "#fff",
+    },
+  },
+  splitPane2: {
+    position: "absolute",
+    width: (props) => (props.mobileView ? "100%" : "50%"),
+    height: (props) => (props.mobileView ? "50%" : "100%"),
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
@@ -83,12 +96,14 @@ const useStyles = makeStyles((theme) => ({
     top: 86,
     left: "calc(50% - 18px)",
     zIndex: 1,
+    [theme.breakpoints.only("xs")]: {
+      left: "20%",
+    },
   },
 }));
 const ReadBible = (props) => {
   const theme = useTheme();
-  //if mobile then true, used to change layout
-  const classes = useStyles();
+
   //ref to get bible panes 1 & 2
   const bibleText1 = React.useRef();
   const bibleText2 = React.useRef();
@@ -120,6 +135,11 @@ const ReadBible = (props) => {
     parallelView,
     mobileView,
   } = props;
+  const styleProps = {
+    mobileView: mobileView,
+  };
+  //if mobile then true, used to change layout
+  const classes = useStyles(styleProps);
   const { uid } = userDetails;
   //function for moving parallel bibles scroll together
   const scroll = React.useCallback((paneNo, parallelScroll) => {
@@ -241,10 +261,10 @@ const ReadBible = (props) => {
       case views.SEARCH:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Search />
             </div>
           </>
@@ -253,7 +273,7 @@ const ReadBible = (props) => {
       case views.PARALLELBIBLE:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane
                 setValue={setValue1}
                 paneData={panel1}
@@ -282,7 +302,7 @@ const ReadBible = (props) => {
                   </Tooltip>
                 )}
               </div>
-              <div className={classes.biblePane2}>
+              <div className={classes.splitPane2}>
                 <BiblePane
                   setValue={setValue2}
                   paneData={panel2}
@@ -298,10 +318,10 @@ const ReadBible = (props) => {
       case views.COMMENTARY:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Commentary />
             </div>
           </>
@@ -310,10 +330,10 @@ const ReadBible = (props) => {
       case views.DICTIONARY:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Dictionary setDictionary={setDictionary} />
             </div>
           </>
@@ -322,10 +342,10 @@ const ReadBible = (props) => {
       case views.INFOGRAPHICS:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Infographics />
             </div>
           </>
@@ -334,10 +354,10 @@ const ReadBible = (props) => {
       case views.AUDIO:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Audio
                 audioBible={audioBible}
                 bookCode={panel1.bookCode}
@@ -352,10 +372,10 @@ const ReadBible = (props) => {
       case views.VIDEO:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Video
                 books={versionBooks}
                 video={video}
@@ -369,10 +389,10 @@ const ReadBible = (props) => {
       case views.BOOKMARK:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Bookmarks
                 uid={uid}
                 versions={versions}
@@ -386,10 +406,10 @@ const ReadBible = (props) => {
       case views.HIGHLIGHT:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Highlights
                 uid={uid}
                 versions={versions}
@@ -403,10 +423,10 @@ const ReadBible = (props) => {
       case views.NOTE:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Notes
                 uid={uid}
                 versions={versions}
@@ -425,15 +445,16 @@ const ReadBible = (props) => {
       case views.READINGPLANS:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <ReadingPlan
                 readingPlans={readingPlans}
                 bookList={versionBooks[versionSource[panel1.sourceId]]}
                 setValue1={setValue1}
                 versesSelected={panel1.versesSelected}
+                mobileView={mobileView}
               />
             </div>
           </>
@@ -442,10 +463,10 @@ const ReadBible = (props) => {
       case views.SIGNBIBLE:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <SignBible
                 signBible={signBible}
                 bookCode={panel1.bookCode}
@@ -495,6 +516,9 @@ const ReadBible = (props) => {
     getRegionalBookName,
     versionBooks,
     versionSource,
+    classes.splitPane1,
+    classes.splitPane2,
+    mobileView,
   ]);
   return (
     <>
@@ -505,7 +529,9 @@ const ReadBible = (props) => {
           <BibleMenu />
         </div>
       </div>
-      {mobileView ? <BottomBar /> : null}
+      {mobileView ? (
+        <BottomBar login={login} userDetails={userDetails} />
+      ) : null}
     </>
   );
 };

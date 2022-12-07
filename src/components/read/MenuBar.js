@@ -12,10 +12,12 @@ import Highlight from "../highlight/Highlight";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
 import BorderColor from "@material-ui/icons/BorderColor";
 import Note from "../note/Note";
+import PrintIcon from "@material-ui/icons/Print";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 import Close from "../common/Close";
+import Print from "../common/PrintBox";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -25,9 +27,14 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     position: "absolute",
     height: 61,
-    top: 72,
+    top: (props) =>
+      props.mobileView && props.paneNo === 2
+        ? 72
+        : 0 || props.mobileView
+        ? 72
+        : 72,
     [theme.breakpoints.only("xs")]: {
-      padding: "0 15px 0 15px",
+      padding: "0 5.5px",
     },
   },
 
@@ -57,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const MenuBar = (props) => {
-  const classes = useStyles();
   let {
     setValue,
     paneNo,
@@ -86,6 +92,12 @@ const MenuBar = (props) => {
     setPrintHighlights,
     mobileView,
   } = props;
+  const styleProps = {
+    mobileView: mobileView,
+    paneNo: paneNo,
+  };
+  const classes = useStyles(styleProps);
+
   function goFull() {
     setFullscreen(true);
   }
@@ -98,6 +110,7 @@ const MenuBar = (props) => {
   const [noteIcon, setNoteIcon] = React.useState("");
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
+  const [dialogOpen, setDialogOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (bookList) {
@@ -194,6 +207,12 @@ const MenuBar = (props) => {
     chapter,
     classes.info,
   ]);
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
   //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -272,14 +291,28 @@ const MenuBar = (props) => {
             abbreviation="Abbreviation"
           ></Metadata>
           {mobileView ? null : audioIcon}
-          {mobileView ? null : (
+          {mobileView ? (
+            <div className={classes.info} onClick={handleDialogOpen}>
+              <PrintIcon fontSize="small" />
+            </div>
+          ) : (
             <Tooltip title="Fullscreen">
               <div onClick={goFull} className={classes.info}>
                 <i className="material-icons md-23">zoom_out_map</i>
               </div>
             </Tooltip>
           )}
-          {mobileView ? null : (
+          {mobileView ? (
+            <div
+              className={classes.settings}
+              aria-label="More"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={openSettings}
+            >
+              <i className="material-icons md-23">settings</i>
+            </div>
+          ) : (
             <Tooltip title="Settings">
               <div
                 className={classes.settings}
@@ -310,6 +343,16 @@ const MenuBar = (props) => {
           {paneNo === 2 ? <Close /> : ""}
         </Box>
       </Box>
+      <Print
+        dialogOpen={dialogOpen}
+        handleDialogClose={handleDialogClose}
+        bookDisplay={bookDisplay}
+        printRef={printRef}
+        setPrintNotes={setPrintNotes}
+        setPrintHighlights={setPrintHighlights}
+        printNotes={printNotes}
+        chapter={chapter}
+      />
     </div>
   );
 };

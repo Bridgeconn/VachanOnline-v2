@@ -90,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     right: 10,
     bottom: 10,
+    [theme.breakpoints.only("xs")]: {
+      bottom: 1,
+    },
   },
   pageInfo: {
     display: "inline-block",

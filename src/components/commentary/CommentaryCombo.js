@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "30%",
+      width: "50%",
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),

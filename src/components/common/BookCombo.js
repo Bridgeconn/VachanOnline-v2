@@ -18,7 +18,7 @@ const BigTooltip = withStyles((theme) => ({
     backgroundColor: "#66a3ff",
     color: "#00003d",
     boxShadow: theme.shadows[4],
-    border: "1px solid #103f87" ,
+    border: "1px solid #103f87",
     fontSize: 16,
   },
 }))(Tooltip);
@@ -33,12 +33,16 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
       width: "60%",
+      padding: "6px 0",
     },
   },
   icon: {
     left: 3,
     position: "relative",
     width: 30,
+    [theme.breakpoints.only("xs")]: {
+      left: 0,
+    },
   },
   root: {
     width: "100%",
@@ -258,23 +262,27 @@ const BookCombo = ({
   };
   return (
     <>
-<BigTooltip title="Choose a Bible book and chapter to read">
-      <Button
-        aria-controls="customized-menu"
-        aria-haspopup="true"
-        variant="contained"
-        onClick={openCombo}
-        ref={bookDropdown}
-        style={landingPage && mobile ? { marginLeft: "20%" } : {}}
-        classes={{ root: classes.button }}
-      >
-        {minimal === true ? (
-          <div className={classes.bookName}>{`${bookDisplay}  ${chapter}`}</div>
-        ) : (
-          `${bookDisplay}  ${chapter}`
-        )}
-        <i className={`material-icons ${classes.icon}`}>keyboard_arrow_down</i>
-      </Button>
+      <BigTooltip title="Choose a Bible book and chapter to read">
+        <Button
+          aria-controls="customized-menu"
+          aria-haspopup="true"
+          variant="contained"
+          onClick={openCombo}
+          ref={bookDropdown}
+          style={landingPage && mobile ? { marginLeft: "20%" } : {}}
+          classes={{ root: classes.button }}
+        >
+          {minimal === true ? (
+            <div
+              className={classes.bookName}
+            >{`${bookDisplay}  ${chapter}`}</div>
+          ) : (
+            `${bookDisplay}  ${chapter}`
+          )}
+          <i className={`material-icons ${classes.icon}`}>
+            keyboard_arrow_down
+          </i>
+        </Button>
       </BigTooltip>
       {/* If no book list dont render menu */}
       {bookList === undefined || bookList.length === 0 ? (
@@ -320,7 +328,9 @@ const BookCombo = ({
                     onClick={(event) => bookClicked(event)}
                     className={`${classes.book} ${open}`}
                     ref={open === "" ? null : openBookRef}
-                    style = {{borderLeft:"5px solid" + colorGroup[item.book_code]}}
+                    style={{
+                      borderLeft: "5px solid" + colorGroup[item.book_code],
+                    }}
                   >
                     <ListItemText
                       primary={item.short}

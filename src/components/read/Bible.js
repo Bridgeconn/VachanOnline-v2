@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.only("xs")]: {
+      padding: "0 35px",
+    },
   },
   audio: {
     height: "calc(100% - 55px)",
@@ -93,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
-    padding: 25,
+    padding: "0 25px",
   },
   verseText: {
     padding: "4px 0 2px 4px",
@@ -531,7 +534,7 @@ const Bible = (props) => {
       ""
     );
   };
-  
+
   return (
     <div
       className={classes.biblePanel}

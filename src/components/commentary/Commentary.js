@@ -22,6 +22,14 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
+    [theme.breakpoints.only("xs")]: {
+      paddingLeft: 5,
+    },
+  },
+  titleComment: {
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
+    },
   },
   text: {
     position: "absolute",
@@ -74,6 +82,15 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "middle",
     fontSize: 20,
     display: "inline-block",
+    [theme.breakpoints.only("xs")]: {
+      paddingLeft: 5,
+      fontSize: 18,
+      display: "inline-block",
+      width: "120px",
+      whiteSpace: "nowrap",
+      overflow: " hidden",
+      textOverflow: "ellipsis",
+    },
   },
   icons: {
     display: "flex",
@@ -217,7 +234,7 @@ const Commentary = (props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
-        <Box flexGrow={1}>
+        <Box flexGrow={1} className={classes.titleComment}>
           <Typography variant="h6">Commentaries</Typography>
         </Box>
         <Box flexGrow={1}>

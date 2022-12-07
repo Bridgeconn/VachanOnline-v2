@@ -1,13 +1,34 @@
 import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
+import { AppBar, Box, makeStyles, Toolbar } from "@material-ui/core";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
+import SideDrawer from "../Drawer/Drawer";
+const useStyles = makeStyles(() => ({
+  appBar: {
+    top: "auto",
+    bottom: 0,
+  },
+}));
 
 const BottomBar = (props) => {
+  const classes = useStyles();
+
+  const [state, setState] = React.useState({
+    right: false,
+  });
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
   return (
-    <AppBar position="fixed" color="inherit" sx={{ top: "auto", bottom: 0 }}>
+    <AppBar position="fixed" color="inherit" className={classes.appBar}>
       <Toolbar>
         <Box sx={{ flexGrow: 1 }} />
         <div className="bottomBar">
@@ -34,10 +55,17 @@ const BottomBar = (props) => {
             item={views.READINGPLANS}
           />
         </div>
-        <div className="bottomBar">
+        <div className="bottomBar" onClick={toggleDrawer("right", true)}>
           <MenuItem icon="more_vert" title="Drawer" />
         </div>
       </Toolbar>
+      <SideDrawer
+        toggleDrawer={toggleDrawer}
+        state={state}
+        login={props.login}
+        userDetails={props.userDetails}
+        s
+      />
     </AppBar>
   );
 };

@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
       width: "30%",
+      padding: "6px 10px",
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
@@ -78,6 +79,9 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     left: 5,
     position: "relative",
+    [theme.breakpoints.only("xs")]: {
+      left: 0,
+    },
   },
   paper: {
     maxHeight: "calc(100vh - 150px)",

@@ -8,14 +8,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 import PrintIcon from "@material-ui/icons/Print";
-import ReactToPrint from "react-to-print";
 import Typography from "@material-ui/core/Typography";
-import Dialog from "@material-ui/core/Dialog";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormGroup from "@material-ui/core/FormGroup";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
+import Print from "../common/PrintBox";
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -75,7 +69,7 @@ const Setting = ({
   printHighlights,
   setPrintHighlights,
   bookDisplay,
-  chapter
+  chapter,
 }) => {
   const classes = useStyles();
   const open = Boolean(settingsAnchor);
@@ -102,20 +96,6 @@ const Setting = ({
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-  };
-
-  const handleNotesChange = (event) => {
-    setPrintNotes(event.target.checked);
-  };
-  const handleHighlightsChange = (event) => {
-    setPrintHighlights(event.target.checked);
-  };
-  const linkToPrint = () => {
-    return (
-      <Button variant="contained" color="primary">
-        Print
-      </Button>
-    );
   };
   return (
     <>
@@ -203,42 +183,16 @@ const Setting = ({
           <PrintIcon />
         </MenuItem>
       </Menu>
-      <Dialog
-        maxWidth="xs"
-        fullWidth
-        open={dialogOpen}
-        onClose={handleDialogClose}
-      >
-        <DialogTitle>Print Chapter</DialogTitle>
-        <DialogContent dividers>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox checked={printNotes} onChange={handleNotesChange} />
-              }
-              label="Notes"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={printHighlights}
-                  onChange={handleHighlightsChange}
-                />
-              }
-              label="Highlights"
-            />
-          </FormGroup>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose}>Cancel</Button>
-          <ReactToPrint
-            trigger={linkToPrint}
-            documentTitle={`VachanOnline-${bookDisplay}-${chapter}`}
-            onAfterPrint={handleDialogClose}
-            content={() => printRef.current}
-          />
-        </DialogActions>
-      </Dialog>
+      <Print
+        dialogOpen={dialogOpen}
+        handleDialogClose={handleDialogClose}
+        bookDisplay={bookDisplay}
+        printRef={printRef}
+        setPrintNotes={setPrintNotes}
+        setPrintHighlights={setPrintHighlights}
+        printNotes={printNotes}
+        chapter={chapter}
+      />
     </>
   );
 };
