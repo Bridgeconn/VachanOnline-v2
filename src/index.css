@@ -112,6 +112,13 @@ body#body {
 .bottomBar .material-icons{
   color: #333399;
 }
+.privacy-policy{
+  margin: 0 auto;
+  margin-top:50px;
+  font-size: 1.2rem;
+  padding: 30px;
+  max-width: 1000px
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
