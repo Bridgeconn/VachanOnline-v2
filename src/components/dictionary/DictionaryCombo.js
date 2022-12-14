@@ -17,11 +17,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "30%",
+      width: "50%",
+      margin: "0 10px",
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
-      marginRight: 10,
+      margin: "0 6px",
     },
   },
   list: {

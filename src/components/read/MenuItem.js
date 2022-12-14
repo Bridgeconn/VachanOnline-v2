@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MenuItem = (props) => {
   const classes = useStyles();
-  const { icon, title, item, parallelView, uid, setValue } = props;
+  const { icon, title, item, mobileView, parallelView, uid, setValue } = props;
   const [popover, setPopover] = React.useState(null);
 
   function handlePopoverOpen(event) {
@@ -94,30 +94,36 @@ const MenuItem = (props) => {
         }
       >
         <div onClick={() => onClick(item, uid)}>
-          <i className="material-icons" style={{ fontSize: "36px" }}>
+          <i
+            className="material-icons"
+            style={{ fontSize: "36px" }}
+            title={title}
+          >
             {icon}
           </i>
-          <Popover
-            id="mouse-over-popover"
-            className={classes.popover}
-            classes={{
-              paper: classes.paper,
-            }}
-            open={open}
-            anchorEl={popover}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            onClose={handlePopoverClose}
-            disableRestoreFocus
-          >
-            <Typography className={classes.menu}>{title}</Typography>
-          </Popover>
+          {mobileView ? null : (
+            <Popover
+              id="mouse-over-popover"
+              className={classes.popover}
+              classes={{
+                paper: classes.paper,
+              }}
+              open={open}
+              anchorEl={popover}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              onClose={handlePopoverClose}
+              disableRestoreFocus
+            >
+              <Typography className={classes.menu}>{title}</Typography>
+            </Popover>
+          )}
         </div>
       </ListItemIcon>
     </ListItem>
@@ -127,6 +133,7 @@ const mapStateToProps = (state) => {
   return {
     parallelView: state.local.parallelView,
     uid: state.local.userDetails.uid,
+    mobileView: state.local.mobileView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

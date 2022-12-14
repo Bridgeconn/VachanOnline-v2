@@ -36,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
   },
+  titleContainer: {
+    "&:last-child": {
+      [theme.breakpoints.only("xs")]: {
+        paddingBottom: 0,
+      },
+    },
+  },
   heading: {
     borderBottom: "1px solid #f1ecec",
     display: "flex",
@@ -154,7 +161,7 @@ const SignBible = (props) => {
                     width="100%"
                     style={{ maxHeight: "calc(100vh - 150px)" }}
                   />
-                  <CardContent>
+                  <CardContent className={classes.titleContainer}>
                     <Typography
                       gutterBottom
                       variant="h5"

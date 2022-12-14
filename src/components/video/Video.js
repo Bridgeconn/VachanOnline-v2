@@ -10,6 +10,9 @@ import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import Select from "react-select";
 import { capitalize, getShortBook } from "../common/utility";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
+import BookCombo from "../common/BookCombo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 35,
     marginBottom: 20,
     minHeight: 51,
+    [theme.breakpoints.only("xs")]: {
+      alignItems: "center",
+    },
   },
   video: {
     width: "48%",
@@ -53,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 2% 2% 0",
     display: "inline-block",
     verticalAlign: "top",
+    [theme.breakpoints.only("xs")]: {
+      width: "100%",
+      marginBottom: 55,
+    },
   },
   title: {
     paddingTop: 4,
@@ -76,7 +86,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Video = (props) => {
   const classes = useStyles();
-  let { video, bookCode, books, languageCode } = props;
+  let {
+    video,
+    bookCode,
+    books,
+    versionBooks,
+    versionSource,
+    setValue,
+    languageCode,
+    mobileView,
+    panel1,
+    paneNo,
+  } = props;
+  const { sourceId, chapter } = panel1;
+
   const [message, setMessage] = React.useState("");
   const [videoId, setVideoId] = React.useState("");
   const [videos, setVideos] = React.useState([]);
@@ -88,7 +111,7 @@ const Video = (props) => {
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
     const youtu = "https://youtu.be/";
-    const vimeoUrl = process.env.REACT_APP_VIDEO_URL +"vimeo/";
+    const vimeoUrl = process.env.REACT_APP_VIDEO_URL + "vimeo/";
     const youtubeUrl = "https://img.youtube.com/vi/";
     const source = url.includes("vimeo") ? "vimeo" : "youtube";
     const id = source === "vimeo" ? url.split(vimeo)[1] : url.split(youtu)[1];
@@ -146,7 +169,18 @@ const Video = (props) => {
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Videos</Typography>
+          {mobileView && bookCode ? (
+            <BookCombo
+              paneNo={paneNo}
+              bookCode={bookCode}
+              bookList={versionBooks[versionSource[sourceId]]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={true}
+            />
+          ) : (
+            <Typography variant="h6">Videos</Typography>
+          )}
         </Box>
         <Box flexGrow={1}>
           {languages && languages?.length !== 0 && (
@@ -212,4 +246,18 @@ const Video = (props) => {
     </div>
   );
 };
-export default Video;
+const mapStateToProps = (state) => {
+  return {
+    bookCode: state.local.panel1.bookCode,
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
+    mobileView: state.local.mobileView,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Video);

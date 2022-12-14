@@ -37,7 +37,12 @@ const useStyles = makeStyles((theme) => ({
       padding: "0 5.5px",
     },
   },
-
+  selectBox: {
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
   select: {
     marginTop: "-8px",
     backgroundColor: "red",
@@ -266,7 +271,7 @@ const MenuBar = (props) => {
   return (
     <div>
       <Box className={classes.read}>
-        <Box flexGrow={1}>
+        <Box flexGrow={1} className={classes.selectBox}>
           <Version setValue={setValue} version={version} bookCode={bookCode} />
           {bookCode ? (
             <BookCombo

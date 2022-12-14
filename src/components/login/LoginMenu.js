@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginMenu = (props) => {
   const classes = useStyles();
-  const { userDetails, setValue } = props;
+  const { userDetails, setValue, mobileView } = props;
   const [menuOpen, setMenuOpen] = React.useState(null);
 
   const handleProfileMenuOpen = (event) => {
@@ -65,45 +65,64 @@ const LoginMenu = (props) => {
           <AccountCircle fontSize="large" />
         )}
       </IconButton>
-      <Menu
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        anchorEl={menuOpen}
-        keepMounted
-        open={Boolean(menuOpen)}
-        onClose={handleClose}
-        classes={{
-          paper: classes.paper,
-        }}
-      >
-        <List component="nav" aria-label="main mailbox folders">
-          <ListItem button>
-            <ListItemText primary={userDetails.email} />
-          </ListItem>
-        </List>
-        <Divider />
-        <List component="nav" aria-label="secondary mailbox folders">
-          <ListItem button>
-            <ListItemText primary="Sign Out" onClick={signOut} />
-          </ListItem>
-        </List>
-      </Menu>
+      {mobileView ? (
+        <div className="menuLog">
+          <List component="nav" aria-label="main mailbox folders">
+            <ListItem button>
+              <ListItemText primary={userDetails.email} />
+              <ListItem button>
+                <ListItemText primary="Sign Out" onClick={signOut} />
+              </ListItem>
+            </ListItem>
+            <Divider />
+          </List>
+          <List component="nav" aria-label="secondary mailbox folders"></List>
+        </div>
+      ) : (
+        <Menu
+          elevation={0}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+          anchorEl={menuOpen}
+          keepMounted
+          open={Boolean(menuOpen)}
+          onClose={handleClose}
+          classes={{
+            paper: classes.paper,
+          }}
+        >
+          <List component="nav" aria-label="main mailbox folders">
+            <ListItem button>
+              <ListItemText primary={userDetails.email} />
+            </ListItem>
+          </List>
+          <Divider />
+          <List component="nav" aria-label="secondary mailbox folders">
+            <ListItem button>
+              <ListItemText primary="Sign Out" onClick={signOut} />
+            </ListItem>
+          </List>
+        </Menu>
+      )}
     </>
   );
 };
-
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
-export default connect(null, mapDispatchToProps)(LoginMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginMenu);

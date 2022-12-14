@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: 70,
+    },
   },
   title: {
     paddingLeft: 35,
@@ -21,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
+    [theme.breakpoints.only("xs")]: {
+      flexWrap: "wrap",
+      padding: "0 10px",
+    },
   },
   text: {
     position: "absolute",
@@ -56,6 +63,15 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.only("xs")]: {
+      top: 145,
+      bottom: 50,
+    },
+  },
+  textBox: {
+    [theme.breakpoints.only("xs")]: {
+      margin: "0 10px",
     },
   },
   heading: {
@@ -169,7 +185,9 @@ const Dictionary = (props) => {
     <div className={classes.root}>
       <Box className={classes.title}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Dictionary</Typography>
+          <Typography variant="h6" className={classes.textBox}>
+            Dictionary
+          </Typography>
         </Box>
         <Box flexGrow={1}>
           <DictionaryCombo

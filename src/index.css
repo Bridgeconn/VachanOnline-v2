@@ -112,6 +112,14 @@ body#body {
 .bottomBar .material-icons{
   color: #333399;
 }
+.logMenuBox .MuiListItem-gutters{
+  padding:0 5px;
+}
+.menuLog .MuiListItem-root{
+  display: flex;
+  flex-direction: column;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

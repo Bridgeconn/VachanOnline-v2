@@ -115,6 +115,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 130,
     overflow: "hidden",
     textOverflow: "ellipsis",
+    [theme.breakpoints.only("xs")]: {
+      maxWidth: 80,
+      minWidth: 60,
+    },
   },
 }));
 const BookCombo = ({
@@ -262,7 +266,10 @@ const BookCombo = ({
   };
   return (
     <>
-      <BigTooltip title="Choose a Bible book and chapter to read">
+      <BigTooltip
+        title="Choose a Bible book and chapter to read"
+        className="ke"
+      >
         <Button
           aria-controls="customized-menu"
           aria-haspopup="true"

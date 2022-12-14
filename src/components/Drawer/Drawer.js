@@ -2,16 +2,11 @@ import * as React from "react";
 import * as views from "../../store/views";
 
 import clsx from "clsx";
-import {
-  Drawer,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  makeStyles,
-} from "@material-ui/core";
+import { Drawer, ListItem, ListItemText, makeStyles } from "@material-ui/core";
 import Login from "../login/Login";
 import LoginMenu from "../login/LoginMenu";
 import MenuItem from "../read/MenuItem";
+
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -19,13 +14,15 @@ const useStyles = makeStyles({
   fullList: {
     width: "auto",
   },
+  iconText: {
+    padding: "5px 10px",
+  },
 });
 
-export default function SideDrawer(props) {
+function SideDrawer(props) {
   const [loginButton, setLoginButton] = React.useState();
   const { login, toggleDrawer, userDetails, state } = props;
   const classes = useStyles();
-  console.log(login, userDetails, "het");
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
@@ -35,13 +32,13 @@ export default function SideDrawer(props) {
         [classes.fullList]: anchor === "top" || anchor === "bottom",
       })}
       role="presentation"
-      onClick={toggleDrawer(anchor, login || views.BOOKMARK ? false : true)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClick={toggleDrawer(anchor, !login || views.BOOKMARK ? true : false)}
+      onKeyDown={toggleDrawer(anchor, !login || views.BOOKMARK ? true : false)}
     >
-      <ListItem>
-        <ListItemIcon>{loginButton}</ListItemIcon>
-      </ListItem>
-      <ListItem>
+      <div className={!login ? "bottomBar" : "logMenuBox"}>
+        <ListItem>{loginButton}</ListItem>
+      </div>
+      <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem
             icon="comment"
@@ -51,8 +48,8 @@ export default function SideDrawer(props) {
         </div>
         <ListItemText>Commentary</ListItemText>
       </ListItem>
-      <ListItem>
-        <div className="bottomBar">
+      <ListItem className={classes.iconText}>
+        <div className={"bottomBar"}>
           <MenuItem
             icon="sign_language"
             title="ISLV Bible"
@@ -61,7 +58,7 @@ export default function SideDrawer(props) {
         </div>
         <ListItemText>Sign Language Bible</ListItemText>
       </ListItem>
-      <ListItem>
+      <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem
             icon="image"
@@ -71,13 +68,13 @@ export default function SideDrawer(props) {
         </div>
         <ListItemText>Infographics</ListItemText>
       </ListItem>
-      <ListItem>
+      <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem icon="videocam" title="Videos" item={views.VIDEO} />
         </div>
         <ListItemText>Videos</ListItemText>
       </ListItem>
-      <ListItem>
+      <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem
             icon="format_shapes"
@@ -87,13 +84,13 @@ export default function SideDrawer(props) {
         </div>
         <ListItemText>Dictionary</ListItemText>
       </ListItem>
-      <ListItem>
+      <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem icon="bookmark" title="Bookmarks" item={views.BOOKMARK} />
         </div>
         <ListItemText>Bookmarks</ListItemText>
       </ListItem>
-      <ListItem>
+      <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem
             icon="border_color"
@@ -103,7 +100,7 @@ export default function SideDrawer(props) {
         </div>
         <ListItemText onClick={() => views.HIGHLIGHT}>Highlights</ListItemText>
       </ListItem>
-      <ListItem>
+      <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem icon="note" title="Notes" item={views.NOTE} />
         </div>
@@ -125,3 +122,5 @@ export default function SideDrawer(props) {
     </div>
   );
 }
+
+export default SideDrawer;

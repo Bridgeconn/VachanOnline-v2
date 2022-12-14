@@ -569,7 +569,7 @@ const Bible = (props) => {
             {verses.map((item) => {
               const verse = parseInt(item.verseNumber);
               const verseClass =
-                selectedVerses.indexOf(verse) > -1
+                selectedVerses?.indexOf(verse) > -1
                   ? `${classes.verseText} ${classes.selectedVerse}`
                   : highlightVerses.indexOf(verse) > -1
                   ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
