@@ -96,6 +96,7 @@ const PageHeader = (props) => {
           {process.env.REACT_APP_SIGNBIBLE_URL !== undefined &&
           mobile === false ? (
             <Badge
+              overlap="rectangular"
               className={classes.islBadge}
               color="secondary"
               variant="dot"

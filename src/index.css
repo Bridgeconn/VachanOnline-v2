@@ -112,6 +112,13 @@ body#body {
 .bottomBar .material-icons{
   color: #333399;
 }
+.bottomBar .MuiListItemIcon-root{
+  margin: 0 auto;
+}
+.closeButton{
+  display: flex;
+  align-items: flex-start;
+}
 .logMenuBox .MuiListItem-gutters{
   padding:0 5px;
 }
@@ -119,7 +126,14 @@ body#body {
   display: flex;
   flex-direction: column;
 }
-
+.audioHead .material-icons.md-23{
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+body .MuiBottomNavigationAction-root{
+  flex:0 1;
+  margin-left: 50px;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

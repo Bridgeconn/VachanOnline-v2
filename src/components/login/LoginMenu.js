@@ -59,22 +59,28 @@ const LoginMenu = (props) => {
         onClick={handleProfileMenuOpen}
         color="inherit"
       >
-        {userDetails.photoURL ? (
-          <Avatar alt={userDetails.email} src={userDetails.photoURL} />
-        ) : (
-          <AccountCircle fontSize="large" />
-        )}
+        {!mobileView ? (
+          userDetails.photoURL ? (
+            <Avatar alt={userDetails.email} src={userDetails.photoURL} />
+          ) : (
+            <AccountCircle fontSize="large" />
+          )
+        ) : null}
       </IconButton>
       {mobileView ? (
         <div className="menuLog">
           <List component="nav" aria-label="main mailbox folders">
             <ListItem button>
+              {userDetails.photoURL ? (
+                <Avatar alt={userDetails.email} src={userDetails.photoURL} />
+              ) : (
+                <AccountCircle fontSize="large" />
+              )}
               <ListItemText primary={userDetails.email} />
-              <ListItem button>
+              {/* <ListItem button>
                 <ListItemText primary="Sign Out" onClick={signOut} />
-              </ListItem>
+              </ListItem> */}
             </ListItem>
-            <Divider />
           </List>
           <List component="nav" aria-label="secondary mailbox folders"></List>
         </div>

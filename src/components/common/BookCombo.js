@@ -22,7 +22,6 @@ const BigTooltip = withStyles((theme) => ({
     fontSize: 16,
   },
 }))(Tooltip);
-
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
@@ -34,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       width: "60%",
       padding: "6px 0",
+      margin: (props) =>
+        props.mobileView && props.parallelView ? "0 25px" : 9,
     },
   },
   icon: {
@@ -116,24 +117,32 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     [theme.breakpoints.only("xs")]: {
-      maxWidth: 80,
+      maxWidth: 60,
       minWidth: 60,
     },
   },
 }));
-const BookCombo = ({
-  paneNo,
-  bookCode,
-  bookList,
-  chapter,
-  setValue,
-  minimal,
-  landingPage,
-  parallelScroll,
-  syncPanel,
-}) => {
+const BookCombo = (props) => {
+  const {
+    paneNo,
+    bookCode,
+    bookList,
+    chapter,
+    setValue,
+    minimal,
+    landingPage,
+    parallelScroll,
+    syncPanel,
+    mobileView,
+    parallelView,
+  } = props;
   //classes for styling
-  const classes = useStyles();
+
+  const styleProps = {
+    mobileView: mobileView,
+    parallelView: parallelView,
+  };
+  const classes = useStyles(styleProps);
   const theme = useTheme();
   //if mobile then true, used to change layout
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -389,6 +398,8 @@ const BookCombo = ({
 const mapStateToProps = (state) => {
   return {
     parallelScroll: state.local.parallelScroll,
+    mobileView: state.local.mobileView,
+    parallelView: state.local.parallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -11,6 +11,9 @@ import ReactPlayer from "react-player";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import { capitalize, getShortBook } from "../common/utility";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
+import BookCombo from "../common/BookCombo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,7 +102,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Audio = (props) => {
   const classes = useStyles();
-  const { audioBible, bookCode, chapter, books, languageCode } = props;
+  const {
+    audioBible,
+    bookCode,
+    panel1,
+    chapter,
+    books,
+    languageCode,
+    mobileView,
+    setValue,
+    versionBooks,
+    versionSource,
+  } = props;
+  const { sourceId } = panel1;
+
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
   const [hasAudio, setHasAudio] = useState(false);
@@ -148,7 +164,17 @@ const Audio = (props) => {
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Audio Bibles</Typography>
+          {mobileView && bookCode ? (
+            <BookCombo
+              bookCode={bookCode}
+              bookList={versionBooks[versionSource[sourceId]]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={true}
+            />
+          ) : (
+            <Typography variant="h6">Audio Bibles</Typography>
+          )}
         </Box>
         <Box flexGrow={1}>
           {languages && languages?.length !== 0 && (
@@ -220,4 +246,17 @@ const Audio = (props) => {
     </div>
   );
 };
-export default Audio;
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Audio);

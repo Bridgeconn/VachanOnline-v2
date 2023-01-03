@@ -63,6 +63,9 @@ const DialogContent = withStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
     width: 500,
+    [theme.breakpoints.only("xs")]: {
+      width: 300,
+    },
   },
 }))(MuiDialogContent);
 
@@ -179,7 +182,7 @@ export default function Note({
             id="outlined-multiline-static"
             label="Note Text"
             multiline
-            rows={10}
+            minRows={10}
             fullWidth={true}
             inputProps={{ maxLength: 1000 }}
             variant="outlined"

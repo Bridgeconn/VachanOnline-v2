@@ -25,22 +25,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BiblePane = ({
-  setValue,
-  paneData,
-  ref1,
-  scroll,
-  paneNo,
-  singlePane,
-  userDetails,
-}) => {
+const BiblePane = (props) => {
   const classes = useStyles();
+  const {
+    setValue,
+    paneData,
+    ref1,
+    scroll,
+    paneNo,
+    singlePane,
+    userDetails,
+    selectedVerses,
+    setSelectedVerses,
+    highlights,
+    setHighlights,
+    refUrl,
+    setRefUrl,
+  } = props;
   const [fullscreen, setFullscreen] = React.useState(false);
-  const [selectedVerses, setSelectedVerses] = React.useState([]);
-  const [highlights, setHighlights] = React.useState([]);
+
   const [fetchHighlights, setFetchHighlights] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");
-  const [refUrl, setRefUrl] = React.useState("");
   const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
   const printRef = React.useRef();
   const [printNotes, setPrintNotes] = React.useState(true);
@@ -79,11 +84,11 @@ const BiblePane = ({
     if (Object.keys(userDetails).length === 0 || userDetails.uid === null) {
       setSelectedVerses([]);
     }
-  }, [userDetails]);
+  }, [setSelectedVerses, userDetails]);
 
   React.useEffect(() => {
     setSelectedVerses(versesSelected);
-  }, [versesSelected]);
+  }, [setSelectedVerses, versesSelected]);
 
   React.useEffect(() => {
     if (Object.keys(userDetails).length !== 0 && userDetails.uid !== null) {
@@ -103,7 +108,7 @@ const BiblePane = ({
       setFetchHighlights("");
       setHighlights([]);
     }
-  }, [userDetails, sourceId, bookCode, chapter, setHighlights]);
+  }, [userDetails, sourceId, bookCode, chapter, setHighlights, setRefUrl]);
   return (
     <>
       <div>

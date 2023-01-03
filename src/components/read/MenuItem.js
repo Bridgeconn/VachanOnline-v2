@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: LIGHTBLUE,
     },
+    [theme.breakpoints.only("xs")]: {
+      padding: "3px 7px 0px",
+    },
   },
   button: {
     paddingTop: 11,
@@ -39,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 13,
     "&:hover": {
       backgroundColor: "rgba(255,255,255,0.1)",
+    },
+    [theme.breakpoints.only("xs")]: {
+      padding: "3px 7px 0px",
     },
   },
   listItem: {
@@ -96,7 +102,7 @@ const MenuItem = (props) => {
         <div onClick={() => onClick(item, uid)}>
           <i
             className="material-icons"
-            style={{ fontSize: "36px" }}
+            style={mobileView ? { fontSize: "28px" } : { fontSize: "36px" }}
             title={title}
           >
             {icon}

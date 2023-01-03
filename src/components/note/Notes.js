@@ -82,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
   },
   formButtons: {
     textAlign: "right",
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      justifyContent: "center",
+    },
   },
   button: {
     margin: 10,
@@ -114,12 +118,13 @@ export default function Notes(props) {
     chapter,
     versesSelected,
     book,
+    noteText,
+    setNoteText,
     getRegionalBookName,
   } = props;
   const [noteList, setNoteList] = React.useState([]);
   const [chapterNoteList, setChapterNoteList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
-  const [noteText, setNoteText] = React.useState("");
   const [modifiedTime, setModifiedTime] = React.useState("");
   const [editObject, setEditObject] = React.useState({});
   const [noteReference, setNoteReference] = React.useState({});
@@ -157,7 +162,7 @@ export default function Notes(props) {
       setEditObject({});
       setNoteReference({});
     }
-  }, [edit, setValue]);
+  }, [edit, setNoteText, setValue]);
 
   const saveNote = () => {
     //if no verse selected, show alert
@@ -344,7 +349,10 @@ export default function Notes(props) {
     setValue("version", versionData[sourceId][0]);
     setValue("bookCode", bookCode);
     setValue("chapter", chapter);
-    setValue("languageCode",versionData[sourceId][0].split('-')[0].toLowerCase())
+    setValue(
+      "languageCode",
+      versionData[sourceId][0].split("-")[0].toLowerCase()
+    );
   };
 
   //Delete Note
@@ -414,7 +422,7 @@ export default function Notes(props) {
             id="note"
             label="Note Text"
             multiline
-            rows={6}
+            minRows={6}
             fullWidth={true}
             inputProps={{ maxLength: 1000 }}
             variant="outlined"

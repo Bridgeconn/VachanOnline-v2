@@ -7,6 +7,7 @@ import Circle from "@material-ui/icons/LensRounded";
 import Cancel from "@material-ui/icons/CancelOutlined";
 import { useFirebase } from "react-redux-firebase";
 import * as color from "../../store/colorCode";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
   colorBox: {
     padding: 6,
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+    },
   },
   popover: {
     marginTop: 4,
@@ -41,16 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Highlight({
-  selectedVerses,
-  setSelectedVerses,
-  refUrl,
-  highlights,
-}) {
+function Highlight(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const firebase = useFirebase();
-
+  const { selectedVerses, setSelectedVerses, refUrl, highlights, mobileView } =
+    props;
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -92,25 +92,7 @@ export default function Highlight({
   };
   return (
     <div>
-      <div className={classes.info} onClick={handleClick}>
-        <Tooltip title="Highlight">
-          <BorderColor fontSize="small" />
-        </Tooltip>
-      </div>
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        classes={{ paper: classes.popover }}
-      >
+      {mobileView ? (
         <div className={classes.colorBox}>
           {colors.map((color, i) => (
             <Circle
@@ -130,7 +112,55 @@ export default function Highlight({
             />
           </Tooltip>
         </div>
-      </Popover>
+      ) : (
+        <>
+          <div className={classes.info} onClick={handleClick}>
+            <Tooltip title="Highlight">
+              <BorderColor fontSize="small" />
+            </Tooltip>
+          </div>
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            classes={{ paper: classes.popover }}
+          >
+            <div className={classes.colorBox}>
+              {colors.map((color, i) => (
+                <Circle
+                  key={i}
+                  data-code={color.code}
+                  onClick={colorClicked}
+                  fontSize="large"
+                  className={color.class}
+                />
+              ))}
+              <Tooltip title="Clear Highlight">
+                <Cancel
+                  data-code="clear"
+                  onClick={colorClicked}
+                  fontSize="large"
+                  color="disabled"
+                />
+              </Tooltip>
+            </div>
+          </Popover>
+        </>
+      )}
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps)(Highlight);
