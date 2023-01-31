@@ -10,6 +10,7 @@ import { BLUETRANSPARENT } from "../../store/colorCode";
 import PrintIcon from "@material-ui/icons/Print";
 import Typography from "@material-ui/core/Typography";
 import Print from "../common/PrintBox";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -70,6 +71,7 @@ const Setting = ({
   setPrintHighlights,
   bookDisplay,
   chapter,
+  mobileView,
 }) => {
   const classes = useStyles();
   const open = Boolean(settingsAnchor);
@@ -178,10 +180,12 @@ const Setting = ({
             }
           />
         </MenuItem>
-        <MenuItem className={classes.menu} onClick={handleDialogOpen}>
-          <span className={classes.printIcon}>Print/Save</span>
-          <PrintIcon />
-        </MenuItem>
+        {mobileView ? null : (
+          <MenuItem className={classes.menu} onClick={handleDialogOpen}>
+            <span className={classes.printIcon}>Print/Save</span>
+            <PrintIcon />
+          </MenuItem>
+        )}
       </Menu>
       <Print
         dialogOpen={dialogOpen}
@@ -197,4 +201,9 @@ const Setting = ({
   );
 };
 
-export default Setting;
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps)(Setting);

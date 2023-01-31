@@ -120,11 +120,15 @@ body#body {
   align-items: flex-start;
 }
 .logMenuBox .MuiListItem-gutters{
-  padding:0 5px;
+  padding:0;
 }
 .menuLog .MuiListItem-root{
   display: flex;
   flex-direction: column;
+}
+.drawerEmailText .MuiTypography-body1 {
+  font-size:0.85rem;
+  margin: 0 10px;
 }
 .audioHead .material-icons.md-23{
   font-size: 28px;
@@ -133,6 +137,9 @@ body#body {
 body .MuiBottomNavigationAction-root{
   flex:0 1;
   margin-left: 50px;
+}
+.react-date-picker__clear-button{
+  display: none;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

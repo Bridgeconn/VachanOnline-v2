@@ -32,7 +32,6 @@ import {
 import { useMediaQuery } from "@material-ui/core";
 import BottomBar from "./BottomBar";
 import BottomToolBar from "./BottomToolBar";
-
 const useStyles = makeStyles((theme) => ({
   biblePane1: {
     position: "absolute",
@@ -115,7 +114,6 @@ const ReadBible = (props) => {
   const [highlights, setHighlights] = React.useState([]);
   const [refUrl, setRefUrl] = React.useState("");
   const [noteText, setNoteText] = React.useState("");
-
   //used to sync bibles in paralle bibles on scroll
   const [bookObject, setBookObject] = React.useState({});
   //flag to prevent looping of on scroll event
@@ -179,7 +177,6 @@ const ReadBible = (props) => {
       }
     }
   }, []);
-
   React.useEffect(() => {
     if (isMobile) {
       setValue("mobileView", true);
@@ -444,6 +441,15 @@ const ReadBible = (props) => {
           </>
         );
         break;
+      case views.DRAWERCOMMENTARY:
+        setPane(
+          <>
+            <div className={classes.biblePane1}>
+              <Commentary panel1={panel1} />
+            </div>
+          </>
+        );
+        break;
       case views.DICTIONARY:
         setPane(
           <>
@@ -653,8 +659,9 @@ const ReadBible = (props) => {
                 bookCode={panel1.bookCode}
                 chapter={panel1.chapter}
                 noteText={noteText}
+                panel1={panel1}
                 setNoteText={setNoteText}
-                versesSelected={panel1.versesSelected}
+                versesSelected={panel1?.versesSelected}
                 book={bookObject.short}
                 getRegionalBookName={getRegionalBookName}
               />
@@ -721,11 +728,13 @@ const ReadBible = (props) => {
               {mobileView ? (
                 <SignBible
                   signBible={signBible}
-                  bookCode={panel1.bookCode}
-                  chapter={panel1.chapter}
+                  bookCode={panel1?.bookCode}
+                  chapter={panel1?.chapter}
                   book={bookObject.short}
                   setValue={setValue1}
                   versions={versions}
+                  sourceId={panel1?.sourceId}
+                  panel1={panel1}
                 />
               ) : (
                 <BiblePane
@@ -768,7 +777,24 @@ const ReadBible = (props) => {
           </>
         );
         break;
-
+      case views.DRAWERSIGNBIBLE:
+        setPane(
+          <>
+            <div className={classes.biblePane1}>
+              <SignBible
+                signBible={signBible}
+                bookCode={panel1?.bookCode}
+                chapter={panel1.chapter}
+                book={bookObject.short}
+                setValue={setValue1}
+                versions={versions}
+                sourceId={panel1?.sourceId}
+                panel1={panel1}
+              />
+            </div>
+          </>
+        );
+        break;
       default:
         setPane(
           <div className={classes.biblePane1}>
@@ -838,7 +864,9 @@ const ReadBible = (props) => {
           <BibleMenu />
         </div>
       </div>
-      {mobileView && !noteText && selectedVerses.length !== 0 ? (
+      {mobileView &&
+      selectedVerses?.length !== 0 &&
+      selectedVerses?.length !== undefined ? (
         <BottomToolBar
           selectedVerses={selectedVerses}
           setSelectedVerses={setSelectedVerses}

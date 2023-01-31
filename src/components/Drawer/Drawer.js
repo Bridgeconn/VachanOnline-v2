@@ -4,17 +4,10 @@ import * as actions from "../../store/actions";
 import firebase from "firebase/app";
 
 import clsx from "clsx";
-import {
-  Button,
-  Drawer,
-  ListItem,
-  ListItemText,
-  makeStyles,
-} from "@material-ui/core";
+import { Button, Drawer, ListItem, makeStyles } from "@material-ui/core";
 import Login from "../login/Login";
 import LoginMenu from "../login/LoginMenu";
 import MenuItem from "../read/MenuItem";
-import Close from "../common/Close";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles({
@@ -54,45 +47,52 @@ function SideDrawer(props) {
         console.log("Error Signing Out");
       });
   };
+
   React.useEffect(() => {
-    setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
+    setLoginButton(
+      login ? (
+        <LoginMenu userDetails={userDetails} base="drawer" />
+      ) : (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
+          <Login />
+        </div>
+      )
+    );
   }, [login, userDetails]);
-  React.useEffect(() => {}, [login, setValue, state]);
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
         [classes.fullList]: anchor === "top" || anchor === "bottom",
       })}
       role="presentation"
-      onClick={toggleDrawer(anchor, !login ? true : false)}
-      onKeyDown={toggleDrawer(anchor, !login ? true : false)}
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
     >
       <div className={!login ? "closeButton" : "logMenuBox closeButton"}>
         <ListItem>{loginButton}</ListItem>
-        <Close
-          className={classes.closeButton}
-          onClose={toggleDrawer("right", false)}
-        />
       </div>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem
             icon="comment"
             title="Commentaries"
-            item={views.COMMENTARY}
+            item={views.DRAWERCOMMENTARY}
+            base="drawer"
           />
         </div>
-        <ListItemText>Commentary</ListItemText>
       </ListItem>
       <ListItem className={classes.iconText}>
         <div className={"bottomBar"}>
           <MenuItem
             icon="sign_language"
             title="ISLV Bible"
-            item={views.SIGNBIBLE}
+            item={views.DRAWERSIGNBIBLE}
+            base="drawer"
           />
         </div>
-        <ListItemText>Sign Language Bible</ListItemText>
       </ListItem>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
@@ -100,21 +100,29 @@ function SideDrawer(props) {
             icon="image"
             title="infographics"
             item={views.INFOGRAPHICS}
+            base="drawer"
           />
         </div>
-        <ListItemText>Infographics</ListItemText>
       </ListItem>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
-          <MenuItem icon="volume_up" title="Audio Bible" item={views.AUDIO} />
+          <MenuItem
+            icon="volume_up"
+            title="Audio Bible"
+            item={views.AUDIO}
+            base="drawer"
+          />
         </div>
-        <ListItemText>Audio</ListItemText>
       </ListItem>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
-          <MenuItem icon="videocam" title="Videos" item={views.VIDEO} />
+          <MenuItem
+            icon="videocam"
+            title="Videos"
+            item={views.VIDEO}
+            base="drawer"
+          />
         </div>
-        <ListItemText>Videos</ListItemText>
       </ListItem>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
@@ -122,15 +130,19 @@ function SideDrawer(props) {
             icon="format_shapes"
             title="Dictionaries"
             item={views.DICTIONARY}
+            base="drawer"
           />
         </div>
-        <ListItemText>Dictionary</ListItemText>
       </ListItem>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
-          <MenuItem icon="bookmark" title="Bookmarks" item={views.BOOKMARK} />
+          <MenuItem
+            icon="bookmark"
+            title="Bookmarks"
+            item={views.BOOKMARK}
+            base="drawer"
+          />
         </div>
-        <ListItemText>Bookmarks</ListItemText>
       </ListItem>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
@@ -138,15 +150,14 @@ function SideDrawer(props) {
             icon="border_color"
             title="Highlights"
             item={views.HIGHLIGHT}
+            base="drawer"
           />
         </div>
-        <ListItemText onClick={() => views.HIGHLIGHT}>Highlights</ListItemText>
       </ListItem>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
-          <MenuItem icon="note" title="Notes" item={views.NOTE} />
+          <MenuItem icon="note" title="Notes" item={views.NOTE} base="drawer" />
         </div>
-        <ListItemText>Notes</ListItemText>
       </ListItem>
       {login ? (
         <ListItem className={classes.iconText}>

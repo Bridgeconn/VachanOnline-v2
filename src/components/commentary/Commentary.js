@@ -9,6 +9,8 @@ import Metadata from "../common/Metadata";
 import { getCommentaryForChapter } from "../common/utility";
 import parse from "html-react-parser";
 import Close from "../common/Close";
+import BookCombo from "../common/BookCombo";
+import * as views from "../../store/views";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,6 +94,11 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "ellipsis",
     },
   },
+  bookNameBox: {
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+    },
+  },
   icons: {
     display: "flex",
     marginTop: 4,
@@ -117,8 +124,17 @@ const Commentary = (props) => {
   const [message, setMessage] = React.useState("");
   const [baseUrl, setBaseUrl] = React.useState("");
   const [bookNames, setBookNames] = React.useState([]);
-  let { panel1, commentaries, setCommentary, commentary, versionBooks } = props;
-  let { version, bookCode, chapter } = panel1;
+  let {
+    panel1,
+    commentaries,
+    setCommentary,
+    commentary,
+    versionBooks,
+    versionSource,
+    mobileView,
+    setValue,
+  } = props;
+  let { version, bookCode, sourceId, chapter } = panel1;
 
   const textRef = React.useRef();
   React.useEffect(() => {
@@ -237,15 +253,26 @@ const Commentary = (props) => {
         <Box flexGrow={1} className={classes.titleComment}>
           <Typography variant="h6">Commentaries</Typography>
         </Box>
-        <Box flexGrow={1}>
+        <Box flexGrow={1} className={classes.bookNameBox}>
           <CommentaryCombo
             commentaries={props.commentaries}
             commentary={props.commentary}
             setCommentary={props.setCommentary}
           />
-          <Typography className={classes.bookLabel}>
-            {book} {chapter}
-          </Typography>
+          {mobileView && views.DRAWERCOMMENTARY ? (
+            <BookCombo
+              paneNo={panel1}
+              bookCode={bookCode}
+              bookList={versionBooks[versionSource[sourceId]]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={true}
+            />
+          ) : (
+            <Typography className={classes.bookLabel}>
+              {book} {chapter}
+            </Typography>
+          )}
         </Box>
 
         <Box className={classes.icons}>
@@ -280,12 +307,16 @@ const mapStateToProps = (state) => {
     commentary: state.local.commentary,
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
+    mobileView: state.local.mobileView,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     setCommentary: (value) =>
       dispatch({ type: actions.SETVALUE, name: "commentary", value: value }),
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);

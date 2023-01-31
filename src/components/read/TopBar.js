@@ -119,6 +119,7 @@ const TopBar = (props) => {
     mobileView,
     audio,
     setValue,
+    setValue1,
     bookCode,
     parallelView,
     sourceId,
@@ -145,10 +146,18 @@ const TopBar = (props) => {
         </Tooltip>
       );
     } else {
-      setValue("audio", false);
+      setValue1("audio", false);
       setAudioIcon("");
     }
-  }, [audio, audioBible, bookCode, classes.info, setValue, parallelView]);
+  }, [
+    audio,
+    audioBible,
+    bookCode,
+    classes.info,
+    setValue,
+    parallelView,
+    setValue1,
+  ]);
   React.useEffect(() => {
     setAudioBible(getAudioBibleObject(versions, sourceId));
   }, [versions, sourceId]);
@@ -298,6 +307,9 @@ const mapDispatchToProps = (dispatch) => {
         name: "parallelView",
         value: value,
       }),
+    setValue1: (name, value) => {
+      dispatch({ type: actions.SETVALUE1, name: name, value: value });
+    },
   };
 };
 

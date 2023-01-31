@@ -9,14 +9,14 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import { BLUE } from "../../store/colorCode";
-import Tooltip  from "@material-ui/core/Tooltip";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: "#66a3ff",
     color: "#00003d",
     boxShadow: theme.shadows[4],
-    border: "1px solid #103f87" ,
+    border: "1px solid #103f87",
     fontSize: 16,
   },
 }))(Tooltip);
@@ -51,9 +51,10 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "none",
     },
     [theme.breakpoints.only("xs")]: {
-      marginLeft: "20%",
+      marginLeft: 0,
       width: "60%",
       marginTop: 0,
+      marginBottom: 2,
     },
   },
   heading: {
@@ -61,6 +62,13 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     fontSize: 20,
     paddingTop: 10,
+  },
+  readContainer: {
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      whiteSpace: "nowrap",
+      alignItems: "center",
+    },
   },
 }));
 
@@ -74,38 +82,40 @@ const BibleIndex = (props) => {
         <Typography variant="h5" gutterBottom className={classes.heading}>
           Study the Bible in your Language
         </Typography>
-        <Version
-          setValue={props.setValue}
-          version={version}
-          landingPage={true}
-          bookCode={bookCode}
-        />
-        {bookCode !== "" && bookCode !== undefined ? (
-          <BookCombo
-            book={book}
-            bookCode={bookCode}
-            bookList={versionBooks[versionSource[sourceId]]}
-            chapter={chapter}
-            setValue={setValue}
-            minimal={false}
+        <div className={classes.readContainer}>
+          <Version
+            setValue={props.setValue}
+            version={version}
             landingPage={true}
+            bookCode={bookCode}
           />
-        ) : (
-          ""
-        )}
-        <Link
-          to={{
-            pathname: "/read",
-            // hash: "#book",
-            // search: "?search=term",
-          }}
-        >
-        <BigTooltip title = "Click here to read the Bible">
-        <Button variant="contained" className={classes.button}>
-          READ
-        </Button>
-          </BigTooltip>
-        </Link>
+          {bookCode !== "" && bookCode !== undefined ? (
+            <BookCombo
+              book={book}
+              bookCode={bookCode}
+              bookList={versionBooks[versionSource[sourceId]]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={false}
+              landingPage={true}
+            />
+          ) : (
+            ""
+          )}
+          <Link
+            to={{
+              pathname: "/read",
+              // hash: "#book",
+              // search: "?search=term",
+            }}
+          >
+            <BigTooltip title="Click here to read the Bible">
+              <Button variant="contained" className={classes.button}>
+                READ
+              </Button>
+            </BigTooltip>
+          </Link>
+        </div>
       </Paper>
     </div>
   );

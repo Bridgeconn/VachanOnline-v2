@@ -5,7 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { BLUE, LIGHTBLUE } from "../../store/colorCode";
+import { BLUE, LIGHTBLUE, WHITE } from "../../store/colorCode";
 import * as views from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 
@@ -21,10 +21,11 @@ const useStyles = makeStyles((theme) => ({
   },
   menu: {
     fontSize: "18px",
-    color: "#fff",
+    color: WHITE,
+    //#b3b3e6
   },
   selected: {
-    backgroundColor: "#fff",
+    backgroundColor: WHITE,
     paddingTop: 11,
     paddingBottom: 5,
     paddingLeft: 13,
@@ -34,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.only("xs")]: {
       padding: "3px 7px 0px",
+      "&:hover": {
+        backgroundColor: "transparent",
+      },
+      backgroundColor: "transparent",
+      boxShadow: "unset",
     },
   },
   button: {
@@ -54,12 +60,40 @@ const useStyles = makeStyles((theme) => ({
   listItemSelected: {
     minWidth: 44,
     color: BLUE,
+    [theme.breakpoints.only("xs")]: {
+      color: WHITE,
+    },
+  },
+  menuText: {
+    color: "#000",
+    fontSize: "0.65rem",
+  },
+  drawerMenu: {
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
+  bottomMenu: {
+    [theme.breakpoints.only("xs")]: {
+      textAlign: "center",
+      "&:hover": {
+        background: "#aaaeb259",
+      },
+    },
+  },
+  drawerText: {
+    [theme.breakpoints.only("xs")]: {
+      color: "#000",
+      margin: "5px 15px",
+    },
   },
 }));
 
 const MenuItem = (props) => {
   const classes = useStyles();
-  const { icon, title, item, mobileView, parallelView, uid, setValue } = props;
+  const { icon, title, item, mobileView, parallelView, uid, setValue, base } =
+    props;
   const [popover, setPopover] = React.useState(null);
 
   function handlePopoverOpen(event) {
@@ -85,7 +119,6 @@ const MenuItem = (props) => {
     }
     setValue("parallelView", parallelView === view ? "" : view);
   };
-
   const open = Boolean(popover);
   const buttonClass = parallelView === item ? classes.selected : classes.button;
   return (
@@ -99,7 +132,16 @@ const MenuItem = (props) => {
           parallelView === item ? classes.listItemSelected : classes.listItem
         }
       >
-        <div onClick={() => onClick(item, uid)}>
+        <div
+          onClick={() => onClick(item, uid)}
+          className={
+            base === "drawer"
+              ? classes.drawerMenu
+              : base === "bottom"
+              ? classes.bottomMenu
+              : null
+          }
+        >
           <i
             className="material-icons"
             style={mobileView ? { fontSize: "28px" } : { fontSize: "36px" }}
@@ -107,7 +149,16 @@ const MenuItem = (props) => {
           >
             {icon}
           </i>
-          {mobileView ? null : (
+          {base === "bottom" || base === "drawer" ? (
+            <Typography
+              className={
+                base === "drawer" ? classes.drawerText : classes.menuText
+              }
+            >
+              {title}
+            </Typography>
+          ) : null}
+          {mobileView ? null : ( // <Typography className={classes.menu}>{title}</Typography>
             <Popover
               id="mouse-over-popover"
               className={classes.popover}

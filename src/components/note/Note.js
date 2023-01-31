@@ -15,7 +15,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
@@ -76,13 +76,14 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function Note({
+function Note({
   uid,
   selectedVerses,
   setSelectedVerses,
   bookCode,
   sourceId,
   chapter,
+  mobileView,
 }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -151,7 +152,7 @@ export default function Note({
     <div>
       <div className={classes.info} onClick={openNoteDialog}>
         <Tooltip title="Add Note">
-          <NoteIcon fontSize="small" />
+          <NoteIcon fontSize={mobileView ? "large" : "small"} />
         </Tooltip>
       </div>
       <Snackbar
@@ -200,3 +201,9 @@ export default function Note({
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps)(Note);

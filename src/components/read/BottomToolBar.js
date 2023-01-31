@@ -2,10 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import NoteIcon from "@material-ui/icons/NoteOutlined";
 import { connect } from "react-redux";
 import Highlight from "../highlight/Highlight";
-import { Tooltip } from "@material-ui/core";
 import Note from "../note/Note";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 
@@ -18,6 +16,7 @@ const useStyles = makeStyles({
     bottom: 55,
     justifyContent: "space-evenly",
     boxShadow: "0 -1px 4px #b3b6bf",
+    fontSize: "2rem",
   },
   info: {
     padding: 0,
@@ -86,14 +85,6 @@ function BottomToolBar(props) {
           />
         );
         return;
-      } else {
-        setNoteIcon(
-          <Tooltip title="Select Verses">
-            <div className={classes.info}>
-              <NoteIcon fontSize="small" color="disabled" />
-            </div>
-          </Tooltip>
-        );
       }
     } else {
       setNoteIcon("");

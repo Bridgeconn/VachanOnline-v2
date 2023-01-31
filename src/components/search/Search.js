@@ -67,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     flex: 1,
   },
+  searchTitle: {
+    textAlign: "center",
+  },
   searchButton: {
     padding: 10,
   },
@@ -82,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2em",
     position: "relative",
     bottom: 2,
+    [theme.breakpoints.only("xs")]: {
+      bottom: 20,
+    },
   },
   pagination: {
     height: 50,
@@ -254,7 +260,7 @@ const Search = (props) => {
         {pageData && pageData.length ? (
           <List component="nav">
             <ListItem className={classes.listHeading}>
-              <Typography variant="h6">
+              <Typography variant="h6" className={classes.searchTitle}>
                 <span className={classes.searchHeading}>
                   {searchResult.keyword}
                 </span>

@@ -123,6 +123,7 @@ const Version = (props) => {
     parallelView,
     parallelScroll,
     setMainValue,
+    mobileView,
   } = props;
 
   function handleClick(event) {
@@ -185,6 +186,8 @@ const Version = (props) => {
     let [langCode, versionCode] = version.split("-");
     if (mobile && !landingPage) {
       setDisplayVersion(versionCode);
+    } else if (mobileView) {
+      setDisplayVersion(versionCode);
     } else {
       for (let lang in versions) {
         let languageNames = versions[lang];
@@ -201,7 +204,7 @@ const Version = (props) => {
         }
       }
     }
-  }, [landingPage, mobile, version, versions]);
+  }, [landingPage, mobile, mobileView, version, versions]);
 
   return (
     <>
@@ -212,7 +215,9 @@ const Version = (props) => {
           onClick={handleClick}
           variant="contained"
           style={
-            landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}
+            landingPage && mobile
+              ? { marginLeft: 0, marginRight: 15, width: "60%" }
+              : {}
           }
           classes={
             landingPage
@@ -312,6 +317,7 @@ const mapStateToProps = (state) => {
     versionSource: state.local.versionSource,
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
+    mobileView: state.local.mobileView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

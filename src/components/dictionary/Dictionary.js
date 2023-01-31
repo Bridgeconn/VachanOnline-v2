@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
 const Dictionary = (props) => {
   const classes = useStyles();
   const [dictionaryText, setDictionaryText] = React.useState("");
-  let { dictionary, version, setDictionary } = props;
+  let { dictionary, version, setDictionary, mobileView } = props;
   let {
     dictionaries,
     selectedDictionary,
@@ -184,11 +184,13 @@ const Dictionary = (props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
-        <Box flexGrow={1}>
-          <Typography variant="h6" className={classes.textBox}>
-            Dictionary
-          </Typography>
-        </Box>
+        {mobileView ? null : (
+          <Box flexGrow={1}>
+            <Typography variant="h6" className={classes.textBox}>
+              Dictionary
+            </Typography>
+          </Box>
+        )}
         <Box flexGrow={1}>
           <DictionaryCombo
             dictionaries={dictionaries}
@@ -224,6 +226,7 @@ const mapStateToProps = (state) => {
   return {
     dictionary: state.local.dictionary,
     version: state.local.panel1.version,
+    mobileView: state.local.mobileView,
   };
 };
 export default connect(mapStateToProps)(Dictionary);

@@ -121,6 +121,16 @@ const useStyles = makeStyles((theme) => ({
       minWidth: 60,
     },
   },
+  bookNameBox: {
+    [theme.breakpoints.only("xs")]: {
+      whiteSpace: "nowrap",
+      minWidth: 70,
+      maxWidth: 80,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      padding: "0 5px",
+    },
+  },
 }));
 const BookCombo = (props) => {
   const {
@@ -170,7 +180,7 @@ const BookCombo = (props) => {
   }, [bookCode]);
   //on changing book code set chapter row
   React.useEffect(() => {
-    bookList.forEach((element, i) => {
+    bookList?.forEach((element, i) => {
       if (element.book_code === bookCode) {
         setChapterRow(Math.min(Math.floor(i / 2) * 2 + 1, bookList.length - 1));
       }
@@ -285,7 +295,9 @@ const BookCombo = (props) => {
           variant="contained"
           onClick={openCombo}
           ref={bookDropdown}
-          style={landingPage && mobile ? { marginLeft: "20%" } : {}}
+          style={
+            landingPage && mobile ? { marginLeft: 0, marginRight: 15 } : {}
+          }
           classes={{ root: classes.button }}
         >
           {minimal === true ? (
@@ -293,7 +305,9 @@ const BookCombo = (props) => {
               className={classes.bookName}
             >{`${bookDisplay}  ${chapter}`}</div>
           ) : (
-            `${bookDisplay}  ${chapter}`
+            <div className={classes.bookNameBox}>
+              {`${bookDisplay} ${chapter}`}
+            </div>
           )}
           <i className={`material-icons ${classes.icon}`}>
             keyboard_arrow_down

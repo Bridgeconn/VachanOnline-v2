@@ -12,14 +12,16 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddBox from "@material-ui/icons/AddBox";
+import EditIcon from "@material-ui/icons/Edit";
 import Grid from "@material-ui/core/Grid";
 import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.only("xs")]: {
+      marginBottom: 30,
     },
   },
   message: {
@@ -108,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Notes(props) {
+function Notes(props) {
   const {
     uid,
     versions,
@@ -121,6 +126,8 @@ export default function Notes(props) {
     noteText,
     setNoteText,
     getRegionalBookName,
+    close,
+    mobileView,
   } = props;
   const [noteList, setNoteList] = React.useState([]);
   const [chapterNoteList, setChapterNoteList] = React.useState([]);
@@ -166,7 +173,7 @@ export default function Notes(props) {
 
   const saveNote = () => {
     //if no verse selected, show alert
-    if (!versesSelected.length) {
+    if (!versesSelected?.length) {
       setAlert(true);
       setAlertMessage("Please select a verse");
       return;
@@ -355,6 +362,36 @@ export default function Notes(props) {
     );
   };
 
+  const openRef = (event) => {
+    let element = event.currentTarget;
+    let sourceId = element.getAttribute("data-sourceid");
+    let bookCode = element.getAttribute("data-bookcode");
+    let chapter = parseInt(element.getAttribute("data-chapter"));
+    let index = parseInt(element.getAttribute("data-index"));
+    let note = notes[sourceId][bookCode][chapter][index];
+    setNoteText(note.body);
+    setModifiedTime(note.modifiedTime);
+    setEditObject(note);
+    let noteReference = {
+      sourceId: sourceId,
+      bookCode: bookCode,
+      chapter: chapter,
+      index: index,
+    };
+    setNoteReference(noteReference);
+    setLoading(true);
+    setAddNote(true);
+    setEdit(true);
+    setValue("sourceId", sourceId);
+    setValue("version", versionData[sourceId][0]);
+    setValue("bookCode", bookCode);
+    setValue("chapter", chapter);
+    setValue(
+      "languageCode",
+      versionData[sourceId][0].split("-")[0].toLowerCase()
+    );
+    close();
+  };
   //Delete Note
   const deleteNote = (event) => {
     let sourceId = event.currentTarget.getAttribute("data-sourceid");
@@ -412,10 +449,10 @@ export default function Notes(props) {
       </Box>
       {addNote ? (
         <div className={classes.form}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom onClick={close}>
             Note for {book} {chapter}:{" "}
             {versesSelected
-              .sort((a, b) => parseInt(a) - parseInt(b))
+              ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </Typography>
           <TextField
@@ -486,7 +523,7 @@ export default function Notes(props) {
                       data-bookcode={note.bookCode}
                       data-chapter={note.chapter}
                       data-index={note.index}
-                      onClick={editNote}
+                      onClick={mobileView ? openRef : editNote}
                       button
                     >
                       <ListItemText
@@ -496,6 +533,19 @@ export default function Notes(props) {
                         secondary={new Date(note.modifiedTime).toLocaleString()}
                       />
                       <ListItemSecondaryAction>
+                        {mobileView ? (
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            data-sourceid={note.sourceId}
+                            data-bookcode={note.bookCode}
+                            data-chapter={note.chapter}
+                            data-index={note.index}
+                            onClick={mobileView ? editNote : null}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        ) : null}
                         <IconButton
                           edge="end"
                           aria-label="delete"
@@ -529,7 +579,7 @@ export default function Notes(props) {
                   data-bookcode={note.bookCode}
                   data-chapter={note.chapter}
                   data-index={note.index}
-                  onClick={editNote}
+                  onClick={mobileView ? openRef : editNote}
                   button
                 >
                   <ListItemText
@@ -539,6 +589,19 @@ export default function Notes(props) {
                     secondary={new Date(note.modifiedTime).toLocaleString()}
                   />
                   <ListItemSecondaryAction>
+                    {mobileView ? (
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        data-sourceid={note.sourceId}
+                        data-bookcode={note.bookCode}
+                        data-chapter={note.chapter}
+                        data-index={note.index}
+                        onClick={mobileView ? editNote : null}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    ) : null}
                     <IconButton
                       edge="end"
                       aria-label="delete"
@@ -566,3 +629,16 @@ export default function Notes(props) {
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    close: () => {
+      dispatch({ type: actions.SETVALUE, name: "parallelView", value: "" });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Notes);

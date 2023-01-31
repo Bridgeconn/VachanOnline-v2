@@ -58,6 +58,14 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     marginTop: 60,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: 0,
+    },
+  },
+  refBox: {
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+    },
   },
   heading: {
     paddingBottom: 10,
@@ -66,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
+    [theme.breakpoints.only("xs")]: {
+      paddingBottom: "3.5rem",
+    },
   },
   calendar: {
     display: "block",
@@ -87,6 +98,11 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
+  },
+  refText: {
+    [theme.breakpoints.only("xs")]: {
+      fontSize: "1rem",
+    },
   },
   select: {
     width: 200,
@@ -206,13 +222,7 @@ const ReadingPlan = (props) => {
         </Box>
       </Box>
       <Box className={classes.main}>
-        {mobileView ? (
-          <DateCalendar
-            className={classes.calendar}
-            onChange={(date) => setSelectedDate(date)}
-            value={selectedDate}
-          />
-        ) : (
+        {mobileView ? null : (
           <Calendar
             className={classes.calendar}
             onChange={(date) => setSelectedDate(date)}
@@ -221,8 +231,8 @@ const ReadingPlan = (props) => {
         )}
         <div className={classes.container}>
           <Box className={classes.heading}>
-            <Box flexGrow={1}>
-              <Typography variant="h6">
+            <Box flexGrow={1} className={classes.refBox}>
+              <Typography variant="h6" className={classes.refText}>
                 {(mobile ? "References" : "Bible references") +
                   " for " +
                   selectedDate.getDate() +
@@ -231,6 +241,13 @@ const ReadingPlan = (props) => {
                   "-" +
                   selectedDate.getFullYear()}
               </Typography>
+              {mobileView ? (
+                <DateCalendar
+                  className={classes.calendar}
+                  onChange={(date) => setSelectedDate(date)}
+                  value={selectedDate}
+                />
+              ) : null}
             </Box>
           </Box>
           <div>

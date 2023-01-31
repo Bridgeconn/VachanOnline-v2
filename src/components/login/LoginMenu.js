@@ -11,6 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -18,11 +19,16 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 300,
     backgroundColor: theme.palette.background.paper,
   },
+  emailText: {
+    [theme.breakpoints.only("xs")]: {
+      fontSize: "0.75rem",
+    },
+  },
 }));
 
 const LoginMenu = (props) => {
   const classes = useStyles();
-  const { userDetails, setValue, mobileView } = props;
+  const { userDetails, setValue, mobileView, base } = props;
   const [menuOpen, setMenuOpen] = React.useState(null);
 
   const handleProfileMenuOpen = (event) => {
@@ -68,7 +74,7 @@ const LoginMenu = (props) => {
         ) : null}
       </IconButton>
       {mobileView ? (
-        <div className="menuLog">
+        <div className={base === "drawer" ? null : "menuLog"}>
           <List component="nav" aria-label="main mailbox folders">
             <ListItem button>
               {userDetails.photoURL ? (
@@ -76,10 +82,16 @@ const LoginMenu = (props) => {
               ) : (
                 <AccountCircle fontSize="large" />
               )}
-              <ListItemText primary={userDetails.email} />
-              {/* <ListItem button>
-                <ListItemText primary="Sign Out" onClick={signOut} />
-              </ListItem> */}
+              {base === "drawer" ? (
+                <ListItemText
+                  primary={userDetails.email}
+                  className={"drawerEmailText"}
+                />
+              ) : (
+                <Typography className={classes.emailText}>
+                  {userDetails.email}
+                </Typography>
+              )}
             </ListItem>
           </List>
           <List component="nav" aria-label="secondary mailbox folders"></List>

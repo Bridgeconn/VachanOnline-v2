@@ -83,11 +83,12 @@ const reducer = (state = defaultState, action) => {
       };
     case actions.SYNCPANEL:
       let { bookCode, chapter } = state[action.from];
+      // let { bookCode, chapter } = state.panel1;
       let bookList =
-        state.versionBooks[state.versionSource[state[action.to].sourceId]];
+        state.versionBooks[state.versionSource[state[action.to]?.sourceId]];
       let parallelScroll = state.parallelScroll;
       let message = "";
-      if (bookList.findIndex((e) => e.book_code === bookCode) === -1) {
+      if (bookList?.findIndex((e) => e.book_code === bookCode) === -1) {
         //If parallell book not available don't change it
         chapter = state[action.to].chapter;
         bookCode = state[action.to].bookCode;

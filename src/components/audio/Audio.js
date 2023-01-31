@@ -139,7 +139,7 @@ const Audio = (props) => {
     //Get list of languages
     if (audioBible) {
       const languageList = audioBible
-        .map((item) => {
+        ?.map((item) => {
           const lang = capitalize(item?.language?.name);
           return { value: lang, label: lang };
         })
@@ -150,7 +150,7 @@ const Audio = (props) => {
   useEffect(() => {
     if (language) {
       const lang = language?.value?.toLowerCase();
-      const obj = audioBible.find((obj) => obj?.language?.name === lang);
+      const obj = audioBible?.find((obj) => obj?.language?.name === lang);
       setAudios(obj?.audioBibles);
       setBook(getShortBook(books, obj?.language?.code, bookCode));
       setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
@@ -202,7 +202,7 @@ const Audio = (props) => {
             />
             <CardContent className={classes.cardContent}>
               <List>
-                {audios.map((audio) => {
+                {audios?.map((audio) => {
                   const { url, format, books, name, sourceId } = audio;
                   const audioUrl =
                     url + bookCode + "/" + chapter + "." + format;

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  AppBar,
-  Box,
-  makeStyles,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
+import { AppBar, Box, makeStyles, Toolbar } from "@material-ui/core";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
 import * as actions from "../../store/actions";
@@ -16,7 +10,7 @@ const useStyles = makeStyles(() => ({
   appBar: {
     top: "auto",
     bottom: 0,
-    boxShadow: "0 -1px 4px #b3b6bf",
+    boxShadow: "0 -1px 4px #7e7676",
   },
   text: {
     fontSize: 10,
@@ -31,6 +25,7 @@ const BottomBar = (props) => {
   const [state, setState] = React.useState({
     right: false,
   });
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -50,32 +45,35 @@ const BottomBar = (props) => {
             icon="import_contacts"
             title="Parallel Bible"
             item={views.PARALLELBIBLE}
+            base="bottom"
           />
-          <Typography className={classes.text}>Parallel Bible</Typography>
         </div>
         <div className="bottomBar">
           <MenuItem
             icon="comment"
             title="Commentaries"
             item={views.COMMENTARY}
+            base="bottom"
           />
-          <Typography className={classes.text}>Commentary</Typography>
         </div>
         <div className="bottomBar">
-          <MenuItem icon="search" title="Search Bible" item={views.SEARCH} />
-          <Typography className={classes.text}>Search</Typography>
+          <MenuItem
+            icon="search"
+            title="Search"
+            item={views.SEARCH}
+            base="bottom"
+          />
         </div>
         <div className="bottomBar">
           <MenuItem
             icon="event"
             title="Reading Plans"
             item={views.READINGPLANS}
+            base="bottom"
           />
-          <Typography className={classes.text}>Reading Plans</Typography>
         </div>
         <div className="bottomBar" onClick={toggleDrawer("right", true)}>
-          <MenuItem icon="more_vert" title="Drawer" />
-          <Typography className={classes.text}>Menu</Typography>
+          <MenuItem icon="more_vert" title="Menu" base="bottom" />
         </div>
       </Toolbar>
       <SideDrawer
@@ -83,7 +81,6 @@ const BottomBar = (props) => {
         state={state}
         login={props.login}
         userDetails={props.userDetails}
-        s
       />
     </AppBar>
   );

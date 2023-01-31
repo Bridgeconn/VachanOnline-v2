@@ -8,6 +8,9 @@ import Box from "@material-ui/core/Box";
 import ReactPlayer from "react-player";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import * as views from "../../store/views";
+import BookCombo from "../common/BookCombo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +80,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 const SignBible = (props) => {
   const classes = useStyles();
-  let { bookCode, book, chapter, signBible, setValue, versions } = props;
+  let {
+    bookCode,
+    book,
+    chapter,
+    signBible,
+    setValue,
+    versions,
+    versionBooks,
+    versionSource,
+    panel1,
+    sourceId,
+    mobileView,
+  } = props;
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
   const [playing, setPlaying] = useState("");
@@ -139,9 +154,20 @@ const SignBible = (props) => {
           <Typography variant="h6">{heading}</Typography>
         </Box>
         <Box flexGrow={1}>
-          <Typography variant="h6">
-            {book} {chapter}
-          </Typography>
+          {mobileView && views.DRAWERCOMMENTARY ? (
+            <BookCombo
+              paneNo={panel1}
+              bookCode={bookCode}
+              bookList={versionBooks[versionSource[sourceId]]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={true}
+            />
+          ) : (
+            <Typography variant="h6">
+              {book} {chapter}
+            </Typography>
+          )}
         </Box>
         <Box>
           <Close className={classes.closeButton} />
@@ -181,4 +207,11 @@ const SignBible = (props) => {
     </div>
   );
 };
-export default SignBible;
+const mapStateToProps = (state) => {
+  return {
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps)(SignBible);

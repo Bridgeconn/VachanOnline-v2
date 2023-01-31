@@ -9,6 +9,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -82,6 +83,7 @@ const CommentaryCombo = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
+  const { mobileView, commentary } = props;
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -108,7 +110,7 @@ const CommentaryCombo = (props) => {
         variant="contained"
         classes={{ root: classes.button }}
       >
-        {props.commentary.code}
+        {mobileView ? commentary?.code?.slice(0, 3) : commentary.code}
         <i className={classesI}>keyboard_arrow_downn</i>
       </Button>
       {!props.commentaries || props.commentaries.length === 0 ? (
@@ -178,5 +180,9 @@ const CommentaryCombo = (props) => {
     </>
   );
 };
-
-export default CommentaryCombo;
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps)(CommentaryCombo);
