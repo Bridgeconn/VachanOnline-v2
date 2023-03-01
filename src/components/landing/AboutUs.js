@@ -82,20 +82,13 @@ const AboutUs = ({ handleClose }) => {
           Content
         </Typography>
         <Typography variant="body1" gutterBottom>
-          The content on
-          {addHyperLink("VachanOnline", "https://vachanonline.com")} and
-          {addHyperLink(
-            "VachanGo",
-            "https://play.google.com/store/apps/details?id=com.bridgeconn.vachango"
-          )}
-          , is being made available under a collaborative arrangement among
-          Friends of Agape, unfoldingWord, Wycliffe Associates, Crossway,
-          Bridgeway Publications, Dusty Sandals, BibleProject, Visual Unit, and
+          The content on VachanOnline and VachanGo, is being made available
+          under a collaborative arrangement with multiple partners and
           {addHyperLink(
             "Bridge Connectivity Solutions Pvt. Ltd. (BCS)",
             "https://www.bridgeconn.com"
           )}
-          ; who is also the localization and technology partner.
+          ; who is the localization and technology partner.
         </Typography>
         <Typography variant="h6" className={classes.subheading}>
           Technology
