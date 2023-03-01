@@ -40,17 +40,16 @@ const BiblePane = (props) => {
     highlights,
     setHighlights,
     refUrl,
+    toggleParallelScroll,
     setRefUrl,
   } = props;
   const [fullscreen, setFullscreen] = React.useState(false);
-
   const [fetchHighlights, setFetchHighlights] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");
   const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
   const printRef = React.useRef();
   const [printNotes, setPrintNotes] = React.useState(true);
   const [printHighlights, setPrintHighlights] = React.useState(true);
-
   React.useEffect(() => {
     const closeAlert = () => {
       //After showing message remove it
@@ -125,6 +124,7 @@ const BiblePane = (props) => {
           printRef={printRef}
           printNotes={printNotes}
           setPrintNotes={setPrintNotes}
+          toggleParallelScroll={toggleParallelScroll}
           printHighlights={printHighlights}
           setPrintHighlights={setPrintHighlights}
         />
@@ -148,6 +148,8 @@ const BiblePane = (props) => {
                 printRef={printRef}
                 printNotes={printNotes}
                 printHighlights={printHighlights}
+                versesSelected={versesSelected}
+                languageCode={paneData.languageCode}
               />
               {alertMessage}
             </Fullscreen>

@@ -83,6 +83,15 @@ const useStyles = makeStyles((theme) => ({
       left: 0,
     },
   },
+  versionName: {
+    [theme.breakpoints.only("xs")]: {
+      whiteSpace: "nowrap",
+      minWidth: 30,
+      maxWidth: 60,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    },
+  },
   paper: {
     maxHeight: "calc(100vh - 150px)",
     width: 300,
@@ -225,7 +234,7 @@ const Version = (props) => {
               : { root: classes.button, label: classes.label }
           }
         >
-          {displayVersion}
+          <div className={classes.versionName}>{displayVersion}</div>
           <i className={`material-icons ${classes.icon}`}>
             keyboard_arrow_down
           </i>

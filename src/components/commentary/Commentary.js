@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     [theme.breakpoints.only("xs")]: {
       paddingLeft: 5,
+      alignItems: "center",
     },
   },
   titleComment: {
@@ -97,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
   bookNameBox: {
     [theme.breakpoints.only("xs")]: {
       display: "flex",
+      alignItems: "center",
     },
   },
   icons: {
@@ -112,6 +114,9 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 10,
     marginTop: -6,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: "0.2rem",
+    },
   },
 }));
 
@@ -130,12 +135,11 @@ const Commentary = (props) => {
     setCommentary,
     commentary,
     versionBooks,
-    versionSource,
     mobileView,
     setValue,
+    commentaryLang,
   } = props;
-  let { version, bookCode, sourceId, chapter } = panel1;
-
+  let { version, bookCode, chapter } = panel1;
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
@@ -192,7 +196,6 @@ const Commentary = (props) => {
       setBaseUrl("");
     }
   }, [commentaries, commentary, versionBooks, setBaseUrl]);
-
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
@@ -263,7 +266,7 @@ const Commentary = (props) => {
             <BookCombo
               paneNo={panel1}
               bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
+              bookList={versionBooks[commentaryLang]}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
@@ -309,6 +312,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
+    commentaryLang: state.local.commentaryLang,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -18,6 +18,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { BLUETRANSPARENT } from "../../store/colorCode";
 import Close from "../common/Close";
 import Print from "../common/PrintBox";
+import ParallelScroll from "@material-ui/icons/ImportExport";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -51,6 +52,14 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     width: "30px",
     marginTop: 20,
+    marginRight: 4,
+    color: BLUETRANSPARENT,
+    cursor: "pointer",
+  },
+  infoParall: {
+    padding: 0,
+    width: "30px",
+    marginTop: 15,
     marginRight: 4,
     color: BLUETRANSPARENT,
     cursor: "pointer",
@@ -96,6 +105,8 @@ const MenuBar = (props) => {
     printHighlights,
     setPrintHighlights,
     mobileView,
+    parallelScroll,
+    toggleParallelScroll,
   } = props;
   const styleProps = {
     mobileView: mobileView,
@@ -107,7 +118,7 @@ const MenuBar = (props) => {
     setFullscreen(true);
   }
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
-  const [metadataList, setMetadataList] = React.useState(null);
+  const [metadataList, setMetadataList] = React.useState("");
   const [audioBible, setAudioBible] = React.useState({});
   const [audioIcon, setAudioIcon] = React.useState("");
   const [bookmarkIcon, setBookmarkIcon] = React.useState("");
@@ -116,7 +127,6 @@ const MenuBar = (props) => {
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
   const [dialogOpen, setDialogOpen] = React.useState(false);
-
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
@@ -230,7 +240,7 @@ const MenuBar = (props) => {
     if (versions !== undefined) {
       const language = version.split("-");
       const languageVersions = versions.find(
-        (e) => e.languageVersions[0].language.code === language[0]
+        (e) => e.languageVersions[0].language.code === language[0].toLowerCase()
       );
       if (languageVersions !== undefined) {
         const versionObject = languageVersions.languageVersions.find(
@@ -289,6 +299,29 @@ const MenuBar = (props) => {
         <Box className={classes.items}>
           {mobileView ? null : noteIcon}
           {mobileView ? null : highlightIcon}
+          {mobileView && paneNo === 1 ? (
+            <div className={classes.infoParall} onClick={toggleParallelScroll}>
+              {parallelScroll ? (
+                <Tooltip title="Parallel Scroll">
+                  <ParallelScroll
+                    fontSize="large"
+                    style={{ color: BLUETRANSPARENT }}
+                    className={classes.parallelScroll}
+                  />
+                </Tooltip>
+              ) : (
+                <Tooltip title="Parallel Scroll Disabled">
+                  <ParallelScroll
+                    fontSize="large"
+                    color="disabled"
+                    className={classes.parallelScroll}
+                  />
+                </Tooltip>
+              )}
+            </div>
+          ) : (
+            ""
+          )}
           {bookmarkIcon}
           <Metadata
             metadataList={metadataList}
@@ -369,6 +402,7 @@ const mapStateToProps = (state) => {
     versionSource: state.local.versionSource,
     parallelView: state.local.parallelView,
     mobileView: state.local.mobileView,
+    parallelScroll: state.local.parallelScroll,
   };
 };
 export default connect(mapStateToProps)(MenuBar);

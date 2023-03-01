@@ -98,7 +98,7 @@ function SideDrawer(props) {
         <div className="bottomBar">
           <MenuItem
             icon="image"
-            title="infographics"
+            title="Infographics"
             item={views.INFOGRAPHICS}
             base="drawer"
           />
@@ -135,7 +135,11 @@ function SideDrawer(props) {
         </div>
       </ListItem>
       <ListItem className={classes.iconText}>
-        <div className="bottomBar">
+        <div
+          className="bottomBar"
+          onClick={!login ? (e) => e.stopPropagation() : null}
+          onKeyDown={!login ? (e) => e.stopPropagation() : null}
+        >
           <MenuItem
             icon="bookmark"
             title="Bookmarks"
@@ -145,7 +149,11 @@ function SideDrawer(props) {
         </div>
       </ListItem>
       <ListItem className={classes.iconText}>
-        <div className="bottomBar">
+        <div
+          className="bottomBar"
+          onClick={!login ? (e) => e.stopPropagation() : null}
+          onKeyDown={!login ? (e) => e.stopPropagation() : null}
+        >
           <MenuItem
             icon="border_color"
             title="Highlights"
@@ -155,7 +163,11 @@ function SideDrawer(props) {
         </div>
       </ListItem>
       <ListItem className={classes.iconText}>
-        <div className="bottomBar">
+        <div
+          className="bottomBar"
+          onClick={!login ? (e) => e.stopPropagation() : null}
+          onKeyDown={!login ? (e) => e.stopPropagation() : null}
+        >
           <MenuItem icon="note" title="Notes" item={views.NOTE} base="drawer" />
         </div>
       </ListItem>
@@ -189,10 +201,15 @@ function SideDrawer(props) {
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    isDrawer: state.local.isDrawer,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
-export default connect(null, mapDispatchToProps)(SideDrawer);
+export default connect(mapStateToProps, mapDispatchToProps)(SideDrawer);

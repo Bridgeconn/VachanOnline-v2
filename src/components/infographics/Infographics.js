@@ -100,7 +100,6 @@ const Infographics = (props) => {
     panel1,
     languageCode,
     bookCode,
-    versionSource,
     versionBooks,
     setValue,
     paneNo,
@@ -113,7 +112,7 @@ const Infographics = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
-  const { sourceId, chapter } = panel1;
+  const { chapter } = panel1;
 
   useEffect(() => {
     //Get list of languages
@@ -179,7 +178,7 @@ const Infographics = (props) => {
             <BookCombo
               paneNo={paneNo}
               bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
+              bookList={versionBooks[language.value]}
               chapter={chapter}
               setValue={setValue}
               minimal={true}

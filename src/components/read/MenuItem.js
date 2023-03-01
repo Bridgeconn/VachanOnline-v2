@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     fontSize: "18px",
     color: WHITE,
-    //#b3b3e6
   },
   selected: {
     backgroundColor: WHITE,
@@ -86,6 +85,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       color: "#000",
       margin: "5px 15px",
+      textTransform: "capitalize",
     },
   },
 }));

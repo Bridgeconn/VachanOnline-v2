@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
@@ -9,9 +9,24 @@ import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
-import { Divider, Typography } from "@material-ui/core";
+import {
+  Button,
+  Divider,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import { useFirebase } from "react-redux-firebase";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
     position: "absolute",
@@ -216,11 +231,14 @@ const Bible = (props) => {
   );
   const [notes, setNotes] = React.useState([]);
   const [noteText, setNoteText] = React.useState([]);
+  const [noteTextBody, setNoteTextBody] = React.useState("");
   const [fetchData, setFetchData] = React.useState();
   const [font, setFont] = React.useState("");
   const [highlightVerses, setHighlightVerses] = React.useState([]);
   const [highlighMap, setHighlighMap] = React.useState();
   const cancelToken = React.useRef();
+  const firebase = useFirebase();
+  const [open, setOpen] = React.useState(false);
 
   let {
     sourceId,
@@ -250,6 +268,8 @@ const Bible = (props) => {
     printHighlights,
     versionBooks,
     versionSource,
+    mobileView,
+    versesSelected,
   } = props;
   const styleProps = {
     padding: padding,
@@ -262,6 +282,12 @@ const Bible = (props) => {
   const bookList = versionBooks[versionSource[sourceId]];
   const [previousBook, setPreviousBook] = React.useState("");
   const [nextBook, setNextBook] = React.useState("");
+  const [alert, setAlert] = React.useState(false);
+  const [noteReference, setNoteReference] = React.useState({});
+  const [alertMessage, setAlertMessage] = React.useState(false);
+  const [editObject, setEditObject] = React.useState({});
+  const [edit, setEdit] = React.useState(false);
+
   //new usfm json structure
   const getHeading = (contents) => {
     if (contents) {
@@ -281,6 +307,69 @@ const Bible = (props) => {
     } else {
       return null;
     }
+  };
+  const notesx = useSelector(
+    ({ firebase: { data } }) =>
+      data.users &&
+      data.users[userDetails.uid] &&
+      data.users[userDetails.uid].notes
+  );
+  const saveNote = () => {
+    //if no verse selected, show alert
+    if (!versesSelected?.length) {
+      setAlert(true);
+      setAlertMessage("Please select a verse");
+      return;
+    }
+    if (noteTextBody === "") {
+      setAlert(true);
+      setAlertMessage("Please enter note text");
+      return;
+    }
+    let noteObject = edit
+      ? {
+          createdTime: editObject.createdTime,
+          modifiedTime: Date.now(),
+          body: noteTextBody,
+          verses: versesSelected.sort((a, b) => parseInt(a) - parseInt(b)),
+        }
+      : {
+          createdTime: Date.now(),
+          modifiedTime: Date.now(),
+          body: noteTextBody,
+          verses: versesSelected.sort((a, b) => parseInt(a) - parseInt(b)),
+        };
+    let notesArray =
+      notesx &&
+      notesx[sourceId] &&
+      notesx[sourceId][bookCode] &&
+      notesx[sourceId][bookCode][chapter]
+        ? notesx[sourceId][bookCode][chapter]
+        : [];
+    edit
+      ? (notesArray[noteReference.index] = noteObject)
+      : notesArray.push(noteObject);
+    return firebase
+      .ref(
+        "users/" +
+          userDetails.uid +
+          "/notes/" +
+          sourceId +
+          "/" +
+          bookCode +
+          "/" +
+          chapter
+      )
+      .set(notesArray, function (error) {
+        if (error) {
+          console.log("Note add error");
+        } else {
+          setValue("versesSelected", []);
+          // resetForm();
+          setOpen(false);
+          console.log("successful");
+        }
+      });
   };
 
   React.useEffect(() => {
@@ -386,7 +475,6 @@ const Bible = (props) => {
         });
     }
   }, [sourceId, bookCode, chapter]);
-
   //if audio bible show icon
   React.useEffect(() => {
     if (audio) {
@@ -434,6 +522,35 @@ const Bible = (props) => {
       setValue("versesSelected", verses);
     }
   };
+  const openNoteDialog = (verse) => {
+    let index;
+    Object.entries(noteText).map(([key, value]) => {
+      if (value.verses.includes(verse)) {
+        index = key;
+        setNoteTextBody(value.body);
+        setEditObject(value);
+      }
+      return [key, value];
+    });
+    setNoteReference({
+      sourceId: sourceId,
+      bookCode: bookCode,
+      chapter: chapter,
+      index: index,
+    });
+    setEdit(true);
+    setValue("versesSelected", [verse]);
+    setOpen(true);
+  };
+  const handleNoteTextChange = (e) => {
+    setNoteTextBody(e.target.value);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const closeAlert = () => {
+    setAlert(false);
+  };
   React.useEffect(() => {
     function handleResize() {
       let width = window.innerWidth;
@@ -475,7 +592,6 @@ const Bible = (props) => {
   React.useEffect(() => {
     setMainValue("playing", "");
   }, [sourceId, bookCode, chapter, setMainValue]);
-
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
@@ -534,7 +650,6 @@ const Bible = (props) => {
       ""
     );
   };
-
   return (
     <div
       className={classes.biblePanel}
@@ -596,7 +711,11 @@ const Bible = (props) => {
                         className={classes.noteIcon}
                         fontSize="small"
                         color="disabled"
-                        onClick={() => setParallelView(NOTE)}
+                        onClick={() =>
+                          mobileView
+                            ? openNoteDialog(verse)
+                            : setParallelView(NOTE)
+                        }
                       />
                     ) : (
                       ""
@@ -660,6 +779,49 @@ const Bible = (props) => {
       )}
       {getPrevious()}
       {getNext()}
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Note
+        </DialogTitle>
+        <DialogContent dividers>
+          <TextField
+            id="outlined-multiline-static"
+            label="Note Text"
+            multiline
+            minRows={10}
+            fullWidth={true}
+            inputProps={{ maxLength: 1000 }}
+            variant="outlined"
+            value={noteTextBody}
+            onChange={handleNoteTextChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button variant="contained" color="primary" onClick={saveNote}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        open={alert}
+        autoHideDuration={5000}
+        onClose={closeAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          elevation={6}
+          variant="filled"
+          onClose={closeAlert}
+          severity="warning"
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
@@ -671,6 +833,7 @@ const mapStateToProps = (state) => {
     playing: state.local.playing,
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
+    mobileView: state.local.mobileView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

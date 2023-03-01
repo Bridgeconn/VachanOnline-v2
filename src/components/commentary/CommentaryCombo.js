@@ -10,6 +10,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -83,7 +84,7 @@ const CommentaryCombo = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
-  const { mobileView, commentary } = props;
+  const { mobileView, commentary, setValue } = props;
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -91,11 +92,12 @@ const CommentaryCombo = (props) => {
     setAnchorEl(null);
   }
   //function to set the bible commentary when clicked
-  const setCommentary = (event) => {
+  const setCommentary = (event, lan) => {
     handleClose();
     props.setCommentary(
       JSON.parse(decodeURIComponent(event.currentTarget.getAttribute("value")))
     );
+    setValue("commentaryLang", lan);
   };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -165,7 +167,7 @@ const CommentaryCombo = (props) => {
                     <ListItem
                       key={i}
                       value={encodeURIComponent(JSON.stringify(item))}
-                      onClick={setCommentary}
+                      onClick={(e) => setCommentary(e, languages.languageCode)}
                       className={classes.commentary}
                     >
                       {item.code.toUpperCase()} : {item.name}
@@ -185,4 +187,10 @@ const mapStateToProps = (state) => {
     mobileView: state.local.mobileView,
   };
 };
-export default connect(mapStateToProps)(CommentaryCombo);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CommentaryCombo);

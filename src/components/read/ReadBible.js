@@ -345,25 +345,29 @@ const ReadBible = (props) => {
               )}
             </div>
             <div>
-              <div className={classes.info} onClick={toggleParallelScroll}>
-                {parallelScroll ? (
-                  <Tooltip title="Parallel Scroll">
-                    <ParallelScroll
-                      fontSize="large"
-                      style={{ color: BLUETRANSPARENT }}
-                      className={classes.parallelScroll}
-                    />
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Parallel Scroll Disabled">
-                    <ParallelScroll
-                      fontSize="large"
-                      color="disabled"
-                      className={classes.parallelScroll}
-                    />
-                  </Tooltip>
-                )}
-              </div>
+              {mobileView ? (
+                ""
+              ) : (
+                <div className={classes.info} onClick={toggleParallelScroll}>
+                  {parallelScroll ? (
+                    <Tooltip title="Parallel Scroll">
+                      <ParallelScroll
+                        fontSize="large"
+                        style={{ color: BLUETRANSPARENT }}
+                        className={classes.parallelScroll}
+                      />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="Parallel Scroll Disabled">
+                      <ParallelScroll
+                        fontSize="large"
+                        color="disabled"
+                        className={classes.parallelScroll}
+                      />
+                    </Tooltip>
+                  )}
+                </div>
+              )}
               <div className={classes.splitPane2}>
                 {mobileView ? (
                   <BiblePane
@@ -378,6 +382,7 @@ const ReadBible = (props) => {
                     ref1={bibleText1}
                     scroll={scroll}
                     paneNo={1}
+                    toggleParallelScroll={toggleParallelScroll}
                     sourceId={panel1.sourceId}
                   />
                 ) : (
@@ -445,7 +450,7 @@ const ReadBible = (props) => {
         setPane(
           <>
             <div className={classes.biblePane1}>
-              <Commentary panel1={panel1} />
+              <Commentary />
             </div>
           </>
         );

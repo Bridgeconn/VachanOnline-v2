@@ -141,7 +141,6 @@ function Notes(props) {
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(false);
   const firebase = useFirebase();
-
   const closeAlert = () => {
     setAlert(false);
   };

@@ -88,9 +88,16 @@ const LoginMenu = (props) => {
                   className={"drawerEmailText"}
                 />
               ) : (
-                <Typography className={classes.emailText}>
-                  {userDetails.email}
-                </Typography>
+                <div>
+                  <Typography className={classes.emailText}>
+                    {userDetails.email}
+                  </Typography>
+                  <ListItemText
+                    primary="Sign Out"
+                    onClick={signOut}
+                    style={{ textAlign: "center" }}
+                  />
+                </div>
               )}
             </ListItem>
           </List>

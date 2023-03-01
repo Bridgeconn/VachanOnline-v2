@@ -33,8 +33,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       width: "60%",
       padding: "6px 0",
-      margin: (props) =>
-        props.mobileView && props.parallelView ? "0 25px" : 9,
+      margin: 9,
     },
   },
   icon: {
@@ -285,10 +284,7 @@ const BookCombo = (props) => {
   };
   return (
     <>
-      <BigTooltip
-        title="Choose a Bible book and chapter to read"
-        className="ke"
-      >
+      <BigTooltip title="Choose a Bible book and chapter to read">
         <Button
           aria-controls="customized-menu"
           aria-haspopup="true"

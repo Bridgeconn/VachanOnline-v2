@@ -4,6 +4,7 @@ const defaultState = {
   versions: [],
   commentaries: [],
   commentary: {},
+  commentaryLang: "hin",
   dictionary: {
     dictionaries: [],
     selectedDictionary: {},
@@ -82,8 +83,7 @@ const reducer = (state = defaultState, action) => {
         panel2: { ...panel2, versesSelected: [] },
       };
     case actions.SYNCPANEL:
-      let { bookCode, chapter } = state[action.from];
-      // let { bookCode, chapter } = state.panel1;
+      let { bookCode, chapter } = state.panel1;
       let bookList =
         state.versionBooks[state.versionSource[state[action.to]?.sourceId]];
       let parallelScroll = state.parallelScroll;

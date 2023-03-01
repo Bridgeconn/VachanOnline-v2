@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 35,
     marginBottom: 20,
     minHeight: 51,
+    [theme.breakpoints.only("xs")]: {
+      alignItems: "center",
+    },
   },
   language: {
     fontSize: "1.1rem",
@@ -105,16 +108,13 @@ const Audio = (props) => {
   const {
     audioBible,
     bookCode,
-    panel1,
     chapter,
     books,
     languageCode,
     mobileView,
     setValue,
     versionBooks,
-    versionSource,
   } = props;
-  const { sourceId } = panel1;
 
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
@@ -122,7 +122,7 @@ const Audio = (props) => {
   const [audios, setAudios] = useState(null);
   const [playing, setPlaying] = useState("");
   const [book, setBook] = useState("");
-
+  const [audioLangCode, setAudioLangCode] = useState("hin");
   useEffect(() => {
     if (languages.length) {
       let lang = audioBible?.find((l) => l?.language?.code === languageCode);
@@ -151,6 +151,7 @@ const Audio = (props) => {
     if (language) {
       const lang = language?.value?.toLowerCase();
       const obj = audioBible?.find((obj) => obj?.language?.name === lang);
+      setAudioLangCode(obj?.language?.code ? obj?.language?.code : "hin");
       setAudios(obj?.audioBibles);
       setBook(getShortBook(books, obj?.language?.code, bookCode));
       setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
@@ -159,7 +160,6 @@ const Audio = (props) => {
   useEffect(() => {
     setPlaying("");
   }, [bookCode, chapter, languageCode]);
-
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -167,7 +167,7 @@ const Audio = (props) => {
           {mobileView && bookCode ? (
             <BookCombo
               bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
+              bookList={versionBooks[audioLangCode]}
               chapter={chapter}
               setValue={setValue}
               minimal={true}

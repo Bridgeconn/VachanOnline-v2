@@ -91,14 +91,13 @@ const Video = (props) => {
     bookCode,
     books,
     versionBooks,
-    versionSource,
     setValue,
     languageCode,
     mobileView,
     panel1,
     paneNo,
   } = props;
-  const { sourceId, chapter } = panel1;
+  const { chapter } = panel1;
 
   const [message, setMessage] = React.useState("");
   const [videoId, setVideoId] = React.useState("");
@@ -173,7 +172,7 @@ const Video = (props) => {
             <BookCombo
               paneNo={paneNo}
               bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
+              bookList={versionBooks[language.value]}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
