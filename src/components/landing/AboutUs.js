@@ -82,8 +82,14 @@ const AboutUs = ({ handleClose }) => {
           Content
         </Typography>
         <Typography variant="body1" gutterBottom>
-          The content on VachanOnline and VachanGo, is being made available
-          under a collaborative arrangement with multiple partners and
+          The content on{" "}
+          {addHyperLink("VachanOnline", "https://vachanonline.com")} and
+          {addHyperLink(
+            "VachanGo",
+            "https://play.google.com/store/apps/details?id=com.bridgeconn.vachango"
+          )}
+          , is being made available under a collaborative arrangement with
+          multiple partners and
           {addHyperLink(
             "Bridge Connectivity Solutions Pvt. Ltd. (BCS)",
             "https://www.bridgeconn.com"
