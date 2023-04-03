@@ -98,9 +98,9 @@ const SignBible = (props) => {
         //English ESV version not available
       }
     }
-    if (!["mrk", "tit"].includes(bookCode)) {
-      //Set to mark 1 on page load as only Mark and Titus are available now
-      setValue("bookCode", "mrk");
+    if (!["gen", "mrk", "luk", "tit"].includes(bookCode)) {
+      //Set to genesis 1 on page load as only Genesis, Mark, Luke and Titus are available now
+      setValue("bookCode", "gen");
       setValue("chapter", 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,7 +118,7 @@ const SignBible = (props) => {
       } else {
         setVideos();
         setMessage(
-          `Sign Language Bible available only for Mark and Titus. Use the book dropdown in the left panel to navigate.`
+          `Sign Language Bible available only for some books of the Bible. Use the book dropdown in the left panel to navigate.`
         );
       }
       setPlaying();
