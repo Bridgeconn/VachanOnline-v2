@@ -603,11 +603,11 @@ const Bible = (props) => {
 
   React.useEffect(() => {
     if (bookList) {
-      let previousBible = bookList.find(
-        (element) => element.book_code === previous.bibleBookCode
+      let previousBible = bookList?.find(
+        (element) => element?.book_code === previous?.bibleBookCode
       );
-      let nextBible = bookList.find(
-        (element) => element.book_code === next.bibleBookCode
+      let nextBible = bookList?.find(
+        (element) => element?.book_code === next?.bibleBookCode
       );
       if (previousBible) {
         setPreviousBook(previousBible.short);
