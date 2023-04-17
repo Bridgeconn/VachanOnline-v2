@@ -155,6 +155,24 @@ const TopBar = (props) => {
       ""
     );
   };
+  const HymnSongs = () => {
+    return (
+      <Link to="/song">
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="small"
+          aria-label="Hymn Songs"
+          className={classes.button}
+          href="/song"
+          rel="noopener"
+          title="Hymn Songs"
+        >
+          Hymn Songs
+        </Button>
+      </Link>
+    );
+  };
   const StudyBibleButton = () => {
     return (
       <Link to="/read">
@@ -199,10 +217,15 @@ const TopBar = (props) => {
             </Link>
           </div>
           {ISLButton()}
-          {window.location.pathname.startsWith("/read")
-            ? BibleStoriesButton()
-            : StudyBibleButton()}
+          {window.location.pathname.startsWith("/biblestories")
+            ? StudyBibleButton()
+            : BibleStoriesButton()}
+          {window.location.pathname.startsWith("/song")
+            ? StudyBibleButton()
+            : HymnSongs()}
+
           {FeedbackButton()}
+
           {loginButton}
         </Toolbar>
       </AppBar>
