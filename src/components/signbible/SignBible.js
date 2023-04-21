@@ -92,7 +92,7 @@ const SignBible = (props) => {
             version.language.code + "-" + version.version.code.toUpperCase()
           );
           setValue("sourceId", version.sourceId);
-          setValue("languageCode", version.version.code.toLowerCase());
+          setValue("versionCode", version.version.code.toLowerCase());
         }
       } catch (e) {
         //English ESV version not available
