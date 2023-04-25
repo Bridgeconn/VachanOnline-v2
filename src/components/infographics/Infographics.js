@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.only("xs")]: {
       textAlign: "center",
-      top: 95,
+      top: 75,
+      paddingBottom: 50,
     },
   },
   heading: {
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     cursor: "pointer",
     [theme.breakpoints.only("xs")]: {
-      marginBottom: 40,
+      width: "80%",
     },
   },
   closeButton: {
@@ -95,16 +96,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Infographics = (props) => {
   const classes = useStyles();
-  let {
-    infographics,
-    panel1,
-    languageCode,
-    bookCode,
-    versionBooks,
-    setValue,
-    paneNo,
-    mobileView,
-  } = props;
+  let { infographics, panel1, versionBooks, setValue, paneNo, mobileView } =
+    props;
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
   const [bookData, setBookData] = useState([]);
@@ -112,7 +105,7 @@ const Infographics = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
-  const { chapter } = panel1;
+  const { languageCode, bookCode, chapter } = panel1;
 
   useEffect(() => {
     //Get list of languages
@@ -182,6 +175,7 @@ const Infographics = (props) => {
               chapter={chapter}
               setValue={setValue}
               minimal={true}
+              screen={"info"}
             />
           ) : null}
           {languages && languages?.length !== 0 && (
@@ -241,10 +235,8 @@ const Infographics = (props) => {
 const mapStateToProps = (state) => {
   return {
     infographics: state.local.infographics,
-    languageCode: state.local.panel1.languageCode,
     bookCode: state.local.panel1.bookCode,
     versionBooks: state.local.versionBooks,
-    versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
   };
 };

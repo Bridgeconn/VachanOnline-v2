@@ -287,7 +287,6 @@ const Bible = (props) => {
   const [alertMessage, setAlertMessage] = React.useState(false);
   const [editObject, setEditObject] = React.useState({});
   const [edit, setEdit] = React.useState(false);
-
   //new usfm json structure
   const getHeading = (contents) => {
     if (contents) {
@@ -547,6 +546,7 @@ const Bible = (props) => {
   };
   const handleClose = () => {
     setOpen(false);
+    setSelectedVerses([]);
   };
   const closeAlert = () => {
     setAlert(false);

@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: (props) => (props.screenView === "single" ? 82 : 5),
+    },
   },
   title: {
     paddingLeft: 35,
@@ -76,6 +79,9 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: "70%",
       margin: "30px 0px",
     },
+    [theme.breakpoints.only("xs")]: {
+      top: (props) => (props.screenView === "single" ? 135 : 80),
+    },
   },
   message: {
     paddingLeft: 20,
@@ -85,15 +91,6 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "middle",
     fontSize: 20,
     display: "inline-block",
-    [theme.breakpoints.only("xs")]: {
-      paddingLeft: 5,
-      fontSize: 18,
-      display: "inline-block",
-      width: "120px",
-      whiteSpace: "nowrap",
-      overflow: " hidden",
-      textOverflow: "ellipsis",
-    },
   },
   bookNameBox: {
     [theme.breakpoints.only("xs")]: {
@@ -121,7 +118,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Commentary = (props) => {
-  const classes = useStyles();
   const [commentaryText, setCommentaryText] = React.useState("");
   const [commentaryObject, setCommentaryObject] = React.useState();
   const [verseLabel, setVerseLabel] = React.useState("Verse");
@@ -138,7 +134,12 @@ const Commentary = (props) => {
     mobileView,
     setValue,
     commentaryLang,
+    screenView,
   } = props;
+  const styleProps = {
+    screenView: screenView,
+  };
+  const classes = useStyles(styleProps);
   let { version, bookCode, chapter } = panel1;
   const textRef = React.useRef();
   React.useEffect(() => {
@@ -310,7 +311,6 @@ const mapStateToProps = (state) => {
     commentary: state.local.commentary,
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
-    versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
     commentaryLang: state.local.commentaryLang,
   };

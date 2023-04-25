@@ -29,13 +29,19 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     height: 61,
     top: (props) =>
-      props.mobileView && props.paneNo === 2
+      props.mobileView && props.paneNo === 1
         ? 72
         : 0 || props.mobileView
         ? 72
         : 72,
     [theme.breakpoints.only("xs")]: {
       padding: "0 5.5px",
+      top: (props) =>
+        props.mobileView && props.paneNo === 2
+          ? 12
+          : 0 || props.mobileView
+          ? 72
+          : 72,
     },
   },
   selectBox: {
@@ -381,6 +387,7 @@ const MenuBar = (props) => {
           {paneNo === 2 ? <Close /> : ""}
         </Box>
       </Box>
+
       <Print
         dialogOpen={dialogOpen}
         handleDialogClose={handleDialogClose}
@@ -389,6 +396,7 @@ const MenuBar = (props) => {
         setPrintNotes={setPrintNotes}
         setPrintHighlights={setPrintHighlights}
         printNotes={printNotes}
+        printHighlights={printHighlights}
         chapter={chapter}
       />
     </div>

@@ -265,7 +265,7 @@ const TopBar = (props) => {
               <img src={logo} alt={"logo"} className={classes.logo} />
             </Link>
           </div>
-          {ISLButton()}
+
           <div>
             {mobileView ? (
               process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
@@ -280,15 +280,15 @@ const TopBar = (props) => {
               ) : (
                 ""
               )
-            ) : null}
+            ) : (
+              ISLButton()
+            )}
           </div>
-          {mobileView
-            ? null
-            : window.location.pathname.startsWith("/read")
+          {window.location.pathname.startsWith("/read")
             ? BibleStoriesButton()
             : StudyBibleButton()}
           {FeedbackButton()}
-          {mobileView ? BibleStoriesButton() : loginButton}
+          {loginButton}
         </Toolbar>
       </AppBar>
     </div>

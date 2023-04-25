@@ -31,8 +31,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "60%",
-      padding: "6px 0",
+      width: (props) =>
+        props.screen === "audio" || props.screen === "video" ? "85%" : "60%",
+      padding: (props) =>
+        props.screen === "info" ||
+        props.screen === "audio" ||
+        props.screen === "video"
+          ? "4px 0"
+          : "6px 0",
       margin: 9,
     },
   },
@@ -142,14 +148,11 @@ const BookCombo = (props) => {
     landingPage,
     parallelScroll,
     syncPanel,
-    mobileView,
-    parallelView,
+    screen,
   } = props;
   //classes for styling
-
   const styleProps = {
-    mobileView: mobileView,
-    parallelView: parallelView,
+    screen: screen,
   };
   const classes = useStyles(styleProps);
   const theme = useTheme();
@@ -408,8 +411,6 @@ const BookCombo = (props) => {
 const mapStateToProps = (state) => {
   return {
     parallelScroll: state.local.parallelScroll,
-    mobileView: state.local.mobileView,
-    parallelView: state.local.parallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

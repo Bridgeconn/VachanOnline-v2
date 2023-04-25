@@ -44,9 +44,9 @@ const useStyles = makeStyles((theme) => ({
   displayBox: {
     display: "none",
   },
-  splitPane1: {
+  splitPane2: {
     position: "absolute",
-    top: (props) => (props.mobileView ? "40vh" : 0),
+    top: (props) => (props.mobileView ? "50vh" : 0),
     width: (props) => (props.mobileView ? "100%" : "50%"),
     height: (props) => (props.mobileView ? "50%" : "100%"),
     backgroundColor: "#fff",
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#fff",
     },
   },
-  splitPane2: {
+  splitPane1: {
     position: "absolute",
     width: (props) => (props.mobileView ? "100%" : "50%"),
     height: (props) => (props.mobileView ? "50%" : "100%"),
@@ -272,38 +272,20 @@ const ReadBible = (props) => {
         setPane(
           <>
             <div className={classes.splitPane1}>
-              {mobileView ? (
-                <Search />
-              ) : (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  sourceId={panel1.sourceId}
-                />
-              )}
+              <BiblePane
+                selectedVerses={selectedVerses}
+                setSelectedVerses={setSelectedVerses}
+                refUrl={refUrl}
+                setRefUrl={setRefUrl}
+                highlights={highlights}
+                setHighlights={setHighlights}
+                setValue={setValue1}
+                paneData={panel1}
+                sourceId={panel1.sourceId}
+              />
             </div>
             <div className={classes.splitPane2}>
-              {mobileView ? (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  sourceId={panel1.sourceId}
-                />
-              ) : (
-                <Search />
-              )}
+              <Search />
             </div>
           </>
         );
@@ -312,42 +294,24 @@ const ReadBible = (props) => {
         setPane(
           <>
             <div className={classes.splitPane1}>
-              {mobileView ? (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue2}
-                  paneData={panel2}
-                  ref1={bibleText2}
-                  scroll={scroll}
-                  paneNo={2}
-                  sourceId={panel1.sourceId}
-                />
-              ) : (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  ref1={bibleText1}
-                  scroll={scroll}
-                  paneNo={1}
-                  sourceId={panel1.sourceId}
-                />
-              )}
+              <BiblePane
+                selectedVerses={selectedVerses}
+                setSelectedVerses={setSelectedVerses}
+                refUrl={refUrl}
+                setRefUrl={setRefUrl}
+                highlights={highlights}
+                setHighlights={setHighlights}
+                setValue={setValue1}
+                paneData={panel1}
+                ref1={bibleText1}
+                scroll={scroll}
+                paneNo={1}
+                toggleParallelScroll={toggleParallelScroll}
+                sourceId={panel1.sourceId}
+              />
             </div>
             <div>
-              {mobileView ? (
-                ""
-              ) : (
+              {mobileView ? null : (
                 <div className={classes.info} onClick={toggleParallelScroll}>
                   {parallelScroll ? (
                     <Tooltip title="Parallel Scroll">
@@ -368,39 +332,23 @@ const ReadBible = (props) => {
                   )}
                 </div>
               )}
+
               <div className={classes.splitPane2}>
-                {mobileView ? (
-                  <BiblePane
-                    selectedVerses={selectedVerses}
-                    setSelectedVerses={setSelectedVerses}
-                    refUrl={refUrl}
-                    setRefUrl={setRefUrl}
-                    highlights={highlights}
-                    setHighlights={setHighlights}
-                    setValue={setValue1}
-                    paneData={panel1}
-                    ref1={bibleText1}
-                    scroll={scroll}
-                    paneNo={1}
-                    toggleParallelScroll={toggleParallelScroll}
-                    sourceId={panel1.sourceId}
-                  />
-                ) : (
-                  <BiblePane
-                    selectedVerses={selectedVerses}
-                    setSelectedVerses={setSelectedVerses}
-                    refUrl={refUrl}
-                    setRefUrl={setRefUrl}
-                    highlights={highlights}
-                    setHighlights={setHighlights}
-                    setValue={setValue2}
-                    paneData={panel2}
-                    ref1={bibleText2}
-                    scroll={scroll}
-                    paneNo={2}
-                    sourceId={panel1.sourceId}
-                  />
-                )}
+                <BiblePane
+                  selectedVerses={selectedVerses}
+                  setSelectedVerses={setSelectedVerses}
+                  refUrl={refUrl}
+                  setRefUrl={setRefUrl}
+                  highlights={highlights}
+                  setHighlights={setHighlights}
+                  setValue={setValue2}
+                  paneData={panel2}
+                  ref1={bibleText2}
+                  scroll={scroll}
+                  paneNo={2}
+                  toggleParallelScroll={toggleParallelScroll}
+                  sourceId={panel2.sourceId}
+                />
               </div>
             </div>
           </>
@@ -410,38 +358,20 @@ const ReadBible = (props) => {
         setPane(
           <>
             <div className={classes.splitPane1}>
-              {mobileView ? (
-                <Commentary />
-              ) : (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  sourceId={panel1.sourceId}
-                />
-              )}
+              <BiblePane
+                selectedVerses={selectedVerses}
+                setSelectedVerses={setSelectedVerses}
+                refUrl={refUrl}
+                setRefUrl={setRefUrl}
+                highlights={highlights}
+                setHighlights={setHighlights}
+                setValue={setValue1}
+                paneData={panel1}
+                sourceId={panel1.sourceId}
+              />
             </div>
             <div className={classes.splitPane2}>
-              {mobileView ? (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  sourceId={panel1.sourceId}
-                />
-              ) : (
-                <Commentary />
-              )}
+              <Commentary screenView={"split"} />
             </div>
           </>
         );
@@ -450,7 +380,7 @@ const ReadBible = (props) => {
         setPane(
           <>
             <div className={classes.biblePane1}>
-              <Commentary />
+              <Commentary screenView={"single"} />
             </div>
           </>
         );
@@ -678,50 +608,26 @@ const ReadBible = (props) => {
         setPane(
           <>
             <div className={classes.splitPane1}>
-              {mobileView ? (
-                <ReadingPlan
-                  readingPlans={readingPlans}
-                  bookList={versionBooks[versionSource[panel1.sourceId]]}
-                  setValue1={setValue1}
-                  versesSelected={panel1.versesSelected}
-                  mobileView={mobileView}
-                />
-              ) : (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  sourceId={panel1.sourceId}
-                />
-              )}
+              <BiblePane
+                selectedVerses={selectedVerses}
+                setSelectedVerses={setSelectedVerses}
+                refUrl={refUrl}
+                setRefUrl={setRefUrl}
+                highlights={highlights}
+                setHighlights={setHighlights}
+                setValue={setValue1}
+                paneData={panel1}
+                sourceId={panel1.sourceId}
+              />
             </div>
             <div className={classes.splitPane2}>
-              {mobileView ? (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  sourceId={panel1.sourceId}
-                />
-              ) : (
-                <ReadingPlan
-                  readingPlans={readingPlans}
-                  bookList={versionBooks[versionSource[panel1.sourceId]]}
-                  setValue1={setValue1}
-                  versesSelected={panel1.versesSelected}
-                  mobileView={mobileView}
-                />
-              )}
+              <ReadingPlan
+                readingPlans={readingPlans}
+                bookList={versionBooks[versionSource[panel1.sourceId]]}
+                setValue1={setValue1}
+                versesSelected={panel1.versesSelected}
+                mobileView={mobileView}
+              />
             </div>
           </>
         );
@@ -730,54 +636,29 @@ const ReadBible = (props) => {
         setPane(
           <>
             <div className={classes.splitPane1}>
-              {mobileView ? (
-                <SignBible
-                  signBible={signBible}
-                  bookCode={panel1?.bookCode}
-                  chapter={panel1?.chapter}
-                  book={bookObject.short}
-                  setValue={setValue1}
-                  versions={versions}
-                  sourceId={panel1?.sourceId}
-                  panel1={panel1}
-                />
-              ) : (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  sourceId={panel1.sourceId}
-                />
-              )}
+              <BiblePane
+                selectedVerses={selectedVerses}
+                setSelectedVerses={setSelectedVerses}
+                refUrl={refUrl}
+                setRefUrl={setRefUrl}
+                highlights={highlights}
+                setHighlights={setHighlights}
+                setValue={setValue1}
+                paneData={panel1}
+                sourceId={panel1.sourceId}
+              />
             </div>
             <div className={classes.splitPane2}>
-              {mobileView ? (
-                <BiblePane
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  refUrl={refUrl}
-                  setRefUrl={setRefUrl}
-                  highlights={highlights}
-                  setHighlights={setHighlights}
-                  setValue={setValue1}
-                  paneData={panel1}
-                  sourceId={panel1.sourceId}
-                />
-              ) : (
-                <SignBible
-                  signBible={signBible}
-                  bookCode={panel1.bookCode}
-                  chapter={panel1.chapter}
-                  book={bookObject.short}
-                  setValue={setValue1}
-                  versions={versions}
-                />
-              )}
+              <SignBible
+                signBible={signBible}
+                panel1={panel1}
+                bookCode={panel1.bookCode}
+                chapter={panel1.chapter}
+                book={bookObject.short}
+                sourceId={panel1?.sourceId}
+                setValue={setValue1}
+                versions={versions}
+              />
             </div>
           </>
         );
@@ -848,10 +729,10 @@ const ReadBible = (props) => {
     mobileView,
     classes.displayBox,
     classes.biblePane,
-    selectedVerses,
     refUrl,
     highlights,
     noteText,
+    selectedVerses,
   ]);
   return (
     <>

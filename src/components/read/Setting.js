@@ -192,6 +192,7 @@ const Setting = ({
         handleDialogClose={handleDialogClose}
         bookDisplay={bookDisplay}
         printRef={printRef}
+        printHighlights={printHighlights}
         setPrintNotes={setPrintNotes}
         setPrintHighlights={setPrintHighlights}
         printNotes={printNotes}

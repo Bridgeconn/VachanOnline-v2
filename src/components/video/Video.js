@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.only("xs")]: {
+      top: 75,
+    },
   },
   heading: {
     borderBottom: "1px solid #f1ecec",
@@ -60,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
     verticalAlign: "top",
     [theme.breakpoints.only("xs")]: {
-      width: "100%",
-      marginBottom: 55,
+      width: "97%",
+      marginBottom: 25,
     },
   },
   title: {
@@ -176,6 +179,7 @@ const Video = (props) => {
               chapter={chapter}
               setValue={setValue}
               minimal={true}
+              screen={"video"}
             />
           ) : (
             <Typography variant="h6">Videos</Typography>
@@ -249,7 +253,6 @@ const mapStateToProps = (state) => {
   return {
     bookCode: state.local.panel1.bookCode,
     versionBooks: state.local.versionBooks,
-    versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
   };
 };

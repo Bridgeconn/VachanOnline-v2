@@ -171,6 +171,7 @@ const Audio = (props) => {
               chapter={chapter}
               setValue={setValue}
               minimal={true}
+              screen={"audio"}
             />
           ) : (
             <Typography variant="h6">Audio Bibles</Typography>

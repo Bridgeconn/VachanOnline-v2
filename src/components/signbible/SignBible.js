@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
+    [theme.breakpoints.only("xs")]: {
+      top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 82 : 25),
+    },
   },
   container: {
     top: 52,
@@ -37,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.only("xs")]: {
+      top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 52 : 85),
     },
   },
   titleContainer: {
@@ -79,7 +85,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const SignBible = (props) => {
-  const classes = useStyles();
   let {
     bookCode,
     book,
@@ -92,7 +97,12 @@ const SignBible = (props) => {
     panel1,
     sourceId,
     mobileView,
+    parallelView,
   } = props;
+  const styleProps = {
+    parallelView: parallelView,
+  };
+  const classes = useStyles(styleProps);
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
   const [playing, setPlaying] = useState("");
@@ -146,7 +156,6 @@ const SignBible = (props) => {
       setPlaying();
     }
   }, [signBible, bookCode, chapter, book]);
-
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -156,11 +165,11 @@ const SignBible = (props) => {
         <Box flexGrow={1}>
           {mobileView && views.DRAWERCOMMENTARY ? (
             <BookCombo
-              paneNo={panel1}
               bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
               chapter={chapter}
               setValue={setValue}
+              paneNo={panel1}
+              bookList={versionBooks[versionSource[sourceId]]}
               minimal={true}
             />
           ) : (
@@ -212,6 +221,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
+    parallelView: state.local.parallelView,
   };
 };
 export default connect(mapStateToProps)(SignBible);

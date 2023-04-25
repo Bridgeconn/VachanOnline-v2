@@ -1,18 +1,15 @@
 import * as React from "react";
 import * as views from "../../store/views";
 import * as actions from "../../store/actions";
-import firebase from "firebase/app";
-
 import clsx from "clsx";
-import { Button, Drawer, ListItem, makeStyles } from "@material-ui/core";
-import Login from "../login/Login";
-import LoginMenu from "../login/LoginMenu";
+import { Drawer, ListItem, makeStyles } from "@material-ui/core";
 import MenuItem from "../read/MenuItem";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles({
   list: {
     width: 250,
+    marginTop: 30,
   },
   fullList: {
     width: "auto",
@@ -27,41 +24,9 @@ const useStyles = makeStyles({
 });
 
 function SideDrawer(props) {
-  const [loginButton, setLoginButton] = React.useState();
-  const { login, toggleDrawer, userDetails, state, setValue } = props;
+  const { login, toggleDrawer, state } = props;
   const classes = useStyles();
-  const signOut = (e) => {
-    e.preventDefault();
-    firebase
-      .auth()
-      .signOut()
-      .then(function () {
-        setValue("login", false);
-        setValue("userDetails", {
-          uid: null,
-          email: null,
-        });
-        console.log("Sign Out Successful");
-      })
-      .catch(function (error) {
-        console.log("Error Signing Out");
-      });
-  };
 
-  React.useEffect(() => {
-    setLoginButton(
-      login ? (
-        <LoginMenu userDetails={userDetails} base="drawer" />
-      ) : (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          onKeyDown={(e) => e.stopPropagation()}
-        >
-          <Login />
-        </div>
-      )
-    );
-  }, [login, userDetails]);
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -71,9 +36,6 @@ function SideDrawer(props) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className={!login ? "closeButton" : "logMenuBox closeButton"}>
-        <ListItem>{loginButton}</ListItem>
-      </div>
       <ListItem className={classes.iconText}>
         <div className="bottomBar">
           <MenuItem
@@ -171,20 +133,6 @@ function SideDrawer(props) {
           <MenuItem icon="note" title="Notes" item={views.NOTE} base="drawer" />
         </div>
       </ListItem>
-      {login ? (
-        <ListItem className={classes.iconText}>
-          <div className="bottomBar">
-            <Button
-              type="submit"
-              variant="contained"
-              color="inherit"
-              onClick={signOut}
-            >
-              Sign Out
-            </Button>
-          </div>
-        </ListItem>
-      ) : null}
     </div>
   );
   return (

@@ -143,13 +143,9 @@ const LandingFooter = (props) => {
             target="_blank"
             className={classes.companyLink}
           >
-            {mobileView ? (
-              <Typography className={classes.text}>© 2020 BCS</Typography>
-            ) : (
-              <Typography className={classes.text}>
-                © 2020 Bridge Connectivity Solutions
-              </Typography>
-            )}
+            <Typography className={classes.text}>
+              © 2020 {mobileView ? "BCS" : "Bridge Connectivity Solutions"}
+            </Typography>
           </Link>
         </Grid>
       </Grid>

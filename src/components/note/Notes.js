@@ -366,21 +366,6 @@ function Notes(props) {
     let sourceId = element.getAttribute("data-sourceid");
     let bookCode = element.getAttribute("data-bookcode");
     let chapter = parseInt(element.getAttribute("data-chapter"));
-    let index = parseInt(element.getAttribute("data-index"));
-    let note = notes[sourceId][bookCode][chapter][index];
-    setNoteText(note.body);
-    setModifiedTime(note.modifiedTime);
-    setEditObject(note);
-    let noteReference = {
-      sourceId: sourceId,
-      bookCode: bookCode,
-      chapter: chapter,
-      index: index,
-    };
-    setNoteReference(noteReference);
-    setLoading(true);
-    setAddNote(true);
-    setEdit(true);
     setValue("sourceId", sourceId);
     setValue("version", versionData[sourceId][0]);
     setValue("bookCode", bookCode);
@@ -448,7 +433,7 @@ function Notes(props) {
       </Box>
       {addNote ? (
         <div className={classes.form}>
-          <Typography variant="h6" gutterBottom onClick={close}>
+          <Typography variant="h6" gutterBottom>
             Note for {book} {chapter}:{" "}
             {versesSelected
               ?.sort((a, b) => parseInt(a) - parseInt(b))

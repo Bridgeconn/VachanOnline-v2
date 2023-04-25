@@ -105,6 +105,7 @@ function Note({
 
   const handleClose = () => {
     setOpen(false);
+    setSelectedVerses([]);
   };
 
   const saveNote = () => {

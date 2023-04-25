@@ -84,7 +84,7 @@ const CommentaryCombo = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
-  const { mobileView, commentary, setValue } = props;
+  const { commentary, setValue } = props;
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -112,7 +112,7 @@ const CommentaryCombo = (props) => {
         variant="contained"
         classes={{ root: classes.button }}
       >
-        {mobileView ? commentary?.code?.slice(0, 3) : commentary.code}
+        {commentary.code}
         <i className={classesI}>keyboard_arrow_downn</i>
       </Button>
       {!props.commentaries || props.commentaries.length === 0 ? (
@@ -182,15 +182,10 @@ const CommentaryCombo = (props) => {
     </>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    mobileView: state.local.mobileView,
-  };
-};
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(CommentaryCombo);
+export default connect(null, mapDispatchToProps)(CommentaryCombo);

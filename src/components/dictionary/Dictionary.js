@@ -65,15 +65,12 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
     [theme.breakpoints.only("xs")]: {
-      top: 145,
+      top: 115,
       bottom: 50,
+      left: 20,
     },
   },
-  textBox: {
-    [theme.breakpoints.only("xs")]: {
-      margin: "0 10px",
-    },
-  },
+
   heading: {
     fontWeight: "bold",
     fontSize: "1.2em",
@@ -186,9 +183,7 @@ const Dictionary = (props) => {
       <Box className={classes.title}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h6" className={classes.textBox}>
-              Dictionary
-            </Typography>
+            <Typography variant="h6">Dictionary</Typography>
           </Box>
         )}
         <Box flexGrow={1}>

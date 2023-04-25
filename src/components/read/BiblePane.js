@@ -19,6 +19,16 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     overflow: "auto",
     marginBottom: -15,
+    [theme.breakpoints.only("xs")]: {
+      top: (props) =>
+        props.paneNo
+          ? props.paneNo === 1
+            ? 135
+            : 135 || props.paneNo === 2
+            ? 80
+            : 80
+          : 135,
+    },
   },
   fullscreen: {
     backgroundColor: "#fff",
@@ -26,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BiblePane = (props) => {
-  const classes = useStyles();
   const {
     setValue,
     paneData,
@@ -43,6 +52,10 @@ const BiblePane = (props) => {
     toggleParallelScroll,
     setRefUrl,
   } = props;
+  const styleProps = {
+    paneNo: paneNo,
+  };
+  const classes = useStyles(styleProps);
   const [fullscreen, setFullscreen] = React.useState(false);
   const [fetchHighlights, setFetchHighlights] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");

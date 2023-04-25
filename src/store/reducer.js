@@ -83,7 +83,11 @@ const reducer = (state = defaultState, action) => {
         panel2: { ...panel2, versesSelected: [] },
       };
     case actions.SYNCPANEL:
-      let { bookCode, chapter } = state.panel1;
+      let { bookCode, chapter } = state[action.from]
+        ? state[action.from]
+        : state.panel1
+        ? state.panel1
+        : state.panel2;
       let bookList =
         state.versionBooks[state.versionSource[state[action.to]?.sourceId]];
       let parallelScroll = state.parallelScroll;

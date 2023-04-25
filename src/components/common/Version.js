@@ -195,8 +195,6 @@ const Version = (props) => {
     let [langCode, versionCode] = version.split("-");
     if (mobile && !landingPage) {
       setDisplayVersion(versionCode);
-    } else if (mobileView) {
-      setDisplayVersion(versionCode);
     } else {
       for (let lang in versions) {
         let languageNames = versions[lang];

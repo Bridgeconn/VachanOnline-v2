@@ -6,12 +6,10 @@ import firebase from "firebase/app";
 import Menu from "@material-ui/core/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import ListItemText from "@material-ui/core/ListItemText";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
-import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginMenu = (props) => {
   const classes = useStyles();
-  const { userDetails, setValue, mobileView, base } = props;
+  const { userDetails, setValue } = props;
   const [menuOpen, setMenuOpen] = React.useState(null);
 
   const handleProfileMenuOpen = (event) => {
@@ -65,77 +63,39 @@ const LoginMenu = (props) => {
         onClick={handleProfileMenuOpen}
         color="inherit"
       >
-        {!mobileView ? (
-          userDetails.photoURL ? (
-            <Avatar alt={userDetails.email} src={userDetails.photoURL} />
-          ) : (
-            <AccountCircle fontSize="large" />
-          )
-        ) : null}
+        <Avatar alt={userDetails.email} src={userDetails.photoURL} />
       </IconButton>
-      {mobileView ? (
-        <div className={base === "drawer" ? null : "menuLog"}>
-          <List component="nav" aria-label="main mailbox folders">
-            <ListItem button>
-              {userDetails.photoURL ? (
-                <Avatar alt={userDetails.email} src={userDetails.photoURL} />
-              ) : (
-                <AccountCircle fontSize="large" />
-              )}
-              {base === "drawer" ? (
-                <ListItemText
-                  primary={userDetails.email}
-                  className={"drawerEmailText"}
-                />
-              ) : (
-                <div>
-                  <Typography className={classes.emailText}>
-                    {userDetails.email}
-                  </Typography>
-                  <ListItemText
-                    primary="Sign Out"
-                    onClick={signOut}
-                    style={{ textAlign: "center" }}
-                  />
-                </div>
-              )}
-            </ListItem>
-          </List>
-          <List component="nav" aria-label="secondary mailbox folders"></List>
-        </div>
-      ) : (
-        <Menu
-          elevation={0}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-          anchorEl={menuOpen}
-          keepMounted
-          open={Boolean(menuOpen)}
-          onClose={handleClose}
-          classes={{
-            paper: classes.paper,
-          }}
-        >
-          <List component="nav" aria-label="main mailbox folders">
-            <ListItem button>
-              <ListItemText primary={userDetails.email} />
-            </ListItem>
-          </List>
-          <Divider />
-          <List component="nav" aria-label="secondary mailbox folders">
-            <ListItem button>
-              <ListItemText primary="Sign Out" onClick={signOut} />
-            </ListItem>
-          </List>
-        </Menu>
-      )}
+      <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        anchorEl={menuOpen}
+        keepMounted
+        open={Boolean(menuOpen)}
+        onClose={handleClose}
+        classes={{
+          paper: classes.paper,
+        }}
+      >
+        <List component="nav" aria-label="main mailbox folders">
+          <ListItem button>
+            <ListItemText primary={userDetails.email} />
+          </ListItem>
+        </List>
+        <Divider />
+        <List component="nav" aria-label="secondary mailbox folders">
+          <ListItem button>
+            <ListItemText primary="Sign Out" onClick={signOut} />
+          </ListItem>
+        </List>
+      </Menu>
     </>
   );
 };

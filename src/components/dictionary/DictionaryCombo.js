@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
-      margin: "0 6px",
+      marginTop: 65,
     },
   },
   list: {

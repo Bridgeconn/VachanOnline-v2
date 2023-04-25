@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 78,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: 15,
+    },
   },
   heading: {
     display: "flex",
@@ -45,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.only("xs")]: {
+      top: 80,
     },
   },
   message: {

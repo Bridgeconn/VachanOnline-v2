@@ -11,8 +11,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Select from "react-select";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
@@ -31,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: 5,
+    },
   },
   main: {
     top: 134,
@@ -52,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.only("xs")]: {
       width: "100%",
-      padding: 10,
+      padding: "10px 5px",
+      top: 60,
     },
   },
   container: {
@@ -74,16 +76,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
-    [theme.breakpoints.only("xs")]: {
-      paddingBottom: "3.5rem",
-    },
   },
   calendar: {
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
     width: "50%",
-    [theme.breakpoints.down("sm")]: { width: "80%" },
+    [theme.breakpoints.down("sm")]: { width: 120 },
   },
   message: {
     margin: 18,
@@ -102,6 +101,7 @@ const useStyles = makeStyles((theme) => ({
   refText: {
     [theme.breakpoints.only("xs")]: {
       fontSize: "1rem",
+      marginRight: 5,
     },
   },
   select: {
@@ -110,6 +110,9 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginTop: 7,
     marginRight: 15,
+  },
+  dateContainer: {
+    display: "flex",
   },
   loading: {
     paddingLeft: 20,
@@ -124,8 +127,6 @@ const ReadingPlan = (props) => {
   const [plan, setPlan] = useState("");
   const [planData, setPlanData] = useState("");
   const [readingList, setReadingList] = useState([]);
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [loading, setLoading] = React.useState(false);
 
   const months = [
@@ -202,7 +203,10 @@ const ReadingPlan = (props) => {
     <div className={classes.root}>
       <Box className={classes.title}>
         <Box flexGrow={1}>
-          <Typography variant="h6"> {mobile ? "" : "Reading Plans"}</Typography>
+          <Typography variant="h6">
+            {" "}
+            {mobileView ? "" : "Reading Plans"}
+          </Typography>
         </Box>
         <Box flexGrow={1}>
           {plan ? (
@@ -233,20 +237,27 @@ const ReadingPlan = (props) => {
           <Box className={classes.heading}>
             <Box flexGrow={1} className={classes.refBox}>
               <Typography variant="h6" className={classes.refText}>
-                {(mobile ? "References" : "Bible references") +
-                  " for " +
-                  selectedDate.getDate() +
-                  "-" +
-                  months[selectedDate.getMonth()] +
-                  "-" +
-                  selectedDate.getFullYear()}
+                {mobileView
+                  ? ""
+                  : "Bible references" +
+                    " for " +
+                    selectedDate.getDate() +
+                    "-" +
+                    months[selectedDate.getMonth()] +
+                    "-" +
+                    selectedDate.getFullYear()}
               </Typography>
               {mobileView ? (
-                <DateCalendar
-                  className={classes.calendar}
-                  onChange={(date) => setSelectedDate(date)}
-                  value={selectedDate}
-                />
+                <div className={classes.dateContainer}>
+                  <Typography variant="h6" className={classes.refText}>
+                    References for{" "}
+                  </Typography>
+                  <DateCalendar
+                    className={classes.calendar}
+                    onChange={(date) => setSelectedDate(date)}
+                    value={selectedDate}
+                  />
+                </div>
               ) : null}
             </Box>
           </Box>

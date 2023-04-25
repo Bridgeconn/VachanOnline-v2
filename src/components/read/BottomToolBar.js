@@ -46,6 +46,7 @@ function BottomToolBar(props) {
     bookCode,
     chapter,
   } = props;
+  console.log(selectedVerses, "jhug");
   React.useEffect(() => {
     if (userDetails.uid !== null) {
       if (selectedVerses && selectedVerses.length > 0) {
