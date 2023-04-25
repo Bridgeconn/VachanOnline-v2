@@ -11,6 +11,9 @@ import ReactPlayer from "react-player";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import { capitalize, getShortBook } from "../common/utility";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
+import BookCombo from "../common/BookCombo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 35,
     marginBottom: 20,
     minHeight: 51,
+    [theme.breakpoints.only("xs")]: {
+      alignItems: "center",
+    },
   },
   language: {
     fontSize: "1.1rem",
@@ -99,14 +105,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Audio = (props) => {
   const classes = useStyles();
-  const { audioBible, bookCode, chapter, books, languageCode } = props;
+  const {
+    audioBible,
+    bookCode,
+    chapter,
+    books,
+    languageCode,
+    mobileView,
+    setValue,
+    versionBooks,
+  } = props;
+
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
   const [hasAudio, setHasAudio] = useState(false);
   const [audios, setAudios] = useState(null);
   const [playing, setPlaying] = useState("");
   const [book, setBook] = useState("");
-
+  const [audioLangCode, setAudioLangCode] = useState("hin");
   useEffect(() => {
     if (languages.length) {
       let lang = audioBible?.find((l) => l?.language?.code === languageCode);
@@ -123,7 +139,7 @@ const Audio = (props) => {
     //Get list of languages
     if (audioBible) {
       const languageList = audioBible
-        .map((item) => {
+        ?.map((item) => {
           const lang = capitalize(item?.language?.name);
           return { value: lang, label: lang };
         })
@@ -134,7 +150,8 @@ const Audio = (props) => {
   useEffect(() => {
     if (language) {
       const lang = language?.value?.toLowerCase();
-      const obj = audioBible.find((obj) => obj?.language?.name === lang);
+      const obj = audioBible?.find((obj) => obj?.language?.name === lang);
+      setAudioLangCode(obj?.language?.code ? obj?.language?.code : "hin");
       setAudios(obj?.audioBibles);
       setBook(getShortBook(books, obj?.language?.code, bookCode));
       setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
@@ -143,12 +160,22 @@ const Audio = (props) => {
   useEffect(() => {
     setPlaying("");
   }, [bookCode, chapter, languageCode]);
-
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Audio Bibles</Typography>
+          {mobileView && bookCode ? (
+            <BookCombo
+              bookCode={bookCode}
+              bookList={versionBooks[audioLangCode]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={true}
+              screen={"audio"}
+            />
+          ) : (
+            <Typography variant="h6">Audio Bibles</Typography>
+          )}
         </Box>
         <Box flexGrow={1}>
           {languages && languages?.length !== 0 && (
@@ -176,7 +203,7 @@ const Audio = (props) => {
             />
             <CardContent className={classes.cardContent}>
               <List>
-                {audios.map((audio) => {
+                {audios?.map((audio) => {
                   const { url, format, books, name, sourceId } = audio;
                   const audioUrl =
                     url + bookCode + "/" + chapter + "." + format;
@@ -220,4 +247,17 @@ const Audio = (props) => {
     </div>
   );
 };
-export default Audio;
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Audio);

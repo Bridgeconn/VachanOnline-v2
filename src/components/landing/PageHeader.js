@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Login from "../login/Login";
-import Badge from "@material-ui/core/Badge";
 import LoginMenu from "../login/LoginMenu";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
@@ -14,7 +13,6 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import * as actions from "../../store/actions";
-import { isFeatureNew } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,35 +93,28 @@ const PageHeader = (props) => {
           </div>
           {process.env.REACT_APP_SIGNBIBLE_URL !== undefined &&
           mobile === false ? (
-            <Badge
-              className={classes.islBadge}
-              color="secondary"
-              variant="dot"
-              badgeContent={isFeatureNew("12-01-2022")}
+            <Link
+              to={{
+                pathname: "/read",
+              }}
             >
-              <Link
-                to={{
-                  pathname: "/read",
-                }}
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                className={classes.signBible}
+                title="Sign Language Bible"
+                aria-label="sign language bible"
+                target="_blank"
+                rel="noopener"
+                onClick={() => setParallelView(SIGNBIBLE)}
+                startIcon={<i className="material-icons">sign_language</i>}
               >
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="inherit"
-                  className={classes.signBible}
-                  title="Sign Language Bible"
-                  aria-label="sign language bible"
-                  target="_blank"
-                  rel="noopener"
-                  onClick={() => setParallelView(SIGNBIBLE)}
-                  startIcon={<i className="material-icons">sign_language</i>}
-                >
-                  {mobileLandscape === true
-                    ? "ISLV"
-                    : "Sign Language Bible (ISLV)"}
-                </Button>
-              </Link>
-            </Badge>
+                {mobileLandscape === true
+                  ? "ISLV"
+                  : "Sign Language Bible (ISLV)"}
+              </Button>
+            </Link>
           ) : (
             ""
           )}

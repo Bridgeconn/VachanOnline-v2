@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: 70,
+    },
   },
   title: {
     paddingLeft: 35,
@@ -21,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
+    [theme.breakpoints.only("xs")]: {
+      flexWrap: "wrap",
+      padding: "0 10px",
+    },
   },
   text: {
     position: "absolute",
@@ -57,7 +64,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.only("xs")]: {
+      top: 115,
+      bottom: 50,
+      left: 20,
+    },
   },
+
   heading: {
     fontWeight: "bold",
     fontSize: "1.2em",
@@ -81,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 const Dictionary = (props) => {
   const classes = useStyles();
   const [dictionaryText, setDictionaryText] = React.useState("");
-  let { dictionary, version, setDictionary } = props;
+  let { dictionary, version, setDictionary, mobileView } = props;
   let {
     dictionaries,
     selectedDictionary,
@@ -168,9 +181,11 @@ const Dictionary = (props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
-        <Box flexGrow={1}>
-          <Typography variant="h6">Dictionary</Typography>
-        </Box>
+        {mobileView ? null : (
+          <Box flexGrow={1}>
+            <Typography variant="h6">Dictionary</Typography>
+          </Box>
+        )}
         <Box flexGrow={1}>
           <DictionaryCombo
             dictionaries={dictionaries}
@@ -206,6 +221,7 @@ const mapStateToProps = (state) => {
   return {
     dictionary: state.local.dictionary,
     version: state.local.panel1.version,
+    mobileView: state.local.mobileView,
   };
 };
 export default connect(mapStateToProps)(Dictionary);

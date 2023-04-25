@@ -9,10 +9,11 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +63,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Highlights = (props) => {
   const classes = useStyles();
-  const { uid, versions, setValue, getRegionalBookName } = props;
+  const { uid, versions, setValue, getRegionalBookName, close, mobileView } =
+    props;
   const [highlightList, setHighlightList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
   const firebase = useFirebase();
@@ -135,7 +137,10 @@ const Highlights = (props) => {
     setValue("bookCode", element.getAttribute("data-bookcode"));
     setValue("chapter", parseInt(element.getAttribute("data-chapter")));
     setValue("versesSelected", []);
-    setValue("languageCode",versionData[sourceId][0].split('-')[0].toLowerCase())
+    setValue(
+      "languageCode",
+      versionData[sourceId][0].split("-")[0].toLowerCase()
+    );
   };
 
   //Delete highlight
@@ -194,6 +199,7 @@ const Highlights = (props) => {
                   button
                 >
                   <ListItemText
+                    onClick={mobileView ? close : null}
                     primary={`${versionData[highlight.sourceId][0]} ${
                       highlight.book
                     } ${highlight.chapter}:${highlight.verse}`}
@@ -226,4 +232,16 @@ const Highlights = (props) => {
     </div>
   );
 };
-export default Highlights;
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    close: () => {
+      dispatch({ type: actions.SETVALUE, name: "parallelView", value: "" });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Highlights);

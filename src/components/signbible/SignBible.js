@@ -8,6 +8,9 @@ import Box from "@material-ui/core/Box";
 import ReactPlayer from "react-player";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import * as views from "../../store/views";
+import BookCombo from "../common/BookCombo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
+    [theme.breakpoints.only("xs")]: {
+      top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 82 : 25),
+    },
   },
   container: {
     top: 52,
@@ -34,6 +40,16 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.only("xs")]: {
+      top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 52 : 85),
+    },
+  },
+  titleContainer: {
+    "&:last-child": {
+      [theme.breakpoints.only("xs")]: {
+        paddingBottom: 0,
+      },
     },
   },
   heading: {
@@ -69,8 +85,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const SignBible = (props) => {
-  const classes = useStyles();
-  let { bookCode, book, chapter, signBible, setValue, versions } = props;
+  let {
+    bookCode,
+    book,
+    chapter,
+    signBible,
+    setValue,
+    versions,
+    versionBooks,
+    versionSource,
+    panel1,
+    sourceId,
+    mobileView,
+    parallelView,
+  } = props;
+  const styleProps = {
+    parallelView: parallelView,
+  };
+  const classes = useStyles(styleProps);
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
   const [playing, setPlaying] = useState("");
@@ -98,7 +130,7 @@ const SignBible = (props) => {
         //English ESV version not available
       }
     }
-    if (!["gen", "mrk", "luk", "tit"].includes(bookCode)) {
+    if (!["mrk", "tit"].includes(bookCode)) {
       //Set to genesis 1 on page load as only Genesis, Mark, Luke and Titus are available now
       setValue("bookCode", "gen");
       setValue("chapter", 1);
@@ -124,7 +156,6 @@ const SignBible = (props) => {
       setPlaying();
     }
   }, [signBible, bookCode, chapter, book]);
-
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -132,9 +163,20 @@ const SignBible = (props) => {
           <Typography variant="h6">{heading}</Typography>
         </Box>
         <Box flexGrow={1}>
-          <Typography variant="h6">
-            {book} {chapter}
-          </Typography>
+          {mobileView && views.DRAWERCOMMENTARY ? (
+            <BookCombo
+              bookCode={bookCode}
+              chapter={chapter}
+              setValue={setValue}
+              paneNo={panel1}
+              bookList={versionBooks[versionSource[sourceId]]}
+              minimal={true}
+            />
+          ) : (
+            <Typography variant="h6">
+              {book} {chapter}
+            </Typography>
+          )}
         </Box>
         <Box>
           <Close className={classes.closeButton} />
@@ -154,7 +196,7 @@ const SignBible = (props) => {
                     width="100%"
                     style={{ maxHeight: "calc(100vh - 150px)" }}
                   />
-                  <CardContent>
+                  <CardContent className={classes.titleContainer}>
                     <Typography
                       gutterBottom
                       variant="h5"
@@ -174,4 +216,12 @@ const SignBible = (props) => {
     </div>
   );
 };
-export default SignBible;
+const mapStateToProps = (state) => {
+  return {
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
+    mobileView: state.local.mobileView,
+    parallelView: state.local.parallelView,
+  };
+};
+export default connect(mapStateToProps)(SignBible);

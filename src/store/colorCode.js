@@ -8,3 +8,4 @@ export const GREEN = "#5dff79";
 export const CYAN = "#56f3ff";
 export const PINK = "#ffcaf7";
 export const ORANGE = "#ffc66f";
+export const WHITE = "#fff";

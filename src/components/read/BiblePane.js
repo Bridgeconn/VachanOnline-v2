@@ -19,33 +19,50 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     overflow: "auto",
     marginBottom: -15,
+    [theme.breakpoints.only("xs")]: {
+      top: (props) =>
+        props.paneNo
+          ? props.paneNo === 1
+            ? 135
+            : 135 || props.paneNo === 2
+            ? 80
+            : 80
+          : 135,
+    },
   },
   fullscreen: {
     backgroundColor: "#fff",
   },
 }));
 
-const BiblePane = ({
-  setValue,
-  paneData,
-  ref1,
-  scroll,
-  paneNo,
-  singlePane,
-  userDetails,
-}) => {
-  const classes = useStyles();
+const BiblePane = (props) => {
+  const {
+    setValue,
+    paneData,
+    ref1,
+    scroll,
+    paneNo,
+    singlePane,
+    userDetails,
+    selectedVerses,
+    setSelectedVerses,
+    highlights,
+    setHighlights,
+    refUrl,
+    toggleParallelScroll,
+    setRefUrl,
+  } = props;
+  const styleProps = {
+    paneNo: paneNo,
+  };
+  const classes = useStyles(styleProps);
   const [fullscreen, setFullscreen] = React.useState(false);
-  const [selectedVerses, setSelectedVerses] = React.useState([]);
-  const [highlights, setHighlights] = React.useState([]);
   const [fetchHighlights, setFetchHighlights] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");
-  const [refUrl, setRefUrl] = React.useState("");
   const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
   const printRef = React.useRef();
   const [printNotes, setPrintNotes] = React.useState(true);
   const [printHighlights, setPrintHighlights] = React.useState(true);
-
   React.useEffect(() => {
     const closeAlert = () => {
       //After showing message remove it
@@ -79,11 +96,11 @@ const BiblePane = ({
     if (Object.keys(userDetails).length === 0 || userDetails.uid === null) {
       setSelectedVerses([]);
     }
-  }, [userDetails]);
+  }, [setSelectedVerses, userDetails]);
 
   React.useEffect(() => {
     setSelectedVerses(versesSelected);
-  }, [versesSelected]);
+  }, [setSelectedVerses, versesSelected]);
 
   React.useEffect(() => {
     if (Object.keys(userDetails).length !== 0 && userDetails.uid !== null) {
@@ -103,7 +120,7 @@ const BiblePane = ({
       setFetchHighlights("");
       setHighlights([]);
     }
-  }, [userDetails, sourceId, bookCode, chapter, setHighlights]);
+  }, [userDetails, sourceId, bookCode, chapter, setHighlights, setRefUrl]);
   return (
     <>
       <div>
@@ -120,6 +137,7 @@ const BiblePane = ({
           printRef={printRef}
           printNotes={printNotes}
           setPrintNotes={setPrintNotes}
+          toggleParallelScroll={toggleParallelScroll}
           printHighlights={printHighlights}
           setPrintHighlights={setPrintHighlights}
         />
@@ -143,6 +161,8 @@ const BiblePane = ({
                 printRef={printRef}
                 printNotes={printNotes}
                 printHighlights={printHighlights}
+                versesSelected={versesSelected}
+                languageCode={paneData.languageCode}
               />
               {alertMessage}
             </Fullscreen>

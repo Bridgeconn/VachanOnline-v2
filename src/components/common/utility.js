@@ -1,4 +1,4 @@
-import { readingPlanAPI,signBibleAPI, API } from "../../store/api";
+import { readingPlanAPI, signBibleAPI, API } from "../../store/api";
 import { bibleBooks } from "../../store/bibleData";
 //Function to get the bible versions
 export const getVersions = (
@@ -165,7 +165,7 @@ export const getAudioBibleObject = (versions, sourceId) => {
   if (sourceId === "") {
     return;
   }
-  for (var i = 0; i < versions.length; i++) {
+  for (var i = 0; i < versions?.length; i++) {
     let languageVersions = versions[i]["languageVersions"];
     for (var j = 0; j < languageVersions.length; j++) {
       if (Number(sourceId) === languageVersions[j]["sourceId"]) {
@@ -248,14 +248,14 @@ export const getReadingPlans = (setValue) => {
 
 export const getSignBible = (setValue) => {
   signBibleAPI
-  .get('ISL.json')
-  .then(function(response){
-    setValue("signBible", response.data)
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-}
+    .get("ISL.json")
+    .then(function (response) {
+      setValue("signBible", response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 export const isFeatureNew = (featureDate) => {
   let varDate = new Date(featureDate);

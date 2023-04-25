@@ -15,10 +15,15 @@ import { BLUE } from "../../store/colorCode";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
+import { AUDIO } from "../../store/views";
+
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import * as views from "../../store/views";
+
 import Badge from "@material-ui/core/Badge";
-import { isFeatureNew } from "../common/utility";
+import { getAudioBibleObject, isFeatureNew } from "../common/utility";
+import MenuItem from "./MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,8 +52,19 @@ const useStyles = makeStyles((theme) => ({
       lineHeight: "75px",
     },
   },
+  info: {
+    padding: 0,
+    width: "30px",
+    marginTop: 20,
+    marginRight: 4,
+    color: "#fff",
+    cursor: "pointer",
+  },
   icon: {
     height: 50,
+  },
+  gap: {
+    marginRight: 10,
   },
   logo: {
     height: 60,
@@ -85,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
   islBadge: {
     marginRight: 8,
   },
+  iconMobileContainer: {
+    display: "flex",
+  },
 }));
 
 const TopBar = (props) => {
@@ -93,11 +112,58 @@ const TopBar = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  let { login, userDetails, setParallelView } = props;
+  let {
+    login,
+    userDetails,
+    setParallelView,
+    mobileView,
+    audio,
+    setValue,
+    setValue1,
+    bookCode,
+    parallelView,
+    sourceId,
+    versions,
+  } = props;
+  const [audioBible, setAudioBible] = React.useState({});
+  const [audioIcon, setAudioIcon] = React.useState("");
+  React.useEffect(() => {
+    const openAudioBible = () => {
+      setValue("audio", !audio);
+      setValue("audioBible", audioBible);
+    };
+    if (
+      audioBible &&
+      audioBible?.url &&
+      bookCode in audioBible?.books &&
+      parallelView !== AUDIO
+    ) {
+      setAudioIcon(
+        <Tooltip title="Audio Bible" className="audioHead">
+          <div className={classes.info} onClick={openAudioBible}>
+            <i className="material-icons md-23">volume_up</i>
+          </div>
+        </Tooltip>
+      );
+    } else {
+      setValue1("audio", false);
+      setAudioIcon("");
+    }
+  }, [
+    audio,
+    audioBible,
+    bookCode,
+    classes.info,
+    setValue,
+    parallelView,
+    setValue1,
+  ]);
+  React.useEffect(() => {
+    setAudioBible(getAudioBibleObject(versions, sourceId));
+  }, [versions, sourceId]);
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
-
   const ISLButton = () => {
     const Btn = () => {
       return (
@@ -120,6 +186,7 @@ const TopBar = (props) => {
     return process.env.REACT_APP_SIGNBIBLE_URL !== undefined &&
       mobile === false ? (
       <Badge
+        overlap="rectangular"
         className={classes.islBadge}
         color="secondary"
         variant="dot"
@@ -198,7 +265,25 @@ const TopBar = (props) => {
               <img src={logo} alt={"logo"} className={classes.logo} />
             </Link>
           </div>
-          {ISLButton()}
+
+          <div>
+            {mobileView ? (
+              process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+                <div className={classes.iconMobileContainer}>
+                  <MenuItem
+                    icon="sign_language"
+                    title="ISLV Bible"
+                    item={views.SIGNBIBLE}
+                  />
+                  <div className={classes.gap}>{audioIcon}</div>
+                </div>
+              ) : (
+                ""
+              )
+            ) : (
+              ISLButton()
+            )}
+          </div>
           {window.location.pathname.startsWith("/read")
             ? BibleStoriesButton()
             : StudyBibleButton()}
@@ -209,7 +294,11 @@ const TopBar = (props) => {
     </div>
   );
 };
-
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: (value) =>
@@ -218,7 +307,10 @@ const mapDispatchToProps = (dispatch) => {
         name: "parallelView",
         value: value,
       }),
+    setValue1: (name, value) => {
+      dispatch({ type: actions.SETVALUE1, name: name, value: value });
+    },
   };
 };
 
-export default connect(null, mapDispatchToProps)(TopBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

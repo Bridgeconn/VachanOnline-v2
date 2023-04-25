@@ -10,6 +10,8 @@ import Box from "@material-ui/core/Box";
 import Viewer from "react-viewer";
 import Select from "react-select";
 import { capitalize, getShortBook } from "../common/utility";
+import BookCombo from "../common/BookCombo";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.only("xs")]: {
+      textAlign: "center",
+      top: 75,
+      paddingBottom: 50,
+    },
   },
   heading: {
     borderBottom: "1px solid #f1ecec",
@@ -46,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 35,
     marginBottom: 20,
     minHeight: 51,
+    [theme.breakpoints.only("xs")]: {
+      alignItems: "center",
+    },
   },
   title: {
     paddingTop: 4,
@@ -60,10 +70,19 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 20,
     marginTop: 10,
     cursor: "pointer",
+    [theme.breakpoints.only("xs")]: {
+      width: "80%",
+    },
   },
   closeButton: {
     marginRight: 15,
     marginTop: 7,
+  },
+  selectBox: {
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      alignItems: "center",
+    },
   },
   select: {
     width: 200,
@@ -77,7 +96,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Infographics = (props) => {
   const classes = useStyles();
-  let { infographics, languageCode, bookCode, versionBooks } = props;
+  let { infographics, panel1, versionBooks, setValue, paneNo, mobileView } =
+    props;
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
   const [bookData, setBookData] = useState([]);
@@ -85,6 +105,7 @@ const Infographics = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
+  const { languageCode, bookCode, chapter } = panel1;
 
   useEffect(() => {
     //Get list of languages
@@ -140,10 +161,23 @@ const Infographics = (props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
-        <Box flexGrow={1}>
-          <Typography variant="h6">Infographics</Typography>
-        </Box>
-        <Box flexGrow={1}>
+        {mobileView ? null : (
+          <Box flexGrow={1}>
+            <Typography variant="h6">Infographics</Typography>
+          </Box>
+        )}
+        <Box flexGrow={1} className={classes.selectBox}>
+          {mobileView && bookCode ? (
+            <BookCombo
+              paneNo={paneNo}
+              bookCode={bookCode}
+              bookList={versionBooks[language.value]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={true}
+              screen={"info"}
+            />
+          ) : null}
           {languages && languages?.length !== 0 && (
             <Select
               className={classes.select}
@@ -201,9 +235,15 @@ const Infographics = (props) => {
 const mapStateToProps = (state) => {
   return {
     infographics: state.local.infographics,
-    languageCode: state.local.panel1.languageCode,
     bookCode: state.local.panel1.bookCode,
     versionBooks: state.local.versionBooks,
+    mobileView: state.local.mobileView,
   };
 };
-export default connect(mapStateToProps)(Infographics);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Infographics);

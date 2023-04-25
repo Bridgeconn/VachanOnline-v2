@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
       width: "30%",
+      padding: "6px 10px",
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
@@ -78,6 +79,18 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     left: 5,
     position: "relative",
+    [theme.breakpoints.only("xs")]: {
+      left: 0,
+    },
+  },
+  versionName: {
+    [theme.breakpoints.only("xs")]: {
+      whiteSpace: "nowrap",
+      minWidth: 30,
+      maxWidth: 60,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    },
   },
   paper: {
     maxHeight: "calc(100vh - 150px)",
@@ -119,6 +132,7 @@ const Version = (props) => {
     parallelView,
     parallelScroll,
     setMainValue,
+    mobileView,
   } = props;
 
   function handleClick(event) {
@@ -197,7 +211,7 @@ const Version = (props) => {
         }
       }
     }
-  }, [landingPage, mobile, version, versions]);
+  }, [landingPage, mobile, mobileView, version, versions]);
 
   return (
     <>
@@ -208,7 +222,9 @@ const Version = (props) => {
           onClick={handleClick}
           variant="contained"
           style={
-            landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}
+            landingPage && mobile
+              ? { marginLeft: 0, marginRight: 15, width: "60%" }
+              : {}
           }
           classes={
             landingPage
@@ -216,7 +232,7 @@ const Version = (props) => {
               : { root: classes.button, label: classes.label }
           }
         >
-          {displayVersion}
+          <div className={classes.versionName}>{displayVersion}</div>
           <i className={`material-icons ${classes.icon}`}>
             keyboard_arrow_down
           </i>
@@ -308,6 +324,7 @@ const mapStateToProps = (state) => {
     versionSource: state.local.versionSource,
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
+    mobileView: state.local.mobileView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

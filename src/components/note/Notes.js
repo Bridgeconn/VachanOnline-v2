@@ -12,14 +12,16 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddBox from "@material-ui/icons/AddBox";
+import EditIcon from "@material-ui/icons/Edit";
 import Grid from "@material-ui/core/Grid";
 import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.only("xs")]: {
+      marginBottom: 30,
+    },
   },
   message: {
     margin: 18,
@@ -82,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
   },
   formButtons: {
     textAlign: "right",
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      justifyContent: "center",
+    },
   },
   button: {
     margin: 10,
@@ -104,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Notes(props) {
+function Notes(props) {
   const {
     uid,
     versions,
@@ -114,12 +123,15 @@ export default function Notes(props) {
     chapter,
     versesSelected,
     book,
+    noteText,
+    setNoteText,
     getRegionalBookName,
+    close,
+    mobileView,
   } = props;
   const [noteList, setNoteList] = React.useState([]);
   const [chapterNoteList, setChapterNoteList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
-  const [noteText, setNoteText] = React.useState("");
   const [modifiedTime, setModifiedTime] = React.useState("");
   const [editObject, setEditObject] = React.useState({});
   const [noteReference, setNoteReference] = React.useState({});
@@ -129,7 +141,6 @@ export default function Notes(props) {
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(false);
   const firebase = useFirebase();
-
   const closeAlert = () => {
     setAlert(false);
   };
@@ -157,11 +168,11 @@ export default function Notes(props) {
       setEditObject({});
       setNoteReference({});
     }
-  }, [edit, setValue]);
+  }, [edit, setNoteText, setValue]);
 
   const saveNote = () => {
     //if no verse selected, show alert
-    if (!versesSelected.length) {
+    if (!versesSelected?.length) {
       setAlert(true);
       setAlertMessage("Please select a verse");
       return;
@@ -344,9 +355,27 @@ export default function Notes(props) {
     setValue("version", versionData[sourceId][0]);
     setValue("bookCode", bookCode);
     setValue("chapter", chapter);
-    setValue("languageCode",versionData[sourceId][0].split('-')[0].toLowerCase())
+    setValue(
+      "languageCode",
+      versionData[sourceId][0].split("-")[0].toLowerCase()
+    );
   };
 
+  const openRef = (event) => {
+    let element = event.currentTarget;
+    let sourceId = element.getAttribute("data-sourceid");
+    let bookCode = element.getAttribute("data-bookcode");
+    let chapter = parseInt(element.getAttribute("data-chapter"));
+    setValue("sourceId", sourceId);
+    setValue("version", versionData[sourceId][0]);
+    setValue("bookCode", bookCode);
+    setValue("chapter", chapter);
+    setValue(
+      "languageCode",
+      versionData[sourceId][0].split("-")[0].toLowerCase()
+    );
+    close();
+  };
   //Delete Note
   const deleteNote = (event) => {
     let sourceId = event.currentTarget.getAttribute("data-sourceid");
@@ -407,14 +436,14 @@ export default function Notes(props) {
           <Typography variant="h6" gutterBottom>
             Note for {book} {chapter}:{" "}
             {versesSelected
-              .sort((a, b) => parseInt(a) - parseInt(b))
+              ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </Typography>
           <TextField
             id="note"
             label="Note Text"
             multiline
-            rows={6}
+            minRows={6}
             fullWidth={true}
             inputProps={{ maxLength: 1000 }}
             variant="outlined"
@@ -478,7 +507,7 @@ export default function Notes(props) {
                       data-bookcode={note.bookCode}
                       data-chapter={note.chapter}
                       data-index={note.index}
-                      onClick={editNote}
+                      onClick={mobileView ? openRef : editNote}
                       button
                     >
                       <ListItemText
@@ -488,6 +517,19 @@ export default function Notes(props) {
                         secondary={new Date(note.modifiedTime).toLocaleString()}
                       />
                       <ListItemSecondaryAction>
+                        {mobileView ? (
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            data-sourceid={note.sourceId}
+                            data-bookcode={note.bookCode}
+                            data-chapter={note.chapter}
+                            data-index={note.index}
+                            onClick={mobileView ? editNote : null}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        ) : null}
                         <IconButton
                           edge="end"
                           aria-label="delete"
@@ -521,7 +563,7 @@ export default function Notes(props) {
                   data-bookcode={note.bookCode}
                   data-chapter={note.chapter}
                   data-index={note.index}
-                  onClick={editNote}
+                  onClick={mobileView ? openRef : editNote}
                   button
                 >
                   <ListItemText
@@ -531,6 +573,19 @@ export default function Notes(props) {
                     secondary={new Date(note.modifiedTime).toLocaleString()}
                   />
                   <ListItemSecondaryAction>
+                    {mobileView ? (
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        data-sourceid={note.sourceId}
+                        data-bookcode={note.bookCode}
+                        data-chapter={note.chapter}
+                        data-index={note.index}
+                        onClick={mobileView ? editNote : null}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    ) : null}
                     <IconButton
                       edge="end"
                       aria-label="delete"
@@ -558,3 +613,16 @@ export default function Notes(props) {
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    close: () => {
+      dispatch({ type: actions.SETVALUE, name: "parallelView", value: "" });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Notes);

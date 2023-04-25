@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import { BLUE } from "../../store/colorCode";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   landingFooter: {
@@ -23,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
       display: "inline-block",
       paddingTop: theme.spacing(3),
     },
+    [theme.breakpoints.only("xs")]: {
+      flexWrap: "nowrap",
+    },
   },
   text: {
     padding: theme.spacing(1),
@@ -31,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     float: "right",
     [theme.breakpoints.only("xs")]: {
       float: "unset",
+      fontSize: 12,
     },
   },
   link: {
@@ -60,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "unset",
     padding: "2px 10px",
     fontSize: 16,
+    [theme.breakpoints.only("xs")]: {
+      fontSize: 12,
+    },
   },
   feedback: {
     marginTop: 3,
@@ -69,18 +77,23 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "inherit",
     },
+    [theme.breakpoints.only("xs")]: {
+      fontSize: 12,
+    },
   },
   rightLinks: {
     textAlign: "left",
     [theme.breakpoints.only("xs")]: {
       textAlign: "center",
+      whiteSpace: "nowrap",
+      marginRight: 15,
     },
   },
 }));
 const LandingFooter = (props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
+  const { mobileView } = props;
   const openModal = () => {
     setOpen(true);
   };
@@ -131,7 +144,7 @@ const LandingFooter = (props) => {
             className={classes.companyLink}
           >
             <Typography className={classes.text}>
-              © 2020 Bridge Connectivity Solutions
+              © 2020 {mobileView ? "BCS" : "Bridge Connectivity Solutions"}
             </Typography>
           </Link>
         </Grid>
@@ -151,4 +164,9 @@ const LandingFooter = (props) => {
   );
 };
 
-export default LandingFooter;
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps)(LandingFooter);
