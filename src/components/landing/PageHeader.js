@@ -91,8 +91,7 @@ const PageHeader = (props) => {
               )}
             </Link>
           </div>
-          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined &&
-          mobile === false ? (
+          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
             <Link
               to={{
                 pathname: "/read",

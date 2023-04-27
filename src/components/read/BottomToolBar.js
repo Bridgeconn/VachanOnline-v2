@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     flexGrow: 0,
     position: "absolute",
     top: "auto",
-    bottom: 55,
+    bottom: (props) => (props?.paneNo === 1 ? 0 : 55),
     justifyContent: "space-evenly",
     boxShadow: "0 -1px 4px #b3b6bf",
     fontSize: "2rem",
@@ -31,11 +31,6 @@ const useStyles = makeStyles({
   },
 });
 function BottomToolBar(props) {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const [highlightIcon, setHighlightIcon] = React.useState("");
-  const [noteIcon, setNoteIcon] = React.useState("");
-
   const {
     userDetails,
     selectedVerses,
@@ -45,8 +40,16 @@ function BottomToolBar(props) {
     sourceId,
     bookCode,
     chapter,
+    paneNo,
   } = props;
-  console.log(selectedVerses, "jhug");
+  const styleProps = {
+    paneNo: paneNo,
+  };
+  const classes = useStyles(styleProps);
+  const [value, setValue] = React.useState(0);
+  const [highlightIcon, setHighlightIcon] = React.useState("");
+  const [noteIcon, setNoteIcon] = React.useState("");
+
   React.useEffect(() => {
     if (userDetails.uid !== null) {
       if (selectedVerses && selectedVerses.length > 0) {

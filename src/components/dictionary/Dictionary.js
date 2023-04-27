@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginTop: 82,
     [theme.breakpoints.only("xs")]: {
-      marginTop: 70,
+      marginTop: 60,
     },
   },
-  title: {
+  header: {
     paddingLeft: 35,
     paddingBottom: 8,
     marginBottom: 20,
@@ -25,8 +25,15 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     [theme.breakpoints.only("xs")]: {
-      flexWrap: "wrap",
-      padding: "0 10px",
+      padding: 0,
+      height: 60,
+      alignItems: "center",
+    },
+  },
+  title: {
+    marginRight: 10,
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
     },
   },
   text: {
@@ -65,12 +72,11 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
     [theme.breakpoints.only("xs")]: {
-      top: 115,
+      top: 120,
       bottom: 50,
       left: 20,
     },
   },
-
   heading: {
     fontWeight: "bold",
     fontSize: "1.2em",
@@ -180,12 +186,10 @@ const Dictionary = (props) => {
   }, [classes.heading, classes.seeAlso, dictionaryWord.word, wordMeaning]);
   return (
     <div className={classes.root}>
-      <Box className={classes.title}>
-        {mobileView ? null : (
-          <Box flexGrow={1}>
-            <Typography variant="h6">Dictionary</Typography>
-          </Box>
-        )}
+      <Box className={classes.header}>
+        <Typography variant="h6" className={classes.title}>
+          Dictionary
+        </Typography>
         <Box flexGrow={1}>
           <DictionaryCombo
             dictionaries={dictionaries}
@@ -203,6 +207,7 @@ const Dictionary = (props) => {
             metadataList={selectedDictionary.metadata}
             title="Version Name (in Eng)"
             abbreviation="Abbreviation"
+            mobileView={mobileView}
           ></Metadata>
         </Box>
         <Box>

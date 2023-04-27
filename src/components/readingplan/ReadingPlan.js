@@ -54,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       width: "100%",
       padding: "10px 5px",
-      top: 60,
+      top: 58,
+      bottom: 40,
     },
   },
   container: {
@@ -116,6 +117,12 @@ const useStyles = makeStyles((theme) => ({
   },
   loading: {
     paddingLeft: 20,
+  },
+  list: {
+    [theme.breakpoints.only("xs")]: {
+      bottom: 50,
+      top: 0,
+    },
   },
 }));
 
@@ -261,11 +268,11 @@ const ReadingPlan = (props) => {
               ) : null}
             </Box>
           </Box>
-          <div>
+          <>
             {loading ? (
               <h3 className={classes.loading}>Loading</h3>
             ) : readingList.length !== 0 ? (
-              <List component="nav">
+              <List component="nav" className={classes.list}>
                 {readingList.map((reading, i) => {
                   const bookText = getBookText(reading.ref, reading.text);
                   return bookText ? (
@@ -306,7 +313,7 @@ const ReadingPlan = (props) => {
                 No reading plan available for this date.
               </Typography>
             )}
-          </div>
+          </>
         </div>
       </Box>
     </div>

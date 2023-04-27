@@ -11,8 +11,6 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -114,8 +112,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Version = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
   const [displayVersion, setDisplayVersion] = React.useState("Loading...");
@@ -193,7 +189,7 @@ const Version = (props) => {
 
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
-    if (mobile && !landingPage) {
+    if (mobileView) {
       setDisplayVersion(versionCode);
     } else {
       for (let lang in versions) {
@@ -211,7 +207,7 @@ const Version = (props) => {
         }
       }
     }
-  }, [landingPage, mobile, mobileView, version, versions]);
+  }, [landingPage, mobileView, version, versions]);
 
   return (
     <>
@@ -222,7 +218,7 @@ const Version = (props) => {
           onClick={handleClick}
           variant="contained"
           style={
-            landingPage && mobile
+            landingPage && mobileView
               ? { marginLeft: 0, marginRight: 15, width: "60%" }
               : {}
           }

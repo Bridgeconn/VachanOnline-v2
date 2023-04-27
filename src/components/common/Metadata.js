@@ -59,7 +59,12 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
 }));
-export default function Metadata({ metadataList, title, abbreviation }) {
+export default function Metadata({
+  metadataList,
+  title,
+  abbreviation,
+  mobileView,
+}) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   //metadata information popup
@@ -123,10 +128,12 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                     color="inherit"
                     className={classes.metadataTitle}
                   >
-                    {metadataList[title] +
-                      " (" +
-                      metadataList[abbreviation] +
-                      ")"}
+                    {mobileView
+                      ? metadataList[abbreviation]
+                      : metadataList[title] +
+                        " (" +
+                        metadataList[abbreviation] +
+                        ")"}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -145,7 +152,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                 {Object.keys(metadataList)
                   .sort()
                   .map((item, i) => {
-                    const ignoredKeys = ["baseUrl", "Latest","VerseLabel"];
+                    const ignoredKeys = ["baseUrl", "Latest", "VerseLabel"];
                     if (ignoredKeys.includes(item)) {
                       return null;
                     } else {

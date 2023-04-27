@@ -16,19 +16,19 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     position: "absolute",
-    top: 82,
+    top: 72,
     bottom: 0,
     [theme.breakpoints.only("xs")]: {
-      top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 82 : 25),
+      top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 60 : 0),
     },
   },
   container: {
-    top: 52,
-    bottom: 0,
+    top: 60,
+    bottom: -16,
     overflow: "scroll",
     position: "absolute",
     width: "100%",
-    padding: "12px 4px 0 15px",
+    padding: "12px 10px 15px 10px",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
     [theme.breakpoints.only("xs")]: {
-      top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 52 : 85),
+      top: 60,
+      bottom: 44,
     },
   },
   titleContainer: {
@@ -59,7 +60,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 12,
     paddingLeft: 35,
     marginBottom: 20,
-    minHeight: 51,
+    height: 60,
+    alignItems: "center",
+    [theme.breakpoints.only("xs")]: {
+      paddingBottom: 0,
+    },
   },
   video: {
     padding: 0,
@@ -82,6 +87,12 @@ const useStyles = makeStyles((theme) => ({
   },
   message: {
     paddingLeft: 20,
+  },
+  player: {
+    maxHeight: "calc(100vh - 150px)",
+    [theme.breakpoints.only("xs")]: {
+      maxHeight: 240,
+    },
   },
 }));
 const SignBible = (props) => {
@@ -130,7 +141,7 @@ const SignBible = (props) => {
         //English ESV version not available
       }
     }
-    if (!["mrk", "tit"].includes(bookCode)) {
+    if (!["gen", "mrk", "luk", "tit"].includes(bookCode)) {
       //Set to genesis 1 on page load as only Genesis, Mark, Luke and Titus are available now
       setValue("bookCode", "gen");
       setValue("chapter", 1);
@@ -150,7 +161,7 @@ const SignBible = (props) => {
       } else {
         setVideos();
         setMessage(
-          `Sign Language Bible available only for some books of the Bible. Use the book dropdown in the left panel to navigate.`
+          `Sign Language Bible available only for some books of the Bible. Use the book dropdown in the other panel to navigate.`
         );
       }
       setPlaying();
@@ -163,7 +174,7 @@ const SignBible = (props) => {
           <Typography variant="h6">{heading}</Typography>
         </Box>
         <Box flexGrow={1}>
-          {mobileView && views.DRAWERCOMMENTARY ? (
+          {mobileView && parallelView === views.DRAWERSIGNBIBLE ? (
             <BookCombo
               bookCode={bookCode}
               chapter={chapter}
@@ -194,7 +205,7 @@ const SignBible = (props) => {
                     url={video["url"]}
                     controls={true}
                     width="100%"
-                    style={{ maxHeight: "calc(100vh - 150px)" }}
+                    className={classes.player}
                   />
                   <CardContent className={classes.titleContainer}>
                     <Typography

@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 94,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: 60,
+    },
   },
   heading: {
     paddingBottom: 10,
@@ -36,16 +39,20 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
+    [theme.breakpoints.only("xs")]: {
+      height: 60,
+      marginBottom: 0,
+      paddingBottom: 0,
+      alignItems: "center",
+    },
   },
   notesHeading: {
     display: "flex",
   },
-
   list: {
     position: "absolute",
     right: 0,
     left: 0,
-    top: (props) => (props.addNote ? 390 : 135),
     bottom: 0,
     overflow: "scroll",
     marginBottom: -15,
@@ -61,8 +68,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.up("sm")]: {
+      top: (props) => (props.addNote ? 390 : 135),
+    },
     [theme.breakpoints.only("xs")]: {
-      marginBottom: 30,
+      top: 120,
+      bottom: 54,
     },
   },
   message: {
@@ -366,6 +377,8 @@ function Notes(props) {
     let sourceId = element.getAttribute("data-sourceid");
     let bookCode = element.getAttribute("data-bookcode");
     let chapter = parseInt(element.getAttribute("data-chapter"));
+    let index = parseInt(element.getAttribute("data-index"));
+    let note = notes[sourceId][bookCode][chapter][index];
     setValue("sourceId", sourceId);
     setValue("version", versionData[sourceId][0]);
     setValue("bookCode", bookCode);
@@ -374,7 +387,10 @@ function Notes(props) {
       "languageCode",
       versionData[sourceId][0].split("-")[0].toLowerCase()
     );
-    close();
+    setValue("versesSelected", note.verses);
+    if (mobileView) {
+      close();
+    }
   };
   //Delete Note
   const deleteNote = (event) => {
@@ -507,7 +523,7 @@ function Notes(props) {
                       data-bookcode={note.bookCode}
                       data-chapter={note.chapter}
                       data-index={note.index}
-                      onClick={mobileView ? openRef : editNote}
+                      onClick={openRef}
                       button
                     >
                       <ListItemText
@@ -517,19 +533,17 @@ function Notes(props) {
                         secondary={new Date(note.modifiedTime).toLocaleString()}
                       />
                       <ListItemSecondaryAction>
-                        {mobileView ? (
-                          <IconButton
-                            edge="end"
-                            aria-label="delete"
-                            data-sourceid={note.sourceId}
-                            data-bookcode={note.bookCode}
-                            data-chapter={note.chapter}
-                            data-index={note.index}
-                            onClick={mobileView ? editNote : null}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        ) : null}
+                        <IconButton
+                          edge="end"
+                          aria-label="editNote"
+                          data-sourceid={note.sourceId}
+                          data-bookcode={note.bookCode}
+                          data-chapter={note.chapter}
+                          data-index={note.index}
+                          onClick={editNote}
+                        >
+                          <EditIcon />
+                        </IconButton>
                         <IconButton
                           edge="end"
                           aria-label="delete"
@@ -563,7 +577,7 @@ function Notes(props) {
                   data-bookcode={note.bookCode}
                   data-chapter={note.chapter}
                   data-index={note.index}
-                  onClick={mobileView ? openRef : editNote}
+                  onClick={openRef}
                   button
                 >
                   <ListItemText
@@ -573,19 +587,17 @@ function Notes(props) {
                     secondary={new Date(note.modifiedTime).toLocaleString()}
                   />
                   <ListItemSecondaryAction>
-                    {mobileView ? (
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        data-sourceid={note.sourceId}
-                        data-bookcode={note.bookCode}
-                        data-chapter={note.chapter}
-                        data-index={note.index}
-                        onClick={mobileView ? editNote : null}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    ) : null}
+                    <IconButton
+                      edge="end"
+                      aria-label="editNote"
+                      data-sourceid={note.sourceId}
+                      data-bookcode={note.bookCode}
+                      data-chapter={note.chapter}
+                      data-index={note.index}
+                      onClick={editNote}
+                    >
+                      <EditIcon />
+                    </IconButton>
                     <IconButton
                       edge="end"
                       aria-label="delete"

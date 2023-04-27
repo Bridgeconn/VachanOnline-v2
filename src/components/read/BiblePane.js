@@ -8,6 +8,7 @@ import Alert from "@material-ui/lab/Alert";
 import MenuBar from "./MenuBar";
 import Bible from "./Bible";
 import FetchHighlights from "../highlight/FetchHighlights";
+import BottomToolBar from "./BottomToolBar";
 
 const useStyles = makeStyles((theme) => ({
   bible: {
@@ -20,14 +21,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     marginBottom: -15,
     [theme.breakpoints.only("xs")]: {
-      top: (props) =>
-        props.paneNo
-          ? props.paneNo === 1
-            ? 135
-            : 135 || props.paneNo === 2
-            ? 80
-            : 80
-          : 135,
+      top: (props) => (props?.paneNo === 2 ? 61 : 120),
     },
   },
   fullscreen: {
@@ -44,21 +38,19 @@ const BiblePane = (props) => {
     paneNo,
     singlePane,
     userDetails,
-    selectedVerses,
-    setSelectedVerses,
-    highlights,
-    setHighlights,
-    refUrl,
     toggleParallelScroll,
-    setRefUrl,
+    mobileView,
   } = props;
   const styleProps = {
     paneNo: paneNo,
   };
   const classes = useStyles(styleProps);
   const [fullscreen, setFullscreen] = React.useState(false);
+  const [selectedVerses, setSelectedVerses] = React.useState([]);
+  const [highlights, setHighlights] = React.useState([]);
   const [fetchHighlights, setFetchHighlights] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");
+  const [refUrl, setRefUrl] = React.useState("");
   const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
   const printRef = React.useRef();
   const [printNotes, setPrintNotes] = React.useState(true);
@@ -168,14 +160,30 @@ const BiblePane = (props) => {
             </Fullscreen>
           </Grid>
         </Grid>
+        {mobileView &&
+        selectedVerses?.length !== 0 &&
+        selectedVerses?.length !== undefined ? (
+          <BottomToolBar
+            selectedVerses={selectedVerses}
+            setSelectedVerses={setSelectedVerses}
+            refUrl={refUrl}
+            setRefUrl={setRefUrl}
+            highlights={highlights}
+            setHighlights={setHighlights}
+            sourceId={sourceId}
+            bookCode={bookCode}
+            chapter={chapter}
+            paneNo={paneNo}
+          />
+        ) : null}
       </div>
-      {/* </Swipeable> */}
     </>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
+    mobileView: state.local.mobileView,
     userDetails: state.local.userDetails,
   };
 };

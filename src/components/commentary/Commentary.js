@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginTop: 82,
     [theme.breakpoints.only("xs")]: {
-      marginTop: (props) => (props.screenView === "single" ? 82 : 5),
+      marginTop: (props) => (props.screenView === "single" ? 60 : 0),
     },
   },
   title: {
@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     [theme.breakpoints.only("xs")]: {
       paddingLeft: 5,
+      paddingBottom: 0,
+      marginBottom: 0,
       alignItems: "center",
     },
   },
@@ -80,7 +82,8 @@ const useStyles = makeStyles((theme) => ({
       margin: "30px 0px",
     },
     [theme.breakpoints.only("xs")]: {
-      top: (props) => (props.screenView === "single" ? 135 : 80),
+      top: (props) => (props.screenView === "single" ? 122 : 62),
+      bottom: 60,
     },
   },
   message: {
@@ -285,6 +288,7 @@ const Commentary = (props) => {
               metadataList={commentary.metadata}
               title="Version Name (in Eng)"
               abbreviation="Abbreviation"
+              mobileView={mobileView}
             ></Metadata>
           </div>
           <Close className={classes.closeButton} />

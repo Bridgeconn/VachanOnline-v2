@@ -1,16 +1,20 @@
 import React from "react";
-import { AppBar, Box, makeStyles, Toolbar } from "@material-ui/core";
+import { AppBar, makeStyles, Toolbar } from "@material-ui/core";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
 import * as actions from "../../store/actions";
-
-import SideDrawer from "../Drawer/Drawer";
+import SideDrawer from "./SideDrawer";
 import { connect } from "react-redux";
 const useStyles = makeStyles(() => ({
   appBar: {
     top: "auto",
     bottom: 0,
     boxShadow: "0 -1px 4px #7e7676",
+  },
+  toolBar: {
+    padding: 0,
+    display: "flex",
+    justifyContent: "space-between",
   },
   text: {
     fontSize: 10,
@@ -22,66 +26,56 @@ const useStyles = makeStyles(() => ({
 
 const BottomBar = (props) => {
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    right: false,
-  });
+  const [open, setOpen] = React.useState(false);
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
+  const toggleDrawer = (open) => (event) => {
+    const key = event.key;
+    if (event.type === "keydown" && (key === "Tab" || key === "Shift")) {
       return;
     }
-    setState({ ...state, [anchor]: open });
+    setOpen(open);
   };
 
   return (
     <AppBar position="fixed" color="inherit" className={classes.appBar}>
-      <Toolbar>
-        <Box sx={{ flexGrow: 1 }} />
-        <div className="bottomBar">
+      <Toolbar className={`bottomBar ${classes.toolBar}`}>
+        <span>
           <MenuItem
             icon="import_contacts"
             title="Parallel Bible"
             item={views.PARALLELBIBLE}
             base="bottom"
           />
-        </div>
-        <div className="bottomBar">
+        </span>
+        <span>
           <MenuItem
             icon="comment"
             title="Commentaries"
             item={views.COMMENTARY}
             base="bottom"
           />
-        </div>
-        <div className="bottomBar">
-          <MenuItem
-            icon="search"
-            title="Search"
-            item={views.SEARCH}
-            base="bottom"
-          />
-        </div>
-        <div className="bottomBar">
+        </span>
+        <span>
           <MenuItem
             icon="event"
             title="Reading Plans"
             item={views.READINGPLANS}
             base="bottom"
           />
-        </div>
-        <div className="bottomBar" onClick={toggleDrawer("right", true)}>
+        </span>
+        <span>
+          <MenuItem
+            icon="search"
+            title="Search"
+            item={views.SEARCH}
+            base="bottom"
+          />
+        </span>
+        <span onClick={toggleDrawer(true)}>
           <MenuItem icon="more_vert" title="Menu" base="bottom" />
-        </div>
+        </span>
       </Toolbar>
-      <SideDrawer
-        toggleDrawer={toggleDrawer}
-        state={state}
-        login={props.login}
-        userDetails={props.userDetails}
-      />
+      <SideDrawer toggleDrawer={toggleDrawer} open={open} login={props.login} />
     </AppBar>
   );
 };

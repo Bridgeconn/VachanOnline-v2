@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
+    [theme.breakpoints.only("xs")]: {
+      top: 60,
+    },
   },
   container: {
     top: 52,
@@ -40,9 +43,8 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
     [theme.breakpoints.only("xs")]: {
-      textAlign: "center",
-      top: 75,
-      paddingBottom: 50,
+      top: 60,
+      bottom: 54,
     },
   },
   heading: {
@@ -51,10 +53,11 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     paddingBottom: 12,
     paddingLeft: 35,
-    marginBottom: 20,
     minHeight: 51,
     [theme.breakpoints.only("xs")]: {
       alignItems: "center",
+      height: 60,
+      paddingBottom: 0,
     },
   },
   title: {
@@ -71,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     cursor: "pointer",
     [theme.breakpoints.only("xs")]: {
-      width: "80%",
+      width: "99%",
     },
   },
   closeButton: {

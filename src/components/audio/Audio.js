@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
+    [theme.breakpoints.only("xs")]: {
+      top: 60,
+    },
   },
   container: {
     top: 52,
@@ -28,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "scroll",
     position: "absolute",
     width: "100%",
-    padding: "12px 4px 0 15px",
+    padding: "20px 4px 20px 15px",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
@@ -41,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.only("xs")]: {
+      top: 60,
+      bottom: 38,
+    },
   },
   heading: {
     borderBottom: "1px solid #f1ecec",
@@ -52,6 +59,8 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 51,
     [theme.breakpoints.only("xs")]: {
       alignItems: "center",
+      height: 60,
+      paddingBottom: 0,
     },
   },
   language: {
@@ -251,7 +260,6 @@ const mapStateToProps = (state) => {
   return {
     mobileView: state.local.mobileView,
     versionBooks: state.local.versionBooks,
-    versionSource: state.local.versionSource,
   };
 };
 const mapDispatchToProps = (dispatch) => {

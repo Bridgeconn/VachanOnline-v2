@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
+    [theme.breakpoints.only("xs")]: {
+      top: 60,
+    },
   },
   container: {
     top: 52,
@@ -41,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
     [theme.breakpoints.only("xs")]: {
-      top: 75,
+      top: 60,
+      bottom: 42,
     },
   },
   heading: {
@@ -53,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
     minHeight: 51,
     [theme.breakpoints.only("xs")]: {
+      height: 60,
+      paddingBottom: 0,
       alignItems: "center",
     },
   },

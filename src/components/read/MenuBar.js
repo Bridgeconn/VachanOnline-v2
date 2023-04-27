@@ -27,21 +27,11 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 10px 0 44px",
     borderBottom: "1px solid #f1ecec",
     position: "absolute",
-    height: 61,
-    top: (props) =>
-      props.mobileView && props.paneNo === 1
-        ? 72
-        : 0 || props.mobileView
-        ? 72
-        : 72,
+    height: 60,
+    top: 72,
     [theme.breakpoints.only("xs")]: {
       padding: "0 5.5px",
-      top: (props) =>
-        props.mobileView && props.paneNo === 2
-          ? 12
-          : 0 || props.mobileView
-          ? 72
-          : 72,
+      top: (props) => (props.paneNo === 2 ? 0 : 60),
     },
   },
   selectBox: {
@@ -114,10 +104,7 @@ const MenuBar = (props) => {
     parallelScroll,
     toggleParallelScroll,
   } = props;
-  const styleProps = {
-    mobileView: mobileView,
-    paneNo: paneNo,
-  };
+  const styleProps = { paneNo: paneNo };
   const classes = useStyles(styleProps);
 
   function goFull() {
@@ -305,6 +292,51 @@ const MenuBar = (props) => {
         <Box className={classes.items}>
           {mobileView ? null : noteIcon}
           {mobileView ? null : highlightIcon}
+
+          {bookmarkIcon}
+          <Metadata
+            metadataList={metadataList}
+            title="Version Name (in Eng)"
+            abbreviation="Abbreviation"
+            mobileView={mobileView}
+          ></Metadata>
+          {audioIcon}
+          {mobileView ? null : (
+            <>
+              <div className={classes.info} onClick={handleDialogOpen}>
+                <PrintIcon fontSize="small" />
+              </div>
+              <Tooltip title="Fullscreen">
+                <div onClick={goFull} className={classes.info}>
+                  <i className="material-icons md-23">zoom_out_map</i>
+                </div>
+              </Tooltip>
+            </>
+          )}
+          <div
+            className={classes.settings}
+            aria-label="More"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={openSettings}
+          >
+            <i className="material-icons md-23">settings</i>
+          </div>
+          <Setting
+            fontSize={fontSize}
+            fontFamily={fontFamily}
+            lineView={lineView}
+            setValue={setValue}
+            settingsAnchor={settingsAnchor}
+            handleClose={closeSettings}
+            printRef={printRef}
+            printNotes={printNotes}
+            setPrintNotes={setPrintNotes}
+            printHighlights={printHighlights}
+            setPrintHighlights={setPrintHighlights}
+            bookDisplay={bookDisplay}
+            chapter={chapter}
+          />
           {mobileView && paneNo === 1 ? (
             <div className={classes.infoParall} onClick={toggleParallelScroll}>
               {parallelScroll ? (
@@ -328,62 +360,6 @@ const MenuBar = (props) => {
           ) : (
             ""
           )}
-          {bookmarkIcon}
-          <Metadata
-            metadataList={metadataList}
-            title="Version Name (in Eng)"
-            abbreviation="Abbreviation"
-          ></Metadata>
-          {mobileView ? null : audioIcon}
-          {mobileView ? (
-            <div className={classes.info} onClick={handleDialogOpen}>
-              <PrintIcon fontSize="small" />
-            </div>
-          ) : (
-            <Tooltip title="Fullscreen">
-              <div onClick={goFull} className={classes.info}>
-                <i className="material-icons md-23">zoom_out_map</i>
-              </div>
-            </Tooltip>
-          )}
-          {mobileView ? (
-            <div
-              className={classes.settings}
-              aria-label="More"
-              aria-controls="long-menu"
-              aria-haspopup="true"
-              onClick={openSettings}
-            >
-              <i className="material-icons md-23">settings</i>
-            </div>
-          ) : (
-            <Tooltip title="Settings">
-              <div
-                className={classes.settings}
-                aria-label="More"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={openSettings}
-              >
-                <i className="material-icons md-23">more_vert</i>
-              </div>
-            </Tooltip>
-          )}
-          <Setting
-            fontSize={fontSize}
-            fontFamily={fontFamily}
-            lineView={lineView}
-            setValue={setValue}
-            settingsAnchor={settingsAnchor}
-            handleClose={closeSettings}
-            printRef={printRef}
-            printNotes={printNotes}
-            setPrintNotes={setPrintNotes}
-            printHighlights={printHighlights}
-            setPrintHighlights={setPrintHighlights}
-            bookDisplay={bookDisplay}
-            chapter={chapter}
-          />
           {paneNo === 2 ? <Close /> : ""}
         </Box>
       </Box>

@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 94,
+    [theme.breakpoints.only("xs")]: {
+      marginTop: 60,
+    },
   },
   heading: {
     paddingBottom: 10,
@@ -28,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
+    [theme.breakpoints.only("xs")]: {
+      height: 60,
+      marginBottom: 0,
+      paddingBottom: 0,
+      alignItems: "center",
+    },
   },
   list: {
     position: "absolute",
@@ -48,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.only("xs")]: {
+      top: 120,
+      bottom: 54,
     },
   },
   message: {

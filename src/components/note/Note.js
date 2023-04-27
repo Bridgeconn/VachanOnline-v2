@@ -27,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
     color: BLUETRANSPARENT,
     cursor: "pointer",
   },
+  textField: {
+    "& textarea": {
+      maxHeight: 190,
+    },
+  },
 }));
 const styles = (theme) => ({
   root: {
@@ -185,6 +190,7 @@ function Note({
             label="Note Text"
             multiline
             minRows={10}
+            className={classes.textField}
             fullWidth={true}
             inputProps={{ maxLength: 1000 }}
             variant="outlined"

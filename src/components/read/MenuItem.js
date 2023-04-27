@@ -67,6 +67,12 @@ const useStyles = makeStyles((theme) => ({
     color: "#000",
     fontSize: "0.65rem",
   },
+  icon: {
+    fontSize: "36px",
+    [theme.breakpoints.only("xs")]: {
+      fontSize: "28px",
+    },
+  },
   drawerMenu: {
     [theme.breakpoints.only("xs")]: {
       display: "flex",
@@ -76,9 +82,6 @@ const useStyles = makeStyles((theme) => ({
   bottomMenu: {
     [theme.breakpoints.only("xs")]: {
       textAlign: "center",
-      "&:hover": {
-        background: "#aaaeb259",
-      },
     },
   },
   drawerText: {
@@ -134,19 +137,11 @@ const MenuItem = (props) => {
       >
         <div
           onClick={() => onClick(item, uid)}
-          className={
-            base === "drawer"
-              ? classes.drawerMenu
-              : base === "bottom"
-              ? classes.bottomMenu
-              : null
-          }
+          className={`${base === "drawer" ? classes.drawerMenu : ""} ${
+            base === "bottom" ? classes.bottomMenu : ""
+          }`}
         >
-          <i
-            className="material-icons"
-            style={mobileView ? { fontSize: "28px" } : { fontSize: "36px" }}
-            title={title}
-          >
+          <i className={`material-icons ${classes.icon}`} title={title}>
             {icon}
           </i>
           {base === "bottom" || base === "drawer" ? (
@@ -158,7 +153,7 @@ const MenuItem = (props) => {
               {title}
             </Typography>
           ) : null}
-          {mobileView ? null : ( // <Typography className={classes.menu}>{title}</Typography>
+          {mobileView ? null : (
             <Popover
               id="mouse-over-popover"
               className={classes.popover}

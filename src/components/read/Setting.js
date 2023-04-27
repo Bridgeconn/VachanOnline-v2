@@ -180,12 +180,12 @@ const Setting = ({
             }
           />
         </MenuItem>
-        {mobileView ? null : (
+        {mobileView ? (
           <MenuItem className={classes.menu} onClick={handleDialogOpen}>
             <span className={classes.printIcon}>Print/Save</span>
             <PrintIcon />
           </MenuItem>
-        )}
+        ) : null}
       </Menu>
       <Print
         dialogOpen={dialogOpen}

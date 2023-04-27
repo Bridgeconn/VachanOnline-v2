@@ -65,12 +65,9 @@ const useStyles = makeStyles((theme) => ({
       padding: "0 35px",
     },
   },
-  audio: {
-    height: "calc(100% - 55px)",
-  },
   prevChapter: {
     position: "absolute",
-    top: "50%",
+    top: (props) => (props.singlePane || props?.paneNo === 2 ? "40%" : "50%"),
     left: (props) =>
       props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
     cursor: "pointer",
@@ -82,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   nextChapter: {
     position: "absolute",
-    top: "50%",
+    top: (props) => (props.singlePane || props?.paneNo === 2 ? "40%" : "50%"),
     right: (props) =>
       props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
     cursor: "pointer",
@@ -96,9 +93,13 @@ const useStyles = makeStyles((theme) => ({
     padding: 20,
   },
   player: {
-    position: "absolute",
-    bottom: "16px",
+    position: "sticky",
+    bottom: "10px",
     left: "2%",
+    [theme.breakpoints.only("xs")]: {
+      bottom: (props) =>
+        (props.singlePane || props?.paneNo === 2 ? 65 : 10) + props.bottom,
+    },
   },
   text: {
     paddingBottom: 30,
@@ -110,6 +111,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "1366px",
     [theme.breakpoints.up("sm")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
+    },
+    [theme.breakpoints.only("xs")]: {
+      marginBottom: (props) =>
+        props.singlePane || props?.paneNo === 2 ? 40 : 0,
     },
     padding: "0 25px",
   },
@@ -271,11 +276,14 @@ const Bible = (props) => {
     mobileView,
     versesSelected,
   } = props;
+  const bottom = selectedVerses?.length > 0 ? 56 : 0;
   const styleProps = {
     padding: padding,
     singlePane: singlePane,
     printNotes: printNotes,
     printHighlights: printHighlights,
+    paneNo: paneNo,
+    bottom: bottom,
   };
   const classes = useStyles(styleProps);
   const [bookDisplay, setBookDisplay] = React.useState("");

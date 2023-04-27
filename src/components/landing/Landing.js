@@ -9,7 +9,6 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
 import Link from "@material-ui/core/Link";
-import { detectMob } from "../common/utility";
 import "./Landing.css";
 import listen from "../common/images/listen.jpg";
 import read from "../common/images/read.jpg";
@@ -104,7 +103,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Landing = (props) => {
   const classes = useStyles();
-  const mobile = detectMob();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [language, setLanguage] = React.useState("English");
@@ -136,7 +134,7 @@ const Landing = (props) => {
   return (
     <Grid className={classes.body}>
       <PageHeader />
-      {!mobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
+      {!isMobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
       <Banner language={language} />
       <BibleIndex />
       <div className={classes.storeLinkMobile}>{addLink()}</div>

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginTop: 78,
     [theme.breakpoints.only("xs")]: {
-      marginTop: 15,
+      marginTop: 4,
     },
   },
   heading: {
@@ -50,7 +50,9 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
     [theme.breakpoints.only("xs")]: {
-      top: 80,
+      top: 60,
+      bottom: 58,
+      paddingBottom: 10,
     },
   },
   message: {
@@ -96,13 +98,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   pagination: {
-    height: 50,
+    height: 35,
+    whiteSpace: "nowrap",
   },
   pageDisplay: {
     position: "absolute",
     right: 10,
-    bottom: 10,
     [theme.breakpoints.only("xs")]: {
+      right: "unset",
+      left: 5,
       bottom: 1,
     },
   },

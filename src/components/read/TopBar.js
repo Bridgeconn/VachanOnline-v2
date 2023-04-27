@@ -12,17 +12,9 @@ import IconButton from "@material-ui/core/IconButton";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLUE } from "../../store/colorCode";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
-import { AUDIO } from "../../store/views";
-
 import { connect } from "react-redux";
-import * as actions from "../../store/actions";
-import * as views from "../../store/views";
-
-import Badge from "@material-ui/core/Badge";
-import { getAudioBibleObject, isFeatureNew } from "../common/utility";
+import { SETVALUE } from "../../store/actions";
 import MenuItem from "./MenuItem";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,12 +24,19 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "absolute",
     height: 74,
+    [theme.breakpoints.only("xs")]: {
+      height: 60,
+    },
   },
   appBar: {
     background: BLUE,
     padding: "0px 10px",
     marginBottom: "10px",
     zIndex: 900,
+    [theme.breakpoints.only("xs")]: {
+      marginBottom: 0,
+      padding: 0,
+    },
   },
   title: {
     flexGrow: 1,
@@ -52,23 +51,15 @@ const useStyles = makeStyles((theme) => ({
       lineHeight: "75px",
     },
   },
-  info: {
-    padding: 0,
-    width: "30px",
-    marginTop: 20,
-    marginRight: 4,
-    color: "#fff",
-    cursor: "pointer",
-  },
   icon: {
     height: 50,
-  },
-  gap: {
-    marginRight: 10,
+    [theme.breakpoints.only("xs")]: {
+      height: 45,
+    },
   },
   logo: {
     height: 60,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
@@ -94,79 +85,26 @@ const useStyles = makeStyles((theme) => ({
   signBible: {
     color: "#e0e0e0",
     marginTop: 2,
+    marginRight: 10,
     "&:hover": {
       color: "#d0d0d0",
     },
-  },
-  islBadge: {
-    marginRight: 8,
-  },
-  iconMobileContainer: {
-    display: "flex",
   },
 }));
 
 const TopBar = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  let {
-    login,
-    userDetails,
-    setParallelView,
-    mobileView,
-    audio,
-    setValue,
-    setValue1,
-    bookCode,
-    parallelView,
-    sourceId,
-    versions,
-  } = props;
-  const [audioBible, setAudioBible] = React.useState({});
-  const [audioIcon, setAudioIcon] = React.useState("");
-  React.useEffect(() => {
-    const openAudioBible = () => {
-      setValue("audio", !audio);
-      setValue("audioBible", audioBible);
-    };
-    if (
-      audioBible &&
-      audioBible?.url &&
-      bookCode in audioBible?.books &&
-      parallelView !== AUDIO
-    ) {
-      setAudioIcon(
-        <Tooltip title="Audio Bible" className="audioHead">
-          <div className={classes.info} onClick={openAudioBible}>
-            <i className="material-icons md-23">volume_up</i>
-          </div>
-        </Tooltip>
-      );
-    } else {
-      setValue1("audio", false);
-      setAudioIcon("");
-    }
-  }, [
-    audio,
-    audioBible,
-    bookCode,
-    classes.info,
-    setValue,
-    parallelView,
-    setValue1,
-  ]);
-  React.useEffect(() => {
-    setAudioBible(getAudioBibleObject(versions, sourceId));
-  }, [versions, sourceId]);
+
+  let { login, userDetails, setParallelView, mobileView } = props;
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
   const ISLButton = () => {
     const Btn = () => {
-      return (
+      return mobileView ? (
+        <MenuItem icon="sign_language" title="ISLV Bible" item={SIGNBIBLE} />
+      ) : (
         <Button
           variant="outlined"
           size="small"
@@ -175,31 +113,21 @@ const TopBar = (props) => {
           title="Sign Language Bible"
           aria-label="sign language bible"
           target="_blank"
-          rel="noopener"
-          onClick={() => setParallelView(SIGNBIBLE)}
+          rel="noOpener"
+          onClick={setParallelView}
           startIcon={<i className="material-icons">sign_language</i>}
         >
-          {mobileLandscape === true ? "ISLV" : "Sign Language Bible (ISLV)"}
+          Sign Language Bible (ISLV)
         </Button>
       );
     };
-    return process.env.REACT_APP_SIGNBIBLE_URL !== undefined &&
-      mobile === false ? (
-      <Badge
-        overlap="rectangular"
-        className={classes.islBadge}
-        color="secondary"
-        variant="dot"
-        badgeContent={isFeatureNew("12-01-2022")}
-      >
-        {window.location.pathname.startsWith("/biblestories") ? (
-          <Link to="/read">{Btn()}</Link>
-        ) : (
-          Btn()
-        )}
-      </Badge>
+    if (process.env.REACT_APP_SIGNBIBLE_URL === undefined) {
+      return "";
+    }
+    return window.location.pathname.startsWith("/biblestories") ? (
+      <Link to="/read">{Btn()}</Link>
     ) : (
-      ""
+      Btn()
     );
   };
   const BibleStoriesButton = () => {
@@ -215,7 +143,7 @@ const TopBar = (props) => {
           target="_blank"
           rel="noopener"
         >
-          {mobileLandscape === true ? "Stories" : "Bible Stories"}
+          {mobileView === true ? "Stories" : "Bible Stories"}
         </Button>
       </Link>
     ) : (
@@ -235,7 +163,7 @@ const TopBar = (props) => {
           target="_blank"
           rel="noopener"
         >
-          {mobile === true ? "Bible" : "Study Bible"}
+          {mobileView === true ? "Bible" : "Study Bible"}
         </Button>
       </Link>
     );
@@ -266,24 +194,7 @@ const TopBar = (props) => {
             </Link>
           </div>
 
-          <div>
-            {mobileView ? (
-              process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
-                <div className={classes.iconMobileContainer}>
-                  <MenuItem
-                    icon="sign_language"
-                    title="ISLV Bible"
-                    item={views.SIGNBIBLE}
-                  />
-                  <div className={classes.gap}>{audioIcon}</div>
-                </div>
-              ) : (
-                ""
-              )
-            ) : (
-              ISLButton()
-            )}
-          </div>
+          <div>{ISLButton()}</div>
           {window.location.pathname.startsWith("/read")
             ? BibleStoriesButton()
             : StudyBibleButton()}
@@ -294,23 +205,11 @@ const TopBar = (props) => {
     </div>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    mobileView: state.local.mobileView,
-  };
-};
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    setParallelView: (value) =>
-      dispatch({
-        type: actions.SETVALUE,
-        name: "parallelView",
-        value: value,
-      }),
-    setValue1: (name, value) => {
-      dispatch({ type: actions.SETVALUE1, name: name, value: value });
-    },
+    setParallelView: () =>
+      dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
   };
 };
-
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
+export default connect(null, mapDispatchToProps)(TopBar);
