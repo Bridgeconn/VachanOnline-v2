@@ -97,16 +97,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 const SignBible = (props) => {
   let {
-    bookCode,
     book,
-    chapter,
     signBible,
     setValue,
     versions,
     versionBooks,
     versionSource,
     panel1,
-    sourceId,
     mobileView,
     parallelView,
   } = props;
@@ -117,6 +114,8 @@ const SignBible = (props) => {
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
   const [playing, setPlaying] = useState("");
+  const { bookCode, chapter, sourceId } = panel1;
+
   const theme = useTheme();
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   const heading = mobileLandscape ? "ISLV" : "Sign Language Bible (ISLV)";

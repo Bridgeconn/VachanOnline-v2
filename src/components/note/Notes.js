@@ -129,15 +129,13 @@ function Notes(props) {
     uid,
     versions,
     setValue,
-    sourceId,
-    bookCode,
-    chapter,
     versesSelected,
     book,
     noteText,
     setNoteText,
     getRegionalBookName,
     close,
+    panel1,
     mobileView,
   } = props;
   const [noteList, setNoteList] = React.useState([]);
@@ -151,6 +149,7 @@ function Notes(props) {
   const [loading, setLoading] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(false);
+  const { bookCode, chapter, sourceId } = panel1;
   const firebase = useFirebase();
   const closeAlert = () => {
     setAlert(false);

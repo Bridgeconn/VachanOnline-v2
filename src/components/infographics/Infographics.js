@@ -75,7 +75,11 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     [theme.breakpoints.only("xs")]: {
       width: "99%",
+      marginRight: 0,
     },
+  },
+  image: {
+    objectFit: "contain",
   },
   closeButton: {
     marginRight: 15,
@@ -210,6 +214,7 @@ const Infographics = (props) => {
                   component="img"
                   alt={pic.title}
                   height="200"
+                  className={classes.image}
                   image={url + "/thumbs/" + pic.fileName}
                   title={pic.title}
                 />

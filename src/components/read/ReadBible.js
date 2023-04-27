@@ -459,9 +459,6 @@ const ReadBible = (props) => {
                 uid={uid}
                 versions={versions}
                 setValue={setValue1}
-                sourceId={panel1.sourceId}
-                bookCode={panel1.bookCode}
-                chapter={panel1.chapter}
                 noteText={noteText}
                 panel1={panel1}
                 setNoteText={setNoteText}
@@ -501,10 +498,7 @@ const ReadBible = (props) => {
               <SignBible
                 signBible={signBible}
                 panel1={panel1}
-                bookCode={panel1.bookCode}
-                chapter={panel1.chapter}
                 book={bookObject.short}
-                sourceId={panel1?.sourceId}
                 setValue={setValue1}
                 versions={versions}
               />
@@ -517,12 +511,9 @@ const ReadBible = (props) => {
           <div className={classes.biblePane1}>
             <SignBible
               signBible={signBible}
-              bookCode={panel1?.bookCode}
-              chapter={panel1.chapter}
               book={bookObject.short}
               setValue={setValue1}
               versions={versions}
-              sourceId={panel1?.sourceId}
               panel1={panel1}
             />
           </div>
