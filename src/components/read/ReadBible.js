@@ -32,6 +32,13 @@ import {
 import { useMediaQuery } from "@material-ui/core";
 import BottomBar from "./BottomBar";
 const useStyles = makeStyles((theme) => ({
+  main: {
+    [theme.breakpoints.only("xs")]: {
+      position: "absolute",
+      height: "calc(100% - 3.6rem)",
+      width: "100%",
+    },
+  },
   biblePane1: {
     position: "absolute",
     width: "100%",
@@ -53,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       borderBottom: "1px solid #f1ecec",
       width: "100%",
-      height: "50%",
+      height: "calc(50% + 1.8rem)",
     },
   },
   splitPane2: {
@@ -65,9 +72,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     right: 0,
     [theme.breakpoints.only("xs")]: {
-      top: "50vh",
+      top: "calc(50% + 1.8rem)",
       width: "100%",
-      height: "50%",
+      height: "calc(50% - 1.8rem)",
     },
   },
   biblePane: {
@@ -564,15 +571,13 @@ const ReadBible = (props) => {
   return (
     <>
       <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
-      <div>
+      <div className={classes.main}>
         <div className={classes.biblePane}>{pane}</div>
         <div className={classes.rightMenu}>
           <BibleMenu />
         </div>
       </div>
-      {mobileView ? (
-        <BottomBar login={login} userDetails={userDetails} />
-      ) : null}
+      {mobileView ? <BottomBar login={login} /> : null}
     </>
   );
 };

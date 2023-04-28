@@ -174,6 +174,7 @@ const BiblePane = (props) => {
             bookCode={bookCode}
             chapter={chapter}
             paneNo={paneNo}
+            userDetails={userDetails}
           />
         ) : null}
       </div>

@@ -51,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.only("xs")]: {
       top: 60,
-      bottom: 58,
       paddingBottom: 10,
     },
   },

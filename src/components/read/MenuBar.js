@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     width: "30px",
     marginTop: 20,
-    marginLeft: "-10px",
+    marginLeft: "-5px",
     marginRight: "-5px",
     color: BLUETRANSPARENT,
     cursor: "pointer",

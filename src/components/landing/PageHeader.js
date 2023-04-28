@@ -12,7 +12,8 @@ import favicon from "../common/images/favicon.png";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
-import * as actions from "../../store/actions";
+import { SETVALUE } from "../../store/actions";
+import MenuItem from "../read/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,22 +98,28 @@ const PageHeader = (props) => {
                 pathname: "/read",
               }}
             >
-              <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                className={classes.signBible}
-                title="Sign Language Bible"
-                aria-label="sign language bible"
-                target="_blank"
-                rel="noopener"
-                onClick={() => setParallelView(SIGNBIBLE)}
-                startIcon={<i className="material-icons">sign_language</i>}
-              >
-                {mobileLandscape === true
-                  ? "ISLV"
-                  : "Sign Language Bible (ISLV)"}
-              </Button>
+              {mobileLandscape ? (
+                <MenuItem
+                  icon="sign_language"
+                  title="ISLV Bible"
+                  item={SIGNBIBLE}
+                />
+              ) : (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.signBible}
+                  title="Sign Language Bible"
+                  aria-label="sign language bible"
+                  target="_blank"
+                  rel="noopener"
+                  onClick={() => setParallelView(SIGNBIBLE)}
+                  startIcon={<i className="material-icons">sign_language</i>}
+                >
+                  Sign Language Bible (ISLV)
+                </Button>
+              )}
             </Link>
           ) : (
             ""
@@ -151,11 +158,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: (value) =>
-      dispatch({
-        type: actions.SETVALUE,
-        name: "parallelView",
-        value: value,
-      }),
+      dispatch({ type: SETVALUE, name: "parallelView", value: value }),
   };
 };
 

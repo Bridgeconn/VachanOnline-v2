@@ -4,7 +4,7 @@ import BorderColor from "@material-ui/icons/BorderColor";
 import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
 import Circle from "@material-ui/icons/LensRounded";
-import Cancel from "@material-ui/icons/CancelOutlined";
+import NotInterestedIcon from "@material-ui/icons/NotInterested";
 import { useFirebase } from "react-redux-firebase";
 import * as color from "../../store/colorCode";
 import { connect } from "react-redux";
@@ -104,7 +104,7 @@ function Highlight(props) {
             />
           ))}
           <Tooltip title="Clear Highlight">
-            <Cancel
+            <NotInterestedIcon
               data-code="clear"
               onClick={colorClicked}
               fontSize="large"
@@ -144,7 +144,7 @@ function Highlight(props) {
                 />
               ))}
               <Tooltip title="Clear Highlight">
-                <Cancel
+                <NotInterestedIcon
                   data-code="clear"
                   onClick={colorClicked}
                   fontSize="large"

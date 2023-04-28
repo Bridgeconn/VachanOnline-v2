@@ -1,10 +1,11 @@
 import React from "react";
-import { AppBar, makeStyles, Toolbar } from "@material-ui/core";
+import { AppBar, makeStyles, Toolbar, Typography } from "@material-ui/core";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
-import * as actions from "../../store/actions";
+import MenuIcon from "@material-ui/icons/Menu";
 import SideDrawer from "./SideDrawer";
-import { connect } from "react-redux";
+import { BLUE } from "../../store/colorCode";
+
 const useStyles = makeStyles(() => ({
   appBar: {
     top: "auto",
@@ -14,7 +15,7 @@ const useStyles = makeStyles(() => ({
   toolBar: {
     padding: 0,
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
   },
   text: {
     fontSize: 10,
@@ -22,9 +23,19 @@ const useStyles = makeStyles(() => ({
     padding: "0 2px",
     whiteSpace: "nowrap",
   },
+  menu: {
+    width: 40,
+    paddingTop: 6,
+    color: BLUE,
+    "& p": {
+      color: "#000",
+      fontSize: "0.65rem",
+      paddingTop: 5,
+    },
+  },
 }));
 
-const BottomBar = (props) => {
+export default function BottomBar({ login }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -72,17 +83,13 @@ const BottomBar = (props) => {
           />
         </span>
         <span onClick={toggleDrawer(true)}>
-          <MenuItem icon="more_vert" title="Menu" base="bottom" />
+          <div className={classes.menu}>
+            <MenuIcon />
+            <Typography>Menu</Typography>
+          </div>
         </span>
       </Toolbar>
-      <SideDrawer toggleDrawer={toggleDrawer} open={open} login={props.login} />
+      <SideDrawer toggleDrawer={toggleDrawer} open={open} login={login} />
     </AppBar>
   );
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value }),
-  };
-};
-export default connect(null, mapDispatchToProps)(BottomBar);
+}

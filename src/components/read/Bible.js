@@ -41,10 +41,6 @@ const useStyles = makeStyles((theme) => ({
   },
   bibleReadingPane: {
     position: "absolute",
-    paddingRight: (props) =>
-      props.singlePane || props.padding > 40 ? props.padding : 40,
-    paddingLeft: (props) =>
-      props.singlePane || props.padding > 40 ? props.padding : 40,
     paddingTop: 20,
     height: "100%",
     overflow: "scroll",
@@ -61,33 +57,46 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.up("sm")]: {
+      paddingRight: (props) => (props.padding > 40 ? props.padding : 40),
+      paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
+    },
     [theme.breakpoints.only("xs")]: {
-      padding: "0 35px",
+      paddingRight: 20,
+      paddingLeft: 20,
     },
   },
   prevChapter: {
     position: "absolute",
-    top: (props) => (props.singlePane || props?.paneNo === 2 ? "40%" : "50%"),
-    left: (props) =>
-      props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
+    top: "45%",
     cursor: "pointer",
     boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
     borderRadius: "50%",
     backgroundColor: "rgb(255, 255, 255)",
     border: "1px white",
     padding: 7,
+    [theme.breakpoints.up("sm")]: {
+      left: (props) => (props.padding > 40 ? props.padding / 2 : 20),
+    },
+    [theme.breakpoints.only("xs")]: {
+      left: 10,
+    },
   },
   nextChapter: {
     position: "absolute",
-    top: (props) => (props.singlePane || props?.paneNo === 2 ? "40%" : "50%"),
-    right: (props) =>
-      props.singlePane || props.padding > 40 ? props.padding / 2 : 20,
+    top: "45%",
     cursor: "pointer",
     boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
     borderRadius: "50%",
     backgroundColor: "rgb(255, 255, 255)",
     border: "1px white",
     padding: 7,
+    [theme.breakpoints.up("sm")]: {
+      right: (props) => (props.padding > 40 ? props.padding / 2 : 20),
+    },
+    [theme.breakpoints.only("xs")]: {
+      right: 10,
+    },
   },
   loading: {
     padding: 20,
@@ -97,8 +106,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: "10px",
     left: "2%",
     [theme.breakpoints.only("xs")]: {
-      bottom: (props) =>
-        (props.singlePane || props?.paneNo === 2 ? 65 : 10) + props.bottom,
+      bottom: (props) => props.audioBottom,
     },
   },
   text: {
@@ -276,14 +284,14 @@ const Bible = (props) => {
     mobileView,
     versesSelected,
   } = props;
-  const bottom = selectedVerses?.length > 0 ? 56 : 0;
+  const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : ",5rem";
   const styleProps = {
     padding: padding,
     singlePane: singlePane,
     printNotes: printNotes,
     printHighlights: printHighlights,
     paneNo: paneNo,
-    bottom: bottom,
+    audioBottom: audioBottom,
   };
   const classes = useStyles(styleProps);
   const [bookDisplay, setBookDisplay] = React.useState("");

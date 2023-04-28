@@ -55,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
       padding: "10px 5px",
       top: 58,
-      bottom: 40,
     },
   },
   container: {
@@ -263,6 +262,7 @@ const ReadingPlan = (props) => {
                     className={classes.calendar}
                     onChange={(date) => setSelectedDate(date)}
                     value={selectedDate}
+                    clearIcon={null}
                   />
                 </div>
               ) : null}

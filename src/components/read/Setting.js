@@ -113,6 +113,7 @@ const Setting = ({
             width: 280,
             backgroundColor: BLUETRANSPARENT,
             color: "#fff",
+            marginTop: 50,
           },
         }}
       >

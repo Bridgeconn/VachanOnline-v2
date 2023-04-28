@@ -83,7 +83,6 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.only("xs")]: {
       top: (props) => (props.screenView === "single" ? 122 : 62),
-      bottom: 60,
     },
   },
   message: {

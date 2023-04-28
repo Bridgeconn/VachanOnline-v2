@@ -30,7 +30,6 @@ export default function SideDrawer(props) {
     <Drawer
       anchor={"right"}
       open={open}
-      onClose={toggleDrawer(false)}
       classes={{ paper: classes.list }}
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}

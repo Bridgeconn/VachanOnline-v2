@@ -138,13 +138,7 @@ body#body {
   font-size: 28px;
   margin-bottom: 15px;
 }
-body .MuiBottomNavigationAction-root {
-  flex: 0 1;
-  margin-left: 50px;
-}
-.react-date-picker__clear-button {
-  display: none;
-}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
