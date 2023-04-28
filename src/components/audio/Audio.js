@@ -111,6 +111,12 @@ const useStyles = makeStyles((theme) => ({
   message: {
     paddingLeft: 20,
   },
+  selectBox: {
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
 }));
 const Audio = (props) => {
   const classes = useStyles();
@@ -172,7 +178,20 @@ const Audio = (props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
-        <Box flexGrow={1}>
+        {mobileView ? null : (
+          <Box flexGrow={1}>
+            <Typography variant="h6">Audio Bibles</Typography>
+          </Box>
+        )}
+        <Box flexGrow={1} className={classes.selectBox}>
+          {languages && languages?.length !== 0 && (
+            <Select
+              className={classes.select}
+              value={language}
+              onChange={(data) => setLanguage(data)}
+              options={languages}
+            />
+          )}
           {mobileView && bookCode ? (
             <BookCombo
               bookCode={bookCode}
@@ -182,19 +201,7 @@ const Audio = (props) => {
               minimal={true}
               screen={"audio"}
             />
-          ) : (
-            <Typography variant="h6">Audio Bibles</Typography>
-          )}
-        </Box>
-        <Box flexGrow={1}>
-          {languages && languages?.length !== 0 && (
-            <Select
-              className={classes.select}
-              value={language}
-              onChange={(data) => setLanguage(data)}
-              options={languages}
-            />
-          )}
+          ) : null}
         </Box>
         <Box>
           <Close className={classes.closeButton} />

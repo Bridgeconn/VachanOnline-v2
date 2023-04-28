@@ -161,8 +161,8 @@ const BiblePane = (props) => {
           </Grid>
         </Grid>
         {mobileView &&
-        selectedVerses?.length !== 0 &&
-        selectedVerses?.length !== undefined ? (
+        userDetails.uid !== null &&
+        selectedVerses?.length > 0 ? (
           <BottomToolBar
             selectedVerses={selectedVerses}
             setSelectedVerses={setSelectedVerses}

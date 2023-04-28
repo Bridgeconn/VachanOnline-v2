@@ -174,6 +174,14 @@ const Infographics = (props) => {
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>
+          {languages && languages?.length !== 0 && (
+            <Select
+              className={classes.select}
+              value={language}
+              onChange={(data) => setLanguage(data)}
+              options={languages}
+            />
+          )}
           {mobileView && bookCode ? (
             <BookCombo
               paneNo={paneNo}
@@ -185,14 +193,6 @@ const Infographics = (props) => {
               screen={"info"}
             />
           ) : null}
-          {languages && languages?.length !== 0 && (
-            <Select
-              className={classes.select}
-              value={language}
-              onChange={(data) => setLanguage(data)}
-              options={languages}
-            />
-          )}
         </Box>
         <Box>
           <Close className={classes.closeButton} />
