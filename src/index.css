@@ -119,25 +119,6 @@ body#body {
 .bottomBar .material-icons {
   color: #333399;
 }
-.closeButton {
-  display: flex;
-  align-items: flex-start;
-}
-.logMenuBox .MuiListItem-gutters {
-  padding: 0;
-}
-.menuLog .MuiListItem-root {
-  display: flex;
-  flex-direction: column;
-}
-.drawerEmailText .MuiTypography-body1 {
-  font-size: 0.85rem;
-  margin: 0 10px;
-}
-.audioHead .material-icons.md-23 {
-  font-size: 28px;
-  margin-bottom: 15px;
-}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
