@@ -284,7 +284,7 @@ const Bible = (props) => {
     mobileView,
     versesSelected,
   } = props;
-  const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : "5rem";
+  const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : "0.5rem";
   const styleProps = {
     padding: padding,
     singlePane: singlePane,
