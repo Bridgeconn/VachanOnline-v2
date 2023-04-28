@@ -5,17 +5,19 @@ import Banner from "./Banner";
 import LanguageBar from "./LanguageBar";
 import LandingFooter from "./LandingFooter";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
 import Link from "@material-ui/core/Link";
-import { detectMob } from "../common/utility";
 import "./Landing.css";
 import listen from "../common/images/listen.jpg";
 import read from "../common/images/read.jpg";
 import watch from "../common/images/watch.jpg";
 import ImageCard from "./ImageCard";
 import Typography from "@material-ui/core/Typography";
+import { useMediaQuery } from "@material-ui/core";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -99,10 +101,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Landing = () => {
+const Landing = (props) => {
   const classes = useStyles();
-  const mobile = detectMob();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [language, setLanguage] = React.useState("English");
+  const { setValue } = props;
+  React.useEffect(() => {
+    if (isMobile) {
+      setValue("mobileView", true);
+    } else {
+      setValue("mobileView", false);
+    }
+  }, [isMobile, setValue]);
   const addLink = () => {
     return process.env.REACT_APP_DOWNLOAD_URL ? (
       <Link href={process.env.REACT_APP_DOWNLOAD_URL} target="_blank">
@@ -123,7 +134,7 @@ const Landing = () => {
   return (
     <Grid className={classes.body}>
       <PageHeader />
-      {!mobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
+      {!isMobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
       <Banner language={language} />
       <BibleIndex />
       <div className={classes.storeLinkMobile}>{addLink()}</div>
@@ -178,4 +189,11 @@ const Landing = () => {
     </Grid>
   );
 };
-export default Landing;
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+  };
+};
+export default connect(null, mapDispatchToProps)(Landing);

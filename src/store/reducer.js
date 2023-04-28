@@ -4,6 +4,7 @@ const defaultState = {
   versions: [],
   commentaries: [],
   commentary: {},
+  commentaryLang: "hin",
   dictionary: {
     dictionaries: [],
     selectedDictionary: {},
@@ -15,12 +16,13 @@ const defaultState = {
   audioBible: [],
   video: [],
   readingPlans: [],
-  signBible:[],
+  signBible: [],
   playing: "",
   versionBooks: {},
   versionSource: {},
   parallelScroll: true,
   login: false,
+  mobileView: false,
   openLogin: false,
   userDetails: {
     uid: null,
@@ -81,12 +83,16 @@ const reducer = (state = defaultState, action) => {
         panel2: { ...panel2, versesSelected: [] },
       };
     case actions.SYNCPANEL:
-      let { bookCode, chapter } = state[action.from];
+      let { bookCode, chapter } = state[action.from]
+        ? state[action.from]
+        : state.panel1
+        ? state.panel1
+        : state.panel2;
       let bookList =
-        state.versionBooks[state.versionSource[state[action.to].sourceId]];
+        state.versionBooks[state.versionSource[state[action.to]?.sourceId]];
       let parallelScroll = state.parallelScroll;
       let message = "";
-      if (bookList.findIndex((e) => e.book_code === bookCode) === -1) {
+      if (bookList?.findIndex((e) => e.book_code === bookCode) === -1) {
         //If parallell book not available don't change it
         chapter = state[action.to].chapter;
         bookCode = state[action.to].bookCode;

@@ -22,7 +22,6 @@ const BigTooltip = withStyles((theme) => ({
     fontSize: 16,
   },
 }))(Tooltip);
-
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
@@ -32,13 +31,24 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
-      width: "60%",
+      width: (props) =>
+        props.screen === "audio" || props.screen === "video" ? "85%" : "60%",
+      padding: (props) =>
+        props.screen === "info" ||
+        props.screen === "audio" ||
+        props.screen === "video"
+          ? "4px 0"
+          : "6px 0",
+      margin: 9,
     },
   },
   icon: {
     left: 3,
     position: "relative",
     width: 30,
+    [theme.breakpoints.only("xs")]: {
+      left: 0,
+    },
   },
   root: {
     width: "100%",
@@ -111,21 +121,40 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 130,
     overflow: "hidden",
     textOverflow: "ellipsis",
+    [theme.breakpoints.only("xs")]: {
+      maxWidth: 60,
+      minWidth: 60,
+    },
+  },
+  bookNameBox: {
+    [theme.breakpoints.only("xs")]: {
+      whiteSpace: "nowrap",
+      minWidth: 70,
+      maxWidth: 80,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      padding: "0 5px",
+    },
   },
 }));
-const BookCombo = ({
-  paneNo,
-  bookCode,
-  bookList,
-  chapter,
-  setValue,
-  minimal,
-  landingPage,
-  parallelScroll,
-  syncPanel,
-}) => {
+const BookCombo = (props) => {
+  const {
+    paneNo,
+    bookCode,
+    bookList,
+    chapter,
+    setValue,
+    minimal,
+    landingPage,
+    parallelScroll,
+    syncPanel,
+    screen,
+  } = props;
   //classes for styling
-  const classes = useStyles();
+  const styleProps = {
+    screen: screen,
+  };
+  const classes = useStyles(styleProps);
   const theme = useTheme();
   //if mobile then true, used to change layout
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -265,7 +294,9 @@ const BookCombo = ({
           variant="contained"
           onClick={openCombo}
           ref={bookDropdown}
-          style={landingPage && mobile ? { marginLeft: "20%" } : {}}
+          style={
+            landingPage && mobile ? { marginLeft: 0, marginRight: 15 } : {}
+          }
           classes={{ root: classes.button }}
         >
           {minimal === true ? (
@@ -273,7 +304,9 @@ const BookCombo = ({
               className={classes.bookName}
             >{`${bookDisplay}  ${chapter}`}</div>
           ) : (
-            `${bookDisplay}  ${chapter}`
+            <div className={classes.bookNameBox}>
+              {`${bookDisplay} ${chapter}`}
+            </div>
           )}
           <i className={`material-icons ${classes.icon}`}>
             keyboard_arrow_down

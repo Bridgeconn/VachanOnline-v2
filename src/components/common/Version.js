@@ -11,8 +11,6 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -35,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     [theme.breakpoints.only("xs")]: {
       width: "30%",
+      padding: "6px 10px",
     },
     [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
@@ -78,6 +77,18 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     left: 5,
     position: "relative",
+    [theme.breakpoints.only("xs")]: {
+      left: 0,
+    },
+  },
+  versionName: {
+    [theme.breakpoints.only("xs")]: {
+      whiteSpace: "nowrap",
+      minWidth: 30,
+      maxWidth: 60,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    },
   },
   paper: {
     maxHeight: "calc(100vh - 150px)",
@@ -101,8 +112,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Version = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
   const [displayVersion, setDisplayVersion] = React.useState("Loading...");
@@ -119,6 +128,7 @@ const Version = (props) => {
     parallelView,
     parallelScroll,
     setMainValue,
+    mobileView,
   } = props;
 
   function handleClick(event) {
@@ -179,7 +189,7 @@ const Version = (props) => {
 
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
-    if (mobile && !landingPage) {
+    if (mobileView) {
       setDisplayVersion(versionCode);
     } else {
       for (let lang in versions) {
@@ -197,7 +207,7 @@ const Version = (props) => {
         }
       }
     }
-  }, [landingPage, mobile, version, versions]);
+  }, [landingPage, mobileView, version, versions]);
 
   return (
     <>
@@ -208,7 +218,9 @@ const Version = (props) => {
           onClick={handleClick}
           variant="contained"
           style={
-            landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}
+            landingPage && mobileView
+              ? { marginLeft: 0, marginRight: 15, width: "60%" }
+              : {}
           }
           classes={
             landingPage
@@ -216,7 +228,7 @@ const Version = (props) => {
               : { root: classes.button, label: classes.label }
           }
         >
-          {displayVersion}
+          <div className={classes.versionName}>{displayVersion}</div>
           <i className={`material-icons ${classes.icon}`}>
             keyboard_arrow_down
           </i>
@@ -308,6 +320,7 @@ const mapStateToProps = (state) => {
     versionSource: state.local.versionSource,
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
+    mobileView: state.local.mobileView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

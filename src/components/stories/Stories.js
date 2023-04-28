@@ -74,6 +74,11 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       width: "70%",
     },
+    [theme.breakpoints.only("xs")]: {
+      "& img": {
+        width: "95%",
+      },
+    },
     "& h1": {
       textAlign: "center",
     },
@@ -95,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
   mobile: {
     width: "100%",
     position: "fixed",
-    top: 64,
+    top: 60,
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
   },
@@ -146,15 +151,15 @@ const Stories = (props) => {
   const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
-  const [rtlList,setRtlList] = React.useState([])
+  const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
-  const storyClass =
-    rtlList.includes(lang)
-      ? `${classes.stories} ${classes.storyDirection}`
-      : classes.stories;
+  const storyClass = rtlList.includes(lang)
+    ? `${classes.stories} ${classes.storyDirection}`
+    : classes.stories;
   const listClass = rtlList.includes(lang) ? classes.listDirection : "";
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -171,7 +176,7 @@ const Stories = (props) => {
     let storyNum = event.currentTarget.getAttribute("data-id");
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   };
 
   const storySetter = (event) => {
@@ -181,7 +186,7 @@ const Stories = (props) => {
   };
   const getLang = (event) => {
     setLang(event.target.value);
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -211,14 +216,14 @@ const Stories = (props) => {
 
   useEffect(() => {
     API.get("rtl.json").then(function (response) {
-      setRtlList(response.data)
+      setRtlList(response.data);
     });
   }, [API]);
 
   return (
     <>
       <AppBar position="fixed">
-        <TopBar login={login} userDetails={userDetails} />
+        <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
       </AppBar>
       <div className={classes.root}>
         {mobile === true ? (
@@ -319,7 +324,9 @@ const Stories = (props) => {
                     <MenuItem
                       key={y}
                       value={text}
-                      className={rtlList.includes(text) ? classes.listDirection : ""}
+                      className={
+                        rtlList.includes(text) ? classes.listDirection : ""
+                      }
                     >
                       {languageJson[text]}
                     </MenuItem>

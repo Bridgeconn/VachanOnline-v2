@@ -12,13 +12,10 @@ import IconButton from "@material-ui/core/IconButton";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLUE } from "../../store/colorCode";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
-import * as actions from "../../store/actions";
-import Badge from "@material-ui/core/Badge";
-import { isFeatureNew } from "../common/utility";
+import { SETVALUE } from "../../store/actions";
+import MenuItem from "./MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,12 +24,19 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "absolute",
     height: 74,
+    [theme.breakpoints.only("xs")]: {
+      height: 60,
+    },
   },
   appBar: {
     background: BLUE,
     padding: "0px 10px",
     marginBottom: "10px",
     zIndex: 900,
+    [theme.breakpoints.only("xs")]: {
+      marginBottom: 0,
+      padding: 0,
+    },
   },
   title: {
     flexGrow: 1,
@@ -49,10 +53,13 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     height: 50,
+    [theme.breakpoints.only("xs")]: {
+      height: 45,
+    },
   },
   logo: {
     height: 60,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
@@ -78,29 +85,26 @@ const useStyles = makeStyles((theme) => ({
   signBible: {
     color: "#e0e0e0",
     marginTop: 2,
+    marginRight: 10,
     "&:hover": {
       color: "#d0d0d0",
     },
-  },
-  islBadge: {
-    marginRight: 8,
   },
 }));
 
 const TopBar = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  let { login, userDetails, setParallelView } = props;
+
+  let { login, userDetails, setParallelView, mobileView } = props;
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
-
   const ISLButton = () => {
     const Btn = () => {
-      return (
+      return mobileView ? (
+        <MenuItem icon="sign_language" title="ISLV Bible" item={SIGNBIBLE} />
+      ) : (
         <Button
           variant="outlined"
           size="small"
@@ -109,30 +113,21 @@ const TopBar = (props) => {
           title="Sign Language Bible"
           aria-label="sign language bible"
           target="_blank"
-          rel="noopener"
-          onClick={() => setParallelView(SIGNBIBLE)}
+          rel="noOpener"
+          onClick={setParallelView}
           startIcon={<i className="material-icons">sign_language</i>}
         >
-          {mobileLandscape === true ? "ISLV" : "Sign Language Bible (ISLV)"}
+          Sign Language Bible (ISLV)
         </Button>
       );
     };
-    return process.env.REACT_APP_SIGNBIBLE_URL !== undefined &&
-      mobile === false ? (
-      <Badge
-        className={classes.islBadge}
-        color="secondary"
-        variant="dot"
-        badgeContent={isFeatureNew("12-01-2022")}
-      >
-        {window.location.pathname.startsWith("/biblestories") ? (
-          <Link to="/read">{Btn()}</Link>
-        ) : (
-          Btn()
-        )}
-      </Badge>
+    if (process.env.REACT_APP_SIGNBIBLE_URL === undefined) {
+      return "";
+    }
+    return window.location.pathname.startsWith("/biblestories") ? (
+      <Link to="/read">{Btn()}</Link>
     ) : (
-      ""
+      Btn()
     );
   };
   const BibleStoriesButton = () => {
@@ -148,7 +143,7 @@ const TopBar = (props) => {
           target="_blank"
           rel="noopener"
         >
-          {mobileLandscape === true ? "Stories" : "Bible Stories"}
+          {mobileView === true ? "Stories" : "Bible Stories"}
         </Button>
       </Link>
     ) : (
@@ -168,7 +163,7 @@ const TopBar = (props) => {
           target="_blank"
           rel="noopener"
         >
-          {mobile === true ? "Bible" : "Study Bible"}
+          {mobileView === true ? "Bible" : "Study Bible"}
         </Button>
       </Link>
     );
@@ -198,7 +193,8 @@ const TopBar = (props) => {
               <img src={logo} alt={"logo"} className={classes.logo} />
             </Link>
           </div>
-          {ISLButton()}
+
+          <div>{ISLButton()}</div>
           {window.location.pathname.startsWith("/read")
             ? BibleStoriesButton()
             : StudyBibleButton()}
@@ -212,13 +208,8 @@ const TopBar = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setParallelView: (value) =>
-      dispatch({
-        type: actions.SETVALUE,
-        name: "parallelView",
-        value: value,
-      }),
+    setParallelView: () =>
+      dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
   };
 };
-
 export default connect(null, mapDispatchToProps)(TopBar);

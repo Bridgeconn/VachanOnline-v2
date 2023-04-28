@@ -47,6 +47,11 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
+  signbtn: {
+    [theme.breakpoints.only("xs")]: {
+      whiteSpace: "nowrap",
+    },
+  },
   links: {
     marginTop: 10,
   },
@@ -276,6 +281,7 @@ const Login = (props) => {
             variant="contained"
             ref={menuRef}
             onClick={openForm}
+            className={classes.signbtn}
           >
             Sign In
           </Button>

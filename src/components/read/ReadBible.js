@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import ParallelScroll from "@material-ui/icons/ImportExport";
 import Tooltip from "@material-ui/core/Tooltip";
 import { connect } from "react-redux";
@@ -29,8 +29,16 @@ import {
   getBookbyCode,
   getSignBible,
 } from "../common/utility";
-
+import { useMediaQuery } from "@material-ui/core";
+import BottomBar from "./BottomBar";
 const useStyles = makeStyles((theme) => ({
+  main: {
+    [theme.breakpoints.only("xs")]: {
+      position: "absolute",
+      height: "calc(100% - 3.6rem)",
+      width: "100%",
+    },
+  },
   biblePane1: {
     position: "absolute",
     width: "100%",
@@ -39,16 +47,34 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
   },
-  biblePane2: {
+  hide: {
+    display: "none",
+  },
+  splitPane1: {
     position: "absolute",
     width: "50%",
     height: "100%",
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
-    "&:nth-child(2)": {
-      right: 0,
-      backgroundColor: "#fff",
+    [theme.breakpoints.only("xs")]: {
+      borderBottom: "1px solid #f1ecec",
+      width: "100%",
+      height: "calc(50% + 1.8rem)",
+    },
+  },
+  splitPane2: {
+    position: "absolute",
+    width: "50%",
+    height: "100%",
+    backgroundColor: "#fff",
+    borderRight: "1px solid #f7f7f7",
+    overflow: "hidden",
+    right: 0,
+    [theme.breakpoints.only("xs")]: {
+      top: "calc(50% + 1.8rem)",
+      width: "100%",
+      height: "calc(50% - 1.8rem)",
     },
   },
   biblePane: {
@@ -84,10 +110,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const ReadBible = (props) => {
-  const classes = useStyles();
+  const theme = useTheme();
   //ref to get bible panes 1 & 2
   const bibleText1 = React.useRef();
   const bibleText2 = React.useRef();
+  const [noteText, setNoteText] = React.useState("");
   //used to sync bibles in paralle bibles on scroll
   const [bookObject, setBookObject] = React.useState({});
   //flag to prevent looping of on scroll event
@@ -114,8 +141,12 @@ const ReadBible = (props) => {
     versionSource,
     syncPanel,
     parallelView,
+    mobileView,
   } = props;
+  //if mobile then true, used to change layout
+  const classes = useStyles();
   const { uid } = userDetails;
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   //function for moving parallel bibles scroll together
   const scroll = React.useCallback((paneNo, parallelScroll) => {
     //check flag to prevent looping of on scroll event
@@ -143,6 +174,13 @@ const ReadBible = (props) => {
       }
     }
   }, []);
+  React.useEffect(() => {
+    if (isMobile) {
+      setValue("mobileView", true);
+    } else {
+      setValue("mobileView", false);
+    }
+  }, [isMobile, setValue]);
   //Fetch data from APIs
   React.useEffect(() => {
     //if commentaries not loaded fetch list of commentaries
@@ -150,6 +188,7 @@ const ReadBible = (props) => {
       getCommentaries(setValue);
     }
   }, [commentaries.length, setValue]);
+
   React.useEffect(() => {
     //if dictionaries not loaded fetch list of dictionaries
     if (dictionaries.length === 0) {
@@ -229,10 +268,10 @@ const ReadBible = (props) => {
       case views.SEARCH:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <Search />
             </div>
           </>
@@ -241,67 +280,81 @@ const ReadBible = (props) => {
       case views.PARALLELBIBLE:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane
                 setValue={setValue1}
                 paneData={panel1}
                 ref1={bibleText1}
                 scroll={scroll}
                 paneNo={1}
+                toggleParallelScroll={toggleParallelScroll}
               />
             </div>
-            <div>
-              <div className={classes.info} onClick={toggleParallelScroll}>
-                {parallelScroll ? (
-                  <Tooltip title="Parallel Scroll">
-                    <ParallelScroll
-                      fontSize="large"
-                      style={{ color: BLUETRANSPARENT }}
-                      className={classes.parallelScroll}
-                    />
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Parallel Scroll Disabled">
-                    <ParallelScroll
-                      fontSize="large"
-                      color="disabled"
-                      className={classes.parallelScroll}
-                    />
-                  </Tooltip>
-                )}
-              </div>
-              <div className={classes.biblePane2}>
+            <>
+              {mobileView ? null : (
+                <div onClick={toggleParallelScroll}>
+                  {parallelScroll ? (
+                    <Tooltip title="Parallel Scroll">
+                      <ParallelScroll
+                        fontSize="large"
+                        style={{ color: BLUETRANSPARENT }}
+                        className={classes.parallelScroll}
+                      />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="Parallel Scroll Disabled">
+                      <ParallelScroll
+                        fontSize="large"
+                        color="disabled"
+                        className={classes.parallelScroll}
+                      />
+                    </Tooltip>
+                  )}
+                </div>
+              )}
+
+              <div className={classes.splitPane2}>
                 <BiblePane
                   setValue={setValue2}
                   paneData={panel2}
                   ref1={bibleText2}
                   scroll={scroll}
                   paneNo={2}
+                  toggleParallelScroll={toggleParallelScroll}
                 />
               </div>
-            </div>
+            </>
           </>
         );
         break;
       case views.COMMENTARY:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
-              <Commentary />
+            <div className={classes.splitPane2}>
+              <Commentary screenView={"split"} />
             </div>
           </>
+        );
+        break;
+      case views.DRAWERCOMMENTARY:
+        setPane(
+          <div className={classes.biblePane1}>
+            <Commentary screenView={"single"} />
+          </div>
         );
         break;
       case views.DICTIONARY:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={mobileView ? classes.hide : classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div
+              className={mobileView ? classes.biblePane : classes.splitPane2}
+            >
               <Dictionary setDictionary={setDictionary} />
             </div>
           </>
@@ -310,11 +363,13 @@ const ReadBible = (props) => {
       case views.INFOGRAPHICS:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={mobileView ? classes.hide : classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
-              <Infographics />
+            <div
+              className={mobileView ? classes.biblePane : classes.splitPane2}
+            >
+              <Infographics panel1={panel1} />
             </div>
           </>
         );
@@ -322,16 +377,19 @@ const ReadBible = (props) => {
       case views.AUDIO:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={mobileView ? classes.hide : classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div
+              className={mobileView ? classes.biblePane : classes.splitPane2}
+            >
               <Audio
                 audioBible={audioBible}
                 bookCode={panel1.bookCode}
                 books={versionBooks}
                 chapter={panel1.chapter}
                 languageCode={panel1.languageCode}
+                panel1={panel1}
               />
             </div>
           </>
@@ -340,15 +398,18 @@ const ReadBible = (props) => {
       case views.VIDEO:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={mobileView ? classes.hide : classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div
+              className={mobileView ? classes.biblePane : classes.splitPane2}
+            >
               <Video
                 books={versionBooks}
                 video={video}
                 bookCode={panel1.bookCode}
                 languageCode={panel1.languageCode}
+                panel1={panel1}
               />
             </div>
           </>
@@ -357,10 +418,12 @@ const ReadBible = (props) => {
       case views.BOOKMARK:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={mobileView ? classes.hide : classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div
+              className={mobileView ? classes.biblePane : classes.splitPane2}
+            >
               <Bookmarks
                 uid={uid}
                 versions={versions}
@@ -374,10 +437,12 @@ const ReadBible = (props) => {
       case views.HIGHLIGHT:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={mobileView ? classes.hide : classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div
+              className={mobileView ? classes.biblePane : classes.splitPane2}
+            >
               <Highlights
                 uid={uid}
                 versions={versions}
@@ -391,18 +456,20 @@ const ReadBible = (props) => {
       case views.NOTE:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={mobileView ? classes.hide : classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div
+              className={mobileView ? classes.biblePane : classes.splitPane2}
+            >
               <Notes
                 uid={uid}
                 versions={versions}
                 setValue={setValue1}
-                sourceId={panel1.sourceId}
-                bookCode={panel1.bookCode}
-                chapter={panel1.chapter}
-                versesSelected={panel1.versesSelected}
+                noteText={noteText}
+                panel1={panel1}
+                setNoteText={setNoteText}
+                versesSelected={panel1?.versesSelected}
                 book={bookObject.short}
                 getRegionalBookName={getRegionalBookName}
               />
@@ -413,15 +480,16 @@ const ReadBible = (props) => {
       case views.READINGPLANS:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <ReadingPlan
                 readingPlans={readingPlans}
                 bookList={versionBooks[versionSource[panel1.sourceId]]}
                 setValue1={setValue1}
                 versesSelected={panel1.versesSelected}
+                mobileView={mobileView}
               />
             </div>
           </>
@@ -430,14 +498,13 @@ const ReadBible = (props) => {
       case views.SIGNBIBLE:
         setPane(
           <>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane1}>
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
-            <div className={classes.biblePane2}>
+            <div className={classes.splitPane2}>
               <SignBible
                 signBible={signBible}
-                bookCode={panel1.bookCode}
-                chapter={panel1.chapter}
+                panel1={panel1}
                 book={bookObject.short}
                 setValue={setValue1}
                 versions={versions}
@@ -446,7 +513,19 @@ const ReadBible = (props) => {
           </>
         );
         break;
-
+      case views.DRAWERSIGNBIBLE:
+        setPane(
+          <div className={classes.biblePane1}>
+            <SignBible
+              signBible={signBible}
+              book={bookObject.short}
+              setValue={setValue1}
+              versions={versions}
+              panel1={panel1}
+            />
+          </div>
+        );
+        break;
       default:
         setPane(
           <div className={classes.biblePane1}>
@@ -461,7 +540,6 @@ const ReadBible = (props) => {
   }, [
     audioBible,
     classes.biblePane1,
-    classes.biblePane2,
     classes.parallelScroll,
     scroll,
     panel1,
@@ -478,21 +556,28 @@ const ReadBible = (props) => {
     versions,
     bookObject,
     parallelScroll,
-    classes.info,
     syncPanel,
     getRegionalBookName,
     versionBooks,
     versionSource,
+    classes.splitPane1,
+    classes.splitPane2,
+    mobileView,
+    classes.hide,
+    classes.biblePane,
+
+    noteText,
   ]);
   return (
     <>
-      <TopBar login={login} userDetails={userDetails} />
-      <div>
+      <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+      <div className={classes.main}>
         <div className={classes.biblePane}>{pane}</div>
         <div className={classes.rightMenu}>
           <BibleMenu />
         </div>
       </div>
+      {mobileView ? <BottomBar login={login} /> : null}
     </>
   );
 };
@@ -512,6 +597,7 @@ const mapStateToProps = (state) => {
     readingPlans: state.local.readingPlans,
     signBible: state.local.signBible,
     login: state.local.login,
+    mobileView: state.local.mobileView,
     userDetails: state.local.userDetails,
     parallelView: state.local.parallelView,
   };

@@ -8,6 +8,7 @@ import Alert from "@material-ui/lab/Alert";
 import MenuBar from "./MenuBar";
 import Bible from "./Bible";
 import FetchHighlights from "../highlight/FetchHighlights";
+import BottomToolBar from "./BottomToolBar";
 
 const useStyles = makeStyles((theme) => ({
   bible: {
@@ -19,22 +20,31 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     overflow: "auto",
     marginBottom: -15,
+    [theme.breakpoints.only("xs")]: {
+      top: (props) => (props?.paneNo === 2 ? 61 : 120),
+    },
   },
   fullscreen: {
     backgroundColor: "#fff",
   },
 }));
 
-const BiblePane = ({
-  setValue,
-  paneData,
-  ref1,
-  scroll,
-  paneNo,
-  singlePane,
-  userDetails,
-}) => {
-  const classes = useStyles();
+const BiblePane = (props) => {
+  const {
+    setValue,
+    paneData,
+    ref1,
+    scroll,
+    paneNo,
+    singlePane,
+    userDetails,
+    toggleParallelScroll,
+    mobileView,
+  } = props;
+  const styleProps = {
+    paneNo: paneNo,
+  };
+  const classes = useStyles(styleProps);
   const [fullscreen, setFullscreen] = React.useState(false);
   const [selectedVerses, setSelectedVerses] = React.useState([]);
   const [highlights, setHighlights] = React.useState([]);
@@ -45,7 +55,6 @@ const BiblePane = ({
   const printRef = React.useRef();
   const [printNotes, setPrintNotes] = React.useState(true);
   const [printHighlights, setPrintHighlights] = React.useState(true);
-
   React.useEffect(() => {
     const closeAlert = () => {
       //After showing message remove it
@@ -79,11 +88,11 @@ const BiblePane = ({
     if (Object.keys(userDetails).length === 0 || userDetails.uid === null) {
       setSelectedVerses([]);
     }
-  }, [userDetails]);
+  }, [setSelectedVerses, userDetails]);
 
   React.useEffect(() => {
     setSelectedVerses(versesSelected);
-  }, [versesSelected]);
+  }, [setSelectedVerses, versesSelected]);
 
   React.useEffect(() => {
     if (Object.keys(userDetails).length !== 0 && userDetails.uid !== null) {
@@ -103,7 +112,7 @@ const BiblePane = ({
       setFetchHighlights("");
       setHighlights([]);
     }
-  }, [userDetails, sourceId, bookCode, chapter, setHighlights]);
+  }, [userDetails, sourceId, bookCode, chapter, setHighlights, setRefUrl]);
   return (
     <>
       <div>
@@ -120,6 +129,7 @@ const BiblePane = ({
           printRef={printRef}
           printNotes={printNotes}
           setPrintNotes={setPrintNotes}
+          toggleParallelScroll={toggleParallelScroll}
           printHighlights={printHighlights}
           setPrintHighlights={setPrintHighlights}
         />
@@ -143,19 +153,38 @@ const BiblePane = ({
                 printRef={printRef}
                 printNotes={printNotes}
                 printHighlights={printHighlights}
+                versesSelected={versesSelected}
+                languageCode={paneData.languageCode}
               />
               {alertMessage}
             </Fullscreen>
           </Grid>
         </Grid>
+        {mobileView &&
+        userDetails.uid !== null &&
+        selectedVerses?.length > 0 ? (
+          <BottomToolBar
+            selectedVerses={selectedVerses}
+            setSelectedVerses={setSelectedVerses}
+            refUrl={refUrl}
+            setRefUrl={setRefUrl}
+            highlights={highlights}
+            setHighlights={setHighlights}
+            sourceId={sourceId}
+            bookCode={bookCode}
+            chapter={chapter}
+            paneNo={paneNo}
+            userDetails={userDetails}
+          />
+        ) : null}
       </div>
-      {/* </Swipeable> */}
     </>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
+    mobileView: state.local.mobileView,
     userDetails: state.local.userDetails,
   };
 };

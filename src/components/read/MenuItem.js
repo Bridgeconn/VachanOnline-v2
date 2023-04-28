@@ -5,7 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { BLUE, LIGHTBLUE } from "../../store/colorCode";
+import { BLUE, LIGHTBLUE, WHITE } from "../../store/colorCode";
 import * as views from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 
@@ -21,16 +21,24 @@ const useStyles = makeStyles((theme) => ({
   },
   menu: {
     fontSize: "18px",
-    color: "#fff",
+    color: WHITE,
   },
   selected: {
-    backgroundColor: "#fff",
+    backgroundColor: WHITE,
     paddingTop: 11,
     paddingBottom: 5,
     paddingLeft: 13,
     boxShadow: "inset 1px 0px 3px 1px" + LIGHTBLUE,
     "&:hover": {
       backgroundColor: LIGHTBLUE,
+    },
+    [theme.breakpoints.only("xs")]: {
+      padding: "3px 7px 0px",
+      "&:hover": {
+        backgroundColor: "transparent",
+      },
+      backgroundColor: "transparent",
+      boxShadow: "unset",
     },
   },
   button: {
@@ -40,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "rgba(255,255,255,0.1)",
     },
+    [theme.breakpoints.only("xs")]: {
+      padding: "3px 7px 0px",
+    },
   },
   listItem: {
     minWidth: 44,
@@ -48,12 +59,44 @@ const useStyles = makeStyles((theme) => ({
   listItemSelected: {
     minWidth: 44,
     color: BLUE,
+    [theme.breakpoints.only("xs")]: {
+      color: WHITE,
+    },
+  },
+  menuText: {
+    color: "#000",
+    fontSize: "0.65rem",
+  },
+  icon: {
+    fontSize: "36px",
+    [theme.breakpoints.only("xs")]: {
+      fontSize: "28px",
+    },
+  },
+  drawerMenu: {
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
+  bottomMenu: {
+    [theme.breakpoints.only("xs")]: {
+      textAlign: "center",
+    },
+  },
+  drawerText: {
+    [theme.breakpoints.only("xs")]: {
+      color: "#000",
+      margin: "5px 15px",
+      textTransform: "capitalize",
+    },
   },
 }));
 
 const MenuItem = (props) => {
   const classes = useStyles();
-  const { icon, title, item, parallelView, uid, setValue } = props;
+  const { icon, title, item, mobileView, parallelView, uid, setValue, base } =
+    props;
   const [popover, setPopover] = React.useState(null);
 
   function handlePopoverOpen(event) {
@@ -79,7 +122,6 @@ const MenuItem = (props) => {
     }
     setValue("parallelView", parallelView === view ? "" : view);
   };
-
   const open = Boolean(popover);
   const buttonClass = parallelView === item ? classes.selected : classes.button;
   return (
@@ -93,31 +135,47 @@ const MenuItem = (props) => {
           parallelView === item ? classes.listItemSelected : classes.listItem
         }
       >
-        <div onClick={() => onClick(item, uid)}>
-          <i className="material-icons" style={{ fontSize: "36px" }}>
+        <div
+          onClick={() => onClick(item, uid)}
+          className={`${base === "drawer" ? classes.drawerMenu : ""} ${
+            base === "bottom" ? classes.bottomMenu : ""
+          }`}
+        >
+          <i className={`material-icons ${classes.icon}`} title={title}>
             {icon}
           </i>
-          <Popover
-            id="mouse-over-popover"
-            className={classes.popover}
-            classes={{
-              paper: classes.paper,
-            }}
-            open={open}
-            anchorEl={popover}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            onClose={handlePopoverClose}
-            disableRestoreFocus
-          >
-            <Typography className={classes.menu}>{title}</Typography>
-          </Popover>
+          {base === "bottom" || base === "drawer" ? (
+            <Typography
+              className={
+                base === "drawer" ? classes.drawerText : classes.menuText
+              }
+            >
+              {title}
+            </Typography>
+          ) : null}
+          {mobileView ? null : (
+            <Popover
+              id="mouse-over-popover"
+              className={classes.popover}
+              classes={{
+                paper: classes.paper,
+              }}
+              open={open}
+              anchorEl={popover}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              onClose={handlePopoverClose}
+              disableRestoreFocus
+            >
+              <Typography className={classes.menu}>{title}</Typography>
+            </Popover>
+          )}
         </div>
       </ListItemIcon>
     </ListItem>
@@ -127,6 +185,7 @@ const mapStateToProps = (state) => {
   return {
     parallelView: state.local.parallelView,
     uid: state.local.userDetails.uid,
+    mobileView: state.local.mobileView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

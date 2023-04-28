@@ -6,7 +6,6 @@ import firebase from "firebase/app";
 import Menu from "@material-ui/core/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import ListItemText from "@material-ui/core/ListItemText";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -17,6 +16,11 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: 300,
     backgroundColor: theme.palette.background.paper,
+  },
+  emailText: {
+    [theme.breakpoints.only("xs")]: {
+      fontSize: "0.75rem",
+    },
   },
 }));
 
@@ -59,11 +63,7 @@ const LoginMenu = (props) => {
         onClick={handleProfileMenuOpen}
         color="inherit"
       >
-        {userDetails.photoURL ? (
-          <Avatar alt={userDetails.email} src={userDetails.photoURL} />
-        ) : (
-          <AccountCircle fontSize="large" />
-        )}
+        <Avatar alt={userDetails.email} src={userDetails.photoURL} />
       </IconButton>
       <Menu
         elevation={0}
@@ -99,11 +99,15 @@ const LoginMenu = (props) => {
     </>
   );
 };
-
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
-export default connect(null, mapDispatchToProps)(LoginMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginMenu);
