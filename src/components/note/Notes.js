@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
       top: (props) => (props.addNote ? 390 : 135),
     },
     [theme.breakpoints.only("xs")]: {
-      top: 120,
+      top: (props) => (props.addNote ? 365 : 120),
       bottom: 54,
     },
   },
