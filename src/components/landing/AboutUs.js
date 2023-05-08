@@ -333,7 +333,7 @@ const AboutUs = ({ handleClose }) => {
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
               <li>
-                Moved thenew website to{" "}
+                Moved the new website to{" "}
                 {addLink("vachanonline.com", "https://")}
               </li>
               <li>

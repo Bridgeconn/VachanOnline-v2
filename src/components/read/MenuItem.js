@@ -5,7 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { BLUE, LIGHTBLUE, WHITE } from "../../store/colorCode";
+import { BLUE, GRAY, LIGHTBLUE, WHITE } from "../../store/colorCode";
 import * as views from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 
@@ -61,11 +61,13 @@ const useStyles = makeStyles((theme) => ({
     color: BLUE,
     [theme.breakpoints.only("xs")]: {
       color: WHITE,
+      backgroundColor: GRAY,
     },
   },
   menuText: {
     color: "#000",
     fontSize: "0.65rem",
+    padding: "0 5px",
   },
   icon: {
     fontSize: "36px",
