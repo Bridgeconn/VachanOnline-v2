@@ -24,8 +24,9 @@ const useStyles = makeStyles(() => ({
     whiteSpace: "nowrap",
   },
   menu: {
-    width: 40,
+    width: 45,
     paddingTop: 6,
+    paddingLeft: 10,
     color: BLUE,
     "& p": {
       color: "#000",
