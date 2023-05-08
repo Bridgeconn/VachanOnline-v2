@@ -333,9 +333,8 @@ const AboutUs = ({ handleClose }) => {
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
               <li>
-                Moved the website to {addLink("vachanonline.com", "https://")},
-                and the classic website to
-                {addLink("legacy.vachanonline.com", "https://")}
+                Moved thenew website to{" "}
+                {addLink("vachanonline.com", "https://")}
               </li>
               <li>
                 Added metadata-based filtering for only published bibles to be

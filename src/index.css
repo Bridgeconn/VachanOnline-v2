@@ -33,11 +33,7 @@
   src: local("NotoSans"), url(./fonts/NotoSans.ttf) format("truetype");
   unicode-range: U+00-FF, U+0900-097F;
 }
-@font-face {
-  font-family: "Latha";
-  src: local("Latha"), url(./fonts/Latha.ttf) format("truetype");
-  unicode-range: U+00-FF, U+0B80-0BFF;
-}
+
 @font-face {
   font-family: "Mukti";
   src: local("Mukti"), url(./fonts/Mukti.ttf) format("truetype");
@@ -60,12 +56,7 @@
     url(./fonts/NotoSerifMalayalam.ttf) format("truetype");
   unicode-range: U+00-FF, U+0D00-0D7F;
 }
-@font-face {
-  font-family: "Noto Serif Tamil";
-  src: local("NotoSerifTamil"),
-    url(./fonts/NotoSerifTamil.ttf) format("truetype");
-  unicode-range: U+00-FF, U+0B80-0BFF;
-}
+
 @font-face {
   font-family: "Noto Serif Telugu";
   src: local("NotoSerifTelugu"),
