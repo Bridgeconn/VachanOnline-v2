@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as views from "../../store/views";
-import { Drawer, ListItem, makeStyles } from "@material-ui/core";
+import { Drawer, makeStyles } from "@material-ui/core";
 import MenuItem from "./MenuItem";
 
 const useStyles = makeStyles({
@@ -14,17 +14,15 @@ export default function SideDrawer(props) {
   const { login, toggleDrawer, open } = props;
   const classes = useStyles();
   const Item = ({ icon, title, item }) => (
-    <ListItem>
-      <MenuItem icon={icon} title={title} item={item} base="drawer" />
-    </ListItem>
+    <MenuItem icon={icon} title={title} item={item} base="drawer" />
   );
   const LoginItem = ({ icon, title, item }) => (
-    <ListItem
+    <span
       onClick={!login ? (e) => e.stopPropagation() : null}
       onKeyDown={!login ? (e) => e.stopPropagation() : null}
     >
       <MenuItem icon={icon} title={title} item={item} base="drawer" />
-    </ListItem>
+    </span>
   );
   return (
     <Drawer

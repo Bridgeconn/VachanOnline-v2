@@ -33,11 +33,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: LIGHTBLUE,
     },
     [theme.breakpoints.only("xs")]: {
-      padding: "3px 7px 0px",
-      "&:hover": {
-        backgroundColor: "transparent",
-      },
-      backgroundColor: "transparent",
+      padding: (props) =>
+        props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
       boxShadow: "unset",
     },
   },
@@ -49,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(255,255,255,0.1)",
     },
     [theme.breakpoints.only("xs")]: {
-      padding: "3px 7px 0px",
+      padding: (props) =>
+        props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
     },
   },
   listItem: {
@@ -66,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   menuText: {
     color: "#000",
     fontSize: "0.65rem",
+    padding: "0 5px",
   },
   icon: {
     fontSize: "36px",
@@ -94,9 +93,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MenuItem = (props) => {
-  const classes = useStyles();
   const { icon, title, item, mobileView, parallelView, uid, setValue, base } =
     props;
+  const styleProps = {
+    base: base,
+  };
+  const classes = useStyles(styleProps);
   const [popover, setPopover] = React.useState(null);
 
   function handlePopoverOpen(event) {
@@ -125,7 +127,11 @@ const MenuItem = (props) => {
   const open = Boolean(popover);
   const buttonClass = parallelView === item ? classes.selected : classes.button;
   return (
-    <ListItem button className={buttonClass}>
+    <ListItem
+      button
+      className={buttonClass}
+      selected={parallelView === item && mobileView}
+    >
       <ListItemIcon
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
