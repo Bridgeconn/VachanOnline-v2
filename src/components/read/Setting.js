@@ -6,7 +6,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { BLACK, WHITE } from "../../store/colorCode";
 import PrintIcon from "@material-ui/icons/Print";
 import Typography from "@material-ui/core/Typography";
 import Print from "../common/PrintBox";
@@ -111,8 +111,8 @@ const Setting = ({
           style: {
             maxHeight: ITEM_HEIGHT * 5.5,
             width: 280,
-            backgroundColor: BLUETRANSPARENT,
-            color: "#fff",
+            backgroundColor: WHITE,
+            color: BLACK,
             marginTop: 50,
           },
         }}

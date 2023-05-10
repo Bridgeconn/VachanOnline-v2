@@ -14,6 +14,7 @@ import Popover from "@material-ui/core/Popover";
 import Snackbar from "@material-ui/core/Snackbar";
 import Collapse from "@material-ui/core/Collapse";
 import Alert from "@material-ui/lab/Alert";
+import { GREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,8 +49,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   signbtn: {
+    margin: theme.spacing(1.5),
+    backgroundColor: "#fff",
+    boxShadow: "1px 1px 1px 1px" + GREY,
+    border: "1px solid #d3d3d3",
+    height: "42px",
+    "& hover": {
+      textDecoration: "none",
+    },
     [theme.breakpoints.only("xs")]: {
-      whiteSpace: "nowrap",
+      marginLeft: 0,
+      width: "60%",
+      marginTop: 0,
+      marginBottom: 2,
     },
   },
   links: {

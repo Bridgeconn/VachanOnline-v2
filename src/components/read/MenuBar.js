@@ -15,7 +15,7 @@ import Note from "../note/Note";
 import PrintIcon from "@material-ui/icons/Print";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 import Close from "../common/Close";
 import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: BLUETRANSPARENT,
+    color: "default",
     cursor: "pointer",
   },
   infoParall: {
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 15,
     marginRight: 4,
-    color: BLUETRANSPARENT,
+    color: "default",
     cursor: "pointer",
   },
   settings: {
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
     marginLeft: "-5px",
     marginRight: "-5px",
-    color: BLUETRANSPARENT,
+    color: "default",
     cursor: "pointer",
   },
   items: {
@@ -343,7 +343,7 @@ const MenuBar = (props) => {
                 <Tooltip title="Parallel Scroll">
                   <ParallelScroll
                     fontSize="large"
-                    style={{ color: BLUETRANSPARENT }}
+                    style={{ color: BLACK }}
                     className={classes.parallelScroll}
                   />
                 </Tooltip>

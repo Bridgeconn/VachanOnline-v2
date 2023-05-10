@@ -9,3 +9,5 @@ export const CYAN = "#56f3ff";
 export const PINK = "#ffcaf7";
 export const ORANGE = "#ffc66f";
 export const WHITE = "#fff";
+export const GREY = "#808080"
+export const BLACK = "#000000"

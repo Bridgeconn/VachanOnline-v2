@@ -17,10 +17,10 @@ import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import TopBar from "../read/TopBar";
-import { BLUETRANSPARENT } from "../../store/colorCode";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography } from "@material-ui/core";
+import { BLACK, GREY } from "../../store/colorCode";
 
 const drawerWidth = 400;
 
@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "inline-block",
     fontSize: 18,
-    color: BLUETRANSPARENT,
   },
   margin: {
     height: theme.spacing(5),
@@ -116,6 +115,12 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     lineHeight: "1.255",
+  },
+  linkList: {
+    color: BLACK,
+    "&:hover": {
+      color: GREY,
+    },
   },
   mobileBox: {
     display: "flex",
@@ -376,8 +381,11 @@ const Stories = (props) => {
               <List>
                 {manifest.map((text, y) => (
                   <ListItem key={y} value={text} className={listClass}>
-                    <Link href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
+                    <Link 
+                    className={classes.linkList}
+                    href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
                       {y + 1 + ". " + text}
+                      
                     </Link>
                   </ListItem>
                 ))}

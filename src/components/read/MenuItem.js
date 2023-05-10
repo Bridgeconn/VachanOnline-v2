@@ -5,7 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { BLUE, LIGHTBLUE, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import * as views from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 
@@ -17,21 +17,18 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: "10px 15px",
-    backgroundColor: BLUE,
+    backgroundColor: WHITE,
   },
   menu: {
     fontSize: "18px",
-    color: WHITE,
+    color: BLACK,
   },
   selected: {
     backgroundColor: WHITE,
     paddingTop: 11,
     paddingBottom: 5,
     paddingLeft: 13,
-    boxShadow: "inset 1px 0px 3px 1px" + LIGHTBLUE,
-    "&:hover": {
-      backgroundColor: LIGHTBLUE,
-    },
+    boxShadow: "inset 1px 0px 3px 1px" + GREY,
     [theme.breakpoints.only("xs")]: {
       padding: "3px 7px 0px",
       "&:hover": {
@@ -54,11 +51,12 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     minWidth: 44,
-    color: "#fff",
+    color: BLACK,
   },
   listItemSelected: {
     minWidth: 44,
-    color: BLUE,
+    
+    color: GREY,
     [theme.breakpoints.only("xs")]: {
       color: WHITE,
     },
@@ -131,6 +129,7 @@ const MenuItem = (props) => {
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
+        variant="outlined"
         className={
           parallelView === item ? classes.listItemSelected : classes.listItem
         }

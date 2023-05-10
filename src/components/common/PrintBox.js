@@ -32,7 +32,7 @@ const PrintBox = (props) => {
   };
   const linkToPrint = () => {
     return (
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="default">
         Print
       </Button>
     );

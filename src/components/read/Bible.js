@@ -134,13 +134,13 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 6,
     bottom: 3,
     position: "relative",
-    color: "#262662",
+    color: color.BLUE,
   },
   sectionHeading: {
     fontSize: "1.3em",
     display: "block",
     paddingTop: 12,
-    color: "#3E4095",
+    color: color.BLUE,
   },
   yellow: {
     backgroundColor: color.YELLOW,

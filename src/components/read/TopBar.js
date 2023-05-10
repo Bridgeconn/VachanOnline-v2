@@ -1,17 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Login from "../login/Login";
-import logo from "../common/images/logo.png";
-import favicon from "../common/images/favicon.png";
+import logo from "../common/images/logo2.png";
+import favicon from "../common/images/favicon_blue.png";
 import LoginMenu from "../login/LoginMenu";
 import IconButton from "@material-ui/core/IconButton";
-import FeedbackIcon from "@material-ui/icons/Feedback";
-import Tooltip from "@material-ui/core/Tooltip";
-import { BLUE } from "../../store/colorCode";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
@@ -29,9 +28,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
-    background: BLUE,
+    background: WHITE,
     padding: "0px 10px",
     marginBottom: "10px",
+    border: BLACK,
     zIndex: 900,
     [theme.breakpoints.only("xs")]: {
       marginBottom: 0,
@@ -64,31 +64,22 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    color: "#e0e0e0",
     marginRight: 4,
     marginTop: 2,
-    "&:hover": {
-      color: "#d0d0d0",
-    },
   },
   feedback: {
-    color: "#e0e0e0",
     marginRight: 4,
     marginTop: 2,
     "&:hover": {
-      color: "#d0d0d0",
+      color: GREY,
     },
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
   signBible: {
-    color: "#e0e0e0",
     marginTop: 2,
     marginRight: 10,
-    "&:hover": {
-      color: "#d0d0d0",
-    },
   },
 }));
 
@@ -108,7 +99,6 @@ const TopBar = (props) => {
         <Button
           variant="outlined"
           size="small"
-          color="inherit"
           className={classes.signBible}
           title="Sign Language Bible"
           aria-label="sign language bible"
@@ -136,7 +126,6 @@ const TopBar = (props) => {
         <Button
           variant="outlined"
           size="small"
-          color="inherit"
           className={classes.button}
           title="Bible Stories"
           aria-label="bible stories"
@@ -156,7 +145,6 @@ const TopBar = (props) => {
         <Button
           variant="outlined"
           size="small"
-          color="inherit"
           className={classes.button}
           title="Study Bible"
           aria-label="bible"
@@ -170,7 +158,6 @@ const TopBar = (props) => {
   };
   const FeedbackButton = () => {
     return (
-      <Tooltip title="Feedback">
         <IconButton
           aria-label="feedback"
           className={classes.feedback}
@@ -178,9 +165,8 @@ const TopBar = (props) => {
           target="_blank"
           rel="noopener"
         >
-          <FeedbackIcon />
+          <FeedbackOutlinedIcon />
         </IconButton>
-      </Tooltip>
     );
   };
   return (

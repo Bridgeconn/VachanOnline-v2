@@ -14,13 +14,14 @@ import Typography from "@material-ui/core/Typography";
 import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
-    backgroundColor: "#66a3ff",
-    color: "#00003d",
+    backgroundColor: WHITE,
+    color: BLACK,
     boxShadow: theme.shadows[4],
-    border: "1px solid #103f87",
+    border: "1px solid" + GREY,
     fontSize: 16,
   },
 }))(Tooltip);
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   menuRoot: {
-    backgroundColor: "#eaeaea",
+    backgroundColor: "#fff",
     boxShadow: "none",
     border: "1px solid #00000020",
     "&:not(:last-child)": {
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   expanded: {},
   expansionDetails: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#eaeaea",
     boxShadow: "none",
     padding: "0 0 0 8px",
     width: "100%",

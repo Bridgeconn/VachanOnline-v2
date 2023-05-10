@@ -4,12 +4,12 @@ import CloseIcon from "@material-ui/icons/Close";
 import Tooltip from "@material-ui/core/Tooltip";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 import * as actions from "../../store/actions";
 
 const useStyles = makeStyles(() => ({
   closeButton: {
-    color: BLUETRANSPARENT,
+    color: BLACK,
   },
 }));
 
