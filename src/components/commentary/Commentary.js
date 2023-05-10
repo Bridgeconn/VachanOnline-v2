@@ -135,7 +135,6 @@ const Commentary = (props) => {
     versionBooks,
     mobileView,
     setValue,
-    commentaryLang,
     screenView,
   } = props;
   const styleProps = {
@@ -269,7 +268,7 @@ const Commentary = (props) => {
             <BookCombo
               paneNo={panel1}
               bookCode={bookCode}
-              bookList={versionBooks[commentaryLang]}
+              bookList={bookNames}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
@@ -315,7 +314,6 @@ const mapStateToProps = (state) => {
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
-    commentaryLang: state.local.commentaryLang,
   };
 };
 const mapDispatchToProps = (dispatch) => {

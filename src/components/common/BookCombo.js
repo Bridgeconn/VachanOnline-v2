@@ -223,10 +223,10 @@ const BookCombo = (props) => {
         //If current book not available set first available book, fallback mechanism, actual check in versions
         book = bookList[0];
         setValue("chapter", 1);
-        setValue("bookCode", bookList[0].book_code);
+        setValue("bookCode", bookList[0]?.book_code);
         setValue("versesSelected", []);
       }
-      setBookDisplay(book.short);
+      setBookDisplay(book?.short);
     }
   }, [bookList, bookCode, setValue]);
   //on updating chapter row scroll it into view
