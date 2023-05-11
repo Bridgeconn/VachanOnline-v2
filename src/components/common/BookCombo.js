@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: (props) =>
         props.screen === "audio" || props.screen === "video" ? "85%" : "60%",
       padding: (props) =>

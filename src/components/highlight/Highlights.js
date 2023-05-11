@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       top: 120,
-      bottom: 54,
     },
   },
   message: {

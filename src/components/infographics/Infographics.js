@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       top: 60,
-      bottom: 54,
     },
   },
   heading: {

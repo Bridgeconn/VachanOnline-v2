@@ -73,7 +73,6 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       top: (props) => (props.addNote ? 365 : 120),
-      bottom: 54,
     },
   },
   message: {
