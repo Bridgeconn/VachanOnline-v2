@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     width: "30%",
     display: "inline-block",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "block",
     },
     "& a": {

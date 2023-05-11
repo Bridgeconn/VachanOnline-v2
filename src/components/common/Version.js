@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
       width: "30%",
       padding: "6px 10px",
     },
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       left: theme.spacing(0),
       marginRight: 10,
     },

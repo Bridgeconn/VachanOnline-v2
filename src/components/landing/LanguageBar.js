@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     top: 64,
     width: "100%",
     flexGrow: 1,
+    [theme.breakpoints.down("md")]: {
+      overflow: "auto",
+    },
   },
   toolbarSecondary: {
     color: "#fff",

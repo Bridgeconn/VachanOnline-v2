@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
       width: "40%",
       whiteSpace: "nowrap",
     },
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       left: theme.spacing(0),
       marginRight: 10,
     },
