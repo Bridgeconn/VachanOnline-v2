@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -135,7 +135,6 @@ const Commentary = (props) => {
     versionBooks,
     mobileView,
     setValue,
-    commentaryLang,
     screenView,
   } = props;
   const styleProps = {
@@ -156,6 +155,7 @@ const Commentary = (props) => {
       } else {
         comm = comm.commentaries[0];
       }
+
       setCommentary(comm);
     }
   }, [version, commentary, commentaries, setCommentary]);
@@ -269,7 +269,7 @@ const Commentary = (props) => {
             <BookCombo
               paneNo={panel1}
               bookCode={bookCode}
-              bookList={versionBooks[commentaryLang]}
+              bookList={bookNames}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
