@@ -119,6 +119,27 @@ const AboutUs = ({ handleClose }) => {
 
         <div className={classes.releaseNotes}>
           <Typography variant="h6" className={classes.subheading}>
+            Release Notes (12/05/2023) v1.4.0
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Enhancements:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Website now responsive, mobile friendly view made</li>
+              <li>Theme color changed to monochromatic</li>
+              <li>Tamil font changed</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Bug Fixes:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>UI Bug fixes</li>
+            </ul>
+          </Typography>
+          <Typography variant="h6" className={classes.subheading}>
             Release Notes (17/10/2022) v1.3.3
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
