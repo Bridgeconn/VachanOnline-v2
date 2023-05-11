@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 78,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: 4,
     },
   },
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       top: 60,
       paddingBottom: 10,
     },
@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2em",
     position: "relative",
     bottom: 2,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       bottom: 20,
     },
   },
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
   pageDisplay: {
     position: "absolute",
     right: 10,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       right: "unset",
       left: 5,
       bottom: 1,

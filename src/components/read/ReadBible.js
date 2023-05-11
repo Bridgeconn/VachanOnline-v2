@@ -33,7 +33,7 @@ import { useMediaQuery } from "@material-ui/core";
 import BottomBar from "./BottomBar";
 const useStyles = makeStyles((theme) => ({
   main: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       position: "absolute",
       height: "calc(100% - 3.6rem)",
       width: "100%",
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       borderBottom: "1px solid #f1ecec",
       width: "100%",
       height: "calc(50% + 1.8rem)",
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
     right: 0,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       top: "calc(50% + 1.8rem)",
       width: "100%",
       height: "calc(50% - 1.8rem)",
@@ -80,10 +80,10 @@ const useStyles = makeStyles((theme) => ({
   biblePane: {
     position: "absolute",
     height: "100%",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "100%",
     },
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       width: "calc(100% - 65px)",
     },
   },
@@ -99,9 +99,6 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     overflow: "hidden",
     textAlign: "center",
-    [theme.breakpoints.only("xs")]: {
-      display: "none",
-    },
   },
   parallelScroll: {
     position: "absolute",
@@ -147,7 +144,7 @@ const ReadBible = (props) => {
   //if mobile then true, used to change layout
   const classes = useStyles();
   const { uid } = userDetails;
-  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   //function for moving parallel bibles scroll together
   const scroll = React.useCallback((paneNo, parallelScroll) => {
     //check flag to prevent looping of on scroll event
@@ -574,9 +571,11 @@ const ReadBible = (props) => {
       <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
       <div className={classes.main}>
         <div className={classes.biblePane}>{pane}</div>
-        <div className={classes.rightMenu}>
-          <BibleMenu />
-        </div>
+        {isMobile ? null : (
+          <div className={classes.rightMenu}>
+            <BibleMenu />
+          </div>
+        )}
       </div>
       {mobileView ? <BottomBar login={login} /> : null}
     </>

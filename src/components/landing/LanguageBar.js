@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     top: 64,
     width: "100%",
     flexGrow: 1,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   toolbarSecondary: {
     color: "#fff",
@@ -32,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "1px solid",
     "&:last-child": {
       borderRight: 0,
+    },
+    [theme.breakpoints.only("md")]: {
+      paddingRight: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
     },
   },
 }));

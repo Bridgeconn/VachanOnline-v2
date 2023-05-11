@@ -28,14 +28,13 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 11,
     paddingBottom: 5,
     paddingLeft: 13,
-    boxShadow: "inset 1px 0px 3px 1px" + GREY,
-    [theme.breakpoints.only("xs")]: {
-      padding: "3px 7px 0px",
+    boxShadow: "inset 1px 0px 3px 1px " + GREY,
+    [theme.breakpoints.down("sm")]: {
+      padding: (props) =>
+        props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
       "&:hover": {
-        backgroundColor: "transparent",
+        backgroundColor: GREY,
       },
-      backgroundColor: "transparent",
-      boxShadow: "unset",
     },
   },
   button: {
@@ -43,10 +42,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 5,
     paddingLeft: 13,
     "&:hover": {
-      backgroundColor: "rgba(255,255,255,0.1)",
+      backgroundColor: "rgba(0,0,0,0.1)",
     },
-    [theme.breakpoints.only("xs")]: {
-      padding: "3px 7px 0px",
+    [theme.breakpoints.down("sm")]: {
+      padding: (props) =>
+        props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
     },
   },
   listItem: {
@@ -55,35 +55,35 @@ const useStyles = makeStyles((theme) => ({
   },
   listItemSelected: {
     minWidth: 44,
-    
-    color: GREY,
-    [theme.breakpoints.only("xs")]: {
-      color: WHITE,
+    color: BLACK,
+    [theme.breakpoints.down("sm")]: {
+      color: BLACK,
     },
   },
   menuText: {
     color: "#000",
     fontSize: "0.65rem",
+    padding: "0 5px",
   },
   icon: {
     fontSize: "36px",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "28px",
     },
   },
   drawerMenu: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",
     },
   },
   bottomMenu: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       textAlign: "center",
     },
   },
   drawerText: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       color: "#000",
       margin: "5px 15px",
       textTransform: "capitalize",
@@ -92,9 +92,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MenuItem = (props) => {
-  const classes = useStyles();
   const { icon, title, item, mobileView, parallelView, uid, setValue, base } =
     props;
+  const styleProps = {
+    base: base,
+  };
+  const classes = useStyles(styleProps);
   const [popover, setPopover] = React.useState(null);
 
   function handlePopoverOpen(event) {
@@ -123,7 +126,11 @@ const MenuItem = (props) => {
   const open = Boolean(popover);
   const buttonClass = parallelView === item ? classes.selected : classes.button;
   return (
-    <ListItem button className={buttonClass}>
+    <ListItem
+      button
+      className={buttonClass}
+      selected={parallelView === item && mobileView}
+    >
       <ListItemIcon
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"

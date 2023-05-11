@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "absolute",
     height: 74,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       height: 60,
     },
   },
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "10px",
     border: BLACK,
     zIndex: 900,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginBottom: 0,
       padding: 0,
     },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     width: "30%",
     display: "inline-block",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "block",
     },
     "& a": {
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     height: 50,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       height: 45,
     },
   },

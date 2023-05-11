@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       top: 60,
     },
   },
@@ -42,9 +42,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       top: 60,
-      bottom: 54,
     },
   },
   heading: {
@@ -54,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 12,
     paddingLeft: 35,
     minHeight: 51,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       alignItems: "center",
       height: 60,
       paddingBottom: 0,
@@ -73,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 20,
     marginTop: 10,
     cursor: "pointer",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "99%",
       marginRight: 0,
     },
@@ -86,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 7,
   },
   selectBox: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",
     },

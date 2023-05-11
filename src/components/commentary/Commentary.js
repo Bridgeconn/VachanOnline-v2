@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: (props) => (props.screenView === "single" ? 60 : 0),
     },
   },
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: 5,
       paddingBottom: 0,
       marginBottom: 0,
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   titleComment: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 20,
     top: 135,
     bottom: 0,
-    textAlign: "justify",
     color: "#464545",
     fontFamily: "Roboto,Noto Sans",
     overflow: "scroll",
@@ -81,7 +80,10 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: "70%",
       margin: "30px 0px",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.up("sm")]: {
+      textAlign: "justify",
+    },
+    [theme.breakpoints.down("sm")]: {
       top: (props) => (props.screenView === "single" ? 122 : 62),
     },
   },
@@ -95,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
   },
   bookNameBox: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",
     },
@@ -113,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 10,
     marginTop: -6,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: "0.2rem",
     },
   },
@@ -135,7 +137,6 @@ const Commentary = (props) => {
     versionBooks,
     mobileView,
     setValue,
-    commentaryLang,
     screenView,
   } = props;
   const styleProps = {
@@ -156,6 +157,7 @@ const Commentary = (props) => {
       } else {
         comm = comm.commentaries[0];
       }
+
       setCommentary(comm);
     }
   }, [version, commentary, commentaries, setCommentary]);
@@ -269,7 +271,7 @@ const Commentary = (props) => {
             <BookCombo
               paneNo={panel1}
               bookCode={bookCode}
-              bookList={versionBooks[commentaryLang]}
+              bookList={bookNames}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
@@ -315,7 +317,6 @@ const mapStateToProps = (state) => {
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
-    commentaryLang: state.local.commentaryLang,
   };
 };
 const mapDispatchToProps = (dispatch) => {

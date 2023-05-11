@@ -42,26 +42,21 @@ const useStyles = makeStyles((theme) => ({
     "& hover": {
       textDecoration: "none",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginLeft: "20%",
       width: "60%",
       marginTop: 0,
     },
   },
   signbtn: {
-    margin: theme.spacing(1.5),
     backgroundColor: "#fff",
     boxShadow: "1px 1px 1px 1px" + GREY,
     border: "1px solid #d3d3d3",
-    height: "42px",
     "& hover": {
       textDecoration: "none",
     },
-    [theme.breakpoints.only("xs")]: {
-      marginLeft: 0,
-      width: "60%",
-      marginTop: 0,
-      marginBottom: 2,
+    [theme.breakpoints.down("sm")]: {
+      whiteSpace: "nowrap",
     },
   },
   links: {

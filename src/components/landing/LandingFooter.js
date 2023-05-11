@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     position: "fixed",
     background: WHITE,
-    boxShadow: "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)", 
+    boxShadow:
+      "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
     borderTop: "1px solid" + GREY,
     color: "#fff",
     padding: "5px 15px",
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
       display: "inline-block",
       paddingTop: theme.spacing(3),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       flexWrap: "nowrap",
     },
   },
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "right",
     display: "inline-block",
     float: "right",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       float: "unset",
       fontSize: 12,
     },
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: GREY,
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.only("sm")]: {
       fontSize: 12,
     },
   },
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: GREY,
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
   },
@@ -109,19 +110,10 @@ const LandingFooter = (props) => {
     <>
       <Grid container className={classes.landingFooter}>
         <Grid item xs={6} sm={5} className={classes.rightLinks}>
-          {/* 
-          <Link
-            href="#"
-            className={classes.link}
-            key="About us"
-            onClick={openModal}
-          >
-            {"About us "}
-          </Link>*/}
           <Button
             variant="outlined"
             size="small"
-            color= "default"
+            color="default"
             className={classes.button}
             onClick={openModal}
           >

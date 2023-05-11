@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     "& hover": {
       textDecoration: "none",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginLeft: 0,
       width: "60%",
       marginTop: 0,
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 10,
   },
   readContainer: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       whiteSpace: "nowrap",
       alignItems: "center",
