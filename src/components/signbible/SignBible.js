@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 72,
     bottom: 0,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 60 : 0),
     },
   },
@@ -41,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       top: 60,
       bottom: 44,
     },
   },
   titleContainer: {
     "&:last-child": {
-      [theme.breakpoints.only("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         paddingBottom: 0,
       },
     },
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
     height: 60,
     alignItems: "center",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       paddingBottom: 0,
     },
   },
@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
   },
   player: {
     maxHeight: "calc(100vh - 150px)",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       maxHeight: 240,
     },
   },

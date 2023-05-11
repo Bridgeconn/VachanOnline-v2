@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "40%",
       whiteSpace: "nowrap",
     },
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   textbox: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "inline-block",
       width: 50,
       whiteSpace: "nowrap",

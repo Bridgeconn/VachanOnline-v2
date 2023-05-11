@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   colorBox: {
     padding: 6,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
     },
   },

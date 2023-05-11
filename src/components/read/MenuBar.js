@@ -29,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     height: 60,
     top: 72,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       padding: "0 5.5px",
       top: (props) => (props.paneNo === 2 ? 0 : 60),
     },
   },
   selectBox: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",
     },

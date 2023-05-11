@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     transition: "opacity 0.35s ease-in-out",
     background: "none",
     opacity: 1,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       bottom: "3%",
     },
   },

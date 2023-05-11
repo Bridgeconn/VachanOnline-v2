@@ -68,7 +68,7 @@ const DialogContent = withStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
     width: 500,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       width: 300,
     },
   },

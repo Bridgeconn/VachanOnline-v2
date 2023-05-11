@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: (props) => (props.padding > 40 ? props.padding : 40),
       paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       paddingRight: 20,
       paddingLeft: 20,
     },
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       left: (props) => (props.padding > 40 ? props.padding / 2 : 20),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       left: 10,
     },
   },
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       right: (props) => (props.padding > 40 ? props.padding / 2 : 20),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       right: 10,
     },
   },
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     bottom: "10px",
     left: "2%",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       bottom: (props) => props.audioBottom,
     },
   },
@@ -120,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginBottom: (props) =>
         props.singlePane || props?.paneNo === 2 ? 40 : 0,
     },

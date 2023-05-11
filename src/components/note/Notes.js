@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 94,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: 60,
     },
   },
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       height: 60,
       marginBottom: 0,
       paddingBottom: 0,
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       top: (props) => (props.addNote ? 390 : 135),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       top: (props) => (props.addNote ? 365 : 120),
       bottom: 54,
     },
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formButtons: {
     textAlign: "right",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       justifyContent: "center",
     },

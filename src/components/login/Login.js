@@ -41,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
     "& hover": {
       textDecoration: "none",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginLeft: "20%",
       width: "60%",
       marginTop: 0,
     },
   },
   signbtn: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
     },
   },

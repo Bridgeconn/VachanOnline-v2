@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       width: (props) =>
         props.screen === "audio" || props.screen === "video" ? "85%" : "60%",
       padding: (props) =>
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     left: 3,
     position: "relative",
     width: 30,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       left: 0,
     },
   },
@@ -121,13 +121,13 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 130,
     overflow: "hidden",
     textOverflow: "ellipsis",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       maxWidth: 60,
       minWidth: 60,
     },
   },
   bookNameBox: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
       minWidth: 70,
       maxWidth: 80,
