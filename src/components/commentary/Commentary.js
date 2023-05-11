@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 20,
     top: 135,
     bottom: 0,
-    textAlign: "justify",
     color: "#464545",
     fontFamily: "Roboto,Noto Sans",
     overflow: "scroll",
@@ -80,6 +79,9 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 30,
       maxWidth: "70%",
       margin: "30px 0px",
+    },
+    [theme.breakpoints.up("sm")]: {
+      textAlign: "justify",
     },
     [theme.breakpoints.down("sm")]: {
       top: (props) => (props.screenView === "single" ? 122 : 62),

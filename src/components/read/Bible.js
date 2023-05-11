@@ -112,13 +112,15 @@ const useStyles = makeStyles((theme) => ({
   text: {
     paddingBottom: 30,
     marginBottom: 20,
-    textAlign: "justify",
     [`@media print`]: {
       fontSize: "1.2rem",
     },
     maxWidth: "1366px",
     [theme.breakpoints.up("md")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
+    },
+    [theme.breakpoints.up("sm")]: {
+      textAlign: "justify",
     },
     [theme.breakpoints.down("sm")]: {
       marginBottom: (props) =>

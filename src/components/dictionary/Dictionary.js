@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px 20px 20px 0",
     top: 135,
     bottom: 0,
-    textAlign: "justify",
     color: "#464545",
     fontFamily: "Roboto,Noto Sans",
     overflow: "scroll",
@@ -70,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.up("sm")]: {
+      textAlign: "justify",
     },
     [theme.breakpoints.down("sm")]: {
       top: 120,
