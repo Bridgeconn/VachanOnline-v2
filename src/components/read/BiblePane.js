@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     overflow: "auto",
     marginBottom: -15,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       top: (props) => (props?.paneNo === 2 ? 61 : 120),
     },
   },

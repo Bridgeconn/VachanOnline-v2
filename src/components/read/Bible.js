@@ -57,11 +57,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       paddingRight: (props) => (props.padding > 40 ? props.padding : 40),
       paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       paddingRight: 20,
       paddingLeft: 20,
     },
@@ -75,10 +75,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgb(255, 255, 255)",
     border: "1px white",
     padding: 7,
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       left: (props) => (props.padding > 40 ? props.padding / 2 : 20),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       left: 10,
     },
   },
@@ -91,10 +91,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgb(255, 255, 255)",
     border: "1px white",
     padding: 7,
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       right: (props) => (props.padding > 40 ? props.padding / 2 : 20),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       right: 10,
     },
   },
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     bottom: "10px",
     left: "2%",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       bottom: (props) => props.audioBottom,
     },
   },
@@ -117,10 +117,10 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1.2rem",
     },
     maxWidth: "1366px",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginBottom: (props) =>
         props.singlePane || props?.paneNo === 2 ? 40 : 0,
     },

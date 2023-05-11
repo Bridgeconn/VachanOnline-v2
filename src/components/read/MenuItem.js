@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: LIGHTBLUE,
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       padding: (props) =>
         props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
       boxShadow: "unset",
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "rgba(255,255,255,0.1)",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       padding: (props) =>
         props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
     },
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   listItemSelected: {
     minWidth: 44,
     color: BLUE,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       color: WHITE,
     },
   },
@@ -68,23 +68,23 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     fontSize: "36px",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "28px",
     },
   },
   drawerMenu: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",
     },
   },
   bottomMenu: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       textAlign: "center",
     },
   },
   drawerText: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       color: "#000",
       margin: "5px 15px",
       textTransform: "capitalize",

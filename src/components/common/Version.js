@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "30%",
       padding: "6px 10px",
     },
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       left: theme.spacing(0),
       marginRight: 10,
     },
@@ -77,12 +77,12 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     left: 5,
     position: "relative",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       left: 0,
     },
   },
   versionName: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
       minWidth: 30,
       maxWidth: 60,
@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   label: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       justifyContent: "unset",
     },
   },

@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: 1,
     [theme.breakpoints.only("xs")]: {
       bottom: "3%",
+      fontSize: "1.65rem",
     },
   },
   imageContainer: {

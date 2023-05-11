@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: 5,
     },
   },
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "100%",
       padding: "10px 5px",
       top: 58,
@@ -60,12 +60,12 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     marginTop: 60,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: 0,
     },
   },
   refBox: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
     },
   },
@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   refText: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "1rem",
       marginRight: 5,
     },
@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
   },
   list: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       bottom: 50,
       top: 0,
     },

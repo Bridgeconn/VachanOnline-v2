@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
       display: "inline-block",
       paddingTop: theme.spacing(3),
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       flexWrap: "nowrap",
     },
   },
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "right",
     display: "inline-block",
     float: "right",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       float: "unset",
       fontSize: 12,
     },
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "unset",
     padding: "2px 10px",
     fontSize: 16,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
   },
@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "inherit",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
   },
@@ -104,15 +104,6 @@ const LandingFooter = (props) => {
     <>
       <Grid container className={classes.landingFooter}>
         <Grid item xs={6} sm={5} className={classes.rightLinks}>
-          {/* 
-          <Link
-            href="#"
-            className={classes.link}
-            key="About us"
-            onClick={openModal}
-          >
-            {"About us "}
-          </Link>*/}
           <Button
             variant="outlined"
             size="small"
