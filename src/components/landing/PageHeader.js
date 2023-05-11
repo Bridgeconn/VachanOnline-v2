@@ -13,7 +13,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import { SETVALUE } from "../../store/actions";
-import MenuItem from "../read/MenuItem";
+import { WHITE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  islIcon: {
+    padding: "8px 16px 0",
+    color: WHITE,
+  },
 }));
 
 const PageHeader = (props) => {
@@ -99,11 +103,12 @@ const PageHeader = (props) => {
               }}
             >
               {mobileLandscape ? (
-                <MenuItem
-                  icon="sign_language"
-                  title="ISLV Bible"
-                  item={SIGNBIBLE}
-                />
+                <i
+                  className={`material-icons ${classes.islIcon}`}
+                  onClick={() => setParallelView(SIGNBIBLE)}
+                >
+                  sign_language
+                </i>
               ) : (
                 <Button
                   variant="outlined"

@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: color.BLUETRANSPARENT,
     cursor: "pointer",
   },
   colorBox: {

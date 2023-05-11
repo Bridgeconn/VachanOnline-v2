@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: GREY,
     },
-    [theme.breakpoints.only("sm")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
   },

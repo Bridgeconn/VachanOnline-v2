@@ -8,8 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import { BLACK} from "../../store/colorCode";
-
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -30,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
   },
   metadataTitle: {
     fontSize: "1.3em",
-    padding: "11px 0 0 12px", 
+    padding: "11px 0 0 12px",
   },
   metadataTitleBar: {
-    backgroundColor: "#d3d3d3",
-    
+    boxShadow: theme.shadows[4],
+    marginBottom: 4,
     color: BLACK,
   },
   metadataHeading: {

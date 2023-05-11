@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined';
+import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
@@ -14,7 +14,6 @@ import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
-import MenuItem from "./MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,6 +80,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 2,
     marginRight: 10,
   },
+  islIcon: {
+    padding: "8px 16px 0",
+    color: BLACK,
+  },
 }));
 
 const TopBar = (props) => {
@@ -94,7 +97,12 @@ const TopBar = (props) => {
   const ISLButton = () => {
     const Btn = () => {
       return mobileView ? (
-        <MenuItem icon="sign_language" title="ISLV Bible" item={SIGNBIBLE} />
+        <i
+          className={`material-icons ${classes.islIcon}`}
+          onClick={setParallelView}
+        >
+          sign_language
+        </i>
       ) : (
         <Button
           variant="outlined"
@@ -158,15 +166,15 @@ const TopBar = (props) => {
   };
   const FeedbackButton = () => {
     return (
-        <IconButton
-          aria-label="feedback"
-          className={classes.feedback}
-          href="https://forms.office.com/r/qiV0Ym335M"
-          target="_blank"
-          rel="noopener"
-        >
-          <FeedbackOutlinedIcon />
-        </IconButton>
+      <IconButton
+        aria-label="feedback"
+        className={classes.feedback}
+        href="https://forms.office.com/r/qiV0Ym335M"
+        target="_blank"
+        rel="noopener"
+      >
+        <FeedbackOutlinedIcon />
+      </IconButton>
     );
   };
   return (

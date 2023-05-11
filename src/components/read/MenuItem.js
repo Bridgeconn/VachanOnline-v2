@@ -56,9 +56,6 @@ const useStyles = makeStyles((theme) => ({
   listItemSelected: {
     minWidth: 44,
     color: BLACK,
-    [theme.breakpoints.down("sm")]: {
-      color: BLACK,
-    },
   },
   menuText: {
     color: "#000",

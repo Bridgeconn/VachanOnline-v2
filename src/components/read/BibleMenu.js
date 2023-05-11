@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "calc(100vh - 50px)",
-    overflow: "auto",
+    overflowY: "auto",
+    overflowX: "hidden",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) rgba(0,0,0,.1)",
     "&::-webkit-scrollbar": {
@@ -50,7 +51,13 @@ export default function BibleMenu() {
           ""
         )}
         <Divider />
-        <MenuItem class="material-icons" icon="image_outline" title="Infographics" item={views.INFOGRAPHICS} variant="outlined"/>
+        <MenuItem
+          class="material-icons"
+          icon="image_outline"
+          title="Infographics"
+          item={views.INFOGRAPHICS}
+          variant="outlined"
+        />
         <Divider />
         <MenuItem icon="volume_up" title="Audio Bible" item={views.AUDIO} />
         <Divider />

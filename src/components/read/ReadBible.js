@@ -18,7 +18,7 @@ import Highlights from "../highlight/Highlights";
 import Notes from "../note/Notes";
 import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
-import {BLUETRANSPARENT, GREY } from "../../store/colorCode";
+import { BLUE, GREY } from "../../store/colorCode";
 import SignBible from "../signbible/SignBible";
 import {
   getCommentaries,
@@ -295,7 +295,7 @@ const ReadBible = (props) => {
                     <Tooltip title="Parallel Scroll">
                       <ParallelScroll
                         fontSize="large"
-                        style={{ color: BLUETRANSPARENT }}
+                        style={{ color: BLUE }}
                         className={classes.parallelScroll}
                       />
                     </Tooltip>
