@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rightLinks: {
     textAlign: "left",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       textAlign: "center",
       whiteSpace: "nowrap",
       marginRight: 15,
@@ -104,15 +104,6 @@ const LandingFooter = (props) => {
     <>
       <Grid container className={classes.landingFooter}>
         <Grid item xs={6} sm={5} className={classes.rightLinks}>
-          {/* 
-          <Link
-            href="#"
-            className={classes.link}
-            key="About us"
-            onClick={openModal}
-          >
-            {"About us "}
-          </Link>*/}
           <Button
             variant="outlined"
             size="small"
