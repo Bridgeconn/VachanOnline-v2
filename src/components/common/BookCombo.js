@@ -10,15 +10,15 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
-    backgroundColor: "#66a3ff",
-    color: "#00003d",
+    backgroundColor: WHITE,
+    color: BLACK,
     boxShadow: theme.shadows[4],
-    border: "1px solid #103f87",
+    border: "1px solid" + GREY,
     fontSize: 16,
   },
 }))(Tooltip);
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 680,
-    backgroundColor: "#eaeaea",
+    backgroundColor: WHITE,
     textTransform: "capitalize",
     maxHeight: "calc(100vh - 150px)",
   },
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     maxHeight: "calc(100vh - 150px)",
     width: 358,
-    backgroundColor: "#eaeaea",
+    backgroundColor: WHITE,
     color: "#2a2a2a",
   },
   book: {
@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0px 0px",
     fontSize: "11px",
     border: "1px solid #d2d2d2c9",
+    backgroundColor: WHITE,
   },
   bookText: {
     whiteSpace: "nowrap",
@@ -83,12 +84,12 @@ const useStyles = makeStyles((theme) => ({
   },
   openBook: {
     border: "1px solid #ccc",
-    backgroundColor: BLUETRANSPARENT,
-    color: "#fff",
+    backgroundColor: LIGHTGREY,
+    color: BLACK,
     "&:hover": {
       border: "1px solid #ccc",
-      backgroundColor: BLUETRANSPARENT,
-      color: "#fff",
+      backgroundColor: WHITE,
+      color: BLACK,
     },
   },
   chapterList: {
@@ -107,12 +108,11 @@ const useStyles = makeStyles((theme) => ({
   },
   openChapter: {
     border: "1px solid #ccc",
-    backgroundColor: BLUETRANSPARENT,
-    color: "#fff",
+    backgroundColor: LIGHTGREY,
+    color: BLACK,
     "&:hover": {
       border: "1px solid #ccc",
-      backgroundColor: BLUETRANSPARENT,
-      color: "#fff",
+      backgroundColor: GREY,
     },
   },
   bookName: {
@@ -358,7 +358,7 @@ const BookCombo = (props) => {
                     className={`${classes.book} ${open}`}
                     ref={open === "" ? null : openBookRef}
                     style={{
-                      borderLeft: "5px solid" + colorGroup[item.book_code],
+                      borderLeft: "4px solid" + colorGroup[item.book_code],
                     }}
                   >
                     <ListItemText

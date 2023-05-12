@@ -4,7 +4,7 @@ import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
 import MenuIcon from "@material-ui/icons/Menu";
 import SideDrawer from "./SideDrawer";
-import { BLUE } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
     width: 45,
     paddingTop: 6,
     paddingLeft: 10,
-    color: BLUE,
+    color: BLACK,
     "& p": {
       color: "#000",
       fontSize: "0.65rem",

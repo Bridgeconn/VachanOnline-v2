@@ -5,7 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { BLUE, LIGHTBLUE, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import * as views from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 
@@ -17,25 +17,24 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: "10px 15px",
-    backgroundColor: BLUE,
+    backgroundColor: WHITE,
   },
   menu: {
     fontSize: "18px",
-    color: WHITE,
+    color: BLACK,
   },
   selected: {
     backgroundColor: WHITE,
     paddingTop: 11,
     paddingBottom: 5,
     paddingLeft: 13,
-    boxShadow: "inset 1px 0px 3px 1px" + LIGHTBLUE,
-    "&:hover": {
-      backgroundColor: LIGHTBLUE,
-    },
+    boxShadow: "inset 1px 0px 3px 1px " + GREY,
     [theme.breakpoints.down("sm")]: {
       padding: (props) =>
         props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
-      boxShadow: "unset",
+      "&:hover": {
+        backgroundColor: GREY,
+      },
     },
   },
   button: {
@@ -43,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 5,
     paddingLeft: 13,
     "&:hover": {
-      backgroundColor: "rgba(255,255,255,0.1)",
+      backgroundColor: "rgba(0,0,0,0.1)",
     },
     [theme.breakpoints.down("sm")]: {
       padding: (props) =>
@@ -52,14 +51,11 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     minWidth: 44,
-    color: "#fff",
+    color: BLACK,
   },
   listItemSelected: {
     minWidth: 44,
-    color: BLUE,
-    [theme.breakpoints.down("sm")]: {
-      color: WHITE,
-    },
+    color: BLACK,
   },
   menuText: {
     color: "#000",
@@ -137,6 +133,7 @@ const MenuItem = (props) => {
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
+        variant="outlined"
         className={
           parallelView === item ? classes.listItemSelected : classes.listItem
         }

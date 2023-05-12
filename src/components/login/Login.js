@@ -47,7 +47,12 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
-  signbtn: {
+  signBtn: {
+    backgroundColor: "#fff",
+    border: "1px solid #d3d3d3",
+    "& hover": {
+      textDecoration: "none",
+    },
     [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
     },
@@ -279,9 +284,10 @@ const Login = (props) => {
           <Button
             aria-describedby="sign-in"
             variant="contained"
+            size="small"
             ref={menuRef}
             onClick={openForm}
-            className={classes.signbtn}
+            className={classes.signBtn}
           >
             Sign In
           </Button>

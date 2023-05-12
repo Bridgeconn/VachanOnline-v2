@@ -7,14 +7,17 @@ import FeedbackIcon from "@material-ui/icons/Feedback";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
-import { BLUE } from "../../store/colorCode";
 import { connect } from "react-redux";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   landingFooter: {
     bottom: 0,
     position: "fixed",
-    background: BLUE,
+    background: WHITE,
+    boxShadow:
+      "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
+    borderTop: "1px solid" + GREY,
     color: "#fff",
     padding: "5px 15px",
     marginTop: 40,
@@ -54,9 +57,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   companyLink: {
-    color: "inherit",
+    color: BLACK,
     "&:hover": {
-      color: "inherit",
+      color: BLACK,
       textDecoration: "none",
     },
   },
@@ -65,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "unset",
     padding: "2px 10px",
     fontSize: 16,
+    "&:hover": {
+      color: GREY,
+    },
     [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
@@ -75,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px 10px",
     fontSize: 16,
     "&:hover": {
-      color: "inherit",
+      color: GREY,
     },
     [theme.breakpoints.down("sm")]: {
       fontSize: 12,
@@ -107,7 +113,7 @@ const LandingFooter = (props) => {
           <Button
             variant="outlined"
             size="small"
-            color="inherit"
+            color="default"
             className={classes.button}
             onClick={openModal}
           >
@@ -118,7 +124,7 @@ const LandingFooter = (props) => {
           <Button
             variant="outlined"
             size="small"
-            color="inherit"
+            color="default"
             className={classes.feedback}
             startIcon={<FeedbackIcon />}
             href="https://forms.office.com/r/qiV0Ym335M"

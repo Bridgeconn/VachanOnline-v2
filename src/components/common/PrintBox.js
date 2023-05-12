@@ -31,11 +31,7 @@ const PrintBox = (props) => {
     setPrintHighlights(event.target.checked);
   };
   const linkToPrint = () => {
-    return (
-      <Button variant="contained" color="primary">
-        Print
-      </Button>
-    );
+    return <Button variant="outlined">Print</Button>;
   };
   return (
     <Dialog
@@ -65,7 +61,9 @@ const PrintBox = (props) => {
         </FormGroup>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleDialogClose}>Cancel</Button>
+        <Button variant="outlined" onClick={handleDialogClose}>
+          Cancel
+        </Button>
         <ReactToPrint
           trigger={linkToPrint}
           documentTitle={`VachanOnline-${bookDisplay}-${chapter}`}

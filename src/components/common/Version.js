@@ -14,13 +14,14 @@ import Typography from "@material-ui/core/Typography";
 import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
-    backgroundColor: "#66a3ff",
-    color: "#00003d",
+    backgroundColor: WHITE,
+    color: BLACK,
     boxShadow: theme.shadows[4],
-    border: "1px solid #103f87",
+    border: "1px solid" + GREY,
     fontSize: 16,
   },
 }))(Tooltip);
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   menuRoot: {
-    backgroundColor: "#eaeaea",
+    backgroundColor: WHITE,
     boxShadow: "none",
     border: "1px solid #00000020",
     "&:not(:last-child)": {
@@ -59,9 +60,9 @@ const useStyles = makeStyles((theme) => ({
   },
   expanded: {},
   expansionDetails: {
-    backgroundColor: "#ffffff",
-    boxShadow: "none",
-    padding: "0 0 0 8px",
+    backgroundColor: WHITE,
+    boxShadow: "inset 1px 2px 2px 0px " + GREY,
+    padding: "4px 4px 1px 4px",
     width: "100%",
   },
   summaryPanel: {
@@ -72,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
     "&$expanded": {
       minHeight: 40,
       maxHeight: 40,
+      boxShadow: theme.shadows[4],
     },
   },
   icon: {
@@ -100,6 +102,8 @@ const useStyles = makeStyles((theme) => ({
   version: {
     fontSize: "1rem",
     cursor: "pointer",
+    backgroundColor: WHITE,
+    borderBottom: "1px solid " + LIGHTGREY,
   },
   label: {
     [theme.breakpoints.down("sm")]: {

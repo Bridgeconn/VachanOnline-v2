@@ -107,10 +107,6 @@ body#body {
   background-color: white;
   overflow: overlay;
 }
-.bottomBar .material-icons {
-  color: #333399;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
