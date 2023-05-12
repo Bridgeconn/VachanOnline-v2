@@ -14,7 +14,6 @@ import Popover from "@material-ui/core/Popover";
 import Snackbar from "@material-ui/core/Snackbar";
 import Collapse from "@material-ui/core/Collapse";
 import Alert from "@material-ui/lab/Alert";
-import { GREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,9 +47,8 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
-  signbtn: {
+  signBtn: {
     backgroundColor: "#fff",
-    boxShadow: "1px 1px 1px 1px" + GREY,
     border: "1px solid #d3d3d3",
     "& hover": {
       textDecoration: "none",
@@ -286,9 +284,10 @@ const Login = (props) => {
           <Button
             aria-describedby="sign-in"
             variant="contained"
+            size="small"
             ref={menuRef}
             onClick={openForm}
-            className={classes.signbtn}
+            className={classes.signBtn}
           >
             Sign In
           </Button>

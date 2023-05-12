@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1.5),
     backgroundColor: "#fff",
-    boxShadow: "2px 2px 2px 2px" + GREY,
+    boxShadow: "1px 1px 1px 1px " + GREY,
     height: "42px",
     "& hover": {
       textDecoration: "none",

@@ -6,4 +6,5 @@ export const PINK = "#ffcaf7";
 export const ORANGE = "#ffc66f";
 export const WHITE = "#fff";
 export const GREY = "#808080";
-export const BLACK = "#1f2937";
+export const BLACK = "#1e293b";
+export const LIGHTGREY = "#e5e7eb";

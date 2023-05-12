@@ -10,7 +10,7 @@ import logo from "../common/images/logo2.png";
 import favicon from "../common/images/favicon_blue.png";
 import LoginMenu from "../login/LoginMenu";
 import IconButton from "@material-ui/core/IconButton";
-import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { BLACK, WHITE } from "../../store/colorCode";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
@@ -69,8 +69,9 @@ const useStyles = makeStyles((theme) => ({
   feedback: {
     marginRight: 4,
     marginTop: 2,
+    color: BLACK,
     "&:hover": {
-      color: GREY,
+      color: BLACK,
     },
     [theme.breakpoints.down("sm")]: {
       display: "none",

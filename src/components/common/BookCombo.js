@@ -10,7 +10,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const BigTooltip = withStyles((theme) => ({
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "3px 3px 4px 6px",
     paddingBottom: 1,
     display: "inline-block",
-    width: 140,
+    width: 160,
     transition: "width 500ms ease-out, height 500ms ease-out",
     textAlign: "center",
     padding: "0px 0px",
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
   },
   openBook: {
     border: "1px solid #ccc",
-    backgroundColor: WHITE,
+    backgroundColor: LIGHTGREY,
     color: BLACK,
     "&:hover": {
       border: "1px solid #ccc",
@@ -108,12 +108,11 @@ const useStyles = makeStyles((theme) => ({
   },
   openChapter: {
     border: "1px solid #ccc",
-    backgroundColor: GREY,
-    color: "#fff",
+    backgroundColor: LIGHTGREY,
+    color: BLACK,
     "&:hover": {
       border: "1px solid #ccc",
       backgroundColor: GREY,
-      color: "#fff",
     },
   },
   bookName: {
@@ -359,7 +358,7 @@ const BookCombo = (props) => {
                     className={`${classes.book} ${open}`}
                     ref={open === "" ? null : openBookRef}
                     style={{
-                      borderLeft: "5px solid" + colorGroup[item.book_code],
+                      borderLeft: "4px solid" + colorGroup[item.book_code],
                     }}
                   >
                     <ListItemText
