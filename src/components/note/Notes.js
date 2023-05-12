@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    margin: 10,
+    margin: "10px 5px",
   },
   addNote: {
     padding: theme.spacing(1),
@@ -470,12 +470,15 @@ function Notes(props) {
               Last Modified: {new Date(modifiedTime).toLocaleString()}
             </Grid>
             <Grid item xs={5} className={classes.formButtons}>
-              <Button className={classes.button} onClick={resetForm}>
+              <Button
+                variant="outlined"
+                className={classes.button}
+                onClick={resetForm}
+              >
                 Cancel
               </Button>
               <Button
-                variant="contained"
-                color="primary"
+                variant="outlined"
                 className={classes.button}
                 onClick={saveNote}
               >

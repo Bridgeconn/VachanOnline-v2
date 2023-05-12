@@ -6,14 +6,15 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Login from "../login/Login";
-import logo from "../common/images/logo2.png";
-import favicon from "../common/images/favicon_blue.png";
+import logo from "../common/images/logo1.png";
+import favicon from "../common/images/favicon_black.png";
 import LoginMenu from "../login/LoginMenu";
 import IconButton from "@material-ui/core/IconButton";
 import { BLACK, WHITE } from "../../store/colorCode";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
+import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -167,15 +168,17 @@ const TopBar = (props) => {
   };
   const FeedbackButton = () => {
     return (
-      <IconButton
-        aria-label="feedback"
-        className={classes.feedback}
-        href="https://forms.office.com/r/qiV0Ym335M"
-        target="_blank"
-        rel="noopener"
-      >
-        <FeedbackOutlinedIcon />
-      </IconButton>
+      <Tooltip title="Feedback">
+        <IconButton
+          aria-label="feedback"
+          className={classes.feedback}
+          href="https://forms.office.com/r/qiV0Ym335M"
+          target="_blank"
+          rel="noopener"
+        >
+          <FeedbackOutlinedIcon />
+        </IconButton>
+      </Tooltip>
     );
   };
   return (

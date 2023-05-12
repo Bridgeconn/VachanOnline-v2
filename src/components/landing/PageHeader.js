@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   signBible: {
     color: "#e0e0e0",
     marginTop: 2,
+    marginRight: 10,
     "&:hover": {
       color: "#d0d0d0",
     },

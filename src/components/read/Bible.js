@@ -120,9 +120,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
-    [theme.breakpoints.up("sm")]: {
-      textAlign: "justify",
-    },
     [theme.breakpoints.down("sm")]: {
       marginBottom: (props) =>
         props.singlePane || props?.paneNo === 2 ? 40 : 0,
@@ -135,15 +132,16 @@ const useStyles = makeStyles((theme) => ({
   verseNumber: {
     fontWeight: 600,
     paddingLeft: 6,
-    bottom: 3,
+    bottom: 4,
     position: "relative",
-    color: color.BLUE,
+    fontSize: ".8em",
+    color: color.MEDIUMGREY,
   },
   sectionHeading: {
     fontSize: "1.3em",
     display: "block",
     paddingTop: 12,
-    color: color.BLUE,
+    fontWeight: 700,
   },
   yellow: {
     backgroundColor: color.YELLOW,
@@ -820,8 +818,10 @@ const Bible = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" color="primary" onClick={saveNote}>
+          <Button variant="outlined" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="outlined" onClick={saveNote}>
             Save
           </Button>
         </DialogActions>

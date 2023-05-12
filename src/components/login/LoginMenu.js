@@ -10,12 +10,14 @@ import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
+import { GREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     width: "100%",
     maxWidth: 300,
     backgroundColor: theme.palette.background.paper,
+    boxShadow: "1px 1px 4px 1px " + GREY,
   },
   emailText: {
     [theme.breakpoints.down("sm")]: {

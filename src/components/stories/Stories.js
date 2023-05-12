@@ -139,6 +139,9 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 68 * 4.5,
     width: 250,
   },
+  slider: {
+    color: BLACK,
+  },
 }));
 
 const Stories = (props) => {
@@ -381,11 +384,13 @@ const Stories = (props) => {
               <List>
                 {manifest.map((text, y) => (
                   <ListItem key={y} value={text} className={listClass}>
-                    <Link 
-                    className={classes.linkList}
-                    href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
+                    <Link
+                      className={classes.linkList}
+                      href="#"
+                      data-id={y + 1}
+                      onClick={(e) => getStory(e)}
+                    >
                       {y + 1 + ". " + text}
-                      
                     </Link>
                   </ListItem>
                 ))}
