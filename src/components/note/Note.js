@@ -197,8 +197,10 @@ function Note({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" color="primary" onClick={saveNote}>
+          <Button variant="outlined" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="outlined" onClick={saveNote}>
             Save
           </Button>
         </DialogActions>

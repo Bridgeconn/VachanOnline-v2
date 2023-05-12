@@ -45,7 +45,11 @@ const PrintBox = (props) => {
         <FormGroup>
           <FormControlLabel
             control={
-              <Checkbox checked={printNotes} onChange={handleNotesChange} />
+              <Checkbox
+                color="default"
+                checked={printNotes}
+                onChange={handleNotesChange}
+              />
             }
             label="Notes"
           />
@@ -53,6 +57,7 @@ const PrintBox = (props) => {
             control={
               <Checkbox
                 checked={printHighlights}
+                color="default"
                 onChange={handleHighlightsChange}
               />
             }
