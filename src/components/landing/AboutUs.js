@@ -122,13 +122,21 @@ const AboutUs = ({ handleClose }) => {
             Release Notes (12/05/2023) v1.4.0
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Feature Additions:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Responsive UI for mobile browser</li>
+              <li>Monochrome theme for the UI</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
             {addStyle("Enhancements:", "bold")}
           </Typography>
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
-              <li>Website now responsive, mobile friendly view made</li>
-              <li>Theme color changed to monochromatic</li>
-              <li>Tamil font changed</li>
+              <li>Changed Tamil font to an easily readable format</li>
+              <li>Mobile browser UX enhancements</li>
             </ul>
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
@@ -136,7 +144,7 @@ const AboutUs = ({ handleClose }) => {
           </Typography>
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
-              <li>UI Bug fixes</li>
+              <li>UI Bug fixes on Infographics</li>
             </ul>
           </Typography>
           <Typography variant="h6" className={classes.subheading}>
@@ -436,7 +444,7 @@ const AboutUs = ({ handleClose }) => {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} variant="outlined">
           Close
         </Button>
       </DialogActions>
