@@ -10,6 +10,8 @@ import Box from "@material-ui/core/Box";
 import Viewer from "react-viewer";
 import Select from "react-select";
 import { capitalize, getShortBook } from "../common/utility";
+import BookCombo from "../common/BookCombo";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
+    [theme.breakpoints.down("sm")]: {
+      top: 60,
+    },
   },
   container: {
     top: 52,
@@ -37,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.down("sm")]: {
+      top: 60,
+    },
   },
   heading: {
     borderBottom: "1px solid #f1ecec",
@@ -44,8 +52,12 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     paddingBottom: 12,
     paddingLeft: 35,
-    marginBottom: 20,
     minHeight: 51,
+    [theme.breakpoints.down("sm")]: {
+      alignItems: "center",
+      height: 60,
+      paddingBottom: 0,
+    },
   },
   title: {
     paddingTop: 4,
@@ -60,10 +72,23 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 20,
     marginTop: 10,
     cursor: "pointer",
+    [theme.breakpoints.down("sm")]: {
+      width: "99%",
+      marginRight: 0,
+    },
+  },
+  image: {
+    objectFit: "contain",
   },
   closeButton: {
     marginRight: 15,
     marginTop: 7,
+  },
+  selectBox: {
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      alignItems: "center",
+    },
   },
   select: {
     width: 200,
@@ -77,7 +102,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Infographics = (props) => {
   const classes = useStyles();
-  let { infographics, languageCode, bookCode, versionBooks } = props;
+  let { infographics, panel1, versionBooks, setValue, paneNo, mobileView } =
+    props;
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
   const [bookData, setBookData] = useState([]);
@@ -85,6 +111,7 @@ const Infographics = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
+  const { languageCode, bookCode, chapter } = panel1;
 
   useEffect(() => {
     //Get list of languages
@@ -140,10 +167,12 @@ const Infographics = (props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
-        <Box flexGrow={1}>
-          <Typography variant="h6">Infographics</Typography>
-        </Box>
-        <Box flexGrow={1}>
+        {mobileView ? null : (
+          <Box flexGrow={1}>
+            <Typography variant="h6">Infographics</Typography>
+          </Box>
+        )}
+        <Box flexGrow={1} className={classes.selectBox}>
           {languages && languages?.length !== 0 && (
             <Select
               className={classes.select}
@@ -152,6 +181,17 @@ const Infographics = (props) => {
               options={languages}
             />
           )}
+          {mobileView && bookCode ? (
+            <BookCombo
+              paneNo={paneNo}
+              bookCode={bookCode}
+              bookList={versionBooks[language.value]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={true}
+              screen={"info"}
+            />
+          ) : null}
         </Box>
         <Box>
           <Close className={classes.closeButton} />
@@ -173,6 +213,7 @@ const Infographics = (props) => {
                   component="img"
                   alt={pic.title}
                   height="200"
+                  className={classes.image}
                   image={url + "/thumbs/" + pic.fileName}
                   title={pic.title}
                 />
@@ -201,9 +242,15 @@ const Infographics = (props) => {
 const mapStateToProps = (state) => {
   return {
     infographics: state.local.infographics,
-    languageCode: state.local.panel1.languageCode,
     bookCode: state.local.panel1.bookCode,
     versionBooks: state.local.versionBooks,
+    mobileView: state.local.mobileView,
   };
 };
-export default connect(mapStateToProps)(Infographics);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Infographics);

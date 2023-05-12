@@ -6,15 +6,14 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Login from "../login/Login";
-import Badge from "@material-ui/core/Badge";
 import LoginMenu from "../login/LoginMenu";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
-import * as actions from "../../store/actions";
-import { isFeatureNew } from "../common/utility";
+import { SETVALUE } from "../../store/actions";
+import { WHITE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   signBible: {
     color: "#e0e0e0",
     marginTop: 2,
+    marginRight: 10,
     "&:hover": {
       color: "#d0d0d0",
     },
@@ -65,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
+  },
+  islIcon: {
+    padding: "8px 16px 0",
+    color: WHITE,
   },
 }));
 
@@ -93,19 +97,20 @@ const PageHeader = (props) => {
               )}
             </Link>
           </div>
-          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined &&
-          mobile === false ? (
-            <Badge
-              className={classes.islBadge}
-              color="secondary"
-              variant="dot"
-              badgeContent={isFeatureNew("12-01-2022")}
+          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+            <Link
+              to={{
+                pathname: "/read",
+              }}
             >
-              <Link
-                to={{
-                  pathname: "/read",
-                }}
-              >
+              {mobileLandscape ? (
+                <i
+                  className={`material-icons ${classes.islIcon}`}
+                  onClick={() => setParallelView(SIGNBIBLE)}
+                >
+                  sign_language
+                </i>
+              ) : (
                 <Button
                   variant="outlined"
                   size="small"
@@ -118,12 +123,10 @@ const PageHeader = (props) => {
                   onClick={() => setParallelView(SIGNBIBLE)}
                   startIcon={<i className="material-icons">sign_language</i>}
                 >
-                  {mobileLandscape === true
-                    ? "ISLV"
-                    : "Sign Language Bible (ISLV)"}
+                  Sign Language Bible (ISLV)
                 </Button>
-              </Link>
-            </Badge>
+              )}
+            </Link>
           ) : (
             ""
           )}
@@ -161,11 +164,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: (value) =>
-      dispatch({
-        type: actions.SETVALUE,
-        name: "parallelView",
-        value: value,
-      }),
+      dispatch({ type: SETVALUE, name: "parallelView", value: value }),
   };
 };
 

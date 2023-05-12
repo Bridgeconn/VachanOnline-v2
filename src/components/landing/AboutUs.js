@@ -119,6 +119,35 @@ const AboutUs = ({ handleClose }) => {
 
         <div className={classes.releaseNotes}>
           <Typography variant="h6" className={classes.subheading}>
+            Release Notes (12/05/2023) v1.4.0
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Feature Additions:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Responsive UI for mobile browser</li>
+              <li>Monochrome theme for the UI</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Enhancements:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>Changed Tamil font to an easily readable format</li>
+              <li>Mobile browser UX enhancements</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Bug Fixes:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>UI Bug fixes on Infographics</li>
+            </ul>
+          </Typography>
+          <Typography variant="h6" className={classes.subheading}>
             Release Notes (17/10/2022) v1.3.3
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
@@ -333,9 +362,8 @@ const AboutUs = ({ handleClose }) => {
           <Typography variant="body1" component="div" gutterBottom>
             <ul className={classes.list}>
               <li>
-                Moved the website to {addLink("vachanonline.com", "https://")},
-                and the classic website to
-                {addLink("legacy.vachanonline.com", "https://")}
+                Moved the new website to{" "}
+                {addLink("vachanonline.com", "https://")}
               </li>
               <li>
                 Added metadata-based filtering for only published bibles to be
@@ -416,7 +444,7 @@ const AboutUs = ({ handleClose }) => {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} variant="outlined">
           Close
         </Button>
       </DialogActions>

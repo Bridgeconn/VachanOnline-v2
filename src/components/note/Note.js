@@ -15,8 +15,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
-import { useSelector } from "react-redux";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { connect, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -24,8 +23,12 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: BLUETRANSPARENT,
     cursor: "pointer",
+  },
+  textField: {
+    "& textarea": {
+      maxHeight: 190,
+    },
   },
 }));
 const styles = (theme) => ({
@@ -63,6 +66,9 @@ const DialogContent = withStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
     width: 500,
+    [theme.breakpoints.down("sm")]: {
+      width: 300,
+    },
   },
 }))(MuiDialogContent);
 
@@ -73,13 +79,14 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function Note({
+function Note({
   uid,
   selectedVerses,
   setSelectedVerses,
   bookCode,
   sourceId,
   chapter,
+  mobileView,
 }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -101,6 +108,7 @@ export default function Note({
 
   const handleClose = () => {
     setOpen(false);
+    setSelectedVerses([]);
   };
 
   const saveNote = () => {
@@ -148,7 +156,7 @@ export default function Note({
     <div>
       <div className={classes.info} onClick={openNoteDialog}>
         <Tooltip title="Add Note">
-          <NoteIcon fontSize="small" />
+          <NoteIcon fontSize={mobileView ? "large" : "small"} />
         </Tooltip>
       </div>
       <Snackbar
@@ -179,7 +187,8 @@ export default function Note({
             id="outlined-multiline-static"
             label="Note Text"
             multiline
-            rows={10}
+            minRows={10}
+            className={classes.textField}
             fullWidth={true}
             inputProps={{ maxLength: 1000 }}
             variant="outlined"
@@ -188,8 +197,10 @@ export default function Note({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" color="primary" onClick={saveNote}>
+          <Button variant="outlined" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="outlined" onClick={saveNote}>
             Save
           </Button>
         </DialogActions>
@@ -197,3 +208,9 @@ export default function Note({
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps)(Note);

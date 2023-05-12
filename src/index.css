@@ -33,11 +33,7 @@
   src: local("NotoSans"), url(./fonts/NotoSans.ttf) format("truetype");
   unicode-range: U+00-FF, U+0900-097F;
 }
-@font-face {
-  font-family: "Latha";
-  src: local("Latha"), url(./fonts/Latha.ttf) format("truetype");
-  unicode-range: U+00-FF, U+0B80-0BFF;
-}
+
 @font-face {
   font-family: "Mukti";
   src: local("Mukti"), url(./fonts/Mukti.ttf) format("truetype");
@@ -60,12 +56,7 @@
     url(./fonts/NotoSerifMalayalam.ttf) format("truetype");
   unicode-range: U+00-FF, U+0D00-0D7F;
 }
-@font-face {
-  font-family: "Noto Serif Tamil";
-  src: local("NotoSerifTamil"),
-    url(./fonts/NotoSerifTamil.ttf) format("truetype");
-  unicode-range: U+00-FF, U+0B80-0BFF;
-}
+
 @font-face {
   font-family: "Noto Serif Telugu";
   src: local("NotoSerifTelugu"),
@@ -105,18 +96,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.privacy-policy{
+.privacy-policy {
   margin: 0 auto;
-  margin-top:50px;
+  margin-top: 50px;
   font-size: 1.2rem;
   padding: 30px;
-  max-width: 1000px
+  max-width: 1000px;
 }
 body#body {
   background-color: white;
   overflow: overlay;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

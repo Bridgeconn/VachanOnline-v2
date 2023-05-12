@@ -10,19 +10,18 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
-    backgroundColor: "#66a3ff",
-    color: "#00003d",
+    backgroundColor: WHITE,
+    color: BLACK,
     boxShadow: theme.shadows[4],
-    border: "1px solid #103f87",
+    border: "1px solid" + GREY,
     fontSize: 16,
   },
 }))(Tooltip);
-
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
@@ -31,19 +30,31 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.only("xs")]: {
-      width: "60%",
+    boxShadow: "1px 1px 1px 1px " + GREY,
+    [theme.breakpoints.down("xs")]: {
+      width: (props) =>
+        props.screen === "audio" || props.screen === "video" ? "85%" : "60%",
+      padding: (props) =>
+        props.screen === "info" ||
+        props.screen === "audio" ||
+        props.screen === "video"
+          ? "4px 0"
+          : "6px 0",
+      margin: 9,
     },
   },
   icon: {
     left: 3,
     position: "relative",
     width: 30,
+    [theme.breakpoints.down("sm")]: {
+      left: 0,
+    },
   },
   root: {
     width: "100%",
     maxWidth: 680,
-    backgroundColor: "#eaeaea",
+    backgroundColor: WHITE,
     textTransform: "capitalize",
     maxHeight: "calc(100vh - 150px)",
   },
@@ -51,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     maxHeight: "calc(100vh - 150px)",
     width: 358,
-    backgroundColor: "#eaeaea",
+    backgroundColor: WHITE,
     color: "#2a2a2a",
   },
   book: {
@@ -64,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0px 0px",
     fontSize: "11px",
     border: "1px solid #d2d2d2c9",
+    backgroundColor: WHITE,
   },
   bookText: {
     whiteSpace: "nowrap",
@@ -73,12 +85,12 @@ const useStyles = makeStyles((theme) => ({
   },
   openBook: {
     border: "1px solid #ccc",
-    backgroundColor: BLUETRANSPARENT,
-    color: "#fff",
+    backgroundColor: LIGHTGREY,
+    color: BLACK,
     "&:hover": {
       border: "1px solid #ccc",
-      backgroundColor: BLUETRANSPARENT,
-      color: "#fff",
+      backgroundColor: WHITE,
+      color: BLACK,
     },
   },
   chapterList: {
@@ -97,12 +109,11 @@ const useStyles = makeStyles((theme) => ({
   },
   openChapter: {
     border: "1px solid #ccc",
-    backgroundColor: BLUETRANSPARENT,
-    color: "#fff",
+    backgroundColor: LIGHTGREY,
+    color: BLACK,
     "&:hover": {
       border: "1px solid #ccc",
-      backgroundColor: BLUETRANSPARENT,
-      color: "#fff",
+      backgroundColor: GREY,
     },
   },
   bookName: {
@@ -111,21 +122,40 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 130,
     overflow: "hidden",
     textOverflow: "ellipsis",
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 60,
+      minWidth: 60,
+    },
+  },
+  bookNameBox: {
+    [theme.breakpoints.down("sm")]: {
+      whiteSpace: "nowrap",
+      minWidth: 70,
+      maxWidth: 80,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      padding: "0 5px",
+    },
   },
 }));
-const BookCombo = ({
-  paneNo,
-  bookCode,
-  bookList,
-  chapter,
-  setValue,
-  minimal,
-  landingPage,
-  parallelScroll,
-  syncPanel,
-}) => {
+const BookCombo = (props) => {
+  const {
+    paneNo,
+    bookCode,
+    bookList,
+    chapter,
+    setValue,
+    minimal,
+    landingPage,
+    parallelScroll,
+    syncPanel,
+    screen,
+  } = props;
   //classes for styling
-  const classes = useStyles();
+  const styleProps = {
+    screen: screen,
+  };
+  const classes = useStyles(styleProps);
   const theme = useTheme();
   //if mobile then true, used to change layout
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -194,10 +224,10 @@ const BookCombo = ({
         //If current book not available set first available book, fallback mechanism, actual check in versions
         book = bookList[0];
         setValue("chapter", 1);
-        setValue("bookCode", bookList[0].book_code);
+        setValue("bookCode", bookList[0]?.book_code);
         setValue("versesSelected", []);
       }
-      setBookDisplay(book.short);
+      setBookDisplay(book?.short);
     }
   }, [bookList, bookCode, setValue]);
   //on updating chapter row scroll it into view
@@ -265,7 +295,9 @@ const BookCombo = ({
           variant="contained"
           onClick={openCombo}
           ref={bookDropdown}
-          style={landingPage && mobile ? { marginLeft: "20%" } : {}}
+          style={
+            landingPage && mobile ? { marginLeft: 0, marginRight: 15 } : {}
+          }
           classes={{ root: classes.button }}
         >
           {minimal === true ? (
@@ -273,7 +305,9 @@ const BookCombo = ({
               className={classes.bookName}
             >{`${bookDisplay}  ${chapter}`}</div>
           ) : (
-            `${bookDisplay}  ${chapter}`
+            <div className={classes.bookNameBox}>
+              {`${bookDisplay} ${chapter}`}
+            </div>
           )}
           <i className={`material-icons ${classes.icon}`}>
             keyboard_arrow_down
@@ -325,7 +359,7 @@ const BookCombo = ({
                     className={`${classes.book} ${open}`}
                     ref={open === "" ? null : openBookRef}
                     style={{
-                      borderLeft: "5px solid" + colorGroup[item.book_code],
+                      borderLeft: "4px solid" + colorGroup[item.book_code],
                     }}
                   >
                     <ListItemText

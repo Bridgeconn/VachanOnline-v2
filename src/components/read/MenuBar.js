@@ -12,10 +12,13 @@ import Highlight from "../highlight/Highlight";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
 import BorderColor from "@material-ui/icons/BorderColor";
 import Note from "../note/Note";
+import PrintIcon from "@material-ui/icons/Print";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 import Close from "../common/Close";
+import Print from "../common/PrintBox";
+import ParallelScroll from "@material-ui/icons/ImportExport";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -24,13 +27,19 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 10px 0 44px",
     borderBottom: "1px solid #f1ecec",
     position: "absolute",
-    height: 61,
+    height: 60,
     top: 72,
-    [theme.breakpoints.only("xs")]: {
-      padding: "0 15px 0 15px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 5.5px",
+      top: (props) => (props.paneNo === 2 ? 0 : 60),
     },
   },
-
+  selectBox: {
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
   select: {
     marginTop: "-8px",
     backgroundColor: "red",
@@ -40,16 +49,24 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: BLUETRANSPARENT,
+    color: "default",
+    cursor: "pointer",
+  },
+  infoParall: {
+    padding: 0,
+    width: "30px",
+    marginTop: 15,
+    marginRight: 4,
+    color: "default",
     cursor: "pointer",
   },
   settings: {
     padding: 0,
     width: "30px",
     marginTop: 20,
-    marginLeft: "-10px",
+    marginLeft: "-5px",
     marginRight: "-5px",
-    color: BLUETRANSPARENT,
+    color: "default",
     cursor: "pointer",
   },
   items: {
@@ -57,7 +74,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const MenuBar = (props) => {
-  const classes = useStyles();
   let {
     setValue,
     paneNo,
@@ -84,12 +100,18 @@ const MenuBar = (props) => {
     setPrintNotes,
     printHighlights,
     setPrintHighlights,
+    mobileView,
+    parallelScroll,
+    toggleParallelScroll,
   } = props;
+  const styleProps = { paneNo: paneNo };
+  const classes = useStyles(styleProps);
+
   function goFull() {
     setFullscreen(true);
   }
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
-  const [metadataList, setMetadataList] = React.useState(null);
+  const [metadataList, setMetadataList] = React.useState("");
   const [audioBible, setAudioBible] = React.useState({});
   const [audioIcon, setAudioIcon] = React.useState("");
   const [bookmarkIcon, setBookmarkIcon] = React.useState("");
@@ -97,7 +119,7 @@ const MenuBar = (props) => {
   const [noteIcon, setNoteIcon] = React.useState("");
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
-
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
@@ -193,6 +215,12 @@ const MenuBar = (props) => {
     chapter,
     classes.info,
   ]);
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
   //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -205,7 +233,7 @@ const MenuBar = (props) => {
     if (versions !== undefined) {
       const language = version.split("-");
       const languageVersions = versions.find(
-        (e) => e.languageVersions[0].language.code === language[0]
+        (e) => e.languageVersions[0].language.code === language[0].toLowerCase()
       );
       if (languageVersions !== undefined) {
         const versionObject = languageVersions.languageVersions.find(
@@ -246,7 +274,7 @@ const MenuBar = (props) => {
   return (
     <div>
       <Box className={classes.read}>
-        <Box flexGrow={1}>
+        <Box flexGrow={1} className={classes.selectBox}>
           <Version setValue={setValue} version={version} bookCode={bookCode} />
           {bookCode ? (
             <BookCombo
@@ -262,31 +290,38 @@ const MenuBar = (props) => {
           )}
         </Box>
         <Box className={classes.items}>
-          {noteIcon}
-          {highlightIcon}
+          {mobileView ? null : noteIcon}
+          {mobileView ? null : highlightIcon}
+
           {bookmarkIcon}
           <Metadata
             metadataList={metadataList}
             title="Version Name (in Eng)"
             abbreviation="Abbreviation"
+            mobileView={mobileView}
           ></Metadata>
           {audioIcon}
-          <Tooltip title="Fullscreen">
-            <div onClick={goFull} className={classes.info}>
-              <i className="material-icons md-23">zoom_out_map</i>
-            </div>
-          </Tooltip>
-          <Tooltip title="Settings">
-            <div
-              className={classes.settings}
-              aria-label="More"
-              aria-controls="long-menu"
-              aria-haspopup="true"
-              onClick={openSettings}
-            >
-              <i className="material-icons md-23">more_vert</i>
-            </div>
-          </Tooltip>
+          {mobileView ? null : (
+            <>
+              <div className={classes.info} onClick={handleDialogOpen}>
+                <PrintIcon fontSize="small" />
+              </div>
+              <Tooltip title="Fullscreen">
+                <div onClick={goFull} className={classes.info}>
+                  <i className="material-icons md-23">zoom_out_map</i>
+                </div>
+              </Tooltip>
+            </>
+          )}
+          <div
+            className={classes.settings}
+            aria-label="More"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={openSettings}
+          >
+            <i className="material-icons md-23">settings</i>
+          </div>
           <Setting
             fontSize={fontSize}
             fontFamily={fontFamily}
@@ -302,9 +337,44 @@ const MenuBar = (props) => {
             bookDisplay={bookDisplay}
             chapter={chapter}
           />
+          {mobileView && paneNo === 1 ? (
+            <div className={classes.infoParall} onClick={toggleParallelScroll}>
+              {parallelScroll ? (
+                <Tooltip title="Parallel Scroll">
+                  <ParallelScroll
+                    fontSize="large"
+                    style={{ color: BLACK }}
+                    className={classes.parallelScroll}
+                  />
+                </Tooltip>
+              ) : (
+                <Tooltip title="Parallel Scroll Disabled">
+                  <ParallelScroll
+                    fontSize="large"
+                    color="disabled"
+                    className={classes.parallelScroll}
+                  />
+                </Tooltip>
+              )}
+            </div>
+          ) : (
+            ""
+          )}
           {paneNo === 2 ? <Close /> : ""}
         </Box>
       </Box>
+
+      <Print
+        dialogOpen={dialogOpen}
+        handleDialogClose={handleDialogClose}
+        bookDisplay={bookDisplay}
+        printRef={printRef}
+        setPrintNotes={setPrintNotes}
+        setPrintHighlights={setPrintHighlights}
+        printNotes={printNotes}
+        printHighlights={printHighlights}
+        chapter={chapter}
+      />
     </div>
   );
 };
@@ -315,6 +385,8 @@ const mapStateToProps = (state) => {
     userDetails: state.local.userDetails,
     versionSource: state.local.versionSource,
     parallelView: state.local.parallelView,
+    mobileView: state.local.mobileView,
+    parallelScroll: state.local.parallelScroll,
   };
 };
 export default connect(mapStateToProps)(MenuBar);

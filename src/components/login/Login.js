@@ -41,10 +41,20 @@ const useStyles = makeStyles((theme) => ({
     "& hover": {
       textDecoration: "none",
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginLeft: "20%",
       width: "60%",
       marginTop: 0,
+    },
+  },
+  signBtn: {
+    backgroundColor: "#fff",
+    border: "1px solid #d3d3d3",
+    "& hover": {
+      textDecoration: "none",
+    },
+    [theme.breakpoints.down("sm")]: {
+      whiteSpace: "nowrap",
     },
   },
   links: {
@@ -244,11 +254,7 @@ const Login = (props) => {
   return (
     <>
       {login ? (
-        <Button
-          aria-describedby="sign-in"
-          variant="contained"
-          onClick={signOut}
-        >
+        <Button aria-describedby="sign-in" variant="outlined" onClick={signOut}>
           Sign Out
         </Button>
       ) : (
@@ -274,8 +280,10 @@ const Login = (props) => {
           <Button
             aria-describedby="sign-in"
             variant="contained"
+            size="small"
             ref={menuRef}
             onClick={openForm}
+            className={classes.signBtn}
           >
             Sign In
           </Button>
@@ -343,8 +351,7 @@ const Login = (props) => {
                     <Button
                       type="submit"
                       fullWidth
-                      variant="contained"
-                      color="primary"
+                      variant="outlined"
                       className={classes.submit}
                     >
                       Sign In
@@ -352,8 +359,7 @@ const Login = (props) => {
                     <Button
                       type="submit"
                       fullWidth
-                      variant="contained"
-                      color="primary"
+                      variant="outlined"
                       onClick={signInGoogle}
                       className={classes.submit}
                     >
@@ -362,8 +368,7 @@ const Login = (props) => {
                     {/* <Button
                       type="submit"
                       fullWidth
-                      variant="contained"
-                      color="primary"
+                      variant="outlined"
                       onClick={signInFacebook}
                       className={classes.submit}
                     >
@@ -425,8 +430,7 @@ const Login = (props) => {
                     <Button
                       type="submit"
                       fullWidth
-                      variant="contained"
-                      color="primary"
+                      variant="outlined"
                       className={classes.submit}
                     >
                       Sign Up
@@ -481,8 +485,7 @@ const Login = (props) => {
                     <Button
                       type="submit"
                       fullWidth
-                      variant="contained"
-                      color="primary"
+                      variant="outlined"
                       className={classes.submit}
                     >
                       Submit

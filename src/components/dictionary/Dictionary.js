@@ -13,14 +13,28 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 60,
+    },
   },
-  title: {
+  header: {
     paddingLeft: 35,
     paddingBottom: 8,
     marginBottom: 20,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      padding: 0,
+      height: 60,
+      alignItems: "center",
+    },
+  },
+  title: {
+    marginRight: 10,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   text: {
     position: "absolute",
@@ -29,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px 20px 20px 0",
     top: 135,
     bottom: 0,
-    textAlign: "justify",
     color: "#464545",
     fontFamily: "Roboto,Noto Sans",
     overflow: "scroll",
@@ -57,6 +70,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.up("sm")]: {
+      textAlign: "justify",
+    },
+    [theme.breakpoints.down("sm")]: {
+      top: 120,
+      left: 20,
+    },
   },
   heading: {
     fontWeight: "bold",
@@ -81,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
 const Dictionary = (props) => {
   const classes = useStyles();
   const [dictionaryText, setDictionaryText] = React.useState("");
-  let { dictionary, version, setDictionary } = props;
+  let { dictionary, version, setDictionary, mobileView } = props;
   let {
     dictionaries,
     selectedDictionary,
@@ -167,10 +187,10 @@ const Dictionary = (props) => {
   }, [classes.heading, classes.seeAlso, dictionaryWord.word, wordMeaning]);
   return (
     <div className={classes.root}>
-      <Box className={classes.title}>
-        <Box flexGrow={1}>
-          <Typography variant="h6">Dictionary</Typography>
-        </Box>
+      <Box className={classes.header}>
+        <Typography variant="h6" className={classes.title}>
+          Dictionary
+        </Typography>
         <Box flexGrow={1}>
           <DictionaryCombo
             dictionaries={dictionaries}
@@ -188,6 +208,7 @@ const Dictionary = (props) => {
             metadataList={selectedDictionary.metadata}
             title="Version Name (in Eng)"
             abbreviation="Abbreviation"
+            mobileView={mobileView}
           ></Metadata>
         </Box>
         <Box>
@@ -206,6 +227,7 @@ const mapStateToProps = (state) => {
   return {
     dictionary: state.local.dictionary,
     version: state.local.panel1.version,
+    mobileView: state.local.mobileView,
   };
 };
 export default connect(mapStateToProps)(Dictionary);

@@ -6,7 +6,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
-import { BLUETRANSPARENT } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -14,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: BLUETRANSPARENT,
     cursor: "pointer",
   },
 }));

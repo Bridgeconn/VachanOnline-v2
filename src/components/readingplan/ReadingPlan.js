@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
+import DateCalendar from "react-date-picker";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
@@ -10,8 +11,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Select from "react-select";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
@@ -30,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 5,
+    },
   },
   main: {
     top: 134,
@@ -49,10 +51,23 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      padding: "10px 5px",
+      top: 58,
+    },
   },
   container: {
     width: "100%",
     marginTop: 60,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 0,
+    },
+  },
+  refBox: {
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+    },
   },
   heading: {
     paddingBottom: 10,
@@ -67,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
     width: "50%",
-    [theme.breakpoints.down("sm")]: { width: "80%" },
+    [theme.breakpoints.down("sm")]: { width: 120 },
   },
   message: {
     margin: 18,
@@ -83,6 +98,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
   },
+  refText: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1rem",
+      marginRight: 5,
+    },
+  },
   select: {
     width: 200,
   },
@@ -90,21 +111,28 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 7,
     marginRight: 15,
   },
+  dateContainer: {
+    display: "flex",
+  },
   loading: {
     paddingLeft: 20,
+  },
+  list: {
+    [theme.breakpoints.down("sm")]: {
+      bottom: 50,
+      top: 0,
+    },
   },
 }));
 
 const ReadingPlan = (props) => {
   const classes = useStyles();
-  const { setValue1, bookList, readingPlans } = props;
+  const { setValue1, bookList, mobileView, readingPlans } = props;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [plans, setPlans] = useState([]);
   const [plan, setPlan] = useState("");
   const [planData, setPlanData] = useState("");
   const [readingList, setReadingList] = useState([]);
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [loading, setLoading] = React.useState(false);
 
   const months = [
@@ -146,7 +174,10 @@ const ReadingPlan = (props) => {
     }
   };
 
-  const API = useMemo(() => axios.create({ baseURL: process.env.REACT_APP_BIBLE_PLANS_URL }), []);
+  const API = useMemo(
+    () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_PLANS_URL }),
+    []
+  );
   useEffect(() => {
     if (readingPlans) {
       setPlans(readingPlans);
@@ -178,7 +209,10 @@ const ReadingPlan = (props) => {
     <div className={classes.root}>
       <Box className={classes.title}>
         <Box flexGrow={1}>
-          <Typography variant="h6"> {mobile ? "" : "Reading Plans"}</Typography>
+          <Typography variant="h6">
+            {" "}
+            {mobileView ? "" : "Reading Plans"}
+          </Typography>
         </Box>
         <Box flexGrow={1}>
           {plan ? (
@@ -198,30 +232,47 @@ const ReadingPlan = (props) => {
         </Box>
       </Box>
       <Box className={classes.main}>
-        <Calendar
-          className={classes.calendar}
-          onChange={(date) => setSelectedDate(date)}
-          value={selectedDate}
-        />
+        {mobileView ? null : (
+          <Calendar
+            className={classes.calendar}
+            onChange={(date) => setSelectedDate(date)}
+            value={selectedDate}
+          />
+        )}
         <div className={classes.container}>
           <Box className={classes.heading}>
-            <Box flexGrow={1}>
-              <Typography variant="h6">
-                {(mobile ? "References" : "Bible references") +
-                  " for " +
-                  selectedDate.getDate() +
-                  "-" +
-                  months[selectedDate.getMonth()] +
-                  "-" +
-                  selectedDate.getFullYear()}
+            <Box flexGrow={1} className={classes.refBox}>
+              <Typography variant="h6" className={classes.refText}>
+                {mobileView
+                  ? ""
+                  : "Bible references" +
+                    " for " +
+                    selectedDate.getDate() +
+                    "-" +
+                    months[selectedDate.getMonth()] +
+                    "-" +
+                    selectedDate.getFullYear()}
               </Typography>
+              {mobileView ? (
+                <div className={classes.dateContainer}>
+                  <Typography variant="h6" className={classes.refText}>
+                    References for{" "}
+                  </Typography>
+                  <DateCalendar
+                    className={classes.calendar}
+                    onChange={(date) => setSelectedDate(date)}
+                    value={selectedDate}
+                    clearIcon={null}
+                  />
+                </div>
+              ) : null}
             </Box>
           </Box>
-          <div>
+          <>
             {loading ? (
               <h3 className={classes.loading}>Loading</h3>
             ) : readingList.length !== 0 ? (
-              <List component="nav">
+              <List component="nav" className={classes.list}>
                 {readingList.map((reading, i) => {
                   const bookText = getBookText(reading.ref, reading.text);
                   return bookText ? (
@@ -262,7 +313,7 @@ const ReadingPlan = (props) => {
                 No reading plan available for this date.
               </Typography>
             )}
-          </div>
+          </>
         </div>
       </Box>
     </div>

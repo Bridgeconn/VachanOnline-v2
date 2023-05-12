@@ -12,19 +12,24 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddBox from "@material-ui/icons/AddBox";
+import EditIcon from "@material-ui/icons/Edit";
 import Grid from "@material-ui/core/Grid";
 import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 94,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 60,
+    },
   },
   heading: {
     paddingBottom: 10,
@@ -34,16 +39,20 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
+    [theme.breakpoints.down("sm")]: {
+      height: 60,
+      marginBottom: 0,
+      paddingBottom: 0,
+      alignItems: "center",
+    },
   },
   notesHeading: {
     display: "flex",
   },
-
   list: {
     position: "absolute",
     right: 0,
     left: 0,
-    top: (props) => (props.addNote ? 390 : 135),
     bottom: 0,
     overflow: "scroll",
     marginBottom: -15,
@@ -58,6 +67,12 @@ const useStyles = makeStyles((theme) => ({
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.up("md")]: {
+      top: (props) => (props.addNote ? 390 : 135),
+    },
+    [theme.breakpoints.down("sm")]: {
+      top: (props) => (props.addNote ? 365 : 120),
     },
   },
   message: {
@@ -82,9 +97,13 @@ const useStyles = makeStyles((theme) => ({
   },
   formButtons: {
     textAlign: "right",
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      justifyContent: "center",
+    },
   },
   button: {
-    margin: 10,
+    margin: "10px 5px",
   },
   addNote: {
     padding: theme.spacing(1),
@@ -104,22 +123,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Notes(props) {
+function Notes(props) {
   const {
     uid,
     versions,
     setValue,
-    sourceId,
-    bookCode,
-    chapter,
     versesSelected,
     book,
+    noteText,
+    setNoteText,
     getRegionalBookName,
+    close,
+    panel1,
+    mobileView,
   } = props;
   const [noteList, setNoteList] = React.useState([]);
   const [chapterNoteList, setChapterNoteList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
-  const [noteText, setNoteText] = React.useState("");
   const [modifiedTime, setModifiedTime] = React.useState("");
   const [editObject, setEditObject] = React.useState({});
   const [noteReference, setNoteReference] = React.useState({});
@@ -128,8 +148,8 @@ export default function Notes(props) {
   const [loading, setLoading] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(false);
+  const { bookCode, chapter, sourceId } = panel1;
   const firebase = useFirebase();
-
   const closeAlert = () => {
     setAlert(false);
   };
@@ -157,11 +177,11 @@ export default function Notes(props) {
       setEditObject({});
       setNoteReference({});
     }
-  }, [edit, setValue]);
+  }, [edit, setNoteText, setValue]);
 
   const saveNote = () => {
     //if no verse selected, show alert
-    if (!versesSelected.length) {
+    if (!versesSelected?.length) {
       setAlert(true);
       setAlertMessage("Please select a verse");
       return;
@@ -344,9 +364,32 @@ export default function Notes(props) {
     setValue("version", versionData[sourceId][0]);
     setValue("bookCode", bookCode);
     setValue("chapter", chapter);
-    setValue("languageCode",versionData[sourceId][0].split('-')[0].toLowerCase())
+    setValue(
+      "languageCode",
+      versionData[sourceId][0].split("-")[0].toLowerCase()
+    );
   };
 
+  const openRef = (event) => {
+    let element = event.currentTarget;
+    let sourceId = element.getAttribute("data-sourceid");
+    let bookCode = element.getAttribute("data-bookcode");
+    let chapter = parseInt(element.getAttribute("data-chapter"));
+    let index = parseInt(element.getAttribute("data-index"));
+    let note = notes[sourceId][bookCode][chapter][index];
+    setValue("sourceId", sourceId);
+    setValue("version", versionData[sourceId][0]);
+    setValue("bookCode", bookCode);
+    setValue("chapter", chapter);
+    setValue(
+      "languageCode",
+      versionData[sourceId][0].split("-")[0].toLowerCase()
+    );
+    setValue("versesSelected", note.verses);
+    if (mobileView) {
+      close();
+    }
+  };
   //Delete Note
   const deleteNote = (event) => {
     let sourceId = event.currentTarget.getAttribute("data-sourceid");
@@ -407,14 +450,14 @@ export default function Notes(props) {
           <Typography variant="h6" gutterBottom>
             Note for {book} {chapter}:{" "}
             {versesSelected
-              .sort((a, b) => parseInt(a) - parseInt(b))
+              ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </Typography>
           <TextField
             id="note"
             label="Note Text"
             multiline
-            rows={6}
+            minRows={6}
             fullWidth={true}
             inputProps={{ maxLength: 1000 }}
             variant="outlined"
@@ -427,12 +470,15 @@ export default function Notes(props) {
               Last Modified: {new Date(modifiedTime).toLocaleString()}
             </Grid>
             <Grid item xs={5} className={classes.formButtons}>
-              <Button className={classes.button} onClick={resetForm}>
+              <Button
+                variant="outlined"
+                className={classes.button}
+                onClick={resetForm}
+              >
                 Cancel
               </Button>
               <Button
-                variant="contained"
-                color="primary"
+                variant="outlined"
                 className={classes.button}
                 onClick={saveNote}
               >
@@ -478,7 +524,7 @@ export default function Notes(props) {
                       data-bookcode={note.bookCode}
                       data-chapter={note.chapter}
                       data-index={note.index}
-                      onClick={editNote}
+                      onClick={openRef}
                       button
                     >
                       <ListItemText
@@ -488,6 +534,17 @@ export default function Notes(props) {
                         secondary={new Date(note.modifiedTime).toLocaleString()}
                       />
                       <ListItemSecondaryAction>
+                        <IconButton
+                          edge="end"
+                          aria-label="editNote"
+                          data-sourceid={note.sourceId}
+                          data-bookcode={note.bookCode}
+                          data-chapter={note.chapter}
+                          data-index={note.index}
+                          onClick={editNote}
+                        >
+                          <EditIcon />
+                        </IconButton>
                         <IconButton
                           edge="end"
                           aria-label="delete"
@@ -521,7 +578,7 @@ export default function Notes(props) {
                   data-bookcode={note.bookCode}
                   data-chapter={note.chapter}
                   data-index={note.index}
-                  onClick={editNote}
+                  onClick={openRef}
                   button
                 >
                   <ListItemText
@@ -531,6 +588,17 @@ export default function Notes(props) {
                     secondary={new Date(note.modifiedTime).toLocaleString()}
                   />
                   <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      aria-label="editNote"
+                      data-sourceid={note.sourceId}
+                      data-bookcode={note.bookCode}
+                      data-chapter={note.chapter}
+                      data-index={note.index}
+                      onClick={editNote}
+                    >
+                      <EditIcon />
+                    </IconButton>
                     <IconButton
                       edge="end"
                       aria-label="delete"
@@ -558,3 +626,16 @@ export default function Notes(props) {
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    close: () => {
+      dispatch({ type: actions.SETVALUE, name: "parallelView", value: "" });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Notes);

@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 78,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 4,
+    },
   },
   heading: {
     display: "flex",
@@ -46,6 +49,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.down("sm")]: {
+      top: 60,
+      paddingBottom: 10,
+    },
   },
   message: {
     margin: 18,
@@ -67,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     flex: 1,
   },
+  searchTitle: {
+    textAlign: "center",
+  },
   searchButton: {
     padding: 10,
   },
@@ -82,14 +92,22 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2em",
     position: "relative",
     bottom: 2,
+    [theme.breakpoints.down("sm")]: {
+      bottom: 20,
+    },
   },
   pagination: {
-    height: 50,
+    height: 35,
+    whiteSpace: "nowrap",
   },
   pageDisplay: {
     position: "absolute",
     right: 10,
-    bottom: 10,
+    [theme.breakpoints.down("sm")]: {
+      right: "unset",
+      left: 5,
+      bottom: 1,
+    },
   },
   pageInfo: {
     display: "inline-block",
@@ -251,7 +269,7 @@ const Search = (props) => {
         {pageData && pageData.length ? (
           <List component="nav">
             <ListItem className={classes.listHeading}>
-              <Typography variant="h6">
+              <Typography variant="h6" className={classes.searchTitle}>
                 <span className={classes.searchHeading}>
                   {searchResult.keyword}
                 </span>

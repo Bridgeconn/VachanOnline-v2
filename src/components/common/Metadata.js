@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import { BLUETRANSPARENT } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     marginTop: 20,
     marginRight: 4,
-    color: BLUETRANSPARENT,
+    color: BLACK,
     cursor: "pointer",
   },
   paper: {
     width: "40%",
     minWidth: 550,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "95%",
       minWidth: "unset",
     },
@@ -32,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
     padding: "11px 0 0 12px",
   },
   metadataTitleBar: {
-    backgroundColor: BLUETRANSPARENT,
-    color: "#fff",
+    boxShadow: theme.shadows[4],
+    marginBottom: 4,
+    color: BLACK,
   },
   metadataHeading: {
     fontSize: 17,
@@ -59,7 +60,12 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
 }));
-export default function Metadata({ metadataList, title, abbreviation }) {
+export default function Metadata({
+  metadataList,
+  title,
+  abbreviation,
+  mobileView,
+}) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   //metadata information popup
@@ -123,10 +129,12 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                     color="inherit"
                     className={classes.metadataTitle}
                   >
-                    {metadataList[title] +
-                      " (" +
-                      metadataList[abbreviation] +
-                      ")"}
+                    {mobileView
+                      ? metadataList[abbreviation]
+                      : metadataList[title] +
+                        " (" +
+                        metadataList[abbreviation] +
+                        ")"}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -145,7 +153,7 @@ export default function Metadata({ metadataList, title, abbreviation }) {
                 {Object.keys(metadataList)
                   .sort()
                   .map((item, i) => {
-                    const ignoredKeys = ["baseUrl", "Latest","VerseLabel"];
+                    const ignoredKeys = ["baseUrl", "Latest", "VerseLabel"];
                     if (ignoredKeys.includes(item)) {
                       return null;
                     } else {

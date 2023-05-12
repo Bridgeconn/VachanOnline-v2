@@ -11,18 +11,17 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
-    backgroundColor: "#66a3ff",
-    color: "#00003d",
+    backgroundColor: WHITE,
+    color: BLACK,
     boxShadow: theme.shadows[4],
-    border: "1px solid #103f87",
+    border: "1px solid" + GREY,
     fontSize: 16,
   },
 }))(Tooltip);
@@ -33,10 +32,12 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.only("xs")]: {
+    boxShadow: "1px 1px 1px 1px " + GREY,
+    [theme.breakpoints.down("sm")]: {
       width: "30%",
+      padding: "6px 10px",
     },
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       left: theme.spacing(0),
       marginRight: 10,
     },
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   menuRoot: {
-    backgroundColor: "#eaeaea",
+    backgroundColor: WHITE,
     boxShadow: "none",
     border: "1px solid #00000020",
     "&:not(:last-child)": {
@@ -60,9 +61,9 @@ const useStyles = makeStyles((theme) => ({
   },
   expanded: {},
   expansionDetails: {
-    backgroundColor: "#ffffff",
-    boxShadow: "none",
-    padding: "0 0 0 8px",
+    backgroundColor: WHITE,
+    boxShadow: "inset 1px 2px 2px 0px " + GREY,
+    padding: "4px 4px 1px 4px",
     width: "100%",
   },
   summaryPanel: {
@@ -73,11 +74,24 @@ const useStyles = makeStyles((theme) => ({
     "&$expanded": {
       minHeight: 40,
       maxHeight: 40,
+      boxShadow: theme.shadows[4],
     },
   },
   icon: {
     left: 5,
     position: "relative",
+    [theme.breakpoints.down("sm")]: {
+      left: 0,
+    },
+  },
+  versionName: {
+    [theme.breakpoints.down("sm")]: {
+      whiteSpace: "nowrap",
+      minWidth: 30,
+      maxWidth: 60,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    },
   },
   paper: {
     maxHeight: "calc(100vh - 150px)",
@@ -89,9 +103,11 @@ const useStyles = makeStyles((theme) => ({
   version: {
     fontSize: "1rem",
     cursor: "pointer",
+    backgroundColor: WHITE,
+    borderBottom: "1px solid " + LIGHTGREY,
   },
   label: {
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       justifyContent: "unset",
     },
   },
@@ -101,8 +117,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Version = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expanded, setExpanded] = React.useState("hindi");
   const [displayVersion, setDisplayVersion] = React.useState("Loading...");
@@ -119,6 +133,7 @@ const Version = (props) => {
     parallelView,
     parallelScroll,
     setMainValue,
+    mobileView,
   } = props;
 
   function handleClick(event) {
@@ -179,7 +194,7 @@ const Version = (props) => {
 
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
-    if (mobile && !landingPage) {
+    if (mobileView) {
       setDisplayVersion(versionCode);
     } else {
       for (let lang in versions) {
@@ -197,7 +212,7 @@ const Version = (props) => {
         }
       }
     }
-  }, [landingPage, mobile, version, versions]);
+  }, [landingPage, mobileView, version, versions]);
 
   return (
     <>
@@ -208,7 +223,9 @@ const Version = (props) => {
           onClick={handleClick}
           variant="contained"
           style={
-            landingPage && mobile ? { marginLeft: "20%", width: "60%" } : {}
+            landingPage && mobileView
+              ? { marginLeft: 0, marginRight: 15, width: "60%" }
+              : {}
           }
           classes={
             landingPage
@@ -216,7 +233,7 @@ const Version = (props) => {
               : { root: classes.button, label: classes.label }
           }
         >
-          {displayVersion}
+          <div className={classes.versionName}>{displayVersion}</div>
           <i className={`material-icons ${classes.icon}`}>
             keyboard_arrow_down
           </i>
@@ -308,6 +325,7 @@ const mapStateToProps = (state) => {
     versionSource: state.local.versionSource,
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
+    mobileView: state.local.mobileView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

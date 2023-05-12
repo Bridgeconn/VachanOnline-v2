@@ -16,12 +16,22 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.only("xs")]: {
-      width: "30%",
+    [theme.breakpoints.down("sm")]: {
+      width: "40%",
+      whiteSpace: "nowrap",
     },
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       left: theme.spacing(0),
       marginRight: 10,
+    },
+  },
+  textbox: {
+    [theme.breakpoints.down("sm")]: {
+      display: "inline-block",
+      width: 50,
+      whiteSpace: "nowrap",
+      overflow: " hidden",
+      textOverflow: "ellipsis",
     },
   },
   list: {
@@ -105,7 +115,7 @@ const DictionaryWordCombo = (props) => {
         variant="contained"
         classes={{ root: classes.button }}
       >
-        {dictionaryWord.word}
+        <span className={classes.textbox}>{dictionaryWord.word}</span>
         <i className={classesI}>keyboard_arrow_downn</i>
       </Button>
       {!dictionaryIndex || dictionaryIndex.length === 0 ? (

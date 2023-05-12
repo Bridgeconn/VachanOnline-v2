@@ -10,6 +10,9 @@ import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import Select from "react-select";
 import { capitalize, getShortBook } from "../common/utility";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions";
+import BookCombo from "../common/BookCombo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
+    [theme.breakpoints.down("sm")]: {
+      top: 60,
+    },
   },
   container: {
     top: 52,
@@ -37,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.down("sm")]: {
+      top: 60,
+    },
   },
   heading: {
     borderBottom: "1px solid #f1ecec",
@@ -46,6 +55,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 35,
     marginBottom: 20,
     minHeight: 51,
+    [theme.breakpoints.down("sm")]: {
+      height: 60,
+      paddingBottom: 0,
+      alignItems: "center",
+    },
   },
   video: {
     width: "48%",
@@ -53,6 +67,10 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 2% 2% 0",
     display: "inline-block",
     verticalAlign: "top",
+    [theme.breakpoints.down("sm")]: {
+      width: "97%",
+      marginBottom: 25,
+    },
   },
   title: {
     paddingTop: 4,
@@ -73,10 +91,28 @@ const useStyles = makeStyles((theme) => ({
   message: {
     paddingLeft: 20,
   },
+  selectBox: {
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
 }));
 const Video = (props) => {
   const classes = useStyles();
-  let { video, bookCode, books, languageCode } = props;
+  let {
+    video,
+    bookCode,
+    books,
+    versionBooks,
+    setValue,
+    languageCode,
+    mobileView,
+    panel1,
+    paneNo,
+  } = props;
+  const { chapter } = panel1;
+
   const [message, setMessage] = React.useState("");
   const [videoId, setVideoId] = React.useState("");
   const [videos, setVideos] = React.useState([]);
@@ -88,7 +124,7 @@ const Video = (props) => {
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
     const youtu = "https://youtu.be/";
-    const vimeoUrl = process.env.REACT_APP_VIDEO_URL +"vimeo/";
+    const vimeoUrl = process.env.REACT_APP_VIDEO_URL + "vimeo/";
     const youtubeUrl = "https://img.youtube.com/vi/";
     const source = url.includes("vimeo") ? "vimeo" : "youtube";
     const id = source === "vimeo" ? url.split(vimeo)[1] : url.split(youtu)[1];
@@ -145,10 +181,12 @@ const Video = (props) => {
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
-        <Box flexGrow={1}>
-          <Typography variant="h6">Videos</Typography>
-        </Box>
-        <Box flexGrow={1}>
+        {mobileView ? null : (
+          <Box flexGrow={1}>
+            <Typography variant="h6">Videos</Typography>{" "}
+          </Box>
+        )}
+        <Box flexGrow={1} className={classes.selectBox}>
           {languages && languages?.length !== 0 && (
             <Select
               className={classes.select}
@@ -157,6 +195,17 @@ const Video = (props) => {
               options={languages}
             />
           )}
+          {mobileView && bookCode ? (
+            <BookCombo
+              paneNo={paneNo}
+              bookCode={bookCode}
+              bookList={versionBooks[language.value]}
+              chapter={chapter}
+              setValue={setValue}
+              minimal={true}
+              screen={"video"}
+            />
+          ) : null}
         </Box>
         <Box>
           <Close className={classes.closeButton} />
@@ -212,4 +261,17 @@ const Video = (props) => {
     </div>
   );
 };
-export default Video;
+const mapStateToProps = (state) => {
+  return {
+    bookCode: state.local.panel1.bookCode,
+    versionBooks: state.local.versionBooks,
+    mobileView: state.local.mobileView,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Video);

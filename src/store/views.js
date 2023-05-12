@@ -10,3 +10,5 @@ export const NOTE = "NOTE";
 export const SEARCH = "SEARCH";
 export const READINGPLANS = "READINGPLANS";
 export const SIGNBIBLE = "SIGNBIBLE";
+export const DRAWERCOMMENTARY = "DRAWERCOMMENTARY";
+export const DRAWERSIGNBIBLE = "DRAWERSIGNBIBLE";

@@ -7,13 +7,17 @@ import FeedbackIcon from "@material-ui/icons/Feedback";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
-import { BLUE } from "../../store/colorCode";
+import { connect } from "react-redux";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   landingFooter: {
     bottom: 0,
     position: "fixed",
-    background: BLUE,
+    background: WHITE,
+    boxShadow:
+      "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
+    borderTop: "1px solid" + GREY,
     color: "#fff",
     padding: "5px 15px",
     marginTop: 40,
@@ -23,14 +27,18 @@ const useStyles = makeStyles((theme) => ({
       display: "inline-block",
       paddingTop: theme.spacing(3),
     },
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "nowrap",
+    },
   },
   text: {
     padding: theme.spacing(1),
     textAlign: "right",
     display: "inline-block",
     float: "right",
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       float: "unset",
+      fontSize: 12,
     },
   },
   link: {
@@ -49,9 +57,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   companyLink: {
-    color: "inherit",
+    color: BLACK,
     "&:hover": {
-      color: "inherit",
+      color: BLACK,
       textDecoration: "none",
     },
   },
@@ -60,6 +68,12 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "unset",
     padding: "2px 10px",
     fontSize: 16,
+    "&:hover": {
+      color: GREY,
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 12,
+    },
   },
   feedback: {
     marginTop: 3,
@@ -67,20 +81,25 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px 10px",
     fontSize: 16,
     "&:hover": {
-      color: "inherit",
+      color: GREY,
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 12,
     },
   },
   rightLinks: {
     textAlign: "left",
     [theme.breakpoints.only("xs")]: {
       textAlign: "center",
+      whiteSpace: "nowrap",
+      marginRight: 15,
     },
   },
 }));
 const LandingFooter = (props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
+  const { mobileView } = props;
   const openModal = () => {
     setOpen(true);
   };
@@ -91,19 +110,10 @@ const LandingFooter = (props) => {
     <>
       <Grid container className={classes.landingFooter}>
         <Grid item xs={6} sm={5} className={classes.rightLinks}>
-          {/* 
-          <Link
-            href="#"
-            className={classes.link}
-            key="About us"
-            onClick={openModal}
-          >
-            {"About us "}
-          </Link>*/}
           <Button
             variant="outlined"
             size="small"
-            color="inherit"
+            color="default"
             className={classes.button}
             onClick={openModal}
           >
@@ -114,7 +124,7 @@ const LandingFooter = (props) => {
           <Button
             variant="outlined"
             size="small"
-            color="inherit"
+            color="default"
             className={classes.feedback}
             startIcon={<FeedbackIcon />}
             href="https://forms.office.com/r/qiV0Ym335M"
@@ -131,7 +141,7 @@ const LandingFooter = (props) => {
             className={classes.companyLink}
           >
             <Typography className={classes.text}>
-              © 2020 Bridge Connectivity Solutions
+              © 2020 {mobileView ? "BCS" : "Bridge Connectivity Solutions"}
             </Typography>
           </Link>
         </Grid>
@@ -151,4 +161,9 @@ const LandingFooter = (props) => {
   );
 };
 
-export default LandingFooter;
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps)(LandingFooter);

@@ -16,12 +16,12 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.only("xs")]: {
-      width: "30%",
+    margin: "0 10px",
+    [theme.breakpoints.down("sm")]: {
+      width: "50%",
     },
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       left: theme.spacing(0),
-      marginRight: 10,
     },
   },
   list: {

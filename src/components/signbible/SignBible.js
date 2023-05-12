@@ -8,21 +8,27 @@ import Box from "@material-ui/core/Box";
 import ReactPlayer from "react-player";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import * as views from "../../store/views";
+import BookCombo from "../common/BookCombo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     position: "absolute",
-    top: 82,
+    top: 72,
     bottom: 0,
+    [theme.breakpoints.down("sm")]: {
+      top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 60 : 0),
+    },
   },
   container: {
-    top: 52,
-    bottom: 0,
+    top: 60,
+    bottom: -16,
     overflow: "scroll",
     position: "absolute",
     width: "100%",
-    padding: "12px 4px 0 15px",
+    padding: "12px 10px 15px 10px",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
@@ -35,6 +41,16 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
+    [theme.breakpoints.down("sm")]: {
+      top: 60,
+    },
+  },
+  titleContainer: {
+    "&:last-child": {
+      [theme.breakpoints.down("sm")]: {
+        paddingBottom: 0,
+      },
+    },
   },
   heading: {
     borderBottom: "1px solid #f1ecec",
@@ -43,7 +59,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 12,
     paddingLeft: 35,
     marginBottom: 20,
-    minHeight: 51,
+    height: 60,
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      paddingBottom: 0,
+    },
   },
   video: {
     padding: 0,
@@ -67,13 +87,34 @@ const useStyles = makeStyles((theme) => ({
   message: {
     paddingLeft: 20,
   },
+  player: {
+    maxHeight: "calc(100vh - 150px)",
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: 240,
+    },
+  },
 }));
 const SignBible = (props) => {
-  const classes = useStyles();
-  let { bookCode, book, chapter, signBible, setValue, versions } = props;
+  let {
+    book,
+    signBible,
+    setValue,
+    versions,
+    versionBooks,
+    versionSource,
+    panel1,
+    mobileView,
+    parallelView,
+  } = props;
+  const styleProps = {
+    parallelView: parallelView,
+  };
+  const classes = useStyles(styleProps);
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
   const [playing, setPlaying] = useState("");
+  const { bookCode, chapter, sourceId } = panel1;
+
   const theme = useTheme();
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   const heading = mobileLandscape ? "ISLV" : "Sign Language Bible (ISLV)";
@@ -92,7 +133,7 @@ const SignBible = (props) => {
             version.language.code + "-" + version.version.code.toUpperCase()
           );
           setValue("sourceId", version.sourceId);
-          setValue("languageCode", version.version.code.toLowerCase());
+          setValue("versionCode", version.version.code.toLowerCase());
         }
       } catch (e) {
         //English ESV version not available
@@ -118,13 +159,12 @@ const SignBible = (props) => {
       } else {
         setVideos();
         setMessage(
-          `Sign Language Bible available only for some books of the Bible. Use the book dropdown in the left panel to navigate.`
+          `Sign Language Bible available only for some books of the Bible. Use the book dropdown in the other panel to navigate.`
         );
       }
       setPlaying();
     }
   }, [signBible, bookCode, chapter, book]);
-
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -132,9 +172,20 @@ const SignBible = (props) => {
           <Typography variant="h6">{heading}</Typography>
         </Box>
         <Box flexGrow={1}>
-          <Typography variant="h6">
-            {book} {chapter}
-          </Typography>
+          {mobileView && parallelView === views.DRAWERSIGNBIBLE ? (
+            <BookCombo
+              bookCode={bookCode}
+              chapter={chapter}
+              setValue={setValue}
+              paneNo={panel1}
+              bookList={versionBooks[versionSource[sourceId]]}
+              minimal={true}
+            />
+          ) : (
+            <Typography variant="h6">
+              {book} {chapter}
+            </Typography>
+          )}
         </Box>
         <Box>
           <Close className={classes.closeButton} />
@@ -152,9 +203,9 @@ const SignBible = (props) => {
                     url={video["url"]}
                     controls={true}
                     width="100%"
-                    style={{ maxHeight: "calc(100vh - 150px)" }}
+                    className={classes.player}
                   />
-                  <CardContent>
+                  <CardContent className={classes.titleContainer}>
                     <Typography
                       gutterBottom
                       variant="h5"
@@ -174,4 +225,12 @@ const SignBible = (props) => {
     </div>
   );
 };
-export default SignBible;
+const mapStateToProps = (state) => {
+  return {
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
+    mobileView: state.local.mobileView,
+    parallelView: state.local.parallelView,
+  };
+};
+export default connect(mapStateToProps)(SignBible);

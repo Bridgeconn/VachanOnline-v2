@@ -17,10 +17,10 @@ import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import TopBar from "../read/TopBar";
-import { BLUETRANSPARENT } from "../../store/colorCode";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography } from "@material-ui/core";
+import { BLACK, GREY } from "../../store/colorCode";
 
 const drawerWidth = 400;
 
@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "inline-block",
     fontSize: 18,
-    color: BLUETRANSPARENT,
   },
   margin: {
     height: theme.spacing(5),
@@ -74,6 +73,11 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       width: "70%",
     },
+    [theme.breakpoints.down("sm")]: {
+      "& img": {
+        width: "95%",
+      },
+    },
     "& h1": {
       textAlign: "center",
     },
@@ -95,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   mobile: {
     width: "100%",
     position: "fixed",
-    top: 64,
+    top: 60,
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
   },
@@ -111,6 +115,12 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     lineHeight: "1.255",
+  },
+  linkList: {
+    color: BLACK,
+    "&:hover": {
+      color: GREY,
+    },
   },
   mobileBox: {
     display: "flex",
@@ -129,6 +139,9 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 68 * 4.5,
     width: 250,
   },
+  slider: {
+    color: BLACK,
+  },
 }));
 
 const Stories = (props) => {
@@ -146,15 +159,15 @@ const Stories = (props) => {
   const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
-  const [rtlList,setRtlList] = React.useState([])
+  const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
-  const storyClass =
-    rtlList.includes(lang)
-      ? `${classes.stories} ${classes.storyDirection}`
-      : classes.stories;
+  const storyClass = rtlList.includes(lang)
+    ? `${classes.stories} ${classes.storyDirection}`
+    : classes.stories;
   const listClass = rtlList.includes(lang) ? classes.listDirection : "";
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -171,7 +184,7 @@ const Stories = (props) => {
     let storyNum = event.currentTarget.getAttribute("data-id");
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   };
 
   const storySetter = (event) => {
@@ -181,7 +194,7 @@ const Stories = (props) => {
   };
   const getLang = (event) => {
     setLang(event.target.value);
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -211,14 +224,14 @@ const Stories = (props) => {
 
   useEffect(() => {
     API.get("rtl.json").then(function (response) {
-      setRtlList(response.data)
+      setRtlList(response.data);
     });
   }, [API]);
 
   return (
     <>
       <AppBar position="fixed">
-        <TopBar login={login} userDetails={userDetails} />
+        <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
       </AppBar>
       <div className={classes.root}>
         {mobile === true ? (
@@ -319,7 +332,9 @@ const Stories = (props) => {
                     <MenuItem
                       key={y}
                       value={text}
-                      className={rtlList.includes(text) ? classes.listDirection : ""}
+                      className={
+                        rtlList.includes(text) ? classes.listDirection : ""
+                      }
                     >
                       {languageJson[text]}
                     </MenuItem>
@@ -369,7 +384,12 @@ const Stories = (props) => {
               <List>
                 {manifest.map((text, y) => (
                   <ListItem key={y} value={text} className={listClass}>
-                    <Link href="#" data-id={y + 1} onClick={(e) => getStory(e)}>
+                    <Link
+                      className={classes.linkList}
+                      href="#"
+                      data-id={y + 1}
+                      onClick={(e) => getStory(e)}
+                    >
                       {y + 1 + ". " + text}
                     </Link>
                   </ListItem>
