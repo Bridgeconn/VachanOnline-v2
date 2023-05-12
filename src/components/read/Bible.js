@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     width: "100%",
     height: "100%",
+    borderRight: "1px solid " + color.LIGHTGREY,
     "& p": {
       textAlign: "justify",
       color: "#464545",
