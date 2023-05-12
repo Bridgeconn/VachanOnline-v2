@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   menuRoot: {
-    backgroundColor: "#fff",
+    backgroundColor: WHITE,
     boxShadow: "none",
     border: "1px solid #00000020",
     "&:not(:last-child)": {

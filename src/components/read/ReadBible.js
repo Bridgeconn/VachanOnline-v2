@@ -89,7 +89,6 @@ const useStyles = makeStyles((theme) => ({
   },
   rightMenu: {
     width: 65,
-    backgroundColor: "#00000000",
     boxShadow: "2px 2px 2px 2px" + GREY,
     position: "absolute",
     height: "100vh",
