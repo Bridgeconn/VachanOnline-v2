@@ -192,6 +192,7 @@ const useStyles = makeStyles((theme) => ({
   firstVerse: {
     fontSize: "1.8em",
     bottom: -2,
+    color: color.BLACK,
   },
   paper: {
     position: "absolute",

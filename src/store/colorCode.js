@@ -1,7 +1,7 @@
 export const WHITE = "#fff";
 export const GREY = "#808080";
 export const BLACK = "#1e293b";
-export const MEDIUMGREY = "#1f2937";
+export const MEDIUMGREY = "#9ca3af";
 export const LIGHTGREY = "#e5e7eb";
 export const YELLOW = "#fffe00";
 export const GREEN = "#5dff79";
