@@ -15,6 +15,7 @@ import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import { languageJson } from "../../store/languageData";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -206,7 +207,12 @@ const Version = (props) => {
             langVersions[versionNames]["language"]["code"]
           ) {
             setDisplayVersion(
-              langVersions[versionNames]["language"]["name"] + "-" + versionCode
+              langVersions[versionNames]["language"]["name"] ===
+                languageJson[lang].language
+                ? languageJson[lang].languageName + "-" + versionCode
+                : langVersions[versionNames]["language"]["name"] +
+                    "-" +
+                    versionCode
             );
           }
         }
@@ -283,7 +289,11 @@ const Version = (props) => {
                   }}
                 >
                   <Typography className={classes.language}>
-                    {version.language}
+                    {version.language === languageJson[i].language
+                      ? languageJson[i].languageName !== ""
+                        ? languageJson[i].languageName
+                        : version.language
+                      : version.language}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails
