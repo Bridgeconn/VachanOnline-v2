@@ -104,11 +104,13 @@ const useStyles = makeStyles((theme) => ({
   select: {
     width: 200,
     [theme.breakpoints.down("sm")]: {
-      width: 130,
+      width: 180,
     },
   },
   message: {
     paddingLeft: 20,
+    whiteSpace: "pre-wrap",
+    lineHeight: "1.8rem",
   },
   selectBox: {
     [theme.breakpoints.down("sm")]: {
@@ -136,7 +138,7 @@ const Audio = (props) => {
   const [audios, setAudios] = useState(null);
   const [playing, setPlaying] = useState("");
   const [book, setBook] = useState("");
-  const [OBTMessage, setOBTMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [audioLangCode, setAudioLangCode] = useState("hin");
   useEffect(() => {
     if (languages.length) {
@@ -165,10 +167,22 @@ const Audio = (props) => {
   useEffect(() => {
     if (language) {
       const lang = language?.value?.toLowerCase();
-      const OBTBibles = ["Bommala","Dommri","Kachha","Kongaru","Mayla marathi", "Thakalika"]
-      if(OBTBibles.includes(language.value)){
-        setOBTMessage(`OBT Audio bible not available in ${language.value} for this book. It is available only for Mark, Luke, 1st and 2nd Thessalonians. Use the book dropdown in the left panel to navigate.`)
-        }
+      const value = language.value;
+      const OBTBibles = [
+        "Bommala",
+        "Dommri",
+        "Kachha",
+        "Kongaru",
+        "Mayla marathi",
+        "Thakalika",
+      ];
+
+      if (OBTBibles.includes(value)) {
+        const message = `OBT Audio bible not available in ${value} for this book.\nIt is available only for Mark, Luke, 1st and 2nd Thessalonians.\nUse the book dropdown in the left panel to navigate.`;
+        setMessage(message);
+      } else {
+        setMessage(`Audio bible not available in ${value} for this book`);
+      }
       const obj = audioBible?.find((obj) => obj?.language?.name === lang);
       setAudioLangCode(obj?.language?.code ? obj?.language?.code : "hin");
       setAudios(obj?.audioBibles);
@@ -213,7 +227,7 @@ const Audio = (props) => {
       </Box>
       <div className={classes.container}>
         {(audioBible?.length === 0 || audioBible?.success === false) && (
-          <h5 className={classes.message}>{OBTMessage || "No audio bibles available"}</h5>
+          <h5 className={classes.message}>{"No audio bibles available"}</h5>
         )}
         {hasAudio ? (
           <Card className={classes.cardRoot}>
@@ -259,9 +273,7 @@ const Audio = (props) => {
             </CardContent>
           </Card>
         ) : (
-          <h5 className={classes.message}>
-            {OBTMessage || `Audio bible not available in ${language.value} for this book` }
-          </h5>
+          <h5 className={classes.message}>{message}</h5>
         )}
       </div>
     </div>
