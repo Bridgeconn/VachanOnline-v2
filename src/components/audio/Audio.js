@@ -136,6 +136,7 @@ const Audio = (props) => {
   const [audios, setAudios] = useState(null);
   const [playing, setPlaying] = useState("");
   const [book, setBook] = useState("");
+  const [OBTMessage, setOBTMessage] = useState("");
   const [audioLangCode, setAudioLangCode] = useState("hin");
   useEffect(() => {
     if (languages.length) {
@@ -164,6 +165,10 @@ const Audio = (props) => {
   useEffect(() => {
     if (language) {
       const lang = language?.value?.toLowerCase();
+      const OBTBibles = ["Bommala","Dommri","Kachha","Kongaru","Mayla marathi", "Thakalika"]
+      if(OBTBibles.includes(language.value)){
+        setOBTMessage(`OBT Audio bible not available in ${language.value} for this book. It is available only for Mark, Luke, 1st and 2nd Thessalonians. Use the book dropdown in the left panel to navigate.`)
+        }
       const obj = audioBible?.find((obj) => obj?.language?.name === lang);
       setAudioLangCode(obj?.language?.code ? obj?.language?.code : "hin");
       setAudios(obj?.audioBibles);
@@ -208,7 +213,7 @@ const Audio = (props) => {
       </Box>
       <div className={classes.container}>
         {(audioBible?.length === 0 || audioBible?.success === false) && (
-          <h5 className={classes.message}>No audio bibles available</h5>
+          <h5 className={classes.message}>{OBTMessage || "No audio bibles available"}</h5>
         )}
         {hasAudio ? (
           <Card className={classes.cardRoot}>
@@ -255,7 +260,7 @@ const Audio = (props) => {
           </Card>
         ) : (
           <h5 className={classes.message}>
-            Audio bible not available in {language.value} for this book
+            {OBTMessage || `Audio bible not available in ${language.value} for this book` }
           </h5>
         )}
       </div>
