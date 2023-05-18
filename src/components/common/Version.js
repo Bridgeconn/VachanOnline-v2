@@ -193,30 +193,28 @@ const Version = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
+  function getDisplayLanguage(language) {
+    language = language?.toLowerCase();
+    const found = languageJson.find((lang) => lang.language === language);
+    return found?.languageName || language;
+  }
+
+  function getLanguageByCode(versions, code) {
+    for (const language of versions) {
+      const languages = language["languageVersions"];
+      if (languages[0]?.language?.code === code) {
+        return languages[0]?.language?.name;
+      }
+    }
+    return code;
+  }
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
     if (mobileView) {
       setDisplayVersion(versionCode);
     } else {
-      for (let lang in versions) {
-        let languageNames = versions[lang];
-        let langVersions = languageNames["languageVersions"];
-        for (let versionNames in langVersions) {
-          if (
-            langCode.toLowerCase() ===
-            langVersions[versionNames]["language"]["code"]
-          ) {
-            setDisplayVersion(
-              langVersions[versionNames]["language"]["name"] ===
-                languageJson[lang].language
-                ? languageJson[lang].languageName + "-" + versionCode
-                : langVersions[versionNames]["language"]["name"] +
-                    "-" +
-                    versionCode
-            );
-          }
-        }
-      }
+      const language = getLanguageByCode(versions, langCode?.toLowerCase());
+      setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
   }, [landingPage, mobileView, version, versions]);
 
@@ -289,11 +287,7 @@ const Version = (props) => {
                   }}
                 >
                   <Typography className={classes.language}>
-                    {version.language === languageJson[i].language
-                      ? languageJson[i].languageName !== ""
-                        ? languageJson[i].languageName
-                        : version.language
-                      : version.language}
+                    {getDisplayLanguage(version.language)}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails
