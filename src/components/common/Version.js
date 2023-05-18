@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    maxHeight: "calc(100vh - 150px)",
+    maxHeight: "calc(100vh - 170px)",
     width: 300,
   },
   language: {

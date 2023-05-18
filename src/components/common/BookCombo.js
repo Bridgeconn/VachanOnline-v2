@@ -32,8 +32,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
     [theme.breakpoints.down("xs")]: {
-      width: (props) =>
-        props.screen === "audio" || props.screen === "video" ? "85%" : "60%",
+      width: "60%",
       padding: (props) =>
         props.screen === "info" ||
         props.screen === "audio" ||
@@ -56,11 +55,11 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 680,
     backgroundColor: WHITE,
     textTransform: "capitalize",
-    maxHeight: "calc(100vh - 150px)",
+    maxHeight: "calc(100vh - 170px)",
   },
   paper: {
     position: "relative",
-    maxHeight: "calc(100vh - 150px)",
+    maxHeight: "calc(100vh - 170px)",
     width: 358,
     backgroundColor: WHITE,
     color: "#2a2a2a",

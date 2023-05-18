@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       marginTop: 4,
     },
+    [theme.breakpoints.only("sm")]: {
+      marginTop: 66,
+    },
   },
   heading: {
     display: "flex",
@@ -53,8 +56,9 @@ const useStyles = makeStyles((theme) => ({
       top: 60,
       paddingBottom: 10,
     },
-    [theme.breakpoints.only("md")]: {
-      top: 135,
+    [theme.breakpoints.only("sm")]: {
+      top: 122,
+      paddingBottom: 10,
     },
   },
   message: {

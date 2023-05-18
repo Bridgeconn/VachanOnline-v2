@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   paper: {
-    maxHeight: "calc(100vh - 150px)",
+    maxHeight: "calc(100vh - 170px)",
     width: 500,
     border: "1px solid #d3d4d5",
   },

@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       marginTop: 5,
     },
+    [theme.breakpoints.only("sm")]: {
+      marginTop: 70,
+    },
   },
   main: {
     top: 134,
@@ -56,14 +59,10 @@ const useStyles = makeStyles((theme) => ({
       padding: "10px 5px",
       top: 58,
     },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.only("sm")]: {
       width: "100%",
-      padding: "10px 5px",
-      top: 58,
-    },
-    [theme.breakpoints.between("sm", "md")]: {
-      width: "100%",
-      top: 134,
+      top: 122,
+      paddingTop: 8,
     },
   },
   container: {

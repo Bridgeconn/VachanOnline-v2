@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 60 : 0),
     },
-    [theme.breakpoints.only("md")]: {
-      top: 72,
+    [theme.breakpoints.only("sm")]: {
+      top: 61,
     },
   },
   container: {

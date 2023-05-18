@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
       top: (props) => (props.addNote ? 390 : 135),
     },
     [theme.breakpoints.down("sm")]: {
-      top: (props) => (props.addNote ? 365 : 60),
+      top: 60,
     },
   },
   message: {
@@ -103,6 +103,10 @@ const useStyles = makeStyles((theme) => ({
   lastModified: {
     color: "#0000008a",
     paddingTop: 18,
+    [theme.breakpoints.down("md")]: {
+      paddingTop: 5,
+      display: "inline-block",
+    },
   },
   formButtons: {
     textAlign: "right",
@@ -468,12 +472,8 @@ function Notes(props) {
         </Box>
       )}
       {mobileView ? (
-        <Dialog
-          onClose={handleClose}
-          aria-labelledby="customized-dialog-title"
-          open={open}
-        >
-          <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <Dialog onClose={handleClose} aria-labelledby="note-title" open={open}>
+          <DialogTitle id="note-title" onClose={handleClose}>
             Note for {book} {chapter}:{" "}
             {versesSelected
               ?.sort((a, b) => parseInt(a) - parseInt(b))
@@ -492,7 +492,9 @@ function Notes(props) {
               onChange={handleNoteTextChange}
               className={classes.noteBody}
             />
-            Last Modified: {new Date(modifiedTime).toLocaleString()}
+            <div className={classes.lastModified}>
+              Last Modified: {new Date(modifiedTime).toLocaleString()}
+            </div>
           </DialogContent>
           <DialogActions>
             <Button variant="outlined" onClick={handleClose}>
@@ -577,7 +579,6 @@ function Notes(props) {
                     <Close className={classes.closeButton} />
                   ) : null}
                 </ListItem>
-
                 {chapterNoteList.map((note, i) => {
                   return versionData[note.sourceId] !== undefined ? (
                     <ListItem

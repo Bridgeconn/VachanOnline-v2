@@ -62,10 +62,6 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
       height: "calc(50% + 1.8rem)",
     },
-    [theme.breakpoints.up("md")]: {
-      width: "50%",
-      height: "100%",
-    },
   },
   splitPane2: {
     position: "absolute",
@@ -79,10 +75,6 @@ const useStyles = makeStyles((theme) => ({
       top: "calc(50% + 1.8rem)",
       width: "100%",
       height: "calc(50% - 1.8rem)",
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "50%",
-      height: "100%",
     },
   },
   biblePane: {
