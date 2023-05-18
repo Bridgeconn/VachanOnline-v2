@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       marginTop: 5,
     },
   },
@@ -51,10 +51,19 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       width: "100%",
       padding: "10px 5px",
       top: 58,
+    },
+    [theme.breakpoints.only("xs")]: {
+      width: "100%",
+      padding: "10px 5px",
+      top: 58,
+    },
+    [theme.breakpoints.between("sm", "md")]: {
+      width: "100%",
+      top: 134,
     },
   },
   container: {

@@ -16,8 +16,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       marginTop: (props) => (props.screenView === "single" ? 60 : 0),
+    },
+    [theme.breakpoints.down("md")]: {
+      marginTop: 70,
     },
   },
   title: {
@@ -83,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       textAlign: "justify",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       top: (props) => (props.screenView === "single" ? 122 : 62),
     },
   },

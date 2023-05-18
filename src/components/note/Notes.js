@@ -22,6 +22,12 @@ import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import * as actions from "../../store/actions";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
       top: (props) => (props.addNote ? 390 : 135),
     },
     [theme.breakpoints.down("sm")]: {
-      top: (props) => (props.addNote ? 365 : 120),
+      top: (props) => (props.addNote ? 365 : 60),
     },
   },
   message: {
@@ -81,6 +87,9 @@ const useStyles = makeStyles((theme) => ({
   listHeading: {
     borderBottom: "1px solid darkgray",
     fontWeight: 600,
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "space-between",
+    },
   },
   listItem: {
     borderBottom: "1px solid lightgray",
@@ -149,6 +158,8 @@ function Notes(props) {
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState(false);
   const { bookCode, chapter, sourceId } = panel1;
+  const [open, setOpen] = React.useState(false);
+
   const firebase = useFirebase();
   const closeAlert = () => {
     setAlert(false);
@@ -214,6 +225,7 @@ function Notes(props) {
     edit
       ? (notesArray[noteReference.index] = noteObject)
       : notesArray.push(noteObject);
+    setOpen(false);
     return firebase
       .ref(
         "users/" + uid + "/notes/" + sourceId + "/" + bookCode + "/" + chapter
@@ -299,6 +311,9 @@ function Notes(props) {
     ({ firebase: { data } }) =>
       data.users && data.users[uid] && data.users[uid].notes
   );
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   //When data comes from firebase put in noteList
   React.useEffect(() => {
@@ -341,6 +356,7 @@ function Notes(props) {
 
   //Edit Note
   const editNote = (event) => {
+    setOpen(true);
     let element = event.currentTarget;
     let sourceId = element.getAttribute("data-sourceid");
     let bookCode = element.getAttribute("data-bookcode");
@@ -358,7 +374,9 @@ function Notes(props) {
     };
     setNoteReference(noteReference);
     setLoading(true);
-    setAddNote(true);
+    if (!mobileView) {
+      setAddNote(true);
+    }
     setEdit(true);
     setValue("sourceId", sourceId);
     setValue("version", versionData[sourceId][0]);
@@ -412,39 +430,80 @@ function Notes(props) {
 
   return (
     <div className={classes.root}>
-      <Box className={classes.heading}>
-        <Box flexGrow={1}>
-          <Typography variant="h6" className={classes.notesHeading}>
-            Notes
-            {Array.isArray(versesSelected) && versesSelected.length && !edit ? (
-              <Tooltip title="Add Note">
-                <IconButton
-                  aria-label="add"
-                  className={classes.addNote}
-                  onClick={clickAddNote}
-                >
-                  <AddBox />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Select Verses">
-                <div className={classes.addNoteDisabled}>
+      {mobileView ? null : (
+        <Box className={classes.heading}>
+          <Box flexGrow={1}>
+            <Typography variant="h6" className={classes.notesHeading}>
+              Notes
+              {Array.isArray(versesSelected) &&
+              versesSelected.length &&
+              !edit ? (
+                <Tooltip title="Add Note">
                   <IconButton
                     aria-label="add"
                     className={classes.addNote}
-                    disabled
+                    onClick={clickAddNote}
                   >
                     <AddBox />
                   </IconButton>
-                </div>
-              </Tooltip>
-            )}
-          </Typography>
+                </Tooltip>
+              ) : (
+                <Tooltip title="Select Verses">
+                  <div className={classes.addNoteDisabled}>
+                    <IconButton
+                      aria-label="add"
+                      className={classes.addNote}
+                      disabled
+                    >
+                      <AddBox />
+                    </IconButton>
+                  </div>
+                </Tooltip>
+              )}
+            </Typography>
+          </Box>
+          <Box>
+            <Close className={classes.closeButton} />
+          </Box>
         </Box>
-        <Box>
-          <Close className={classes.closeButton} />
-        </Box>
-      </Box>
+      )}
+      {mobileView ? (
+        <Dialog
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={open}
+        >
+          <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+            Note for {book} {chapter}:{" "}
+            {versesSelected
+              ?.sort((a, b) => parseInt(a) - parseInt(b))
+              .join(", ")}
+          </DialogTitle>
+          <DialogContent dividers>
+            <TextField
+              id="note"
+              label="Note Text"
+              multiline
+              minRows={6}
+              fullWidth={true}
+              inputProps={{ maxLength: 1000 }}
+              variant="outlined"
+              value={noteText}
+              onChange={handleNoteTextChange}
+              className={classes.noteBody}
+            />
+            Last Modified: {new Date(modifiedTime).toLocaleString()}
+          </DialogContent>
+          <DialogActions>
+            <Button variant="outlined" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button variant="outlined" onClick={saveNote}>
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ) : null}
       {addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>
@@ -514,7 +573,11 @@ function Notes(props) {
                   <Typography variant="h5">
                     Notes for {book} {chapter}
                   </Typography>
+                  {mobileView ? (
+                    <Close className={classes.closeButton} />
+                  ) : null}
                 </ListItem>
+
                 {chapterNoteList.map((note, i) => {
                   return versionData[note.sourceId] !== undefined ? (
                     <ListItem
@@ -541,7 +604,7 @@ function Notes(props) {
                           data-bookcode={note.bookCode}
                           data-chapter={note.chapter}
                           data-index={note.index}
-                          onClick={editNote}
+                          onClick={(event) => editNote(event)}
                         >
                           <EditIcon />
                         </IconButton>
@@ -595,7 +658,7 @@ function Notes(props) {
                       data-bookcode={note.bookCode}
                       data-chapter={note.chapter}
                       data-index={note.index}
-                      onClick={editNote}
+                      onClick={(event) => editNote(event)}
                     >
                       <EditIcon />
                     </IconButton>

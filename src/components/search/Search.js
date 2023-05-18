@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 78,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       marginTop: 4,
     },
   },
@@ -49,9 +49,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       top: 60,
       paddingBottom: 10,
+    },
+    [theme.breakpoints.only("md")]: {
+      top: 135,
     },
   },
   message: {

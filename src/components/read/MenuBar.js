@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     height: 60,
     top: 72,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
+      padding: "0 10px 0 20px",
+    },
+    [theme.breakpoints.only("xs")]: {
       padding: "0 5.5px",
       top: (props) => (props.paneNo === 2 ? 0 : 60),
     },

@@ -57,10 +57,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       borderBottom: "1px solid #f1ecec",
       width: "100%",
       height: "calc(50% + 1.8rem)",
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "50%",
+      height: "100%",
     },
   },
   splitPane2: {
@@ -71,10 +75,14 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
     right: 0,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       top: "calc(50% + 1.8rem)",
       width: "100%",
       height: "calc(50% - 1.8rem)",
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "50%",
+      height: "100%",
     },
   },
   biblePane: {
