@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import { getAudioBibleObject } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -260,9 +261,9 @@ const Bible = (props) => {
     bookCode,
     chapter,
     version,
+    versions,
     fontFamily,
     audio,
-    audioBible,
     setValue,
     scroll,
     paneNo,
@@ -305,6 +306,7 @@ const Bible = (props) => {
   const [alertMessage, setAlertMessage] = React.useState(false);
   const [editObject, setEditObject] = React.useState({});
   const [edit, setEdit] = React.useState(false);
+  const currentAudio = getAudioBibleObject(versions, sourceId);
   //new usfm json structure
   const getHeading = (contents) => {
     if (contents) {
@@ -494,12 +496,12 @@ const Bible = (props) => {
   }, [sourceId, bookCode, chapter]);
   //if audio bible show icon
   React.useEffect(() => {
-    if (audio) {
+    if (currentAudio) {
       setAudioUrl(
-        audioBible.url + bookCode + "/" + chapter + "." + audioBible.format
+        currentAudio.url + bookCode + "/" + chapter + "." + currentAudio.format
       );
     }
-  }, [audio, audioBible, bookCode, chapter]);
+  }, [currentAudio, bookCode, chapter]);
   //Function to load previous chapter
   const prevClick = () => {
     if (!isLoading && Object.keys(previous).length > 0) {
@@ -854,6 +856,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
+    versions: state.local.versions,
   };
 };
 const mapDispatchToProps = (dispatch) => {
