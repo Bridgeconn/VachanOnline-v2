@@ -258,7 +258,6 @@ const MenuBar = (props) => {
   React.useEffect(() => {
     const openAudioBible = () => {
       setValue("audio", !audio);
-      setValue("audioBible", audioBible);
     };
     if (
       audioBible &&
