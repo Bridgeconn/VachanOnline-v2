@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       top: 60,
+      height: "calc(100vh - 160px)",
     },
   },
   heading: {

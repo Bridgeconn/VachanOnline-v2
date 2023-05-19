@@ -29,8 +29,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       marginTop: 5,
+    },
+    [theme.breakpoints.only("sm")]: {
+      marginTop: 70,
     },
   },
   main: {
@@ -51,10 +54,15 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       width: "100%",
       padding: "10px 5px",
       top: 58,
+    },
+    [theme.breakpoints.only("sm")]: {
+      width: "100%",
+      top: 122,
+      paddingTop: 8,
     },
   },
   container: {

@@ -55,11 +55,11 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 680,
     backgroundColor: WHITE,
     textTransform: "capitalize",
-    maxHeight: "calc(100vh - 150px)",
+    maxHeight: "calc(100vh - 170px)",
   },
   paper: {
     position: "relative",
-    maxHeight: "calc(100vh - 150px)",
+    maxHeight: "calc(100vh - 170px)",
     width: 358,
     backgroundColor: WHITE,
     color: "#2a2a2a",

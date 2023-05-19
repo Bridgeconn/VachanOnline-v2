@@ -29,7 +29,11 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     height: 60,
     top: 72,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("sm")]: {
+      padding: "0 4px",
+      top: 61,
+    },
+    [theme.breakpoints.only("xs")]: {
       padding: "0 5.5px",
       top: (props) => (props.paneNo === 2 ? 0 : 60),
     },
@@ -71,6 +75,9 @@ const useStyles = makeStyles((theme) => ({
   },
   items: {
     display: "flex",
+    [theme.breakpoints.only("sm")]: {
+      marginLeft: -16,
+    },
   },
 }));
 const MenuBar = (props) => {
