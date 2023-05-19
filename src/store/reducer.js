@@ -39,7 +39,6 @@ const defaultState = {
     fontFamily: "Sans",
     lineView: false,
     audio: false,
-    audioBible: {},
     versesSelected: [],
   },
   panel2: {
@@ -51,7 +50,6 @@ const defaultState = {
     fontFamily: "Sans",
     lineView: false,
     audio: false,
-    audioBible: {},
   },
 };
 const reducer = (state = defaultState, action) => {
