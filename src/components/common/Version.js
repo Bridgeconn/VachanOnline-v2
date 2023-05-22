@@ -199,10 +199,9 @@ const Version = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  function getDisplayLanguage(language, full) {
+  function getFullDisplayLanguage(language) {
     language = language?.toLowerCase();
     const found = languageJson.find((lang) => lang.language === language);
-    if (full !== "full") return found?.languageName || language;
     const lang = (
       <>
         <span>{found?.languageName}</span>
@@ -223,6 +222,11 @@ const Version = (props) => {
   }
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
+    function getDisplayLanguage(language) {
+      language = language?.toLowerCase();
+      const found = languageJson.find((lang) => lang.language === language);
+      return found?.languageName || language;
+    }
     if (mobileView) {
       setDisplayVersion(versionCode);
     } else {
@@ -300,7 +304,7 @@ const Version = (props) => {
                   }}
                 >
                   <Typography className={classes.language}>
-                    {getDisplayLanguage(version.language, "full")}
+                    {getFullDisplayLanguage(version.language)}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails
