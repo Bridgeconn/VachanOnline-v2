@@ -18,6 +18,8 @@ import Typography from "@material-ui/core/Typography";
 import { useMediaQuery } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import { SIGNBIBLE } from "../../store/views";
+import { AUDIO } from "../../store/views";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -113,7 +115,7 @@ const Landing = (props) => {
     } else {
       setValue("mobileView", false);
     }
-  }, [isMobile, setValue]);
+  }, [isMobile, setValue]);   
   const addLink = () => {
     return process.env.REACT_APP_DOWNLOAD_URL ? (
       <Link href={process.env.REACT_APP_DOWNLOAD_URL} target="_blank">
@@ -180,9 +182,10 @@ const Landing = (props) => {
         spacing={2}
         className={classes.imageRow}
       >
-        <ImageCard src={read} text="read" />
-        <ImageCard src={watch} text="watch" />
-        <ImageCard src={listen} text="listen" />
+        <a href="/read">
+        <ImageCard src={read} text="read" /></a>
+        <ImageCard src={watch} text="watch" onclick={()=>setValue("parallelView", SIGNBIBLE)} />
+        <ImageCard src={listen} text="listen" onclick={()=>setValue("parallelView", AUDIO)}/>
       </Grid>
 
       <LandingFooter />
