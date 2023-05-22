@@ -100,6 +100,7 @@ const useStyles = makeStyles((theme) => ({
   },
   language: {
     fontSize: "1rem",
+    width: "100%",
   },
   version: {
     fontSize: "1rem",
@@ -114,6 +115,11 @@ const useStyles = makeStyles((theme) => ({
   },
   expansionDetailsRoot: {
     padding: 0,
+  },
+  lang: {
+    color: GREY,
+    fontSize: "0.9rem",
+    float: "right",
   },
 }));
 const Version = (props) => {
@@ -193,12 +199,17 @@ const Version = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  function getDisplayLanguage(language) {
+  function getDisplayLanguage(language, full) {
     language = language?.toLowerCase();
     const found = languageJson.find((lang) => lang.language === language);
-    return found?.languageName.toLowerCase() === language
-      ? language
-      : found?.languageName + "-" + language;
+    if (full !== "full") return found?.languageName || language;
+    const lang = (
+      <>
+        <span>{found?.languageName}</span>
+        <span className={classes.lang}>{language}</span>
+      </>
+    );
+    return found?.languageName.toLowerCase() === language ? language : lang;
   }
 
   function getLanguageByCode(versions, code) {
@@ -289,7 +300,7 @@ const Version = (props) => {
                   }}
                 >
                   <Typography className={classes.language}>
-                    {getDisplayLanguage(version.language)}
+                    {getDisplayLanguage(version.language, "full")}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails

@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
       paddingBottom: 0,
       marginBottom: 0,
       alignItems: "center",
+      boxShadow: theme.shadows[1],
     },
   },
   titleComment: {

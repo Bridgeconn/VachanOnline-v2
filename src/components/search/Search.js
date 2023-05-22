@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 6,
     paddingLeft: 15,
     borderBottom: "1px solid #f1ecec",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: theme.shadows[1],
+    },
   },
   list: {
     position: "absolute",
