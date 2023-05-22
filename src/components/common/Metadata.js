@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     paddingLeft: 5,
     fontWeight: 600,
+    [theme.breakpoints.down("sm")]: {
+      fontWeight: "normal",
+    },
   },
   metadataText: {
     lineHeight: "28px",
@@ -58,6 +61,16 @@ const useStyles = makeStyles((theme) => ({
   },
   closeButton: {
     color: "inherit",
+  },
+  para: {
+    margin: "0 10px",
+    lineBreak: "anywhere",
+  },
+  metaDataBox: {
+    [theme.breakpoints.down("sm")]: {
+      height: "80vh",
+      overflow: "scroll",
+    },
   },
 }));
 export default function Metadata({
@@ -149,7 +162,7 @@ export default function Metadata({
                   </IconButton>
                 </Grid>
               </Grid>
-              <Grid container>
+              <Grid container className={classes.metaDataBox}>
                 {Object.keys(metadataList)
                   .sort()
                   .map((item, i) => {
@@ -164,16 +177,31 @@ export default function Metadata({
                           item
                           xs={12}
                           key={i}
-                          alignItems="flex-start"
-                          justifyContent="flex-end"
+                          alignItems={mobileView ? "flex-start" : "flex-start"}
+                          justifyContent={
+                            mobileView ? "flex-start" : "flex-end"
+                          }
                           className={classes.metadataRow}
                         >
-                          <Grid item xs={4} className={classes.metadataHeading}>
-                            {item}:
+                          <Grid
+                            item
+                            xs={12}
+                            lg={4}
+                            md={12}
+                            className={classes.metadataHeading}
+                          >
+                            <b>{item}:</b>
+                            {mobileView ? (
+                              <span className={classes.para}>
+                                {metadataList[item].split(" ").map(checkLink)}
+                              </span>
+                            ) : null}
                           </Grid>
-                          <Grid item xs={8} className={classes.metadataText}>
-                            {metadataList[item].split(" ").map(checkLink)}
-                          </Grid>
+                          {mobileView ? null : (
+                            <Grid item xs={8} className={classes.metadataText}>
+                              {metadataList[item].split(" ").map(checkLink)}
+                            </Grid>
+                          )}
                         </Grid>
                       ) : (
                         ""

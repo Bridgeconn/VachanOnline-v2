@@ -196,7 +196,9 @@ const Version = (props) => {
   function getDisplayLanguage(language) {
     language = language?.toLowerCase();
     const found = languageJson.find((lang) => lang.language === language);
-    return found?.languageName || language;
+    return found?.languageName.toLowerCase() === language
+      ? language
+      : found?.languageName + "-" + language;
   }
 
   function getLanguageByCode(versions, code) {

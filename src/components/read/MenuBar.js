@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
       padding: "0 5.5px",
       top: (props) => (props.paneNo === 2 ? 0 : 60),
     },
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: "0 -1px 4px #7e7676",
+    },
   },
   selectBox: {
     [theme.breakpoints.down("sm")]: {
