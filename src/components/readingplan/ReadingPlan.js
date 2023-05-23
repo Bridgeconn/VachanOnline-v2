@@ -14,6 +14,7 @@ import Select from "react-select";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import { GREY } from "../../store/colorCode";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -313,6 +314,17 @@ const ReadingPlan = (props) => {
                           >
                             {reading.text}
                           </Button>
+                          {mobileView ? (
+                            <Typography
+                              style={{
+                                color: GREY,
+                                fontSize: "0.9rem",
+                                float: "right",
+                              }}
+                            >
+                              Book not available
+                            </Typography>
+                          ) : null}
                         </ListItem>
                       </span>
                     </BigTooltip>

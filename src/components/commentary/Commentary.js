@@ -328,7 +328,7 @@ const mapDispatchToProps = (dispatch) => {
     setCommentary: (value) =>
       dispatch({ type: actions.SETVALUE, name: "commentary", value: value }),
     setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);

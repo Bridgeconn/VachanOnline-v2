@@ -91,6 +91,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: WHITE,
       color: BLACK,
     },
+    [theme.breakpoints.down("md")]: {
+      "&:hover": {
+        backgroundColor: LIGHTGREY,
+      },
+    },
   },
   chapterList: {
     paddingTop: 5,
