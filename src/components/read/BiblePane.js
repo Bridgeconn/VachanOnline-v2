@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
       top: (props) => (props?.paneNo === 2 ? 61 : 121),
     },
     [theme.breakpoints.only("sm")]: {
-      top: 121,
+      top: 122,
     },
   },
   fullscreen: {
