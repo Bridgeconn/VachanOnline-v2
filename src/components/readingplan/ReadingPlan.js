@@ -105,6 +105,9 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: theme.shadows[1],
+    },
   },
   refText: {
     [theme.breakpoints.down("sm")]: {

@@ -18,7 +18,7 @@ import Highlights from "../highlight/Highlights";
 import Notes from "../note/Notes";
 import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
-import { GREY } from "../../store/colorCode";
+import { GREY, LIGHTGREY } from "../../store/colorCode";
 import SignBible from "../signbible/SignBible";
 import {
   getCommentaries,
@@ -72,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     right: 0,
     [theme.breakpoints.only("xs")]: {
+      borderTop: "1px solid " + LIGHTGREY,
       top: "calc(50% + 1.8rem)",
       width: "100%",
       height: "calc(50% - 1.8rem)",
