@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
       alignItems: "center",
       height: 60,
       paddingBottom: 0,
+      paddingLeft: 15,
     },
   },
   language: {
@@ -105,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   select: {
     width: 200,
     [theme.breakpoints.down("sm")]: {
-      width: 180,
+      width: 150,
     },
   },
   message: {

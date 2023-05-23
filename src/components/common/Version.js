@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
     [theme.breakpoints.down("sm")]: {
-      width: "30%",
+      minWidth: 50,
       padding: "6px 10px",
     },
     [theme.breakpoints.up("md")]: {
@@ -83,6 +83,9 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     [theme.breakpoints.down("sm")]: {
       left: 0,
+    },
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
     },
   },
   versionName: {
@@ -226,11 +229,7 @@ const Version = (props) => {
           aria-haspopup="true"
           onClick={handleClick}
           variant="contained"
-          style={
-            landingPage && mobileView
-              ? { marginLeft: 0, marginRight: 15, width: "60%" }
-              : {}
-          }
+          style={landingPage && mobileView ? { marginRight: 15 } : {}}
           classes={
             landingPage
               ? { root: classes.button }

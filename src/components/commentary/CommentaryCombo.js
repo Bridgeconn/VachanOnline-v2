@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     [theme.breakpoints.down("xs")]: {
-      width: "50%",
+      maxWidth: 130,
     },
     [theme.breakpoints.up("md")]: {
       left: theme.spacing(0),
@@ -66,6 +66,9 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     left: 15,
     position: "relative",
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
+    },
   },
   paper: {
     maxHeight: "calc(100vh - 170px)",
