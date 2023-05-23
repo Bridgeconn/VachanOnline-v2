@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       padding: (props) =>
         props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
+      "&:hover": {
+        backgroundColor: "transparent",
+      },
     },
   },
   listItem: {
