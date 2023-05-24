@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
       minHeight: 40,
       maxHeight: 40,
       boxShadow: theme.shadows[4],
+      backgroundColor: LIGHTGREY,
     },
   },
   icon: {
