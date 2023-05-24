@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   infoParall: {
     padding: 0,
-    width: "30px",
+    width: 22,
     marginTop: 15,
     marginRight: 4,
     color: "default",

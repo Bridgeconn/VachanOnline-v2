@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       maxWidth: 130,
     },
     [theme.breakpoints.up("md")]: {

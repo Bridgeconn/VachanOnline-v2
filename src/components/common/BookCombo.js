@@ -12,6 +12,12 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import Tooltip from "@material-ui/core/Tooltip";
+import {
+  COMMENTARY,
+  PARALLELBIBLE,
+  READINGPLANS,
+  SEARCH,
+} from "../../store/views";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -31,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
+    [theme.breakpoints.only("sm")]: {
+      padding: 6,
+      maxWidth: (props) => (props.parallelView ? 110 : 165),
+    },
     [theme.breakpoints.down("xs")]: {
       maxWidth: 165,
       padding: (props) =>
@@ -48,8 +58,6 @@ const useStyles = makeStyles((theme) => ({
     width: 30,
     [theme.breakpoints.down("sm")]: {
       left: 0,
-    },
-    [theme.breakpoints.only("xs")]: {
       display: "none",
     },
   },
@@ -145,12 +153,17 @@ const BookCombo = (props) => {
     minimal,
     landingPage,
     parallelScroll,
+    parallelView,
     syncPanel,
     screen,
   } = props;
   //classes for styling
+  console.log(parallelView);
+  const mobilePV = [PARALLELBIBLE, COMMENTARY, READINGPLANS, SEARCH];
+  const parallelMV = mobilePV.includes(parallelView);
   const styleProps = {
     screen: screen,
+    parallelView: parallelMV,
   };
   const classes = useStyles(styleProps);
   const theme = useTheme();
@@ -409,6 +422,7 @@ const BookCombo = (props) => {
 const mapStateToProps = (state) => {
   return {
     parallelScroll: state.local.parallelScroll,
+    parallelView: state.local.parallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

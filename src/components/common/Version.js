@@ -83,8 +83,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     [theme.breakpoints.down("sm")]: {
       left: 0,
-    },
-    [theme.breakpoints.only("xs")]: {
       display: "none",
     },
   },
