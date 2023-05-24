@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     top: 134,
     bottom: 0,
     paddingTop: 30,
-    overflow: "scroll",
+    overflow: "auto",
     position: "absolute",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
@@ -59,13 +59,13 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.only("xs")]: {
       width: "100%",
-      padding: "10px 5px",
-      top: 40,
+      padding: "0 5px",
+      top: 57,
     },
     [theme.breakpoints.only("sm")]: {
       width: "100%",
-      top: 100,
-      paddingTop: 8,
+      top: 123,
+      paddingTop: 0,
     },
   },
   container: {
@@ -87,13 +87,16 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   calendar: {
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
     width: "50%",
-    [theme.breakpoints.down("sm")]: { width: 120 },
+    [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
   },
   message: {
     margin: 18,
@@ -272,15 +275,12 @@ const ReadingPlan = (props) => {
           <Box className={classes.heading}>
             <Box flexGrow={1} className={classes.refBox}>
               <Typography variant="h6" className={classes.refText}>
-                {mobileView
-                  ? ""
-                  : "Bible references" +
-                    " for " +
-                    selectedDate.getDate() +
-                    "-" +
-                    months[selectedDate.getMonth()] +
-                    "-" +
-                    selectedDate.getFullYear()}
+                {"Bible references for " +
+                  selectedDate.getDate() +
+                  "-" +
+                  months[selectedDate.getMonth()] +
+                  "-" +
+                  selectedDate.getFullYear()}
               </Typography>
             </Box>
           </Box>
