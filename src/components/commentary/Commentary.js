@@ -240,7 +240,7 @@ const Commentary = (props) => {
       if (commentaryObject.bookIntro) {
         commText += "<p>" + changeBaseUrl(commentaryObject.bookIntro) + "</p>";
       }
-      if (commentaryObject?.commentaries?.length > 0) {
+       if (commentaryObject?.commentaries?.length > 0 || commentaryObject?.bookIntro) {
         let item;
         for (item of commentaryObject.commentaries) {
           if (
@@ -259,6 +259,8 @@ const Commentary = (props) => {
       setCommentaryText(commText);
     }
   }, [baseUrl, commentary, commentaryObject, verseLabel]);
+  console.log(commentaryText,"text")
+  console.log(commentaryObject,"object")
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
