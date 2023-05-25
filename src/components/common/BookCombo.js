@@ -197,7 +197,6 @@ const BookCombo = (props) => {
   }, [bookCode]);
   React.useEffect(() => {
     if (paneNo !== 2) {
-      console.log("setbookcombo");
       localStorage.setItem("bookCode", bookCode);
       localStorage.setItem("chapter", chapter);
     }
