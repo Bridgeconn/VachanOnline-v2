@@ -4,7 +4,8 @@ const defaultState = {
   versions: [],
   commentaries: [],
   commentary: {},
-  commentaryLang: "hin",
+  commentaryLang: "hindi",
+  language: "hindi",
   dictionary: {
     dictionaries: [],
     selectedDictionary: {},
