@@ -83,8 +83,9 @@ const useStyles = makeStyles((theme) => ({
 const CommentaryCombo = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [expanded, setExpanded] = React.useState("hindi");
-  const { commentary, setValue } = props;
+  const { commentary, setValue, commentaryLang } = props;
+  const [expanded, setExpanded] = React.useState(commentaryLang);
+
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -167,7 +168,7 @@ const CommentaryCombo = (props) => {
                     <ListItem
                       key={i}
                       value={encodeURIComponent(JSON.stringify(item))}
-                      onClick={(e) => setCommentary(e, languages.languageCode)}
+                      onClick={(e) => setCommentary(e, languages.language)}
                       className={classes.commentary}
                     >
                       {item.code.toUpperCase()} : {item.name}
@@ -182,10 +183,15 @@ const CommentaryCombo = (props) => {
     </>
   );
 };
+const mapStateToProps = (state) => {
+  return {
+    commentaryLang: state.local.commentaryLang,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
-export default connect(null, mapDispatchToProps)(CommentaryCombo);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentaryCombo);

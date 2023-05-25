@@ -126,7 +126,6 @@ const useStyles = makeStyles((theme) => ({
 const Version = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [expanded, setExpanded] = React.useState("hindi");
   const [displayVersion, setDisplayVersion] = React.useState("Loading...");
   const {
     setVersions,
@@ -142,8 +141,10 @@ const Version = (props) => {
     parallelScroll,
     setMainValue,
     mobileView,
+    language,
+    setValue1,
   } = props;
-
+  const [expanded, setExpanded] = React.useState(language);
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -226,6 +227,7 @@ const Version = (props) => {
     function getDisplayLanguage(language) {
       language = language?.toLowerCase();
       const found = languageJson.find((lang) => lang.language === language);
+      setValue1("language", found?.language);
       return found?.languageName || language;
     }
     if (mobileView) {
@@ -234,7 +236,7 @@ const Version = (props) => {
       const language = getLanguageByCode(versions, langCode?.toLowerCase());
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, mobileView, version, versions]);
+  }, [landingPage, mobileView, setValue1, version, versions]);
 
   return (
     <>
@@ -348,6 +350,7 @@ const mapStateToProps = (state) => {
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
     mobileView: state.local.mobileView,
+    language: state.local.language,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -357,6 +360,8 @@ const mapDispatchToProps = (dispatch) => {
     setVersionBooks: (name, value) =>
       dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
     setMainValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    setValue1: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };

@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
-// import DateCalendar from "react-date-picker";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
@@ -126,9 +125,11 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     [theme.breakpoints.down("md")]: {
       width: 150,
+      padding: "0 15px",
     },
     [theme.breakpoints.only("xs")]: {
       width: 200,
+      padding: "0 15px",
     },
   },
   closeButton: {
@@ -252,6 +253,7 @@ const ReadingPlan = (props) => {
                   className={classes.calendar}
                   selected={selectedDate}
                   onChange={(date) => setSelectedDate(date)}
+                  withPortal
                 />
               ) : null}
             </div>
