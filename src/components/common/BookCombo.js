@@ -12,6 +12,12 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import Tooltip from "@material-ui/core/Tooltip";
+import {
+  COMMENTARY,
+  PARALLELBIBLE,
+  READINGPLANS,
+  SEARCH,
+} from "../../store/views";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -31,14 +37,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
+    [theme.breakpoints.only("sm")]: {
+      padding: 6,
+      maxWidth: (props) => (props.parallelView ? 110 : 165),
+    },
     [theme.breakpoints.down("xs")]: {
-      width: "60%",
+      maxWidth: 165,
       padding: (props) =>
         props.screen === "info" ||
         props.screen === "audio" ||
         props.screen === "video"
-          ? "4px 0"
-          : "6px 0",
+          ? 4
+          : 6,
       margin: 9,
     },
   },
@@ -48,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
     width: 30,
     [theme.breakpoints.down("sm")]: {
       left: 0,
+      display: "none",
     },
   },
   root: {
@@ -123,22 +134,17 @@ const useStyles = makeStyles((theme) => ({
   bookName: {
     whiteSpace: "nowrap",
     minWidth: 100,
-    maxWidth: 130,
+    width: "fit-content",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    [theme.breakpoints.down("sm")]: {
-      maxWidth: 60,
-      minWidth: 60,
-    },
   },
   bookNameBox: {
     [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
-      minWidth: 70,
-      maxWidth: 80,
+      minWidth: 130,
+      maxWidth: 150,
       overflow: "hidden",
       textOverflow: "ellipsis",
-      padding: "0 5px",
     },
   },
 }));
@@ -152,12 +158,17 @@ const BookCombo = (props) => {
     minimal,
     landingPage,
     parallelScroll,
+    parallelView,
     syncPanel,
     screen,
   } = props;
   //classes for styling
+  console.log(parallelView);
+  const mobilePV = [PARALLELBIBLE, COMMENTARY, READINGPLANS, SEARCH];
+  const parallelMV = mobilePV.includes(parallelView);
   const styleProps = {
     screen: screen,
+    parallelView: parallelMV,
   };
   const classes = useStyles(styleProps);
   const theme = useTheme();
@@ -416,6 +427,7 @@ const BookCombo = (props) => {
 const mapStateToProps = (state) => {
   return {
     parallelScroll: state.local.parallelScroll,
+    parallelView: state.local.parallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "none",
     },
     [theme.breakpoints.down("sm")]: {
-      marginLeft: 0,
+      margin: 0,
       width: "60%",
       marginTop: 0,
       marginBottom: 2,
