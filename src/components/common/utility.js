@@ -26,17 +26,21 @@ export const getVersions = (
       if (versions.length > 0) {
         let version = versions[0].languageVersions[0];
         try {
+          const lsVersion = localStorage.getItem("version");
+          const langCode = lsVersion?.split("-")[0] || "hin";
+          const versionCode = lsVersion?.split("-")[1] || "IRV";
           version = versions
-            .find((e) => e.language === "hindi")
-            .languageVersions.find((e) => e.version.code === "IRV");
+            .find((e) => e?.languageVersions[0]?.language?.code === langCode)
+            .languageVersions.find((e) => e.version.code === versionCode);
         } catch (e) {
-          //hindi IRV version not available use first versions
+          // last read or hindi IRV version not available use first versions
         }
         setPaneValue(
           "version",
           version.language.code + "-" + version.version.code.toUpperCase()
         );
         setPaneValue("sourceId", version.sourceId);
+        setUserSettings(setPaneValue);
         getAllBooks(setVersionBooks, setPaneValue, setValue);
         let versionSource = {};
         for (let lang of versions) {
@@ -51,6 +55,21 @@ export const getVersions = (
       console.log(error);
     });
 };
+//Function to set User Bible settings from local storage
+const setUserSettings = (setValue) => {
+  const fontSize = localStorage.getItem("fontSize");
+  if (fontSize) {
+    setValue("fontSize", parseInt(fontSize));
+  }
+  const fontFamily = localStorage.getItem("fontFamily");
+  if (fontFamily) {
+    setValue("fontFamily", fontFamily);
+  }
+  const lineView = localStorage.getItem("lineView");
+  if (lineView) {
+    setValue("lineView", JSON.parse(lineView));
+  }
+};
 //Function to get the bible books
 export const getAllBooks = (setVersionBooks, setPaneValue, setValue) => {
   API.get("booknames")
@@ -64,8 +83,10 @@ export const getAllBooks = (setVersionBooks, setPaneValue, setValue) => {
       const languages = response.data.map((a) => a.language);
       getAllInfographics(languages, setValue);
       if (response.data && response.data.length > 0) {
-        setPaneValue("bookCode", "jhn");
-        setPaneValue("chapter", "1");
+        const bookCode = localStorage.getItem("bookCode") || "jhn";
+        const chapter = localStorage.getItem("chapter") || "1";
+        setPaneValue("bookCode", bookCode);
+        setPaneValue("chapter", chapter);
       }
     })
     .catch(function (error) {
