@@ -142,6 +142,7 @@ const Version = (props) => {
     parallelScroll,
     setMainValue,
     mobileView,
+    paneNo,
     language,
     setValue1,
   } = props;
@@ -182,7 +183,7 @@ const Version = (props) => {
       bookList.findIndex((e) => e.book_code === bookCode) === -1
     ) {
       //If current book not available set first available book
-      //Using bookname api call for now, will fail in case a langauge has full and NT bible
+      //Using bookname api call for now, will fail in case a language has full and NT bible
       //In that case will need to update bible API with books present and see actual book present in bible or not
       setValue("chapter", 1);
       setValue("bookCode", bookList[0].book_code);
@@ -223,6 +224,12 @@ const Version = (props) => {
     }
     return code;
   }
+  React.useEffect(() => {
+    if (version !== "Loading..." && paneNo !== 2) {
+      const [lang, ver] = version.split("-");
+      localStorage.setItem("version", lang.toLowerCase() + "-" + ver);
+    }
+  }, [version, paneNo]);
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
     function getDisplayLanguage(language) {

@@ -284,7 +284,12 @@ const MenuBar = (props) => {
     <div>
       <Box className={classes.read}>
         <Box flexGrow={1} className={classes.selectBox}>
-          <Version setValue={setValue} version={version} bookCode={bookCode} />
+          <Version
+            setValue={setValue}
+            version={version}
+            bookCode={bookCode}
+            paneNo={paneNo}
+          />
           {bookCode ? (
             <BookCombo
               paneNo={paneNo}
@@ -345,6 +350,7 @@ const MenuBar = (props) => {
             setPrintHighlights={setPrintHighlights}
             bookDisplay={bookDisplay}
             chapter={chapter}
+            paneNo={paneNo}
           />
           {mobileView && paneNo === 1 ? (
             <div className={classes.infoParall} onClick={toggleParallelScroll}>

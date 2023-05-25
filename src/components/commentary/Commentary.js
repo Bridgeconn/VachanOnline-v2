@@ -10,7 +10,6 @@ import { getCommentaryForChapter } from "../common/utility";
 import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
-import * as views from "../../store/views";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -240,7 +239,10 @@ const Commentary = (props) => {
       if (commentaryObject.bookIntro) {
         commText += "<p>" + changeBaseUrl(commentaryObject.bookIntro) + "</p>";
       }
-       if (commentaryObject?.commentaries?.length > 0 || commentaryObject?.bookIntro?.length > 0) {
+      if (
+        commentaryObject?.commentaries?.length > 0 ||
+        commentaryObject?.bookIntro?.length > 0
+      ) {
         let item;
         for (item of commentaryObject.commentaries) {
           if (
@@ -271,9 +273,8 @@ const Commentary = (props) => {
             commentary={props.commentary}
             setCommentary={props.setCommentary}
           />
-          {mobileView && views.DRAWERCOMMENTARY ? (
+          {mobileView && screenView === "single" ? (
             <BookCombo
-              paneNo={panel1}
               bookCode={bookCode}
               bookList={bookNames}
               chapter={chapter}
@@ -328,7 +329,7 @@ const mapDispatchToProps = (dispatch) => {
     setCommentary: (value) =>
       dispatch({ type: actions.SETVALUE, name: "commentary", value: value }),
     setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);

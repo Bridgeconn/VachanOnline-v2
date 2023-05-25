@@ -180,7 +180,6 @@ const SignBible = (props) => {
               bookCode={bookCode}
               chapter={chapter}
               setValue={setValue}
-              paneNo={panel1}
               bookList={versionBooks[versionSource[sourceId]]}
               minimal={true}
             />

@@ -163,7 +163,6 @@ const BookCombo = (props) => {
     screen,
   } = props;
   //classes for styling
-  console.log(parallelView);
   const mobilePV = [PARALLELBIBLE, COMMENTARY, READINGPLANS, SEARCH];
   const parallelMV = mobilePV.includes(parallelView);
   const styleProps = {
@@ -196,6 +195,12 @@ const BookCombo = (props) => {
   React.useEffect(() => {
     setOpenBookCode(bookCode);
   }, [bookCode]);
+  React.useEffect(() => {
+    if (paneNo !== 2) {
+      localStorage.setItem("bookCode", bookCode);
+      localStorage.setItem("chapter", chapter);
+    }
+  }, [paneNo, bookCode, chapter]);
   //on changing book code set chapter row
   React.useEffect(() => {
     bookList?.forEach((element, i) => {

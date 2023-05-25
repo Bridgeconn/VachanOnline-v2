@@ -102,8 +102,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Infographics = (props) => {
   const classes = useStyles();
-  let { infographics, panel1, versionBooks, setValue, paneNo, mobileView } =
-    props;
+  let { infographics, panel1, versionBooks, setValue, mobileView } = props;
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
   const [bookData, setBookData] = useState([]);
@@ -183,7 +182,6 @@ const Infographics = (props) => {
           )}
           {mobileView && bookCode ? (
             <BookCombo
-              paneNo={paneNo}
               bookCode={bookCode}
               bookList={versionBooks[language.value]}
               chapter={chapter}

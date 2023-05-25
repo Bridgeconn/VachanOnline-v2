@@ -72,23 +72,30 @@ const Setting = ({
   bookDisplay,
   chapter,
   mobileView,
+  paneNo,
 }) => {
   const classes = useStyles();
   const open = Boolean(settingsAnchor);
 
+  function setItem(key, value) {
+    setValue(key, value);
+    if (paneNo !== 2) {
+      localStorage.setItem(key, value);
+    }
+  }
   const decreaseFontSize = () => {
-    setValue("fontSize", fontSize > 12 ? fontSize - 1 : fontSize);
+    setItem("fontSize", fontSize > 12 ? fontSize - 1 : fontSize);
   };
 
   const increaseFontSize = () => {
-    setValue("fontSize", fontSize < 25 ? fontSize + 1 : fontSize);
+    setItem("fontSize", fontSize < 25 ? fontSize + 1 : fontSize);
   };
 
   const setFontFamily = (event) => {
-    setValue("fontFamily", event.currentTarget.getAttribute("value"));
+    setItem("fontFamily", event.currentTarget.getAttribute("value"));
   };
   const setLineView = (event) => {
-    setValue("lineView", event.target.checked);
+    setItem("lineView", event.target.checked);
   };
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
