@@ -179,7 +179,7 @@ const Audio = (props) => {
       ];
 
       if (OBTBibles.includes(value)) {
-        const message = `OBT Audio bible not available in ${value} for this book.\nIt is available only for Mark, Luke, 1st and 2nd Thessalonians.\nUse the book dropdown in the left panel to navigate.`;
+        const message = `Audio Bible not available in ${value} for this book.\nIt is available only for Mark, Luke, 1st and 2nd Thessalonians.\nUse the book dropdown in the left panel to navigate.`;
         setMessage(message);
       } else {
         setMessage(`Audio bible not available in ${value} for this book`);
