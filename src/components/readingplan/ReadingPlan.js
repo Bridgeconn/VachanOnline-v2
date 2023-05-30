@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
-import DateCalendar from "react-date-picker";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
@@ -14,6 +13,9 @@ import Select from "react-select";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import { GREY } from "../../store/colorCode";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -29,15 +31,18 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       marginTop: 5,
+    },
+    [theme.breakpoints.only("sm")]: {
+      marginTop: 70,
     },
   },
   main: {
     top: 134,
     bottom: 0,
     paddingTop: 30,
-    overflow: "scroll",
+    overflow: "auto",
     position: "absolute",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
@@ -51,10 +56,15 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       width: "100%",
-      padding: "10px 5px",
-      top: 58,
+      padding: "0 5px",
+      top: 57,
+    },
+    [theme.breakpoints.only("sm")]: {
+      width: "100%",
+      top: 123,
+      paddingTop: 0,
     },
   },
   container: {
@@ -76,13 +86,16 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   calendar: {
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
     width: "50%",
-    [theme.breakpoints.down("sm")]: { width: 120 },
+    [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
   },
   message: {
     margin: 18,
@@ -97,6 +110,10 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: theme.shadows[1],
+      paddingLeft: 15,
+    },
   },
   refText: {
     [theme.breakpoints.down("sm")]: {
@@ -106,6 +123,14 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     width: 200,
+    [theme.breakpoints.down("md")]: {
+      width: 150,
+      padding: "0 15px",
+    },
+    [theme.breakpoints.only("xs")]: {
+      width: 200,
+      padding: "0 15px",
+    },
   },
   closeButton: {
     marginTop: 7,
@@ -209,20 +234,29 @@ const ReadingPlan = (props) => {
     <div className={classes.root}>
       <Box className={classes.title}>
         <Box flexGrow={1}>
-          <Typography variant="h6">
-            {" "}
-            {mobileView ? "" : "Reading Plans"}
-          </Typography>
+          {mobileView ? null : (
+            <Typography variant="h6"> {"Reading Plans"}</Typography>
+          )}
         </Box>
         <Box flexGrow={1}>
           {plan ? (
-            <Select
-              className={classes.select}
-              defaultValue={plan}
-              onChange={(data) => setPlan(data)}
-              options={plans}
-              isSearchable={false}
-            />
+            <div className={mobileView ? classes.dateContainer : null}>
+              <Select
+                className={classes.select}
+                defaultValue={plan}
+                onChange={(data) => setPlan(data)}
+                options={plans}
+                isSearchable={false}
+              />
+              {mobileView ? (
+                <ReactDatePicker
+                  className={classes.calendar}
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  withPortal
+                />
+              ) : null}
+            </div>
           ) : (
             ""
           )}
@@ -243,29 +277,13 @@ const ReadingPlan = (props) => {
           <Box className={classes.heading}>
             <Box flexGrow={1} className={classes.refBox}>
               <Typography variant="h6" className={classes.refText}>
-                {mobileView
-                  ? ""
-                  : "Bible references" +
-                    " for " +
-                    selectedDate.getDate() +
-                    "-" +
-                    months[selectedDate.getMonth()] +
-                    "-" +
-                    selectedDate.getFullYear()}
+                {"Bible references for " +
+                  selectedDate.getDate() +
+                  "-" +
+                  months[selectedDate.getMonth()] +
+                  "-" +
+                  selectedDate.getFullYear()}
               </Typography>
-              {mobileView ? (
-                <div className={classes.dateContainer}>
-                  <Typography variant="h6" className={classes.refText}>
-                    References for{" "}
-                  </Typography>
-                  <DateCalendar
-                    className={classes.calendar}
-                    onChange={(date) => setSelectedDate(date)}
-                    value={selectedDate}
-                    clearIcon={null}
-                  />
-                </div>
-              ) : null}
             </Box>
           </Box>
           <>
@@ -302,6 +320,17 @@ const ReadingPlan = (props) => {
                           >
                             {reading.text}
                           </Button>
+                          {mobileView ? (
+                            <Typography
+                              style={{
+                                color: GREY,
+                                fontSize: "0.9rem",
+                                float: "right",
+                              }}
+                            >
+                              Book not available
+                            </Typography>
+                          ) : null}
                         </ListItem>
                       </span>
                     </BigTooltip>

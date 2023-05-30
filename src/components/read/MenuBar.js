@@ -29,9 +29,16 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     height: 60,
     top: 72,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("sm")]: {
+      padding: "0 4px",
+      top: 61,
+    },
+    [theme.breakpoints.only("xs")]: {
       padding: "0 5.5px",
       top: (props) => (props.paneNo === 2 ? 0 : 60),
+    },
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: theme.shadows[1],
     },
   },
   selectBox: {
@@ -54,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   infoParall: {
     padding: 0,
-    width: "30px",
+    width: 22,
     marginTop: 15,
     marginRight: 4,
     color: "default",
@@ -71,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
   },
   items: {
     display: "flex",
+    [theme.breakpoints.only("sm")]: {
+      marginLeft: -16,
+    },
   },
 }));
 const MenuBar = (props) => {
@@ -251,7 +261,6 @@ const MenuBar = (props) => {
   React.useEffect(() => {
     const openAudioBible = () => {
       setValue("audio", !audio);
-      setValue("audioBible", audioBible);
     };
     if (
       audioBible &&
@@ -275,7 +284,12 @@ const MenuBar = (props) => {
     <div>
       <Box className={classes.read}>
         <Box flexGrow={1} className={classes.selectBox}>
-          <Version setValue={setValue} version={version} bookCode={bookCode} />
+          <Version
+            setValue={setValue}
+            version={version}
+            bookCode={bookCode}
+            paneNo={paneNo}
+          />
           {bookCode ? (
             <BookCombo
               paneNo={paneNo}
@@ -336,6 +350,7 @@ const MenuBar = (props) => {
             setPrintHighlights={setPrintHighlights}
             bookDisplay={bookDisplay}
             chapter={chapter}
+            paneNo={paneNo}
           />
           {mobileView && paneNo === 1 ? (
             <div className={classes.infoParall} onClick={toggleParallelScroll}>

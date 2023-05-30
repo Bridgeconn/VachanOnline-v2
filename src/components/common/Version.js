@@ -15,6 +15,7 @@ import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import { languageJson } from "../../store/languageData";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
     [theme.breakpoints.down("sm")]: {
-      width: "30%",
+      minWidth: 50,
       padding: "6px 10px",
     },
     [theme.breakpoints.up("md")]: {
@@ -75,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
       minHeight: 40,
       maxHeight: 40,
       boxShadow: theme.shadows[4],
+      backgroundColor: LIGHTGREY,
     },
   },
   icon: {
@@ -82,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     [theme.breakpoints.down("sm")]: {
       left: 0,
+      display: "none",
     },
   },
   versionName: {
@@ -94,11 +97,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    maxHeight: "calc(100vh - 150px)",
+    maxHeight: "calc(100vh - 170px)",
     width: 300,
   },
   language: {
     fontSize: "1rem",
+    width: "100%",
   },
   version: {
     fontSize: "1rem",
@@ -114,11 +118,15 @@ const useStyles = makeStyles((theme) => ({
   expansionDetailsRoot: {
     padding: 0,
   },
+  lang: {
+    color: GREY,
+    fontSize: "0.9rem",
+    float: "right",
+  },
 }));
 const Version = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [expanded, setExpanded] = React.useState("hindi");
   const [displayVersion, setDisplayVersion] = React.useState("Loading...");
   const {
     setVersions,
@@ -134,8 +142,11 @@ const Version = (props) => {
     parallelScroll,
     setMainValue,
     mobileView,
+    paneNo,
+    language,
+    setValue1,
   } = props;
-
+  const [expanded, setExpanded] = React.useState(language);
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -172,7 +183,7 @@ const Version = (props) => {
       bookList.findIndex((e) => e.book_code === bookCode) === -1
     ) {
       //If current book not available set first available book
-      //Using bookname api call for now, will fail in case a langauge has full and NT bible
+      //Using bookname api call for now, will fail in case a language has full and NT bible
       //In that case will need to update bible API with books present and see actual book present in bible or not
       setValue("chapter", 1);
       setValue("bookCode", bookList[0].book_code);
@@ -192,27 +203,48 @@ const Version = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
+  function getFullDisplayLanguage(language) {
+    language = language?.toLowerCase();
+    const found = languageJson.find((lang) => lang.language === language);
+    const lang = (
+      <>
+        <span>{found?.languageName}</span>
+        <span className={classes.lang}>{language}</span>
+      </>
+    );
+    return found?.languageName.toLowerCase() === language ? language : lang;
+  }
+
+  function getLanguageByCode(versions, code) {
+    for (const language of versions) {
+      const languages = language["languageVersions"];
+      if (languages[0]?.language?.code === code) {
+        return languages[0]?.language?.name;
+      }
+    }
+    return code;
+  }
+  React.useEffect(() => {
+    if (version !== "Loading..." && paneNo !== 2) {
+      const [lang, ver] = version.split("-");
+      localStorage.setItem("version", lang.toLowerCase() + "-" + ver);
+    }
+  }, [version, paneNo]);
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
+    function getDisplayLanguage(language) {
+      language = language?.toLowerCase();
+      const found = languageJson.find((lang) => lang.language === language);
+      setValue1("language", found?.language);
+      return found?.languageName || language;
+    }
     if (mobileView) {
       setDisplayVersion(versionCode);
     } else {
-      for (let lang in versions) {
-        let languageNames = versions[lang];
-        let langVersions = languageNames["languageVersions"];
-        for (let versionNames in langVersions) {
-          if (
-            langCode.toLowerCase() ===
-            langVersions[versionNames]["language"]["code"]
-          ) {
-            setDisplayVersion(
-              langVersions[versionNames]["language"]["name"] + "-" + versionCode
-            );
-          }
-        }
-      }
+      const language = getLanguageByCode(versions, langCode?.toLowerCase());
+      setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, mobileView, version, versions]);
+  }, [landingPage, mobileView, setValue1, version, versions]);
 
   return (
     <>
@@ -222,11 +254,7 @@ const Version = (props) => {
           aria-haspopup="true"
           onClick={handleClick}
           variant="contained"
-          style={
-            landingPage && mobileView
-              ? { marginLeft: 0, marginRight: 15, width: "60%" }
-              : {}
-          }
+          style={landingPage && mobileView ? { marginRight: 15 } : {}}
           classes={
             landingPage
               ? { root: classes.button }
@@ -283,7 +311,7 @@ const Version = (props) => {
                   }}
                 >
                   <Typography className={classes.language}>
-                    {version.language}
+                    {getFullDisplayLanguage(version.language)}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails
@@ -326,6 +354,7 @@ const mapStateToProps = (state) => {
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
     mobileView: state.local.mobileView,
+    language: state.local.language,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -335,6 +364,8 @@ const mapDispatchToProps = (dispatch) => {
     setVersionBooks: (name, value) =>
       dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
     setMainValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    setValue1: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };

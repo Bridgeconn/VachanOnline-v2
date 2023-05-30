@@ -6,7 +6,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SideDrawer from "./SideDrawer";
 import { BLACK } from "../../store/colorCode";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     top: "auto",
     bottom: 0,
@@ -16,6 +16,9 @@ const useStyles = makeStyles(() => ({
     padding: 0,
     display: "flex",
     justifyContent: "space-evenly",
+    [theme.breakpoints.only("sm")]: {
+      minHeight: 56,
+    },
   },
   text: {
     fontSize: 10,

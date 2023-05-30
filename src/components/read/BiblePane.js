@@ -20,8 +20,11 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     overflow: "auto",
     marginBottom: -15,
-    [theme.breakpoints.down("sm")]: {
-      top: (props) => (props?.paneNo === 2 ? 61 : 120),
+    [theme.breakpoints.only("xs")]: {
+      top: (props) => (props?.paneNo === 2 ? 61 : 121),
+    },
+    [theme.breakpoints.only("sm")]: {
+      top: 122,
     },
   },
   fullscreen: {

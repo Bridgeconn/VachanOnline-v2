@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "28px",
     fontSize: 16,
     paddingLeft: 14,
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 5,
+    },
   },
   metadataRow: {
     "&:last-child": {
@@ -58,6 +61,12 @@ const useStyles = makeStyles((theme) => ({
   },
   closeButton: {
     color: "inherit",
+  },
+  metaDataBox: {
+    [theme.breakpoints.down("sm")]: {
+      height: "80vh",
+      overflow: "scroll",
+    },
   },
 }));
 export default function Metadata({
@@ -149,7 +158,7 @@ export default function Metadata({
                   </IconButton>
                 </Grid>
               </Grid>
-              <Grid container>
+              <Grid container className={classes.metaDataBox}>
                 {Object.keys(metadataList)
                   .sort()
                   .map((item, i) => {
@@ -165,13 +174,12 @@ export default function Metadata({
                           xs={12}
                           key={i}
                           alignItems="flex-start"
-                          justifyContent="flex-end"
                           className={classes.metadataRow}
                         >
-                          <Grid item xs={4} className={classes.metadataHeading}>
-                            {item}:
+                          <Grid item md={4} className={classes.metadataHeading}>
+                            {item} :
                           </Grid>
-                          <Grid item xs={8} className={classes.metadataText}>
+                          <Grid item md={8} className={classes.metadataText}>
                             {metadataList[item].split(" ").map(checkLink)}
                           </Grid>
                         </Grid>

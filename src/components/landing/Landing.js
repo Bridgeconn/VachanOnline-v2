@@ -18,6 +18,8 @@ import Typography from "@material-ui/core/Typography";
 import { useMediaQuery } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import { VIDEO } from "../../store/views";
+import { AUDIO } from "../../store/views";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -181,8 +183,16 @@ const Landing = (props) => {
         className={classes.imageRow}
       >
         <ImageCard src={read} text="read" />
-        <ImageCard src={watch} text="watch" />
-        <ImageCard src={listen} text="listen" />
+        <ImageCard
+          src={watch}
+          text="watch"
+          onClick={() => setValue("parallelView", VIDEO)}
+        />
+        <ImageCard
+          src={listen}
+          text="listen"
+          onClick={() => setValue("parallelView", AUDIO)}
+        />
       </Grid>
 
       <LandingFooter />

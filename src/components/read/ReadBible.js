@@ -18,7 +18,7 @@ import Highlights from "../highlight/Highlights";
 import Notes from "../note/Notes";
 import Search from "../search/Search";
 import BibleMenu from "./BibleMenu";
-import { GREY } from "../../store/colorCode";
+import { GREY, LIGHTGREY } from "../../store/colorCode";
 import SignBible from "../signbible/SignBible";
 import {
   getCommentaries,
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       borderBottom: "1px solid #f1ecec",
       width: "100%",
       height: "calc(50% + 1.8rem)",
@@ -71,7 +71,8 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
     right: 0,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
+      borderTop: "1px solid " + LIGHTGREY,
       top: "calc(50% + 1.8rem)",
       width: "100%",
       height: "calc(50% - 1.8rem)",

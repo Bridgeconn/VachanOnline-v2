@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import { getAudioBibleObject } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -65,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       paddingRight: 20,
       paddingLeft: 20,
+      lineHeight: "1.8em",
     },
   },
   prevChapter: {
@@ -81,6 +83,8 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       left: 10,
+      top: "unset",
+      bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
     },
   },
   nextChapter: {
@@ -97,6 +101,8 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       right: 10,
+      top: "unset",
+      bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
     },
   },
   loading: {
@@ -105,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
   player: {
     position: "sticky",
     bottom: "10px",
-    left: "2%",
+    left: 35,
     [theme.breakpoints.down("sm")]: {
       bottom: (props) => props.audioBottom,
     },
@@ -121,8 +127,8 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
     [theme.breakpoints.down("sm")]: {
-      marginBottom: (props) =>
-        props.singlePane || props?.paneNo === 2 ? 40 : 0,
+      marginBottom: 40,
+      padding: "0 0 50px 5px",
     },
     padding: "0 25px",
   },
@@ -260,9 +266,9 @@ const Bible = (props) => {
     bookCode,
     chapter,
     version,
+    versions,
     fontFamily,
     audio,
-    audioBible,
     setValue,
     scroll,
     paneNo,
@@ -305,6 +311,7 @@ const Bible = (props) => {
   const [alertMessage, setAlertMessage] = React.useState(false);
   const [editObject, setEditObject] = React.useState({});
   const [edit, setEdit] = React.useState(false);
+  const currentAudio = getAudioBibleObject(versions, sourceId);
   //new usfm json structure
   const getHeading = (contents) => {
     if (contents) {
@@ -494,12 +501,12 @@ const Bible = (props) => {
   }, [sourceId, bookCode, chapter]);
   //if audio bible show icon
   React.useEffect(() => {
-    if (audio) {
+    if (currentAudio) {
       setAudioUrl(
-        audioBible.url + bookCode + "/" + chapter + "." + audioBible.format
+        currentAudio.url + bookCode + "/" + chapter + "." + currentAudio.format
       );
     }
-  }, [audio, audioBible, bookCode, chapter]);
+  }, [currentAudio, bookCode, chapter]);
   //Function to load previous chapter
   const prevClick = () => {
     if (!isLoading && Object.keys(previous).length > 0) {
@@ -777,7 +784,7 @@ const Bible = (props) => {
                 setMainValue("playing", paneNo);
               }}
               controls
-              width="96%"
+              width="calc(100% - 70px)"
               height="50px"
               className={classes.player}
               config={{
@@ -854,6 +861,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
+    versions: state.local.versions,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -19,8 +19,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 78,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       marginTop: 4,
+    },
+    [theme.breakpoints.only("sm")]: {
+      marginTop: 66,
     },
   },
   heading: {
@@ -28,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 6,
     paddingLeft: 15,
     borderBottom: "1px solid #f1ecec",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: theme.shadows[1],
+    },
   },
   list: {
     position: "absolute",
@@ -49,8 +55,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       top: 60,
+      paddingBottom: 10,
+    },
+    [theme.breakpoints.only("sm")]: {
+      top: 122,
       paddingBottom: 10,
     },
   },

@@ -10,14 +10,16 @@ import { getCommentaryForChapter } from "../common/utility";
 import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
-import * as views from "../../store/views";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       marginTop: (props) => (props.screenView === "single" ? 60 : 0),
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 60,
     },
   },
   title: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
       paddingBottom: 0,
       marginBottom: 0,
       alignItems: "center",
+      boxShadow: theme.shadows[1],
     },
   },
   titleComment: {
@@ -80,10 +83,10 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: "70%",
       margin: "30px 0px",
     },
-    [theme.breakpoints.up("sm")]: {
-      textAlign: "justify",
+    [theme.breakpoints.only("sm")]: {
+      top: 123,
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       top: (props) => (props.screenView === "single" ? 122 : 62),
     },
   },
@@ -236,7 +239,10 @@ const Commentary = (props) => {
       if (commentaryObject.bookIntro) {
         commText += "<p>" + changeBaseUrl(commentaryObject.bookIntro) + "</p>";
       }
-      if (commentaryObject?.commentaries?.length > 0) {
+      if (
+        commentaryObject?.commentaries?.length > 0 ||
+        commentaryObject?.bookIntro?.length > 0
+      ) {
         let item;
         for (item of commentaryObject.commentaries) {
           if (
@@ -267,9 +273,8 @@ const Commentary = (props) => {
             commentary={props.commentary}
             setCommentary={props.setCommentary}
           />
-          {mobileView && views.DRAWERCOMMENTARY ? (
+          {mobileView && screenView === "single" ? (
             <BookCombo
-              paneNo={panel1}
               bookCode={bookCode}
               bookList={bookNames}
               chapter={chapter}

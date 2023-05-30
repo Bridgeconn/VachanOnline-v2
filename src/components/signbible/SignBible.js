@@ -18,8 +18,11 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 72,
     bottom: 0,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("xs")]: {
       top: (props) => (props.parallelView === "DRAWERSIGNBIBLE" ? 60 : 0),
+    },
+    [theme.breakpoints.only("sm")]: {
+      top: 61,
     },
   },
   container: {
@@ -177,7 +180,6 @@ const SignBible = (props) => {
               bookCode={bookCode}
               chapter={chapter}
               setValue={setValue}
-              paneNo={panel1}
               bookList={versionBooks[versionSource[sourceId]]}
               minimal={true}
             />

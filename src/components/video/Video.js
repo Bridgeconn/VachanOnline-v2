@@ -109,7 +109,6 @@ const Video = (props) => {
     languageCode,
     mobileView,
     panel1,
-    paneNo,
   } = props;
   const { chapter } = panel1;
 
@@ -197,7 +196,6 @@ const Video = (props) => {
           )}
           {mobileView && bookCode ? (
             <BookCombo
-              paneNo={paneNo}
               bookCode={bookCode}
               bookList={versionBooks[language.value]}
               chapter={chapter}
