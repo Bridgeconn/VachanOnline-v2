@@ -49,6 +49,7 @@ export const getVersions = (
           }
         }
         setValue("versionSource", versionSource);
+        setPaneValue("language", version?.language);
       }
     })
     .catch(function (error) {

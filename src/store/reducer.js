@@ -5,7 +5,6 @@ const defaultState = {
   commentaries: [],
   commentary: {},
   commentaryLang: "hindi",
-  language: "hindi",
   dictionary: {
     dictionaries: [],
     selectedDictionary: {},
@@ -41,9 +40,10 @@ const defaultState = {
     lineView: false,
     audio: false,
     versesSelected: [],
+    language: "Loading...",
   },
   panel2: {
-    version: "Loading...",
+    version: "Loading...2",
     sourceId: "",
     bookCode: "",
     chapter: "",

@@ -143,10 +143,10 @@ const Version = (props) => {
     setMainValue,
     mobileView,
     paneNo,
-    language,
+    panel1,
     setValue1,
   } = props;
-  const [expanded, setExpanded] = React.useState(language);
+  const [expanded, setExpanded] = React.useState(panel1?.language);
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -229,12 +229,13 @@ const Version = (props) => {
       const [lang, ver] = version.split("-");
       localStorage.setItem("version", lang.toLowerCase() + "-" + ver);
     }
-  }, [version, paneNo]);
+  }, [version, paneNo, versions]);
   React.useEffect(() => {
+    handleChange(panel1.language);
     let [langCode, versionCode] = version.split("-");
     function getDisplayLanguage(language) {
       language = language?.toLowerCase();
-      const found = languageJson.find((lang) => lang.language === language);
+      const found = languageJson.find((lang) => lang.langCode === langCode);
       setValue1("language", found?.language);
       return found?.languageName || language;
     }
@@ -244,8 +245,15 @@ const Version = (props) => {
       const language = getLanguageByCode(versions, langCode?.toLowerCase());
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, mobileView, setValue1, version, versions]);
-
+  }, [
+    landingPage,
+    mobileView,
+    setValue1,
+    expanded,
+    version,
+    versions,
+    panel1.language,
+  ]);
   return (
     <>
       <BigTooltip title="Select a Bible in your language and version">
@@ -354,7 +362,7 @@ const mapStateToProps = (state) => {
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
     mobileView: state.local.mobileView,
-    language: state.local.language,
+    panel1: state.local.panel1,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -366,7 +374,9 @@ const mapDispatchToProps = (dispatch) => {
     setMainValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
     setValue1: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+    setValue2: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Version);
