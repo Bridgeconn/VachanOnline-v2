@@ -318,7 +318,9 @@ const MenuBar = (props) => {
           {mobileView ? null : (
             <>
               <div className={classes.info} onClick={handleDialogOpen}>
+                 <Tooltip title="Print Chapter">
                 <PrintIcon fontSize="small" />
+                </Tooltip>
               </div>
               <Tooltip title="Fullscreen">
                 <div onClick={goFull} className={classes.info}>
