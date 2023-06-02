@@ -3,7 +3,10 @@ import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import Toolbar from "@material-ui/core/Toolbar";
 import Paper from "@material-ui/core/Paper";
+import * as actions from "../../store/actions";
+
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,23 +45,36 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const LanguageBar = ({ setLanguage }) => {
+const LanguageBar = (props) => {
+  const { setLanguage, setValue, versions } = props;
   const classes = useStyles();
   const languages = [
-    "অসমীয়া",
-    "বাঙালি",
-    "English",
-    "ગુજરાતી",
-    "हिंदी",
-    "ಕನ್ನಡ",
-    "മലയാളം",
-    "मराठी",
-    "ଓଡିଆ",
-    "ਪੰਜਾਬੀ",
-    "தமிழ்",
-    "తెలుగు",
-    "اردو",
+    { language: "assamese", languageName: "অসমীয়া" },
+    { language: "bengali", languageName: "বাঙালি", langCode: "ben" },
+    { language: "english", languageName: "English", langCode: "eng" },
+    { language: "gujarati", languageName: "ગુજરાતી", langCode: "guj" },
+    { language: "hindi", languageName: "हिंदी", langCode: "hin" },
+    { language: "kannada", languageName: "ಕನ್ನಡ", langCode: "kan" },
+    { language: "malayalam", languageName: "മലയാളം", langCode: "mal" },
+    { language: "marathi", languageName: "मराठी", langCode: "mar" },
+    { language: "odia", languageName: "ଓଡିଆ", langCode: "ory" },
+    { language: "punjabi", languageName: "ਪੰਜਾਬੀ", langCode: "pan" },
+    { language: "tamil", languageName: "தமிழ்", langCode: "tam" },
+    { language: "telugu", languageName: "తెలుగు", langCode: "tel" },
+    { language: "urdu", languageName: "اردو", langCode: "urd" },
   ];
+  const selectedLang = (lan) => {
+    let version = versions.find((version) => version?.language === lan);
+    setValue(
+      "version",
+      version?.languageVersions[0]?.language?.code +
+        "-" +
+        version?.languageVersions[0]?.version?.code
+    );
+    setValue("sourceId", version?.languageVersions[0]?.sourceId);
+    setValue("language", lan);
+    window.location.assign("/read");
+  };
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
@@ -69,15 +85,15 @@ const LanguageBar = ({ setLanguage }) => {
             className={classes.languageBar}
           >
             <Toolbar variant="dense" className={classes.toolbarSecondary}>
-              {Object.keys(languages).map((key) => (
+              {languages.map((language, key) => (
                 <Link
                   key={key}
                   px={20}
                   className={classes.toolbarLink}
-                  onMouseOver={() => setLanguage(languages[key])}
+                  onMouseOver={() => setLanguage(language.languageName)}
+                  onClick={() => selectedLang(language.language)}
                 >
-                  {" "}
-                  {languages[key]}{" "}
+                  {language.languageName}
                 </Link>
               ))}
             </Toolbar>
@@ -87,4 +103,15 @@ const LanguageBar = ({ setLanguage }) => {
     </Grid>
   );
 };
-export default LanguageBar;
+const mapStateToProps = (state) => {
+  return {
+    versions: state.local.versions,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageBar);
