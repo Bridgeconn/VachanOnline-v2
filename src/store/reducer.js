@@ -40,10 +40,10 @@ const defaultState = {
     lineView: false,
     audio: false,
     versesSelected: [],
-    language: "Loading...",
+    language: "hindi",
   },
   panel2: {
-    version: "Loading...2",
+    version: "Loading...",
     sourceId: "",
     bookCode: "",
     chapter: "",
@@ -51,6 +51,7 @@ const defaultState = {
     fontFamily: "Sans",
     lineView: false,
     audio: false,
+    language: "hindi",
   },
 };
 const reducer = (state = defaultState, action) => {

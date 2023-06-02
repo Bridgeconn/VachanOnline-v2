@@ -150,7 +150,6 @@ const Commentary = (props) => {
     versionBooks,
     mobileView,
     setValue,
-    setValue1,
     screenView,
   } = props;
   const styleProps = {
@@ -194,7 +193,6 @@ const Commentary = (props) => {
         });
         return bool;
       });
-      setValue1("commentaryLang", langObject?.language);
       setBookNames(versionBooks[langObject.languageCode]);
       //Set verse label
       let label = "Verse";
@@ -215,7 +213,7 @@ const Commentary = (props) => {
     } else {
       setBaseUrl("");
     }
-  }, [commentaries, commentary, versionBooks, setBaseUrl, setValue1]);
+  }, [commentaries, commentary, versionBooks, setBaseUrl]);
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
@@ -342,8 +340,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVALUE, name: "commentary", value: value }),
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
-    setValue1: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);
