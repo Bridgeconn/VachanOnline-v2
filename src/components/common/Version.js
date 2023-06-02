@@ -144,7 +144,6 @@ const Version = (props) => {
     mobileView,
     paneNo,
     language,
-    setValue1,
   } = props;
   const [expanded, setExpanded] = React.useState(language);
   function handleClick(event) {
@@ -231,11 +230,15 @@ const Version = (props) => {
     }
   }, [version, paneNo]);
   React.useEffect(() => {
+    if (language) {
+      setExpanded(language);
+    }
+  }, [language]);
+  React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
     function getDisplayLanguage(language) {
-      language = language?.toLowerCase();
-      const found = languageJson.find((lang) => lang.language === language);
-      setValue1("language", found?.language);
+      const found = languageJson.find((lang) => lang.langCode === langCode);
+      setValue("language", found?.language);
       return found?.languageName || language;
     }
     if (mobileView) {
@@ -244,7 +247,7 @@ const Version = (props) => {
       const language = getLanguageByCode(versions, langCode?.toLowerCase());
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, mobileView, setValue1, version, versions]);
+  }, [landingPage, mobileView, setValue, version, versions]);
 
   return (
     <>
@@ -354,7 +357,6 @@ const mapStateToProps = (state) => {
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
     mobileView: state.local.mobileView,
-    language: state.local.language,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -364,8 +366,6 @@ const mapDispatchToProps = (dispatch) => {
     setVersionBooks: (name, value) =>
       dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
     setMainValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value }),
-    setValue1: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };

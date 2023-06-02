@@ -98,17 +98,27 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "middle",
     fontSize: 20,
     display: "inline-block",
+    [theme.breakpoints.down("md")]: {
+      fontSize: 16,
+      paddingLeft: 5,
+    },
   },
   bookNameBox: {
     [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",
     },
+    [theme.breakpoints.down("md")]: {
+      whiteSpace: "nowrap",
+    },
   },
   icons: {
     display: "flex",
     marginTop: 4,
     marginLeft: -5,
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: 0,
+    },
   },
   metadata: {
     marginLeft: "auto",

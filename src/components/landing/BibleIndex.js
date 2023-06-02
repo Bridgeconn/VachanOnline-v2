@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
 const BibleIndex = (props) => {
   const classes = useStyles();
   const { panel1, setValue, versionBooks, versionSource } = props;
-  const { version, book, bookCode, sourceId, chapter } = panel1;
+  const { version, book, bookCode, sourceId, chapter, language } = panel1;
   return (
     <div className={classes.container}>
       <Paper className={classes.bibleIndex} elevation={3}>
@@ -88,6 +88,7 @@ const BibleIndex = (props) => {
             version={version}
             landingPage={true}
             bookCode={bookCode}
+            language={language}
           />
           {bookCode !== "" && bookCode !== undefined ? (
             <BookCombo

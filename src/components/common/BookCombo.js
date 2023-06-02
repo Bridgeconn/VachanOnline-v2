@@ -74,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
     width: 358,
     backgroundColor: WHITE,
     color: "#2a2a2a",
+    "@media (max-width: 370px)": {
+      width: 320,
+    },
   },
   book: {
     margin: "3px 3px 4px 6px",
@@ -86,6 +89,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "11px",
     border: "1px solid #d2d2d2c9",
     backgroundColor: WHITE,
+    "@media (max-width: 370px)": {
+      width: 140,
+    },
   },
   bookText: {
     whiteSpace: "nowrap",
