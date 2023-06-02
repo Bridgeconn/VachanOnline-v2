@@ -136,6 +136,7 @@ const Commentary = (props) => {
     panel1,
     commentaries,
     setCommentary,
+    setCommentaryLang,
     commentary,
     versionBooks,
     mobileView,
@@ -162,8 +163,9 @@ const Commentary = (props) => {
       }
 
       setCommentary(comm);
+      setCommentaryLang(comm.metadata["Language Name"].toLowerCase())
     }
-  }, [version, commentary, commentaries, setCommentary]);
+  }, [version, commentary, commentaries, setCommentary, setCommentaryLang]);
   React.useEffect(() => {
     if (bookNames) {
       let bookObject = bookNames.find(
@@ -330,6 +332,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVALUE, name: "commentary", value: value }),
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+      setCommentaryLang: (value) =>
+      dispatch({ type: actions.SETVALUE, name: "commentaryLang", value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);
