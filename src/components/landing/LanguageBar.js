@@ -6,7 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import * as actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { Box, Tooltip } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import BigTooltip from "../common/BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,7 +68,7 @@ const LanguageBar = (props) => {
     { language: "punjabi", name: "ਪੰਜਾਬੀ" },
     { language: "tamil", name: "தமிழ்" },
     { language: "telugu", name: "తెలుగు" },
-    { language: "urdu", name: "اردو" },
+    { language: "urdu", name: "उर्दू" },
   ];
   const selectedLang = (lan) => {
     const version = versions.find((version) => version?.language === lan);
@@ -94,13 +95,13 @@ const LanguageBar = (props) => {
                   onMouseOver={() => setLanguage(language.name)}
                   onClick={() => selectedLang(language.language)}
                 >
-                  <Tooltip
+                  <BigTooltip
                     title={`Click to read the Bible in ${language.name}`}
                   >
                     <Link className={classes.link} to={{ pathname: "/read" }}>
                       {language.name}
                     </Link>
-                  </Tooltip>
+                  </BigTooltip>
                 </Box>
               ))}
             </Toolbar>

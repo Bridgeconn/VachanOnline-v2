@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
   },
+  link: {
+    "&:hover": {
+      textDecoration: "none",
+    },
+  },
 }));
 
 export default function ImageCard({ src, text, onClick }) {
@@ -38,7 +43,7 @@ export default function ImageCard({ src, text, onClick }) {
 
   return (
     <Grid item md={4} sm={12} xs={12}>
-      <Link to={{ pathname: "/read" }}>
+      <Link to={{ pathname: "/read" }} className={classes.link}>
         <div onClick={onClick}>
           <Card className={classes.root}>
             <CardActionArea className={classes.action}>

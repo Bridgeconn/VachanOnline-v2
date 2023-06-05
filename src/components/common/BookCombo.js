@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import List from "@material-ui/core/List";
@@ -11,7 +11,7 @@ import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
-import Tooltip from "@material-ui/core/Tooltip";
+import BigTooltip from "./BigTooltip";
 import {
   COMMENTARY,
   PARALLELBIBLE,
@@ -19,15 +19,6 @@ import {
   SEARCH,
 } from "../../store/views";
 
-const BigTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: WHITE,
-    color: BLACK,
-    boxShadow: theme.shadows[4],
-    border: "1px solid" + GREY,
-    fontSize: 16,
-  },
-}))(Tooltip);
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",

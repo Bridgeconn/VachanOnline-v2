@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     [theme.breakpoints.down("sm")]: {
       maxWidth: 130,
+      margin: "9px 5px",
     },
     [theme.breakpoints.up("md")]: {
       left: theme.spacing(0),
@@ -94,7 +95,7 @@ const CommentaryCombo = (props) => {
   }
   function handleClose() {
     setAnchorEl(null);
-    setExpanded(commentaryLang)
+    setExpanded(commentaryLang);
   }
   //function to set the bible commentary when clicked
   const setCommentary = (event, lan) => {
@@ -109,8 +110,8 @@ const CommentaryCombo = (props) => {
   };
   const classesI = `material-icons ${classes.icon}`;
   React.useEffect(() => {
-    if(commentaryLang) {
-      setExpanded(commentaryLang)
+    if (commentaryLang) {
+      setExpanded(commentaryLang);
     }
   }, [commentaryLang]);
   return (

@@ -85,7 +85,7 @@ export default function Banner({ language }) {
       "Noto Serif Tamil",
     ],
     తెలుగు: ["నీ వాక్కు నా పాదాలకు దీపం,", "నా దారిలో వెలుగు.", "Gautami"],
-    اردو: [
+    उर्दू: [
       "तेरा कलाम मेरे क़दमों के लिए चराग़,",
       "और मेरी राह के लिए रोशनी है।",
       "Noto Sans Devanagari",

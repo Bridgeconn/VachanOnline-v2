@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
     [theme.breakpoints.down("sm")]: {
-      marginBottom: 40,
+      marginBottom: 50,
       padding: "0 0 50px 5px",
     },
     padding: "0 25px",
