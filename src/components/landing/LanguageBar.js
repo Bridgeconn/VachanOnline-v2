@@ -4,9 +4,10 @@ import Link from "@material-ui/core/Link";
 import Toolbar from "@material-ui/core/Toolbar";
 import Paper from "@material-ui/core/Paper";
 import * as actions from "../../store/actions";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import RrdLink from "react-router-dom/Link";
+import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,24 +45,30 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(1),
     },
   },
+  link: {
+    color: "unset",
+    "&:hover": {
+      color: "unset",
+    },
+  },
 }));
 const LanguageBar = (props) => {
   const { setLanguage, setValue, versions } = props;
   const classes = useStyles();
   const languages = [
     { language: "assamese", languageName: "অসমীয়া" },
-    { language: "bengali", languageName: "বাঙালি", langCode: "ben" },
-    { language: "english", languageName: "English", langCode: "eng" },
-    { language: "gujarati", languageName: "ગુજરાતી", langCode: "guj" },
-    { language: "hindi", languageName: "हिंदी", langCode: "hin" },
-    { language: "kannada", languageName: "ಕನ್ನಡ", langCode: "kan" },
-    { language: "malayalam", languageName: "മലയാളം", langCode: "mal" },
-    { language: "marathi", languageName: "मराठी", langCode: "mar" },
-    { language: "odia", languageName: "ଓଡିଆ", langCode: "ory" },
-    { language: "punjabi", languageName: "ਪੰਜਾਬੀ", langCode: "pan" },
-    { language: "tamil", languageName: "தமிழ்", langCode: "tam" },
-    { language: "telugu", languageName: "తెలుగు", langCode: "tel" },
-    { language: "urdu", languageName: "اردو", langCode: "urd" },
+    { language: "bengali", languageName: "বাঙালি" },
+    { language: "english", languageName: "English" },
+    { language: "gujarati", languageName: "ગુજરાતી" },
+    { language: "hindi", languageName: "हिंदी" },
+    { language: "kannada", languageName: "ಕನ್ನಡ" },
+    { language: "malayalam", languageName: "മലയാളം" },
+    { language: "marathi", languageName: "मराठी" },
+    { language: "odia", languageName: "ଓଡିଆ" },
+    { language: "punjabi", languageName: "ਪੰਜਾਬੀ" },
+    { language: "tamil", languageName: "தமிழ்" },
+    { language: "telugu", languageName: "తెలుగు" },
+    { language: "urdu", languageName: "اردو" },
   ];
   const selectedLang = (lan) => {
     let version = versions.find((version) => version?.language === lan);
@@ -73,7 +80,6 @@ const LanguageBar = (props) => {
     );
     setValue("sourceId", version?.languageVersions[0]?.sourceId);
     setValue("language", lan);
-    window.location.assign("/read");
   };
   return (
     <Grid container className={classes.root}>
@@ -93,7 +99,14 @@ const LanguageBar = (props) => {
                   onMouseOver={() => setLanguage(language.languageName)}
                   onClick={() => selectedLang(language.language)}
                 >
-                  {language.languageName}
+                  <Tooltip title="Click to read the Bible in this language">
+                    <RrdLink
+                      className={classes.link}
+                      to={{ pathname: "/read" }}
+                    >
+                      {language.languageName}
+                    </RrdLink>
+                  </Tooltip>
                 </Link>
               ))}
             </Toolbar>
