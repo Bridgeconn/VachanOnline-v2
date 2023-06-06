@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import List from "@material-ui/core/List";
@@ -13,19 +13,9 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
-import Tooltip from "@material-ui/core/Tooltip";
-import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import BigTooltip from "./BigTooltip";
+import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { languageJson } from "../../store/languageData";
-
-const BigTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: WHITE,
-    color: BLACK,
-    boxShadow: theme.shadows[4],
-    border: "1px solid" + GREY,
-    fontSize: 16,
-  },
-}))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
   button: {
