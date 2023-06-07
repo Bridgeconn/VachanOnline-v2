@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   expansionDetails: {
     backgroundColor: WHITE,
     boxShadow: "inset 1px 2px 2px 0px " + GREY,
-    padding: "4px 4px 1px 4px",
+    padding: "4px 0px 1px 1px",
     width: "100%",
   },
   summaryPanel: {
@@ -99,6 +99,10 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     backgroundColor: WHITE,
     borderBottom: "1px solid " + LIGHTGREY,
+  },
+  versionSelected: {
+    boxShadow: "inset 0 0 30px " + LIGHTGREY,
+    border: "1px solid #ccc",
   },
   label: {
     [theme.breakpoints.down("sm")]: {
@@ -213,6 +217,9 @@ const Version = (props) => {
     }
     return code;
   }
+  function currentVersion(item){
+    return item.language.code + "-" + item.version.code === version ? classes.versionSelected : "";
+  }
   React.useEffect(() => {
     if (version !== "Loading..." && paneNo !== 2) {
       const [lang, ver] = version.split("-");
@@ -238,7 +245,7 @@ const Version = (props) => {
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
   }, [landingPage, mobileView, setValue, version, versions]);
-
+ 
   return (
     <>
       <BigTooltip title="Select a Bible in your language and version">
@@ -313,21 +320,24 @@ const Version = (props) => {
                   }}
                 >
                   <List className={classes.expansionDetails}>
-                    {version.languageVersions.map((item, i) => (
+                    {version.languageVersions.map((item, i) => {
+                       var versionActive = currentVersion(item)
+                       return (
                       <ListItem
                         key={i}
                         value={
                           item.language.code +
                           "-" +
-                          item.version.code.toUpperCase()
+                          item.version.code.toUpperCase() 
                         }
                         data-sourceid={item.sourceId}
+                        className={`${classes.version} ${versionActive}`}
                         onClick={setVersion}
-                        className={classes.version}
                       >
                         {item.version.code.toUpperCase()} : {item.version.name}
                       </ListItem>
-                    ))}
+                      );
+                    })}
                   </List>
                 </AccordionDetails>
               </Accordion>
