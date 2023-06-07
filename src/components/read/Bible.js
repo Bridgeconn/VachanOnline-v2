@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
     },
     [theme.breakpoints.down("sm")]: {
-      paddingRight: 20,
-      paddingLeft: 20,
+      paddingRight: 15,
+      paddingLeft: 15,
       lineHeight: "1.8em",
     },
   },
@@ -133,21 +133,15 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 25px",
   },
   verseText: {
-    padding: "4px 0 2px 4px",
-    [theme.breakpoints.down("md")]: {
-      padding: "4px 4px 2px 4px",
-    },
+    padding: "4px 0x 2px 4px",
   },
   verseNumber: {
     fontWeight: 600,
-    paddingLeft: 6,
+    paddingLeft: 3,
     bottom: 4,
     position: "relative",
     fontSize: ".8em",
     color: color.MEDIUMGREY,
-    [theme.breakpoints.down("md")]: {
-      paddingLeft: 0,
-    },
   },
   sectionHeading: {
     fontSize: "1.3em",
@@ -738,7 +732,7 @@ const Bible = (props) => {
                           {verseNo}
                           &nbsp;
                         </span>
-                        {item.verseText}
+                        {item.verseText + " "}
                       </span>
                     </span>
                     {/*If verse has note then show note icon to open notes pane */}
