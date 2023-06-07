@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 25px",
   },
   verseText: {
-    padding: "4px 0x 2px 4px",
+    padding: "4px 0 2px 4px",
   },
   verseNumber: {
     fontWeight: 600,
