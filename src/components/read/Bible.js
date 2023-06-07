@@ -727,8 +727,13 @@ const Bible = (props) => {
                       onClick={handleVerseClick}
                       data-verse={item.verseNumber}
                     >
-                      <span className={verseNumberClass}>{verseNo}</span>
-                      <span className={verseClass}> {item.verseText}</span>
+                      <span className={verseClass}>
+                        <span className={verseNumberClass}>
+                          {verseNo}
+                          &nbsp;
+                        </span>
+                        {item.verseText}
+                      </span>
                     </span>
                     {/*If verse has note then show note icon to open notes pane */}
                     {notes && notes.includes(verse) ? (
