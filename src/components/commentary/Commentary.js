@@ -148,8 +148,8 @@ const Commentary = (props) => {
     setCommentary,
     setCommentaryLang,
     commentary,
+    commentaryLang,
     versionBooks,
-    versionSource,
     mobileView,
     setValue,
     screenView,
@@ -158,7 +158,10 @@ const Commentary = (props) => {
     screenView: screenView,
   };
   const classes = useStyles(styleProps);
-  let { version, bookCode, chapter, sourceId } = panel1;
+  let { version, bookCode, chapter } = panel1;
+  let currentCommentary = commentaries.find(
+    (el) => el.language === commentaryLang
+  );
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
@@ -289,7 +292,7 @@ const Commentary = (props) => {
           {mobileView && screenView === "single" ? (
             <BookCombo
               bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
+              bookList={versionBooks[currentCommentary?.languageCode]}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
@@ -335,7 +338,7 @@ const mapStateToProps = (state) => {
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
-    versionSource: state.local.versionSource,
+    commentaryLang: state.local.commentaryLang,
   };
 };
 const mapDispatchToProps = (dispatch) => {
