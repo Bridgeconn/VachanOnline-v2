@@ -149,6 +149,7 @@ const Commentary = (props) => {
     setCommentaryLang,
     commentary,
     versionBooks,
+    versionSource,
     mobileView,
     setValue,
     screenView,
@@ -157,7 +158,7 @@ const Commentary = (props) => {
     screenView: screenView,
   };
   const classes = useStyles(styleProps);
-  let { version, bookCode, chapter } = panel1;
+  let { version, bookCode, chapter, sourceId } = panel1;
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
@@ -173,7 +174,7 @@ const Commentary = (props) => {
       }
 
       setCommentary(comm);
-      setCommentaryLang(comm.metadata["Language Name"].toLowerCase())
+      setCommentaryLang(comm.metadata["Language Name"].toLowerCase());
     }
   }, [version, commentary, commentaries, setCommentary, setCommentaryLang]);
   React.useEffect(() => {
@@ -288,7 +289,7 @@ const Commentary = (props) => {
           {mobileView && screenView === "single" ? (
             <BookCombo
               bookCode={bookCode}
-              bookList={bookNames}
+              bookList={versionBooks[versionSource[sourceId]]}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
@@ -334,6 +335,7 @@ const mapStateToProps = (state) => {
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
+    versionSource: state.local.versionSource,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -342,8 +344,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVALUE, name: "commentary", value: value }),
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
-      setCommentaryLang: (value) =>
-      dispatch({ type: actions.SETVALUE, name: "commentaryLang", value: value }),
+    setCommentaryLang: (value) =>
+      dispatch({
+        type: actions.SETVALUE,
+        name: "commentaryLang",
+        value: value,
+      }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);
