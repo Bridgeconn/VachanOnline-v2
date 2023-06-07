@@ -134,6 +134,9 @@ const useStyles = makeStyles((theme) => ({
   },
   verseText: {
     padding: "4px 0 2px 4px",
+    [theme.breakpoints.down("md")]: {
+      padding: "4px 4px 2px 4px",
+    },
   },
   verseNumber: {
     fontWeight: 600,
@@ -142,6 +145,9 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     fontSize: ".8em",
     color: color.MEDIUMGREY,
+    [theme.breakpoints.down("md")]: {
+      paddingLeft: 0,
+    },
   },
   sectionHeading: {
     fontSize: "1.3em",
