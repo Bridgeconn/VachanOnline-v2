@@ -235,7 +235,7 @@ const BookCombo = (props) => {
   }, [openBookCode, bookList]);
   //if bookCode changed set book display
   React.useEffect(() => {
-    if (bookList) {
+    if (bookList?.length > 0 && bookCode) {
       let book = bookList.find((element) => element.book_code === bookCode);
       if (!book) {
         //If current book not available set first available book, fallback mechanism, actual check in versions
