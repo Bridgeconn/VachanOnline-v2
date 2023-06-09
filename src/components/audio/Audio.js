@@ -178,8 +178,10 @@ const Audio = (props) => {
         "Mayla marathi",
         "Thakalika",
       ];
-
-      if (OBTBibles.includes(value)) {
+      if (mobileView) {
+        //In mobile view there is only single pane view with the book combo, it will set the first available book
+        setMessage("");
+      } else if (OBTBibles.includes(value)) {
         const message = `Audio Bible not available in ${value} for this book.\nIt is available only for Mark, Luke, 1st and 2nd Thessalonians.\nUse the book dropdown in the left panel to navigate.`;
         setMessage(message);
       } else {
@@ -191,7 +193,7 @@ const Audio = (props) => {
       setBook(getShortBook(books, obj?.language?.code, bookCode));
       setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
     }
-  }, [language, audioBible, bookCode, books]);
+  }, [language, audioBible, bookCode, books, mobileView]);
   useEffect(() => {
     setPlaying("");
   }, [bookCode, chapter, languageCode]);
