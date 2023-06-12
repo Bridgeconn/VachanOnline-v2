@@ -145,17 +145,17 @@ const Landing = (props) => {
         spacing={1}
         className={classes.imageRow}
       >
-        <ImageCard src={read} text="read" />
+         <ImageCard
+          src={listen}
+          text="listen"
+          onClick={() => setValue("parallelView", AUDIO)}
+        />
         <ImageCard
           src={watch}
           text="watch"
           onClick={() => setValue("parallelView", VIDEO)}
         />
-        <ImageCard
-          src={listen}
-          text="listen"
-          onClick={() => setValue("parallelView", AUDIO)}
-        />
+         <ImageCard src={read} text="read" />
       </Grid>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item xs={12} md={6}>
