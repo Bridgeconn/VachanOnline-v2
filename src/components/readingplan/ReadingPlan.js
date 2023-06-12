@@ -305,7 +305,7 @@ const ReadingPlan = (props) => {
                     <BigTooltip
                       key={i}
                       title="The book you selected is not available in this language, please select another language"
-                      placement="top-start"
+                      arrow
                     >
                       <span>
                         <ListItem key={i} className={classes.listItem} button>
