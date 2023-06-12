@@ -75,14 +75,14 @@ const useStyles = makeStyles((theme) => ({
   },
   textRow: {
     margin: 15,
-    marginBottom: 30,
+    marginBottom: 70,
     width: "calc(100% - 30px)",
     [theme.breakpoints.down("md")]: {
       marginTop: -30,
     },
   },
   imageRow: {
-    margin: "0 12px 90px",
+    margin: "0 12px 20px",
     width: "calc(100% - 30px)",
   },
   text: {
@@ -139,7 +139,24 @@ const Landing = (props) => {
       {!isMobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
       <Banner language={language} />
       <BibleIndex />
-      <div className={classes.storeLinkMobile}>{addLink()}</div>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={1}
+        className={classes.imageRow}
+      >
+        <ImageCard src={read} text="read" />
+        <ImageCard
+          src={watch}
+          text="watch"
+          onClick={() => setValue("parallelView", VIDEO)}
+        />
+        <ImageCard
+          src={listen}
+          text="listen"
+          onClick={() => setValue("parallelView", AUDIO)}
+        />
+      </Grid>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item xs={12} md={6}>
           <Typography variant="h6" className={classes.text}>
@@ -173,28 +190,12 @@ const Landing = (props) => {
               className={classes.screenshot}
             />
             <div className={classes.storeLinkPC}>{addLink()}</div>
+            <div className={classes.storeLinkMobile}>{addLink()}</div> 
           </div>
         </Grid>
+        
       </Grid>
-      <Grid
-        container
-        justifyContent="center"
-        spacing={2}
-        className={classes.imageRow}
-      >
-        <ImageCard src={read} text="read" />
-        <ImageCard
-          src={watch}
-          text="watch"
-          onClick={() => setValue("parallelView", VIDEO)}
-        />
-        <ImageCard
-          src={listen}
-          text="listen"
-          onClick={() => setValue("parallelView", AUDIO)}
-        />
-      </Grid>
-
+       
       <LandingFooter />
     </Grid>
   );
