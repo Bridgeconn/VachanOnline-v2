@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
       height: "33vw",
       width: "50vw",
     },
+    root: {
+      boxShadow: theme.shadows[2],
+      },
   },
   text: {
     fontFamily: "Samarkan",

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     display: "flex",
-    marginBottom: -30,
+    marginBottom: -40,
     [theme.breakpoints.down("xs")]: {
       marginBottom: -10,
     },

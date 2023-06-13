@@ -83,12 +83,17 @@ const useStyles = makeStyles((theme) => ({
   },
   imageRow: {
     margin: "0 12px 20px",
-    width: "calc(100% - 30px)",
+    width: "calc(100% - 24px)",
   },
   text: {
     fontSize: 20,
     marginTop: 50,
     paddingLeft: 30,
+    [theme.breakpoints.only("xs")]: {
+      paddingLeft: 0,
+      fontSize: 16,
+      textAlign: "center",
+    },
   },
   storeLinkMobile: {
     textAlign: "center",
@@ -159,9 +164,9 @@ const Landing = (props) => {
       </Grid>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" className={classes.text}>
+          <Typography className={classes.text}>
             <p>
-              <b>Welcome to VachanOnline.com</b>
+            <h3>Welcome to VachanOnline.com</h3>
             </p>
             <p>
               VachanOnline.com and the companion VachanGo app is a premier
