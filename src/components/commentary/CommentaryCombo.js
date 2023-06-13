@@ -11,6 +11,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import { LIGHTGREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   expansionDetails: {
     backgroundColor: "#ffffff",
     boxShadow: "none",
-    padding: "0 0 0 20px",
+    padding: "1px 0px 0px 0px",
     width: "100%",
   },
   summaryPanel: {
@@ -83,6 +84,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     cursor: "pointer",
   },
+  versionSelected: {
+    boxShadow: "inset 0 0 30px " + LIGHTGREY,
+    border: "1px solid #ccc",
+  },
 }));
 const CommentaryCombo = (props) => {
   const classes = useStyles();
@@ -109,6 +114,9 @@ const CommentaryCombo = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
   const classesI = `material-icons ${classes.icon}`;
+  function currentVersion(item){
+    return item.code === commentary.code ? classes.versionSelected : "";
+  }
   React.useEffect(() => {
     if (commentaryLang) {
       setExpanded(commentaryLang);
@@ -174,16 +182,21 @@ const CommentaryCombo = (props) => {
               </AccordionSummary>
               <AccordionDetails style={{ padding: 0 }}>
                 <List className={classes.expansionDetails}>
-                  {languages.commentaries.map((item, i) => (
+                  {languages.commentaries.map((item, i) => {
+                    var versionActive = currentVersion(item)
+                    return(
                     <ListItem
                       key={i}
                       value={encodeURIComponent(JSON.stringify(item))}
+                      className={`${classes.commentary} ${versionActive}`}
                       onClick={(e) => setCommentary(e, languages.language)}
-                      className={classes.commentary}
                     >
                       {item.code.toUpperCase()} : {item.name}
                     </ListItem>
-                  ))}
+                    )
+                  })}
+                
+                    
                 </List>
               </AccordionDetails>
             </Accordion>
