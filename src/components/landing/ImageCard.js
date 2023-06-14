@@ -6,6 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { LIGHTGREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -15,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
       height: "33vw",
       width: "50vw",
     },
+  },
+  root: {
+    boxShadow: theme.shadows[2],
+    border: "1px solid " + LIGHTGREY,
   },
   text: {
     fontFamily: "Samarkan",
