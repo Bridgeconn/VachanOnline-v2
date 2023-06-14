@@ -650,6 +650,9 @@ const Bible = (props) => {
     return <span className={classes[style]}>{" " + text}</span>;
   };
   const getPrevious = () => {
+    if(parallelScroll && paneNo === 1 && mobileView){
+      return " ";
+    }
     return previous && Object.values(previous).length !== 0 ? (
       <Tooltip title={previousBook + " " + previous.chapterId}>
         <ArrowBackIosIcon
@@ -663,6 +666,9 @@ const Bible = (props) => {
     );
   };
   const getNext = () => {
+    if(parallelScroll && paneNo === 1 && mobileView){
+      return " ";
+    }
     return next && Object.values(next).length !== 0 ? (
       <Tooltip title={nextBook + " " + next.chapterId}>
         <ArrowForwardIosIcon
