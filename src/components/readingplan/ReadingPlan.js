@@ -304,7 +304,7 @@ const ReadingPlan = (props) => {
                   ) : (
                     <BigTooltip
                       key={i}
-                      title="The book you selected is not available in this language, please select another language"
+                      title="The book is not available in the selected version"
                       arrow
                     >
                       <span>
