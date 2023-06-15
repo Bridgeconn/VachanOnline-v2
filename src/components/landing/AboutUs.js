@@ -119,6 +119,17 @@ const AboutUs = ({ handleClose }) => {
 
         <div className={classes.releaseNotes}>
         <Typography variant="h6" className={classes.subheading}>
+           Release Notes (14/06/2023) v1.4.2
+          </Typography>
+          <Typography variant="body1" className={classes.subheading}>
+            {addStyle("Bug Fixes:", "bold")}
+          </Typography>
+          <Typography variant="body1" component="div" gutterBottom>
+            <ul className={classes.list}>
+              <li>UX and UI improvements</li>
+            </ul>
+          </Typography>
+        <Typography variant="h6" className={classes.subheading}>
            Release Notes (31/05/2023) v1.4.1
           </Typography>
           <Typography variant="body1" className={classes.subheading}>
