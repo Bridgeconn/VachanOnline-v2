@@ -90,6 +90,7 @@ const MenuBar = (props) => {
     setFullscreen,
     versions,
     version,
+    language,
     sourceId,
     chapter,
     versionBooks,
@@ -289,6 +290,7 @@ const MenuBar = (props) => {
             version={version}
             bookCode={bookCode}
             paneNo={paneNo}
+            language={language}
           />
           {bookCode ? (
             <BookCombo
@@ -318,7 +320,9 @@ const MenuBar = (props) => {
           {mobileView ? null : (
             <>
               <div className={classes.info} onClick={handleDialogOpen}>
+                 <Tooltip title="Print Chapter">
                 <PrintIcon fontSize="small" />
+                </Tooltip>
               </div>
               <Tooltip title="Fullscreen">
                 <div onClick={goFull} className={classes.info}>

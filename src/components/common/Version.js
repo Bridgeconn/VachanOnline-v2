@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import List from "@material-ui/core/List";
@@ -13,19 +13,9 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { getVersions, capitalize } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
-import Tooltip from "@material-ui/core/Tooltip";
-import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import BigTooltip from "./BigTooltip";
+import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { languageJson } from "../../store/languageData";
-
-const BigTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: WHITE,
-    color: BLACK,
-    boxShadow: theme.shadows[4],
-    border: "1px solid" + GREY,
-    fontSize: 16,
-  },
-}))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -64,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   expansionDetails: {
     backgroundColor: WHITE,
     boxShadow: "inset 1px 2px 2px 0px " + GREY,
-    padding: "4px 4px 1px 4px",
+    padding: "4px 0px 1px 1px",
     width: "100%",
   },
   summaryPanel: {
@@ -110,6 +100,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: WHITE,
     borderBottom: "1px solid " + LIGHTGREY,
   },
+  versionSelected: {
+    boxShadow: "inset 0 0 30px " + LIGHTGREY,
+    border: "1px solid #ccc",
+  },
   label: {
     [theme.breakpoints.down("sm")]: {
       justifyContent: "unset",
@@ -144,7 +138,6 @@ const Version = (props) => {
     mobileView,
     paneNo,
     language,
-    setValue1,
   } = props;
   const [expanded, setExpanded] = React.useState(language);
   function handleClick(event) {
@@ -224,6 +217,9 @@ const Version = (props) => {
     }
     return code;
   }
+  function currentVersion(item){
+    return item.language.code + "-" + item.version.code === version ? classes.versionSelected : "";
+  }
   React.useEffect(() => {
     if (version !== "Loading..." && paneNo !== 2) {
       const [lang, ver] = version.split("-");
@@ -231,11 +227,15 @@ const Version = (props) => {
     }
   }, [version, paneNo]);
   React.useEffect(() => {
+    if (language) {
+      setExpanded(language);
+    }
+  }, [language]);
+  React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
     function getDisplayLanguage(language) {
-      language = language?.toLowerCase();
-      const found = languageJson.find((lang) => lang.language === language);
-      setValue1("language", found?.language);
+      const found = languageJson.find((lang) => lang.langCode === langCode);
+      setValue("language", found?.language);
       return found?.languageName || language;
     }
     if (mobileView) {
@@ -244,8 +244,8 @@ const Version = (props) => {
       const language = getLanguageByCode(versions, langCode?.toLowerCase());
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, mobileView, setValue1, version, versions]);
-
+  }, [landingPage, mobileView, setValue, version, versions]);
+ 
   return (
     <>
       <BigTooltip title="Select a Bible in your language and version">
@@ -320,21 +320,24 @@ const Version = (props) => {
                   }}
                 >
                   <List className={classes.expansionDetails}>
-                    {version.languageVersions.map((item, i) => (
+                    {version.languageVersions.map((item, i) => {
+                       var versionActive = currentVersion(item)
+                       return (
                       <ListItem
                         key={i}
                         value={
                           item.language.code +
                           "-" +
-                          item.version.code.toUpperCase()
+                          item.version.code.toUpperCase() 
                         }
                         data-sourceid={item.sourceId}
+                        className={`${classes.version} ${versionActive}`}
                         onClick={setVersion}
-                        className={classes.version}
                       >
                         {item.version.code.toUpperCase()} : {item.version.name}
                       </ListItem>
-                    ))}
+                      );
+                    })}
                   </List>
                 </AccordionDetails>
               </Accordion>
@@ -354,7 +357,6 @@ const mapStateToProps = (state) => {
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
     mobileView: state.local.mobileView,
-    language: state.local.language,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -364,8 +366,6 @@ const mapDispatchToProps = (dispatch) => {
     setVersionBooks: (name, value) =>
       dispatch({ type: actions.ADDVERSIONBOOKS, name: name, value: value }),
     setMainValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value }),
-    setValue1: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };

@@ -98,17 +98,27 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "middle",
     fontSize: 20,
     display: "inline-block",
+    [theme.breakpoints.down("md")]: {
+      fontSize: 16,
+      paddingLeft: 5,
+    },
   },
   bookNameBox: {
     [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",
     },
+    [theme.breakpoints.down("md")]: {
+      whiteSpace: "nowrap",
+    },
   },
   icons: {
     display: "flex",
     marginTop: 4,
     marginLeft: -5,
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: 0,
+    },
   },
   metadata: {
     marginLeft: "auto",
@@ -136,6 +146,7 @@ const Commentary = (props) => {
     panel1,
     commentaries,
     setCommentary,
+    setCommentaryLang,
     commentary,
     versionBooks,
     mobileView,
@@ -146,7 +157,7 @@ const Commentary = (props) => {
     screenView: screenView,
   };
   const classes = useStyles(styleProps);
-  let { version, bookCode, chapter } = panel1;
+  const { version, bookCode, chapter } = panel1;
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
@@ -162,8 +173,9 @@ const Commentary = (props) => {
       }
 
       setCommentary(comm);
+      setCommentaryLang(comm.metadata["Language Name"].toLowerCase());
     }
-  }, [version, commentary, commentaries, setCommentary]);
+  }, [version, commentary, commentaries, setCommentary, setCommentaryLang]);
   React.useEffect(() => {
     if (bookNames) {
       let bookObject = bookNames.find(
@@ -330,6 +342,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVALUE, name: "commentary", value: value }),
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+    setCommentaryLang: (val) =>
+      dispatch({ type: actions.SETVALUE, name: "commentaryLang", value: val }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);

@@ -1,9 +1,13 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
+import { Link } from "react-router-dom";
 import Toolbar from "@material-ui/core/Toolbar";
 import Paper from "@material-ui/core/Paper";
+import * as actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { Box } from "@material-ui/core";
+import BigTooltip from "../common/BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,24 +45,38 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(1),
     },
   },
+  link: {
+    color: "unset",
+    "&:hover": {
+      color: "unset",
+    },
+  },
 }));
-const LanguageBar = ({ setLanguage }) => {
+const LanguageBar = (props) => {
+  const { setLanguage, setValue, versions } = props;
   const classes = useStyles();
   const languages = [
-    "অসমীয়া",
-    "বাঙালি",
-    "English",
-    "ગુજરાતી",
-    "हिंदी",
-    "ಕನ್ನಡ",
-    "മലയാളം",
-    "मराठी",
-    "ଓଡିଆ",
-    "ਪੰਜਾਬੀ",
-    "தமிழ்",
-    "తెలుగు",
-    "اردو",
+    { language: "assamese", name: "অসমীয়া" },
+    { language: "bengali", name: "বাঙালি" },
+    { language: "english", name: "English" },
+    { language: "gujarati", name: "ગુજરાતી" },
+    { language: "hindi", name: "हिंदी" },
+    { language: "kannada", name: "ಕನ್ನಡ" },
+    { language: "malayalam", name: "മലയാളം" },
+    { language: "marathi", name: "मराठी" },
+    { language: "odia", name: "ଓଡିଆ" },
+    { language: "punjabi", name: "ਪੰਜਾਬੀ" },
+    { language: "tamil", name: "தமிழ்" },
+    { language: "telugu", name: "తెలుగు" },
+    { language: "urdu", name: "उर्दू" },
   ];
+  const selectedLang = (lan) => {
+    const version = versions.find((version) => version?.language === lan);
+    const ver = version?.languageVersions[0];
+    setValue("version", ver?.language?.code + "-" + ver?.version?.code);
+    setValue("sourceId", ver?.sourceId);
+    setValue("language", lan);
+  };
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
@@ -69,16 +87,22 @@ const LanguageBar = ({ setLanguage }) => {
             className={classes.languageBar}
           >
             <Toolbar variant="dense" className={classes.toolbarSecondary}>
-              {Object.keys(languages).map((key) => (
-                <Link
+              {languages.map((language, key) => (
+                <Box
                   key={key}
                   px={20}
                   className={classes.toolbarLink}
-                  onMouseOver={() => setLanguage(languages[key])}
+                  onMouseOver={() => setLanguage(language.name)}
+                  onClick={() => selectedLang(language.language)}
                 >
-                  {" "}
-                  {languages[key]}{" "}
-                </Link>
+                  <BigTooltip
+                    title={`Click to read the Bible in ${language.name}`}
+                  >
+                    <Link className={classes.link} to={{ pathname: "/read" }}>
+                      {language.name}
+                    </Link>
+                  </BigTooltip>
+                </Box>
               ))}
             </Toolbar>
           </Grid>
@@ -87,4 +111,15 @@ const LanguageBar = ({ setLanguage }) => {
     </Grid>
   );
 };
-export default LanguageBar;
+const mapStateToProps = (state) => {
+  return {
+    versions: state.local.versions,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageBar);

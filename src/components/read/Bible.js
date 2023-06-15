@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
     },
     [theme.breakpoints.down("sm")]: {
-      paddingRight: 20,
-      paddingLeft: 20,
+      paddingRight: 15,
+      paddingLeft: 15,
       lineHeight: "1.8em",
     },
   },
@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
     [theme.breakpoints.down("sm")]: {
-      marginBottom: 40,
+      marginBottom: 50,
       padding: "0 0 50px 5px",
     },
     padding: "0 25px",
@@ -137,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
   },
   verseNumber: {
     fontWeight: 600,
-    paddingLeft: 6,
+    paddingLeft: 3,
     bottom: 4,
     position: "relative",
     fontSize: ".8em",
@@ -727,8 +727,13 @@ const Bible = (props) => {
                       onClick={handleVerseClick}
                       data-verse={item.verseNumber}
                     >
-                      <span className={verseNumberClass}>{verseNo}</span>
-                      <span className={verseClass}> {item.verseText}</span>
+                      <span className={verseClass}>
+                        <span className={verseNumberClass}>
+                          {verseNo}
+                          &nbsp;
+                        </span>
+                        {item.verseText + " "}
+                      </span>
                     </span>
                     {/*If verse has note then show note icon to open notes pane */}
                     {notes && notes.includes(verse) ? (

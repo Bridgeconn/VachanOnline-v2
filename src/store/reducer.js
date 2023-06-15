@@ -5,7 +5,6 @@ const defaultState = {
   commentaries: [],
   commentary: {},
   commentaryLang: "hindi",
-  language: "hindi",
   dictionary: {
     dictionaries: [],
     selectedDictionary: {},
@@ -41,6 +40,7 @@ const defaultState = {
     lineView: false,
     audio: false,
     versesSelected: [],
+    language: "hindi",
   },
   panel2: {
     version: "Loading...",
@@ -51,6 +51,7 @@ const defaultState = {
     fontFamily: "Sans",
     lineView: false,
     audio: false,
+    language: "hindi",
   },
 };
 const reducer = (state = defaultState, action) => {

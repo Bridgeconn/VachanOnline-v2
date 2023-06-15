@@ -5,21 +5,11 @@ import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
-import Tooltip from "@material-ui/core/Tooltip";
+import BigTooltip from "../common/BigTooltip";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
-
-const BigTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: WHITE,
-    color: BLACK,
-    boxShadow: theme.shadows[4],
-    border: "1px solid #808080",
-    fontSize: 16,
-  },
-}))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -75,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 const BibleIndex = (props) => {
   const classes = useStyles();
   const { panel1, setValue, versionBooks, versionSource } = props;
-  const { version, book, bookCode, sourceId, chapter } = panel1;
+  const { version, book, bookCode, sourceId, chapter, language } = panel1;
   return (
     <div className={classes.container}>
       <Paper className={classes.bibleIndex} elevation={3}>
@@ -88,6 +78,7 @@ const BibleIndex = (props) => {
             version={version}
             landingPage={true}
             bookCode={bookCode}
+            language={language}
           />
           {bookCode !== "" && bookCode !== undefined ? (
             <BookCombo

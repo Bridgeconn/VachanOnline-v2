@@ -19,6 +19,6 @@ export const languageJson = [
   { language: "punjabi", languageName: "ਪੰਜਾਬੀ", langCode: "pan" },
   { language: "tamil", languageName: "தமிழ்", langCode: "tam" },
   { language: "telugu", languageName: "తెలుగు", langCode: "tel" },
-  { language: "urdu", languageName: "اردو", langCode: "urd" },
-  { language: "varli", languageName: "વારલી", langCode: "vav" },
+  { language: "urdu", languageName: "उर्दू", langCode: "urd" },
+  { language: "varli-davri", languageName: "વારલી", langCode: "vav" },
 ];
