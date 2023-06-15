@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
   },
   versionSelected: {
     boxShadow: "inset 0 0 30px " + LIGHTGREY,
-    border: "1px solid #ccc",
+    border: "1px solid " + GREY + "70",
   },
   label: {
     [theme.breakpoints.down("sm")]: {

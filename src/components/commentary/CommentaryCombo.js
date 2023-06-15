@@ -11,6 +11,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
+import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     backgroundColor: "#fff",
     border: "1px solid #fff",
+    boxShadow: "1px 1px 1px 1px " + GREY,
     [theme.breakpoints.down("sm")]: {
       maxWidth: 130,
       margin: "9px 5px",
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   menuRoot: {
-    backgroundColor: "#eaeaea",
+    backgroundColor: WHITE,
     boxShadow: "none",
     border: "1px solid #00000020",
     "&:not(:last-child)": {
@@ -47,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
   expanded: {},
   expansionDetails: {
     backgroundColor: "#ffffff",
-    boxShadow: "none",
-    padding: "0 0 0 20px",
+    boxShadow: "inset 1px 2px 2px 0px " + GREY,
+    padding: "1px 0px 0px 0px",
     width: "100%",
   },
   summaryPanel: {
@@ -56,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #b7b7b726",
     "&$expanded": {
       minHeight: 50,
+      backgroundColor: LIGHTGREY,
     },
   },
   content: {
@@ -83,6 +86,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     cursor: "pointer",
   },
+  versionSelected: {
+    boxShadow: "inset 0 0 30px " + LIGHTGREY,
+    border: "1px solid " + GREY + "70",
+  },
 }));
 const CommentaryCombo = (props) => {
   const classes = useStyles();
@@ -109,6 +116,10 @@ const CommentaryCombo = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
   const classesI = `material-icons ${classes.icon}`;
+  function currentVersion(item){
+    return item.code === commentary.code && item.metadata["Language Name"] === commentary.metadata["Language Name"] ? classes.versionSelected : "";
+    
+  }
   React.useEffect(() => {
     if (commentaryLang) {
       setExpanded(commentaryLang);
@@ -174,16 +185,21 @@ const CommentaryCombo = (props) => {
               </AccordionSummary>
               <AccordionDetails style={{ padding: 0 }}>
                 <List className={classes.expansionDetails}>
-                  {languages.commentaries.map((item, i) => (
+                  {languages.commentaries.map((item, i) => {
+                    var versionActive = currentVersion(item)
+                    return(
                     <ListItem
                       key={i}
                       value={encodeURIComponent(JSON.stringify(item))}
+                      className={`${classes.commentary} ${versionActive}`}
                       onClick={(e) => setCommentary(e, languages.language)}
-                      className={classes.commentary}
                     >
                       {item.code.toUpperCase()} : {item.name}
                     </ListItem>
-                  ))}
+                    )
+                  })}
+                
+                    
                 </List>
               </AccordionDetails>
             </Accordion>
