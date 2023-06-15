@@ -650,7 +650,7 @@ const Bible = (props) => {
     return <span className={classes[style]}>{" " + text}</span>;
   };
   const getPrevious = () => {
-    if(parallelScroll && paneNo === 2 && mobileView) {
+    if (parallelScroll && paneNo === 2 && mobileView) {
       return "";
     }
     return previous && Object.values(previous).length !== 0 ? (
@@ -666,7 +666,7 @@ const Bible = (props) => {
     );
   };
   const getNext = () => {
-    if(parallelScroll && paneNo === 2 && mobileView) {
+    if (parallelScroll && paneNo === 2 && mobileView) {
       return "";
     }
     return next && Object.values(next).length !== 0 ? (
