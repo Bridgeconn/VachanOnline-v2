@@ -10,6 +10,7 @@ import { getCommentaryForChapter } from "../common/utility";
 import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
+import Viewer from "react-viewer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,6 +143,8 @@ const Commentary = (props) => {
   const [message, setMessage] = React.useState("");
   const [baseUrl, setBaseUrl] = React.useState("");
   const [bookNames, setBookNames] = React.useState([]);
+  const [commentaryImages, setCommentaryImages] = React.useState([]);
+
   let {
     panel1,
     commentaries,
@@ -158,6 +161,9 @@ const Commentary = (props) => {
   };
   const classes = useStyles(styleProps);
   const { version, bookCode, chapter } = panel1;
+  const [visible, setVisible] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(0);
+
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
@@ -216,6 +222,7 @@ const Commentary = (props) => {
       setBaseUrl("");
     }
   }, [commentaries, commentary, versionBooks, setBaseUrl]);
+  console.log(typeof commentaryImages);
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
@@ -236,6 +243,21 @@ const Commentary = (props) => {
     str = str.trim();
     return str.startsWith("<br>") ? str.slice(4) : str;
   };
+  const openViewer = (index) => {
+    setVisible(true);
+    setActiveIndex(index);
+  };
+  console.log(commentaryImages);
+  const getImgSrc = (imgStr) => {
+    const rex = /http"?([^"\s]+)"?.*?\//g;
+    let images = imgStr.match(/(?<=src=)"?'?.*?\.(png|jpg)"?'?/g);
+    let imagesArray = [];
+    console.log(images);
+    images?.map((el) => imagesArray.push({ src: el }));
+    setCommentaryImages(imagesArray);
+    return imgStr.replace(rex, ` onClick=openViewer(0)`);
+  };
+  console.log(commentaryText);
   React.useEffect(() => {
     const changeBaseUrl = (str) => {
       if (typeof str === "string" && baseUrl !== "") {
@@ -270,9 +292,9 @@ const Commentary = (props) => {
         setCommentaryText("");
         setMessage("unavailable");
       }
-      setCommentaryText(commText);
+      setCommentaryText(getImgSrc(commText));
     }
-  }, [baseUrl, commentary, commentaryObject, verseLabel]);
+  }, [baseUrl, commentary, commentaryObject, commentaryText, verseLabel]);
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
@@ -312,6 +334,19 @@ const Commentary = (props) => {
           <Close className={classes.closeButton} />
         </Box>
       </Box>
+      {/* {commentaryImages ? (
+        <Viewer
+          visible={visible}
+          onClose={() => {
+            setVisible(false);
+          }}
+          images={commentaryImages}
+          activeIndex={activeIndex}
+          scalable={false}
+        />
+      ) : (
+        ""
+      )} */}
       {message && (
         <h5 className={classes.message}>
           {message === "loading"
