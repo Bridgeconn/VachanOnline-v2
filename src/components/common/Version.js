@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
   },
   versionSelected: {
     boxShadow: "inset 0 0 30px " + LIGHTGREY,
-    border: "1px solid #ccc",
+    border: "1px solid" + GREY + "70",
   },
   label: {
     [theme.breakpoints.down("sm")]: {
@@ -152,6 +152,7 @@ const Version = (props) => {
 
   function handleClose() {
     setAnchorEl(null);
+    setExpanded(language)
   }
   function sortVersionLanguages(a, b) {
     var langA = a.language.toUpperCase(); // ignore upper and lowercase
@@ -167,6 +168,7 @@ const Version = (props) => {
   //function to set the bible version when clicked
   const setVersion = (event) => {
     handleClose();
+    setAnchorEl(null)
     let selectedVersion = event.currentTarget;
     let sourceId = selectedVersion.getAttribute("data-sourceid");
     let bookList = versionBooks[versionSource[sourceId]];
