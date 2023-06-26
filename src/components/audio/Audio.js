@@ -199,22 +199,12 @@ const Audio = (props) => {
     setPlaying("");
   }, [bookCode, chapter, languageCode]);
   useEffect(() => {
-    var audioBookArray = [];
-    audioBible.map((el) => {
-      if (el?.language?.code === audioLangCode) {
-        versionBooks[audioLangCode]?.map((element) => {
-          Object.keys(el?.audioBibles[0]?.books)?.map((item) => {
-            if (element?.book_code === item) {
-              audioBookArray.push(element);
-            }
-            return audioBookArray;
-          });
-          return element;
-        });
-      }
-      setAudioBooks(audioBookArray);
-      return el;
-    });
+    const lang = audioBible.find(
+      (ele) => ele?.language?.code === audioLangCode
+    );
+    const books = Object.keys(lang?.audioBibles[0]?.books);
+    const filterBooks = (ele) => books?.includes(ele.book_code);
+    setAudioBooks(versionBooks[audioLangCode]?.filter(filterBooks));
   }, [audioBible, audioLangCode, versionBooks]);
   return (
     <div className={classes.root}>
