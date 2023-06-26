@@ -142,6 +142,7 @@ const Audio = (props) => {
   const [book, setBook] = useState("");
   const [message, setMessage] = useState("");
   const [audioLangCode, setAudioLangCode] = useState("hin");
+  const [audioBooks, setAudioBooks] = useState([]);
   useEffect(() => {
     if (languages.length) {
       let lang = audioBible?.find((l) => l?.language?.code === languageCode);
@@ -197,6 +198,24 @@ const Audio = (props) => {
   useEffect(() => {
     setPlaying("");
   }, [bookCode, chapter, languageCode]);
+  useEffect(() => {
+    var audioBookArray = [];
+    audioBible.map((el) => {
+      if (el?.language?.code === audioLangCode) {
+        versionBooks[audioLangCode]?.map((element) => {
+          Object.keys(el?.audioBibles[0]?.books)?.map((item) => {
+            if (element?.book_code === item) {
+              audioBookArray.push(element);
+            }
+            return audioBookArray;
+          });
+          return element;
+        });
+      }
+      setAudioBooks(audioBookArray);
+      return el;
+    });
+  }, [audioBible, audioLangCode, versionBooks]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -217,7 +236,7 @@ const Audio = (props) => {
           {mobileView && bookCode ? (
             <BookCombo
               bookCode={bookCode}
-              bookList={versionBooks[audioLangCode]}
+              bookList={audioBooks}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
