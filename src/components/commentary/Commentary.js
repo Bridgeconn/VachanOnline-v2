@@ -222,7 +222,6 @@ const Commentary = (props) => {
       setBaseUrl("");
     }
   }, [commentaries, commentary, versionBooks, setBaseUrl]);
-  console.log(typeof commentaryImages);
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
@@ -243,21 +242,26 @@ const Commentary = (props) => {
     str = str.trim();
     return str.startsWith("<br>") ? str.slice(4) : str;
   };
-  const openViewer = (index) => {
-    setVisible(true);
-    setActiveIndex(index);
-  };
-  console.log(commentaryImages);
   const getImgSrc = (imgStr) => {
-    const rex = /http"?([^"\s]+)"?.*?\//g;
-    let images = imgStr.match(/(?<=src=)"?'?.*?\.(png|jpg)"?'?/g);
+    const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
+    let images = imgStr.match(rex);
     let imagesArray = [];
-    console.log(images);
-    images?.map((el) => imagesArray.push({ src: el }));
+    for (let i = 0; i < images?.length; i++) {
+      const element = images[i];
+      const src = "src=" + element;
+      imgStr = imgStr.replace(src, ` data-index=${i} ` + src);
+    }
+    images?.forEach((el) => imagesArray.push({ src: el.replaceAll("'", "") }));
     setCommentaryImages(imagesArray);
-    return imgStr.replace(rex, ` onClick=openViewer(0)`);
+    return imgStr;
   };
-  console.log(commentaryText);
+  const openImage = (event) => {
+    const img = event.target;
+    if (img?.getAttribute("data-index")) {
+      setVisible(true);
+      setActiveIndex(parseInt(img.getAttribute("data-index")));
+    }
+  };
   React.useEffect(() => {
     const changeBaseUrl = (str) => {
       if (typeof str === "string" && baseUrl !== "") {
@@ -334,7 +338,7 @@ const Commentary = (props) => {
           <Close className={classes.closeButton} />
         </Box>
       </Box>
-      {/* {commentaryImages ? (
+      {commentaryImages ? (
         <Viewer
           visible={visible}
           onClose={() => {
@@ -346,7 +350,7 @@ const Commentary = (props) => {
         />
       ) : (
         ""
-      )} */}
+      )}
       {message && (
         <h5 className={classes.message}>
           {message === "loading"
@@ -355,7 +359,7 @@ const Commentary = (props) => {
         </h5>
       )}
       {!message && commentaryText && (
-        <div className={classes.text} ref={textRef}>
+        <div className={classes.text} ref={textRef} onClick={openImage}>
           {parse(commentaryText)}
         </div>
       )}
