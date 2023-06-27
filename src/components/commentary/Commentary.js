@@ -291,7 +291,7 @@ const Commentary = (props) => {
         setMessage("unavailable");
       }
     }
-  }, [baseUrl, commentary, commentaryObject, commentaryText, verseLabel]);
+  }, [baseUrl, commentary, commentaryObject, verseLabel]);
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
