@@ -122,18 +122,12 @@ const SignBible = (props) => {
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   const heading = mobileLandscape ? "ISLV" : "Sign Language Bible (ISLV)";
 
-  function getBooks(bookName){
-    return bookName.filter(filterByName)
+  function getBooks(bookName) {
+    let books = Object.keys(signBible?.books);
+    const filterByName = (item) => books?.includes(item?.book_code);
+    return bookName.filter(filterByName);
   }
 
-  function filterByName(item) {
-    let books = Object.keys(signBible["books"]);
-    console.log(books,"Books")
-    if (books.includes(item.book_code)) {
-      return true;
-    }
-    return false;
-  }
   useEffect(() => {
     if (versions.length > 0) {
       //Set default version to english for ISL
@@ -169,7 +163,7 @@ const SignBible = (props) => {
         books.hasOwnProperty(bookCode) &&
         books[bookCode].hasOwnProperty(chapter)
       ) {
-      setVideos(books[bookCode][chapter]);
+        setVideos(books[bookCode][chapter]);
         setMessage("");
       } else {
         setVideos();
@@ -187,7 +181,7 @@ const SignBible = (props) => {
           <Typography variant="h6">{heading}</Typography>
         </Box>
         <Box flexGrow={1}>
-           {mobileView && parallelView === views.DRAWERSIGNBIBLE ? ( 
+          {mobileView && parallelView === views.DRAWERSIGNBIBLE ? (
             <BookCombo
               bookCode={bookCode}
               chapter={chapter}
@@ -195,11 +189,11 @@ const SignBible = (props) => {
               bookList={getBooks(versionBooks[versionSource[sourceId]])}
               minimal={true}
             />
-           ) : (
+          ) : (
             <Typography variant="h6">
               {book} {chapter}
             </Typography>
-          )} 
+          )}
         </Box>
         <Box>
           <Close className={classes.closeButton} />
