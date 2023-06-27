@@ -122,6 +122,12 @@ const SignBible = (props) => {
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   const heading = mobileLandscape ? "ISLV" : "Sign Language Bible (ISLV)";
 
+  function getBooks(bookName) {
+    let books = Object.keys(signBible?.books);
+    const filterByName = (item) => books?.includes(item?.book_code);
+    return bookName.filter(filterByName);
+  }
+
   useEffect(() => {
     if (versions.length > 0) {
       //Set default version to english for ISL
@@ -180,7 +186,7 @@ const SignBible = (props) => {
               bookCode={bookCode}
               chapter={chapter}
               setValue={setValue}
-              bookList={versionBooks[versionSource[sourceId]]}
+              bookList={getBooks(versionBooks[versionSource[sourceId]])}
               minimal={true}
             />
           ) : (
@@ -233,6 +239,7 @@ const mapStateToProps = (state) => {
     versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
     parallelView: state.local.parallelView,
+    signBible: state.local.signBible,
   };
 };
 export default connect(mapStateToProps)(SignBible);
