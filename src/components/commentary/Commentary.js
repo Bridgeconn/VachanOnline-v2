@@ -237,24 +237,7 @@ const Commentary = (props) => {
     if (textRef.current !== undefined && textRef.current !== null)
       textRef.current.scrollTo(0, 0);
   }, [commentary, bookCode, chapter]);
-  //Remove leading break line
-  const removeBr = (str) => {
-    str = str.trim();
-    return str.startsWith("<br>") ? str.slice(4) : str;
-  };
-  const getImgSrc = (imgStr) => {
-    const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
-    let images = imgStr.match(rex);
-    let imagesArray = [];
-    for (let i = 0; i < images?.length; i++) {
-      const element = images[i];
-      const src = "src=" + element;
-      imgStr = imgStr.replace(src, ` data-index=${i} ` + src);
-    }
-    images?.forEach((el) => imagesArray.push({ src: el.replaceAll("'", "") }));
-    setCommentaryImages(imagesArray);
-    return imgStr;
-  };
+
   const openImage = (event) => {
     const img = event.target;
     if (img?.getAttribute("data-index")) {
@@ -262,41 +245,51 @@ const Commentary = (props) => {
       setActiveIndex(parseInt(img.getAttribute("data-index")));
     }
   };
-  React.useEffect(() => {
-    const changeBaseUrl = (str) => {
-      if (typeof str === "string" && baseUrl !== "") {
-        return str.replaceAll("base_url", baseUrl);
-      } else {
-        return str;
-      }
-    };
 
-    //If commentary object then set commentary text to show on UI
-    if (commentaryObject) {
-      let commText = "";
-      if (commentaryObject.bookIntro) {
-        commText += "<p>" + changeBaseUrl(commentaryObject.bookIntro) + "</p>";
+  React.useEffect(() => {
+    //Remove leading break line
+    const removeBr = (str) => {
+      str = str.trim();
+      return str.startsWith("<br>") ? str.slice(4) : str;
+    };
+    const setImages = (str) => {
+      if (typeof str === "string" && baseUrl !== "") {
+        str = str.replaceAll("base_url", baseUrl);
+        const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
+        const images = str.match(rex);
+        const imagesArray = images?.map((ele, i) => {
+          const src = "src=" + ele;
+          str = str.replace(src, ` data-index=${i} ` + src);
+          return { src: ele.replaceAll("'", "") };
+        });
+        setCommentaryImages(imagesArray);
       }
-      if (
-        commentaryObject?.commentaries?.length > 0 ||
-        commentaryObject?.bookIntro?.length > 0
-      ) {
-        let item;
-        for (item of commentaryObject.commentaries) {
-          if (
-            item.verse !== "0" &&
-            commentary.metadata?.VerseLabel !== "False"
-          ) {
+      return str;
+    };
+    //If commentary object then set commentary text to show on UI
+
+    const comm = commentaryObject;
+    const VerseLabel = commentary.metadata?.VerseLabel;
+    if (comm) {
+      let commText = "";
+      if (comm.bookIntro) {
+        commText += "<p>" + comm.bookIntro + "</p>";
+      }
+      if (comm?.commentaries?.length > 0) {
+        for (let item of comm.commentaries) {
+          if (item.verse !== "0" && VerseLabel !== "False") {
             commText += "<span>" + verseLabel + " " + item.verse + "</span>";
           }
-          commText += "<p>" + changeBaseUrl(removeBr(item.text)) + "</p>";
+          commText += "<p>" + removeBr(item.text) + "</p>";
         }
+      }
+      if (commText !== "") {
+        setCommentaryText(setImages(commText));
         setMessage("");
       } else {
         setCommentaryText("");
         setMessage("unavailable");
       }
-      setCommentaryText(getImgSrc(commText));
     }
   }, [baseUrl, commentary, commentaryObject, commentaryText, verseLabel]);
   return (
