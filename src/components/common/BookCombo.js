@@ -88,7 +88,15 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    width: 140,
+    width: 160,
+  },
+  headers: {
+    margin: "4px 3px 3px 10px",
+    display: "inline-block",
+    fontWeight: "bold",
+    width: "100%",
+    fontSize: "16px",
+    height: "35%",
   },
   openBook: {
     border: "1px solid #ccc",
@@ -354,6 +362,7 @@ const BookCombo = (props) => {
           classes={{ paper: classes.paper }}
         >
           {/*List of books*/}
+           {bookList.find(item=>item.book_id<=39)?<ListItem class={classes.headers}>OLD TESTAMENT</ListItem>:""}
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
@@ -363,10 +372,10 @@ const BookCombo = (props) => {
               //set row to last column in row, handle case when last row incomplete
               const lastBook = bookList.length - 1;
               let row = Math.min(Math.floor(i / 2) * 2 + 1, lastBook);
-              let open =
-                openBookCode === item.book_code ? classes.openBook : "";
+              let open = openBookCode === item.book_code ? classes.openBook : "";  
               return (
                 <React.Fragment key={item.book_id}>
+                  {item.book_id <=39 && ( 
                   <ListItem
                     value={item.short}
                     data-bookcode={item.book_code}
@@ -384,9 +393,10 @@ const BookCombo = (props) => {
                       classes={{ primary: classes.bookText }}
                     />
                   </ListItem>
+                  )}
                   {/* if chapterRow equal to current book index show chapters */}
                   {chapterRow === i &&
-                  selectedChapterList &&
+                  selectedChapterList && item.book_id <=39 &&
                   selectedChapterList.length !== 0 ? (
                     <List
                       component="div"
@@ -418,8 +428,73 @@ const BookCombo = (props) => {
                     ""
                   )}
                 </React.Fragment>
+                
               );
             })}
+             {bookList.find(item=>item.book_id>=40)?<ListItem class={classes.headers}>NEW TESTAMENT</ListItem>:""}
+             {bookList.map((item, i) => {
+              //set row to last column in row, handle case when last row incomplete
+              const lastBook = bookList.length - 1;
+              let row = Math.min(Math.floor(i  / 2) * 2 + 1, lastBook);
+              let open = openBookCode === item.book_code ? classes.openBook : "";  
+              return (
+             <React.Fragment key={item.book_id}>
+                  {item.book_id > 39 && ( 
+                  <ListItem
+                    value={item.short}
+                    data-bookcode={item.book_code}
+                    data-row={row}
+                    button
+                    onClick={(event) => bookClicked(event)}
+                    className={`${classes.book} ${open}`}
+                    ref={open === "" ? null : openBookRef}
+                    style={{
+                      borderLeft: "4px solid" + colorGroup[item.book_code],
+                    }}
+                  >
+                    <ListItemText
+                      primary={item.short}
+                      classes={{ primary: classes.bookText }}
+                    />
+                  </ListItem>
+                  )}
+                  {/* if chapterRow equal to current book index show chapters */}
+                  {chapterRow === i &&
+                  selectedChapterList && item.book_id > 39 &&
+                  selectedChapterList.length !== 0 ? (
+                    
+                    <List
+                      component="div"
+                      disablePadding
+                      className={classes.chapterList}
+                    >
+                      {selectedChapterList.map((chapterObject, i) => {
+                        var chapterActive =
+                          openBookCode === bookCode &&
+                          chapterObject.number === parseInt(chapter)
+                            ? classes.openChapter
+                            : "";
+                        return (
+                          <ListItem
+                            button
+                            key={chapterObject.number}
+                            data-bookcode={chapterObject.bibleBookCode}
+                            data-chapter={chapterObject.number}
+                            className={`${classes.chapter} ${chapterActive}`}
+                            onClick={clickChapter}
+                            ref={i === 0 ? firstChapterRef : null}
+                          >
+                            {chapterObject.number}
+                          </ListItem>
+                        );
+                      })}
+                    </List>
+                  ) : (
+                    ""
+                  )}
+                </React.Fragment>
+              )
+                  })}
           </List>
         </Menu>
       )}
