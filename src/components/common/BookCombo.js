@@ -94,9 +94,14 @@ const useStyles = makeStyles((theme) => ({
     margin: "4px 3px 3px 10px",
     display: "inline-block",
     fontWeight: "bold",
-    width: "100%",
+    width: 322,
     fontSize: "16px",
     height: "35%",
+    paddingBottom: "2px",
+    border: "1px solid #fff",
+    borderRadius:4,
+    boxShadow: "1px 1px 1px 1px" + GREY,
+    textAlign: "center",
   },
   openBook: {
     border: "1px solid #ccc",
@@ -292,12 +297,12 @@ const BookCombo = (props) => {
   //on updating chapter row scroll it into view
   React.useEffect(() => {
     if (firstChapterRef.current != null) {
-      firstChapterRef.current.scrollIntoView();
+      firstChapterRef.current.scrollIntoView(true);
     }
     if (openBookRef.current !== null) {
-      openBookRef.current.scrollIntoView();
+      openBookRef.current.scrollIntoView(true);
     }
-  }, [chapterRow]);
+  }, [comboOpen]);
   //function to set book once its clicked and open the chapter list for it
   function bookClicked(event) {
     let clickedBookCode = event.currentTarget.getAttribute("data-bookcode");
@@ -316,7 +321,7 @@ const BookCombo = (props) => {
     setPrevChapterList(selectedChapterList);
     setComboOpen(true);
     if (openBookRef.current !== null) {
-      openBookRef.current.scrollIntoView();
+      openBookRef.current.scrollIntoView(true);
     }
   }
   function otHeader() {
@@ -435,7 +440,7 @@ const BookCombo = (props) => {
                     />
                   </ListItem>
                   {/* if chapterRow equal to current book index show chapters */}
-                  {chapterRow === item.book_code &&
+                  {chapterRow === item.book_code && 
                   selectedChapterList?.length !== 0 ? (
                     <List
                       component="div"
