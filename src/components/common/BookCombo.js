@@ -81,7 +81,8 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #d2d2d2c9",
     backgroundColor: WHITE,
     "@media (max-width: 370px)": {
-      width: 140,
+      margin: "3px 5px 3px 1px",
+      width: 146,
     },
   },
   bookText: {
@@ -89,19 +90,23 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     width: 160,
+    "@media (max-width: 370px)": {
+      width: 140,
+    },
   },
   headers: {
-    margin: "4px 3px 3px 10px",
+    margin: 4,
     display: "inline-block",
     fontWeight: "bold",
-    width: 322,
+    width: 330,
     fontSize: "16px",
-    height: "35%",
-    paddingBottom: "2px",
-    border: "1px solid #fff",
-    borderRadius:4,
+    height: 35,
+    borderRadius: 4,
     boxShadow: "1px 1px 1px 1px" + GREY,
     textAlign: "center",
+    "@media (max-width: 370px)": {
+      width: 294,
+    },
   },
   openBook: {
     border: "1px solid #ccc",
@@ -120,7 +125,6 @@ const useStyles = makeStyles((theme) => ({
   },
   chapterList: {
     paddingTop: 5,
-    border: "1px solid #d8d8d8",
     backgroundColor: "white",
   },
   chapter: {
@@ -417,7 +421,7 @@ const BookCombo = (props) => {
             aria-labelledby="nested-list-subheader"
             className={classes.root}
           >
-            {bookList.map((item, i) => {
+            {bookList.map((item) => {
               let open =
                 openBookCode === item.book_code ? classes.openBook : "";
               return (
@@ -440,7 +444,7 @@ const BookCombo = (props) => {
                     />
                   </ListItem>
                   {/* if chapterRow equal to current book index show chapters */}
-                  {chapterRow === item.book_code && 
+                  {chapterRow === item.book_code &&
                   selectedChapterList?.length !== 0 ? (
                     <List
                       component="div"
