@@ -81,14 +81,32 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #d2d2d2c9",
     backgroundColor: WHITE,
     "@media (max-width: 370px)": {
-      width: 140,
+      margin: "3px 5px 3px 1px",
+      width: 146,
     },
   },
   bookText: {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    width: 140,
+    width: 160,
+    "@media (max-width: 370px)": {
+      width: 140,
+    },
+  },
+  headers: {
+    margin: 4,
+    display: "inline-block",
+    fontWeight: "bold",
+    width: 330,
+    fontSize: "16px",
+    height: 35,
+    borderRadius: 4,
+    boxShadow: "1px 1px 1px 1px" + GREY,
+    textAlign: "center",
+    "@media (max-width: 370px)": {
+      width: 294,
+    },
   },
   openBook: {
     border: "1px solid #ccc",
@@ -107,7 +125,6 @@ const useStyles = makeStyles((theme) => ({
   },
   chapterList: {
     paddingTop: 5,
-    border: "1px solid #d8d8d8",
     backgroundColor: "white",
   },
   chapter: {
@@ -188,6 +205,44 @@ const BookCombo = (props) => {
   const openBookRef = React.useRef(null);
   //first chapter ref
   const firstChapterRef = React.useRef(null);
+  function getChapterMap() {
+    const bookMap = new Map();
+    let col = 1;
+    let nt = false;
+    bookList.forEach((item) => {
+      const { book_code, book_id } = item;
+      //OT Books
+      if (book_id < 40) {
+        if (col === 1) {
+          //get next book if exists
+          const next = bookList.find(
+            (i) => i.book_id > book_id && i.book_id < 40
+          );
+          bookMap.set(book_code, next?.book_code || book_code);
+          col = 2;
+        } else if (col === 2) {
+          bookMap.set(book_code, book_code);
+          col = 1;
+        }
+      } else {
+        if (!nt) {
+          col = 1;
+          nt = true;
+        }
+        if (col === 1) {
+          //get next book if exists
+          const next = bookList.find((i) => i.book_id > book_id);
+          bookMap.set(book_code, next?.book_code || book_code);
+          col = 2;
+        } else if (col === 2) {
+          bookMap.set(book_code, book_code);
+          col = 1;
+        }
+      }
+    });
+    return bookMap;
+  }
+  const chapterOpenMap = React.useMemo(getChapterMap, [bookList]);
   //on changing bookcode change open book code
   React.useEffect(() => {
     setOpenBookCode(bookCode);
@@ -200,12 +255,8 @@ const BookCombo = (props) => {
   }, [paneNo, bookCode, chapter]);
   //on changing book code set chapter row
   React.useEffect(() => {
-    bookList?.forEach((element, i) => {
-      if (element.book_code === bookCode) {
-        setChapterRow(Math.min(Math.floor(i / 2) * 2 + 1, bookList.length - 1));
-      }
-    });
-  }, [bookCode, bookList]);
+    setChapterRow(chapterOpenMap.get(bookCode));
+  }, [bookCode, chapterOpenMap]);
   //initialize chapter list when book opened changed
   React.useEffect(() => {
     if (
@@ -250,22 +301,22 @@ const BookCombo = (props) => {
   //on updating chapter row scroll it into view
   React.useEffect(() => {
     if (firstChapterRef.current != null) {
-      firstChapterRef.current.scrollIntoView();
+      firstChapterRef.current.scrollIntoView(true);
     }
     if (openBookRef.current !== null) {
-      openBookRef.current.scrollIntoView();
+      openBookRef.current.scrollIntoView(true);
     }
-  }, [chapterRow]);
+  }, [comboOpen]);
   //function to set book once its clicked and open the chapter list for it
   function bookClicked(event) {
     let clickedBookCode = event.currentTarget.getAttribute("data-bookcode");
     //if opened book clicked, close it else open it
     if (openBookCode !== clickedBookCode) {
-      setChapterRow(parseInt(event.currentTarget.getAttribute("data-row")));
+      setChapterRow(chapterOpenMap.get(clickedBookCode));
       setOpenBookCode(clickedBookCode);
     } else {
       setOpenBookCode("");
-      setChapterRow(-1);
+      setChapterRow("");
     }
   }
   //handle book combo opening
@@ -274,8 +325,23 @@ const BookCombo = (props) => {
     setPrevChapterList(selectedChapterList);
     setComboOpen(true);
     if (openBookRef.current !== null) {
-      openBookRef.current.scrollIntoView();
+      openBookRef.current.scrollIntoView(true);
     }
+  }
+  function otHeader() {
+    return bookList.find((item) => item.book_id <= 39) ? (
+      <ListItem className={classes.headers}>OLD TESTAMENT</ListItem>
+    ) : (
+      ""
+    );
+  }
+  function ntHeader(item) {
+    const ntBook = bookList.find((item) => item.book_id >= 40);
+    return item?.book_code === ntBook?.book_code ? (
+      <ListItem className={classes.headers}>NEW TESTAMENT</ListItem>
+    ) : (
+      ""
+    );
   }
   //function to handle close combo/menu
   function closeMenu(chapterSelected) {
@@ -284,12 +350,7 @@ const BookCombo = (props) => {
     if (!chapterSelected) {
       setOpenBookCode(bookCode);
       setSelectedChapterList(prevChapterList);
-      bookList.forEach((element, i) => {
-        if (element.book_code === bookCode) {
-          const lastBook = bookList.length - 1;
-          setChapterRow(Math.min(Math.floor(i / 2) * 2 + 1, lastBook));
-        }
-      });
+      setChapterRow(chapterOpenMap.get(bookCode));
     }
   }
   //function to handle click chapter event
@@ -354,23 +415,21 @@ const BookCombo = (props) => {
           classes={{ paper: classes.paper }}
         >
           {/*List of books*/}
+          {otHeader()}
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
             className={classes.root}
           >
-            {bookList.map((item, i) => {
-              //set row to last column in row, handle case when last row incomplete
-              const lastBook = bookList.length - 1;
-              let row = Math.min(Math.floor(i / 2) * 2 + 1, lastBook);
+            {bookList.map((item) => {
               let open =
                 openBookCode === item.book_code ? classes.openBook : "";
               return (
                 <React.Fragment key={item.book_id}>
+                  {ntHeader(item)}
                   <ListItem
                     value={item.short}
                     data-bookcode={item.book_code}
-                    data-row={row}
                     button
                     onClick={(event) => bookClicked(event)}
                     className={`${classes.book} ${open}`}
@@ -385,9 +444,8 @@ const BookCombo = (props) => {
                     />
                   </ListItem>
                   {/* if chapterRow equal to current book index show chapters */}
-                  {chapterRow === i &&
-                  selectedChapterList &&
-                  selectedChapterList.length !== 0 ? (
+                  {chapterRow === item.book_code &&
+                  selectedChapterList?.length !== 0 ? (
                     <List
                       component="div"
                       disablePadding
