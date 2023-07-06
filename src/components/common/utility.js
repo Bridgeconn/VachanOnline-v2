@@ -122,6 +122,24 @@ export const getCommentaryForChapter = (sourceId, book, chapter, setText) => {
       console.log(error);
     });
 };
+//Function to get the bookintro of first chapter
+export const getCommentaryBookIntro = (sourceId, book, setText,setImages,removeBr) => {
+  let key = process.env.REACT_APP_COMMENTARY_KEY;
+  key = key ? "?key=" + key : "";
+  API.get("commentaries/" + sourceId + "/" + book + "/" + 1 + key)
+    .then(function (response) {
+      const commText = "<p>" + removeBr(response.data.bookIntro) + "</p>";
+       setText(
+        {
+          sourceId:sourceId,
+          bookCode: book,
+          bookIntro:setImages(commText),
+        });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 //Function to get the list of dictionaries
 export const getDictionaries = (setDictionaries) => {
   API.get("dictionaries")

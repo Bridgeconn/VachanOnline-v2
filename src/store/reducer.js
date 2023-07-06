@@ -5,6 +5,11 @@ const defaultState = {
   commentaries: [],
   commentary: {},
   commentaryLang: "hindi",
+  commentaryIntro: {
+    sourceId:"",
+    bookCode:"",
+    bookIntro:"",
+  },
   dictionary: {
     dictionaries: [],
     selectedDictionary: {},

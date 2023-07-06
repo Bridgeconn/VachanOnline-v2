@@ -6,11 +6,16 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import CommentaryCombo from "./CommentaryCombo";
 import Metadata from "../common/Metadata";
-import { getCommentaryForChapter } from "../common/utility";
+import { getCommentaryBookIntro, getCommentaryForChapter } from "../common/utility";
 import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { useCallback } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,13 +48,63 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  introTitle:{
+    fontSize: "1rem",
+    fontWeight: 400,
+    fontFamily: "Roboto,Noto Sans",
+    color: "#464545",
+  },
+  commIntro:{
+    fontFamily: "Roboto,Noto Sans",
+    //width:"100%",
+    height:"100%",
+    fontSize: "1rem",
+    paddingLeft:5,
+    paddingTop:0,
+    marginLeft:2,
+    marginTop:0,
+    overflow: "auto",
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+    "& span": {
+      fontWeight: 600,
+      display: "block",
+    },
+    "& p": {
+      marginBottom: 10,
+    },
+    "&::-webkit-scrollbar": {
+      width: "0.45em",
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.4)",
+      outline: "1px solid slategrey",
+    },
+    "& img": {
+      float: "right",
+      marginLeft: 30,
+      maxWidth: "70%",
+      margin: "30px 0px",
+    },
+    [theme.breakpoints.only("sm")]: {
+      top: 123,
+    },
+    [theme.breakpoints.only("xs")]: {
+      top: (props) => (props.screenView === "single" ? 122 : 62),
+    },
+  },
   text: {
-    position: "absolute",
+    position: "flex",
     right: 0,
     left: 35,
+    paddingLeft:20,
     paddingRight: 20,
-    paddingTop: 20,
-    top: 135,
+    paddingTop: 5,
+    height: "500px", 
+    top: 200,
     bottom: 0,
     color: "#464545",
     fontFamily: "Roboto,Noto Sans",
@@ -144,11 +199,14 @@ const Commentary = (props) => {
   const [baseUrl, setBaseUrl] = React.useState("");
   const [bookNames, setBookNames] = React.useState([]);
   const [commentaryImages, setCommentaryImages] = React.useState([]);
+  const [chapterIntro, setChapterIntro] = React.useState("");
 
   let {
     panel1,
     commentaries,
     setCommentary,
+    commentaryIntro,
+    setCommentaryIntro,
     setCommentaryLang,
     commentary,
     versionBooks,
@@ -222,6 +280,38 @@ const Commentary = (props) => {
       setBaseUrl("");
     }
   }, [commentaries, commentary, versionBooks, setBaseUrl]);
+  const removeBr = useCallback((str) => {
+    str = str.trim();
+    return str.startsWith("<br>") ? str.slice(4) : str;
+  },[]);
+  const setImages = useCallback((str) => {
+    if (typeof str === "string" && baseUrl !== "") {
+      str = str.replaceAll("base_url", baseUrl);
+      const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
+      const images = str.match(rex);
+      const imagesArray = images?.map((ele, i) => {
+        const src = "src=" + ele;
+        str = str.replace(src, ` data-index=${i} ` + src);
+        return { src: ele.replaceAll("'", "") };
+      });
+      setCommentaryImages(imagesArray);
+    }
+    return str;
+  },[baseUrl]);
+  React.useEffect(() =>{
+      if (commentary.sourceId===commentaryIntro.sourceId && bookCode ===commentaryIntro.bookCode) {
+          setChapterIntro(commentaryIntro.bookIntro)
+      } else{
+        getCommentaryBookIntro(
+          commentary.sourceId,
+          bookCode,
+          setCommentaryIntro,
+          setImages,
+          removeBr,
+        );
+      }
+  },[commentary, bookCode,commentaryIntro,setCommentaryIntro,setImages,removeBr])
+  
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
@@ -232,11 +322,11 @@ const Commentary = (props) => {
         chapter,
         setCommentaryObject
       );
-    }
+      }
     //Scroll to top on text change
     if (textRef.current !== undefined && textRef.current !== null)
       textRef.current.scrollTo(0, 0);
-  }, [commentary, bookCode, chapter]);
+  }, [commentary, bookCode, chapter, chapterIntro, setCommentaryIntro]);
 
   const openImage = (event) => {
     const img = event.target;
@@ -245,36 +335,19 @@ const Commentary = (props) => {
       setActiveIndex(parseInt(img.getAttribute("data-index")));
     }
   };
-
+ 
   React.useEffect(() => {
     //Remove leading break line
-    const removeBr = (str) => {
-      str = str.trim();
-      return str.startsWith("<br>") ? str.slice(4) : str;
-    };
-    const setImages = (str) => {
-      if (typeof str === "string" && baseUrl !== "") {
-        str = str.replaceAll("base_url", baseUrl);
-        const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
-        const images = str.match(rex);
-        const imagesArray = images?.map((ele, i) => {
-          const src = "src=" + ele;
-          str = str.replace(src, ` data-index=${i} ` + src);
-          return { src: ele.replaceAll("'", "") };
-        });
-        setCommentaryImages(imagesArray);
-      }
-      return str;
-    };
+   
     //If commentary object then set commentary text to show on UI
 
     const comm = commentaryObject;
     const VerseLabel = commentary.metadata?.VerseLabel;
     if (comm) {
       let commText = "";
-      if (comm.bookIntro) {
-        commText += "<p>" + comm.bookIntro + "</p>";
-      }
+      // if (comm.bookIntro) {
+      //   commText += "<p>" + comm.bookIntro + "</p>";
+      // }
       if (comm?.commentaries?.length > 0) {
         for (let item of comm.commentaries) {
           if (item.verse !== "0" && VerseLabel !== "False") {
@@ -291,7 +364,8 @@ const Commentary = (props) => {
         setMessage("unavailable");
       }
     }
-  }, [baseUrl, commentary, commentaryObject, verseLabel]);
+  }, [baseUrl, commentary, commentaryObject, verseLabel, chapterIntro, bookCode, setCommentaryIntro, setImages,removeBr]);
+
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
@@ -351,6 +425,20 @@ const Commentary = (props) => {
             : `No commentary available for ${book} ${chapter}`}
         </h5>
       )}
+      {commentaryIntro.bookIntro && (
+      <Accordion className={classes.commIntro}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography className={classes.introTitle}><b>Introduction to {book}</b></Typography>
+        </AccordionSummary>
+        <AccordionDetails  className={classes.commIntro}>
+          {parse(commentaryIntro.bookIntro)}
+        </AccordionDetails>
+      </Accordion>
+      )}
       {!message && commentaryText && (
         <div className={classes.text} ref={textRef} onClick={openImage}>
           {parse(commentaryText)}
@@ -366,6 +454,7 @@ const mapStateToProps = (state) => {
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
+    commentaryIntro: state.local.commentaryIntro,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -376,6 +465,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
     setCommentaryLang: (val) =>
       dispatch({ type: actions.SETVALUE, name: "commentaryLang", value: val }),
+    setCommentaryIntro: (val) =>
+      dispatch({ type: actions.SETVALUE, name: "commentaryIntro", value: val }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);
