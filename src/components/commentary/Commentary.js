@@ -11,11 +11,10 @@ import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
 import { useCallback } from "react";
+import { LIGHTGREY } from "../../store/colorCode";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,8 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     paddingLeft: 35,
-    paddingBottom: 8,
-    marginBottom: 20,
+    paddingBottom: 7,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
@@ -49,52 +47,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   introTitle:{
-    fontSize: "1rem",
-    fontWeight: 400,
-    fontFamily: "Roboto,Noto Sans",
-    color: "#464545",
+    fontSize: "1.2rem",
+    width: "100%",
   },
-  commIntro:{
-    fontFamily: "Roboto,Noto Sans",
-    //width:"100%",
-    height:"100%",
-    fontSize: "1rem",
-    paddingLeft:5,
-    paddingTop:0,
-    marginLeft:2,
-    marginTop:0,
-    overflow: "auto",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "& span": {
-      fontWeight: 600,
-      display: "block",
-    },
-    "& p": {
-      marginBottom: 10,
-    },
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    "& img": {
-      float: "right",
-      marginLeft: 30,
-      maxWidth: "70%",
-      margin: "30px 0px",
-    },
-    [theme.breakpoints.only("sm")]: {
-      top: 123,
-    },
-    [theme.breakpoints.only("xs")]: {
-      top: (props) => (props.screenView === "single" ? 122 : 62),
-    },
+  introHeading: {
+    display: "flex",
+    border: "1px solid " + LIGHTGREY,
+    padding: "10px 20px",
+    boxShadow: theme.shadows[1], 
+  },
+  introText: {
+  borderBottom: "3px solid " + LIGHTGREY,
+  marginBottom: 20,
+  paddingBottom: 10,
   },
   text: {
     position: "flex",
@@ -102,8 +67,8 @@ const useStyles = makeStyles((theme) => ({
     left: 35,
     paddingLeft:20,
     paddingRight: 20,
-    paddingTop: 5,
-    height: "500px", 
+    paddingTop: 25,
+    height: "550px", 
     top: 200,
     bottom: 0,
     color: "#464545",
@@ -200,6 +165,7 @@ const Commentary = (props) => {
   const [bookNames, setBookNames] = React.useState([]);
   const [commentaryImages, setCommentaryImages] = React.useState([]);
   const [chapterIntro, setChapterIntro] = React.useState("");
+  const [showIntro, setShowIntro] = React.useState(false);
 
   let {
     panel1,
@@ -280,6 +246,7 @@ const Commentary = (props) => {
       setBaseUrl("");
     }
   }, [commentaries, commentary, versionBooks, setBaseUrl]);
+   //Remove leading break line
   const removeBr = useCallback((str) => {
     str = str.trim();
     return str.startsWith("<br>") ? str.slice(4) : str;
@@ -337,17 +304,12 @@ const Commentary = (props) => {
   };
  
   React.useEffect(() => {
-    //Remove leading break line
-   
     //If commentary object then set commentary text to show on UI
 
     const comm = commentaryObject;
     const VerseLabel = commentary.metadata?.VerseLabel;
     if (comm) {
       let commText = "";
-      // if (comm.bookIntro) {
-      //   commText += "<p>" + comm.bookIntro + "</p>";
-      // }
       if (comm?.commentaries?.length > 0) {
         for (let item of comm.commentaries) {
           if (item.verse !== "0" && VerseLabel !== "False") {
@@ -365,7 +327,9 @@ const Commentary = (props) => {
       }
     }
   }, [baseUrl, commentary, commentaryObject, verseLabel, chapterIntro, bookCode, setCommentaryIntro, setImages,removeBr]);
-
+  const onClick = () => {
+    setShowIntro((prev) => !prev);
+  };
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
@@ -425,25 +389,25 @@ const Commentary = (props) => {
             : `No commentary available for ${book} ${chapter}`}
         </h5>
       )}
-      {commentaryIntro.bookIntro && (
-      <Accordion className={classes.commIntro}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.introTitle}><b>Introduction to {book}</b></Typography>
-        </AccordionSummary>
-        <AccordionDetails  className={classes.commIntro}>
-          {parse(commentaryIntro.bookIntro)}
-        </AccordionDetails>
-      </Accordion>
+      {commentaryIntro.bookIntro &&(
+      <div onClick={onClick} className={classes.introHeading}>
+      <Typography className={classes.introTitle}>Introduction to {book}</Typography>
+      <ExpandMoreIcon />
+      
+      </div>
       )}
+      <div  className={classes.text}>
+        <Collapse in={showIntro}>
+      <div className={classes.introText}>
+      {parse(commentaryIntro.bookIntro)}
+      </div>
+      </Collapse>
       {!message && commentaryText && (
-        <div className={classes.text} ref={textRef} onClick={openImage}>
+        <div ref={textRef} onClick={openImage}>
           {parse(commentaryText)}
         </div>
       )}
+      </div>
     </div>
   );
 };
