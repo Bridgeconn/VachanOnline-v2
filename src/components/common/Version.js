@@ -152,6 +152,7 @@ const Version = (props) => {
 
   function handleClose() {
     setAnchorEl(null);
+    setExpanded(language);
   }
   function sortVersionLanguages(a, b) {
     var langA = a.language.toUpperCase(); // ignore upper and lowercase
@@ -167,6 +168,7 @@ const Version = (props) => {
   //function to set the bible version when clicked
   const setVersion = (event) => {
     handleClose();
+    setAnchorEl(null);
     let selectedVersion = event.currentTarget;
     let sourceId = selectedVersion.getAttribute("data-sourceid");
     let bookList = versionBooks[versionSource[sourceId]];
@@ -217,8 +219,10 @@ const Version = (props) => {
     }
     return code;
   }
-  function currentVersion(item){
-    return item.language.code + "-" + item.version.code === version ? classes.versionSelected : "";
+  function currentVersion(item) {
+    return item.language.code + "-" + item.version.code === version
+      ? classes.versionSelected
+      : "";
   }
   React.useEffect(() => {
     if (version !== "Loading..." && paneNo !== 2) {
@@ -245,7 +249,7 @@ const Version = (props) => {
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
   }, [landingPage, mobileView, setValue, version, versions]);
- 
+
   return (
     <>
       <BigTooltip title="Select a Bible in your language and version">
@@ -321,21 +325,22 @@ const Version = (props) => {
                 >
                   <List className={classes.expansionDetails}>
                     {version.languageVersions.map((item, i) => {
-                       var versionActive = currentVersion(item)
-                       return (
-                      <ListItem
-                        key={i}
-                        value={
-                          item.language.code +
-                          "-" +
-                          item.version.code.toUpperCase() 
-                        }
-                        data-sourceid={item.sourceId}
-                        className={`${classes.version} ${versionActive}`}
-                        onClick={setVersion}
-                      >
-                        {item.version.code.toUpperCase()} : {item.version.name}
-                      </ListItem>
+                      var versionActive = currentVersion(item);
+                      return (
+                        <ListItem
+                          key={i}
+                          value={
+                            item.language.code +
+                            "-" +
+                            item.version.code.toUpperCase()
+                          }
+                          data-sourceid={item.sourceId}
+                          className={`${classes.version} ${versionActive}`}
+                          onClick={setVersion}
+                        >
+                          {item.version.code.toUpperCase()} :{" "}
+                          {item.version.name}
+                        </ListItem>
                       );
                     })}
                   </List>

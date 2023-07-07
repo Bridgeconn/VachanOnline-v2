@@ -10,6 +10,7 @@ import { getCommentaryForChapter } from "../common/utility";
 import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
+import Viewer from "react-viewer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,6 +143,8 @@ const Commentary = (props) => {
   const [message, setMessage] = React.useState("");
   const [baseUrl, setBaseUrl] = React.useState("");
   const [bookNames, setBookNames] = React.useState([]);
+  const [commentaryImages, setCommentaryImages] = React.useState([]);
+
   let {
     panel1,
     commentaries,
@@ -158,6 +161,9 @@ const Commentary = (props) => {
   };
   const classes = useStyles(styleProps);
   const { version, bookCode, chapter } = panel1;
+  const [visible, setVisible] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(0);
+
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
@@ -231,46 +237,59 @@ const Commentary = (props) => {
     if (textRef.current !== undefined && textRef.current !== null)
       textRef.current.scrollTo(0, 0);
   }, [commentary, bookCode, chapter]);
-  //Remove leading break line
-  const removeBr = (str) => {
-    str = str.trim();
-    return str.startsWith("<br>") ? str.slice(4) : str;
-  };
-  React.useEffect(() => {
-    const changeBaseUrl = (str) => {
-      if (typeof str === "string" && baseUrl !== "") {
-        return str.replaceAll("base_url", baseUrl);
-      } else {
-        return str;
-      }
-    };
 
-    //If commentary object then set commentary text to show on UI
-    if (commentaryObject) {
-      let commText = "";
-      if (commentaryObject.bookIntro) {
-        commText += "<p>" + changeBaseUrl(commentaryObject.bookIntro) + "</p>";
+  const openImage = (event) => {
+    const img = event.target;
+    if (img?.getAttribute("data-index")) {
+      setVisible(true);
+      setActiveIndex(parseInt(img.getAttribute("data-index")));
+    }
+  };
+
+  React.useEffect(() => {
+    //Remove leading break line
+    const removeBr = (str) => {
+      str = str.trim();
+      return str.startsWith("<br>") ? str.slice(4) : str;
+    };
+    const setImages = (str) => {
+      if (typeof str === "string" && baseUrl !== "") {
+        str = str.replaceAll("base_url", baseUrl);
+        const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
+        const images = str.match(rex);
+        const imagesArray = images?.map((ele, i) => {
+          const src = "src=" + ele;
+          str = str.replace(src, ` data-index=${i} ` + src);
+          return { src: ele.replaceAll("'", "") };
+        });
+        setCommentaryImages(imagesArray);
       }
-      if (
-        commentaryObject?.commentaries?.length > 0 ||
-        commentaryObject?.bookIntro?.length > 0
-      ) {
-        let item;
-        for (item of commentaryObject.commentaries) {
-          if (
-            item.verse !== "0" &&
-            commentary.metadata?.VerseLabel !== "False"
-          ) {
+      return str;
+    };
+    //If commentary object then set commentary text to show on UI
+
+    const comm = commentaryObject;
+    const VerseLabel = commentary.metadata?.VerseLabel;
+    if (comm) {
+      let commText = "";
+      if (comm.bookIntro) {
+        commText += "<p>" + comm.bookIntro + "</p>";
+      }
+      if (comm?.commentaries?.length > 0) {
+        for (let item of comm.commentaries) {
+          if (item.verse !== "0" && VerseLabel !== "False") {
             commText += "<span>" + verseLabel + " " + item.verse + "</span>";
           }
-          commText += "<p>" + changeBaseUrl(removeBr(item.text)) + "</p>";
+          commText += "<p>" + removeBr(item.text) + "</p>";
         }
+      }
+      if (commText !== "") {
+        setCommentaryText(setImages(commText));
         setMessage("");
       } else {
         setCommentaryText("");
         setMessage("unavailable");
       }
-      setCommentaryText(commText);
     }
   }, [baseUrl, commentary, commentaryObject, verseLabel]);
   return (
@@ -312,6 +331,19 @@ const Commentary = (props) => {
           <Close className={classes.closeButton} />
         </Box>
       </Box>
+      {commentaryImages ? (
+        <Viewer
+          visible={visible}
+          onClose={() => {
+            setVisible(false);
+          }}
+          images={commentaryImages}
+          activeIndex={activeIndex}
+          scalable={false}
+        />
+      ) : (
+        ""
+      )}
       {message && (
         <h5 className={classes.message}>
           {message === "loading"
@@ -320,7 +352,7 @@ const Commentary = (props) => {
         </h5>
       )}
       {!message && commentaryText && (
-        <div className={classes.text} ref={textRef}>
+        <div className={classes.text} ref={textRef} onClick={openImage}>
           {parse(commentaryText)}
         </div>
       )}
