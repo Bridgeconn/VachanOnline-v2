@@ -6,9 +6,10 @@ const defaultState = {
   commentary: {},
   commentaryLang: "hindi",
   commentaryIntro: {
-    sourceId:"",
-    bookCode:"",
-    bookIntro:"",
+    sourceId: "",
+    bookCode: "",
+    bookIntro: "",
+    images: [],
   },
   dictionary: {
     dictionaries: [],
