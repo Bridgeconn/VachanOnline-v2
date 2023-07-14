@@ -14,7 +14,8 @@ import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
-import { GREY, LIGHTGREY } from "../../store/colorCode";
+import { LIGHTGREY } from "../../store/colorCode";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,10 +58,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     border: "1px solid " + LIGHTGREY,
     padding: "10px 20px",
-    boxShadow: theme.shadows[1],
+    boxShadow: theme.shadows[2],
   },
   introText: {
-    borderBottom: "5px solid " + GREY,
     padding: "20px 20px 30px 30px",
   },
   text: {
@@ -416,6 +416,7 @@ const Commentary = (props) => {
           <div className={classes.introText}>
             {parse(commentaryIntro.bookIntro)}
           </div>
+          <Divider />
         </Collapse>
         {!message && commentaryText && (
           <div ref={textRef} className={classes.verseText}>
