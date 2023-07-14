@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import Box from "@material-ui/core/Box";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -11,11 +14,16 @@ import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
+import { LIGHTGREY } from "../../store/colorCode";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
     [theme.breakpoints.only("xs")]: {
       marginTop: (props) => (props.screenView === "single" ? 60 : 0),
     },
@@ -25,8 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     paddingLeft: 35,
-    paddingBottom: 8,
-    marginBottom: 20,
+    paddingBottom: 7,
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
@@ -43,22 +50,31 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  introTitle: {
+    fontSize: "1.2rem",
+    width: "100%",
+  },
+  introHeading: {
+    display: "flex",
+    border: "1px solid " + LIGHTGREY,
+    padding: "10px 20px",
+    boxShadow: theme.shadows[2],
+  },
+  introText: {
+    padding: "20px 20px 30px 30px",
+  },
   text: {
-    position: "absolute",
-    right: 0,
-    left: 35,
-    paddingRight: 20,
-    paddingTop: 20,
-    top: 135,
-    bottom: 0,
+    height: "calc(100vh - 203px)",
+    marginTop: 2,
+    marginBottom: 68,
+    flexGrow: 1,
     color: "#464545",
     fontFamily: "Roboto,Noto Sans",
     overflow: "scroll",
     fontSize: "1rem",
     fontWeight: 400,
     lineHeight: 1.5,
-    letterSpacing: "0.00938em",
-    marginBottom: -15,
+    letterSpacing: "0.01em",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "& span": {
@@ -85,11 +101,14 @@ const useStyles = makeStyles((theme) => ({
       margin: "30px 0px",
     },
     [theme.breakpoints.only("sm")]: {
-      top: 123,
+      marginBottom: 45,
     },
     [theme.breakpoints.only("xs")]: {
-      top: (props) => (props.screenView === "single" ? 122 : 62),
+      marginBottom: (props) => (props.screenView === "single" ? 45 : -15),
     },
+  },
+  verseText: {
+    padding: "20px 20px 30px 30px",
   },
   message: {
     paddingLeft: 20,
@@ -144,11 +163,14 @@ const Commentary = (props) => {
   const [baseUrl, setBaseUrl] = React.useState("");
   const [bookNames, setBookNames] = React.useState([]);
   const [commentaryImages, setCommentaryImages] = React.useState([]);
+  const [showIntro, setShowIntro] = React.useState(false);
 
   let {
     panel1,
     commentaries,
     setCommentary,
+    commentaryIntro,
+    setCommentaryIntro,
     setCommentaryLang,
     commentary,
     versionBooks,
@@ -177,7 +199,6 @@ const Commentary = (props) => {
       } else {
         comm = comm.commentaries[0];
       }
-
       setCommentary(comm);
       setCommentaryLang(comm.metadata["Language Name"].toLowerCase());
     }
@@ -196,32 +217,74 @@ const Commentary = (props) => {
     //Set bookNames based on commentary language
     if (Object.entries(commentary).length !== 0 && commentaries) {
       let langObject = commentaries.find((lang) => {
-        let bool = lang.commentaries.some((c) => {
+        return lang.commentaries.some((c) => {
           return c.sourceId === commentary.sourceId;
         });
-        return bool;
       });
       setBookNames(versionBooks[langObject.languageCode]);
       //Set verse label
-      let label = "Verse";
       const verseLabels = {
         english: "Verse",
         hindi: "पद",
         marathi: "वचन",
         gujarati: "કલામ",
       };
-      label = verseLabels[langObject.language] || label;
-      setVerseLabel(label);
+      setVerseLabel(verseLabels[langObject.language] || "Verse");
     }
-    if (
-      commentary.metadata !== undefined &&
-      commentary.metadata?.baseUrl !== undefined
-    ) {
-      setBaseUrl(commentary.metadata.baseUrl);
-    } else {
-      setBaseUrl("");
-    }
+    setBaseUrl(commentary?.metadata?.baseUrl || "");
   }, [commentaries, commentary, versionBooks, setBaseUrl]);
+  //Remove leading break line
+  const removeBr = useCallback((str) => {
+    str = str.trim();
+    return str.startsWith("<br>") ? str.slice(4) : str;
+  }, []);
+  const setImages = useCallback(
+    (str, imageArr) => {
+      const imageObj = { text: str, images: imageArr };
+      if (typeof str === "string" && baseUrl !== "") {
+        str = str.replaceAll("base_url", baseUrl);
+        const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
+        const images = str.match(rex);
+        const newImages =
+          images?.map((ele, i) => {
+            const src = "src=" + ele;
+            str = str.replace(src, ` data-index=${i + imageArr.length} ` + src);
+            return { src: ele.replaceAll("'", "") };
+          }) || [];
+        imageObj.text = str;
+        imageObj.images = imageArr ? imageArr.concat(newImages) : newImages;
+      }
+      return imageObj;
+    },
+    [baseUrl]
+  );
+  const getIntro = useCallback(
+    (sourceId, bookCode) => {
+      const setText = (commText) => {
+        const intro = "<p>" + removeBr(commText.bookIntro) + "</p>";
+        const introObj = setImages(intro, []);
+        setCommentaryIntro({
+          sourceId: sourceId,
+          bookCode: bookCode,
+          bookIntro: introObj.text,
+          images: introObj.images,
+        });
+      };
+      if (sourceId) {
+        getCommentaryForChapter(sourceId, bookCode, 1, setText);
+      }
+    },
+    [setCommentaryIntro, setImages, removeBr]
+  );
+  React.useEffect(() => {
+    if (
+      commentary.sourceId !== commentaryIntro.sourceId ||
+      bookCode !== commentaryIntro.bookCode
+    ) {
+      getIntro(commentary.sourceId, bookCode);
+    }
+  }, [commentary, bookCode, commentaryIntro, getIntro]);
+
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
     if (commentary && commentary.sourceId && bookCode && chapter) {
@@ -247,34 +310,11 @@ const Commentary = (props) => {
   };
 
   React.useEffect(() => {
-    //Remove leading break line
-    const removeBr = (str) => {
-      str = str.trim();
-      return str.startsWith("<br>") ? str.slice(4) : str;
-    };
-    const setImages = (str) => {
-      if (typeof str === "string" && baseUrl !== "") {
-        str = str.replaceAll("base_url", baseUrl);
-        const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
-        const images = str.match(rex);
-        const imagesArray = images?.map((ele, i) => {
-          const src = "src=" + ele;
-          str = str.replace(src, ` data-index=${i} ` + src);
-          return { src: ele.replaceAll("'", "") };
-        });
-        setCommentaryImages(imagesArray);
-      }
-      return str;
-    };
     //If commentary object then set commentary text to show on UI
-
     const comm = commentaryObject;
     const VerseLabel = commentary.metadata?.VerseLabel;
     if (comm) {
       let commText = "";
-      if (comm.bookIntro) {
-        commText += "<p>" + comm.bookIntro + "</p>";
-      }
       if (comm?.commentaries?.length > 0) {
         for (let item of comm.commentaries) {
           if (item.verse !== "0" && VerseLabel !== "False") {
@@ -284,14 +324,26 @@ const Commentary = (props) => {
         }
       }
       if (commText !== "") {
-        setCommentaryText(setImages(commText));
+        const imagesObj = setImages(commText, commentaryIntro.images);
+        setCommentaryText(imagesObj.text);
+        setCommentaryImages(imagesObj.images);
         setMessage("");
       } else {
         setCommentaryText("");
         setMessage("unavailable");
       }
     }
-  }, [baseUrl, commentary, commentaryObject, verseLabel]);
+  }, [
+    commentary,
+    commentaryObject,
+    verseLabel,
+    setImages,
+    removeBr,
+    commentaryIntro.images,
+  ]);
+  const toggleIntro = () => {
+    setShowIntro((prev) => !prev);
+  };
   return (
     <div className={classes.root}>
       <Box className={classes.title}>
@@ -351,11 +403,27 @@ const Commentary = (props) => {
             : `No commentary available for ${book} ${chapter}`}
         </h5>
       )}
-      {!message && commentaryText && (
-        <div className={classes.text} ref={textRef} onClick={openImage}>
-          {parse(commentaryText)}
+      {commentaryIntro.bookIntro && (
+        <div onClick={toggleIntro} className={classes.introHeading}>
+          <Typography className={classes.introTitle}>
+            Introduction to {book}
+          </Typography>
+          {showIntro ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </div>
       )}
+      <div onClick={openImage} className={classes.text}>
+        <Collapse in={showIntro}>
+          <div className={classes.introText}>
+            {parse(commentaryIntro.bookIntro)}
+          </div>
+          <Divider />
+        </Collapse>
+        {!message && commentaryText && (
+          <div ref={textRef} className={classes.verseText}>
+            {parse(commentaryText)}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -366,6 +434,7 @@ const mapStateToProps = (state) => {
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
+    commentaryIntro: state.local.commentaryIntro,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -376,6 +445,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
     setCommentaryLang: (val) =>
       dispatch({ type: actions.SETVALUE, name: "commentaryLang", value: val }),
+    setCommentaryIntro: (val) =>
+      dispatch({ type: actions.SETVALUE, name: "commentaryIntro", value: val }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Commentary);
