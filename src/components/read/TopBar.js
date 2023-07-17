@@ -66,6 +66,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginRight: 4,
     marginTop: 2,
+    "&:hover": {
+      color: BLACK,
+    },
   },
   feedback: {
     color: BLACK,
@@ -149,6 +152,26 @@ const TopBar = (props) => {
       ""
     );
   };
+  const SongsButton = () => {
+    return process.env.REACT_APP_SONGS_URL !== undefined ? (
+      <Link to="/songs">
+        <Button
+          variant="outlined"
+          size="small"
+          className={classes.button}
+          title="Songs"
+          aria-label="songs"
+          target="_blank"
+          rel="noopener"
+        >
+          Songs
+        </Button>
+      </Link>
+    ) : (
+      ""
+    );
+  };
+
   const StudyBibleButton = () => {
     return (
       <Link to="/read">
@@ -196,6 +219,9 @@ const TopBar = (props) => {
           {window.location.pathname.startsWith("/read")
             ? BibleStoriesButton()
             : StudyBibleButton()}
+          {window.location.pathname.startsWith("/read")
+            ? SongsButton()
+            : BibleStoriesButton()}
           {FeedbackButton()}
           {loginButton}
         </Toolbar>

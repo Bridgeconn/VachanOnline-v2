@@ -130,6 +130,35 @@ const PageHeader = (props) => {
           ) : (
             ""
           )}
+          {process.env.REACT_APP_SONGS_URL !== undefined ? (
+            <Link
+              to={{
+                pathname: "/songs",
+              }}
+            >
+              {mobileLandscape ? (
+                <i className={`material-icons ${classes.islIcon}`}>
+                  music_note
+                </i>
+              ) : (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.signBible}
+                  title="Songs"
+                  aria-label="Song"
+                  target="_blank"
+                  rel="noopener"
+                  startIcon={<i className="material-icons">music_note</i>}
+                >
+                  songs
+                </Button>
+              )}
+            </Link>
+          ) : (
+            ""
+          )}
           {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
             <Link to="/biblestories">
               <Button
