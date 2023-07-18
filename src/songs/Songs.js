@@ -1,10 +1,7 @@
 import React, { useMemo, useEffect, useCallback } from "react";
 import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
-import Slider from "@material-ui/core/Slider";
 import Select from "@material-ui/core/Select";
-import Menu from "@material-ui/core/Menu";
-import Tooltip from "@material-ui/core/Tooltip";
 import FormControl from "@material-ui/core/FormControl";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
@@ -20,6 +17,7 @@ import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { BLACK, GREY, WHITE } from "../store/colorCode";
 import TopBar from "../components/read/TopBar";
+import Setting from "../components/common/Setting";
 
 const drawerWidth = 400;
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "-10px",
     marginRight: "20px",
     cursor: "pointer",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 0,
+    },
   },
   root: {
     display: "flex",
@@ -113,6 +114,9 @@ const useStyles = makeStyles((theme) => ({
   },
   mobileBox: {
     display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      alignItems: "center",
+    },
   },
   mobileLangCombo: {
     minWidth: 100,
@@ -280,34 +284,19 @@ const Songs = (props) => {
                 </FormControl>
               </Box>
               <Box p={1}>
-                <div onClick={openSettings} className={classes.mobileSettings}>
-                  <i className="material-icons md-23">more_vert</i>
-                </div>
-                <Menu
-                  id="long-menu"
-                  anchorEl={settingsAnchor}
-                  keepMounted
+                <Setting
+                  root={classes.slider}
+                  settings={classes.settings}
+                  settingsMenu={classes.settingsMenu}
+                  menu={classes.menu}
+                  margin={classes.margin}
+                  fontSize={fontSize}
+                  settingsAnchor={settingsAnchor}
+                  handleSliderChange={handleSliderChange}
+                  closeSettings={closeSettings}
+                  openSettings={openSettings}
                   open={open}
-                  onClose={closeSettings}
-                  PaperProps={{
-                    className: classes.settingsMenu,
-                  }}
-                >
-                  <MenuItem>Font Size</MenuItem>
-                  <Divider />
-                  <MenuItem className={classes.menu}>
-                    <div className={classes.margin} />
-                    <Slider
-                      defaultValue={20}
-                      value={fontSize}
-                      onChange={handleSliderChange}
-                      valueLabelDisplay="on"
-                      min={12}
-                      max={30}
-                      classes={{ root: classes.slider }}
-                    />
-                  </MenuItem>
-                </Menu>
+                />
               </Box>
             </Box>
           </Box>
@@ -333,43 +322,19 @@ const Songs = (props) => {
                   ))}
                 </Select>
               </FormControl>
-              <div>
-                <Tooltip
-                  title="Settings"
-                  className={classes.settings}
-                  aria-label="More"
-                  aria-controls="long-menu"
-                  aria-haspopup="true"
-                  onClick={openSettings}
-                >
-                  <i className="material-icons md-23">more_vert</i>
-                </Tooltip>
-                <Menu
-                  id="long-menu"
-                  anchorEl={settingsAnchor}
-                  keepMounted
-                  open={open}
-                  onClose={closeSettings}
-                  PaperProps={{
-                    className: classes.settingsMenu,
-                  }}
-                >
-                  <MenuItem className={classes.menu}>Font Size</MenuItem>
-                  <Divider />
-                  <MenuItem className={classes.menu}>
-                    <div className={classes.margin} />
-                    <Slider
-                      defaultValue={20}
-                      value={fontSize}
-                      onChange={handleSliderChange}
-                      valueLabelDisplay="on"
-                      min={12}
-                      max={30}
-                      classes={{ root: classes.slider }}
-                    />
-                  </MenuItem>
-                </Menu>
-              </div>
+              <Setting
+                root={classes.slider}
+                settings={classes.settings}
+                settingsMenu={classes.settingsMenu}
+                menu={classes.menu}
+                margin={classes.margin}
+                fontSize={fontSize}
+                settingsAnchor={settingsAnchor}
+                handleSliderChange={handleSliderChange}
+                closeSettings={closeSettings}
+                openSettings={openSettings}
+                open={open}
+              />
             </div>
             <Divider />
             <div className={classes.drawerContainer}>
