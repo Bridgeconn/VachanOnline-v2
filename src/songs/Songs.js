@@ -1,3 +1,4 @@
+import React, { useMemo, useEffect, useCallback } from "react";
 import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
 import Slider from "@material-ui/core/Slider";
@@ -5,8 +6,6 @@ import Select from "@material-ui/core/Select";
 import Menu from "@material-ui/core/Menu";
 import Tooltip from "@material-ui/core/Tooltip";
 import FormControl from "@material-ui/core/FormControl";
-import Markdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
 import Link from "@material-ui/core/Link";
@@ -17,7 +16,6 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography } from "@material-ui/core";
 import axios from "axios";
-import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { BLACK, GREY, WHITE } from "../store/colorCode";
@@ -73,15 +71,9 @@ const useStyles = makeStyles((theme) => ({
     },
     fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
   },
-  storyDirection: {
-    direction: "rtl",
-    textAlign: "right",
-    paddingRight: "50px",
-  },
   listDirection: {
     textAlign: "left",
   },
-
   drawerContainer: {
     overflow: "auto",
     fontSize: "1.2rem",
@@ -113,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "5px 0",
   },
   linkList: {
+    marginLeft: 5,
     color: BLACK,
     "&:hover": {
       color: GREY,
@@ -128,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "90%",
     display: "flex",
   },
-  mobileTooltip: {
+  mobileSettings: {
     marginTop: 15,
   },
   settingsMenu: {
@@ -139,8 +132,8 @@ const useStyles = makeStyles((theme) => ({
     color: BLACK,
   },
   box: {
-    paddingLeft: 15,
-    paddingRight: 15,
+    padding: 20,
+    whiteSpace: "pre-wrap",
   },
   container: {
     [theme.breakpoints.down("sm")]: {
@@ -160,52 +153,42 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 10px",
     bottom: 0,
     [theme.breakpoints.down("sm")]: {
-      boxShadow:
-        "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
       background: WHITE,
       marginTop: 30,
       padding: 0,
     },
   },
+  songList: {
+    marginLeft: 10,
+    flexGrow: 1,
+    maxWidth: 300,
+  },
+  content: {
+    flexGrow: 1,
+  },
 }));
 const Songs = (props) => {
-  const [languages, setLanguages] = React.useState([]);
   const [languageJson, setLanguageJson] = React.useState({});
   const [lang, setLang] = React.useState("");
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const [songs, setSongs] = React.useState([]);
-  const [songsName, setSongsName] = React.useState([]);
   const [currentSong, setCurrentSong] = React.useState(null);
-  const [songName, setSongName] = React.useState("");
-  const [url, setUrl] = React.useState("");
-  const [playing, setPlaying] = React.useState(false);
   const [lyrics, setLyrics] = React.useState("");
   const open = Boolean(settingsAnchor);
 
   const { userDetails, login } = props;
   const theme = useTheme();
   const classes = useStyles();
-  const listClass = classes.listDirection;
-  const storyClass = classes.stories;
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const smallScreen = useMediaQuery("(max-width:319px)");
 
   const getLang = (event) => {
     setLang(event.target.value);
   };
-  const songSelect = React.useCallback(
-    (event) => {
-      let value = event?.target?.value;
-      setSongName(value);
-      setCurrentSong(songs[songsName.indexOf(value)]);
-      setUrl(songs[songsName.indexOf(value)]?.url);
-    },
-    [songs, songsName]
-  );
-  React.useEffect(() => {
-    setUrl(currentSong?.url);
-  }, [currentSong?.url]);
+  const songSelect = useCallback((event) => {
+    const song = JSON.parse(event?.target?.value);
+    setCurrentSong(song);
+  }, []);
   const API = useMemo(
     () => axios.create({ baseURL: process.env.REACT_APP_SONGS_URL }),
     []
@@ -219,37 +202,30 @@ const Songs = (props) => {
   const handleSliderChange = (event, newValue) => {
     setFontSize(newValue);
   };
-  React.useEffect(() => {
+  useEffect(() => {
     API.get("languages.json").then(function (response) {
-      let languageArray = Object.keys(response.data);
-      setLanguages(languageArray);
       setLanguageJson(response.data);
-      setLang(languageArray[0] || "");
+      setLang(Object.keys(response.data)[0] || "");
     });
   }, [API]);
-  React.useEffect(() => {
-    let songsNameArray = [];
-    let songsObject = [];
+  useEffect(() => {
     if (lang !== "") {
       API.get(lang + "/manifest.json").then(function (response) {
-        let songsArray = response?.data?.songs;
-        songsArray.map((element) => {
-          if (element?.lyrics !== "Not Available") {
-            songsNameArray.push(element?.name);
-            songsObject.push(element);
-          }
-          return songsArray;
-        });
-        setSongs(songsObject);
-        setSongsName(songsNameArray);
-        setCurrentSong(songsObject[0]);
-        setSongName(songsObject[0].name);
+        const _songs = response?.data?.songs.filter(
+          (song) => song?.lyrics !== "Not Available"
+        );
+        setSongs(_songs);
+        setCurrentSong(_songs[0]);
       });
     }
   }, [API, lang]);
 
-  React.useEffect(() => {
-    if (currentSong?.lyrics !== "Not Available" && lang !== "") {
+  useEffect(() => {
+    if (
+      currentSong?.lyrics !== undefined &&
+      currentSong?.lyrics !== "Not Available" &&
+      lang !== ""
+    ) {
       API.get(lang + "/" + currentSong?.lyrics).then(function (response) {
         setLyrics(response?.data);
       });
@@ -273,9 +249,9 @@ const Songs = (props) => {
                   className={classes.mobileLangCombo}
                 >
                   <Select value={lang} onChange={getLang}>
-                    {languages.map((text, y) => (
+                    {Object.keys(languageJson).map((text) => (
                       <MenuItem
-                        key={y}
+                        key={text}
                         value={text}
                         className={classes.listDirection}
                       >
@@ -284,18 +260,19 @@ const Songs = (props) => {
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl
-                  variant="outlined"
-                  style={{
-                    marginLeft: 20,
-                    maxWidth: smallScreen === true ? "90px" : "50%",
-                  }}
-                >
-                  {songsName?.length > 0 && (
-                    <Select value={songName} onChange={songSelect}>
-                      {songsName?.map((text, y) => (
-                        <MenuItem className={listClass} key={y} value={text}>
-                          {y + 1 + ". " + text}
+                <FormControl variant="outlined" className={classes.songList}>
+                  {songs?.length > 0 && currentSong && (
+                    <Select
+                      value={JSON.stringify(currentSong)}
+                      onChange={songSelect}
+                    >
+                      {songs?.map((song, y) => (
+                        <MenuItem
+                          className={classes.listDirection}
+                          key={y}
+                          value={JSON.stringify(song)}
+                        >
+                          {y + 1 + ". " + song?.name}
                         </MenuItem>
                       ))}
                     </Select>
@@ -303,16 +280,9 @@ const Songs = (props) => {
                 </FormControl>
               </Box>
               <Box p={1}>
-                <Tooltip
-                  title="Settings"
-                  aria-label="More"
-                  aria-controls="long-menu"
-                  aria-haspopup="true"
-                  onClick={openSettings}
-                  className={classes.mobileTooltip}
-                >
+                <div onClick={openSettings} className={classes.mobileSettings}>
                   <i className="material-icons md-23">more_vert</i>
-                </Tooltip>
+                </div>
                 <Menu
                   id="long-menu"
                   anchorEl={settingsAnchor}
@@ -352,9 +322,9 @@ const Songs = (props) => {
             <div className={classes.drawerHeader}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <Select value={lang}>
-                  {languages.map((text, y) => (
+                  {Object.keys(languageJson).map((text) => (
                     <MenuItem
-                      key={y}
+                      key={text}
                       value={text}
                       className={classes.listDirection}
                     >
@@ -404,15 +374,15 @@ const Songs = (props) => {
             <Divider />
             <div className={classes.drawerContainer}>
               <List>
-                {songs?.map((text, y) => (
-                  <ListItem key={y} value={text} className={listClass}>
+                {songs?.map((song, y) => (
+                  <ListItem key={y} className={classes.listDirection}>
+                    {y + 1 + "."}
                     <Link
                       className={classes.linkList}
                       href="#"
-                      data-id={y + 1}
-                      onClick={() => setCurrentSong(text)}
+                      onClick={() => setCurrentSong(song)}
                     >
-                      {y + 1 + ". " + text.name}
+                      {song.name}
                     </Link>
                   </ListItem>
                 ))}
@@ -420,27 +390,28 @@ const Songs = (props) => {
             </div>
           </Drawer>
         )}
-        <main style={{ width: "100%" }}>
+        <main className={classes.content}>
           <div className={classes.heading}>
             <Typography variant="h3" className={classes.text}>
               Songs
             </Typography>
             <Divider />
           </div>
-          <div className={storyClass} style={{ fontSize: fontSize }}>
+          <div className={classes.stories} style={{ fontSize: fontSize }}>
             <Typography variant="h4" className={classes.lyricsHeading}>
               {currentSong?.name}
             </Typography>
           </div>
           <div className={classes.container} style={{ fontSize: fontSize }}>
-            {currentSong !== null &&
-            // !isMobile &&
-            currentSong !== undefined ? (
+            {currentSong?.url !== undefined ? (
               <div className={classes.playerBox}>
                 <ReactPlayer
-                  playing={playing}
-                  onReady={() => setPlaying(true)}
-                  url={process.env.REACT_APP_SONGS_URL + lang + "/" + url}
+                  url={
+                    process.env.REACT_APP_SONGS_URL +
+                    lang +
+                    "/" +
+                    currentSong?.url
+                  }
                   controls
                   width="100%"
                   height="50px"
@@ -448,7 +419,10 @@ const Songs = (props) => {
                   onError={() =>
                     console.log(
                       "error",
-                      process.env.REACT_APP_SONGS_URL + "dgo/" + url
+                      process.env.REACT_APP_SONGS_URL +
+                        lang +
+                        "/" +
+                        currentSong?.url
                     )
                   }
                   config={{
@@ -463,9 +437,7 @@ const Songs = (props) => {
             ) : (
               ""
             )}
-            <div className={classes.box}>
-              <Markdown rehypePlugins={[rehypeHighlight]}>{lyrics}</Markdown>
-            </div>
+            <div className={classes.box}>{lyrics}</div>
           </div>
         </main>
       </div>

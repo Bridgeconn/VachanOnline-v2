@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     background: "rgba(0,0,0,0.5)",
     paddingLeft: 10,
+    [theme.breakpoints.down("sm")]: {
+      padding: 0,
+    },
   },
   links: {
     flexGrow: 1,
