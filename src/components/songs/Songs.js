@@ -15,9 +15,9 @@ import { Box, Typography } from "@material-ui/core";
 import axios from "axios";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { BLACK, GREY } from "../store/colorCode";
-import TopBar from "../components/read/TopBar";
-import Setting from "../components/common/Setting";
+import Setting from "../common/Setting";
+import TopBar from "../read/TopBar";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
 const drawerWidth = 400;
 const useStyles = makeStyles((theme) => ({
@@ -65,8 +65,17 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     zIndex: 1,
   },
-  mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
+  mobileHeading: {
+    color: WHITE,
+    textShadow: "1px 1px 2px hsl(246 37% 47% / 1)",
+    textAlign: "center",
+    borderBottom: "1px solid #f1ecec",
+    background:
+      "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 100.2%)",
+  },
   heading: {
+    fontSize: "2rem",
+    color: WHITE,
     background:
       "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 100.2%)",
     marginTop: 62,
@@ -79,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "5px 0",
     textAlign: "center",
     color: "rgb(150, 144, 204)",
-    textShadow: "1px 1px 2px hsl(246 37% 47% / 1)",
+    textShadow: "6px 4px 7px rgb(143 143 145 / 83%)",
   },
   linkList: {
     marginLeft: 5,
@@ -121,6 +130,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   playerBox: {
+    background: WHITE,
     position: "absolute",
     width: "calc(100% - 400px)",
     bottom: 0,
@@ -288,7 +298,7 @@ const Songs = (props) => {
         )}
         <main className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
-            Songs
+            Listen to your favourite Christian Songs in your heart language
           </Typography>
           <div className={classes.songs} style={{ fontSize: fontSize }}>
             <Typography variant="h4" className={classes.lyricsHeading}>

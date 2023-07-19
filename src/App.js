@@ -7,7 +7,7 @@ import "./components/common/common.css";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
-import Songs from "./songs/Songs";
+import Songs from "./components/songs/Songs";
 const App = () => (
   <BrowserRouter>
     <CssBaseline />
