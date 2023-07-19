@@ -302,7 +302,7 @@ const Songs = (props) => {
           </Typography>
           <div className={classes.songs} style={{ fontSize: fontSize }}>
             <Typography variant="h4" className={classes.lyricsHeading}>
-              {currentSong?.name}
+              {songs?.indexOf(currentSong) + 1}. {currentSong?.name}
             </Typography>
           </div>
           <Divider />
