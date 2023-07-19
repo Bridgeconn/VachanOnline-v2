@@ -15,7 +15,7 @@ import { Box, Typography } from "@material-ui/core";
 import axios from "axios";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { BLACK, GREY, WHITE } from "../store/colorCode";
+import { BLACK, GREY } from "../store/colorCode";
 import TopBar from "../components/read/TopBar";
 import Setting from "../components/common/Setting";
 
@@ -24,27 +24,6 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200,
-  },
-  menu: {
-    textAlign: "center",
-    width: "100%",
-    display: "inline-block",
-    fontSize: 18,
-  },
-  margin: {
-    height: theme.spacing(5),
-  },
-  settings: {
-    padding: 0,
-    width: "30px",
-    marginTop: -46,
-    float: "right",
-    marginLeft: "-10px",
-    marginRight: "20px",
-    cursor: "pointer",
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 0,
-    },
   },
   root: {
     display: "flex",
@@ -61,14 +40,13 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     marginTop: 60,
   },
-  stories: {
-    marginTop: 200,
-    paddingLeft: 15,
-    paddingRight: 25,
-    [theme.breakpoints.up("md")]: {
-      marginTop: 140,
-      paddingLeft: 10,
-      paddingRight: 10,
+  songs: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 182,
+      paddingLeft: 15,
+      paddingRight: 25,
     },
     fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
   },
@@ -89,21 +67,19 @@ const useStyles = makeStyles((theme) => ({
   },
   mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
   heading: {
-    backgroundColor: "white",
-    position: "fixed",
+    background:
+      "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 100.2%)",
     marginTop: 62,
     textAlign: "center",
-    paddingTop: 10,
-    zIndex: 1,
     [theme.breakpoints.down("sm")]: { display: "none" },
-    width: "calc(100% - 400px)",
-  },
-  text: {
-    lineHeight: "1.255",
+    lineHeight: "1.5",
   },
   lyricsHeading: {
     lineHeight: "1.255",
     margin: "5px 0",
+    textAlign: "center",
+    color: "rgb(150, 144, 204)",
+    textShadow: "1px 1px 2px hsl(246 37% 47% / 1)",
   },
   linkList: {
     marginLeft: 5,
@@ -125,41 +101,31 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "90%",
     display: "flex",
   },
-  mobileSettings: {
-    marginTop: 15,
-  },
-  settingsMenu: {
-    maxHeight: 68 * 4.5,
-    width: 250,
-  },
-  slider: {
-    color: BLACK,
-  },
   box: {
     padding: 20,
     whiteSpace: "pre-wrap",
-  },
-  container: {
+    position: "absolute",
+    overflow: "auto",
+    height: "calc(100% - 253px)",
+    width: "calc(100% - 400px)",
     [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      flexDirection: "column-reverse",
+      width: "100%",
+      height: "calc(100% - 312px)",
     },
   },
   player: {
-    marginTop: 5,
-    marginBottom: 10,
+    margin: 10,
+    width: "calc(100% - 20px)",
     "& audio": {
       outlineWidth: 0,
     },
   },
   playerBox: {
-    position: "sticky",
-    padding: "0 10px",
+    position: "absolute",
+    width: "calc(100% - 400px)",
     bottom: 0,
     [theme.breakpoints.down("sm")]: {
-      background: WHITE,
-      marginTop: 30,
-      padding: 0,
+      width: "100%",
     },
   },
   songList: {
@@ -175,11 +141,9 @@ const Songs = (props) => {
   const [languageJson, setLanguageJson] = React.useState({});
   const [lang, setLang] = React.useState("");
   const [fontSize, setFontSize] = React.useState(20);
-  const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const [songs, setSongs] = React.useState([]);
   const [currentSong, setCurrentSong] = React.useState(null);
   const [lyrics, setLyrics] = React.useState("");
-  const open = Boolean(settingsAnchor);
 
   const { userDetails, login } = props;
   const theme = useTheme();
@@ -197,15 +161,6 @@ const Songs = (props) => {
     () => axios.create({ baseURL: process.env.REACT_APP_SONGS_URL }),
     []
   );
-  function openSettings(event) {
-    setSettingsAnchor(event.currentTarget);
-  }
-  function closeSettings() {
-    setSettingsAnchor(null);
-  }
-  const handleSliderChange = (event, newValue) => {
-    setFontSize(newValue);
-  };
   useEffect(() => {
     API.get("languages.json").then(function (response) {
       setLanguageJson(response.data);
@@ -284,19 +239,7 @@ const Songs = (props) => {
                 </FormControl>
               </Box>
               <Box p={1}>
-                <Setting
-                  root={classes.slider}
-                  settings={classes.settings}
-                  settingsMenu={classes.settingsMenu}
-                  menu={classes.menu}
-                  margin={classes.margin}
-                  fontSize={fontSize}
-                  settingsAnchor={settingsAnchor}
-                  handleSliderChange={handleSliderChange}
-                  closeSettings={closeSettings}
-                  openSettings={openSettings}
-                  open={open}
-                />
+                <Setting fontSize={fontSize} setFontSize={setFontSize} />
               </Box>
             </Box>
           </Box>
@@ -322,19 +265,7 @@ const Songs = (props) => {
                   ))}
                 </Select>
               </FormControl>
-              <Setting
-                root={classes.slider}
-                settings={classes.settings}
-                settingsMenu={classes.settingsMenu}
-                menu={classes.menu}
-                margin={classes.margin}
-                fontSize={fontSize}
-                settingsAnchor={settingsAnchor}
-                handleSliderChange={handleSliderChange}
-                closeSettings={closeSettings}
-                openSettings={openSettings}
-                open={open}
-              />
+              <Setting fontSize={fontSize} setFontSize={setFontSize} />
             </div>
             <Divider />
             <div className={classes.drawerContainer}>
@@ -356,20 +287,20 @@ const Songs = (props) => {
           </Drawer>
         )}
         <main className={classes.content}>
-          <div className={classes.heading}>
-            <Typography variant="h3" className={classes.text}>
-              Songs
-            </Typography>
-            <Divider />
-          </div>
-          <div className={classes.stories} style={{ fontSize: fontSize }}>
+          <Typography variant="h3" className={classes.heading}>
+            Songs
+          </Typography>
+          <div className={classes.songs} style={{ fontSize: fontSize }}>
             <Typography variant="h4" className={classes.lyricsHeading}>
               {currentSong?.name}
             </Typography>
           </div>
+          <Divider />
           <div className={classes.container} style={{ fontSize: fontSize }}>
+            <div className={classes.box}>{lyrics}</div>
             {currentSong?.url !== undefined ? (
               <div className={classes.playerBox}>
+                <Divider />
                 <ReactPlayer
                   url={
                     process.env.REACT_APP_SONGS_URL +
@@ -378,7 +309,7 @@ const Songs = (props) => {
                     currentSong?.url
                   }
                   controls
-                  width="100%"
+                  width="calc(100% - 20px)"
                   height="50px"
                   className={classes.player}
                   onError={() =>
@@ -402,7 +333,6 @@ const Songs = (props) => {
             ) : (
               ""
             )}
-            <div className={classes.box}>{lyrics}</div>
           </div>
         </main>
       </div>
