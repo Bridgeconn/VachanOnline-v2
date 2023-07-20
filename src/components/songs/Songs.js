@@ -89,6 +89,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     color: "rgb(150, 144, 204)",
     textShadow: "6px 4px 7px rgb(143 143 145 / 83%)",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.75rem",
+    },
   },
   linkList: {
     marginLeft: 5,
