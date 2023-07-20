@@ -162,7 +162,7 @@ const Stories = (props) => {
   const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
   const storyClass = rtlList.includes(lang)

@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     background: "rgba(0,0,0,0.5)",
     paddingLeft: 10,
+    [theme.breakpoints.down("sm")]: {
+      padding: 0,
+    },
   },
   links: {
     flexGrow: 1,
@@ -124,6 +127,35 @@ const PageHeader = (props) => {
                   startIcon={<i className="material-icons">sign_language</i>}
                 >
                   Sign Language Bible (ISLV)
+                </Button>
+              )}
+            </Link>
+          ) : (
+            ""
+          )}
+          {process.env.REACT_APP_SONGS_URL !== undefined ? (
+            <Link
+              to={{
+                pathname: "/songs",
+              }}
+            >
+              {mobileLandscape ? (
+                <i className={`material-icons ${classes.islIcon}`}>
+                  music_note
+                </i>
+              ) : (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.signBible}
+                  title="Songs"
+                  aria-label="Song"
+                  target="_blank"
+                  rel="noopener"
+                  startIcon={<i className="material-icons">music_note</i>}
+                >
+                  songs
                 </Button>
               )}
             </Link>

@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       display: "block",
     },
+    [theme.breakpoints.down("sm")]: {
+      width: "10%",
+    },
     "& a": {
       color: "inherit",
       textDecoration: "none",
@@ -130,7 +133,7 @@ const TopBar = (props) => {
       Btn()
     );
   };
-  const BibleStoriesButton = () => {
+  const StoriesButton = () => {
     return process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
       <Link to="/biblestories">
         <Button
@@ -149,7 +152,32 @@ const TopBar = (props) => {
       ""
     );
   };
-  const StudyBibleButton = () => {
+  const SongsButton = () => {
+    return process.env.REACT_APP_SONGS_URL !== undefined ? (
+      <Link to="/songs">
+        {mobileView ? (
+          <i className={`material-icons ${classes.islIcon}`}>music_note</i>
+        ) : (
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.button}
+            title="Songs"
+            aria-label="songs"
+            target="_blank"
+            rel="noopener"
+            startIcon={<i className="material-icons">music_note</i>}
+          >
+            Songs
+          </Button>
+        )}
+      </Link>
+    ) : (
+      ""
+    );
+  };
+
+  const BibleButton = () => {
     return (
       <Link to="/read">
         <Button
@@ -191,11 +219,12 @@ const TopBar = (props) => {
               <img src={logo} alt={"logo"} className={classes.logo} />
             </Link>
           </div>
-
           <div>{ISLButton()}</div>
-          {window.location.pathname.startsWith("/read")
-            ? BibleStoriesButton()
-            : StudyBibleButton()}
+          {window.location.pathname.startsWith("/songs") ? "" : SongsButton()}
+          {window.location.pathname.startsWith("/read") ? "" : BibleButton()}
+          {window.location.pathname.startsWith("/biblestories")
+            ? ""
+            : StoriesButton()}
           {FeedbackButton()}
           {loginButton}
         </Toolbar>

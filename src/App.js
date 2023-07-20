@@ -7,6 +7,7 @@ import "./components/common/common.css";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
+import Songs from "./components/songs/Songs";
 const App = () => (
   <BrowserRouter>
     <CssBaseline />
@@ -14,6 +15,7 @@ const App = () => (
       <Route path="/" exact component={Landing} />
       <Route path="/read" component={ReadBible} />
       <Route path="/biblestories" component={Stories} />
+      <Route path="/songs" component={Songs} />
       <Route path="/privacypolicy" component={PrivacyPolicy} />
       <Route render={() => <h1>Page Not Found</h1>} />
     </Switch>
