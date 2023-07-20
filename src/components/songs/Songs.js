@@ -19,7 +19,7 @@ import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
-const drawerWidth = 400;
+const drawerWidth = 350;
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -27,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     display: "flex",
-    [theme.breakpoints.down("sm")]: { display: "block" },
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      marginTop: 61,
+    },
   },
   drawer: {
     width: drawerWidth,
@@ -38,17 +41,8 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   drawerHeader: {
-    marginTop: 60,
-  },
-  songs: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 182,
-      paddingLeft: 15,
-      paddingRight: 25,
-    },
-    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+    marginTop: 65,
+    backgroundColor: "rgb(137, 191, 221)",
   },
   listDirection: {
     textAlign: "left",
@@ -57,31 +51,22 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     fontSize: "1.2rem",
   },
-  mobile: {
-    width: "100%",
-    position: "fixed",
-    top: 60,
-    backgroundColor: "white",
-    borderBottom: "1px solid #f1ecec",
-    zIndex: 1,
-  },
   mobileHeading: {
     color: WHITE,
     textShadow: "1px 1px 2px hsl(246 37% 47% / 1)",
     textAlign: "center",
-    borderBottom: "1px solid #f1ecec",
     background:
-      "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 100.2%)",
+      "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 90.2%)",
   },
   heading: {
     fontSize: "2rem",
     color: WHITE,
     background:
       "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 100.2%)",
-    marginTop: 62,
     textAlign: "center",
     [theme.breakpoints.down("sm")]: { display: "none" },
-    lineHeight: "1.5",
+    lineHeight: "1.8",
+    height: 56,
   },
   lyricsHeading: {
     lineHeight: "1.255",
@@ -89,9 +74,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     color: "rgb(150, 144, 204)",
     textShadow: "6px 4px 7px rgb(143 143 145 / 83%)",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "1.75rem",
-    },
+    fontSize: "1.6rem",
   },
   linkList: {
     marginLeft: 5,
@@ -110,20 +93,14 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 100,
   },
   mobileComboBox: {
-    maxWidth: "90%",
     display: "flex",
   },
   box: {
     padding: 20,
     whiteSpace: "pre-wrap",
-    position: "absolute",
     overflow: "auto",
-    height: "calc(100% - 253px)",
-    width: "calc(100% - 400px)",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-      height: "calc(100% - 312px)",
-    },
+    flexGrow: 1,
+    width: "100%",
   },
   player: {
     margin: 10,
@@ -133,13 +110,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   playerBox: {
-    background: WHITE,
-    position: "absolute",
-    width: "calc(100% - 400px)",
-    bottom: 0,
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
+    width: "100%",
   },
   songList: {
     marginLeft: 10,
@@ -148,6 +119,15 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+    height: "calc(100vh - 65px)",
+    marginTop: 65,
+    [theme.breakpoints.down("sm")]: {
+      height: "calc(100vh - 160px)",
+      marginTop: 0,
+    },
   },
 }));
 const Songs = (props) => {
@@ -162,6 +142,7 @@ const Songs = (props) => {
   const theme = useTheme();
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLarge = useMediaQuery("(min-width:1150px)");
 
   const getLang = (event) => {
     setLang(event.target.value);
@@ -221,6 +202,7 @@ const Songs = (props) => {
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
                 <FormControl
                   variant="outlined"
+                  size="small"
                   className={classes.mobileLangCombo}
                 >
                   <Select value={lang} onChange={getLang}>
@@ -235,7 +217,11 @@ const Songs = (props) => {
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl variant="outlined" className={classes.songList}>
+                <FormControl
+                  variant="outlined"
+                  size="small"
+                  className={classes.songList}
+                >
                   {songs?.length > 0 && currentSong && (
                     <Select
                       value={JSON.stringify(currentSong)}
@@ -259,6 +245,7 @@ const Songs = (props) => {
                 <Setting fontSize={fontSize} setFontSize={setFontSize} />
               </Box>
             </Box>
+            <Divider />
           </Box>
         ) : (
           <Drawer
@@ -269,7 +256,11 @@ const Songs = (props) => {
             }}
           >
             <div className={classes.drawerHeader}>
-              <FormControl variant="outlined" className={classes.formControl}>
+              <FormControl
+                variant="outlined"
+                size="small"
+                className={classes.formControl}
+              >
                 <Select value={lang}>
                   {Object.keys(languageJson).map((text) => (
                     <MenuItem
@@ -303,55 +294,55 @@ const Songs = (props) => {
             </div>
           </Drawer>
         )}
-        <main className={classes.content}>
+        <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
-            Your favourite Christian Songs in your heart language
+            {isLarge
+              ? "Listen to your favourite Christian Songs in your language"
+              : "Songs"}
           </Typography>
-          <div className={classes.songs} style={{ fontSize: fontSize }}>
-            <Typography variant="h4" className={classes.lyricsHeading}>
-              {currentSong?.sno}. {currentSong?.name}
-            </Typography>
-          </div>
+          <Typography variant="h4" className={classes.lyricsHeading}>
+            {currentSong?.sno}. {currentSong?.name}
+          </Typography>
           <Divider />
-          <div className={classes.container} style={{ fontSize: fontSize }}>
-            <div className={classes.box}>{lyrics}</div>
-            {currentSong?.url !== undefined ? (
-              <div className={classes.playerBox}>
-                <Divider />
-                <ReactPlayer
-                  url={
-                    process.env.REACT_APP_SONGS_URL +
-                    lang +
-                    "/" +
-                    currentSong?.url
-                  }
-                  controls
-                  width="calc(100% - 20px)"
-                  height="50px"
-                  className={classes.player}
-                  onError={() =>
-                    console.log(
-                      "error",
-                      process.env.REACT_APP_SONGS_URL +
-                        lang +
-                        "/" +
-                        currentSong?.url
-                    )
-                  }
-                  config={{
-                    file: {
-                      attributes: {
-                        controlsList: "nodownload",
-                      },
-                    },
-                  }}
-                />
-              </div>
-            ) : (
-              ""
-            )}
+          <div className={classes.box} style={{ fontSize: fontSize }}>
+            {lyrics}
           </div>
-        </main>
+          {currentSong?.url !== undefined ? (
+            <div className={classes.playerBox}>
+              <Divider />
+              <ReactPlayer
+                url={
+                  process.env.REACT_APP_SONGS_URL +
+                  lang +
+                  "/" +
+                  currentSong?.url
+                }
+                controls
+                width="calc(100% - 20px)"
+                height="50px"
+                className={classes.player}
+                onError={() =>
+                  console.log(
+                    "error",
+                    process.env.REACT_APP_SONGS_URL +
+                      lang +
+                      "/" +
+                      currentSong?.url
+                  )
+                }
+                config={{
+                  file: {
+                    attributes: {
+                      controlsList: "nodownload",
+                    },
+                  },
+                }}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </>
   );
