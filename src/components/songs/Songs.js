@@ -156,7 +156,6 @@ const Songs = (props) => {
   const [fontSize, setFontSize] = React.useState(20);
   const [songs, setSongs] = React.useState([]);
   const [currentSong, setCurrentSong] = React.useState(null);
-  const [songNumber, setSongNumber] = React.useState(null);
   const [lyrics, setLyrics] = React.useState("");
 
   const { userDetails, login } = props;
@@ -168,7 +167,6 @@ const Songs = (props) => {
     setLang(event.target.value);
   };
   const songSelect = useCallback((event) => {
-    setSongNumber(event.currentTarget.getAttribute("data-id"));
     const song = JSON.parse(event?.target?.value);
     setCurrentSong(song);
   }, []);
@@ -176,10 +174,6 @@ const Songs = (props) => {
     () => axios.create({ baseURL: process.env.REACT_APP_SONGS_URL }),
     []
   );
-  const getSong = (song, index) => {
-    setSongNumber(index);
-    setCurrentSong(song);
-  };
   useEffect(() => {
     API.get("languages.json").then(function (response) {
       setLanguageJson(response.data);
@@ -189,11 +183,13 @@ const Songs = (props) => {
   useEffect(() => {
     if (lang !== "") {
       API.get(lang + "/manifest.json").then(function (response) {
-        const _songs = response?.data?.songs.filter(
-          (song) => song?.lyrics !== "Not Available"
-        );
+        const _songs = response?.data?.songs
+          .filter((song) => song?.lyrics !== "Not Available")
+          .map((song, i) => {
+            song["sno"] = i + 1;
+            return song;
+          });
         setSongs(_songs);
-        setSongNumber(1);
         setCurrentSong(_songs[0]);
       });
     }
@@ -252,7 +248,7 @@ const Songs = (props) => {
                           data-id={y + 1}
                           value={JSON.stringify(song)}
                         >
-                          {y + 1 + ". " + song?.name}
+                          {song?.sno + ". " + song?.name}
                         </MenuItem>
                       ))}
                     </Select>
@@ -291,13 +287,13 @@ const Songs = (props) => {
             <Divider />
             <div className={classes.drawerContainer}>
               <List>
-                {songs?.map((song, y) => (
-                  <ListItem key={y} className={classes.listDirection}>
-                    {y + 1 + "."}
+                {songs?.map((song) => (
+                  <ListItem key={song.sno} className={classes.listDirection}>
+                    {song.sno + "."}
                     <Link
                       className={classes.linkList}
                       href="#"
-                      onClick={() => getSong(song, y + 1)}
+                      onClick={() => setCurrentSong(song)}
                     >
                       {song.name}
                     </Link>
@@ -309,11 +305,11 @@ const Songs = (props) => {
         )}
         <main className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
-            Listen to your favourite Christian Songs in your heart language
+            Your favourite Christian Songs in your heart language
           </Typography>
           <div className={classes.songs} style={{ fontSize: fontSize }}>
             <Typography variant="h4" className={classes.lyricsHeading}>
-              {songNumber}. {currentSong?.name}
+              {currentSong?.sno}. {currentSong?.name}
             </Typography>
           </div>
           <Divider />
