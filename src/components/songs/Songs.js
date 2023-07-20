@@ -153,6 +153,7 @@ const Songs = (props) => {
   const [fontSize, setFontSize] = React.useState(20);
   const [songs, setSongs] = React.useState([]);
   const [currentSong, setCurrentSong] = React.useState(null);
+  const [songNumber, setSongNumber] = React.useState(null);
   const [lyrics, setLyrics] = React.useState("");
 
   const { userDetails, login } = props;
@@ -164,6 +165,7 @@ const Songs = (props) => {
     setLang(event.target.value);
   };
   const songSelect = useCallback((event) => {
+    setSongNumber(event.currentTarget.getAttribute("data-id"));
     const song = JSON.parse(event?.target?.value);
     setCurrentSong(song);
   }, []);
@@ -171,6 +173,10 @@ const Songs = (props) => {
     () => axios.create({ baseURL: process.env.REACT_APP_SONGS_URL }),
     []
   );
+  const getSong = (song, index) => {
+    setSongNumber(index);
+    setCurrentSong(song);
+  };
   useEffect(() => {
     API.get("languages.json").then(function (response) {
       setLanguageJson(response.data);
@@ -184,6 +190,7 @@ const Songs = (props) => {
           (song) => song?.lyrics !== "Not Available"
         );
         setSongs(_songs);
+        setSongNumber(1);
         setCurrentSong(_songs[0]);
       });
     }
@@ -239,6 +246,7 @@ const Songs = (props) => {
                         <MenuItem
                           className={classes.listDirection}
                           key={y}
+                          data-id={y + 1}
                           value={JSON.stringify(song)}
                         >
                           {y + 1 + ". " + song?.name}
@@ -286,7 +294,7 @@ const Songs = (props) => {
                     <Link
                       className={classes.linkList}
                       href="#"
-                      onClick={() => setCurrentSong(song)}
+                      onClick={() => getSong(song, y + 1)}
                     >
                       {song.name}
                     </Link>
@@ -302,7 +310,7 @@ const Songs = (props) => {
           </Typography>
           <div className={classes.songs} style={{ fontSize: fontSize }}>
             <Typography variant="h4" className={classes.lyricsHeading}>
-              {songs?.indexOf(currentSong) + 1}. {currentSong?.name}
+              {songNumber}. {currentSong?.name}
             </Typography>
           </div>
           <Divider />
