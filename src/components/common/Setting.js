@@ -19,11 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
   settings: {
     padding: 0,
-    width: "30px",
-    marginTop: -46,
+    width: 30,
+    marginTop: -38,
     float: "right",
-    marginLeft: "-10px",
-    marginRight: "20px",
+    marginRight: 5,
     cursor: "pointer",
     [theme.breakpoints.down("sm")]: {
       marginTop: 0,
