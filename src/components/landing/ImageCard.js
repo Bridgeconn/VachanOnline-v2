@@ -48,7 +48,7 @@ export default function ImageCard({ src, text, onClick }) {
 
   return (
     <Grid item md={4} sm={12} xs={12}>
-      <Link to={{ pathname: "/read" }} className={classes.link}>
+      <Link to={{ pathname: "/study" }} className={classes.link}>
         <div onClick={onClick}>
           <Card className={classes.root}>
             <CardActionArea className={classes.action}>

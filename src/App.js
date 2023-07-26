@@ -1,6 +1,7 @@
 import React from "react";
 import Landing from "./components/landing/Landing";
 import ReadBible from "./components/read/ReadBible";
+import StudyBible from "./components/read/StudyBible";
 import Stories from "./components/stories/Stories";
 import PrivacyPolicy from "./components/privacypolicy/PrivacyPolicy";
 import "./components/common/common.css";
@@ -14,6 +15,7 @@ const App = () => (
     <Switch>
       <Route path="/" exact component={Landing} />
       <Route path="/read" component={ReadBible} />
+      <Route path="/study" component={StudyBible} />
       <Route path="/biblestories" component={Stories} />
       <Route path="/songs" component={Songs} />
       <Route path="/privacypolicy" component={PrivacyPolicy} />

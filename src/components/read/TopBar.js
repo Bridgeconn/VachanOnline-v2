@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useMediaQuery } from "@material-ui/core";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -86,14 +87,17 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 10,
   },
   islIcon: {
-    padding: "8px 16px 0",
+    padding: "8px 8px 0",
     color: BLACK,
   },
 }));
 
 const TopBar = (props) => {
+  const theme = useTheme();
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
 
   let { login, userDetails, setParallelView, mobileView } = props;
   React.useEffect(() => {
@@ -120,17 +124,17 @@ const TopBar = (props) => {
           onClick={setParallelView}
           startIcon={<i className="material-icons">sign_language</i>}
         >
-          Sign Language Bible (ISLV)
+          {isTablet ? "ISLV" : "Sign Language Bible (ISLV)"}
         </Button>
       );
     };
     if (process.env.REACT_APP_SIGNBIBLE_URL === undefined) {
       return "";
     }
-    return window.location.pathname.startsWith("/biblestories") ? (
-      <Link to="/read">{Btn()}</Link>
-    ) : (
+    return window.location.pathname.startsWith("/study") ? (
       Btn()
+    ) : (
+      <Link to="/study">{Btn()}</Link>
     );
   };
   const StoriesButton = () => {
@@ -177,20 +181,47 @@ const TopBar = (props) => {
     );
   };
 
-  const BibleButton = () => {
+  const ReadButton = () => {
     return (
       <Link to="/read">
-        <Button
-          variant="outlined"
-          size="small"
-          className={classes.button}
-          title="Study Bible"
-          aria-label="bible"
-          target="_blank"
-          rel="noopener"
-        >
-          {mobileView === true ? "Bible" : "Study Bible"}
-        </Button>
+        {isMobilePortrait ? (
+          <i className={`material-icons ${classes.islIcon}`}>local_library</i>
+        ) : (
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.button}
+            title="Read Bible"
+            aria-label="read bible"
+            target="_blank"
+            rel="noopener"
+            startIcon={<i className="material-icons">local_library</i>}
+          >
+            {mobileView === true ? "Read" : "Read Bible"}
+          </Button>
+        )}
+      </Link>
+    );
+  };
+  const StudyButton = () => {
+    return (
+      <Link to="/study">
+        {isMobilePortrait ? (
+          <i className={`material-icons ${classes.islIcon}`}>local_library</i>
+        ) : (
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.button}
+            title="Study Bible"
+            aria-label="study bible"
+            target="_blank"
+            rel="noopener"
+            startIcon={<i className="material-icons">local_library</i>}
+          >
+            {mobileView === true ? "Study" : "Study Bible"}
+          </Button>
+        )}
       </Link>
     );
   };
@@ -221,7 +252,8 @@ const TopBar = (props) => {
           </div>
           <div>{ISLButton()}</div>
           {window.location.pathname.startsWith("/songs") ? "" : SongsButton()}
-          {window.location.pathname.startsWith("/read") ? "" : BibleButton()}
+          {window.location.pathname.startsWith("/read") ? "" : ReadButton()}
+          {window.location.pathname.startsWith("/study") ? "" : StudyButton()}
           {window.location.pathname.startsWith("/biblestories")
             ? ""
             : StoriesButton()}
