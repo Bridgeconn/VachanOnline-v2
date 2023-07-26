@@ -15,7 +15,7 @@ import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
 import { LIGHTGREY } from "../../store/colorCode";
-import { Divider } from "@material-ui/core";
+import { Divider, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -261,14 +261,16 @@ const Commentary = (props) => {
   const getIntro = useCallback(
     (sourceId, bookCode) => {
       const setText = (commText) => {
-        const intro = "<p>" + removeBr(commText.bookIntro) + "</p>";
-        const introObj = setImages(intro, []);
-        setCommentaryIntro({
-          sourceId: sourceId,
-          bookCode: bookCode,
-          bookIntro: introObj.text,
-          images: introObj.images,
-        });
+        if (typeof commText.bookIntro === "string") {
+          const intro = removeBr(commText.bookIntro);
+          const introObj = setImages(intro, []);
+          setCommentaryIntro({
+            sourceId: sourceId,
+            bookCode: bookCode,
+            bookIntro: introObj.text,
+            images: introObj.images,
+          });
+        }
       };
       if (sourceId) {
         getCommentaryForChapter(sourceId, bookCode, 1, setText);
@@ -276,14 +278,27 @@ const Commentary = (props) => {
     },
     [setCommentaryIntro, setImages, removeBr]
   );
+  const resetCommentaryIntro = useCallback(() => {
+    setCommentaryIntro({
+      sourceId: "",
+      bookCode: "",
+      bookIntro: "",
+      images: [],
+    });
+  }, [setCommentaryIntro]);
+
   React.useEffect(() => {
+    console.log(bookCode, commentaryIntro.bookCode);
     if (
       commentary.sourceId !== commentaryIntro.sourceId ||
       bookCode !== commentaryIntro.bookCode
     ) {
+      if (commentaryIntro.bookIntro !== "") {
+        resetCommentaryIntro();
+      }
       getIntro(commentary.sourceId, bookCode);
     }
-  }, [commentary, bookCode, commentaryIntro, getIntro]);
+  }, [commentary, bookCode, commentaryIntro, getIntro, resetCommentaryIntro]);
 
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
@@ -330,7 +345,11 @@ const Commentary = (props) => {
         setMessage("");
       } else {
         setCommentaryText("");
-        setMessage("unavailable");
+        if (commentaryIntro.bookIntro === "") {
+          setMessage("unavailable");
+        } else {
+          setMessage("");
+        }
       }
     }
   }, [
@@ -339,7 +358,7 @@ const Commentary = (props) => {
     verseLabel,
     setImages,
     removeBr,
-    commentaryIntro.images,
+    commentaryIntro,
   ]);
   const toggleIntro = () => {
     setShowIntro((prev) => !prev);
@@ -412,11 +431,12 @@ const Commentary = (props) => {
         </div>
       )}
       <div onClick={openImage} className={classes.text}>
-        <Collapse in={showIntro}>
-          <div className={classes.introText}>
-            {parse(commentaryIntro.bookIntro)}
-          </div>
-          <Divider />
+        <Collapse in={showIntro} timeout={1000}>
+          <Paper elevation={4}>
+            <div className={classes.introText}>
+              {parse(commentaryIntro.bookIntro)}
+            </div>
+          </Paper>
         </Collapse>
         {!message && commentaryText && (
           <div ref={textRef} className={classes.verseText}>
