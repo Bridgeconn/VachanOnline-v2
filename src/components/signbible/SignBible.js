@@ -74,14 +74,18 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "top",
     width: "100%",
     marginBlockStart: 10,
-    maxHeight: "80vh",
+    maxHeight: "200vh",
     boxSizing: "content-box",
   },
   title: {
-    paddingTop: 4,
+    paddingTop: 0,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
+  },
+  description: {
+    padding: "10px 10px 10px 20px",
+    fontSize: 18,
   },
   closeButton: {
     marginRight: 15,
@@ -204,7 +208,18 @@ const SignBible = (props) => {
           {videos &&
             videos?.map((video, i) => {
               return (
-                <Card className={classes.video} key={i}>
+                <Card className={classes.video} key={i} >
+                   <CardContent className={classes.titleContainer}>
+                    <Typography
+                      gutterBottom
+                      variant="h6"
+                      component="h2"
+                      title={video["title"]}
+                      className={classes.title}
+                    >
+                      {video["title"]}
+                    </Typography>
+                  </CardContent>
                   <ReactPlayer
                     playing={playing === video["url"]}
                     onPlay={() => setPlaying(video["url"])}
@@ -213,17 +228,13 @@ const SignBible = (props) => {
                     width="100%"
                     className={classes.player}
                   />
-                  <CardContent className={classes.titleContainer}>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="h2"
-                      title={video["title"]}
-                      className={classes.title}
-                    >
-                      {video["title"]}
+                  <Typography 
+                  component="h2"
+                  description={video["description"]}
+                  className={classes.description}
+                  >
+                    {video["description"]}
                     </Typography>
-                  </CardContent>
                 </Card>
               );
             })}
