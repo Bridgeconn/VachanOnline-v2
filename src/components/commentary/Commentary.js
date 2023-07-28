@@ -15,7 +15,7 @@ import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
 import { LIGHTGREY } from "../../store/colorCode";
-import { Divider, Paper } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[2],
   },
   introText: {
-    padding: "20px 20px 30px 30px",
+    padding: "10px 0px 0px 30px",
   },
   text: {
     height: "calc(100vh - 203px)",
@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px 20px 30px 30px",
   },
   message: {
-    paddingLeft: 20,
+    padding: "20px 15px 2px 15px",
   },
   bookLabel: {
     paddingLeft: 20,
@@ -177,6 +177,7 @@ const Commentary = (props) => {
     mobileView,
     setValue,
     screenView,
+    bookShortName,
   } = props;
   const styleProps = {
     screenView: screenView,
@@ -203,8 +204,11 @@ const Commentary = (props) => {
       setCommentaryLang(comm.metadata["Language Name"].toLowerCase());
     }
   }, [version, commentary, commentaries, setCommentary, setCommentaryLang]);
+  const presentBook  = bookNames.map((item)=>{
+    return item.book_code
+  })
   React.useEffect(() => {
-    if (bookNames) {
+    if (bookNames && presentBook.includes(bookCode)) {
       let bookObject = bookNames.find(
         (element) => element.book_code === bookCode
       );
@@ -212,7 +216,10 @@ const Commentary = (props) => {
         setBook(bookObject.short);
       }
     }
-  }, [bookCode, bookNames]);
+    else {
+      setBook(bookShortName)  
+    }
+  }, [bookCode, bookNames,bookShortName,presentBook]);
   React.useEffect(() => {
     //Set bookNames based on commentary language
     if (Object.entries(commentary).length !== 0 && commentaries) {
@@ -431,7 +438,7 @@ const Commentary = (props) => {
         </div>
       )}
       <div onClick={openImage} className={classes.text}>
-        <Collapse in={showIntro} timeout={1000}>
+        <Collapse in={showIntro} timeout={400}>
           <Paper elevation={4}>
             <div className={classes.introText}>
               {parse(commentaryIntro.bookIntro)}
