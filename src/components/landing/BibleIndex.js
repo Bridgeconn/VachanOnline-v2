@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       marginBottom: -10,
     },
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
   },
   bibleIndex: {
     margin: "auto",
@@ -31,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
       bottom: 25,
       width: "100%",
     },
+  },
+  iconSize: {
+    fontSize: "3.75rem",
+    color: BLACK,
   },
   button: {
     margin: theme.spacing(1.5),
@@ -47,6 +54,11 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 2,
     },
   },
+  iconBox: {
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "center",
+  },
   heading: {
     color: BLACK,
     textAlign: "center",
@@ -58,16 +70,35 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       whiteSpace: "nowrap",
       alignItems: "center",
+      justifyContent: "center",
     },
   },
 }));
 
 const BibleIndex = (props) => {
   const classes = useStyles();
-  const { panel1, setValue, versionBooks, versionSource } = props;
+  const classesI = `material-icons ${classes.iconSize}`;
+
+  const { panel1, setValue, versionBooks, versionSource, mobileView } = props;
   const { version, book, bookCode, sourceId, chapter, language } = panel1;
   return (
     <div className={classes.container}>
+      {mobileView ? (
+        ""
+      ) : (
+        <Paper className={[classes.bibleIndex, classes.iconBox]} elevation={3}>
+          <Link
+            to={{
+              pathname: "/read",
+            }}
+          >
+            <i className={classesI}>local_library</i>
+            <Typography variant="h5" gutterBottom className={classes.heading}>
+              Read Bible
+            </Typography>
+          </Link>
+        </Paper>
+      )}
       <Paper className={classes.bibleIndex} elevation={3}>
         <Typography variant="h5" gutterBottom className={classes.heading}>
           Study the Bible in your Language
@@ -96,8 +127,6 @@ const BibleIndex = (props) => {
           <Link
             to={{
               pathname: "/read",
-              // hash: "#book",
-              // search: "?search=term",
             }}
           >
             <BigTooltip title="Click here to read the Bible">
@@ -108,6 +137,23 @@ const BibleIndex = (props) => {
           </Link>
         </div>
       </Paper>
+      {mobileView ? (
+        ""
+      ) : (
+        <Paper className={[classes.bibleIndex, classes.iconBox]} elevation={3}>
+          <Link
+            to={{
+              pathname: "/study",
+              search: `version=${version}`,
+            }}
+          >
+            <i className={classesI}>menu_book</i>
+            <Typography variant="h5" gutterBottom className={classes.heading}>
+              Study Bible
+            </Typography>
+          </Link>
+        </Paper>
+      )}
     </div>
   );
 };
@@ -117,6 +163,7 @@ const mapStateToProps = (state) => {
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
+    mobileView: state.local.mobileView,
   };
 };
 
