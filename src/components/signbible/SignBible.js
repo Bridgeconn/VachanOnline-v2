@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
-import ReactPlayer from "react-player";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as views from "../../store/views";
 import BookCombo from "../common/BookCombo";
+import VideoCard from "./VideoCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,11 +47,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   titleContainer: {
-    "&:last-child": {
-      [theme.breakpoints.down("sm")]: {
-        paddingBottom: 0,
-      },
-    },
+    padding: 12,
   },
   heading: {
     borderBottom: "1px solid #f1ecec",
@@ -76,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     marginBlockStart: 10,
     maxHeight: "200vh",
     boxSizing: "content-box",
+    boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
   },
   title: {
     paddingTop: 0,
@@ -208,34 +203,11 @@ const SignBible = (props) => {
           {videos &&
             videos?.map((video, i) => {
               return (
-                <Card className={classes.video} key={i} >
-                   <CardContent className={classes.titleContainer}>
-                    <Typography
-                      gutterBottom
-                      variant="h6"
-                      component="h2"
-                      title={video["title"]}
-                      className={classes.title}
-                    >
-                      {video["title"]}
-                    </Typography>
-                  </CardContent>
-                  <ReactPlayer
-                    playing={playing === video["url"]}
-                    onPlay={() => setPlaying(video["url"])}
-                    url={video["url"]}
-                    controls={true}
-                    width="100%"
-                    className={classes.player}
-                  />
-                  <Typography 
-                  component="h2"
-                  description={video["description"]}
-                  className={classes.description}
-                  >
-                    {video["description"]}
-                    </Typography>
-                </Card>
+                <VideoCard
+                  video={video}
+                  playing={playing}
+                  setPlaying={setPlaying}
+                />
               );
             })}
           {message && <h5 className={classes.message}>{message}</h5>}
