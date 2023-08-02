@@ -331,7 +331,10 @@ const StudyBible = (props) => {
               <BiblePane setValue={setValue1} paneData={panel1} />
             </div>
             <div className={classes.splitPane2}>
-              <Commentary screenView={"split"} />
+              <Commentary
+                screenView={"split"}
+                bookShortName={bookObject.short}
+              />
             </div>
           </>
         );
