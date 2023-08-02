@@ -15,7 +15,7 @@ import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
 import { LIGHTGREY } from "../../store/colorCode";
-import { Divider } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[2],
   },
   introText: {
+    margin: "0 6px",
     padding: "20px 20px 30px 30px",
   },
   text: {
@@ -111,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px 20px 30px 30px",
   },
   message: {
-    paddingLeft: 20,
+    padding: "20px 15px 2px 15px",
   },
   bookLabel: {
     paddingLeft: 20,
@@ -152,6 +153,11 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "0.2rem",
     },
   },
+  arrow: {
+    borderRadius: 20,
+    fontSize: "1.6rem",
+    boxShadow: theme.shadows[2],
+  },
 }));
 
 const Commentary = (props) => {
@@ -177,6 +183,7 @@ const Commentary = (props) => {
     mobileView,
     setValue,
     screenView,
+    bookShortName,
   } = props;
   const styleProps = {
     screenView: screenView,
@@ -204,15 +211,18 @@ const Commentary = (props) => {
     }
   }, [version, commentary, commentaries, setCommentary, setCommentaryLang]);
   React.useEffect(() => {
-    if (bookNames) {
+    const bookCodes = bookNames.map((book) => book.book_code);
+    if (bookNames && bookCodes.includes(bookCode)) {
       let bookObject = bookNames.find(
         (element) => element.book_code === bookCode
       );
       if (bookObject) {
         setBook(bookObject.short);
       }
+    } else {
+      setBook(bookShortName);
     }
-  }, [bookCode, bookNames]);
+  }, [bookCode, bookNames, bookShortName]);
   React.useEffect(() => {
     //Set bookNames based on commentary language
     if (Object.entries(commentary).length !== 0 && commentaries) {
@@ -261,14 +271,16 @@ const Commentary = (props) => {
   const getIntro = useCallback(
     (sourceId, bookCode) => {
       const setText = (commText) => {
-        const intro = "<p>" + removeBr(commText.bookIntro) + "</p>";
-        const introObj = setImages(intro, []);
-        setCommentaryIntro({
-          sourceId: sourceId,
-          bookCode: bookCode,
-          bookIntro: introObj.text,
-          images: introObj.images,
-        });
+        if (typeof commText.bookIntro === "string") {
+          const intro = removeBr(commText.bookIntro);
+          const introObj = setImages(intro, []);
+          setCommentaryIntro({
+            sourceId: sourceId,
+            bookCode: bookCode,
+            bookIntro: introObj.text,
+            images: introObj.images,
+          });
+        }
       };
       if (sourceId) {
         getCommentaryForChapter(sourceId, bookCode, 1, setText);
@@ -276,14 +288,26 @@ const Commentary = (props) => {
     },
     [setCommentaryIntro, setImages, removeBr]
   );
+  const resetCommentaryIntro = useCallback(() => {
+    setCommentaryIntro({
+      sourceId: "",
+      bookCode: "",
+      bookIntro: "",
+      images: [],
+    });
+  }, [setCommentaryIntro]);
+
   React.useEffect(() => {
     if (
       commentary.sourceId !== commentaryIntro.sourceId ||
       bookCode !== commentaryIntro.bookCode
     ) {
+      if (commentaryIntro.bookIntro !== "") {
+        resetCommentaryIntro();
+      }
       getIntro(commentary.sourceId, bookCode);
     }
-  }, [commentary, bookCode, commentaryIntro, getIntro]);
+  }, [commentary, bookCode, commentaryIntro, getIntro, resetCommentaryIntro]);
 
   React.useEffect(() => {
     //If book,chapter or commentary change get commentary text
@@ -330,7 +354,11 @@ const Commentary = (props) => {
         setMessage("");
       } else {
         setCommentaryText("");
-        setMessage("unavailable");
+        if (commentaryIntro.bookIntro === "") {
+          setMessage("unavailable");
+        } else {
+          setMessage("");
+        }
       }
     }
   }, [
@@ -339,7 +367,7 @@ const Commentary = (props) => {
     verseLabel,
     setImages,
     removeBr,
-    commentaryIntro.images,
+    commentaryIntro,
   ]);
   const toggleIntro = () => {
     setShowIntro((prev) => !prev);
@@ -408,15 +436,18 @@ const Commentary = (props) => {
           <Typography className={classes.introTitle}>
             Introduction to {book}
           </Typography>
-          {showIntro ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          {showIntro ? (
+            <ExpandLessIcon className={classes.arrow} />
+          ) : (
+            <ExpandMoreIcon className={classes.arrow} />
+          )}
         </div>
       )}
       <div onClick={openImage} className={classes.text}>
-        <Collapse in={showIntro}>
-          <div className={classes.introText}>
+        <Collapse in={showIntro} timeout={600}>
+          <Paper elevation={4} className={classes.introText}>
             {parse(commentaryIntro.bookIntro)}
-          </div>
-          <Divider />
+          </Paper>
         </Collapse>
         {!message && commentaryText && (
           <div ref={textRef} className={classes.verseText}>

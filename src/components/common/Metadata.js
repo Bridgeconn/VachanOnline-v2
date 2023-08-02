@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   metaDataBox: {
     [theme.breakpoints.down("sm")]: {
-      height: "80vh",
+      maxHeight: "80vh",
       overflow: "scroll",
     },
   },
