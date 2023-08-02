@@ -61,7 +61,8 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[2],
   },
   introText: {
-    padding: "10px 0px 0px 30px",
+    margin: "0 6px",
+    padding: "20px 20px 30px 30px",
   },
   text: {
     height: "calc(100vh - 203px)",
@@ -152,6 +153,11 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "0.2rem",
     },
   },
+  arrow: {
+    borderRadius: 20,
+    fontSize: "1.6rem",
+    boxShadow: theme.shadows[2],
+  },
 }));
 
 const Commentary = (props) => {
@@ -204,22 +210,19 @@ const Commentary = (props) => {
       setCommentaryLang(comm.metadata["Language Name"].toLowerCase());
     }
   }, [version, commentary, commentaries, setCommentary, setCommentaryLang]);
-  const presentBook  = bookNames.map((item)=>{
-    return item.book_code
-  })
   React.useEffect(() => {
-    if (bookNames && presentBook.includes(bookCode)) {
+    const bookCodes = bookNames.map((book) => book.book_code);
+    if (bookNames && bookCodes.includes(bookCode)) {
       let bookObject = bookNames.find(
         (element) => element.book_code === bookCode
       );
       if (bookObject) {
         setBook(bookObject.short);
       }
+    } else {
+      setBook(bookShortName);
     }
-    else {
-      setBook(bookShortName)  
-    }
-  }, [bookCode, bookNames,bookShortName,presentBook]);
+  }, [bookCode, bookNames, bookShortName]);
   React.useEffect(() => {
     //Set bookNames based on commentary language
     if (Object.entries(commentary).length !== 0 && commentaries) {
@@ -295,7 +298,6 @@ const Commentary = (props) => {
   }, [setCommentaryIntro]);
 
   React.useEffect(() => {
-    console.log(bookCode, commentaryIntro.bookCode);
     if (
       commentary.sourceId !== commentaryIntro.sourceId ||
       bookCode !== commentaryIntro.bookCode
@@ -434,15 +436,17 @@ const Commentary = (props) => {
           <Typography className={classes.introTitle}>
             Introduction to {book}
           </Typography>
-          {showIntro ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          {showIntro ? (
+            <ExpandLessIcon className={classes.arrow} />
+          ) : (
+            <ExpandMoreIcon className={classes.arrow} />
+          )}
         </div>
       )}
       <div onClick={openImage} className={classes.text}>
-        <Collapse in={showIntro} timeout={400}>
-          <Paper elevation={4}>
-            <div className={classes.introText}>
-              {parse(commentaryIntro.bookIntro)}
-            </div>
+        <Collapse in={showIntro} timeout={600}>
+          <Paper elevation={4} className={classes.introText}>
+            {parse(commentaryIntro.bookIntro)}
           </Paper>
         </Collapse>
         {!message && commentaryText && (
