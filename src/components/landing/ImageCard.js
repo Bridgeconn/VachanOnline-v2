@@ -1,64 +1,61 @@
-import React from "react";
+import { Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import { Grid } from "@material-ui/core";
+import React from "react";
 import { Link } from "react-router-dom";
-import { LIGHTGREY } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
+import BigTooltip from "../common/BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
-  media: {
-    height: "16vw",
-    width: "32vw",
-    [theme.breakpoints.down("sm")]: {
-      height: "33vw",
-      width: "50vw",
-    },
-  },
-  root: {
-    boxShadow: theme.shadows[2],
-    border: "1px solid " + LIGHTGREY,
-  },
-  text: {
-    fontFamily: "Samarkan",
-    fontSize: 65,
-    textAlign: "center",
-  },
-  action: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-  },
   link: {
     "&:hover": {
       textDecoration: "none",
     },
   },
+  iconBox: {
+    margin: "0 auto",
+    width: 250,
+    textAlign: "center",
+    padding: "15px 30px",
+    [theme.breakpoints.only("md")]: {
+      width: 200,
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "75%",
+      margin: "15px auto",
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "80%",
+      margin: "0 auto",
+    },
+  },
+  iconSize: {
+    fontSize: "3.75rem",
+    color: BLACK,
+  },
 }));
 
-export default function ImageCard({ src, text, onClick }) {
+export default function ImageCard({ icon, text, onClick }) {
   const classes = useStyles();
   const caption = {
-    read: "Read, annotate, compare and search Bibles and study material",
-    watch: "See the scriptures come alive in pictures and video",
-    listen: "Hear the recorded word in your own language",
+    "Read Bible": "Read the Bible in your language",
+    "Study Bible":
+      "Read, annotate, compare and search Bibles and study material",
+    Watch: "See the scriptures come alive in pictures and video",
+    Listen: "Hear the recorded word in your own language",
   };
-
   return (
-    <Grid item md={4} sm={12} xs={12}>
-      <Link to={{ pathname: "/study" }} className={classes.link}>
+    <Grid item md={3} sm={6} xs={12}>
+      <Link
+        to={{ pathname: text === "read" ? "/read" : "/study" }}
+        className={classes.link}
+      >
         <div onClick={onClick}>
-          <Card className={classes.root}>
-            <CardActionArea className={classes.action}>
-              <CardMedia className={classes.media} image={src} title={text} />
-              <CardContent>
-                <div className={classes.text}>{text}</div>
-                <div>{caption[text]}</div>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+          <BigTooltip title={caption[text]}>
+            <Paper className={classes.iconBox} elevation={3}>
+              <i className={`material-icons ${classes.iconSize}`}>{icon}</i>
+              <Typography variant="h5">{text}</Typography>
+            </Paper>
+          </BigTooltip>
         </div>
       </Link>
     </Grid>

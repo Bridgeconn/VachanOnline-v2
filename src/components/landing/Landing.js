@@ -1,25 +1,21 @@
-import React from "react";
-import BibleIndex from "../landing/BibleIndex";
-import PageHeader from "./PageHeader";
-import Banner from "./Banner";
-import LanguageBar from "./LanguageBar";
-import LandingFooter from "./LandingFooter";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import screenshot from "../common/images/screenshot.jpg";
-import playStore from "../common/images/playStore.png";
-import Link from "@material-ui/core/Link";
-import "./Landing.css";
-import listen from "../common/images/listen.jpg";
-import read from "../common/images/read.jpg";
-import watch from "../common/images/watch.jpg";
-import ImageCard from "./ImageCard";
-import Typography from "@material-ui/core/Typography";
 import { useMediaQuery } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import { VIDEO } from "../../store/views";
-import { AUDIO } from "../../store/views";
+import { AUDIO, VIDEO } from "../../store/views";
+import playStore from "../common/images/playStore.png";
+import screenshot from "../common/images/screenshot.jpg";
+import BibleIndex from "../landing/BibleIndex";
+import Banner from "./Banner";
+import ImageCard from "./ImageCard";
+import "./Landing.css";
+import LandingFooter from "./LandingFooter";
+import LanguageBar from "./LanguageBar";
+import PageHeader from "./PageHeader";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -45,16 +41,16 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 30,
   },
   playStore: {
-    width: "25%",
+    width: "10%",
     margin: "0 7%",
     maxWidth: 280,
     display: "inline-block",
     [theme.breakpoints.down("sm")]: {
-      width: "50%",
+      width: "25%",
       margin: "15px 7%",
     },
     [theme.breakpoints.down("md")]: {
-      width: "30%",
+      width: "15%",
     },
   },
   screenshotDiv: {
@@ -74,16 +70,20 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   textRow: {
-    margin: 15,
     marginBottom: 70,
-    width: "calc(100% - 30px)",
+    textAlign: "center",
     [theme.breakpoints.down("md")]: {
       marginTop: -30,
     },
   },
   imageRow: {
-    margin: "0 12px 20px",
-    width: "calc(100% - 24px)",
+    display: "flex",
+    justifyContent: "space-evenly",
+    margin: "25px 8%",
+    width: "auto",
+    [theme.breakpoints.down("md")]: {
+      margin: "25px 0",
+    },
   },
   text: {
     fontSize: 20,
@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: 0,
       fontSize: 16,
       textAlign: "center",
+      margin: 20,
     },
   },
   storeLinkMobile: {
@@ -150,23 +151,24 @@ const Landing = (props) => {
         spacing={1}
         className={classes.imageRow}
       >
-         <ImageCard
-          src={listen}
-          text="listen"
+        <ImageCard
+          icon="volume_up"
+          text="Listen"
           onClick={() => setValue("parallelView", AUDIO)}
         />
         <ImageCard
-          src={watch}
-          text="watch"
+          icon="videocam"
+          text="Watch"
           onClick={() => setValue("parallelView", VIDEO)}
         />
-         <ImageCard src={read} text="read" />
+        <ImageCard icon="local_library" text="Read Bible" />
+        <ImageCard icon="menu_book" text="Study Bible" />
       </Grid>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item xs={12} md={6}>
           <Typography className={classes.text}>
             <p>
-            <h3>Welcome to VachanOnline.com</h3>
+              <h3>Welcome to VachanOnline.com</h3>
             </p>
             <p>
               VachanOnline.com and the companion VachanGo app is a premier
@@ -195,12 +197,10 @@ const Landing = (props) => {
               className={classes.screenshot}
             />
             <div className={classes.storeLinkPC}>{addLink()}</div>
-            <div className={classes.storeLinkMobile}>{addLink()}</div> 
+            <div className={classes.storeLinkMobile}>{addLink()}</div>
           </div>
         </Grid>
-        
       </Grid>
-       
       <LandingFooter />
     </Grid>
   );

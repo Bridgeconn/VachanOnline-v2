@@ -202,7 +202,7 @@ const Audio = (props) => {
     const lang = audioBible.find(
       (ele) => ele?.language?.code === audioLangCode
     );
-    const books = Object.keys(lang?.audioBibles[0]?.books);
+    const books = Object.keys(lang?.audioBibles[0]?.books || {});
     const filterBooks = (ele) => books?.includes(ele.book_code);
     setAudioBooks(versionBooks[audioLangCode]?.filter(filterBooks));
   }, [audioBible, audioLangCode, versionBooks]);
