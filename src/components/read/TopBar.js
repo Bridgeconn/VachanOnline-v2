@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
@@ -98,7 +98,8 @@ const TopBar = (props) => {
   const [loginButton, setLoginButton] = React.useState();
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
-
+  const location = useLocation();
+  const path = location?.pathname;
   let { login, userDetails, setParallelView, mobileView } = props;
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
@@ -131,11 +132,7 @@ const TopBar = (props) => {
     if (process.env.REACT_APP_SIGNBIBLE_URL === undefined) {
       return "";
     }
-    return window.location.pathname.startsWith("/study") ? (
-      Btn()
-    ) : (
-      <Link to="/study">{Btn()}</Link>
-    );
+    return path.startsWith("/study") ? Btn() : <Link to="/study">{Btn()}</Link>;
   };
   const StoriesButton = () => {
     return process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
@@ -251,12 +248,9 @@ const TopBar = (props) => {
             </Link>
           </div>
           <div>{ISLButton()}</div>
-          {window.location.pathname.startsWith("/songs") ? "" : SongsButton()}
-          {window.location.pathname.startsWith("/read") ? "" : ReadButton()}
-          {window.location.pathname.startsWith("/study") ? "" : StudyButton()}
-          {window.location.pathname.startsWith("/biblestories")
-            ? ""
-            : StoriesButton()}
+          {path.startsWith("/songs") ? "" : SongsButton()}
+          {path.startsWith("/study") ? ReadButton() : StudyButton()}
+          {path.startsWith("/biblestories") ? "" : StoriesButton()}
           {FeedbackButton()}
           {loginButton}
         </Toolbar>

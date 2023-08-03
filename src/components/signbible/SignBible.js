@@ -204,6 +204,7 @@ const SignBible = (props) => {
             videos?.map((video, i) => {
               return (
                 <VideoCard
+                  key={i}
                   video={video}
                   playing={playing}
                   setPlaying={setPlaying}

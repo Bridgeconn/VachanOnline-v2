@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -140,13 +141,39 @@ const Version = (props) => {
     language,
   } = props;
   const [expanded, setExpanded] = React.useState(language);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlVersion = searchParams.get("version");
+  const reference = searchParams.get("reference");
+
+  const location = useLocation();
+  const path = location?.pathname;
+
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
   React.useEffect(() => {
+    let _version = localStorage.getItem("version");
+    let _bookCode = localStorage.getItem("bookCode");
+    let _chapter = localStorage.getItem("chapter");
+    if (path.startsWith("/read")) {
+      _version = urlVersion || _version;
+      if (reference !== null) {
+        const [bookCode, chapter] = reference?.split("+");
+        _bookCode = bookCode || _bookCode;
+        _chapter = chapter || _chapter;
+      }
+    }
     //if versions not loaded fetch versions and books for the versions
     if (versions.length === 0) {
-      getVersions(setVersions, setValue, setVersionBooks, setMainValue);
+      getVersions(
+        setVersions,
+        setValue,
+        setVersionBooks,
+        setMainValue,
+        _version,
+        _bookCode,
+        _chapter
+      );
     }
   });
 
@@ -172,6 +199,7 @@ const Version = (props) => {
     let selectedVersion = event.currentTarget;
     let sourceId = selectedVersion.getAttribute("data-sourceid");
     let bookList = versionBooks[versionSource[sourceId]];
+    const _version = selectedVersion.getAttribute("value");
     if (
       bookList &&
       bookCode &&
@@ -186,13 +214,17 @@ const Version = (props) => {
       //if parallel bible view and parallel sCroll, disable parallel scroll, show message
       if (parallelView === PARALLELBIBLE && parallelScroll) {
         setMainValue("parallelScroll", false);
-        const ver = capitalize(selectedVersion.getAttribute("value"));
+        const ver = capitalize(_version);
         const message = `Current book not available in ${ver}, Parallel Scroll disabled`;
         setValue("message", message);
       }
     }
-    setValue("version", selectedVersion.getAttribute("value"));
+    setValue("version", _version);
     setValue("sourceId", sourceId);
+    if (path.startsWith("/read")) {
+      const reference = searchParams.get("reference");
+      setSearchParams({ version: _version, reference: reference });
+    }
   };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);

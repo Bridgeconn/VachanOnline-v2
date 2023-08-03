@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
@@ -205,6 +206,10 @@ const BookCombo = (props) => {
   const openBookRef = React.useRef(null);
   //first chapter ref
   const firstChapterRef = React.useRef(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const path = location?.pathname;
+
   function getChapterMap() {
     const bookMap = new Map();
     let col = 1;
@@ -356,10 +361,15 @@ const BookCombo = (props) => {
   //function to handle click chapter event
   const clickChapter = (event) => {
     closeMenu(true);
-    let element = event.currentTarget;
-    setValue("chapter", element.getAttribute("data-chapter"));
-    setValue("bookCode", element.getAttribute("data-bookcode").toLowerCase());
+    const element = event.currentTarget;
+    const chapter = element.getAttribute("data-chapter");
+    const bookCode = element.getAttribute("data-bookcode").toLowerCase();
+    setValue("chapter", chapter);
+    setValue("bookCode", bookCode);
     setValue("versesSelected", []);
+    if (path.startsWith("/read")) {
+      setSearchParams({ reference: bookCode + "+" + chapter });
+    }
     if (parallelScroll && paneNo) {
       syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
     }
