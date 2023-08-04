@@ -289,6 +289,7 @@ const MenuBar = (props) => {
             setValue={setValue}
             version={version}
             bookCode={bookCode}
+            chapter={chapter}
             paneNo={paneNo}
             language={language}
           />
@@ -320,8 +321,8 @@ const MenuBar = (props) => {
           {mobileView ? null : (
             <>
               <div className={classes.info} onClick={handleDialogOpen}>
-                 <Tooltip title="Print Chapter">
-                <PrintIcon fontSize="small" />
+                <Tooltip title="Print Chapter">
+                  <PrintIcon fontSize="small" />
                 </Tooltip>
               </div>
               <Tooltip title="Fullscreen">

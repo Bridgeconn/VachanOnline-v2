@@ -138,13 +138,13 @@ const Version = (props) => {
     setMainValue,
     mobileView,
     paneNo,
+    chapter,
     language,
   } = props;
   const [expanded, setExpanded] = React.useState(language);
   const [searchParams, setSearchParams] = useSearchParams();
   const urlVersion = searchParams.get("version");
   const reference = searchParams.get("reference");
-
   const location = useLocation();
   const path = location?.pathname;
 
@@ -158,9 +158,9 @@ const Version = (props) => {
     if (path.startsWith("/read")) {
       _version = urlVersion || _version;
       if (reference !== null) {
-        const [bookCode, chapter] = reference?.split("+");
+        const [bookCode, refChapter] = reference?.split("+");
         _bookCode = bookCode || _bookCode;
-        _chapter = chapter || _chapter;
+        _chapter = refChapter || _chapter;
       }
     }
     //if versions not loaded fetch versions and books for the versions
@@ -222,7 +222,9 @@ const Version = (props) => {
     setValue("version", _version);
     setValue("sourceId", sourceId);
     if (path.startsWith("/read")) {
-      const reference = searchParams.get("reference");
+      const reference = searchParams.get("reference")
+        ? searchParams.get("reference")
+        : bookCode + "+" + chapter;
       setSearchParams({ version: _version, reference: reference });
     }
   };

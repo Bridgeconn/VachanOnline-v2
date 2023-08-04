@@ -79,6 +79,7 @@ const BibleIndex = (props) => {
             version={version}
             landingPage={true}
             bookCode={bookCode}
+            chapter={chapter}
             language={language}
           />
           {bookCode !== "" && bookCode !== undefined ? (

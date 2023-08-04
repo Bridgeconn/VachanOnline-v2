@@ -209,6 +209,7 @@ const BookCombo = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const path = location?.pathname;
+  const paramVersion = searchParams.get("version");
 
   function getChapterMap() {
     const bookMap = new Map();
@@ -362,13 +363,18 @@ const BookCombo = (props) => {
   const clickChapter = (event) => {
     closeMenu(true);
     const element = event.currentTarget;
-    const chapter = element.getAttribute("data-chapter");
-    const bookCode = element.getAttribute("data-bookcode").toLowerCase();
-    setValue("chapter", chapter);
-    setValue("bookCode", bookCode);
+    const selectedChapter = element.getAttribute("data-chapter") || chapter;
+    const selectedBookCode =
+      element.getAttribute("data-bookcode").toLowerCase() || bookCode;
+
+    setValue("chapter", selectedChapter);
+    setValue("bookCode", selectedBookCode);
     setValue("versesSelected", []);
     if (path.startsWith("/read")) {
-      setSearchParams({ reference: bookCode + "+" + chapter });
+      setSearchParams({
+        version: paramVersion,
+        reference: selectedBookCode + "+" + selectedChapter,
+      });
     }
     if (parallelScroll && paneNo) {
       syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
