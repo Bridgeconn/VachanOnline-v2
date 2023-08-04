@@ -39,18 +39,17 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     display: "inline-block",
     marginBottom: 30,
+    [theme.breakpoints.only("md")]: {
+      width: "60%",
+    },
   },
   playStore: {
-    width: "10%",
+    width: "20%",
     margin: "0 7%",
     maxWidth: 280,
     display: "inline-block",
     [theme.breakpoints.down("sm")]: {
-      width: "25%",
-      margin: "15px 7%",
-    },
-    [theme.breakpoints.down("md")]: {
-      width: "15%",
+      width: "30%",
     },
   },
   screenshotDiv: {
@@ -73,27 +72,29 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 70,
     textAlign: "center",
     [theme.breakpoints.down("md")]: {
-      marginTop: -30,
+      marginTop: -10,
     },
   },
   imageRow: {
     display: "flex",
     justifyContent: "space-evenly",
-    margin: "25px 8%",
+    margin: "0 10px",
     width: "auto",
-    [theme.breakpoints.down("md")]: {
-      margin: "25px 0",
+    [theme.breakpoints.only("sm")]: {
+      margin: 5,
     },
   },
   text: {
     fontSize: 20,
     marginTop: 50,
     paddingLeft: 30,
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("md")]: {
       paddingLeft: 0,
-      fontSize: 16,
       textAlign: "center",
       margin: 20,
+    },
+    [theme.breakpoints.only("xs")]: {
+      fontSize: 16,
     },
   },
   storeLinkMobile: {
@@ -161,11 +162,11 @@ const Landing = (props) => {
           text="Watch"
           onClick={() => setValue("parallelView", VIDEO)}
         />
-        <ImageCard icon="local_library" text="Read Bible" />
-        <ImageCard icon="menu_book" text="Study Bible" />
+        <ImageCard icon="local_library" text="Read" />
+        <ImageCard icon="menu_book" text="Study" />
       </Grid>
       <Grid container spacing={2} className={classes.textRow}>
-        <Grid item xs={12} md={6}>
+        <Grid item md={12} lg={6}>
           <Typography className={classes.text}>
             <p>
               <h3>Welcome to VachanOnline.com</h3>
@@ -189,7 +190,7 @@ const Landing = (props) => {
             </p>
           </Typography>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item md={12} lg={6}>
           <div className={classes.screenshotDiv}>
             <img
               src={screenshot}

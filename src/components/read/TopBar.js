@@ -129,7 +129,10 @@ const TopBar = (props) => {
         </Button>
       );
     };
-    if (process.env.REACT_APP_SIGNBIBLE_URL === undefined) {
+    if (
+      process.env.REACT_APP_SIGNBIBLE_URL === undefined ||
+      path.startsWith("/read")
+    ) {
       return "";
     }
     return path.startsWith("/study") ? Btn() : <Link to="/study">{Btn()}</Link>;
@@ -248,9 +251,14 @@ const TopBar = (props) => {
             </Link>
           </div>
           <div>{ISLButton()}</div>
-          {path.startsWith("/songs") ? "" : SongsButton()}
+          {path.startsWith("/songs") || path.startsWith("/read")
+            ? ""
+            : SongsButton()}
+
+          {path.startsWith("/biblestories") || path.startsWith("/read")
+            ? ""
+            : StoriesButton()}
           {path.startsWith("/study") ? ReadButton() : StudyButton()}
-          {path.startsWith("/biblestories") ? "" : StoriesButton()}
           {FeedbackButton()}
           {loginButton}
         </Toolbar>

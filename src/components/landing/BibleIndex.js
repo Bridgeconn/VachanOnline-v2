@@ -97,7 +97,7 @@ const BibleIndex = (props) => {
           )}
           <Link
             to={{
-              pathname: "/read",
+              pathname: "/study",
             }}
           >
             <BigTooltip title="Click here to read the Bible">
