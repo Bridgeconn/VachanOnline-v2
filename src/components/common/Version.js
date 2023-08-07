@@ -243,12 +243,11 @@ const Version = (props) => {
       setValue("language", found?.language);
       return found?.languageName || language;
     }
+    const language = getLanguageByCode(versions, langCode?.toLowerCase());
     if (mobileView) {
-      const language = getLanguageByCode(versions, langCode?.toLowerCase());
       getDisplayLanguage(language);
       setDisplayVersion(versionCode);
     } else {
-      const language = getLanguageByCode(versions, langCode?.toLowerCase());
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
   }, [landingPage, mobileView, setValue, version, versions]);
