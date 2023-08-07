@@ -3,12 +3,12 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Collapse from "@material-ui/core/Collapse";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ReactPlayer from "react-player";
 import { LIGHTGREY } from "../../store/colorCode";
-import { Tooltip } from "@material-ui/core";
+import BigTooltip from "../common/BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
@@ -51,16 +51,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2rem",
     width: "100%",
   },
-}));
-const BigTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: "#ffd580",
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[4],
-    border: "1px solid orange",
-    fontSize: 16,
+  arrow: {
+    borderRadius: 20,
+    fontSize: "1.6rem",
+    boxShadow: theme.shadows[2],
   },
-}))(Tooltip);
+}));
 
 const VideoCard = ({ video, playing, setPlaying }) => {
   const classes = useStyles();
@@ -86,7 +82,11 @@ const VideoCard = ({ video, playing, setPlaying }) => {
         <BigTooltip title={showDesc ? "Hide description" : "Show description"}>
           <div onClick={handleChange} className={classes.heading}>
             <Typography className={classes.descTitle}>Description</Typography>
-            {showDesc ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            {showDesc ? (
+              <ExpandLessIcon className={classes.arrow} />
+            ) : (
+              <ExpandMoreIcon className={classes.arrow}/>
+            )}
           </div>
         </BigTooltip>
         <Collapse in={showDesc}>
