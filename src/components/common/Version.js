@@ -148,7 +148,8 @@ const Version = (props) => {
     if (versions.length === 0) {
       getVersions(setVersions, setValue, setVersionBooks, setMainValue);
     }
-  });
+    // eslint-disable-next-line
+  }, []);
 
   function handleClose() {
     setAnchorEl(null);
@@ -242,10 +243,11 @@ const Version = (props) => {
       setValue("language", found?.language);
       return found?.languageName || language;
     }
+    const language = getLanguageByCode(versions, langCode?.toLowerCase());
     if (mobileView) {
+      getDisplayLanguage(language);
       setDisplayVersion(versionCode);
     } else {
-      const language = getLanguageByCode(versions, langCode?.toLowerCase());
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
   }, [landingPage, mobileView, setValue, version, versions]);
