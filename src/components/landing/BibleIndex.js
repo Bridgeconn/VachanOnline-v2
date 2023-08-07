@@ -102,7 +102,7 @@ const BibleIndex = (props) => {
           >
             <BigTooltip title="Click here to read the Bible">
               <Button variant="contained" className={classes.button}>
-                READ
+                Start
               </Button>
             </BigTooltip>
           </Link>

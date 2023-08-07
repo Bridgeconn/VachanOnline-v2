@@ -248,6 +248,17 @@ const BookCombo = (props) => {
     });
     return bookMap;
   }
+  const setParams = React.useCallback(
+    (bookCode, chapter) => {
+      if (path.startsWith("/read") && paramVersion !== null) {
+        setSearchParams({
+          version: paramVersion,
+          reference: bookCode + "+" + chapter,
+        });
+      }
+    },
+    [paramVersion, path, setSearchParams]
+  );
   const chapterOpenMap = React.useMemo(getChapterMap, [bookList]);
   //on changing bookcode change open book code
   React.useEffect(() => {
@@ -257,8 +268,9 @@ const BookCombo = (props) => {
     if (paneNo !== 2) {
       localStorage.setItem("bookCode", bookCode);
       localStorage.setItem("chapter", chapter);
+      setParams(bookCode, chapter);
     }
-  }, [paneNo, bookCode, chapter]);
+  }, [paneNo, bookCode, chapter, setParams]);
   //on changing book code set chapter row
   React.useEffect(() => {
     setChapterRow(chapterOpenMap.get(bookCode));
@@ -334,6 +346,7 @@ const BookCombo = (props) => {
       openBookRef.current.scrollIntoView(true);
     }
   }
+
   function otHeader() {
     return bookList.find((item) => item.book_id <= 39) ? (
       <ListItem className={classes.headers}>OLD TESTAMENT</ListItem>
@@ -370,12 +383,7 @@ const BookCombo = (props) => {
     setValue("chapter", selectedChapter);
     setValue("bookCode", selectedBookCode);
     setValue("versesSelected", []);
-    if (path.startsWith("/read")) {
-      setSearchParams({
-        version: paramVersion,
-        reference: selectedBookCode + "+" + selectedChapter,
-      });
-    }
+    setParams(selectedBookCode, selectedChapter);
     if (parallelScroll && paneNo) {
       syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
     }
