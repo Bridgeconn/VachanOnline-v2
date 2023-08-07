@@ -152,7 +152,9 @@ const Version = (props) => {
 
   function handleClose() {
     setAnchorEl(null);
-    setExpanded(language);
+    if (!mobileView) {
+      setExpanded(language);
+    }
   }
   function sortVersionLanguages(a, b) {
     var langA = a.language.toUpperCase(); // ignore upper and lowercase
@@ -167,7 +169,7 @@ const Version = (props) => {
   }
   //function to set the bible version when clicked
   const setVersion = (event) => {
-    handleClose();
+    //handleClose();
     setAnchorEl(null);
     let selectedVersion = event.currentTarget;
     let sourceId = selectedVersion.getAttribute("data-sourceid");
@@ -220,6 +222,11 @@ const Version = (props) => {
     return code;
   }
   function currentVersion(item) {
+    if (mobileView) {
+      return item.version.code === displayVersion
+        ? classes.versionSelected
+        : "";
+    }
     return item.language.code + "-" + item.version.code === version
       ? classes.versionSelected
       : "";
