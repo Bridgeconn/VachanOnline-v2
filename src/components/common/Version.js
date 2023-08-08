@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -177,6 +177,20 @@ const Version = (props) => {
     }
   });
 
+  useEffect(() => {
+    if (path.startsWith("/read") && urlVersion === null && reference === null) {
+      const _reference = bookCode + "+" + chapter;
+      setSearchParams({ version: version, reference: _reference });
+    }
+  }, [
+    urlVersion,
+    reference,
+    path,
+    bookCode,
+    chapter,
+    setSearchParams,
+    version,
+  ]);
   function handleClose() {
     setAnchorEl(null);
     setExpanded(language);

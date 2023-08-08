@@ -376,14 +376,13 @@ const BookCombo = (props) => {
   const clickChapter = (event) => {
     closeMenu(true);
     const element = event.currentTarget;
-    const selectedChapter = element.getAttribute("data-chapter") || chapter;
-    const selectedBookCode =
-      element.getAttribute("data-bookcode").toLowerCase() || bookCode;
+    const _chapter = element.getAttribute("data-chapter");
+    const _bookCode = element.getAttribute("data-bookcode").toLowerCase();
 
-    setValue("chapter", selectedChapter);
-    setValue("bookCode", selectedBookCode);
+    setValue("chapter", _chapter);
+    setValue("bookCode", _bookCode);
     setValue("versesSelected", []);
-    setParams(selectedBookCode, selectedChapter);
+    setParams(_bookCode, _chapter);
     if (parallelScroll && paneNo) {
       syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
     }

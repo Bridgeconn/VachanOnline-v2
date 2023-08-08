@@ -83,7 +83,7 @@ export default function ImageCard({ icon, text, onClick }) {
   const isLarge = useMediaQuery("(min-width:1550px)");
   const classes = useStyles({ isLarge });
   const caption = {
-    Read: "Read and share the Bible in your heart language  ",
+    Read: "Read and share the Bible in your heart language",
     Study: "Read, annotate and search Bibles and study material",
     Watch: "See scriptures come alive in images and videos",
     Listen: "Hear the recorded word in your heart language",
@@ -103,9 +103,7 @@ export default function ImageCard({ icon, text, onClick }) {
               <Typography variant="h4" className={classes.heading}>
                 {text}
               </Typography>
-              <Typography variant="p" className={classes.caption}>
-                {caption[text]}
-              </Typography>
+              <div className={classes.caption}>{caption[text]}</div>
             </div>
           </Paper>
         </BigTooltip>
