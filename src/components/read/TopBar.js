@@ -207,7 +207,7 @@ const TopBar = (props) => {
     return (
       <Link to="/study">
         {isMobilePortrait ? (
-          <i className={`material-icons ${classes.islIcon}`}>local_library</i>
+          <i className={`material-icons ${classes.islIcon}`}>menu_book</i>
         ) : (
           <Button
             variant="outlined"
@@ -217,7 +217,7 @@ const TopBar = (props) => {
             aria-label="study bible"
             target="_blank"
             rel="noopener"
-            startIcon={<i className="material-icons">local_library</i>}
+            startIcon={<i className="material-icons">menu_book</i>}
           >
             {mobileView === true ? "Study" : "Study Bible"}
           </Button>
