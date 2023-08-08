@@ -1,24 +1,26 @@
 import React from "react";
 import Landing from "./components/landing/Landing";
 import ReadBible from "./components/read/ReadBible";
+import StudyBible from "./components/read/StudyBible";
 import Stories from "./components/stories/Stories";
 import PrivacyPolicy from "./components/privacypolicy/PrivacyPolicy";
 import "./components/common/common.css";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Songs from "./components/songs/Songs";
 const App = () => (
   <BrowserRouter>
     <CssBaseline />
-    <Switch>
-      <Route path="/" exact component={Landing} />
-      <Route path="/read" component={ReadBible} />
-      <Route path="/biblestories" component={Stories} />
-      <Route path="/songs" component={Songs} />
-      <Route path="/privacypolicy" component={PrivacyPolicy} />
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/read" element={<ReadBible />} />
+      <Route path="/study" element={<StudyBible />} />
+      <Route path="/biblestories" element={<Stories />} />
+      <Route path="/songs" element={<Songs />} />
+      <Route path="/privacypolicy" element={<PrivacyPolicy />} />
       <Route render={() => <h1>Page Not Found</h1>} />
-    </Switch>
+    </Routes>
   </BrowserRouter>
 );
 export default App;

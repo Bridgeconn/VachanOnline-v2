@@ -91,7 +91,7 @@ const PageHeader = (props) => {
       <AppBar className={classes.appBar} position="static">
         <Toolbar>
           <div className={classes.links}>
-            <Link to={{ pathname: "/read" }}>
+            <Link to={{ pathname: "/study" }}>
               <img src={favicon} alt="logo" className={classes.favicon} />
               {mobile === true ? (
                 ""
@@ -103,7 +103,7 @@ const PageHeader = (props) => {
           {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
             <Link
               to={{
-                pathname: "/read",
+                pathname: "/study",
               }}
             >
               {mobileLandscape ? (

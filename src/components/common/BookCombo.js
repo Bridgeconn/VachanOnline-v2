@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
@@ -205,6 +206,11 @@ const BookCombo = (props) => {
   const openBookRef = React.useRef(null);
   //first chapter ref
   const firstChapterRef = React.useRef(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const path = location?.pathname;
+  const paramVersion = searchParams.get("version");
+
   function getChapterMap() {
     const bookMap = new Map();
     let col = 1;
@@ -242,6 +248,17 @@ const BookCombo = (props) => {
     });
     return bookMap;
   }
+  const setParams = React.useCallback(
+    (bookCode, chapter) => {
+      if (path.startsWith("/read") && paramVersion !== null) {
+        setSearchParams({
+          version: paramVersion,
+          reference: bookCode + "+" + chapter,
+        });
+      }
+    },
+    [paramVersion, path, setSearchParams]
+  );
   const chapterOpenMap = React.useMemo(getChapterMap, [bookList]);
   //on changing bookcode change open book code
   React.useEffect(() => {
@@ -251,8 +268,9 @@ const BookCombo = (props) => {
     if (paneNo !== 2) {
       localStorage.setItem("bookCode", bookCode);
       localStorage.setItem("chapter", chapter);
+      setParams(bookCode, chapter);
     }
-  }, [paneNo, bookCode, chapter]);
+  }, [paneNo, bookCode, chapter, setParams]);
   //on changing book code set chapter row
   React.useEffect(() => {
     setChapterRow(chapterOpenMap.get(bookCode));
@@ -328,6 +346,7 @@ const BookCombo = (props) => {
       openBookRef.current.scrollIntoView(true);
     }
   }
+
   function otHeader() {
     return bookList.find((item) => item.book_id <= 39) ? (
       <ListItem className={classes.headers}>OLD TESTAMENT</ListItem>
@@ -356,10 +375,14 @@ const BookCombo = (props) => {
   //function to handle click chapter event
   const clickChapter = (event) => {
     closeMenu(true);
-    let element = event.currentTarget;
-    setValue("chapter", element.getAttribute("data-chapter"));
-    setValue("bookCode", element.getAttribute("data-bookcode").toLowerCase());
+    const element = event.currentTarget;
+    const _chapter = element.getAttribute("data-chapter");
+    const _bookCode = element.getAttribute("data-bookcode").toLowerCase();
+
+    setValue("chapter", _chapter);
+    setValue("bookCode", _bookCode);
     setValue("versesSelected", []);
+    setParams(_bookCode, _chapter);
     if (parallelScroll && paneNo) {
       syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
     }

@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       whiteSpace: "nowrap",
       alignItems: "center",
+      justifyContent: "center",
     },
   },
 }));
@@ -78,6 +79,7 @@ const BibleIndex = (props) => {
             version={version}
             landingPage={true}
             bookCode={bookCode}
+            chapter={chapter}
             language={language}
           />
           {bookCode !== "" && bookCode !== undefined ? (
@@ -95,14 +97,12 @@ const BibleIndex = (props) => {
           )}
           <Link
             to={{
-              pathname: "/read",
-              // hash: "#book",
-              // search: "?search=term",
+              pathname: "/study",
             }}
           >
             <BigTooltip title="Click here to read the Bible">
               <Button variant="contained" className={classes.button}>
-                READ
+                Start
               </Button>
             </BigTooltip>
           </Link>
