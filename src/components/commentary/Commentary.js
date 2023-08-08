@@ -444,11 +444,13 @@ const Commentary = (props) => {
         </div>
       )}
       <div onClick={openImage} className={classes.text}>
-        <Collapse in={showIntro} timeout={600}>
-          <Paper elevation={4} className={classes.introText}>
-            {parse(commentaryIntro.bookIntro)}
-          </Paper>
-        </Collapse>
+        {!message && (
+          <Collapse in={showIntro} timeout={600}>
+            <Paper elevation={4} className={classes.introText}>
+              {parse(commentaryIntro.bookIntro)}
+            </Paper>
+          </Collapse>
+        )}
         {!message && commentaryText && (
           <div ref={textRef} className={classes.verseText}>
             {parse(commentaryText)}
