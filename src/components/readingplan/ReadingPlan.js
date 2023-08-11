@@ -148,6 +148,10 @@ const useStyles = makeStyles((theme) => ({
       top: 0,
     },
   },
+  date: {
+    textTransform: "capitalize",
+    backgroundColor: "#fff",
+  },
 }));
 
 const ReadingPlan = (props) => {
@@ -199,6 +203,17 @@ const ReadingPlan = (props) => {
     }
   };
 
+  const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+    <Button
+      aria-haspopup="true"
+      variant="contained"
+      onClick={onClick}
+      ref={ref}
+      classes={{ root: classes.date }}
+    >
+      {value}
+    </Button>
+  ));
   const API = useMemo(
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_PLANS_URL }),
     []
@@ -254,6 +269,12 @@ const ReadingPlan = (props) => {
                   selected={selectedDate}
                   onChange={(date) => setSelectedDate(date)}
                   withPortal
+                  todayButton="Today"
+                  dateFormat="dd MMM"
+                  showMonthDropdown
+                  minDate={new Date(new Date().getFullYear(), 0, 1)}
+                  maxDate={new Date(new Date().getFullYear(), 11, 31)}
+                  customInput={<CustomInput />}
                 />
               ) : null}
             </div>
@@ -304,8 +325,8 @@ const ReadingPlan = (props) => {
                   ) : (
                     <BigTooltip
                       key={i}
-                      title="The book you selected is not available in this language, please select another language"
-                      placement="top-start"
+                      title="The book is not available in the selected version"
+                      arrow
                     >
                       <span>
                         <ListItem key={i} className={classes.listItem} button>

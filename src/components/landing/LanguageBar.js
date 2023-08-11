@@ -98,7 +98,12 @@ const LanguageBar = (props) => {
                   <BigTooltip
                     title={`Click to read the Bible in ${language.name}`}
                   >
-                    <Link className={classes.link} to={{ pathname: "/read" }}>
+                    <Link
+                      className={classes.link}
+                      to={{
+                        pathname: "/read",
+                      }}
+                    >
                       {language.name}
                     </Link>
                   </BigTooltip>

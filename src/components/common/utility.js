@@ -5,7 +5,10 @@ export const getVersions = (
   setVersions,
   setPaneValue,
   setVersionBooks,
-  setValue
+  setValue,
+  _version,
+  _bookCode,
+  _chapter
 ) => {
   API.get("bibles")
     .then(function (response) {
@@ -26,9 +29,8 @@ export const getVersions = (
       if (versions.length > 0) {
         let version = versions[0].languageVersions[0];
         try {
-          const lsVersion = localStorage.getItem("version");
-          const langCode = lsVersion?.split("-")[0] || "hin";
-          const versionCode = lsVersion?.split("-")[1] || "IRV";
+          const langCode = _version?.split("-")[0] || "hin";
+          const versionCode = _version?.split("-")[1] || "IRV";
           version = versions
             .find((e) => e?.languageVersions[0]?.language?.code === langCode)
             .languageVersions.find((e) => e.version.code === versionCode);
@@ -41,7 +43,13 @@ export const getVersions = (
         );
         setPaneValue("sourceId", version.sourceId);
         setUserSettings(setPaneValue);
-        getAllBooks(setVersionBooks, setPaneValue, setValue);
+        getAllBooks(
+          setVersionBooks,
+          setPaneValue,
+          setValue,
+          _bookCode,
+          _chapter
+        );
         let versionSource = {};
         for (let lang of versions) {
           for (let ver of lang.languageVersions) {
@@ -72,7 +80,13 @@ const setUserSettings = (setValue) => {
   }
 };
 //Function to get the bible books
-export const getAllBooks = (setVersionBooks, setPaneValue, setValue) => {
+export const getAllBooks = (
+  setVersionBooks,
+  setPaneValue,
+  setValue,
+  bookCode,
+  chapter
+) => {
   API.get("booknames")
     .then(function (response) {
       for (let item of response.data) {
@@ -84,10 +98,8 @@ export const getAllBooks = (setVersionBooks, setPaneValue, setValue) => {
       const languages = response.data.map((a) => a.language);
       getAllInfographics(languages, setValue);
       if (response.data && response.data.length > 0) {
-        const bookCode = localStorage.getItem("bookCode") || "jhn";
-        const chapter = localStorage.getItem("chapter") || "1";
-        setPaneValue("bookCode", bookCode);
-        setPaneValue("chapter", chapter);
+        setPaneValue("bookCode", bookCode || "jhn");
+        setPaneValue("chapter", chapter || "1");
       }
     })
     .catch(function (error) {

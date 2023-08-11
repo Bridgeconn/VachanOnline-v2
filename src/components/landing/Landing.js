@@ -1,105 +1,77 @@
 import React from "react";
-import BibleIndex from "../landing/BibleIndex";
-import PageHeader from "./PageHeader";
-import Banner from "./Banner";
-import LanguageBar from "./LanguageBar";
-import LandingFooter from "./LandingFooter";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
 import Link from "@material-ui/core/Link";
-import "./Landing.css";
-import listen from "../common/images/listen.jpg";
-import read from "../common/images/read.jpg";
-import watch from "../common/images/watch.jpg";
-import ImageCard from "./ImageCard";
-import Typography from "@material-ui/core/Typography";
 import { useMediaQuery } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import { VIDEO } from "../../store/views";
-import { AUDIO } from "../../store/views";
+import { AUDIO, VIDEO } from "../../store/views";
+import BibleIndex from "../landing/BibleIndex";
+import Banner from "./Banner";
+import ImageCard from "./ImageCard";
+import "./Landing.css";
+import LandingFooter from "./LandingFooter";
+import LanguageBar from "./LanguageBar";
+import PageHeader from "./PageHeader";
+import BigTooltip from "../common/BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
   body: {
     backgroundColor: "white",
   },
-  website: {
-    width: "85%",
-    margin: "0 10%",
-    border: "1px solid #000000a1",
-    boxShadow: "2px 2px 3px #968e8e",
-  },
-  websiteLogo: {
-    width: "80%",
-    margin: "auto",
-    display: "block",
-    [theme.breakpoints.down("sm")]: {
-      width: "60%",
-    },
-  },
   screenshot: {
     width: "90%",
     display: "inline-block",
     marginBottom: 30,
+    [theme.breakpoints.only("md")]: {
+      width: "60%",
+    },
   },
   playStore: {
-    width: "25%",
+    width: "20%",
     margin: "0 7%",
     maxWidth: 280,
     display: "inline-block",
     [theme.breakpoints.down("sm")]: {
-      width: "50%",
-      margin: "15px 7%",
-    },
-    [theme.breakpoints.down("md")]: {
       width: "30%",
     },
   },
   screenshotDiv: {
     textAlign: "center",
   },
-  points: {
-    marginTop: 15,
-    margin: "auto",
-    maxWidth: 500,
-    listStyleType: "none",
-    "& li": {
-      paddingTop: 10,
-      fontSize: "1.3rem",
-      [theme.breakpoints.down("md")]: {
-        fontSize: "1.3em",
-      },
-    },
-  },
   textRow: {
-    margin: 15,
-    marginBottom: 30,
-    width: "calc(100% - 30px)",
+    marginBottom: 70,
+    textAlign: "center",
     [theme.breakpoints.down("md")]: {
-      marginTop: -30,
+      marginTop: -10,
     },
   },
   imageRow: {
-    margin: "0 12px 90px",
-    width: "calc(100% - 30px)",
+    display: "flex",
+    justifyContent: "space-evenly",
+    margin: "0 10px",
+    width: "auto",
+    [theme.breakpoints.only("sm")]: {
+      margin: 5,
+    },
   },
   text: {
     fontSize: 20,
     marginTop: 50,
     paddingLeft: 30,
+    [theme.breakpoints.down("md")]: {
+      paddingLeft: 0,
+      textAlign: "center",
+      margin: 20,
+    },
+    [theme.breakpoints.only("xs")]: {
+      fontSize: 16,
+    },
   },
-  storeLinkMobile: {
+  storeLink: {
     textAlign: "center",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
-  },
-  storeLinkPC: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
   },
 }));
 
@@ -119,18 +91,16 @@ const Landing = (props) => {
   const addLink = () => {
     return process.env.REACT_APP_DOWNLOAD_URL ? (
       <Link href={process.env.REACT_APP_DOWNLOAD_URL} target="_blank">
-        <img
-          src={playStore}
-          alt="Get it on play store"
-          className={classes.playStore}
-        />
+        <BigTooltip title="Get the app on the Google Play Store">
+          <img
+            src={playStore}
+            alt="Get it on the play store"
+            className={classes.playStore}
+          />
+        </BigTooltip>
       </Link>
     ) : (
-      <img
-        src={playStore}
-        alt="Get it on play store"
-        className={classes.playStore}
-      />
+      ""
     );
   };
   return (
@@ -139,13 +109,29 @@ const Landing = (props) => {
       {!isMobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
       <Banner language={language} />
       <BibleIndex />
-      <div className={classes.storeLinkMobile}>{addLink()}</div>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={1}
+        className={classes.imageRow}
+      >
+        <ImageCard
+          icon="volume_up"
+          text="Listen"
+          onClick={() => setValue("parallelView", AUDIO)}
+        />
+        <ImageCard
+          icon="videocam"
+          text="Watch"
+          onClick={() => setValue("parallelView", VIDEO)}
+        />
+        <ImageCard icon="local_library" text="Read" />
+        <ImageCard icon="menu_book" text="Study" />
+      </Grid>
       <Grid container spacing={2} className={classes.textRow}>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h6" className={classes.text}>
-            <p>
-              <b>Welcome to VachanOnline.com</b>
-            </p>
+        <Grid item md={12} lg={6}>
+          <div className={classes.text}>
+            <h3>Welcome to VachanOnline.com</h3>
             <p>
               VachanOnline.com and the companion VachanGo app is a premier
               Scripture Engagement website in Indian Languages!
@@ -163,38 +149,19 @@ const Landing = (props) => {
               The VachanGo companion app enables you take your Bible and your
               Notes with you wherever you go!
             </p>
-          </Typography>
+          </div>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item md={12} lg={6}>
           <div className={classes.screenshotDiv}>
             <img
               src={screenshot}
               alt="Screenshot"
               className={classes.screenshot}
             />
-            <div className={classes.storeLinkPC}>{addLink()}</div>
+            <div>{addLink()}</div>
           </div>
         </Grid>
       </Grid>
-      <Grid
-        container
-        justifyContent="center"
-        spacing={2}
-        className={classes.imageRow}
-      >
-        <ImageCard src={read} text="read" />
-        <ImageCard
-          src={watch}
-          text="watch"
-          onClick={() => setValue("parallelView", VIDEO)}
-        />
-        <ImageCard
-          src={listen}
-          text="listen"
-          onClick={() => setValue("parallelView", AUDIO)}
-        />
-      </Grid>
-
       <LandingFooter />
     </Grid>
   );

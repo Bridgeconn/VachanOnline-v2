@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 17,
     lineHeight: "28px",
     display: "block",
-    paddingLeft: 5,
     fontWeight: 600,
   },
   metadataText: {
@@ -52,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   metadataRow: {
+    paddingLeft: 5,
     "&:last-child": {
       marginBottom: 2,
     },
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   metaDataBox: {
     [theme.breakpoints.down("sm")]: {
-      height: "80vh",
+      maxHeight: "80vh",
       overflow: "scroll",
     },
   },

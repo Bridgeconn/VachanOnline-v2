@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${banner})`,
     backgroundRepeat: "round",
     backgroundSize: "cover",
+    [theme.breakpoints.only("xs")]: {
+      height: "240px",
+    }, 
   },
 }));
 export default function Banner({ language }) {
