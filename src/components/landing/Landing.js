@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textRow: {
     marginBottom: 70,
+    width: "calc(100% - 30px)",
     textAlign: "center",
     [theme.breakpoints.down("md")]: {
       marginTop: -10,
