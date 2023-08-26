@@ -215,7 +215,7 @@ const BookCombo = (props) => {
     const bookMap = new Map();
     let col = 1;
     let nt = false;
-    bookList.forEach((item) => {
+    bookList?.forEach((item) => {
       const { book_code, book_id } = item;
       //OT Books
       if (book_id < 40) {
