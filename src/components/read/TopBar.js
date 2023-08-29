@@ -1,8 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { useMediaQuery } from "@material-ui/core";
+import { InputBase, Paper, useMediaQuery } from "@material-ui/core";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
+import SearchIcon from "@material-ui/icons/Search";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
@@ -10,6 +11,7 @@ import Login from "../login/Login";
 import logo from "../common/images/logo1.png";
 import favicon from "../common/images/favicon_black.png";
 import LoginMenu from "../login/LoginMenu";
+import { getReference } from "../common/utility";
 import IconButton from "@material-ui/core/IconButton";
 import { BLACK, WHITE } from "../../store/colorCode";
 import { SIGNBIBLE } from "../../store/views";
@@ -90,20 +92,150 @@ const useStyles = makeStyles((theme) => ({
     padding: "8px 8px 0",
     color: BLACK,
   },
+  searchBox: {
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    height: 40,
+    width: 350,
+    marginLeft: 20,
+    marginRight: 5,
+  },
+  searchField: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+    [theme.breakpoints.down("sm")]: {
+      width:175,
+    },
+  },
+  searchButtonMob: {
+    marginTop: 1,
+    padding: "8px 8px 0",
+    color: BLACK,
+  },
+  paper: {
+    position: "relative",
+    maxHeight: "calc(100vh - 170px)",
+    width: 358,
+    backgroundColor: WHITE,
+    color: "#2a2a2a",
+    "@media (max-width: 370px)": {
+      width: 320,
+    },
+  },
+  hide: {
+    display: "none",
+  },
+  textField: {
+    marginTop: 20,
+    marginBottom: 20,
+    marginRight: 20,
+    width: 350,
+  },
+  input: {
+    height: "80px",
+  },
+  cancelbtn: {
+    marginLeft: "-10px",
+    textTransform: "capitalize",
+    fontWeight: "bold",
+  },
 }));
 
 const TopBar = (props) => {
   const theme = useTheme();
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
+  const [searchText, setSearchText] = React.useState("");
+  const [message, setMessage] = React.useState("")
+  const [showTextBox, setShowTextBox] = React.useState(false);
+  const [hideIcons, setHideIcons] = React.useState(false);
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
-  let { login, userDetails, setParallelView, mobileView } = props;
+  let { login, userDetails, setParallelView, mobileView , setValue} = props;
+
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
+
+  function handleClose() {
+    setShowTextBox(false);
+    setHideIcons(false)
+  }
+  const handleSearchTextChange = (event) => {
+    setSearchText(event.target.value);
+    if(searchText){
+      setValue("searchPassage", searchText);
+    }
+  };
+
+  const toggleText = () => {
+    setShowTextBox((prev) => !prev);
+    setHideIcons(true)
+  };
+
+  function showSearchResult(){
+    if(searchText){
+      const message = "Sorry, we didn't find any results for your search";
+      setMessage(message);
+      const ref=getReference(searchText)
+      //setValue("panel1",ref)
+      setSearchText("");
+      console.log(ref,"reference")
+      console.log(searchText,"text")
+    } 
+  }
+  // const search = (event) => {
+  //   event.preventDefault();
+  //   if (searchText) {
+  //     searchBible(sourceId, searchText, bookNames, setSearchResult);
+  //     setSearchText("");
+  //   }
+  // };
+
+ 
+  const SearchButton = () => {
+    return mobileView && !showTextBox ? (
+      <IconButton
+        type="submit"
+        className={classes.searchButtonMob}
+        onClick={toggleText}
+        target="_blank"
+        rel="noopener"
+      >
+        <SearchIcon />
+      </IconButton>
+     
+    ) : (
+      <>
+        <Paper component="form" className={classes.searchBox}>
+          <InputBase
+            className={classes.searchField}
+            placeholder="Enter Chapter, Verse or Passage"
+            inputProps={{className:classes.input }}
+            defaultValue={searchText}
+            onChange={handleSearchTextChange}
+          />
+          <IconButton
+            //type="submit"
+            // className={classes.searchButton}
+            //aria-label="search"
+            onClick={showSearchResult}
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+        {mobileView && (
+          <Button className={classes.cancelbtn} onClick={handleClose} >
+            Cancel
+          </Button>
+        )}
+      </>
+    );
+  };
+
   const ISLButton = () => {
     const Btn = () => {
       return mobileView ? (
@@ -258,19 +390,29 @@ const TopBar = (props) => {
           {path.startsWith("/biblestories") || path.startsWith("/read")
             ? ""
             : StoriesButton()}
+          {path.startsWith("/read") ? SearchButton() : ""}
+          <div style={{display:hideIcons?"none":""}} >
           {path.startsWith("/study") ? ReadButton() : StudyButton()}
           {FeedbackButton()}
-          {loginButton}
+          {loginButton}</div>
         </Toolbar>
       </AppBar>
     </div>
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    searchPassage: state.local.searchPassage,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: () =>
       dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
+    setValue: (name, value) =>
+      dispatch({ type: SETVALUE, name: name, value: value }),
   };
 };
-export default connect(null, mapDispatchToProps)(TopBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
+

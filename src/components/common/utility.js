@@ -232,7 +232,21 @@ export const getShortBook = (books, lang, bookCode) => {
     return books[lang][id]?.short;
   }
 };
-
+//Function to get chapter and book code from reference
+export const getReference = (string) => {
+  let searchString=[
+    {
+         "abbreviation":string.split(" ")[0].toLowerCase(),
+         "chapter":string.split(" ")[1],
+     }
+ ]
+ const bookObj = bibleBooks.find((element) => element.abbreviation === searchString.abbreviation)
+ if(bookObj){
+  return {abbreviation:bookObj.abbreviation, chapter:chapter};
+  //return {abbreviation:bookObj.abbreviation, chapter:searchString.chapter};
+ }
+ }
+ 
 //Function to search Bible
 export const searchBible = (sourceId, keyword, bookNames, setResult) => {
   API.get("search/" + sourceId + "?keyword=" + encodeURIComponent(keyword))
