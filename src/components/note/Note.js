@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
@@ -10,12 +9,19 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
+
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { EditorState, ContentState } from "draft-js";
+import { convertToRaw } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -25,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 4,
     cursor: "pointer",
   },
+  paper: { height: "50vh" },
   textField: {
     "& textarea": {
       maxHeight: 190,
@@ -92,14 +99,21 @@ function Note({
   const [open, setOpen] = React.useState(false);
   const [noteText, setNoteText] = React.useState("");
   const [alert, setAlert] = React.useState(false);
+  const contentState = ContentState.createFromBlockArray(
+    htmlToDraft("Write your note")
+  );
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createWithContent(contentState)
+  );
   const firebase = useFirebase();
 
   const closeAlert = () => {
     setAlert(false);
   };
 
-  const handleNoteTextChange = (e) => {
-    setNoteText(e.target.value);
+  const handleNoteTextChange = (editorState) => {
+    setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setEditorState(editorState);
   };
 
   const openNoteDialog = () => {
@@ -174,26 +188,44 @@ function Note({
           Please enter note text
         </Alert>
       </Snackbar>
+      {/*creating new note  popup*/}
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        classes={{ paper: classes.paper }}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Note
         </DialogTitle>
         <DialogContent dividers>
-          <TextField
-            id="outlined-multiline-static"
-            label="Note Text"
-            multiline
-            minRows={10}
-            className={classes.textField}
-            fullWidth={true}
-            inputProps={{ maxLength: 1000 }}
-            variant="outlined"
-            value={noteText}
-            onChange={handleNoteTextChange}
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={handleNoteTextChange}
+            toolbar={
+              mobileView
+                ? {
+                    options: ["inline", "image", "colorPicker", "list"],
+                    inline: {
+                      options: ["bold", "italic", "underline", "strikethrough"],
+                    },
+                  }
+                : {
+                    options: [
+                      "inline",
+                      "image",
+                      "textAlign",
+                      "colorPicker",
+                      "link",
+                      "list",
+                      "remove",
+                      "history",
+                    ],
+                    inline: {
+                      options: ["bold", "italic", "underline", "strikethrough"],
+                    },
+                  }
+            }
           />
         </DialogContent>
         <DialogActions>

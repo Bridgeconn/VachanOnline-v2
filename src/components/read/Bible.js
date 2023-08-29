@@ -9,13 +9,7 @@ import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
-import {
-  Button,
-  Divider,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Button, Divider, Snackbar, Typography } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import { useFirebase } from "react-redux-firebase";
@@ -27,6 +21,10 @@ import {
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { getAudioBibleObject } from "../common/utility";
+import { ContentState, EditorState, convertToRaw } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
+import draftToHtml from "draftjs-to-html";
+import { Editor } from "react-draft-wysiwyg";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -207,6 +205,9 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    [theme.breakpoints.down("sm")]: {
+      width: 300,
+    },
   },
   noteIcon: {
     [`@media print`]: {
@@ -312,6 +313,12 @@ const Bible = (props) => {
   const [editObject, setEditObject] = React.useState({});
   const [edit, setEdit] = React.useState(false);
   const currentAudio = getAudioBibleObject(versions, sourceId);
+  const contentState = ContentState.createFromBlockArray(
+    htmlToDraft(noteTextBody)
+  );
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createWithContent(contentState)
+  );
   //new usfm json structure
   const getHeading = (contents) => {
     if (contents) {
@@ -549,9 +556,14 @@ const Bible = (props) => {
   const openNoteDialog = (verse) => {
     let index;
     Object.entries(noteText).map(([key, value]) => {
-      if (value.verses.includes(verse)) {
+      if (value?.verses?.includes(verse)) {
         index = key;
         setNoteTextBody(value.body);
+        setEditorState(
+          EditorState.createWithContent(
+            ContentState.createFromBlockArray(htmlToDraft(value.body))
+          )
+        );
         setEditObject(value);
       }
       return [key, value];
@@ -566,8 +578,10 @@ const Bible = (props) => {
     setValue("versesSelected", [verse]);
     setOpen(true);
   };
-  const handleNoteTextChange = (e) => {
-    setNoteTextBody(e.target.value);
+  const handleNoteTextChange = (editorState) => {
+    setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setNoteTextBody(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setEditorState(editorState);
   };
   const handleClose = () => {
     setOpen(false);
@@ -645,9 +659,6 @@ const Bible = (props) => {
 
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
-  };
-  const addStyle = (text, style) => {
-    return <span className={classes[style]}>{" " + text}</span>;
   };
   const getPrevious = () => {
     if (parallelScroll && paneNo === 2 && mobileView) {
@@ -772,7 +783,7 @@ const Bible = (props) => {
                 Notes :
               </Typography>
               <Divider />
-              <div className={classes.noteList}>
+              {/* <div className={classes.noteList}>
                 {noteText.map((item, i) => {
                   return (
                     <ul key={i}>
@@ -784,7 +795,7 @@ const Bible = (props) => {
                     </ul>
                   );
                 })}
-              </div>
+              </div> */}
             </div>
           </div>
           {audio ? (
@@ -820,20 +831,28 @@ const Bible = (props) => {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
+        {/*mobile view edit note*/}
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Note
         </DialogTitle>
         <DialogContent dividers>
-          <TextField
-            id="outlined-multiline-static"
-            label="Note Text"
-            multiline
-            minRows={10}
-            fullWidth={true}
-            inputProps={{ maxLength: 1000 }}
-            variant="outlined"
-            value={noteTextBody}
-            onChange={handleNoteTextChange}
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={handleNoteTextChange}
+            editorStyle={{ height: "15vh", overflow: "auto" }}
+            toolbar={{
+              options: [
+                "inline",
+                "image",
+                "colorPicker",
+                "link",
+                "list",
+                "remove",
+              ],
+              inline: {
+                options: ["bold", "italic", "underline", "strikethrough"],
+              },
+            }}
           />
         </DialogContent>
         <DialogActions>

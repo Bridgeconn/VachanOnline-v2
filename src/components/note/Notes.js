@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
 import Tooltip from "@material-ui/core/Tooltip";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
@@ -28,6 +27,10 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
+import draftToHtml from "draftjs-to-html";
+import { ContentState, EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import htmlToDraft from "html-to-draftjs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 60,
     },
   },
+  paper: { height: "50vh" },
   heading: {
     paddingBottom: 10,
     paddingLeft: 15,
@@ -50,6 +54,13 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 0,
       paddingBottom: 0,
       alignItems: "center",
+    },
+  },
+
+  ".rdw-editor-main": {
+    [theme.breakpoints.down("md")]: {
+      width: "80vw",
+      height: "30vh",
     },
   },
   notesHeading: {
@@ -75,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
     [theme.breakpoints.up("md")]: {
-      top: (props) => (props.addNote ? 390 : 135),
+      top: (props) => (props.addNote ? 510 : 135),
     },
     [theme.breakpoints.down("sm")]: {
       top: 60,
@@ -163,7 +174,10 @@ function Notes(props) {
   const [alertMessage, setAlertMessage] = React.useState(false);
   const { bookCode, chapter, sourceId } = panel1;
   const [open, setOpen] = React.useState(false);
-
+  const contentState = ContentState.createFromBlockArray(htmlToDraft(noteText));
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createWithContent(contentState)
+  );
   const firebase = useFirebase();
   const closeAlert = () => {
     setAlert(false);
@@ -171,8 +185,9 @@ function Notes(props) {
   const styleProps = { addNote: addNote };
   const classes = useStyles(styleProps);
 
-  const handleNoteTextChange = (e) => {
-    setNoteText(e.target.value);
+  const handleNoteTextChange = (editorState) => {
+    setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setEditorState(editorState);
   };
 
   const clickAddNote = () => {
@@ -368,6 +383,11 @@ function Notes(props) {
     let index = parseInt(element.getAttribute("data-index"));
     let note = notes[sourceId][bookCode][chapter][index];
     setNoteText(note.body);
+    setEditorState(
+      EditorState.createWithContent(
+        ContentState.createFromBlockArray(htmlToDraft(note.body))
+      )
+    );
     setModifiedTime(note.modifiedTime);
     setEditObject(note);
     let noteReference = {
@@ -472,7 +492,19 @@ function Notes(props) {
         </Box>
       )}
       {mobileView ? (
-        <Dialog onClose={handleClose} aria-labelledby="note-title" open={open}>
+        /* mobile view edit list */
+        <Dialog
+          onClose={handleClose}
+          aria-labelledby="note-title"
+          open={open}
+          // paperprops={{
+          //   style: {
+          //     minheight: "90%",
+          //     maxheight: "90%",
+          //   },
+          // }}
+          classes={{ paper: classes.paper }}
+        >
           <DialogTitle id="note-title" onClose={handleClose}>
             Note for {book} {chapter}:{" "}
             {versesSelected
@@ -480,29 +512,46 @@ function Notes(props) {
               .join(", ")}
           </DialogTitle>
           <DialogContent dividers>
-            <TextField
-              id="note"
-              label="Note Text"
-              multiline
-              minRows={6}
-              fullWidth={true}
-              inputProps={{ maxLength: 1000 }}
-              variant="outlined"
-              value={noteText}
-              onChange={handleNoteTextChange}
-              className={classes.noteBody}
+            <Editor
+              editorState={editorState}
+              onEditorStateChange={handleNoteTextChange}
+              toolbar={{
+                options: [
+                  "inline",
+                  "image",
+                  "colorPicker",
+                  "link",
+                  "list",
+                  "remove",
+                ],
+                inline: {
+                  options: ["bold", "italic", "underline", "strikethrough"],
+                },
+              }}
             />
-            <div className={classes.lastModified}>
-              Last Modified: {new Date(modifiedTime).toLocaleString()}
-            </div>
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button variant="outlined" onClick={saveNote}>
-              Save
-            </Button>
+            <Grid container>
+              <Grid item xs={6} className={classes.lastModified}>
+                Last Modified: {new Date(modifiedTime).toLocaleString()}
+              </Grid>
+              <Grid item xs={6} className={classes.formButtons}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={handleClose}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={saveNote}
+                >
+                  Save
+                </Button>
+              </Grid>
+            </Grid>
           </DialogActions>
         </Dialog>
       ) : null}
@@ -514,17 +563,26 @@ function Notes(props) {
               ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </Typography>
-          <TextField
-            id="note"
-            label="Note Text"
-            multiline
-            minRows={6}
-            fullWidth={true}
-            inputProps={{ maxLength: 1000 }}
-            variant="outlined"
-            value={noteText}
-            onChange={handleNoteTextChange}
-            className={classes.noteBody}
+          {/*edit note */}
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={handleNoteTextChange}
+            editorStyle={{ height: "15vh" }}
+            toolbar={{
+              options: [
+                "inline",
+                "image",
+                "textAlign",
+                "colorPicker",
+                "link",
+                "list",
+                "remove",
+                "history",
+              ],
+              inline: {
+                options: ["bold", "italic", "underline", "strikethrough"],
+              },
+            }}
           />
           <Grid container>
             <Grid item xs={7} className={classes.lastModified}>
