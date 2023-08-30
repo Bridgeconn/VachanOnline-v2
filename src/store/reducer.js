@@ -22,10 +22,6 @@ const defaultState = {
   audioBible: [],
   video: [],
   readingPlans: [],
-  searchPassage: [{
-    bookCode: "gen",
-    chapter: 1,
-  }],
   signBible: [],
   playing: "",
   versionBooks: {},

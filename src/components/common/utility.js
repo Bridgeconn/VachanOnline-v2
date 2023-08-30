@@ -232,49 +232,48 @@ export const getShortBook = (books, lang, bookCode) => {
     return books[lang][id]?.short;
   }
 };
+const checkValidChapter = (bookCode, chapter) => {
+  if (chapter > 0 && !Number.isNaN(chapter)) {
+    const chapterCount = bibleChapters[bookCode];
+    return chapterCount >= chapter;
+  }
+  return false;
+};
+const getBookCode = (book, bookList) => {
+  let bookCode = "";
+  let bookObj = bibleBooks.find((b) => b.book.toLowerCase() === book);
+  // check the search string contains full Book Name
+  if (bookObj) {
+    bookCode = bookObj.abbreviation;
+  } else {
+    bookObj = bookList.find(
+      (b) =>
+        b.abbr.toLowerCase() === book ||
+        b.short.toLowerCase() === book ||
+        b.long.toLowerCase() === book ||
+        b.book_code.toLowerCase() === book
+    );
+    if (bookObj) {
+      bookCode = bookObj.book_code;
+    }
+  }
+  return bookCode;
+};
 //Function to get chapter and book code from reference
-export const getReference = (string, versionBooks) => {
-  let searchArr = [];
-  searchArr = string.split(" ");
-  const chapter = searchArr.pop()
-  const bookName = searchArr.join(" ");
-  const books = versionBooks[bookName];
-  console.log(books,"versionBooks")
-  console.log(bookName,"bookname")
-  console.log(chapter,"chapter")
-  let searchString = [
-    {
-         "abbreviation":bookName,
-         "chapter":chapter,
-     }
-    ]
-//check the search string contains book code, then return corresponding bookcode
- const bookObj = bibleBooks.find((element) => element.abbreviation === searchString[0].abbreviation.toLowerCase());
- //If search string has book code, then check the corresponding total chapter count
- if(bookObj){
-  const chapterCount = bibleChapters[bookObj.abbreviation];
-  console.log(chapterCount,"Total Chapters")
-  //check entered chapter number is valid
-  if(chapterCount >= searchString[0].chapter){
-    return {abbreviation:bookObj.abbreviation, chapter:searchString[0].chapter};
-  }else{
-    return ""
+export const getReference = (search, bookList) => {
+  let searchArr = search.split(" ");
+  const chapter = Number(searchArr.pop());
+  const bookName = searchArr.join(" ").toLowerCase();
+  //check the search string contains book code
+  const bookCode = getBookCode(bookName, bookList);
+  //If search string has book code, then check the corresponding total chapter count
+  if (bookCode) {
+    if (checkValidChapter(bookCode, chapter)) {
+      return { bookCode, chapter };
+    }
   }
- }
-// check the search string contains full Book Name, then return corresponding bookcode
- const bookObj1 = bibleBooks.find((element) => element.book.toLowerCase() === searchString[0].abbreviation.toLowerCase());
- //If search string has full Book Name, then check the corresponding total chapter count
- if(bookObj1){
-  const chapterCount1 = bibleChapters[bookObj1.abbreviation];
-  console.log(chapterCount1,"Total chapters")
-  //check entered chapter number is valid
-  if(chapterCount1 >= searchString[0].chapter){
-    return {abbreviation:bookObj1.abbreviation, chapter:searchString[0].chapter};
-  }else{
-    return ""
-  }
- }
-}
+  return null;
+};
 // check the search string contains local name, then return corresponding bookcode
 //Function to search Bible
 export const searchBible = (sourceId, keyword, bookNames, setResult) => {

@@ -16,7 +16,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { BLACK, WHITE } from "../../store/colorCode";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
-import { SETVALUE } from "../../store/actions";
+import { SETVALUE, SETVALUE1 } from "../../store/actions";
 import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     flex: 1,
     [theme.breakpoints.down("sm")]: {
-      width:175,
+      width: 175,
     },
   },
   searchButtonMob: {
@@ -147,55 +147,64 @@ const TopBar = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const [searchText, setSearchText] = React.useState("");
-  const [message, setMessage] = React.useState("")
+  const [message, setMessage] = React.useState("");
   const [showTextBox, setShowTextBox] = React.useState(false);
   const [hideIcons, setHideIcons] = React.useState(false);
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
-  let { login, userDetails, setParallelView, mobileView , setValue} = props;
 
+  let {
+    login,
+    userDetails,
+    setParallelView,
+    mobileView,
+    setValue,
+    panel1,
+    versionBooks,
+    versionSource,
+  } = props;
+
+  // bookList={versionBooks[versionSource[panel1.sourceId]]}
+  // React.useEffect(() => {
+  const bookList = versionBooks[versionSource[panel1.sourceId]];
+  //   console.log(bookList);
+  // }, [panel1.bookCode, panel1.sourceId, versionBooks, versionSource]);
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
 
   function handleClose() {
     setShowTextBox(false);
-    setHideIcons(false)
+    setHideIcons(false);
   }
   const handleSearchTextChange = (event) => {
     setSearchText(event.target.value);
-    if(searchText){
-      setValue("searchPassage", searchText);
-    }
   };
 
   const toggleText = () => {
     setShowTextBox((prev) => !prev);
-    setHideIcons(true)
+    setHideIcons(true);
   };
 
-  function showSearchResult(){
-    if(searchText){
+  function showSearchResult(event) {
+    event.preventDefault();
+    const search = event.target.search.value;
+    if (search) {
       const message = "Sorry, we didn't find any results for your search";
       setMessage(message);
-      const ref=getReference(searchText)
-      //setValue("panel1",ref)
-      setSearchText("");
-      console.log(ref,"reference")
-      console.log(searchText,"text")
-    } 
+      const ref = getReference(search, bookList);
+      console.log(ref);
+      if (ref) {
+        setValue("chapter", ref.chapter);
+        setValue("bookCode", ref.bookCode);
+      } else {
+        // To show error message if invalid reference
+      }
+    }
   }
-  // const search = (event) => {
-  //   event.preventDefault();
-  //   if (searchText) {
-  //     searchBible(sourceId, searchText, bookNames, setSearchResult);
-  //     setSearchText("");
-  //   }
-  // };
 
- 
   const SearchButton = () => {
     return mobileView && !showTextBox ? (
       <IconButton
@@ -207,28 +216,31 @@ const TopBar = (props) => {
       >
         <SearchIcon />
       </IconButton>
-     
     ) : (
       <>
-        <Paper component="form" className={classes.searchBox}>
+        <Paper
+          component="form"
+          className={classes.searchBox}
+          onSubmit={showSearchResult}
+        >
           <InputBase
             className={classes.searchField}
             placeholder="Enter Chapter, Verse or Passage"
-            inputProps={{className:classes.input }}
+            inputProps={{ className: classes.input }}
             defaultValue={searchText}
+            name="search"
             onChange={handleSearchTextChange}
           />
           <IconButton
-            //type="submit"
+            type="submit"
             // className={classes.searchButton}
             //aria-label="search"
-            onClick={showSearchResult}
           >
             <SearchIcon />
           </IconButton>
         </Paper>
         {mobileView && (
-          <Button className={classes.cancelbtn} onClick={handleClose} >
+          <Button className={classes.cancelbtn} onClick={handleClose}>
             Cancel
           </Button>
         )}
@@ -391,10 +403,11 @@ const TopBar = (props) => {
             ? ""
             : StoriesButton()}
           {path.startsWith("/read") ? SearchButton() : ""}
-          <div style={{display:hideIcons?"none":""}} >
-          {path.startsWith("/study") ? ReadButton() : StudyButton()}
-          {FeedbackButton()}
-          {loginButton}</div>
+          <div style={{ display: hideIcons ? "none" : "" }}>
+            {path.startsWith("/study") ? ReadButton() : StudyButton()}
+            {FeedbackButton()}
+            {loginButton}
+          </div>
         </Toolbar>
       </AppBar>
     </div>
@@ -404,6 +417,9 @@ const TopBar = (props) => {
 const mapStateToProps = (state) => {
   return {
     searchPassage: state.local.searchPassage,
+    panel1: state.local.panel1,
+    versionBooks: state.local.versionBooks,
+    versionSource: state.local.versionSource,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -411,8 +427,7 @@ const mapDispatchToProps = (dispatch) => {
     setParallelView: () =>
       dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
     setValue: (name, value) =>
-      dispatch({ type: SETVALUE, name: name, value: value }),
+      dispatch({ type: SETVALUE1, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
-
