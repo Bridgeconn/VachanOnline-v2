@@ -20,7 +20,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { getAudioBibleObject } from "../common/utility";
+import { getAudioBibleObject, getEditorToolbar } from "../common/utility";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
@@ -198,17 +198,6 @@ const useStyles = makeStyles((theme) => ({
     bottom: -2,
     color: color.BLACK,
   },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    [theme.breakpoints.down("sm")]: {
-      width: 300,
-    },
-  },
   noteIcon: {
     [`@media print`]: {
       display: (props) => (props.printNotes ? "inline-block" : "none"),
@@ -313,11 +302,8 @@ const Bible = (props) => {
   const [editObject, setEditObject] = React.useState({});
   const [edit, setEdit] = React.useState(false);
   const currentAudio = getAudioBibleObject(versions, sourceId);
-  const contentState = ContentState.createFromBlockArray(
-    htmlToDraft(noteTextBody)
-  );
   const [editorState, setEditorState] = React.useState(
-    EditorState.createWithContent(contentState)
+    EditorState.createEmpty()
   );
   //new usfm json structure
   const getHeading = (contents) => {
@@ -828,42 +814,20 @@ const Bible = (props) => {
       {getNext()}
       <Dialog
         onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
+        aria-labelledby="mobile-edit-note-dialog"
         open={open}
+        className={classes.editNoteDialog}
       >
-        {/*mobile view edit note*/}
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle id="mobile-edit-note-dialog" onClose={handleClose}>
           Note
         </DialogTitle>
         <DialogContent dividers>
           <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
-            editorStyle={{ height: "15vh", overflow: "auto" }}
-            toolbar={{
-              options: [
-                "inline",
-                "blockType",
-                "fontSize",
-                "list",
-                "textAlign",
-                "colorPicker",
-                "link",
-                "image",
-                "remove",
-                "history",
-              ],
-              inline: {
-                options: ["bold", "italic", "underline", "strikethrough"],
-              },
-              list: {
-                inDropdown: true,
-              },
-              textAlign: {
-                inDropdown: true,
-                options: ["left", "center", "right"],
-              },
-            }}
+            placeholder="Write your note"
+            editorStyle={{ height: "15vh" }}
+            toolbar={getEditorToolbar(true)}
           />
         </DialogContent>
         <DialogActions>

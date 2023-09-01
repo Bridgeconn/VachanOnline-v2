@@ -17,7 +17,7 @@ import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
-import { getBookbyCode, capitalize } from "../common/utility";
+import { getBookbyCode, capitalize, getEditorToolbar } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import * as actions from "../../store/actions";
@@ -507,30 +507,7 @@ function Notes(props) {
               editorState={editorState}
               editorStyle={{ height: "20vh", overflow: "auto" }}
               onEditorStateChange={handleNoteTextChange}
-              toolbar={{
-                options: [
-                  "inline",
-                  "blockType",
-                  "fontSize",
-                  "list",
-                  "textAlign",
-                  "colorPicker",
-                  "link",
-                  "image",
-                  "remove",
-                  "history",
-                ],
-                inline: {
-                  options: ["bold", "italic", "underline", "strikethrough"],
-                },
-                list: {
-                  inDropdown: true,
-                },
-                textAlign: {
-                  inDropdown: true,
-                  options: ["left", "center", "right"],
-                },
-              }}
+              toolbar={getEditorToolbar(false)}
             />
           </DialogContent>
           <DialogActions>

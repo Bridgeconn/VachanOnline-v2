@@ -296,3 +296,49 @@ export const isFeatureNew = (featureDate) => {
   let today = new Date();
   return varDate >= today ? 1 : 0;
 };
+
+export const getEditorToolbar = (mobile) => {
+  return mobile
+    ? {
+        options: [
+          "inline",
+          "list",
+          "blockType",
+          "fontSize",
+          "link",
+          "colorPicker",
+          "textAlign",
+          "history",
+        ],
+        inline: {
+          options: ["bold", "italic", "underline", "strikethrough"],
+        },
+        list: {
+          inDropdown: true,
+          options: ["unordered", "ordered", "indent", "outdent"],
+        },
+        textAlign: {
+          inDropdown: true,
+          options: ["left", "center", "right"],
+        },
+      }
+    : {
+        options: [
+          "inline",
+          "blockType",
+          "fontSize",
+          "list",
+          "textAlign",
+          "colorPicker",
+          "link",
+          "image",
+          "history",
+        ],
+        textAlign: {
+          options: ["left", "center", "right"],
+        },
+        inline: {
+          options: ["bold", "italic", "underline", "strikethrough"],
+        },
+      };
+};

@@ -1,4 +1,5 @@
 import React from "react";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import NoteIcon from "@material-ui/icons/NoteOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
@@ -9,19 +10,16 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToHtml from "draftjs-to-html";
-
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { EditorState, ContentState } from "draft-js";
-import { convertToRaw } from "draft-js";
-import htmlToDraft from "html-to-draftjs";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
+import { EditorState, convertToRaw } from "draft-js";
+import { getEditorToolbar } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -98,11 +96,8 @@ function Note({
   const [open, setOpen] = React.useState(false);
   const [noteText, setNoteText] = React.useState("");
   const [alert, setAlert] = React.useState(false);
-  const contentState = ContentState.createFromBlockArray(
-    htmlToDraft("Write your note")
-  );
   const [editorState, setEditorState] = React.useState(
-    EditorState.createWithContent(contentState)
+    EditorState.createEmpty()
   );
   const firebase = useFirebase();
 
@@ -187,13 +182,12 @@ function Note({
           Please enter note text
         </Alert>
       </Snackbar>
-      {/*creating new note  popup*/}
       <Dialog
         onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
+        aria-labelledby="new-note-dialog"
         open={open}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle id="new-note-dialog" onClose={handleClose}>
           Note
         </DialogTitle>
         <DialogContent dividers>
@@ -201,54 +195,8 @@ function Note({
             editorState={editorState}
             editorStyle={{ height: "30vh" }}
             onEditorStateChange={handleNoteTextChange}
-            toolbar={
-              mobileView
-                ? {
-                    options: [
-                      "inline",
-                      "blockType",
-                      "fontSize",
-                      "list",
-                      "textAlign",
-                      "colorPicker",
-                      "link",
-                      "image",
-                      "remove",
-                      "history",
-                    ],
-                    inline: {
-                      options: ["bold", "italic", "underline", "strikethrough"],
-                    },
-                    list: {
-                      inDropdown: true,
-                    },
-                    textAlign: {
-                      inDropdown: true,
-                      options: ["left", "center", "right"],
-                    },
-                  }
-                : {
-                    options: [
-                      "inline",
-                      "blockType",
-                      "fontSize",
-                      "list",
-                      "textAlign",
-                      "colorPicker",
-                      "link",
-                      "image",
-                      "remove",
-                      "history",
-                    ],
-                    textAlign: {
-                      inDropdown: false,
-                      options: ["left", "center", "right"],
-                    },
-                    inline: {
-                      options: ["bold", "italic", "underline", "strikethrough"],
-                    },
-                  }
-            }
+            placeholder="Write your note"
+            toolbar={getEditorToolbar(mobileView)}
           />
         </DialogContent>
         <DialogActions>
