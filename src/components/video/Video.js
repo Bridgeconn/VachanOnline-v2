@@ -128,7 +128,9 @@ const Video = (props) => {
     const source = url.includes("vimeo") ? "vimeo" : "youtube";
     const id = source === "vimeo" ? url.split(vimeo)[1] : url.split(youtu)[1];
     const thumbUrl = source === "vimeo" ? vimeoUrl : youtubeUrl;
-    const imageUrl = thumbUrl + id + "/0.jpg";
+    const imageUrl = thumbUrl.includes("vimeo")
+      ? "https://vumbnail.com/" + id + ".jpg"
+      : thumbUrl + id + "/0.jpg";
     return { source, id, imageUrl };
   };
   const handleVideoClick = (source, id) => {
