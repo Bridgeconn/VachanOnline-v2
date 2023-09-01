@@ -843,14 +843,25 @@ const Bible = (props) => {
             toolbar={{
               options: [
                 "inline",
-                "image",
+                "blockType",
+                "fontSize",
+                "list",
+                "textAlign",
                 "colorPicker",
                 "link",
-                "list",
+                "image",
                 "remove",
+                "history",
               ],
               inline: {
                 options: ["bold", "italic", "underline", "strikethrough"],
+              },
+              list: {
+                inDropdown: true,
+              },
+              textAlign: {
+                inDropdown: true,
+                options: ["left", "center", "right"],
               },
             }}
           />

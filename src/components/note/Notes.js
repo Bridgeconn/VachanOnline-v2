@@ -35,12 +35,14 @@ import htmlToDraft from "html-to-draftjs";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: 94,
+    marginTop: "3.2rem",
     [theme.breakpoints.down("sm")]: {
       marginTop: 60,
     },
+    [theme.breakpoints.up("lg")]: {
+      marginTop: "5.278rem",
+    },
   },
-  paper: { height: "50vh" },
   heading: {
     paddingBottom: 10,
     paddingLeft: 15,
@@ -493,18 +495,7 @@ function Notes(props) {
       )}
       {mobileView ? (
         /* mobile view edit list */
-        <Dialog
-          onClose={handleClose}
-          aria-labelledby="note-title"
-          open={open}
-          // paperprops={{
-          //   style: {
-          //     minheight: "90%",
-          //     maxheight: "90%",
-          //   },
-          // }}
-          classes={{ paper: classes.paper }}
-        >
+        <Dialog onClose={handleClose} aria-labelledby="note-title" open={open}>
           <DialogTitle id="note-title" onClose={handleClose}>
             Note for {book} {chapter}:{" "}
             {versesSelected
@@ -514,18 +505,30 @@ function Notes(props) {
           <DialogContent dividers>
             <Editor
               editorState={editorState}
+              editorStyle={{ height: "20vh", overflow: "auto" }}
               onEditorStateChange={handleNoteTextChange}
               toolbar={{
                 options: [
                   "inline",
-                  "image",
+                  "blockType",
+                  "fontSize",
+                  "list",
+                  "textAlign",
                   "colorPicker",
                   "link",
-                  "list",
+                  "image",
                   "remove",
+                  "history",
                 ],
                 inline: {
                   options: ["bold", "italic", "underline", "strikethrough"],
+                },
+                list: {
+                  inDropdown: true,
+                },
+                textAlign: {
+                  inDropdown: true,
+                  options: ["left", "center", "right"],
                 },
               }}
             />
@@ -567,18 +570,24 @@ function Notes(props) {
           <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
-            editorStyle={{ height: "15vh" }}
+            editorStyle={{ height: "20vh" }}
             toolbar={{
               options: [
                 "inline",
-                "image",
+                "blockType",
+                "fontSize",
+                "list",
                 "textAlign",
                 "colorPicker",
                 "link",
-                "list",
+                "image",
                 "remove",
                 "history",
               ],
+              textAlign: {
+                inDropdown: false,
+                options: ["left", "center", "right"],
+              },
               inline: {
                 options: ["bold", "italic", "underline", "strikethrough"],
               },

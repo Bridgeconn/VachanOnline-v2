@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 4,
     cursor: "pointer",
   },
-  paper: { height: "50vh" },
   textField: {
     "& textarea": {
       maxHeight: 190,
@@ -193,7 +192,6 @@ function Note({
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        classes={{ paper: classes.paper }}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Note
@@ -201,26 +199,51 @@ function Note({
         <DialogContent dividers>
           <Editor
             editorState={editorState}
+            editorStyle={{ height: "30vh" }}
             onEditorStateChange={handleNoteTextChange}
             toolbar={
               mobileView
                 ? {
-                    options: ["inline", "image", "colorPicker", "list"],
+                    options: [
+                      "inline",
+                      "blockType",
+                      "fontSize",
+                      "list",
+                      "textAlign",
+                      "colorPicker",
+                      "link",
+                      "image",
+                      "remove",
+                      "history",
+                    ],
                     inline: {
                       options: ["bold", "italic", "underline", "strikethrough"],
+                    },
+                    list: {
+                      inDropdown: true,
+                    },
+                    textAlign: {
+                      inDropdown: true,
+                      options: ["left", "center", "right"],
                     },
                   }
                 : {
                     options: [
                       "inline",
-                      "image",
+                      "blockType",
+                      "fontSize",
+                      "list",
                       "textAlign",
                       "colorPicker",
                       "link",
-                      "list",
+                      "image",
                       "remove",
                       "history",
                     ],
+                    textAlign: {
+                      inDropdown: false,
+                      options: ["left", "center", "right"],
+                    },
                     inline: {
                       options: ["bold", "italic", "underline", "strikethrough"],
                     },
