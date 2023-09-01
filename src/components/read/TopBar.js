@@ -147,7 +147,6 @@ const TopBar = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const [searchText, setSearchText] = React.useState("");
-  const [message, setMessage] = React.useState("");
   const [showTextBox, setShowTextBox] = React.useState(false);
   const [hideIcons, setHideIcons] = React.useState(false);
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -158,12 +157,13 @@ const TopBar = (props) => {
   let {
     login,
     userDetails,
-    setParallelView,
     mobileView,
+    setValue1,
     setValue,
     panel1,
     versionBooks,
     versionSource,
+    setParallelView,
   } = props;
 
   // bookList={versionBooks[versionSource[panel1.sourceId]]}
@@ -178,6 +178,7 @@ const TopBar = (props) => {
   function handleClose() {
     setShowTextBox(false);
     setHideIcons(false);
+    setSearchText("");
   }
   const handleSearchTextChange = (event) => {
     setSearchText(event.target.value);
@@ -192,15 +193,17 @@ const TopBar = (props) => {
     event.preventDefault();
     const search = event.target.search.value;
     if (search) {
-      const message = "Sorry, we didn't find any results for your search";
-      setMessage(message);
       const ref = getReference(search, bookList);
-      console.log(ref);
+      //console.log(ref);
       if (ref) {
-        setValue("chapter", ref.chapter);
-        setValue("bookCode", ref.bookCode);
+        setValue1("chapter", ref.chapter);
+        setValue1("bookCode", ref.bookCode);
+        setValue("errorMessage", "");
       } else {
-        // To show error message if invalid reference
+        console.log(ref,search,"ref")
+        //To show error message if invalid reference
+        setValue("errorMessage", "notFound");
+        setValue("verseSearch",search)
       }
     }
   }
@@ -227,8 +230,9 @@ const TopBar = (props) => {
             className={classes.searchField}
             placeholder="Enter Chapter, Verse or Passage"
             inputProps={{ className: classes.input }}
-            defaultValue={searchText}
+            value={searchText}
             name="search"
+            autoComplete="off"
             onChange={handleSearchTextChange}
           />
           <IconButton
@@ -416,7 +420,6 @@ const TopBar = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    searchPassage: state.local.searchPassage,
     panel1: state.local.panel1,
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
@@ -426,8 +429,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: () =>
       dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
-    setValue: (name, value) =>
+    setValue1: (name, value) =>
       dispatch({ type: SETVALUE1, name: name, value: value }),
+    setValue: (name, value) =>
+      dispatch({ type: SETVALUE, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

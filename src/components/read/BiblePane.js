@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
+import * as actions from "../../store/actions";
 import Fullscreen from "react-full-screen";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
@@ -9,6 +10,10 @@ import MenuBar from "./MenuBar";
 import Bible from "./Bible";
 import FetchHighlights from "../highlight/FetchHighlights";
 import BottomToolBar from "./BottomToolBar";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "@material-ui/core";
+import { SEARCH } from "../../store/views";
+import { GREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   bible: {
@@ -30,6 +35,28 @@ const useStyles = makeStyles((theme) => ({
   fullscreen: {
     backgroundColor: "#fff",
   },
+  errorSearchMessage: {
+    marginLeft: 400,
+    paddingLeft: 5,
+    marginTop:20,
+    paddingTop: 10,
+    marginRight:425,
+    paddingBottom: 20,
+    border: "1px #000000",
+    boxShadow: "1px 1px 1px 1px " + GREY,
+    lineHeight: "1.8rem",
+    fontSize:"16px",
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: 10,
+      marginRight: 10,
+    },
+  },
+  listError :{
+    paddingLeft: 10,
+    // paddingRight: 10,
+    paddingTop: 5,
+    // paddingBottom: 10,
+  }
 }));
 
 const BiblePane = (props) => {
@@ -43,6 +70,8 @@ const BiblePane = (props) => {
     userDetails,
     toggleParallelScroll,
     mobileView,
+    setMainValue,
+    errorMessage,
   } = props;
   const styleProps = {
     paneNo: paneNo,
@@ -58,6 +87,45 @@ const BiblePane = (props) => {
   const printRef = React.useRef();
   const [printNotes, setPrintNotes] = React.useState(true);
   const [printHighlights, setPrintHighlights] = React.useState(true);
+  const location = useLocation();
+  const path = location?.pathname;
+
+  function goToSearch(){
+  setMainValue("parallelView", SEARCH)
+  setMainValue("errorMessage","");
+  }
+  const notFoundMessage = (
+    <div className={classes.errorSearchMessage}>
+      <span className={classes.listError}><b>
+        Sorry, we didn't find any results for your search</b>
+        <br />
+        <li className={classes.listError}>Double-check spelling, you can use either book code,full book name or local book name</li>
+        <li className={classes.listError}>For a Chapter search, Make sure there are spaces between book name and chapter</li>
+        <li className={classes.listError}>For a verse search, use this format. eg: psalms 5:8 or psalms 5:8,10</li>
+        <li className={classes.listError}>For a passage search, use this format. eg: psalms 10-15</li>
+        <li className={classes.listError}>
+          If you are searching for a word, click here &nbsp;
+          <Link
+            to={{
+              pathname: "/study",
+            }}
+          >
+            <Button
+              variant="outlined"
+              size="small"
+              title="Search Text"
+              aria-label="search text"
+              target="_blank"
+              rel="noOpener"
+              onClick={goToSearch}
+            >
+              Search Text
+            </Button>
+          </Link>
+        </li>
+      </span>
+    </div>
+  );
   React.useEffect(() => {
     const closeAlert = () => {
       //After showing message remove it
@@ -143,6 +211,8 @@ const BiblePane = (props) => {
               onChange={(fullscreen) => setFullscreen(fullscreen)}
               className={classes.fullscreen}
             >
+              {console.log(errorMessage,"message")}
+              {errorMessage === "" ? (
               <Bible
                 {...paneData}
                 setValue={setValue}
@@ -159,13 +229,18 @@ const BiblePane = (props) => {
                 versesSelected={versesSelected}
                 languageCode={paneData.languageCode}
               />
+              ): (errorMessage === "notFound" ? notFoundMessage : ""
+                // path.startsWith("/read") && errorMessage === "notFound" ? notFoundMessage : ""
+               )}
               {alertMessage}
+              
             </Fullscreen>
           </Grid>
         </Grid>
-        {mobileView &&
+        {mobileView && errorMessage === "" &&
         userDetails.uid !== null &&
         selectedVerses?.length > 0 ? (
+          
           <BottomToolBar
             selectedVerses={selectedVerses}
             setSelectedVerses={setSelectedVerses}
@@ -189,7 +264,19 @@ const mapStateToProps = (state) => {
   return {
     mobileView: state.local.mobileView,
     userDetails: state.local.userDetails,
+    errorMessage: state.local.errorMessage,
   };
 };
 
-export default connect(mapStateToProps)(BiblePane);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setMainValue: (name,value) =>
+      dispatch({
+        type: actions.SETVALUE,
+        name: name,
+        value: value,
+      }),
+  
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(BiblePane);

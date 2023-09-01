@@ -264,6 +264,8 @@ export const getReference = (search, bookList) => {
   let searchArr = search.split(" ");
   const chapter = Number(searchArr.pop());
   const bookName = searchArr.join(" ").toLowerCase();
+  console.log(chapter,"chapter")
+  console.log(bookName,"bookname")
   //check the search string contains book code
   const bookCode = getBookCode(bookName, bookList);
   //If search string has book code, then check the corresponding total chapter count
@@ -274,7 +276,6 @@ export const getReference = (search, bookList) => {
   }
   return null;
 };
-// check the search string contains local name, then return corresponding bookcode
 //Function to search Bible
 export const searchBible = (sourceId, keyword, bookNames, setResult) => {
   API.get("search/" + sourceId + "?keyword=" + encodeURIComponent(keyword))
