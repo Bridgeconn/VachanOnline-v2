@@ -211,7 +211,7 @@ const Commentary = (props) => {
     }
   }, [version, commentary, commentaries, setCommentary, setCommentaryLang]);
   React.useEffect(() => {
-    const bookCodes = bookNames.map((book) => book.book_code);
+    const bookCodes = bookNames?.map((book) => book.book_code);
     if (bookNames && bookCodes.includes(bookCode)) {
       let bookObject = bookNames.find(
         (element) => element.book_code === bookCode
