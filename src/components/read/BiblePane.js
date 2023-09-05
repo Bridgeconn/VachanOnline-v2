@@ -38,25 +38,25 @@ const useStyles = makeStyles((theme) => ({
   errorSearchMessage: {
     marginLeft: 400,
     paddingLeft: 5,
-    marginTop:20,
+    marginTop: 20,
     paddingTop: 10,
-    marginRight:425,
+    marginRight: 425,
     paddingBottom: 20,
     border: "1px #000000",
     boxShadow: "1px 1px 1px 1px " + GREY,
     lineHeight: "1.8rem",
-    fontSize:"16px",
+    fontSize: "16px",
     [theme.breakpoints.down("sm")]: {
       marginLeft: 10,
       marginRight: 10,
     },
   },
-  listError :{
+  listError: {
     paddingLeft: 10,
     // paddingRight: 10,
     paddingTop: 5,
     // paddingBottom: 10,
-  }
+  },
 }));
 
 const BiblePane = (props) => {
@@ -83,26 +83,37 @@ const BiblePane = (props) => {
   const [fetchHighlights, setFetchHighlights] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");
   const [refUrl, setRefUrl] = React.useState("");
-  const { sourceId, bookCode, chapter, versesSelected, message } = paneData;
+  const { sourceId, bookCode, chapter, versesSelected, message, verseData } =
+    paneData;
   const printRef = React.useRef();
   const [printNotes, setPrintNotes] = React.useState(true);
   const [printHighlights, setPrintHighlights] = React.useState(true);
   const location = useLocation();
   const path = location?.pathname;
 
-  function goToSearch(){
-  setMainValue("parallelView", SEARCH)
-  setMainValue("errorMessage","");
+  function goToSearch() {
+    setMainValue("parallelView", SEARCH);
+    setMainValue("errorMessage", "");
   }
   const notFoundMessage = (
     <div className={classes.errorSearchMessage}>
-      <span className={classes.listError}><b>
-        Sorry, we didn't find any results for your search</b>
+      <span className={classes.listError}>
+        <b>Sorry, we didn't find any results for your search</b>
         <br />
-        <li className={classes.listError}>Double-check spelling, you can use either book code,full book name or local book name</li>
-        <li className={classes.listError}>For a Chapter search, Make sure there are spaces between book name and chapter</li>
-        <li className={classes.listError}>For a verse search, use this format. eg: psalms 5:8 or psalms 5:8,10</li>
-        <li className={classes.listError}>For a passage search, use this format. eg: psalms 10-15</li>
+        <li className={classes.listError}>
+          Double-check spelling, you can use either book code,full book name or
+          local book name
+        </li>
+        <li className={classes.listError}>
+          For a Chapter search, Make sure there are spaces between book name and
+          chapter
+        </li>
+        <li className={classes.listError}>
+          For a verse search, use this format. eg: psalms 5:8 or psalms 5:8,10
+        </li>
+        <li className={classes.listError}>
+          For a passage search, use this format. eg: psalms 5:10-15
+        </li>
         <li className={classes.listError}>
           If you are searching for a word, click here &nbsp;
           <Link
@@ -160,7 +171,13 @@ const BiblePane = (props) => {
       setSelectedVerses([]);
     }
   }, [setSelectedVerses, userDetails]);
-
+  // Reset errorMessage value as empty
+  React.useEffect(() => {
+    if (path.startsWith("/study")) {
+      setMainValue("errorMessage", "");
+      setMainValue("verseSearch", "");
+    }
+  }, [path, setMainValue]);
   React.useEffect(() => {
     setSelectedVerses(versesSelected);
   }, [setSelectedVerses, versesSelected]);
@@ -211,36 +228,36 @@ const BiblePane = (props) => {
               onChange={(fullscreen) => setFullscreen(fullscreen)}
               className={classes.fullscreen}
             >
-              {console.log(errorMessage,"message")}
               {errorMessage === "" ? (
-              <Bible
-                {...paneData}
-                setValue={setValue}
-                ref1={ref1}
-                scroll={scroll}
-                paneNo={paneNo}
-                singlePane={singlePane}
-                selectedVerses={selectedVerses}
-                setSelectedVerses={setSelectedVerses}
-                highlights={highlights}
-                printRef={printRef}
-                printNotes={printNotes}
-                printHighlights={printHighlights}
-                versesSelected={versesSelected}
-                languageCode={paneData.languageCode}
-              />
-              ): (errorMessage === "notFound" ? notFoundMessage : ""
-                // path.startsWith("/read") && errorMessage === "notFound" ? notFoundMessage : ""
-               )}
+                <Bible
+                  {...paneData}
+                  setValue={setValue}
+                  ref1={ref1}
+                  scroll={scroll}
+                  paneNo={paneNo}
+                  singlePane={singlePane}
+                  selectedVerses={selectedVerses}
+                  setSelectedVerses={setSelectedVerses}
+                  highlights={highlights}
+                  printRef={printRef}
+                  printNotes={printNotes}
+                  printHighlights={printHighlights}
+                  versesSelected={versesSelected}
+                  languageCode={paneData.languageCode}
+                />
+              ) : errorMessage === "notFound" ? (
+                notFoundMessage
+              ) : (
+                ""
+              )}
               {alertMessage}
-              
             </Fullscreen>
           </Grid>
         </Grid>
-        {mobileView && errorMessage === "" &&
+        {mobileView &&
+        errorMessage === "" &&
         userDetails.uid !== null &&
         selectedVerses?.length > 0 ? (
-          
           <BottomToolBar
             selectedVerses={selectedVerses}
             setSelectedVerses={setSelectedVerses}
@@ -251,6 +268,7 @@ const BiblePane = (props) => {
             sourceId={sourceId}
             bookCode={bookCode}
             chapter={chapter}
+            verse={verseData}
             paneNo={paneNo}
             userDetails={userDetails}
           />
@@ -270,13 +288,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setMainValue: (name,value) =>
+    setMainValue: (name, value) =>
       dispatch({
         type: actions.SETVALUE,
         name: name,
         value: value,
       }),
-  
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(BiblePane);

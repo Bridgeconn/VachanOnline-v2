@@ -15,7 +15,7 @@ import Note from "../note/Note";
 import PrintIcon from "@material-ui/icons/Print";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
-import { BLACK} from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 import Close from "../common/Close";
 import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     width: 100,
     paddingLeft: 20,
     fontWeight: 600,
-  }
+  },
 }));
 const MenuBar = (props) => {
   let {
@@ -142,7 +142,7 @@ const MenuBar = (props) => {
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [verse, setVerse] = React.useState(true);
+  // const [verse, setVerse] = React.useState(true);
   // const verseSearch1="Jude 1:1";
   React.useEffect(() => {
     if (bookList) {
@@ -168,7 +168,7 @@ const MenuBar = (props) => {
     }
     setBookmarkIcon("");
   }, [userDetails, sourceId, bookCode, chapter]);
-
+  console.log(verseSearch, "verse");
   //Set highlight icon
   React.useEffect(() => {
     if (userDetails.uid !== null) {
@@ -252,7 +252,6 @@ const MenuBar = (props) => {
   function closeSettings() {
     setSettingsAnchor(null);
   }
-  // console.log(errorMessage,"error")
   //get metadata from versions object if version changed
   React.useEffect(() => {
     if (versions !== undefined) {
@@ -307,9 +306,9 @@ const MenuBar = (props) => {
             paneNo={paneNo}
             language={language}
           />
-         
-          {/* {bookCode && verseSearch !== "" ?  (
-             <div style={{ display: verse ? "none" : "" }}>
+
+          {bookCode && verseSearch === "" ? (
+            //<div style={{ display: verse ? "none" : "" }}>
             <BookCombo
               paneNo={paneNo}
               bookCode={bookCode}
@@ -318,11 +317,13 @@ const MenuBar = (props) => {
               setValue={setValue}
               minimal={true}
             />
-            </div>
           ) : (
-            <Typography variant="button" className={classes.verseDisplay}>{verseSearch}</Typography>
-          )} */}
-          {bookCode ?  (
+            //</div>
+            <Typography variant="button" className={classes.verseDisplay}>
+              {verseSearch}
+            </Typography>
+          )}
+          {/* {bookCode ?  (
             <BookCombo
               paneNo={paneNo}
               bookCode={bookCode}
@@ -333,86 +334,91 @@ const MenuBar = (props) => {
             />
           ) : (
             ""
-          )}
+          )} */}
         </Box>
         {errorMessage === "" ? (
-        <Box className={classes.items}>
-          {mobileView ? null : noteIcon}
-          {mobileView ? null : highlightIcon}
+          <Box className={classes.items}>
+            {mobileView ? null : noteIcon}
+            {mobileView ? null : highlightIcon}
 
-          {bookmarkIcon}
-          <Metadata
-            metadataList={metadataList}
-            title="Version Name (in Eng)"
-            abbreviation="Abbreviation"
-            mobileView={mobileView}
-          ></Metadata>
-          {audioIcon}
-          {mobileView ? null : (
-            <>
-              <div className={classes.info} onClick={handleDialogOpen}>
-                <Tooltip title="Print Chapter">
-                  <PrintIcon fontSize="small" />
-                </Tooltip>
-              </div>
-              <Tooltip title="Fullscreen">
-                <div onClick={goFull} className={classes.info}>
-                  <i className="material-icons md-23">zoom_out_map</i>
+            {bookmarkIcon}
+            <Metadata
+              metadataList={metadataList}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+              mobileView={mobileView}
+            ></Metadata>
+            {audioIcon}
+            {mobileView ? null : (
+              <>
+                <div className={classes.info} onClick={handleDialogOpen}>
+                  <Tooltip title="Print Chapter">
+                    <PrintIcon fontSize="small" />
+                  </Tooltip>
                 </div>
-              </Tooltip>
-            </>
-          )}
-          <div
-            className={classes.settings}
-            aria-label="More"
-            aria-controls="long-menu"
-            aria-haspopup="true"
-            onClick={openSettings}
-          >
-            <i className="material-icons md-23">settings</i>
-          </div>
-          <Setting
-            fontSize={fontSize}
-            fontFamily={fontFamily}
-            lineView={lineView}
-            setValue={setValue}
-            settingsAnchor={settingsAnchor}
-            handleClose={closeSettings}
-            printRef={printRef}
-            printNotes={printNotes}
-            setPrintNotes={setPrintNotes}
-            printHighlights={printHighlights}
-            setPrintHighlights={setPrintHighlights}
-            bookDisplay={bookDisplay}
-            chapter={chapter}
-            paneNo={paneNo}
-          />
-          {mobileView && paneNo === 1 ? (
-            <div className={classes.infoParall} onClick={toggleParallelScroll}>
-              {parallelScroll ? (
-                <Tooltip title="Parallel Scroll">
-                  <ParallelScroll
-                    fontSize="large"
-                    style={{ color: BLACK }}
-                    className={classes.parallelScroll}
-                  />
+                <Tooltip title="Fullscreen">
+                  <div onClick={goFull} className={classes.info}>
+                    <i className="material-icons md-23">zoom_out_map</i>
+                  </div>
                 </Tooltip>
-              ) : (
-                <Tooltip title="Parallel Scroll Disabled">
-                  <ParallelScroll
-                    fontSize="large"
-                    color="disabled"
-                    className={classes.parallelScroll}
-                  />
-                </Tooltip>
-              )}
+              </>
+            )}
+            <div
+              className={classes.settings}
+              aria-label="More"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={openSettings}
+            >
+              <i className="material-icons md-23">settings</i>
             </div>
-          ) : (
-            ""
-          )}
-          {paneNo === 2 ? <Close /> : ""}
-        </Box>
-):( "")}
+            <Setting
+              fontSize={fontSize}
+              fontFamily={fontFamily}
+              lineView={lineView}
+              setValue={setValue}
+              settingsAnchor={settingsAnchor}
+              handleClose={closeSettings}
+              printRef={printRef}
+              printNotes={printNotes}
+              setPrintNotes={setPrintNotes}
+              printHighlights={printHighlights}
+              setPrintHighlights={setPrintHighlights}
+              bookDisplay={bookDisplay}
+              chapter={chapter}
+              paneNo={paneNo}
+            />
+            {mobileView && paneNo === 1 ? (
+              <div
+                className={classes.infoParall}
+                onClick={toggleParallelScroll}
+              >
+                {parallelScroll ? (
+                  <Tooltip title="Parallel Scroll">
+                    <ParallelScroll
+                      fontSize="large"
+                      style={{ color: BLACK }}
+                      className={classes.parallelScroll}
+                    />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Parallel Scroll Disabled">
+                    <ParallelScroll
+                      fontSize="large"
+                      color="disabled"
+                      className={classes.parallelScroll}
+                    />
+                  </Tooltip>
+                )}
+              </div>
+            ) : (
+              ""
+            )}
+            {paneNo === 2 ? <Close /> : ""}
+          </Box>
+        ) : (
+          ""
+        )}
       </Box>
 
       <Print

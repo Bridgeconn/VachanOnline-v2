@@ -192,18 +192,26 @@ const TopBar = (props) => {
   function showSearchResult(event) {
     event.preventDefault();
     const search = event.target.search.value;
+
     if (search) {
       const ref = getReference(search, bookList);
-      //console.log(ref);
-      if (ref) {
+      console.log(ref, "ref");
+      if (ref && ref.verse === undefined) {
         setValue1("chapter", ref.chapter);
         setValue1("bookCode", ref.bookCode);
         setValue("errorMessage", "");
-      } else {
-        console.log(ref,search,"ref")
+        setValue("verseSearch", "");
+      } else if (ref) {
         //To show error message if invalid reference
+        setValue1("chapter", ref.chapter);
+        setValue1("bookCode", ref.bookCode);
+        setValue1("verseData", ref.verse);
+        setValue("errorMessage", "");
+        setValue("verseSearch", ref.verseSearchText);
+        console.log(ref.verse, "versedata");
+      } else {
         setValue("errorMessage", "notFound");
-        setValue("verseSearch",search)
+        setValue("verseSearch", "");
       }
     }
   }

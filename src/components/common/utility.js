@@ -241,10 +241,12 @@ const checkValidChapter = (bookCode, chapter) => {
 };
 const getBookCode = (book, bookList) => {
   let bookCode = "";
-  let bookObj = bibleBooks.find((b) => b.book.toLowerCase() === book);
+  let displayBookName = "";
   // check the search string contains full Book Name
+  let bookObj = bibleBooks.find((b) => b.book.toLowerCase() === book);
   if (bookObj) {
     bookCode = bookObj.abbreviation;
+    displayBookName = bookObj.book;
   } else {
     bookObj = bookList.find(
       (b) =>
@@ -255,23 +257,31 @@ const getBookCode = (book, bookList) => {
     );
     if (bookObj) {
       bookCode = bookObj.book_code;
+      displayBookName = bookObj.short;
     }
   }
-  return bookCode;
+  return { bookCode, displayBookName };
 };
 //Function to get chapter and book code from reference
 export const getReference = (search, bookList) => {
   let searchArr = search.split(" ");
-  const chapter = Number(searchArr.pop());
+  console.log(searchArr, "array1");
+  const chapterVerse = searchArr.pop();
+  const searchArr1 = chapterVerse.split(/:/);
+  const chapter = Number(searchArr1[0]);
+  const verse = searchArr1[1];
+  //const chapter = Number(searchArr.pop());
   const bookName = searchArr.join(" ").toLowerCase();
-  console.log(chapter,"chapter")
-  console.log(bookName,"bookname")
+
   //check the search string contains book code
-  const bookCode = getBookCode(bookName, bookList);
+  const books = getBookCode(bookName, bookList);
+  const bookCode = books.bookCode;
+  const verseSearchText = books.displayBookName + " " + chapterVerse;
+  console.log(bookName, chapter, verse, verseSearchText, "bookname");
   //If search string has book code, then check the corresponding total chapter count
   if (bookCode) {
     if (checkValidChapter(bookCode, chapter)) {
-      return { bookCode, chapter };
+      return { bookCode, chapter, verse, verseSearchText };
     }
   }
   return null;
