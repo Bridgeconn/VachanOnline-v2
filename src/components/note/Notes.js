@@ -88,9 +88,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    // [theme.breakpoints.up("md")]: {
-    //   top: (props) => (props.addNote ? 510 : 135),
-    // },
     [theme.breakpoints.down("sm")]: {
       marginBottom: 60,
     },

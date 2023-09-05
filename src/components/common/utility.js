@@ -89,7 +89,6 @@ export const getAllBooks = (
   bookCode,
   chapter
 ) => {
-  console.log("test");
   API.get("booknames")
     .then(function (response) {
       for (let item of response.data) {
