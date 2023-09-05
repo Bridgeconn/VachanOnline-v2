@@ -5,7 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
+import DialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -39,6 +39,12 @@ const useStyles = makeStyles((theme) => ({
       maxHeight: 190,
     },
   },
+  dialog: {
+    padding: 0,
+  },
+  editor: {
+    padding: 10,
+  },
 }));
 const styles = (theme) => ({
   root: {
@@ -70,16 +76,6 @@ const DialogTitle = withStyles(styles)((props) => {
     </MuiDialogTitle>
   );
 });
-
-const DialogContent = withStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    width: 500,
-    [theme.breakpoints.down("sm")]: {
-      width: 300,
-    },
-  },
-}))(MuiDialogContent);
 
 const DialogActions = withStyles((theme) => ({
   root: {
@@ -188,6 +184,8 @@ function Note({
         </Alert>
       </Snackbar>
       <Dialog
+        maxWidth="md"
+        fullWidth
         onClose={handleClose}
         aria-labelledby="new-note-dialog"
         open={open}
@@ -196,12 +194,13 @@ function Note({
         <DialogTitle id="new-note-dialog" onClose={handleClose}>
           Note
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent dividers className={classes.dialog}>
           <Editor
             editorState={editorState}
             editorStyle={{ height: "30vh" }}
             onEditorStateChange={handleNoteTextChange}
             placeholder="Write your note"
+            editorClassName={classes.editor}
             toolbar={getEditorToolbar(mobileView)}
           />
         </DialogContent>

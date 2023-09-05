@@ -9,7 +9,7 @@ import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
-import { Button, Divider, Snackbar, Typography } from "@material-ui/core";
+import { Button, Snackbar, Typography } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import { useFirebase } from "react-redux-firebase";
@@ -232,6 +232,12 @@ const useStyles = makeStyles((theme) => ({
   },
   noteList: {
     paddingTop: 20,
+  },
+  noteDialog: {
+    padding: 0,
+  },
+  editor: {
+    padding: 10,
   },
 }));
 const Bible = (props) => {
@@ -651,6 +657,9 @@ const Bible = (props) => {
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };
+  // const addStyle = (text, style) => {
+  //   return <span className={classes[style]}>{" " + text}</span>;
+  // };
   const getPrevious = () => {
     if (parallelScroll && paneNo === 2 && mobileView) {
       return "";
@@ -769,12 +778,12 @@ const Bible = (props) => {
                 </span>
               );
             })}
-            <div className={classes.footNotes}>
+            {/* <div className={classes.footNotes}>
               <Typography className={classes.noteTitle} variant="h4">
                 Notes :
               </Typography>
               <Divider />
-              {/* <div className={classes.noteList}>
+              <div className={classes.noteList}>
                 {noteText.map((item, i) => {
                   return (
                     <ul key={i}>
@@ -786,8 +795,8 @@ const Bible = (props) => {
                     </ul>
                   );
                 })}
-              </div> */}
-            </div>
+              </div>
+            </div> */}
           </div>
           {audio ? (
             <ReactPlayer
@@ -826,13 +835,14 @@ const Bible = (props) => {
         <DialogTitle id="mobile-edit-note-dialog" onClose={handleClose}>
           Note
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent dividers className={classes.noteDialog}>
           <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
             placeholder="Write your note"
-            editorStyle={{ height: "20vh" }}
-            toolbar={getEditorToolbar(mobileView)}
+            editorStyle={{ height: "30vh" }}
+            editorClassName={classes.editor}
+            toolbar={getEditorToolbar(true)}
           />
         </DialogContent>
         <DialogActions>

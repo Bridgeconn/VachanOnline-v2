@@ -33,7 +33,9 @@ export const getVersions = (
           const versionCode = _version?.split("-")[1] || "IRV";
           version = versions
             .find((e) => e?.languageVersions[0]?.language?.code === langCode)
-            .languageVersions.find((e) => e.version.code === versionCode);
+            .languageVersions.find(
+              (e) => e.version.code?.toUpperCase() === versionCode
+            );
         } catch (e) {
           // last read or hindi IRV version not available use first versions
         }
@@ -87,6 +89,7 @@ export const getAllBooks = (
   bookCode,
   chapter
 ) => {
+  console.log("test");
   API.get("booknames")
     .then(function (response) {
       for (let item of response.data) {
@@ -298,7 +301,6 @@ export const isFeatureNew = (featureDate) => {
 };
 
 export const getEditorToolbar = (mobile) => {
-  console.log(mobile);
   return mobile
     ? {
         options: [
@@ -326,9 +328,9 @@ export const getEditorToolbar = (mobile) => {
     : {
         options: [
           "inline",
+          "link",
           "blockType",
           "fontSize",
-          "link",
           "list",
           "textAlign",
           "colorPicker",

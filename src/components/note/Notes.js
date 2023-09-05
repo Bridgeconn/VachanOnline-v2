@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -35,12 +35,13 @@ import htmlToDraft from "html-to-draftjs";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: "3.2rem",
+    marginTop: "5.278rem",
+    display: "flex",
+    flexDirection: "column",
+    height: "calc( 100vh - 5.278rem)",
     [theme.breakpoints.down("sm")]: {
       marginTop: 60,
-    },
-    [theme.breakpoints.up("lg")]: {
-      marginTop: "5.278rem",
+      height: "calc( 100vh - 60px)",
     },
   },
   paper: {
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2.75em",
+    height: "3.4em",
     [theme.breakpoints.down("sm")]: {
       height: 60,
       marginBottom: 0,
@@ -74,12 +75,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   list: {
-    position: "absolute",
-    right: 0,
-    left: 0,
-    bottom: 0,
-    overflow: "scroll",
-    marginBottom: -15,
+    overflow: "auto",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
@@ -92,11 +88,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.up("md")]: {
-      top: (props) => (props.addNote ? 510 : 135),
-    },
+    // [theme.breakpoints.up("md")]: {
+    //   top: (props) => (props.addNote ? 510 : 135),
+    // },
     [theme.breakpoints.down("sm")]: {
-      top: 60,
+      marginBottom: 60,
     },
   },
   message: {
@@ -115,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 4,
   },
   form: {
-    padding: "0 10px",
+    paddingLeft: 10,
     borderBottom: "1px solid gray",
   },
   lastModified: {
@@ -137,11 +133,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px 5px",
   },
   addNote: {
-    padding: theme.spacing(1),
-  },
-  addNoteDisabled: {
     position: "relative",
     bottom: 5,
+    padding: theme.spacing(1),
   },
   noteBody: {
     "& textarea": {
@@ -151,6 +145,12 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: -6,
+  },
+  dialog: {
+    padding: 0,
+  },
+  editor: {
+    padding: 10,
   },
 }));
 
@@ -205,6 +205,7 @@ function Notes(props) {
 
   const resetForm = React.useCallback(() => {
     setNoteText("");
+    setEditorState(EditorState.createEmpty());
     setModifiedTime("");
     setEditObject({});
     setAddNote(false);
@@ -319,6 +320,11 @@ function Notes(props) {
     }
   }, [sourceId, bookCode, chapter, edit, noteReference, resetForm, loading]);
 
+  useEffect(() => {
+    if (addNote && !edit && !loading && versesSelected?.length === 0) {
+      resetForm();
+    }
+  }, [addNote, edit, loading, resetForm, versesSelected?.length]);
   //Set current chapter notes
   React.useEffect(() => {
     setChapterNoteList(
@@ -437,6 +443,8 @@ function Notes(props) {
     setValue("versesSelected", note.verses);
     if (mobileView) {
       close();
+    } else {
+      editNote(event);
     }
   };
   //Delete Note
@@ -480,7 +488,7 @@ function Notes(props) {
                 </Tooltip>
               ) : (
                 <Tooltip title="Select Verses">
-                  <div className={classes.addNoteDisabled}>
+                  <>
                     <IconButton
                       aria-label="add"
                       className={classes.addNote}
@@ -488,7 +496,7 @@ function Notes(props) {
                     >
                       <AddBox />
                     </IconButton>
-                  </div>
+                  </>
                 </Tooltip>
               )}
             </Typography>
@@ -512,12 +520,13 @@ function Notes(props) {
               ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </DialogTitle>
-          <DialogContent dividers>
+          <DialogContent dividers className={classes.dialog}>
             <Editor
               editorState={editorState}
-              editorStyle={{ height: "20vh", overflow: "auto" }}
+              editorStyle={{ height: "30vh", overflow: "auto" }}
               onEditorStateChange={handleNoteTextChange}
-              toolbar={getEditorToolbar(mobileView)}
+              editorClassName={classes.editor}
+              toolbar={getEditorToolbar(true)}
             />
           </DialogContent>
           <DialogActions>
@@ -544,8 +553,7 @@ function Notes(props) {
             </Grid>
           </DialogActions>
         </Dialog>
-      ) : null}
-      {addNote ? (
+      ) : addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>
             Note for {book} {chapter}:{" "}
@@ -557,12 +565,13 @@ function Notes(props) {
           <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
-            editorStyle={{ height: "20vh" }}
-            toolbar={getEditorToolbar(true)}
+            editorStyle={{ height: "30vh" }}
+            toolbar={getEditorToolbar(false)}
           />
           <Grid container>
             <Grid item xs={7} className={classes.lastModified}>
-              Last Modified: {new Date(modifiedTime).toLocaleString()}
+              {modifiedTime &&
+                "Last Modified: " + new Date(modifiedTime).toLocaleString()}
             </Grid>
             <Grid item xs={5} className={classes.formButtons}>
               <Button
@@ -632,17 +641,19 @@ function Notes(props) {
                         secondary={new Date(note.modifiedTime).toLocaleString()}
                       />
                       <ListItemSecondaryAction>
-                        <IconButton
-                          edge="end"
-                          aria-label="editNote"
-                          data-sourceid={note.sourceId}
-                          data-bookcode={note.bookCode}
-                          data-chapter={note.chapter}
-                          data-index={note.index}
-                          onClick={(event) => editNote(event)}
-                        >
-                          <EditIcon />
-                        </IconButton>
+                        {mobileView && (
+                          <IconButton
+                            edge="end"
+                            aria-label="editNote"
+                            data-sourceid={note.sourceId}
+                            data-bookcode={note.bookCode}
+                            data-chapter={note.chapter}
+                            data-index={note.index}
+                            onClick={(event) => editNote(event)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        )}
                         <IconButton
                           edge="end"
                           aria-label="delete"
@@ -686,17 +697,19 @@ function Notes(props) {
                     secondary={new Date(note.modifiedTime).toLocaleString()}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="editNote"
-                      data-sourceid={note.sourceId}
-                      data-bookcode={note.bookCode}
-                      data-chapter={note.chapter}
-                      data-index={note.index}
-                      onClick={(event) => editNote(event)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    {mobileView && (
+                      <IconButton
+                        edge="end"
+                        aria-label="editNote"
+                        data-sourceid={note.sourceId}
+                        data-bookcode={note.bookCode}
+                        data-chapter={note.chapter}
+                        data-index={note.index}
+                        onClick={(event) => editNote(event)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    )}
                     <IconButton
                       edge="end"
                       aria-label="delete"
