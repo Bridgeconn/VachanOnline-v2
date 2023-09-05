@@ -9,13 +9,7 @@ import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
-import {
-  Button,
-  Divider,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Button, Snackbar, Typography } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import { useFirebase } from "react-redux-firebase";
@@ -26,7 +20,11 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { getAudioBibleObject } from "../common/utility";
+import { getAudioBibleObject, getEditorToolbar } from "../common/utility";
+import { ContentState, EditorState, convertToRaw } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
+import draftToHtml from "draftjs-to-html";
+import { Editor } from "react-draft-wysiwyg";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -39,6 +37,11 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "justify",
       color: "#464545",
       marginBottom: 5,
+    },
+  },
+  paper: {
+    [theme.breakpoints.down("sm")]: {
+      margin: 25,
     },
   },
   bibleReadingPane: {
@@ -200,14 +203,6 @@ const useStyles = makeStyles((theme) => ({
     bottom: -2,
     color: color.BLACK,
   },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
   noteIcon: {
     [`@media print`]: {
       display: (props) => (props.printNotes ? "inline-block" : "none"),
@@ -237,6 +232,12 @@ const useStyles = makeStyles((theme) => ({
   },
   noteList: {
     paddingTop: 20,
+  },
+  noteDialog: {
+    padding: 0,
+  },
+  editor: {
+    padding: 10,
   },
 }));
 const Bible = (props) => {
@@ -312,6 +313,9 @@ const Bible = (props) => {
   const [editObject, setEditObject] = React.useState({});
   const [edit, setEdit] = React.useState(false);
   const currentAudio = getAudioBibleObject(versions, sourceId);
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createEmpty()
+  );
   //new usfm json structure
   const getHeading = (contents) => {
     if (contents) {
@@ -549,9 +553,14 @@ const Bible = (props) => {
   const openNoteDialog = (verse) => {
     let index;
     Object.entries(noteText).map(([key, value]) => {
-      if (value.verses.includes(verse)) {
+      if (value?.verses?.includes(verse)) {
         index = key;
         setNoteTextBody(value.body);
+        setEditorState(
+          EditorState.createWithContent(
+            ContentState.createFromBlockArray(htmlToDraft(value.body))
+          )
+        );
         setEditObject(value);
       }
       return [key, value];
@@ -566,8 +575,10 @@ const Bible = (props) => {
     setValue("versesSelected", [verse]);
     setOpen(true);
   };
-  const handleNoteTextChange = (e) => {
-    setNoteTextBody(e.target.value);
+  const handleNoteTextChange = (editorState) => {
+    setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setNoteTextBody(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setEditorState(editorState);
   };
   const handleClose = () => {
     setOpen(false);
@@ -646,9 +657,9 @@ const Bible = (props) => {
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };
-  const addStyle = (text, style) => {
-    return <span className={classes[style]}>{" " + text}</span>;
-  };
+  // const addStyle = (text, style) => {
+  //   return <span className={classes[style]}>{" " + text}</span>;
+  // };
   const getPrevious = () => {
     if (parallelScroll && paneNo === 2 && mobileView) {
       return "";
@@ -767,7 +778,7 @@ const Bible = (props) => {
                 </span>
               );
             })}
-            <div className={classes.footNotes}>
+            {/* <div className={classes.footNotes}>
               <Typography className={classes.noteTitle} variant="h4">
                 Notes :
               </Typography>
@@ -785,7 +796,7 @@ const Bible = (props) => {
                   );
                 })}
               </div>
-            </div>
+            </div> */}
           </div>
           {audio ? (
             <ReactPlayer
@@ -817,23 +828,21 @@ const Bible = (props) => {
       {getNext()}
       <Dialog
         onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
+        aria-labelledby="mobile-edit-note-dialog"
         open={open}
+        classes={{ paper: classes.paper }}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle id="mobile-edit-note-dialog" onClose={handleClose}>
           Note
         </DialogTitle>
-        <DialogContent dividers>
-          <TextField
-            id="outlined-multiline-static"
-            label="Note Text"
-            multiline
-            minRows={10}
-            fullWidth={true}
-            inputProps={{ maxLength: 1000 }}
-            variant="outlined"
-            value={noteTextBody}
-            onChange={handleNoteTextChange}
+        <DialogContent dividers className={classes.noteDialog}>
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={handleNoteTextChange}
+            placeholder="Write your note"
+            editorStyle={{ height: "30vh" }}
+            editorClassName={classes.editor}
+            toolbar={getEditorToolbar(true)}
           />
         </DialogContent>
         <DialogActions>

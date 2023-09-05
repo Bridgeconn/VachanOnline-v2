@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
 import Tooltip from "@material-ui/core/Tooltip";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
@@ -18,7 +17,7 @@ import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
-import { getBookbyCode, capitalize } from "../common/utility";
+import { getBookbyCode, capitalize, getEditorToolbar } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import * as actions from "../../store/actions";
@@ -28,13 +27,26 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
+import draftToHtml from "draftjs-to-html";
+import { ContentState, EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import htmlToDraft from "html-to-draftjs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: 94,
+    marginTop: "5.278rem",
+    display: "flex",
+    flexDirection: "column",
+    height: "calc( 100vh - 5.278rem)",
     [theme.breakpoints.down("sm")]: {
       marginTop: 60,
+      height: "calc( 100vh - 60px)",
+    },
+  },
+  paper: {
+    [theme.breakpoints.down("sm")]: {
+      margin: 25,
     },
   },
   heading: {
@@ -44,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    height: "2.75em",
+    height: "3.4em",
     [theme.breakpoints.down("sm")]: {
       height: 60,
       marginBottom: 0,
@@ -52,16 +64,18 @@ const useStyles = makeStyles((theme) => ({
       alignItems: "center",
     },
   },
+
+  ".rdw-editor-main": {
+    [theme.breakpoints.down("md")]: {
+      width: "80vw",
+      height: "30vh",
+    },
+  },
   notesHeading: {
     display: "flex",
   },
   list: {
-    position: "absolute",
-    right: 0,
-    left: 0,
-    bottom: 0,
-    overflow: "scroll",
-    marginBottom: -15,
+    overflow: "auto",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
     "&::-webkit-scrollbar": {
@@ -74,11 +88,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.up("md")]: {
-      top: (props) => (props.addNote ? 390 : 135),
-    },
     [theme.breakpoints.down("sm")]: {
-      top: 60,
+      marginBottom: 60,
     },
   },
   message: {
@@ -97,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 4,
   },
   form: {
-    padding: "0 10px",
+    paddingLeft: 10,
     borderBottom: "1px solid gray",
   },
   lastModified: {
@@ -119,11 +130,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px 5px",
   },
   addNote: {
-    padding: theme.spacing(1),
-  },
-  addNoteDisabled: {
     position: "relative",
     bottom: 5,
+    padding: theme.spacing(1),
   },
   noteBody: {
     "& textarea": {
@@ -133,6 +142,12 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: -6,
+  },
+  dialog: {
+    padding: 0,
+  },
+  editor: {
+    padding: 10,
   },
 }));
 
@@ -163,7 +178,10 @@ function Notes(props) {
   const [alertMessage, setAlertMessage] = React.useState(false);
   const { bookCode, chapter, sourceId } = panel1;
   const [open, setOpen] = React.useState(false);
-
+  const contentState = ContentState.createFromBlockArray(htmlToDraft(noteText));
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createWithContent(contentState)
+  );
   const firebase = useFirebase();
   const closeAlert = () => {
     setAlert(false);
@@ -171,8 +189,9 @@ function Notes(props) {
   const styleProps = { addNote: addNote };
   const classes = useStyles(styleProps);
 
-  const handleNoteTextChange = (e) => {
-    setNoteText(e.target.value);
+  const handleNoteTextChange = (editorState) => {
+    setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setEditorState(editorState);
   };
 
   const clickAddNote = () => {
@@ -183,6 +202,7 @@ function Notes(props) {
 
   const resetForm = React.useCallback(() => {
     setNoteText("");
+    setEditorState(EditorState.createEmpty());
     setModifiedTime("");
     setEditObject({});
     setAddNote(false);
@@ -297,6 +317,11 @@ function Notes(props) {
     }
   }, [sourceId, bookCode, chapter, edit, noteReference, resetForm, loading]);
 
+  useEffect(() => {
+    if (addNote && !edit && !loading && versesSelected?.length === 0) {
+      resetForm();
+    }
+  }, [addNote, edit, loading, resetForm, versesSelected?.length]);
   //Set current chapter notes
   React.useEffect(() => {
     setChapterNoteList(
@@ -368,6 +393,11 @@ function Notes(props) {
     let index = parseInt(element.getAttribute("data-index"));
     let note = notes[sourceId][bookCode][chapter][index];
     setNoteText(note.body);
+    setEditorState(
+      EditorState.createWithContent(
+        ContentState.createFromBlockArray(htmlToDraft(note.body))
+      )
+    );
     setModifiedTime(note.modifiedTime);
     setEditObject(note);
     let noteReference = {
@@ -410,6 +440,8 @@ function Notes(props) {
     setValue("versesSelected", note.verses);
     if (mobileView) {
       close();
+    } else {
+      editNote(event);
     }
   };
   //Delete Note
@@ -453,7 +485,7 @@ function Notes(props) {
                 </Tooltip>
               ) : (
                 <Tooltip title="Select Verses">
-                  <div className={classes.addNoteDisabled}>
+                  <>
                     <IconButton
                       aria-label="add"
                       className={classes.addNote}
@@ -461,7 +493,7 @@ function Notes(props) {
                     >
                       <AddBox />
                     </IconButton>
-                  </div>
+                  </>
                 </Tooltip>
               )}
             </Typography>
@@ -472,41 +504,53 @@ function Notes(props) {
         </Box>
       )}
       {mobileView ? (
-        <Dialog onClose={handleClose} aria-labelledby="note-title" open={open}>
+        /* mobile view edit list */
+        <Dialog
+          onClose={handleClose}
+          aria-labelledby="note-title"
+          open={open}
+          classes={{ paper: classes.paper }}
+        >
           <DialogTitle id="note-title" onClose={handleClose}>
             Note for {book} {chapter}:{" "}
             {versesSelected
               ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </DialogTitle>
-          <DialogContent dividers>
-            <TextField
-              id="note"
-              label="Note Text"
-              multiline
-              minRows={6}
-              fullWidth={true}
-              inputProps={{ maxLength: 1000 }}
-              variant="outlined"
-              value={noteText}
-              onChange={handleNoteTextChange}
-              className={classes.noteBody}
+          <DialogContent dividers className={classes.dialog}>
+            <Editor
+              editorState={editorState}
+              editorStyle={{ height: "30vh", overflow: "auto" }}
+              onEditorStateChange={handleNoteTextChange}
+              editorClassName={classes.editor}
+              toolbar={getEditorToolbar(true)}
             />
-            <div className={classes.lastModified}>
-              Last Modified: {new Date(modifiedTime).toLocaleString()}
-            </div>
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button variant="outlined" onClick={saveNote}>
-              Save
-            </Button>
+            <Grid container>
+              <Grid item xs={6} className={classes.lastModified}>
+                Last Modified: {new Date(modifiedTime).toLocaleString()}
+              </Grid>
+              <Grid item xs={6} className={classes.formButtons}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={handleClose}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={saveNote}
+                >
+                  Save
+                </Button>
+              </Grid>
+            </Grid>
           </DialogActions>
         </Dialog>
-      ) : null}
-      {addNote ? (
+      ) : addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>
             Note for {book} {chapter}:{" "}
@@ -514,21 +558,17 @@ function Notes(props) {
               ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </Typography>
-          <TextField
-            id="note"
-            label="Note Text"
-            multiline
-            minRows={6}
-            fullWidth={true}
-            inputProps={{ maxLength: 1000 }}
-            variant="outlined"
-            value={noteText}
-            onChange={handleNoteTextChange}
-            className={classes.noteBody}
+          {/*edit note */}
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={handleNoteTextChange}
+            editorStyle={{ height: "30vh" }}
+            toolbar={getEditorToolbar(false)}
           />
           <Grid container>
             <Grid item xs={7} className={classes.lastModified}>
-              Last Modified: {new Date(modifiedTime).toLocaleString()}
+              {modifiedTime &&
+                "Last Modified: " + new Date(modifiedTime).toLocaleString()}
             </Grid>
             <Grid item xs={5} className={classes.formButtons}>
               <Button
@@ -598,17 +638,19 @@ function Notes(props) {
                         secondary={new Date(note.modifiedTime).toLocaleString()}
                       />
                       <ListItemSecondaryAction>
-                        <IconButton
-                          edge="end"
-                          aria-label="editNote"
-                          data-sourceid={note.sourceId}
-                          data-bookcode={note.bookCode}
-                          data-chapter={note.chapter}
-                          data-index={note.index}
-                          onClick={(event) => editNote(event)}
-                        >
-                          <EditIcon />
-                        </IconButton>
+                        {mobileView && (
+                          <IconButton
+                            edge="end"
+                            aria-label="editNote"
+                            data-sourceid={note.sourceId}
+                            data-bookcode={note.bookCode}
+                            data-chapter={note.chapter}
+                            data-index={note.index}
+                            onClick={(event) => editNote(event)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        )}
                         <IconButton
                           edge="end"
                           aria-label="delete"
@@ -652,17 +694,19 @@ function Notes(props) {
                     secondary={new Date(note.modifiedTime).toLocaleString()}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="editNote"
-                      data-sourceid={note.sourceId}
-                      data-bookcode={note.bookCode}
-                      data-chapter={note.chapter}
-                      data-index={note.index}
-                      onClick={(event) => editNote(event)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    {mobileView && (
+                      <IconButton
+                        edge="end"
+                        aria-label="editNote"
+                        data-sourceid={note.sourceId}
+                        data-bookcode={note.bookCode}
+                        data-chapter={note.chapter}
+                        data-index={note.index}
+                        onClick={(event) => editNote(event)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    )}
                     <IconButton
                       edge="end"
                       aria-label="delete"

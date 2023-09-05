@@ -117,7 +117,7 @@ const CommentaryCombo = (props) => {
   };
   const classesI = `material-icons ${classes.icon}`;
   function currentVersion(item){
-    return item.code === commentary.code && item.metadata["Language Name"] === commentary.metadata["Language Name"] ? classes.versionSelected : "";
+    return item?.code === commentary?.code && item?.metadata["Language Name"] === commentary?.metadata["Language Name"] ? classes.versionSelected : "";
     
   }
   React.useEffect(() => {

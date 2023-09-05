@@ -123,12 +123,12 @@ const Video = (props) => {
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
     const youtu = "https://youtu.be/";
-    const vimeoUrl = process.env.REACT_APP_VIDEO_URL + "vimeo/";
+    const vimeoUrl = "https://vumbnail.com/";
     const youtubeUrl = "https://img.youtube.com/vi/";
     const source = url.includes("vimeo") ? "vimeo" : "youtube";
     const id = source === "vimeo" ? url.split(vimeo)[1] : url.split(youtu)[1];
-    const thumbUrl = source === "vimeo" ? vimeoUrl : youtubeUrl;
-    const imageUrl = thumbUrl + id + "/0.jpg";
+    const imageUrl =
+      source === "vimeo" ? vimeoUrl + id + ".jpg" : youtubeUrl + id + "/0.jpg";
     return { source, id, imageUrl };
   };
   const handleVideoClick = (source, id) => {
