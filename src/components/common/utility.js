@@ -33,7 +33,9 @@ export const getVersions = (
           const versionCode = _version?.split("-")[1] || "IRV";
           version = versions
             .find((e) => e?.languageVersions[0]?.language?.code === langCode)
-            .languageVersions.find((e) => e.version.code === versionCode);
+            .languageVersions.find(
+              (e) => e.version.code?.toUpperCase() === versionCode
+            );
         } catch (e) {
           // last read or hindi IRV version not available use first versions
         }
@@ -295,4 +297,55 @@ export const isFeatureNew = (featureDate) => {
   let varDate = new Date(featureDate);
   let today = new Date();
   return varDate >= today ? 1 : 0;
+};
+
+export const getEditorToolbar = (mobile) => {
+  return mobile
+    ? {
+        options: [
+          "inline",
+          "list",
+          "link",
+          "blockType",
+          "fontSize",
+          "colorPicker",
+          "textAlign",
+          "history",
+        ],
+        inline: {
+          options: ["bold", "italic", "underline", "strikethrough"],
+        },
+        list: {
+          inDropdown: true,
+          options: ["unordered", "ordered", "indent", "outdent"],
+        },
+        textAlign: {
+          inDropdown: true,
+          options: ["left", "center", "right"],
+        },
+      }
+    : {
+        options: [
+          "inline",
+          "link",
+          "blockType",
+          "fontSize",
+          "list",
+          "textAlign",
+          "colorPicker",
+          "image",
+          "history",
+        ],
+        inline: {
+          options: ["bold", "italic", "underline", "strikethrough"],
+        },
+        list: {
+          inDropdown: true,
+          options: ["unordered", "ordered", "indent", "outdent"],
+        },
+        textAlign: {
+          inDropdown: true,
+          options: ["left", "center", "right"],
+        },
+      };
 };
