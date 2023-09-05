@@ -175,7 +175,6 @@ const BiblePane = (props) => {
   React.useEffect(() => {
     if (path.startsWith("/study")) {
       setMainValue("errorMessage", "");
-      setMainValue("verseSearch", "");
     }
   }, [path, setMainValue]);
   React.useEffect(() => {

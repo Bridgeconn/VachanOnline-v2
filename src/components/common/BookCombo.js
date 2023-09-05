@@ -19,6 +19,7 @@ import {
   READINGPLANS,
   SEARCH,
 } from "../../store/views";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -162,6 +163,15 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "ellipsis",
     },
   },
+  verseDisplay: {
+    display: "inline-flex",
+    fontSize: "1.1rem",
+    textTransform: "capitalize",
+    border: "1px solid " + BLACK,
+    margin: 4,
+    padding: "5px 10px",
+    borderRadius: 5,
+  },
 }));
 const BookCombo = (props) => {
   const {
@@ -169,6 +179,7 @@ const BookCombo = (props) => {
     bookCode,
     bookList,
     chapter,
+    verseData,
     setValue,
     minimal,
     landingPage,
@@ -387,7 +398,11 @@ const BookCombo = (props) => {
       syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
     }
   };
-  return (
+  return verseData ? (
+    <Typography variant="button" className={classes.verseDisplay}>
+      {`${bookDisplay} ${chapter}:${verseData}`}
+    </Typography>
+  ) : (
     <>
       <BigTooltip title="Choose a Bible book and chapter to read">
         <Button

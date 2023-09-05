@@ -20,7 +20,6 @@ const defaultState = {
   },
   infographics: {},
   errorMessage: "",
-  verseSearch: "",
   audioBible: [],
   video: [],
   readingPlans: [],

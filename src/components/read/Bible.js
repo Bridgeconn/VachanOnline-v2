@@ -266,11 +266,13 @@ const Bible = (props) => {
     sourceId,
     bookCode,
     chapter,
+    verseData,
     version,
     versions,
     fontFamily,
     audio,
     setValue,
+    setValue1,
     scroll,
     paneNo,
     parallelScroll,
@@ -676,6 +678,13 @@ const Bible = (props) => {
       ""
     );
   };
+
+  function handleChapter() {
+    setValue1("verseData", "");
+    setMainValue("bookCode", bookCode);
+    setMainValue("chapter", chapter);
+  }
+
   const getNext = () => {
     if (parallelScroll && paneNo === 2 && mobileView) {
       return "";
@@ -737,6 +746,89 @@ const Bible = (props) => {
                   : `${classes.verseNumber}`;
               const verseNo = verse === 1 ? chapter : item.verseNumber;
               const sectionHeading = getHeading(item.contents);
+              // ############Fetching single verse###########
+              if (verseData) {
+                if (item.verseNumber !== verseData) {
+                  return "";
+                } else {
+                  return (
+                    <span key={item.verseNumber}>
+                      <span data-verse={item.verseNumber}>
+                        <span className={verseClass}>
+                          <span className={verseNumberClass}>
+                            {verseData}
+                            &nbsp;
+                          </span>
+                          {item.verseText + " "}
+                        </span>
+                      </span>
+                      <br />
+                      {verseData !== "" ? (
+                        <Button
+                          id="button"
+                          variant="outlined"
+                          onClick={handleChapter}
+                        >
+                          Read {bookDisplay + " " + chapter}
+                        </Button>
+                      ) : (
+                        ""
+                      )}
+                    </span>
+                  );
+                }
+              }
+              //#############fetching single verse###############
+
+              //######Fetching multiple verses#######
+              // if (verseData && verseSearch) {
+              //   let bookObj = verseSearch.split(/:/);
+              //   let bookChapter = bookObj[0];
+              //   let bookObj1 = verseData.split(/,/);
+              //   console.log(bookObj1, "bookobj1");
+              //   var index;
+              //   for (index = 0; index < bookObj1.length; index++) {
+              //     console.log(index, "index");
+
+              //     if (item.verseNumber !== bookObj1[index]) {
+              //       console.log(
+              //         item.verseNumber,
+              //         bookObj1[index],
+              //         index,
+              //         "item number"
+              //       );
+              //       return "";
+              //     } else {
+              //       return (
+              //         <>
+              //           <span data-verse={item.verseNumber}>
+              //             <span className={verseClass}>
+              //               <span className={verseNumberClass}>
+              //                 {bookObj1[index]}
+              //                 &nbsp;
+              //               </span>
+              //               {item.verseText + " "}
+              //             </span>
+              //           </span>
+              //           <br />
+              //           <Divider />
+              //           {verseData !== "" ? (
+              //             <Button
+              //               id="button"
+              //               variant="contained"
+              //               onClick={handleChapter}
+              //             >
+              //               Read {bookChapter}
+              //             </Button>
+              //           ) : (
+              //             ""
+              //           )}
+              //         </>
+              //       );
+              //     }
+              //   }
+              // }
+              // #######fetching multiple verses##########
               return (
                 <span key={item.verseNumber}>
                   <span className={lineViewClass}>
@@ -897,6 +989,8 @@ const mapDispatchToProps = (dispatch) => {
       }),
     setMainValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    setValue1: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Bible);

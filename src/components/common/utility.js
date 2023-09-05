@@ -266,24 +266,20 @@ const getBookCode = (book, bookList) => {
 };
 //Function to get chapter and book code from reference
 export const getReference = (search, bookList) => {
-  let searchArr = search.split(" ");
-  console.log(searchArr, "array1");
-  const chapterVerse = searchArr.pop();
-  const searchArr1 = chapterVerse.split(/:/);
-  const chapter = Number(searchArr1[0]);
-  const verse = searchArr1[1];
-  //const chapter = Number(searchArr.pop());
-  const bookName = searchArr.join(" ").toLowerCase();
+  const searchArr = search.split(/:/);
+  const bookChapter = searchArr[0].trim();
+  const verse = searchArr[1].replace(/\s/g, "");
+  const searchArr1 = bookChapter.split(" ");
+  const chapter = Number(searchArr1.pop());
+  const bookName = searchArr1.join(" ").toLowerCase();
 
   //check the search string contains book code
   const books = getBookCode(bookName, bookList);
   const bookCode = books.bookCode;
-  const verseSearchText = books.displayBookName + " " + chapterVerse;
-  console.log(bookName, chapter, verse, verseSearchText, "bookname");
   //If search string has book code, then check the corresponding total chapter count
   if (bookCode) {
     if (checkValidChapter(bookCode, chapter)) {
-      return { bookCode, chapter, verse, verseSearchText };
+      return { bookCode, chapter, verse };
     }
   }
   return null;

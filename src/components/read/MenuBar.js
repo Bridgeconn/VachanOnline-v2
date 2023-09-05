@@ -19,7 +19,6 @@ import { BLACK } from "../../store/colorCode";
 import Close from "../common/Close";
 import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
-import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -102,6 +101,7 @@ const MenuBar = (props) => {
     language,
     sourceId,
     chapter,
+    verseData,
     versionBooks,
     versionSource,
     fontSize,
@@ -124,7 +124,6 @@ const MenuBar = (props) => {
     parallelScroll,
     toggleParallelScroll,
     errorMessage,
-    verseSearch,
   } = props;
   const styleProps = { paneNo: paneNo };
   const classes = useStyles(styleProps);
@@ -168,7 +167,6 @@ const MenuBar = (props) => {
     }
     setBookmarkIcon("");
   }, [userDetails, sourceId, bookCode, chapter]);
-  console.log(verseSearch, "verse");
   //Set highlight icon
   React.useEffect(() => {
     if (userDetails.uid !== null) {
@@ -306,35 +304,19 @@ const MenuBar = (props) => {
             paneNo={paneNo}
             language={language}
           />
-
-          {bookCode && verseSearch === "" ? (
-            //<div style={{ display: verse ? "none" : "" }}>
+          {bookCode ? (
             <BookCombo
               paneNo={paneNo}
               bookCode={bookCode}
               bookList={versionBooks[versionSource[sourceId]]}
               chapter={chapter}
-              setValue={setValue}
-              minimal={true}
-            />
-          ) : (
-            //</div>
-            <Typography variant="button" className={classes.verseDisplay}>
-              {verseSearch}
-            </Typography>
-          )}
-          {/* {bookCode ?  (
-            <BookCombo
-              paneNo={paneNo}
-              bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
-              chapter={chapter}
+              verseData={verseData}
               setValue={setValue}
               minimal={true}
             />
           ) : (
             ""
-          )} */}
+          )}
         </Box>
         {errorMessage === "" ? (
           <Box className={classes.items}>
@@ -445,7 +427,6 @@ const mapStateToProps = (state) => {
     mobileView: state.local.mobileView,
     parallelScroll: state.local.parallelScroll,
     errorMessage: state.local.errorMessage,
-    verseSearch: state.local.verseSearch,
   };
 };
 export default connect(mapStateToProps)(MenuBar);
