@@ -43,6 +43,11 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "5.278rem",
     },
   },
+  paper: {
+    [theme.breakpoints.down("sm")]: {
+      margin: 25,
+    },
+  },
   heading: {
     paddingBottom: 10,
     paddingLeft: 15,
@@ -495,7 +500,12 @@ function Notes(props) {
       )}
       {mobileView ? (
         /* mobile view edit list */
-        <Dialog onClose={handleClose} aria-labelledby="note-title" open={open}>
+        <Dialog
+          onClose={handleClose}
+          aria-labelledby="note-title"
+          open={open}
+          classes={{ paper: classes.paper }}
+        >
           <DialogTitle id="note-title" onClose={handleClose}>
             Note for {book} {chapter}:{" "}
             {versesSelected
@@ -507,7 +517,7 @@ function Notes(props) {
               editorState={editorState}
               editorStyle={{ height: "20vh", overflow: "auto" }}
               onEditorStateChange={handleNoteTextChange}
-              toolbar={getEditorToolbar(false)}
+              toolbar={getEditorToolbar(mobileView)}
             />
           </DialogContent>
           <DialogActions>
@@ -548,27 +558,7 @@ function Notes(props) {
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
             editorStyle={{ height: "20vh" }}
-            toolbar={{
-              options: [
-                "inline",
-                "blockType",
-                "fontSize",
-                "list",
-                "textAlign",
-                "colorPicker",
-                "link",
-                "image",
-                "remove",
-                "history",
-              ],
-              textAlign: {
-                inDropdown: false,
-                options: ["left", "center", "right"],
-              },
-              inline: {
-                options: ["bold", "italic", "underline", "strikethrough"],
-              },
-            }}
+            toolbar={getEditorToolbar(true)}
           />
           <Grid container>
             <Grid item xs={7} className={classes.lastModified}>

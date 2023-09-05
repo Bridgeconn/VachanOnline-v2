@@ -29,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 4,
     cursor: "pointer",
   },
+  paper: {
+    [theme.breakpoints.down("sm")]: {
+      margin: 25,
+    },
+  },
   textField: {
     "& textarea": {
       maxHeight: 190,
@@ -186,6 +191,7 @@ function Note({
         onClose={handleClose}
         aria-labelledby="new-note-dialog"
         open={open}
+        classes={{ paper: classes.paper }}
       >
         <DialogTitle id="new-note-dialog" onClose={handleClose}>
           Note

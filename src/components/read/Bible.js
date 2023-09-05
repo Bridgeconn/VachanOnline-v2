@@ -39,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 5,
     },
   },
+  paper: {
+    [theme.breakpoints.down("sm")]: {
+      margin: 25,
+    },
+  },
   bibleReadingPane: {
     position: "absolute",
     paddingTop: 20,
@@ -816,7 +821,7 @@ const Bible = (props) => {
         onClose={handleClose}
         aria-labelledby="mobile-edit-note-dialog"
         open={open}
-        className={classes.editNoteDialog}
+        classes={{ paper: classes.paper }}
       >
         <DialogTitle id="mobile-edit-note-dialog" onClose={handleClose}>
           Note
@@ -826,8 +831,8 @@ const Bible = (props) => {
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
             placeholder="Write your note"
-            editorStyle={{ height: "15vh" }}
-            toolbar={getEditorToolbar(true)}
+            editorStyle={{ height: "20vh" }}
+            toolbar={getEditorToolbar(mobileView)}
           />
         </DialogContent>
         <DialogActions>

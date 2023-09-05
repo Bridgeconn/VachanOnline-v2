@@ -298,14 +298,15 @@ export const isFeatureNew = (featureDate) => {
 };
 
 export const getEditorToolbar = (mobile) => {
+  console.log(mobile);
   return mobile
     ? {
         options: [
           "inline",
           "list",
+          "link",
           "blockType",
           "fontSize",
-          "link",
           "colorPicker",
           "textAlign",
           "history",
@@ -327,18 +328,23 @@ export const getEditorToolbar = (mobile) => {
           "inline",
           "blockType",
           "fontSize",
+          "link",
           "list",
           "textAlign",
           "colorPicker",
-          "link",
           "image",
           "history",
         ],
-        textAlign: {
-          options: ["left", "center", "right"],
-        },
         inline: {
           options: ["bold", "italic", "underline", "strikethrough"],
+        },
+        list: {
+          inDropdown: true,
+          options: ["unordered", "ordered", "indent", "outdent"],
+        },
+        textAlign: {
+          inDropdown: true,
+          options: ["left", "center", "right"],
         },
       };
 };
