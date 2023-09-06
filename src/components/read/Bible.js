@@ -239,6 +239,16 @@ const useStyles = makeStyles((theme) => ({
   editor: {
     padding: 10,
   },
+  readChapterButton: {
+    display: "inline-flex",
+    fontSize: "1rem",
+    textTransform: "capitalize",
+    border: "1px solid #fff",
+    boxShadow: "1px 1px 1px 1px " + color.GREY,
+    margin: 4,
+    padding: "6px 10px",
+    borderRadius: 4,
+  },
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
@@ -768,6 +778,7 @@ const Bible = (props) => {
                           id="button"
                           variant="outlined"
                           onClick={handleChapter}
+                          className={classes.readChapterButton}
                         >
                           Read {bookDisplay + " " + chapter}
                         </Button>

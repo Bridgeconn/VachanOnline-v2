@@ -165,12 +165,13 @@ const useStyles = makeStyles((theme) => ({
   },
   verseDisplay: {
     display: "inline-flex",
-    fontSize: "1.1rem",
+    fontSize: "1rem",
     textTransform: "capitalize",
-    border: "1px solid " + BLACK,
+    border: "1px solid #fff",
+    boxShadow: "1px 1px 1px 1px " + GREY,
     margin: 4,
-    padding: "5px 10px",
-    borderRadius: 5,
+    padding: "6px 10px",
+    borderRadius: 4,
   },
 }));
 const BookCombo = (props) => {
