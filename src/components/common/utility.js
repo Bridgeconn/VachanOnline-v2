@@ -264,11 +264,40 @@ const getBookCode = (book, bookList) => {
   }
   return { bookCode, displayBookName };
 };
+function validVerseFormat(verse) {
+  if (isNaN(verse)) {
+    // check verse range
+    if (verse?.match(/^[0-9-]*$/g)) {
+      const [start, end, last] = verse.split("-");
+      if (
+        !isNaN(start) &&
+        !isNaN(end) &&
+        parseInt(start) <= parseInt(end) &&
+        last === undefined
+      ) {
+        return true;
+      }
+    }
+    // check multi verse
+    if (verse?.match(/^[0-9,]*$/g)) {
+      const verseArr = verse.split(",");
+      if (verseArr.every((num) => num !== "" && !isNaN(num))) {
+        return true;
+      }
+    }
+  } else {
+    return true;
+  }
+  return false;
+}
 //Function to get chapter and book code from reference
 export const getReference = (search, bookList) => {
   const searchArr = search.split(/:/);
   const bookChapter = searchArr[0].trim();
-  const verse = searchArr[1].replace(/\s/g, "");
+  const verse = searchArr[1]?.replace(/\s/g, "");
+  if (!validVerseFormat(verse)) {
+    return null;
+  }
   const searchArr1 = bookChapter.split(" ");
   const chapter = Number(searchArr1.pop());
   const bookName = searchArr1.join(" ").toLowerCase();

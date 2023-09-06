@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "2em",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+    width: "100%",
     "&::-webkit-scrollbar": {
       width: "0.45em",
     },
@@ -120,12 +121,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   text: {
-    paddingBottom: 30,
+    padding: "0 25px 30px",
     marginBottom: 20,
+    maxWidth: 1191,
     [`@media print`]: {
       fontSize: "1.2rem",
     },
-    maxWidth: "1366px",
     [theme.breakpoints.up("md")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
@@ -133,7 +134,6 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 50,
       padding: "0 0 50px 5px",
     },
-    padding: "0 25px",
   },
   verseText: {
     paddingTop: 4,
@@ -248,6 +248,9 @@ const useStyles = makeStyles((theme) => ({
     margin: 4,
     padding: "6px 10px",
     borderRadius: 4,
+  },
+  verseDiv: {
+    paddingTop: 12,
   },
 }));
 const Bible = (props) => {
@@ -691,8 +694,6 @@ const Bible = (props) => {
 
   function handleChapter() {
     setValue1("verseData", "");
-    setMainValue("bookCode", bookCode);
-    setMainValue("chapter", chapter);
   }
 
   const getNext = () => {
@@ -711,6 +712,35 @@ const Bible = (props) => {
       ""
     );
   };
+
+  useEffect(() => {
+    if (verses?.length > 0 && verseData !== "") {
+      const verseArr = verses.map((a) => a.verseNumber);
+      if (isNaN(verseData)) {
+        //check for verse range
+        if (verseData?.match(/^[0-9-]*$/g)) {
+          const [start, end] = verseData.split("-");
+          if (!verseArr.includes(start)) {
+            setMainValue("errorMessage", "notFound");
+          }
+          if (!verseArr.includes(end)) {
+            setMainValue("errorMessage", "notFound");
+          }
+        }
+        // check for multi verse
+        if (verseData?.match(/^[0-9,]*$/g)) {
+          if (!verseData.split(",").every((num) => verseArr.includes(num))) {
+            setMainValue("errorMessage", "notFound");
+          }
+        }
+      } else {
+        // check for single verse
+        if (!verseArr.includes(verseData)) {
+          setMainValue("errorMessage", "notFound");
+        }
+      }
+    }
+  }, [verses, verseData, setMainValue]);
   return (
     <div
       className={classes.biblePanel}
@@ -737,7 +767,7 @@ const Bible = (props) => {
             <Typography className={classes.bookRef} variant="h4">
               {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
-            {chapterHeading !== "" ? (
+            {chapterHeading !== "" && verseData === "" ? (
               <span className={classes.sectionHeading}>{chapterHeading}</span>
             ) : (
               ""
@@ -758,88 +788,41 @@ const Bible = (props) => {
               const sectionHeading = getHeading(item.contents);
               // ############Fetching single verse###########
               if (verseData) {
-                if (item.verseNumber !== verseData) {
+                if (isNaN(verseData)) {
+                  // verse range
+                  if (verseData?.match(/^[0-9-]*$/g)) {
+                    const [start, end] = verseData.split("-");
+                    if (
+                      item.verseNumber < parseInt(start) ||
+                      parseInt(end) < item.verseNumber
+                    ) {
+                      return "";
+                    }
+                  }
+                  // multi verse
+                  if (verseData?.match(/^[0-9,]*$/g)) {
+                    if (!verseData.split(",").includes(item.verseNumber)) {
+                      return "";
+                    }
+                  }
+                } else if (item.verseNumber !== verseData) {
                   return "";
-                } else {
-                  return (
-                    <span key={item.verseNumber}>
-                      <span data-verse={item.verseNumber}>
-                        <span className={verseClass}>
-                          <span className={verseNumberClass}>
-                            {verseData}
-                            &nbsp;
-                          </span>
-                          {item.verseText + " "}
-                        </span>
-                      </span>
-                      <br />
-                      {verseData !== "" ? (
-                        <Button
-                          id="button"
-                          variant="outlined"
-                          onClick={handleChapter}
-                          className={classes.readChapterButton}
-                        >
-                          Read {bookDisplay + " " + chapter}
-                        </Button>
-                      ) : (
-                        ""
-                      )}
-                    </span>
-                  );
                 }
+                return (
+                  <span key={item.verseNumber} className={classes.verseDiv}>
+                    <span data-verse={item.verseNumber}>
+                      <span className={verseClass}>
+                        <span className={verseNumberClass}>
+                          {item.verseNumber}
+                          &nbsp;
+                        </span>
+                        {item.verseText + " "}
+                      </span>
+                    </span>
+                    <br />
+                  </span>
+                );
               }
-              //#############fetching single verse###############
-
-              //######Fetching multiple verses#######
-              // if (verseData && verseSearch) {
-              //   let bookObj = verseSearch.split(/:/);
-              //   let bookChapter = bookObj[0];
-              //   let bookObj1 = verseData.split(/,/);
-              //   console.log(bookObj1, "bookobj1");
-              //   var index;
-              //   for (index = 0; index < bookObj1.length; index++) {
-              //     console.log(index, "index");
-
-              //     if (item.verseNumber !== bookObj1[index]) {
-              //       console.log(
-              //         item.verseNumber,
-              //         bookObj1[index],
-              //         index,
-              //         "item number"
-              //       );
-              //       return "";
-              //     } else {
-              //       return (
-              //         <>
-              //           <span data-verse={item.verseNumber}>
-              //             <span className={verseClass}>
-              //               <span className={verseNumberClass}>
-              //                 {bookObj1[index]}
-              //                 &nbsp;
-              //               </span>
-              //               {item.verseText + " "}
-              //             </span>
-              //           </span>
-              //           <br />
-              //           <Divider />
-              //           {verseData !== "" ? (
-              //             <Button
-              //               id="button"
-              //               variant="contained"
-              //               onClick={handleChapter}
-              //             >
-              //               Read {bookChapter}
-              //             </Button>
-              //           ) : (
-              //             ""
-              //           )}
-              //         </>
-              //       );
-              //     }
-              //   }
-              // }
-              // #######fetching multiple verses##########
               return (
                 <span key={item.verseNumber}>
                   <span className={lineViewClass}>
@@ -881,6 +864,18 @@ const Bible = (props) => {
                 </span>
               );
             })}
+            {verseData !== "" ? (
+              <Button
+                id="button"
+                variant="outlined"
+                onClick={handleChapter}
+                className={classes.readChapterButton}
+              >
+                Read {bookDisplay + " " + chapter}
+              </Button>
+            ) : (
+              ""
+            )}
             {/* <div className={classes.footNotes}>
               <Typography className={classes.noteTitle} variant="h4">
                 Notes :

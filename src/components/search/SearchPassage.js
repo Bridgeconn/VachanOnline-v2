@@ -74,11 +74,7 @@ const SearchPassage = (props) => {
     versionSource,
   } = props;
 
-  // bookList={versionBooks[versionSource[panel1.sourceId]]}
-  // React.useEffect(() => {
   const bookList = versionBooks[versionSource[panel1.sourceId]];
-  //   console.log(bookList);
-  // }, [panel1.bookCode, panel1.sourceId, versionBooks, versionSource]);
 
   function handleClose() {
     setShowTextBox(false);
@@ -96,6 +92,7 @@ const SearchPassage = (props) => {
 
   function showSearchResult(event) {
     event.preventDefault();
+    setValue("errorMessage", "");
     const search = event.target.search.value;
 
     if (search) {
