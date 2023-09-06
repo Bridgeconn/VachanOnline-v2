@@ -8,7 +8,8 @@ export const getVersions = (
   setValue,
   _version,
   _bookCode,
-  _chapter
+  _chapter,
+  _verseData
 ) => {
   API.get("bibles")
     .then(function (response) {
@@ -50,7 +51,8 @@ export const getVersions = (
           setPaneValue,
           setValue,
           _bookCode,
-          _chapter
+          _chapter,
+          _verseData
         );
         let versionSource = {};
         for (let lang of versions) {
@@ -87,7 +89,8 @@ export const getAllBooks = (
   setPaneValue,
   setValue,
   bookCode,
-  chapter
+  chapter,
+  verseData
 ) => {
   API.get("booknames")
     .then(function (response) {
@@ -102,6 +105,7 @@ export const getAllBooks = (
       if (response.data && response.data.length > 0) {
         setPaneValue("bookCode", bookCode || "jhn");
         setPaneValue("chapter", chapter || "1");
+        setPaneValue("verseData", verseData || "");
       }
     })
     .catch(function (error) {
@@ -294,7 +298,7 @@ function validVerseFormat(verse) {
 export const getReference = (search, bookList) => {
   const searchArr = search.split(/:/);
   const bookChapter = searchArr[0].trim();
-  const verse = searchArr[1]?.replace(/\s/g, "");
+  const verse = searchArr[1]?.replace(/\s/g, "") || "";
   if (verse && !validVerseFormat(verse)) {
     return null;
   }

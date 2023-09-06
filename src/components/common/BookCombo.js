@@ -24,7 +24,7 @@ import { Typography } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
-    margin: 9,
+    margin: 4,
     padding: "6px 0 6px 12px",
     textTransform: "capitalize",
     backgroundColor: "#fff",
@@ -261,11 +261,12 @@ const BookCombo = (props) => {
     return bookMap;
   }
   const setParams = React.useCallback(
-    (bookCode, chapter) => {
+    (bookCode, chapter, verseData) => {
       if (path.startsWith("/read") && paramVersion !== null) {
+        const verse = verseData ? "." + verseData : "";
         setSearchParams({
           version: paramVersion,
-          reference: bookCode + "+" + chapter,
+          reference: bookCode + "." + chapter + verse,
         });
       }
     },
@@ -280,9 +281,10 @@ const BookCombo = (props) => {
     if (paneNo !== 2) {
       localStorage.setItem("bookCode", bookCode);
       localStorage.setItem("chapter", chapter);
-      setParams(bookCode, chapter);
+      localStorage.setItem("verseData", verseData);
+      setParams(bookCode, chapter, verseData);
     }
-  }, [paneNo, bookCode, chapter, setParams]);
+  }, [paneNo, bookCode, chapter, verseData, setParams]);
   //on changing book code set chapter row
   React.useEffect(() => {
     setChapterRow(chapterOpenMap.get(bookCode));

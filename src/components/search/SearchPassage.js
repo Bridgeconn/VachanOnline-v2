@@ -97,18 +97,11 @@ const SearchPassage = (props) => {
 
     if (search) {
       const ref = getReference(search, bookList);
-      console.log(ref, "ref");
-      if (ref && ref.verse === undefined) {
-        setValue1("chapter", ref.chapter);
-        setValue1("bookCode", ref.bookCode);
-        setValue("errorMessage", "");
-      } else if (ref) {
-        //To show error message if invalid reference
+      if (ref) {
         setValue1("chapter", ref.chapter);
         setValue1("bookCode", ref.bookCode);
         setValue1("verseData", ref.verse);
         setValue("errorMessage", "");
-        console.log(ref.verse, "versedata");
       } else {
         setValue("errorMessage", "notFound");
       }

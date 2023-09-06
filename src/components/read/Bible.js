@@ -25,6 +25,7 @@ import { ContentState, EditorState, convertToRaw } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
 import { Editor } from "react-draft-wysiwyg";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -274,7 +275,8 @@ const Bible = (props) => {
   const cancelToken = React.useRef();
   const firebase = useFirebase();
   const [open, setOpen] = React.useState(false);
-
+  const location = useLocation();
+  const path = location?.pathname;
   let {
     sourceId,
     bookCode,
@@ -849,6 +851,8 @@ const Bible = (props) => {
                         onClick={() =>
                           mobileView
                             ? openNoteDialog(verse)
+                            : path.startsWith("/read")
+                            ? ""
                             : setParallelView(NOTE)
                         }
                       />

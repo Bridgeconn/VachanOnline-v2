@@ -43,12 +43,14 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 425,
     paddingBottom: 20,
     border: "1px #000000",
-    boxShadow: "1px 1px 1px 1px " + GREY,
     lineHeight: "1.8rem",
     fontSize: "16px",
     [theme.breakpoints.down("sm")]: {
       marginLeft: 10,
       marginRight: 10,
+    },
+    [theme.breakpoints.up("md")]: {
+      boxShadow: "1px 1px 1px 1px " + GREY,
     },
   },
   listError: {

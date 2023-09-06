@@ -303,10 +303,11 @@ const MenuBar = (props) => {
             version={version}
             bookCode={bookCode}
             chapter={chapter}
+            verseData={verseData}
             paneNo={paneNo}
             language={language}
           />
-          {bookCode ? (
+          {bookCode && errorMessage === "" ? (
             <BookCombo
               paneNo={paneNo}
               bookCode={bookCode}
@@ -322,8 +323,8 @@ const MenuBar = (props) => {
         </Box>
         {errorMessage === "" ? (
           <Box className={classes.items}>
-            {mobileView ? null : noteIcon}
-            {mobileView ? null : highlightIcon}
+            {mobileView || verseData !== "" ? null : noteIcon}
+            {mobileView || verseData !== "" ? null : highlightIcon}
 
             {bookmarkIcon}
             <Metadata
