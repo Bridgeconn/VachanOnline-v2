@@ -295,7 +295,7 @@ export const getReference = (search, bookList) => {
   const searchArr = search.split(/:/);
   const bookChapter = searchArr[0].trim();
   const verse = searchArr[1]?.replace(/\s/g, "");
-  if (!validVerseFormat(verse)) {
+  if (verse && !validVerseFormat(verse)) {
     return null;
   }
   const searchArr1 = bookChapter.split(" ");

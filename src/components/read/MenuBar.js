@@ -199,6 +199,7 @@ const MenuBar = (props) => {
     setSelectedVerses,
     refUrl,
     highlights,
+    errorMessage,
   ]);
 
   //Set note icon
@@ -236,6 +237,7 @@ const MenuBar = (props) => {
     bookCode,
     chapter,
     classes.info,
+    errorMessage,
   ]);
   const handleDialogOpen = () => {
     setDialogOpen(true);

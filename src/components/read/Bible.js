@@ -531,6 +531,7 @@ const Bible = (props) => {
     if (!isLoading && Object.keys(previous).length > 0) {
       setValue("chapter", previous.chapterId);
       setValue("bookCode", previous.bibleBookCode);
+      setValue("verseData", "");
       setValue("versesSelected", []);
       if (parallelScroll && paneNo) {
         syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
@@ -542,6 +543,7 @@ const Bible = (props) => {
     if (!isLoading && Object && Object.keys(next).length > 0) {
       setValue("chapter", next.chapterId);
       setValue("bookCode", next.bibleBookCode);
+      setValue("verseData", "");
       setValue("versesSelected", []);
       if (parallelScroll && paneNo) {
         syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
@@ -819,7 +821,7 @@ const Bible = (props) => {
                         {item.verseText + " "}
                       </span>
                     </span>
-                    <br />
+                    {verseData.includes(",") && <br />}
                   </span>
                 );
               }
@@ -864,6 +866,7 @@ const Bible = (props) => {
                 </span>
               );
             })}
+            <br />
             {verseData !== "" ? (
               <Button
                 id="button"
