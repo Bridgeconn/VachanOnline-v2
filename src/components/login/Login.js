@@ -1,5 +1,5 @@
 import React from "react";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import Button from "@material-ui/core/Button";
