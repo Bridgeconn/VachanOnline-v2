@@ -16,6 +16,7 @@ import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
 import { Tooltip } from "@material-ui/core";
+import SearchPassage from "../search/SearchPassage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,6 +97,7 @@ const TopBar = (props) => {
   const theme = useTheme();
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
+  const [hideIcons, setHideIcons] = React.useState(false);
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
@@ -240,6 +242,9 @@ const TopBar = (props) => {
       </Tooltip>
     );
   };
+  const searchBox = () => {
+    return <SearchPassage setHideIcons={setHideIcons} />;
+  };
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
@@ -258,9 +263,16 @@ const TopBar = (props) => {
           {path.startsWith("/biblestories") || path.startsWith("/read")
             ? ""
             : StoriesButton()}
-          {path.startsWith("/study") ? ReadButton() : StudyButton()}
-          {FeedbackButton()}
-          {loginButton}
+          {path.startsWith("/read") ? searchBox() : ""}
+          {hideIcons ? (
+            ""
+          ) : (
+            <>
+              {path.startsWith("/study") ? ReadButton() : StudyButton()}
+              {FeedbackButton()}
+              {loginButton}
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </div>

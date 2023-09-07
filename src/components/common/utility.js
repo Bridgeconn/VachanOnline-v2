@@ -1,5 +1,5 @@
 import { readingPlanAPI, signBibleAPI, API } from "../../store/api";
-import { bibleBooks } from "../../store/bibleData";
+import { bibleBooks, bibleChapters } from "../../store/bibleData";
 //Function to get the bible versions
 export const getVersions = (
   setVersions,
@@ -8,7 +8,8 @@ export const getVersions = (
   setValue,
   _version,
   _bookCode,
-  _chapter
+  _chapter,
+  _verseData
 ) => {
   API.get("bibles")
     .then(function (response) {
@@ -50,7 +51,8 @@ export const getVersions = (
           setPaneValue,
           setValue,
           _bookCode,
-          _chapter
+          _chapter,
+          _verseData
         );
         let versionSource = {};
         for (let lang of versions) {
@@ -87,7 +89,8 @@ export const getAllBooks = (
   setPaneValue,
   setValue,
   bookCode,
-  chapter
+  chapter,
+  verseData
 ) => {
   API.get("booknames")
     .then(function (response) {
@@ -102,6 +105,7 @@ export const getAllBooks = (
       if (response.data && response.data.length > 0) {
         setPaneValue("bookCode", bookCode || "jhn");
         setPaneValue("chapter", chapter || "1");
+        setPaneValue("verseData", verseData || "");
       }
     })
     .catch(function (error) {
@@ -234,7 +238,81 @@ export const getShortBook = (books, lang, bookCode) => {
     return books[lang][id]?.short;
   }
 };
+const checkValidChapter = (bookCode, chapter) => {
+  if (chapter > 0 && !Number.isNaN(chapter)) {
+    const chapterCount = bibleChapters[bookCode];
+    return chapterCount >= chapter;
+  }
+  return false;
+};
+const getBookCode = (book, bookList) => {
+  let bookCode = "";
+  // check the search string contains full English Book Name
+  let bookObj = bibleBooks.find((b) => b.book.toLowerCase() === book);
+  if (bookObj) {
+    bookCode = bookObj.abbreviation;
+  } else {
+    bookObj = bookList.find(
+      (b) =>
+        b.abbr.toLowerCase() === book ||
+        b.short.toLowerCase() === book ||
+        b.long.toLowerCase() === book ||
+        b.book_code.toLowerCase() === book
+    );
+    if (bookObj) {
+      bookCode = bookObj.book_code;
+    }
+  }
+  return bookCode;
+};
+function validVerseFormat(verse) {
+  if (isNaN(verse)) {
+    // check verse range
+    if (verse?.match(/^[0-9-]*$/g)) {
+      const [start, end, last] = verse.split("-");
+      if (
+        !isNaN(start) &&
+        !isNaN(end) &&
+        parseInt(start) <= parseInt(end) &&
+        last === undefined
+      ) {
+        return true;
+      }
+    }
+    // check multi verse
+    if (verse?.match(/^[0-9,]*$/g)) {
+      const verseArr = verse.split(",");
+      if (verseArr.every((num) => num !== "" && !isNaN(num))) {
+        return true;
+      }
+    }
+  } else {
+    return true;
+  }
+  return false;
+}
+//Function to get chapter and book code from reference
+export const getReference = (search, bookList) => {
+  const searchArr = search.split(/:/);
+  const bookChapter = searchArr[0].trim();
+  const verse = searchArr[1]?.replace(/\s/g, "") || "";
+  if (verse && !validVerseFormat(verse)) {
+    return null;
+  }
+  const searchArr1 = bookChapter.split(/\s+/);
+  const chapter = Number(searchArr1.pop());
+  const bookName = searchArr1.join(" ").toLowerCase();
 
+  //check the search string contains valid book
+  const bookCode = getBookCode(bookName, bookList);
+  //If search string has book code, then check the corresponding total chapter count
+  if (bookCode) {
+    if (checkValidChapter(bookCode, chapter)) {
+      return { bookCode, chapter, verse };
+    }
+  }
+  return null;
+};
 //Function to search Bible
 export const searchBible = (sourceId, keyword, bookNames, setResult) => {
   API.get("search/" + sourceId + "?keyword=" + encodeURIComponent(keyword))

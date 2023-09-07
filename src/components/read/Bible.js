@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
@@ -25,6 +25,7 @@ import { ContentState, EditorState, convertToRaw } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
 import { Editor } from "react-draft-wysiwyg";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -52,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "2em",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+    width: "100%",
     "&::-webkit-scrollbar": {
       width: "0.45em",
     },
@@ -120,12 +122,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   text: {
-    paddingBottom: 30,
+    padding: "12px 25px 30px",
     marginBottom: 20,
+    maxWidth: 1191,
     [`@media print`]: {
       fontSize: "1.2rem",
     },
-    maxWidth: "1366px",
     [theme.breakpoints.up("md")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
@@ -133,7 +135,6 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 50,
       padding: "0 0 50px 5px",
     },
-    padding: "0 25px",
   },
   verseText: {
     paddingTop: 4,
@@ -239,6 +240,16 @@ const useStyles = makeStyles((theme) => ({
   editor: {
     padding: 10,
   },
+  readChapterButton: {
+    display: "inline-flex",
+    fontSize: "1rem",
+    textTransform: "capitalize",
+    border: "1px solid #fff",
+    boxShadow: "1px 1px 1px 1px " + color.GREY,
+    margin: 4,
+    padding: "6px 10px",
+    borderRadius: 4,
+  },
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
@@ -261,16 +272,19 @@ const Bible = (props) => {
   const cancelToken = React.useRef();
   const firebase = useFirebase();
   const [open, setOpen] = React.useState(false);
-
+  const location = useLocation();
+  const path = location?.pathname;
   let {
     sourceId,
     bookCode,
     chapter,
+    verseData,
     version,
     versions,
     fontFamily,
     audio,
     setValue,
+    setValue1,
     scroll,
     paneNo,
     parallelScroll,
@@ -516,6 +530,7 @@ const Bible = (props) => {
     if (!isLoading && Object.keys(previous).length > 0) {
       setValue("chapter", previous.chapterId);
       setValue("bookCode", previous.bibleBookCode);
+      setValue("verseData", "");
       setValue("versesSelected", []);
       if (parallelScroll && paneNo) {
         syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
@@ -527,6 +542,7 @@ const Bible = (props) => {
     if (!isLoading && Object && Object.keys(next).length > 0) {
       setValue("chapter", next.chapterId);
       setValue("bookCode", next.bibleBookCode);
+      setValue("verseData", "");
       setValue("versesSelected", []);
       if (parallelScroll && paneNo) {
         syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
@@ -676,6 +692,11 @@ const Bible = (props) => {
       ""
     );
   };
+
+  function handleChapter() {
+    setValue1("verseData", "");
+  }
+
   const getNext = () => {
     if (parallelScroll && paneNo === 2 && mobileView) {
       return "";
@@ -692,6 +713,40 @@ const Bible = (props) => {
       ""
     );
   };
+
+  useEffect(() => {
+    if (verses?.length > 0 && verseData !== "") {
+      const verseArr = verses.map((a) => a.verseNumber);
+      if (isNaN(verseData)) {
+        //check for verse range
+        if (verseData?.match(/^[0-9-]*$/g)) {
+          const [start, end] = verseData.split("-");
+          if (!verseArr.includes(start)) {
+            setMainValue("errorMessage", "notFound");
+          }
+          if (!verseArr.includes(end)) {
+            setMainValue("errorMessage", "notFound");
+          }
+        }
+        // check for multi verse
+        if (verseData?.match(/^[0-9,]*$/g)) {
+          if (!verseData.split(",").every((num) => verseArr.includes(num))) {
+            setMainValue("errorMessage", "notFound");
+          }
+        }
+      } else {
+        // check for single verse
+        if (!verseArr.includes(verseData)) {
+          setMainValue("errorMessage", "notFound");
+        }
+      }
+    }
+  }, [verses, verseData, setMainValue]);
+  React.useEffect(() => {
+    if (path.startsWith("/read") && verseData !== "") {
+      setValue("versesSelected", []);
+    }
+  }, [path, setValue, verseData]);
   return (
     <div
       className={classes.biblePanel}
@@ -718,7 +773,7 @@ const Bible = (props) => {
             <Typography className={classes.bookRef} variant="h4">
               {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
-            {chapterHeading !== "" ? (
+            {chapterHeading !== "" && verseData === "" ? (
               <span className={classes.sectionHeading}>{chapterHeading}</span>
             ) : (
               ""
@@ -737,6 +792,43 @@ const Bible = (props) => {
                   : `${classes.verseNumber}`;
               const verseNo = verse === 1 ? chapter : item.verseNumber;
               const sectionHeading = getHeading(item.contents);
+              // ############Fetching single verse###########
+              if (verseData) {
+                if (isNaN(verseData)) {
+                  // verse range
+                  if (verseData?.match(/^[0-9-]*$/g)) {
+                    const [start, end] = verseData.split("-");
+                    if (
+                      item.verseNumber < parseInt(start) ||
+                      parseInt(end) < item.verseNumber
+                    ) {
+                      return "";
+                    }
+                  }
+                  // multi verse
+                  if (verseData?.match(/^[0-9,]*$/g)) {
+                    if (!verseData.split(",").includes(item.verseNumber)) {
+                      return "";
+                    }
+                  }
+                } else if (item.verseNumber !== verseData) {
+                  return "";
+                }
+                return (
+                  <span key={item.verseNumber}>
+                    <span data-verse={item.verseNumber}>
+                      <span className={verseClass}>
+                        <span className={verseNumberClass}>
+                          {item.verseNumber}
+                          &nbsp;
+                        </span>
+                        {item.verseText + " "}
+                      </span>
+                    </span>
+                    {verseData.includes(",") && <br />}
+                  </span>
+                );
+              }
               return (
                 <span key={item.verseNumber}>
                   <span className={lineViewClass}>
@@ -761,6 +853,8 @@ const Bible = (props) => {
                         onClick={() =>
                           mobileView
                             ? openNoteDialog(verse)
+                            : path.startsWith("/read")
+                            ? ""
                             : setParallelView(NOTE)
                         }
                       />
@@ -778,6 +872,19 @@ const Bible = (props) => {
                 </span>
               );
             })}
+            <br />
+            {verseData !== "" ? (
+              <Button
+                id="button"
+                variant="outlined"
+                onClick={handleChapter}
+                className={classes.readChapterButton}
+              >
+                Read {bookDisplay + " " + chapter}
+              </Button>
+            ) : (
+              ""
+            )}
             {/* <div className={classes.footNotes}>
               <Typography className={classes.noteTitle} variant="h4">
                 Notes :
@@ -897,6 +1004,8 @@ const mapDispatchToProps = (dispatch) => {
       }),
     setMainValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    setValue1: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Bible);
