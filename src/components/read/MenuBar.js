@@ -141,8 +141,6 @@ const MenuBar = (props) => {
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  // const [verse, setVerse] = React.useState(true);
-  // const verseSearch1="Jude 1:1";
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
@@ -167,6 +165,7 @@ const MenuBar = (props) => {
     }
     setBookmarkIcon("");
   }, [userDetails, sourceId, bookCode, chapter]);
+
   //Set highlight icon
   React.useEffect(() => {
     if (userDetails.uid !== null) {
@@ -199,7 +198,6 @@ const MenuBar = (props) => {
     setSelectedVerses,
     refUrl,
     highlights,
-    errorMessage,
   ]);
 
   //Set note icon
@@ -237,7 +235,6 @@ const MenuBar = (props) => {
     bookCode,
     chapter,
     classes.info,
-    errorMessage,
   ]);
   const handleDialogOpen = () => {
     setDialogOpen(true);

@@ -247,12 +247,10 @@ const checkValidChapter = (bookCode, chapter) => {
 };
 const getBookCode = (book, bookList) => {
   let bookCode = "";
-  let displayBookName = "";
-  // check the search string contains full Book Name
+  // check the search string contains full English Book Name
   let bookObj = bibleBooks.find((b) => b.book.toLowerCase() === book);
   if (bookObj) {
     bookCode = bookObj.abbreviation;
-    displayBookName = bookObj.book;
   } else {
     bookObj = bookList.find(
       (b) =>
@@ -263,10 +261,9 @@ const getBookCode = (book, bookList) => {
     );
     if (bookObj) {
       bookCode = bookObj.book_code;
-      displayBookName = bookObj.short;
     }
   }
-  return { bookCode, displayBookName };
+  return bookCode;
 };
 function validVerseFormat(verse) {
   if (isNaN(verse)) {
@@ -302,13 +299,12 @@ export const getReference = (search, bookList) => {
   if (verse && !validVerseFormat(verse)) {
     return null;
   }
-  const searchArr1 = bookChapter.split(" ");
+  const searchArr1 = bookChapter.split(/\s+/);
   const chapter = Number(searchArr1.pop());
   const bookName = searchArr1.join(" ").toLowerCase();
 
-  //check the search string contains book code
-  const books = getBookCode(bookName, bookList);
-  const bookCode = books.bookCode;
+  //check the search string contains valid book
+  const bookCode = getBookCode(bookName, bookList);
   //If search string has book code, then check the corresponding total chapter count
   if (bookCode) {
     if (checkValidChapter(bookCode, chapter)) {

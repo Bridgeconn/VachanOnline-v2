@@ -5,8 +5,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
 import { connect } from "react-redux";
 import { SETVALUE, SETVALUE1 } from "../../store/actions";
-import { BLACK, WHITE } from "../../store/colorCode";
-import { SIGNBIBLE } from "../../store/views";
+import { BLACK } from "../../store/colorCode";
 import { getReference } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,29 +30,10 @@ const useStyles = makeStyles((theme) => ({
     padding: "8px 8px 0",
     color: BLACK,
   },
-  paper: {
-    position: "relative",
-    maxHeight: "calc(100vh - 170px)",
-    width: 358,
-    backgroundColor: WHITE,
-    color: "#2a2a2a",
-    "@media (max-width: 370px)": {
-      width: 320,
-    },
-  },
-  hide: {
-    display: "none",
-  },
-  textField: {
-    marginTop: 20,
-    marginBottom: 20,
-    marginRight: 20,
-    width: 350,
-  },
   input: {
     height: "80px",
   },
-  cancelbtn: {
+  cancelBtn: {
     marginLeft: "-10px",
     textTransform: "capitalize",
     fontWeight: "bold",
@@ -134,16 +114,12 @@ const SearchPassage = (props) => {
           autoComplete="off"
           onChange={handleSearchTextChange}
         />
-        <IconButton
-          type="submit"
-          // className={classes.searchButton}
-          //aria-label="search"
-        >
+        <IconButton type="submit">
           <SearchIcon />
         </IconButton>
       </Paper>
       {mobileView && (
-        <Button className={classes.cancelbtn} onClick={handleClose}>
+        <Button className={classes.cancelBtn} onClick={handleClose}>
           Cancel
         </Button>
       )}
@@ -161,8 +137,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    setParallelView: () =>
-      dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
     setValue1: (name, value) =>
       dispatch({ type: SETVALUE1, name: name, value: value }),
     setValue: (name, value) =>

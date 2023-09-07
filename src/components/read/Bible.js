@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   text: {
-    padding: "0 25px 30px",
+    padding: "12px 25px 30px",
     marginBottom: 20,
     maxWidth: 1191,
     [`@media print`]: {
@@ -249,9 +249,6 @@ const useStyles = makeStyles((theme) => ({
     margin: 4,
     padding: "6px 10px",
     borderRadius: 4,
-  },
-  verseDiv: {
-    paddingTop: 12,
   },
 }));
 const Bible = (props) => {
@@ -745,6 +742,11 @@ const Bible = (props) => {
       }
     }
   }, [verses, verseData, setMainValue]);
+  React.useEffect(() => {
+    if (path.startsWith("/read") && verseData !== "") {
+      setValue("versesSelected", []);
+    }
+  }, [path, setValue, verseData]);
   return (
     <div
       className={classes.biblePanel}
@@ -813,7 +815,7 @@ const Bible = (props) => {
                   return "";
                 }
                 return (
-                  <span key={item.verseNumber} className={classes.verseDiv}>
+                  <span key={item.verseNumber}>
                     <span data-verse={item.verseNumber}>
                       <span className={verseClass}>
                         <span className={verseNumberClass}>

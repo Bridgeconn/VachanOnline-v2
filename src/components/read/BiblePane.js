@@ -36,28 +36,36 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
   },
   errorSearchMessage: {
-    marginLeft: 400,
-    paddingLeft: 5,
+    margin: "0 auto",
+    width: "90vw",
     marginTop: 20,
-    paddingTop: 10,
-    marginRight: 425,
-    paddingBottom: 20,
+    maxWidth: 1191,
+    padding: 15,
+    paddingLeft: 25,
     border: "1px #000000",
     lineHeight: "1.8rem",
     fontSize: "16px",
     [theme.breakpoints.down("sm")]: {
-      marginLeft: 10,
-      marginRight: 10,
+      margin: "15px 10px 15px 15px",
+      padding: 8,
     },
     [theme.breakpoints.up("md")]: {
       boxShadow: "1px 1px 1px 1px " + GREY,
     },
   },
   listError: {
-    paddingLeft: 10,
-    // paddingRight: 10,
-    paddingTop: 5,
-    // paddingBottom: 10,
+    [theme.breakpoints.down("sm")]: {
+      paddingInlineStart: 30,
+    },
+    "& li": {
+      marginTop: 5,
+    },
+  },
+  searchBtn: {
+    boxShadow: "1px 1px 1px 1px " + GREY,
+    margin: 5,
+    padding: "6px 10px",
+    borderRadius: 4,
   },
 }));
 
@@ -99,44 +107,42 @@ const BiblePane = (props) => {
   }
   const notFoundMessage = (
     <div className={classes.errorSearchMessage}>
-      <span className={classes.listError}>
-        <b>Sorry, we didn't find any results for your search</b>
-        <br />
-        <li className={classes.listError}>
+      <h5>Sorry, we didn't find any results for your search</h5>
+      <ul className={classes.listError}>
+        <li>
           Double-check spelling, you can use either book code,full book name or
           local book name
         </li>
-        <li className={classes.listError}>
+        <li>
           For a Chapter search, Make sure there are spaces between book name and
           chapter
         </li>
-        <li className={classes.listError}>
+        <li>
           For a verse search, use this format. eg: psalms 5:8 or psalms 5:8,10
         </li>
-        <li className={classes.listError}>
-          For a passage search, use this format. eg: psalms 5:10-15
+        <li>For a passage search, use this format. eg: psalms 5:10-15</li>
+        <li>
+          If you are searching for a word in the bible, click the button below
         </li>
-        <li className={classes.listError}>
-          If you are searching for a word, click here &nbsp;
-          <Link
-            to={{
-              pathname: "/study",
-            }}
+        <Link
+          to={{
+            pathname: "/study",
+          }}
+        >
+          <Button
+            variant="outlined"
+            size="small"
+            title="Search Text"
+            aria-label="search text"
+            target="_blank"
+            rel="noOpener"
+            onClick={goToSearch}
+            className={classes.searchBtn}
           >
-            <Button
-              variant="outlined"
-              size="small"
-              title="Search Text"
-              aria-label="search text"
-              target="_blank"
-              rel="noOpener"
-              onClick={goToSearch}
-            >
-              Search Text
-            </Button>
-          </Link>
-        </li>
-      </span>
+            Search Text
+          </Button>
+        </Link>
+      </ul>
     </div>
   );
   React.useEffect(() => {
