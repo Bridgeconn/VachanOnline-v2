@@ -404,14 +404,14 @@ export const getEditorToolbar = (mobile) => {
       }
     : {
         options: [
-          "inline",
+          "colorPicker",
+          "image",
           "link",
+          "inline",
           "blockType",
           "fontSize",
           "list",
           "textAlign",
-          "colorPicker",
-          "image",
           "history",
         ],
         inline: {
