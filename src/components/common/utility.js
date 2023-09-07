@@ -326,10 +326,10 @@ export const getEditorToolbar = (mobile) => {
       }
     : {
         options: [
-          "inline",
-          "link",
           "colorPicker",
           "image",
+          "link",
+          "inline",
           "blockType",
           "fontSize",
           "list",
