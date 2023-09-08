@@ -157,6 +157,7 @@ const Version = (props) => {
     let _bookCode = localStorage.getItem("bookCode");
     let _chapter = localStorage.getItem("chapter");
     let _verseData = localStorage.getItem("verseData");
+    _verseData = !_verseData || _verseData === "undefined" ? "" : _verseData;
     if (path.startsWith("/read")) {
       _version = urlVersion || _version;
       if (reference !== null) {
@@ -165,6 +166,8 @@ const Version = (props) => {
         _chapter = refChapter || _chapter;
         _verseData = verseData || _verseData;
       }
+    } else {
+      _verseData = "";
     }
     //if versions not loaded fetch versions and books for the versions
     if (versions.length === 0) {
