@@ -281,10 +281,22 @@ const BookCombo = (props) => {
     if (paneNo !== 2) {
       localStorage.setItem("bookCode", bookCode);
       localStorage.setItem("chapter", chapter);
-      localStorage.setItem("verseData", verseData);
+      if (!path.startsWith("/read") && verseData !== "") {
+        setValue("verseData", "");
+      }
+      localStorage.setItem("verseData", verseData || "");
       setParams(bookCode, chapter, verseData);
     }
-  }, [paneNo, bookCode, chapter, verseData, setParams]);
+  }, [
+    paneNo,
+    bookCode,
+    chapter,
+    verseData,
+    landingPage,
+    path,
+    setValue,
+    setParams,
+  ]);
   //on changing book code set chapter row
   React.useEffect(() => {
     setChapterRow(chapterOpenMap.get(bookCode));
