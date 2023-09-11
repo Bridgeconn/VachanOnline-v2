@@ -10,7 +10,7 @@ On visiting the website **[VachanOnline.com](https://vachanonline.com/)**, the b
 
 <img src="/img/assets/navigation.png"  width="1000px" alt="navigation"/>
 
-From here the user can access the following Features from the landing page:
+From here the user can access the following features from the landing page:
 
 1. [Study Bible](./studyBible) **(1, 6, 10)**
 
