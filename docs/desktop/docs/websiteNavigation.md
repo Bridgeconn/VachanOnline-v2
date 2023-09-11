@@ -10,7 +10,7 @@ On visiting the website **[VachanOnline.com](https://vachanonline.com/)**, the b
 
 <img src="/img/assets/navigation.png"  width="1000px" alt="navigation"/>
 
-From here the user can access the following Features from the landing page:
+From here the user can access the following features from the landing page:
 
 1. [Study Bible](./studyBible) **(1, 6, 10)**
 
@@ -41,9 +41,9 @@ When the user accesses the **Study Bible Page** they will be directed to the Stu
 
 1. There is a Menu on the right side **(1)**, which allows the user to access the following features: [Search Bible](./searchBible), [Parallel Bible](./studyBible#parallel-bible), [Commentaries](./commentaries), [Sign Language Bible](./signLanguageBible), [Infographics](./infographics), [Audio Bibles](./audioBible), [Videos](./videos), [Reading Plans](./readingPlans), [Dictionaries](./dictionaries), [Bookmarks\*](./bookmarks), [Highlights\*](./highlights), [Notes\*](./notes)
 
-2. The Bible reading page shows one chapter at a time. There are dropdowns to control the Version **(2)** and Bible Reference **(3)** on the upper left side. Here, the users can select their preferred Language, Version, Book and Chapter.
+2. The Bible reading page shows one chapter at a time. There are drop-downs to control the Version **(2)** and Bible Reference **(3)** on the upper left side. Here, the users can select their preferred Language, Version, Book and Chapter.
 
-3. These dropdown menus are also available on the landing page. The user can select the version, book, and chapter, and then click the **Start** button to begin reading.
+3. These drop-down menus are also available on the landing page. The user can select the version, book, and chapter, and then click the **Start** button to begin reading.
 
 4. There are arrows on either side of the biblical text, Next **(4)** and Previous **(5)**, which can be used to move between chapters.
 
