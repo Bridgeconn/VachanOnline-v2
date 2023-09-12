@@ -13,13 +13,8 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
-import {
-  COMMENTARY,
-  PARALLELBIBLE,
-  READINGPLANS,
-  SEARCH,
-} from "../../store/views";
 import { Typography } from "@material-ui/core";
+import { MOBILEPV } from "../../store/views";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -190,8 +185,7 @@ const BookCombo = (props) => {
     screen,
   } = props;
   //classes for styling
-  const mobilePV = [PARALLELBIBLE, COMMENTARY, READINGPLANS, SEARCH];
-  const parallelMV = mobilePV.includes(parallelView);
+  const parallelMV = MOBILEPV.includes(parallelView);
   const styleProps = {
     screen: screen,
     parallelView: parallelMV,

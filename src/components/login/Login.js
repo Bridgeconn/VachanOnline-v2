@@ -265,12 +265,7 @@ const Login = (props) => {
               autoHideDuration={8000}
               onClose={handleClose}
             >
-              <Alert
-                elevation={6}
-                variant="filled"
-                onClose={handleClose}
-                severity={alert}
-              >
+              <Alert variant="filled" onClose={handleClose} severity={alert}>
                 {message}
               </Alert>
             </Snackbar>

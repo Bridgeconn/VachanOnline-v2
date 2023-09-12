@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0px 10px",
     marginBottom: "10px",
     border: BLACK,
-    zIndex: 900,
+    zIndex: 1400,
     [theme.breakpoints.down("sm")]: {
       marginBottom: 0,
       padding: 0,
