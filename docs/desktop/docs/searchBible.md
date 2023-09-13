@@ -20,4 +20,4 @@ The Search Bible feature can be accessed by clicking on the Search Icon **(1)** 
 
 5. To open the bible reference for a search result, click on any search result row **(5)**
 
-6. The book dropdown changes as per the book and chapter of the search result **(6)** and verse is highlighted **(7)**
+6. The book drop-down changes as per the book and chapter of the search result **(6)** and verse is highlighted **(7)**
