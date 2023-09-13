@@ -8,7 +8,7 @@ The Search Bible feature can be accessed by clicking on the Search Icon **(1)** 
 
 <img src="/img/assets/searchBible.png"  width="1000px" alt="songs"/>
 
-#### To search for a phrase in the bible opened on the left
+#### To search for a phrase in the Bible opened on the left
 
 1. The user must enter a search phrase in the search box **(2)**
 
