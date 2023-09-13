@@ -26,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
     [theme.breakpoints.down("sm")]: {
-      minWidth: 50,
+      minWidth: 60,
       padding: "6px 10px",
     },
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
       margin: "4px 15px 4px 0",
     },
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
       minWidth: 30,
-      maxWidth: 60,
+      maxWidth: 118,
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
