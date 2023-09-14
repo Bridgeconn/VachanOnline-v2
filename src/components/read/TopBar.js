@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { useMediaQuery } from "@material-ui/core";
+import { Snackbar, useMediaQuery } from "@material-ui/core";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
 import { Tooltip } from "@material-ui/core";
 import SearchPassage from "../search/SearchPassage";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0px 10px",
     marginBottom: "10px",
     border: BLACK,
-    zIndex: 1400,
+    zIndex: 900,
     [theme.breakpoints.down("sm")]: {
       marginBottom: 0,
       padding: 0,
@@ -98,14 +99,31 @@ const TopBar = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const [hideIcons, setHideIcons] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
+  const [message, setMessage] = React.useState("");
+
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
   let { login, userDetails, setParallelView, mobileView } = props;
   React.useEffect(() => {
-    setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
+    setLoginButton(
+      login ? (
+        <LoginMenu userDetails={userDetails} />
+      ) : (
+        <Login setMessage={setMessage} setAlert={setAlert} />
+      )
+    );
   }, [login, userDetails]);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlert("");
+    setMessage("");
+  };
   const ISLButton = () => {
     const Btn = () => {
       return mobileView ? (
@@ -275,6 +293,19 @@ const TopBar = (props) => {
           )}
         </Toolbar>
       </AppBar>
+      {alert ? (
+        <Snackbar
+          open={Boolean(alert)}
+          autoHideDuration={8000}
+          onClose={handleClose}
+        >
+          <Alert variant="filled" onClose={handleClose} severity={alert}>
+            {message}
+          </Alert>
+        </Snackbar>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

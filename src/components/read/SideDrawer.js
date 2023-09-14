@@ -6,7 +6,7 @@ import MenuItem from "./MenuItem";
 const useStyles = makeStyles({
   list: {
     width: 220,
-    paddingTop: 61,
+    paddingTop: 10,
   },
 });
 

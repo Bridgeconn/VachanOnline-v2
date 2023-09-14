@@ -158,8 +158,6 @@ function Notes(props) {
     setValue,
     versesSelected,
     book,
-    noteText,
-    setNoteText,
     getRegionalBookName,
     close,
     panel1,
@@ -178,6 +176,7 @@ function Notes(props) {
   const [alertMessage, setAlertMessage] = React.useState(false);
   const { bookCode, chapter, sourceId } = panel1;
   const [open, setOpen] = React.useState(false);
+  const [noteText, setNoteText] = React.useState("");
   const contentState = ContentState.createFromBlockArray(htmlToDraft(noteText));
   const [editorState, setEditorState] = React.useState(
     EditorState.createWithContent(contentState)

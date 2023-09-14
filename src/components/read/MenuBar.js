@@ -13,7 +13,7 @@ import NoteIcon from "@material-ui/icons/NoteOutlined";
 import BorderColor from "@material-ui/icons/BorderColor";
 import Note from "../note/Note";
 import PrintIcon from "@material-ui/icons/Print";
-import { AUDIO, DRAWERPV } from "../../store/views";
+import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLACK } from "../../store/colorCode";
 import Close from "../common/Close";
@@ -305,19 +305,15 @@ const MenuBar = (props) => {
             language={language}
           />
           {bookCode && errorMessage === "" ? (
-            mobileView && !DRAWERPV.includes(parallelView) ? (
-              <BookCombo
-                paneNo={paneNo}
-                bookCode={bookCode}
-                bookList={versionBooks[versionSource[sourceId]]}
-                chapter={chapter}
-                verseData={verseData}
-                setValue={setValue}
-                minimal={true}
-              />
-            ) : (
-              ""
-            )
+            <BookCombo
+              paneNo={paneNo}
+              bookCode={bookCode}
+              bookList={versionBooks[versionSource[sourceId]]}
+              chapter={chapter}
+              verseData={verseData}
+              setValue={setValue}
+              minimal={true}
+            />
           ) : (
             ""
           )}
