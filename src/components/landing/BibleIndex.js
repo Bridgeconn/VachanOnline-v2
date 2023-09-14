@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
       marginBottom: 2,
     },
+    [theme.breakpoints.only("sm")]: {
+      margin: theme.spacing(1.5),
+    },
   },
   heading: {
     color: BLACK,
