@@ -38,11 +38,15 @@ export default function SideDrawer(props) {
           title="Commentaries"
           item={views.DRAWERCOMMENTARY}
         />
-        <Item
-          icon="sign_language"
-          title="ISLV Bible"
-          item={views.DRAWERSIGNBIBLE}
-        />
+        {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+          <Item
+            icon="sign_language"
+            title="ISLV Bible"
+            item={views.DRAWERSIGNBIBLE}
+          />
+        ) : (
+          ""
+        )}
         <Item icon="image" title="Infographics" item={views.INFOGRAPHICS} />
         <Item icon="volume_up" title="Audio Bible" item={views.AUDIO} />
         <Item icon="videocam" title="Videos" item={views.VIDEO} />
