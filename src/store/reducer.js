@@ -22,6 +22,7 @@ const defaultState = {
   errorMessage: "",
   audioBible: [],
   video: [],
+  chapterVideo: [],
   readingPlans: [],
   signBible: [],
   playing: "",

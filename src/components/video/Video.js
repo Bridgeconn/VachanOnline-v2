@@ -13,6 +13,7 @@ import { capitalize, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,9 +103,11 @@ const Video = (props) => {
   const classes = useStyles();
   let {
     video,
+    chapterVideo,
     bookCode,
     books,
     versionBooks,
+    setValue1,
     setValue,
     languageCode,
     mobileView,
@@ -136,7 +139,15 @@ const Video = (props) => {
     setVideoId(id);
     setIsOpen(true);
   };
-
+  const API1 = React.useMemo(
+    () => axios.create({ baseURL: process.env.REACT_APP_CHAPTER_VIDEOS }),
+    []
+  );
+  useEffect(() => {
+    API1.get("fcbh_chapter.json").then(function (response) {
+      setValue("chapterVideo", response?.data);
+    });
+  }, [API1, language, setValue]);
   useEffect(() => {
     //Get list of languages
     if (video) {
@@ -166,17 +177,28 @@ const Video = (props) => {
   //If language or book changed update videos and message to show
   React.useEffect(() => {
     if (language) {
+      const book = getShortBook(books, language?.value, bookCode);
       const lang = video.find((obj) => obj?.language?.code === language?.value);
-      if (lang?.books?.hasOwnProperty(bookCode)) {
+      if (
+        lang?.books?.hasOwnProperty(bookCode) &&
+        chapterVideo?.hasOwnProperty(language?.value) &&
+        chapterVideo[language?.value]?.hasOwnProperty(bookCode) &&
+        chapterVideo[language?.value][bookCode]?.hasOwnProperty(chapter)
+      ) {
+        setVideos(chapterVideo[language?.value][bookCode][chapter]);
+        setMessage("");
+      } else if (
+        lang?.books?.hasOwnProperty(bookCode) &&
+        !chapterVideo[language?.value]?.hasOwnProperty(bookCode)
+      ) {
         setVideos(lang.books[bookCode]);
         setMessage("");
       } else {
         setVideos([]);
-        const book = getShortBook(books, language.value, bookCode);
         setMessage(`No videos available in ${language?.label} for ${book}`);
       }
     }
-  }, [video, bookCode, language, books]);
+  }, [video, bookCode, language, books, chapterVideo, chapter, videos]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -199,7 +221,7 @@ const Video = (props) => {
               bookCode={bookCode}
               bookList={versionBooks[language.value]}
               chapter={chapter}
-              setValue={setValue}
+              setValue={setValue1}
               minimal={true}
               screen={"video"}
             />
@@ -219,7 +241,9 @@ const Video = (props) => {
               onClose={() => setIsOpen(false)}
             />
             {videos.map((video, i) => {
-              const { source, id, imageUrl } = getVideoData(video.url);
+              const { source, id, imageUrl } = getVideoData(
+                video.url ? video.url : video
+              );
               return (
                 <Card
                   key={i}
@@ -264,11 +288,14 @@ const mapStateToProps = (state) => {
     bookCode: state.local.panel1.bookCode,
     versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
+    chapterVideo: state.local.chapterVideo,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+    setValue1: (name, value) =>
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
   };
 };
