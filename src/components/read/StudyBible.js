@@ -28,6 +28,7 @@ import {
   getReadingPlans,
   getBookbyCode,
   getSignBible,
+  getChapterVideo,
 } from "../common/utility";
 import { useMediaQuery } from "@material-ui/core";
 import BottomBar from "./BottomBar";
@@ -237,6 +238,9 @@ const StudyBible = (props) => {
       getVideos(setValue);
     }
   }, [video.length, setValue]);
+  useEffect(() => {
+    getChapterVideo(setValue);
+  }, [setValue]);
   useEffect(() => {
     //if reading plans not loaded fetch reading plans
     if (readingPlans.length === 0) {

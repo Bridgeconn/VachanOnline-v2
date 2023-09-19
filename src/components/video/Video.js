@@ -13,7 +13,6 @@ import { capitalize, getBookbyCode, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
-import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -107,7 +106,6 @@ const Video = (props) => {
     bookCode,
     books,
     versionBooks,
-    setValue1,
     setValue,
     languageCode,
     mobileView,
@@ -139,15 +137,7 @@ const Video = (props) => {
     setVideoId(id);
     setIsOpen(true);
   };
-  const API1 = React.useMemo(
-    () => axios.create({ baseURL: process.env.REACT_APP_CHAPTER_VIDEOS }),
-    []
-  );
-  useEffect(() => {
-    API1.get("fcbh_chapter.json").then(function (response) {
-      setValue("chapterVideo", response?.data);
-    });
-  }, [API1, language, setValue]);
+
   useEffect(() => {
     //Get list of languages
     if (video) {
@@ -176,29 +166,39 @@ const Video = (props) => {
   }, [languageCode, languages, video]);
   //If language or book changed update videos and message to show
   React.useEffect(() => {
+    const filterVideos = (videos) => {
+      const languageData = chapterVideo[language?.value];
+      const bookData = languageData ? languageData[bookCode] : [];
+      const bookDataArr = bookData ? Object.values(bookData)?.flat() : [];
+      const vids = videos.filter((vid) => {
+        if (bookDataArr.includes(vid.url)) {
+          // return true if in chapter but not in book
+          return bookData[chapter]?.includes(vid.url) ? true : false;
+        } else {
+          //No chapter filter
+          return true;
+        }
+      });
+      bookData && console.log(chapter, bookData[chapter]);
+      return vids;
+    };
     if (language) {
-      const book = getShortBook(books, language?.value, bookCode);
       const lang = video.find((obj) => obj?.language?.code === language?.value);
-      if (
-        lang?.books?.hasOwnProperty(bookCode) &&
-        chapterVideo?.hasOwnProperty(language?.value) &&
-        chapterVideo[language?.value]?.hasOwnProperty(bookCode) &&
-        chapterVideo[language?.value][bookCode]?.hasOwnProperty(chapter)
-      ) {
-        setVideos(chapterVideo[language?.value][bookCode][chapter]);
-        setMessage("");
-      } else if (
-        lang?.books?.hasOwnProperty(bookCode) &&
-        !chapterVideo[language?.value]?.hasOwnProperty(bookCode)
-      ) {
-        setVideos(lang.books[bookCode]);
+      if (lang?.books?.hasOwnProperty(bookCode)) {
+        const _videos = lang.books[bookCode];
+        setVideos(filterVideos(_videos));
         setMessage("");
       } else {
         setVideos([]);
-        setMessage(`No videos available in ${language?.label} for ${book}`);
+        const book = getShortBook(books, language.value, bookCode);
+        setMessage(
+          `No videos available in ${language?.label} for ${
+            book ? book : getBookbyCode(bookCode)?.book
+          }`
+        );
       }
     }
-  }, [video, bookCode, language, books, chapterVideo, chapter, videos]);
+  }, [video, bookCode, language, books, chapterVideo, chapter]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -221,7 +221,7 @@ const Video = (props) => {
               bookCode={bookCode}
               bookList={versionBooks[language.value]}
               chapter={chapter}
-              setValue={setValue1}
+              setValue={setValue}
               minimal={true}
               screen={"video"}
             />
@@ -241,9 +241,7 @@ const Video = (props) => {
               onClose={() => setIsOpen(false)}
             />
             {videos.map((video, i) => {
-              const { source, id, imageUrl } = getVideoData(
-                video.url ? video.url : video
-              );
+              const { source, id, imageUrl } = getVideoData(video.url);
               return (
                 <Card
                   key={i}
@@ -294,8 +292,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value }),
-    setValue1: (name, value) =>
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
   };
 };

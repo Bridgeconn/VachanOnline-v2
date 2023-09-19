@@ -1,4 +1,9 @@
-import { readingPlanAPI, signBibleAPI, API } from "../../store/api";
+import {
+  readingPlanAPI,
+  signBibleAPI,
+  API,
+  chapterVideoAPI,
+} from "../../store/api";
 import { bibleBooks, bibleChapters } from "../../store/bibleData";
 //Function to get the bible versions
 export const getVersions = (
@@ -426,4 +431,15 @@ export const getEditorToolbar = (mobile) => {
           options: ["left", "center", "right"],
         },
       };
+};
+
+export const getChapterVideo = (setValue) => {
+  chapterVideoAPI
+    ?.get("fcbh_chapter.json")
+    .then(function (response) {
+      setValue("chapterVideo", response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 };
