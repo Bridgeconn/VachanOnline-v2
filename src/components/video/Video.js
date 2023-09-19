@@ -179,7 +179,6 @@ const Video = (props) => {
           return true;
         }
       });
-      bookData && console.log(chapter, bookData[chapter]);
       return vids;
     };
     if (language) {
