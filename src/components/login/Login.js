@@ -11,7 +11,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Popover from "@material-ui/core/Popover";
-import Snackbar from "@material-ui/core/Snackbar";
 import Collapse from "@material-ui/core/Collapse";
 import Alert from "@material-ui/lab/Alert";
 
@@ -68,14 +67,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
   const classes = useStyles();
-  const { login, openLogin, setValue } = props;
+  const { login, openLogin, setValue, setMessage, setAlert } = props;
   const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [form, setForm] = React.useState(1);
-  const [alert, setAlert] = React.useState(false);
-  const [message, setMessage] = React.useState("");
   const [messageOpen, setMessageOpen] = React.useState(false);
 
   const open = Boolean(anchorEl);
@@ -97,14 +94,6 @@ const Login = (props) => {
   };
   const openForgot = (event) => {
     setForm(3);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setAlert("");
-    setMessage("");
   };
 
   //Function to Sign up
@@ -259,24 +248,6 @@ const Login = (props) => {
         </Button>
       ) : (
         <>
-          {alert ? (
-            <Snackbar
-              open={Boolean(alert)}
-              autoHideDuration={8000}
-              onClose={handleClose}
-            >
-              <Alert
-                elevation={6}
-                variant="filled"
-                onClose={handleClose}
-                severity={alert}
-              >
-                {message}
-              </Alert>
-            </Snackbar>
-          ) : (
-            ""
-          )}
           <Button
             aria-describedby="sign-in"
             variant="contained"

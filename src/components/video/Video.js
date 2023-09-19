@@ -9,7 +9,7 @@ import ModalVideo from "react-modal-video";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import Select from "react-select";
-import { capitalize, getShortBook } from "../common/utility";
+import { capitalize, getBookbyCode, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
