@@ -104,17 +104,46 @@ const BiblePane = (props) => {
   function goToSearch() {
     setMainValue("parallelView", SEARCH);
     setMainValue("errorMessage", "");
+    setMainValue("isTextSearch", "");
   }
+  const textSearchMessage = (
+    <div className={classes.errorSearchMessage}>
+      <h6>
+        <b>NO RESULTS FOUND</b>
+        <br />
+        <br />
+        Please try the following:
+      </h6>
+      If you are searching for a word in the bible, click the button{" "}
+      <Link
+        to={{
+          pathname: "/study",
+        }}
+      >
+        <Button
+          variant="outlined"
+          size="small"
+          title="Search Text"
+          aria-label="search text"
+          target="_blank"
+          rel="noOpener"
+          onClick={goToSearch}
+          className={classes.searchBtn}
+        >
+          Search Text
+        </Button>
+      </Link>
+    </div>
+  );
   const notFoundMessage = (
     <div className={classes.errorSearchMessage}>
-      <h5>Sorry, we didn't find any results for your search</h5>
       <ul className={classes.listError}>
         <li>
           Double-check spelling, you can use either book code,full book name or
           local book name
         </li>
         <li>
-          For a Chapter search, Make sure there are spaces between book name and
+          For a Chapter search, Make sure there is a space between book name and
           chapter
         </li>
         <li>
@@ -122,29 +151,117 @@ const BiblePane = (props) => {
         </li>
         <li>For a passage search, use this format. eg: psalms 5:10-15</li>
         <li>
-          If you are searching for a word in the bible, click the button below
-        </li>
-        <Link
-          to={{
-            pathname: "/study",
-          }}
-        >
-          <Button
-            variant="outlined"
-            size="small"
-            title="Search Text"
-            aria-label="search text"
-            target="_blank"
-            rel="noOpener"
-            onClick={goToSearch}
-            className={classes.searchBtn}
+          If you are searching for a word in the bible, click the button below{" "}
+          <br />
+          <Link
+            to={{
+              pathname: "/study",
+            }}
           >
-            Search Text
-          </Button>
-        </Link>
+            <Button
+              variant="outlined"
+              size="small"
+              title="Search Text"
+              aria-label="search text"
+              target="_blank"
+              rel="noOpener"
+              onClick={goToSearch}
+              className={classes.searchBtn}
+            >
+              Search Text
+            </Button>
+          </Link>
+        </li>
       </ul>
     </div>
   );
+  const bookNotFound = (
+    <div className={classes.errorSearchMessage}>
+      <h6>
+        <b>BOOK NOT FOUND</b>
+      </h6>
+      <br />
+      Please try the following:
+      <li>
+        Double-check spelling, you can use either book code,full book name or
+        local book name
+      </li>
+      <li>Make sure there is a space between book name and chapter</li>
+      <li>
+        Please use the above book drop down (second one) to see the list of
+        books
+      </li>
+    </div>
+  );
+  const referenceNotFound = (
+    <div className={classes.errorSearchMessage}>
+      <h6>
+        <b>BIBLE REFERENCE NOT FOUND IN CURRENT BIBLE</b>
+      </h6>
+      <br />
+      Please try the following:
+      <ul className={classes.listError}>
+        <li>Make sure there is a space between book name and chapter</li>
+        <li>Search for another reference</li>
+        <li>Change Bible using Version dropdown (first dropdown)</li>
+        <li>
+          You can use Book dropdown (second dropdown)to read the required
+          chapter, verse or passage
+        </li>
+      </ul>
+    </div>
+  );
+  const invalidFormat = (
+    <div className={classes.errorSearchMessage}>
+      <h6>
+        <b>INVALID SEARCH FORMAT</b>
+      </h6>
+      <br />
+      Please try the following:
+      <ul className={classes.listError}>
+        <li>
+          Don't use special characters except <b>, : -</b>
+        </li>
+        <li>
+          Double-check spelling, you can use either book code,full book name or
+          local book name
+        </li>
+        <li>
+          {" "}
+          Make sure there is a space between book name and chapter, eg:gen 49 or
+          നഹൂം 1 or यहूदा 1
+        </li>
+        <li>
+          You can use Book dropdown (second one)to see the book name and chapter
+        </li>
+        <li>
+          For a verse search, use this format. ഇയ്യോബ് 42:2 or genesis 12:2,3 or
+          रूत 2:12,13
+        </li>
+        <li>
+          For a passage search, use this format. Eg:rev 1:13-16 or 1 योहान
+          4:8-10
+        </li>
+      </ul>
+    </div>
+  );
+  //........
+  function showMessage() {
+    if (errorMessage === "textSearch") {
+      return textSearchMessage;
+    }
+    if (errorMessage === "bookNotFound") {
+      return bookNotFound;
+    }
+    if (errorMessage === "referenceNotFound") {
+      return referenceNotFound;
+    }
+    if (errorMessage === "invalidFormat") {
+      return invalidFormat;
+    }
+    return notFoundMessage;
+  }
+
   React.useEffect(() => {
     const closeAlert = () => {
       //After showing message remove it
@@ -183,6 +300,7 @@ const BiblePane = (props) => {
   React.useEffect(() => {
     if (path.startsWith("/study")) {
       setMainValue("errorMessage", "");
+      setMainValue("isTextSearch", "");
       setValue("verseData", "");
     }
   }, [path, setMainValue, setValue]);
@@ -253,10 +371,8 @@ const BiblePane = (props) => {
                   versesSelected={versesSelected}
                   languageCode={paneData.languageCode}
                 />
-              ) : errorMessage === "notFound" ? (
-                notFoundMessage
               ) : (
-                ""
+                showMessage()
               )}
               {alertMessage}
             </Fullscreen>
@@ -291,6 +407,8 @@ const mapStateToProps = (state) => {
     mobileView: state.local.mobileView,
     userDetails: state.local.userDetails,
     errorMessage: state.local.errorMessage,
+    isTextSearch: state.local.isTextSearch,
+    searchErrorType: state.local.searchErrorType,
   };
 };
 

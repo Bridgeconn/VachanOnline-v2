@@ -320,8 +320,8 @@ const MenuBar = (props) => {
         </Box>
         {errorMessage === "" ? (
           <Box className={classes.items}>
-            {mobileView || verseData !== "" ? null : noteIcon}
-            {mobileView || verseData !== "" ? null : highlightIcon}
+            {mobileView ? null : noteIcon}
+            {mobileView ? null : highlightIcon}
 
             {bookmarkIcon}
             <Metadata

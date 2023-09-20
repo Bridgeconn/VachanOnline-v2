@@ -722,22 +722,22 @@ const Bible = (props) => {
         if (verseData?.match(/^[0-9-]*$/g)) {
           const [start, end] = verseData.split("-");
           if (!verseArr.includes(start)) {
-            setMainValue("errorMessage", "notFound");
+            setMainValue("errorMessage", "referenceNotFound");
           }
           if (!verseArr.includes(end)) {
-            setMainValue("errorMessage", "notFound");
+            setMainValue("errorMessage", "referenceNotFound");
           }
         }
         // check for multi verse
         if (verseData?.match(/^[0-9,]*$/g)) {
           if (!verseData.split(",").every((num) => verseArr.includes(num))) {
-            setMainValue("errorMessage", "notFound");
+            setMainValue("errorMessage", "referenceNotFound");
           }
         }
       } else {
         // check for single verse
         if (!verseArr.includes(verseData)) {
-          setMainValue("errorMessage", "notFound");
+          setMainValue("errorMessage", "referenceNotFound");
         }
       }
     }
@@ -816,7 +816,10 @@ const Bible = (props) => {
                 }
                 return (
                   <span key={item.verseNumber}>
-                    <span data-verse={item.verseNumber}>
+                    <span
+                      onClick={handleVerseClick}
+                      data-verse={item.verseNumber}
+                    >
                       <span className={verseClass}>
                         <span className={verseNumberClass}>
                           {item.verseNumber}
@@ -826,6 +829,22 @@ const Bible = (props) => {
                       </span>
                     </span>
                     {verseData.includes(",") && <br />}
+                    {notes && notes.includes(verse) ? (
+                      <NoteIcon
+                        className={classes.noteIcon}
+                        fontSize="small"
+                        color="disabled"
+                        onClick={() =>
+                          mobileView
+                            ? openNoteDialog(verse)
+                            : path.startsWith("/read")
+                            ? ""
+                            : setParallelView(NOTE)
+                        }
+                      />
+                    ) : (
+                      ""
+                    )}
                   </span>
                 );
               }
