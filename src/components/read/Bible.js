@@ -264,7 +264,6 @@ const Bible = (props) => {
     window.innerWidth > 1200 ? (window.innerWidth - 1200) / 2 : 20
   );
   const [notes, setNotes] = React.useState([]);
-  const [noteText, setNoteText] = React.useState([]);
   const [notesText, setNotesText] = React.useState([]);
   const [noteTextBody, setNoteTextBody] = React.useState("");
   const [fetchData, setFetchData] = React.useState();
@@ -594,7 +593,6 @@ const Bible = (props) => {
     setOpen(true);
   };
   const handleNoteTextChange = (editorState) => {
-    setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
     setNoteTextBody(draftToHtml(convertToRaw(editorState.getCurrentContent())));
     setEditorState(editorState);
   };
