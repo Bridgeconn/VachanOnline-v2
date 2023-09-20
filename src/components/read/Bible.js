@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
@@ -254,7 +254,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
-  const [chapterHeading, setChapterHeading] = React.useState("");
+  const [headings, setHeadings] = React.useState("");
   const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
   const [previous, setPrevious] = React.useState({});
@@ -344,13 +344,40 @@ const Bible = (props) => {
             return section[Object.keys(section)[0]][0];
           }
         }
-      } else {
-        return null;
       }
-    } else {
-      return null;
     }
   };
+  const isVerse = useCallback((content) => {
+    return (
+      typeof content === "object" &&
+      content !== null &&
+      "verseNumber" in content
+    );
+  }, []);
+  //new usfm json structure
+  const getHeadings = useCallback(
+    (chapter) => {
+      const headings = {};
+      let verse = 1;
+      let heading = getHeading(chapter);
+      if (heading) {
+        headings[1] = heading;
+      }
+      chapter?.forEach((item) => {
+        if (item) {
+          if (!Array.isArray(item) && isVerse(item)) {
+            heading = getHeading(item.contents);
+            if (heading) {
+              headings[verse + 1] = heading;
+            }
+            verse = parseInt(item.verseNumber);
+          }
+        }
+      });
+      return headings;
+    },
+    [isVerse]
+  );
   const notesx = useSelector(
     ({ firebase: { data } }) =>
       data.users &&
@@ -414,7 +441,59 @@ const Bible = (props) => {
         }
       });
   };
-
+  function showVerse(item, chapter) {
+    const verse = parseInt(item.verseNumber);
+    const verseClass =
+      selectedVerses?.indexOf(verse) > -1
+        ? `${classes.verseText} ${classes.selectedVerse}`
+        : highlightVerses.indexOf(verse) > -1
+        ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
+        : `${classes.verseText}`;
+    const verseNumberClass =
+      verse === 1
+        ? `${classes.verseNumber} ${classes.firstVerse}`
+        : `${classes.verseNumber}`;
+    const verseNo = verse === 1 ? chapter : item.verseNumber;
+    const sectionHeading = headings[item.verseNumber] || "";
+    return (
+      <span key={item.verseNumber}>
+        {sectionHeading && sectionHeading !== "" ? (
+          <span className={classes.sectionHeading}>{sectionHeading}</span>
+        ) : (
+          ""
+        )}
+        <span className={lineViewClass}>
+          <span onClick={handleVerseClick} data-verse={item.verseNumber}>
+            <span className={verseClass}>
+              <span className={verseNumberClass}>
+                {verseNo}
+                &nbsp;
+              </span>
+              {item.verseText + " "}
+            </span>
+          </span>
+          {/*If verse has note then show note icon to open notes pane */}
+          {notes && notes.includes(verse) ? (
+            <NoteIcon
+              className={classes.noteIcon}
+              fontSize="small"
+              color="disabled"
+              onClick={() =>
+                mobileView
+                  ? openNoteDialog(verse)
+                  : path.startsWith("/read")
+                  ? ""
+                  : setParallelView(NOTE)
+              }
+            />
+          ) : (
+            ""
+          )}
+          {verseData.includes(",") && <br />}
+        </span>
+      </span>
+    );
+  }
   React.useEffect(() => {
     if (version !== "Loading...") {
       let language = version.split("-")[0];
@@ -500,16 +579,10 @@ const Bible = (props) => {
             setLoadingText("Book will be uploaded soon");
           } else {
             setLoadingText("");
-            const isVerse = (content) => {
-              return (
-                typeof content === "object" &&
-                content !== null &&
-                "verseNumber" in content
-              );
-            };
+
             let contents = response.data.chapterContent.contents;
             setVerses(contents ? contents.filter(isVerse) : []);
-            setChapterHeading(getHeading(contents));
+            setHeadings(getHeadings(contents));
           }
           setIsLoading(false);
         })
@@ -517,7 +590,7 @@ const Bible = (props) => {
           console.log(error);
         });
     }
-  }, [sourceId, bookCode, chapter]);
+  }, [sourceId, bookCode, chapter, getHeadings, isVerse]);
   //if audio bible show icon
   React.useEffect(() => {
     if (currentAudio) {
@@ -773,25 +846,7 @@ const Bible = (props) => {
             <Typography className={classes.bookRef} variant="h4">
               {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
-            {chapterHeading !== "" && verseData === "" ? (
-              <span className={classes.sectionHeading}>{chapterHeading}</span>
-            ) : (
-              ""
-            )}
             {verses.map((item) => {
-              const verse = parseInt(item.verseNumber);
-              const verseClass =
-                selectedVerses?.indexOf(verse) > -1
-                  ? `${classes.verseText} ${classes.selectedVerse}`
-                  : highlightVerses.indexOf(verse) > -1
-                  ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
-                  : `${classes.verseText}`;
-              const verseNumberClass =
-                verse === 1
-                  ? `${classes.verseNumber} ${classes.firstVerse}`
-                  : `${classes.verseNumber}`;
-              const verseNo = verse === 1 ? chapter : item.verseNumber;
-              const sectionHeading = getHeading(item.contents);
               // ############Fetching single verse###########
               if (verseData) {
                 if (isNaN(verseData)) {
@@ -814,82 +869,10 @@ const Bible = (props) => {
                 } else if (item.verseNumber !== verseData) {
                   return "";
                 }
-                return (
-                  <span key={item.verseNumber}>
-                    <span
-                      onClick={handleVerseClick}
-                      data-verse={item.verseNumber}
-                    >
-                      <span className={verseClass}>
-                        <span className={verseNumberClass}>
-                          {item.verseNumber}
-                          &nbsp;
-                        </span>
-                        {item.verseText + " "}
-                      </span>
-                    </span>
-                    {verseData.includes(",") && <br />}
-                    {notes && notes.includes(verse) ? (
-                      <NoteIcon
-                        className={classes.noteIcon}
-                        fontSize="small"
-                        color="disabled"
-                        onClick={() =>
-                          mobileView
-                            ? openNoteDialog(verse)
-                            : path.startsWith("/read")
-                            ? ""
-                            : setParallelView(NOTE)
-                        }
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </span>
-                );
+
+                return showVerse(item, chapter);
               }
-              return (
-                <span key={item.verseNumber}>
-                  <span className={lineViewClass}>
-                    <span
-                      onClick={handleVerseClick}
-                      data-verse={item.verseNumber}
-                    >
-                      <span className={verseClass}>
-                        <span className={verseNumberClass}>
-                          {verseNo}
-                          &nbsp;
-                        </span>
-                        {item.verseText + " "}
-                      </span>
-                    </span>
-                    {/*If verse has note then show note icon to open notes pane */}
-                    {notes && notes.includes(verse) ? (
-                      <NoteIcon
-                        className={classes.noteIcon}
-                        fontSize="small"
-                        color="disabled"
-                        onClick={() =>
-                          mobileView
-                            ? openNoteDialog(verse)
-                            : path.startsWith("/read")
-                            ? ""
-                            : setParallelView(NOTE)
-                        }
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </span>
-                  {sectionHeading && sectionHeading !== "" ? (
-                    <span className={classes.sectionHeading}>
-                      {sectionHeading}
-                    </span>
-                  ) : (
-                    ""
-                  )}
-                </span>
-              );
+              return showVerse(item, chapter);
             })}
             <br />
             {verseData !== "" ? (
