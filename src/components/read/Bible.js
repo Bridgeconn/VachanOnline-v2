@@ -9,9 +9,10 @@ import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
-import { Button, Snackbar, Typography } from "@material-ui/core";
+import { Button, Divider, Snackbar, Typography } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import parse from "html-react-parser";
 import { useFirebase } from "react-redux-firebase";
 import {
   Dialog,
@@ -263,7 +264,7 @@ const Bible = (props) => {
     window.innerWidth > 1200 ? (window.innerWidth - 1200) / 2 : 20
   );
   const [notes, setNotes] = React.useState([]);
-  const [noteText, setNoteText] = React.useState([]);
+  const [notesText, setNotesText] = React.useState([]);
   const [noteTextBody, setNoteTextBody] = React.useState("");
   const [fetchData, setFetchData] = React.useState();
   const [font, setFont] = React.useState("");
@@ -568,7 +569,7 @@ const Bible = (props) => {
   };
   const openNoteDialog = (verse) => {
     let index;
-    Object.entries(noteText).map(([key, value]) => {
+    Object.entries(notesText).map(([key, value]) => {
       if (value?.verses?.includes(verse)) {
         index = key;
         setNoteTextBody(value.body);
@@ -592,7 +593,6 @@ const Bible = (props) => {
     setOpen(true);
   };
   const handleNoteTextChange = (editorState) => {
-    setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
     setNoteTextBody(draftToHtml(convertToRaw(editorState.getCurrentContent())));
     setEditorState(editorState);
   };
@@ -633,7 +633,7 @@ const Bible = (props) => {
           bookCode={bookCode}
           chapter={chapter}
           setNotes={setNotes}
-          setNoteText={setNoteText}
+          setNotesText={setNotesText}
         />
       );
     } else {
@@ -673,9 +673,9 @@ const Bible = (props) => {
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };
-  // const addStyle = (text, style) => {
-  //   return <span className={classes[style]}>{" " + text}</span>;
-  // };
+  const addStyle = (text, style) => {
+    return <span className={classes[style]}>{" " + text}</span>;
+  };
   const getPrevious = () => {
     if (parallelScroll && paneNo === 2 && mobileView) {
       return "";
@@ -885,25 +885,25 @@ const Bible = (props) => {
             ) : (
               ""
             )}
-            {/* <div className={classes.footNotes}>
+            <div className={classes.footNotes}>
               <Typography className={classes.noteTitle} variant="h4">
                 Notes :
               </Typography>
               <Divider />
               <div className={classes.noteList}>
-                {noteText.map((item, i) => {
+                {notesText?.map((item, i) => {
                   return (
                     <ul key={i}>
                       {addStyle(
                         bookDisplay + " " + chapter + ":" + item.verses,
                         "underline"
                       )}
-                      {" " + item.body}
+                      {parse(item.body)}
                     </ul>
                   );
                 })}
               </div>
-            </div> */}
+            </div>
           </div>
           {audio ? (
             <ReactPlayer

@@ -15,18 +15,18 @@ const PrintBox = (props) => {
   const {
     printRef,
     dialogOpen,
-    // setPrintNotes,
+    setPrintNotes,
     setPrintHighlights,
-    // printNotes,
+    printNotes,
     printHighlights,
     chapter,
     bookDisplay,
     handleDialogClose,
   } = props;
 
-  // const handleNotesChange = (event) => {
-  //   setPrintNotes(event.target.checked);
-  // };
+  const handleNotesChange = (event) => {
+    setPrintNotes(event.target.checked);
+  };
   const handleHighlightsChange = (event) => {
     setPrintHighlights(event.target.checked);
   };
@@ -43,7 +43,7 @@ const PrintBox = (props) => {
       <DialogTitle>Print Chapter</DialogTitle>
       <DialogContent dividers>
         <FormGroup>
-          {/* <FormControlLabel
+          <FormControlLabel
             control={
               <Checkbox
                 color="default"
@@ -52,7 +52,7 @@ const PrintBox = (props) => {
               />
             }
             label="Notes"
-          /> */}
+          />
           <FormControlLabel
             control={
               <Checkbox
