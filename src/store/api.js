@@ -7,4 +7,7 @@ export const readingPlanAPI = axios.create({
 export const signBibleAPI = axios.create({
   baseURL: process.env.REACT_APP_SIGNBIBLE_URL,
 });
+export const chapterVideoAPI = axios.create({
+  baseURL: process.env.REACT_APP_CHAPTER_VIDEOS,
+});
 export const CancelToken = axios.CancelToken;

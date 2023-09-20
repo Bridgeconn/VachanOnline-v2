@@ -23,6 +23,7 @@ const defaultState = {
   isTextSearch: "",
   audioBible: [],
   video: [],
+  chapterVideo: [],
   readingPlans: [],
   signBible: [],
   playing: "",
