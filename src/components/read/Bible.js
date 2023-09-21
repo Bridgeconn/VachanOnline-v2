@@ -297,6 +297,7 @@ const Bible = (props) => {
     highlights,
     userDetails,
     syncPanel,
+    parallelView,
     setParallelView,
     playing,
     setMainValue,
@@ -478,12 +479,13 @@ const Bible = (props) => {
               className={classes.noteIcon}
               fontSize="small"
               color="disabled"
-              onClick={() =>
-                mobileView
-                  ? openNoteDialog(verse)
-                  : path.startsWith("/read")
-                  ? ""
-                  : setParallelView(NOTE)
+              onClick={
+                () =>
+                  // mobileView
+                  openNoteDialog(verse)
+                // : path.startsWith("/read")
+                // ? ""
+                // : setParallelView(NOTE)
               }
             />
           ) : (
@@ -663,7 +665,12 @@ const Bible = (props) => {
     });
     setEdit(true);
     setValue("versesSelected", [verse]);
-    setOpen(true);
+    if (parallelView === null || parallelView === "") {
+      setOpen(true);
+    } else {
+      setOpen(false);
+      setParallelView(NOTE);
+    }
   };
   const handleNoteTextChange = (editorState) => {
     setNoteTextBody(draftToHtml(convertToRaw(editorState.getCurrentContent())));
@@ -991,6 +998,7 @@ const mapStateToProps = (state) => {
     versionSource: state.local.versionSource,
     mobileView: state.local.mobileView,
     versions: state.local.versions,
+    parallelView: state.local.parallelView,
   };
 };
 const mapDispatchToProps = (dispatch) => {
