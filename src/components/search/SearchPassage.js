@@ -69,27 +69,25 @@ const SearchPassage = (props) => {
   const bookList = versionBooks[versionSource[panel1.sourceId]];
   const searchHints = (
     <div>
-      <b className={classes.hints}>Search Hints:-</b>
-      <br />
-      <li className={classes.hints}>
-        {/* <b>Chapter Search:</b> */}
-        book chapter
-        <br /> Eg: gen 49 or നഹൂം 1 or यहूदा 1
-      </li>
-      <br />
-      <li className={classes.hints}>
-        {/* <b>Verse:</b> */}
-        book chapter:verse1,verse2
-        <br />
-        Eg1: മീഖാ 7:7 or john 3:16 or यिर्मयाह 29:11
-        <br /> Eg2: ഇയ്യോബ് 42:2 or genesis 12:2,3 or रूत 2:12
-      </li>{" "}
-      <br />
-      <li className={classes.hints}>
-        {/* <b>Passage Search:</b> */}
-        book chapter:verse start-verse end
-        <br /> Eg:rev 1:13-16 or 1 योहान 4:8-10
-      </li>
+      <h5>Search Hints:-</h5>
+      <h6>
+        <b>Chapter Search:</b> book chapter
+      </h6>
+      <span>
+        <i>Eg:</i> gen 49 or നഹൂം 1 or यहूदा 1
+      </span>
+      <h6>
+        <b>Verse:</b> book chapter: verse(s)
+      </h6>
+      <span>
+        <i>Eg:</i> ഇയ്യോബ് 42:2 or genesis 12:2,3 or रूत 2:12
+      </span>
+      <h6>
+        <b>Passage Search:</b> book chapter:verse range
+      </h6>
+      <span>
+        <i>Eg: </i>rev 1:13-16 or 1 योहान 4:8-10,16,20-25
+      </span>
     </div>
   );
 
@@ -118,7 +116,6 @@ const SearchPassage = (props) => {
     }
     if (search) {
       const ref = getReference(search, bookList);
-      console.log(ref, "ref");
       if (ref === "bookNotFound") {
         setValue("errorMessage", "bookNotFound");
       } else if (ref === "chapterNotFound") {

@@ -298,7 +298,6 @@ const Bible = (props) => {
     userDetails,
     syncPanel,
     parallelView,
-    setParallelView,
     playing,
     setMainValue,
     printRef,
@@ -379,6 +378,13 @@ const Bible = (props) => {
     },
     [isVerse]
   );
+  const showNoteMessage = () => {
+    setAlert(true);
+    setAlertMessage(
+      "Notes panel already opened on right side, please use it to view/edit the note"
+    );
+    return;
+  };
   const notesx = useSelector(
     ({ firebase: { data } }) =>
       data.users &&
@@ -479,14 +485,7 @@ const Bible = (props) => {
               className={classes.noteIcon}
               fontSize="small"
               color="disabled"
-              onClick={
-                () =>
-                  // mobileView
-                  openNoteDialog(verse)
-                // : path.startsWith("/read")
-                // ? ""
-                // : setParallelView(NOTE)
-              }
+              onClick={() => openNoteDialog(verse)}
             />
           ) : (
             ""
@@ -643,6 +642,9 @@ const Bible = (props) => {
     }
   };
   const openNoteDialog = (verse) => {
+    if (parallelView === NOTE) {
+      return showNoteMessage();
+    }
     let index;
     Object.entries(notesText).map(([key, value]) => {
       if (value?.verses?.includes(verse)) {
@@ -665,12 +667,7 @@ const Bible = (props) => {
     });
     setEdit(true);
     setValue("versesSelected", [verse]);
-    if (parallelView === null || parallelView === "") {
-      setOpen(true);
-    } else {
-      setOpen(false);
-      setParallelView(NOTE);
-    }
+    setOpen(true);
   };
   const handleNoteTextChange = (editorState) => {
     setNoteTextBody(draftToHtml(convertToRaw(editorState.getCurrentContent())));
@@ -1006,12 +1003,6 @@ const mapDispatchToProps = (dispatch) => {
     syncPanel: (from, to) => {
       dispatch({ type: actions.SYNCPANEL, from: from, to: to });
     },
-    setParallelView: (value) =>
-      dispatch({
-        type: actions.SETVALUE,
-        name: "parallelView",
-        value: value,
-      }),
     setMainValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
     setValue1: (name, value) =>
