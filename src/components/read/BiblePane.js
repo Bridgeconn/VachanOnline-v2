@@ -105,46 +105,154 @@ const BiblePane = (props) => {
     setMainValue("parallelView", SEARCH);
     setMainValue("errorMessage", "");
   }
+  const searchTextButton = (
+    <>
+      If you are searching for a word in the bible, click the button{" "}
+      <Link
+        to={{
+          pathname: "/study",
+        }}
+      >
+        <Button
+          variant="outlined"
+          size="small"
+          title="Search Text"
+          aria-label="search text"
+          target="_blank"
+          rel="noOpener"
+          onClick={goToSearch}
+          className={classes.searchBtn}
+        >
+          Search Text
+        </Button>
+      </Link>
+    </>
+  );
+  const resetSearch = () => {
+    setMainValue("errorMessage", "");
+    setValue("verseData", "");
+  };
+  const resetButton = (
+    <Button
+      variant="outlined"
+      title="Search Text"
+      aria-label="search text"
+      target="_blank"
+      rel="noOpener"
+      onClick={resetSearch}
+      className={classes.searchBtn}
+    >
+      Reset Search
+    </Button>
+  );
+  const navigatePoint = (
+    <>
+      <li>
+        Reset search and navigate to the required reference using the Book
+        dropdown above{" "}
+      </li>
+      {resetButton}
+    </>
+  );
+  const textSearchMessage = (
+    <div className={classes.errorSearchMessage}>
+      <h5>NO RESULTS FOUND</h5>
+      <b>Please try the following:</b>
+      <br />
+      {searchTextButton}
+    </div>
+  );
   const notFoundMessage = (
     <div className={classes.errorSearchMessage}>
-      <h5>Sorry, we didn't find any results for your search</h5>
+      <h5>NO RESULTS FOUND</h5>
+      <b>Please try the following:</b>
       <ul className={classes.listError}>
         <li>
           Double-check spelling, you can use either book code,full book name or
           local book name
         </li>
         <li>
-          For a Chapter search, Make sure there are spaces between book name and
+          For a Chapter search, Make sure there is a space between book name and
           chapter
         </li>
         <li>
           For a verse search, use this format. eg: psalms 5:8 or psalms 5:8,10
         </li>
         <li>For a passage search, use this format. eg: psalms 5:10-15</li>
-        <li>
-          If you are searching for a word in the bible, click the button below
-        </li>
-        <Link
-          to={{
-            pathname: "/study",
-          }}
-        >
-          <Button
-            variant="outlined"
-            size="small"
-            title="Search Text"
-            aria-label="search text"
-            target="_blank"
-            rel="noOpener"
-            onClick={goToSearch}
-            className={classes.searchBtn}
-          >
-            Search Text
-          </Button>
-        </Link>
+        <li>{searchTextButton}</li>
+        {navigatePoint}
       </ul>
     </div>
   );
+  const bookNotFound = (
+    <div className={classes.errorSearchMessage}>
+      <h5>BOOK NOT FOUND</h5>
+      <b>Please try the following:</b>
+      <li>
+        Double-check spelling, you can use either book code,full book name or
+        local book name
+      </li>
+      <li>Make sure there is a space between book name and chapter</li>
+      {navigatePoint}
+    </div>
+  );
+  const referenceNotFound = (
+    <div className={classes.errorSearchMessage}>
+      <h5>BIBLE REFERENCE NOT FOUND IN CURRENT BIBLE</h5>
+      <b>Please try the following:</b>
+      <ul className={classes.listError}>
+        <li>Make sure there is a space between book name and chapter</li>
+        <li>Search for another reference</li>
+        <li>Change Bible using Version dropdown (first dropdown)</li>
+        {navigatePoint}
+      </ul>
+    </div>
+  );
+  const invalidFormat = (
+    <div className={classes.errorSearchMessage}>
+      <h5>INVALID SEARCH FORMAT</h5>
+      <b>Please try the following:</b>
+      <ul className={classes.listError}>
+        <li>
+          Don't use special characters except <b>, : -</b>
+        </li>
+        <li>
+          Double-check spelling, you can use either book code,full book name or
+          local book name
+        </li>
+        <li>
+          {" "}
+          Make sure there is a space between book name and chapter, eg:gen 49 or
+          നഹൂം 1 or यहूदा 1
+        </li>
+        <li>
+          For a verse search, use this format. ഇയ്യോബ് 42:2 or genesis 12:2,3 or
+          रूत 2:12,13
+        </li>
+        <li>
+          For a passage search, use this format. Eg:rev 1:13-16 or 1 योहान
+          4:8-10
+        </li>
+        {navigatePoint}
+      </ul>
+    </div>
+  );
+  function showMessage() {
+    if (errorMessage === "textSearch") {
+      return textSearchMessage;
+    }
+    if (errorMessage === "bookNotFound") {
+      return bookNotFound;
+    }
+    if (errorMessage === "referenceNotFound") {
+      return referenceNotFound;
+    }
+    if (errorMessage === "invalidFormat") {
+      return invalidFormat;
+    }
+    return notFoundMessage;
+  }
+
   React.useEffect(() => {
     const closeAlert = () => {
       //After showing message remove it
@@ -253,10 +361,8 @@ const BiblePane = (props) => {
                   versesSelected={versesSelected}
                   languageCode={paneData.languageCode}
                 />
-              ) : errorMessage === "notFound" ? (
-                notFoundMessage
               ) : (
-                ""
+                showMessage()
               )}
               {alertMessage}
             </Fullscreen>

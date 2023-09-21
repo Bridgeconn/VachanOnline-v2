@@ -291,6 +291,17 @@ function validVerseFormat(verse) {
         return true;
       }
     }
+    //check multi verse and passage in same chapter
+    if (verse?.match(/^[0-9,-]*$/g)) {
+      const verseArr = verse.split(",");
+      if (
+        verseArr.every(
+          (num) => num.includes("-") || (num !== "" && !isNaN(num))
+        )
+      ) {
+        return true;
+      }
+    }
   } else {
     return true;
   }
@@ -302,7 +313,7 @@ export const getReference = (search, bookList) => {
   const bookChapter = searchArr[0].trim();
   const verse = searchArr[1]?.replace(/\s/g, "") || "";
   if (verse && !validVerseFormat(verse)) {
-    return null;
+    return "invalidFormat";
   }
   const searchArr1 = bookChapter.split(/\s+/);
   const chapter = Number(searchArr1.pop());
@@ -314,9 +325,12 @@ export const getReference = (search, bookList) => {
   if (bookCode) {
     if (checkValidChapter(bookCode, chapter)) {
       return { bookCode, chapter, verse };
+    } else {
+      return "chapterNotFound";
     }
+  } else {
+    return "bookNotFound";
   }
-  return null;
 };
 //Function to search Bible
 export const searchBible = (sourceId, keyword, bookNames, setResult) => {
