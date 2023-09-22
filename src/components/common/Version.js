@@ -234,6 +234,7 @@ const Version = (props) => {
       setValue("chapter", 1);
       setValue("bookCode", bookList[0].book_code);
       setValue("versesSelected", []);
+      setValue("verseData", "");
       //if parallel bible view and parallel sCroll, disable parallel scroll, show message
       if (parallelView === PARALLELBIBLE && parallelScroll) {
         setMainValue("parallelScroll", false);

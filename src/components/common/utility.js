@@ -294,11 +294,23 @@ function validVerseFormat(verse) {
     //check multi verse and passage in same chapter
     if (verse?.match(/^[0-9,-]*$/g)) {
       const verseArr = verse.split(",");
-      if (
-        verseArr.every(
-          (num) => num.includes("-") || (num !== "" && !isNaN(num))
-        )
-      ) {
+      const checkArr = (verse) => {
+        if (verse.includes("-")) {
+          const [start, end, last] = verse.split("-");
+          if (
+            !isNaN(start) &&
+            !isNaN(end) &&
+            parseInt(start) <= parseInt(end) &&
+            last === undefined
+          ) {
+            return true;
+          }
+        } else if (verse !== "" && !isNaN(verse)) {
+          return true;
+        }
+        return false;
+      };
+      if (verseArr.every(checkArr)) {
         return true;
       }
     }
@@ -312,6 +324,9 @@ export const getReference = (search, bookList) => {
   const searchArr = search.split(/:/);
   const bookChapter = searchArr[0].trim();
   const verse = searchArr[1]?.replace(/\s/g, "") || "";
+  if (searchArr[1]?.replace(/\s/g, "") === "" || searchArr[2] !== undefined) {
+    return "invalidFormat";
+  }
   if (verse && !validVerseFormat(verse)) {
     return "invalidFormat";
   }

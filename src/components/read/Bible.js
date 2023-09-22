@@ -251,6 +251,15 @@ const useStyles = makeStyles((theme) => ({
     padding: "6px 10px",
     borderRadius: 4,
   },
+  searchHeading: {
+    textTransform: "capitalize",
+    fontWeight: 600,
+    fontSize: 14,
+  },
+  divider: {
+    marginTop: 12,
+    marginBottom: 12,
+  },
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
@@ -448,7 +457,10 @@ const Bible = (props) => {
         }
       });
   };
-  function showVerse(item, chapter) {
+  function showVerse(item, chapter, verseData) {
+    if (!filterVerse(verseData, item.verseNumber)) {
+      return "";
+    }
     const verse = parseInt(item.verseNumber);
     const verseClass =
       selectedVerses?.indexOf(verse) > -1
@@ -494,6 +506,55 @@ const Bible = (props) => {
         </span>
       </span>
     );
+  }
+  //multi verses, passage in a same chapter
+  function showMultiVerse(item, chapter, verseData) {
+    if (verseData?.match(/^[0-9,-]*$/g)) {
+      return verseData?.split(",").map((element, i) => {
+        return (
+          <span key={element + i}>
+            {verseData?.indexOf(",") !== -1 && (
+              <>
+                <Typography variant="button" className={classes.searchHeading}>
+                  {`${bookDisplay} ${chapter}:${element}`}
+                </Typography>
+                <br />
+              </>
+            )}
+            {verses.map((item) => showVerse(item, chapter, element))}
+            {i !== verseData?.split(",").length - 1 ? (
+              <Divider className={classes.divider} />
+            ) : (
+              ""
+            )}
+          </span>
+        );
+      });
+    } else {
+      return verses.map((item) => showVerse(item, chapter, verseData));
+    }
+  }
+  function filterVerse(verseData, verseNumber) {
+    if (verseData) {
+      if (isNaN(verseData)) {
+        // verse range
+        if (verseData?.match(/^[0-9-]*$/g)) {
+          const [start, end] = verseData.split("-");
+          if (verseNumber < parseInt(start) || parseInt(end) < verseNumber) {
+            return false;
+          }
+        }
+        // multi verse
+        if (verseData?.match(/^[0-9,]*$/g)) {
+          if (!verseData.split(",").includes(verseNumber)) {
+            return false;
+          }
+        }
+      } else if (verseNumber !== verseData) {
+        return false;
+      }
+    }
+    return true; //show verse
   }
   React.useEffect(() => {
     if (version !== "Loading...") {
@@ -805,9 +866,11 @@ const Bible = (props) => {
             setMainValue("errorMessage", "referenceNotFound");
           }
         }
-        // check for multi verse
-        if (verseData?.match(/^[0-9,]*$/g)) {
-          if (!verseData.split(",").every((num) => verseArr.includes(num))) {
+        // check for multi search
+        if (verseData?.match(/^[0-9,-]*$/g)) {
+          if (
+            !verseData.split(/[,-]+/).every((num) => verseArr.includes(num))
+          ) {
             setMainValue("errorMessage", "referenceNotFound");
           }
         }
@@ -850,34 +913,8 @@ const Bible = (props) => {
             <Typography className={classes.bookRef} variant="h4">
               {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
-            {verses.map((item) => {
-              // ############Fetching single verse###########
-              if (verseData) {
-                if (isNaN(verseData)) {
-                  // verse range
-                  if (verseData?.match(/^[0-9-]*$/g)) {
-                    const [start, end] = verseData.split("-");
-                    if (
-                      item.verseNumber < parseInt(start) ||
-                      parseInt(end) < item.verseNumber
-                    ) {
-                      return "";
-                    }
-                  }
-                  // multi verse
-                  if (verseData?.match(/^[0-9,]*$/g)) {
-                    if (!verseData.split(",").includes(item.verseNumber)) {
-                      return "";
-                    }
-                  }
-                } else if (item.verseNumber !== verseData) {
-                  return "";
-                }
-
-                return showVerse(item, chapter);
-              }
-              return showVerse(item, chapter);
-            })}
+            {showMultiVerse(verses, chapter, verseData)}
+            <br />
             <br />
             {verseData !== "" ? (
               <Button
