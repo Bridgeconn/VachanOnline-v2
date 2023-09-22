@@ -305,7 +305,7 @@ function validVerseFormat(verse) {
           ) {
             return true;
           }
-        } else if (!isNaN(verse)) {
+        } else if (verse !== "" && !isNaN(verse)) {
           return true;
         }
         return false;
@@ -324,6 +324,9 @@ export const getReference = (search, bookList) => {
   const searchArr = search.split(/:/);
   const bookChapter = searchArr[0].trim();
   const verse = searchArr[1]?.replace(/\s/g, "") || "";
+  if (searchArr[1]?.replace(/\s/g, "") === "" || searchArr[2] !== undefined) {
+    return "invalidFormat";
+  }
   if (verse && !validVerseFormat(verse)) {
     return "invalidFormat";
   }

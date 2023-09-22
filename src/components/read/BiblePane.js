@@ -186,13 +186,14 @@ const BiblePane = (props) => {
   );
   const bookNotFound = (
     <div className={classes.errorSearchMessage}>
-      <h5>BOOK NOT FOUND</h5>
+      <h5>BOOK NOT FOUND IN CURRENT BIBLE</h5>
       <b>Please try the following:</b>
       <li>
         Double-check spelling, you can use either book code,full book name or
         local book name
       </li>
       <li>Make sure there is a space between book name and chapter</li>
+      <li>Change Bible using Version dropdown (first dropdown)</li>
       {navigatePoint}
     </div>
   );

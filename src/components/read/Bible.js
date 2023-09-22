@@ -512,7 +512,7 @@ const Bible = (props) => {
     if (verseData?.match(/^[0-9,-]*$/g)) {
       return verseData?.split(",").map((element, i) => {
         return (
-          <>
+          <span key={element + i}>
             {verseData?.indexOf(",") !== -1 && (
               <>
                 <Typography variant="button" className={classes.searchHeading}>
@@ -527,7 +527,7 @@ const Bible = (props) => {
             ) : (
               ""
             )}
-          </>
+          </span>
         );
       });
     } else {
