@@ -294,11 +294,23 @@ function validVerseFormat(verse) {
     //check multi verse and passage in same chapter
     if (verse?.match(/^[0-9,-]*$/g)) {
       const verseArr = verse.split(",");
-      if (
-        verseArr.every(
-          (num) => num.includes("-") || (num !== "" && !isNaN(num))
-        )
-      ) {
+      const checkArr = (verse) => {
+        if (verse.includes("-")) {
+          const [start, end, last] = verse.split("-");
+          if (
+            !isNaN(start) &&
+            !isNaN(end) &&
+            parseInt(start) <= parseInt(end) &&
+            last === undefined
+          ) {
+            return true;
+          }
+        } else if (!isNaN(verse)) {
+          return true;
+        }
+        return false;
+      };
+      if (verseArr.every(checkArr)) {
         return true;
       }
     }

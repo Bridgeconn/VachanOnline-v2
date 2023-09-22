@@ -230,8 +230,8 @@ const BiblePane = (props) => {
           रूत 2:12,13
         </li>
         <li>
-          For a passage search, use this format. Eg:rev 1:13-16 or 1 योहान
-          4:8-10
+          For a passage search, start verse should be less than end verse, use
+          this format. Eg:rev 1:13-16 or 1 योहान 4:8-10
         </li>
         {navigatePoint}
       </ul>
