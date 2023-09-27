@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
@@ -21,11 +21,8 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import {
-  getAudioBibleObject,
-  getEditorToolbar,
-  getVerse,
-} from "../common/utility";
+import { getAudioBibleObject, getEditorToolbar } from "../common/utility";
+import { getHeading, getVerse, parseHeading } from "../common/utility";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
@@ -152,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: ".8em",
     color: color.MEDIUMGREY,
   },
-  sectionHeading: {
+  heading: {
     fontSize: "1.3em",
     display: "block",
     paddingTop: 12,
@@ -267,7 +264,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
-  const [headings, setHeadings] = React.useState("");
   const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
   const [previous, setPrevious] = React.useState({});
@@ -344,53 +340,6 @@ const Bible = (props) => {
   const [editorState, setEditorState] = React.useState(
     EditorState.createEmpty()
   );
-  //new usfm json structure
-  const getHeading = (contents) => {
-    if (contents) {
-      let data = contents.find((item) => Array.isArray(item));
-      if (data) {
-        for (let section of data) {
-          if (
-            Object.keys(section)[0].startsWith("s") &&
-            typeof section[Object.keys(section)[0]][0] === "string"
-          ) {
-            return section[Object.keys(section)[0]][0];
-          }
-        }
-      }
-    }
-  };
-  const isVerse = useCallback((content) => {
-    return (
-      typeof content === "object" &&
-      content !== null &&
-      "verseNumber" in content
-    );
-  }, []);
-  //new usfm json structure
-  const getHeadings = useCallback(
-    (chapter) => {
-      const headings = {};
-      let verse = 1;
-      let heading = getHeading(chapter);
-      if (heading) {
-        headings[1] = heading;
-      }
-      chapter?.forEach((item) => {
-        if (item) {
-          if (!Array.isArray(item) && isVerse(item)) {
-            heading = getHeading(item.contents);
-            if (heading) {
-              headings[verse + 1] = heading;
-            }
-            verse = parseInt(item.verseNumber);
-          }
-        }
-      });
-      return headings;
-    },
-    [isVerse]
-  );
   const showNoteMessage = () => {
     setAlert(true);
     setAlertMessage(
@@ -462,6 +411,13 @@ const Bible = (props) => {
       });
   };
   function showVerse(item, chapter, verseData) {
+    const heading = parseHeading(item, classes.heading);
+    if (heading !== "") {
+      return heading;
+    }
+    if (item?.verseNumber === "" || isNaN(item?.verseNumber)) {
+      return "";
+    }
     if (!filterVerse(verseData, item.verseNumber)) {
       return "";
     }
@@ -477,14 +433,8 @@ const Bible = (props) => {
         ? `${classes.verseNumber} ${classes.firstVerse}`
         : `${classes.verseNumber}`;
     const verseNo = verse === 1 ? chapter : item.verseNumber;
-    const sectionHeading = headings[item.verseNumber] || "";
     return (
       <span key={item.verseNumber}>
-        {sectionHeading && sectionHeading !== "" ? (
-          <span className={classes.sectionHeading}>{sectionHeading}</span>
-        ) : (
-          ""
-        )}
         <span className={lineViewClass}>
           <span onClick={handleVerseClick} data-verse={item.verseNumber}>
             <span className={verseClass}>
@@ -508,12 +458,13 @@ const Bible = (props) => {
           )}
           {verseData.includes(",") && <br />}
         </span>
+        {getHeading(item, classes.heading)}
       </span>
     );
   }
   //multi verses, passage in a same chapter
   function showMultiVerse(item, chapter, verseData) {
-    if (verseData?.match(/^[0-9,-]*$/g)) {
+    if (verseData !== "" && verseData?.match(/^[0-9,-]*$/g)) {
       return verseData?.split(",").map((element, i) => {
         return (
           <span key={element + i}>
@@ -645,10 +596,8 @@ const Bible = (props) => {
             setLoadingText("Book will be uploaded soon");
           } else {
             setLoadingText("");
-
             let contents = response.data.chapterContent.contents;
-            setVerses(contents ? contents.filter(isVerse) : []);
-            setHeadings(getHeadings(contents));
+            setVerses(contents);
           }
           setIsLoading(false);
         })
@@ -656,7 +605,7 @@ const Bible = (props) => {
           console.log(error);
         });
     }
-  }, [sourceId, bookCode, chapter, getHeadings, isVerse]);
+  }, [sourceId, bookCode, chapter]);
   //if audio bible show icon
   React.useEffect(() => {
     if (currentAudio) {
@@ -858,7 +807,7 @@ const Bible = (props) => {
 
   useEffect(() => {
     if (verses?.length > 0 && verseData !== "") {
-      const verseArr = verses.map((a) => a.verseNumber);
+      const verseArr = verses.map((a) => a?.verseNumber);
       if (isNaN(verseData)) {
         //check for verse range
         if (verseData?.match(/^[0-9-]*$/g)) {

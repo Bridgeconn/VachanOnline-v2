@@ -479,7 +479,7 @@ export const getChapterVideo = (setValue) => {
 };
 
 export const getVerse = (verse) => {
-  if (verse?.contents.length === 1 && typeof verse?.contents[0] === "string") {
+  if (verse?.contents?.length === 1 && typeof verse?.contents[0] === "string") {
     return verse.verseText;
   }
   return parseTags(verse?.contents);
@@ -517,3 +517,38 @@ function parseTags(tags) {
   }
   return verseText;
 }
+export const parseHeading = (item, className) => {
+  if (Array.isArray(item)) {
+    const [first] = item;
+    if (typeof first === "object") {
+      const tag = Object.keys(first)[0];
+      if (tag.match(/s.?/)) {
+        const heading = first[tag][0];
+        if (heading && heading !== "") {
+          return (
+            <span key={heading} className={className}>
+              {heading}
+            </span>
+          );
+        }
+      }
+    }
+  }
+  return "";
+};
+export const getHeading = (item, className) => {
+  try {
+    const { contents } = item;
+    if (contents) {
+      for (item of contents) {
+        const heading = parseHeading(item, className);
+        if (heading !== "") {
+          return heading;
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  return "";
+};
