@@ -21,7 +21,11 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { getAudioBibleObject, getEditorToolbar } from "../common/utility";
+import {
+  getAudioBibleObject,
+  getEditorToolbar,
+  getVerse,
+} from "../common/utility";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
@@ -488,7 +492,7 @@ const Bible = (props) => {
                 {verseNo}
                 &nbsp;
               </span>
-              {item.verseText + " "}
+              {getVerse(item) + " "}
             </span>
           </span>
           {/*If verse has note then show note icon to open notes pane */}

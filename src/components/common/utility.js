@@ -5,6 +5,11 @@ import {
   chapterVideoAPI,
 } from "../../store/api";
 import { bibleBooks, bibleChapters } from "../../store/bibleData";
+import {
+  punctPattern1,
+  punctPattern2,
+  verseCarryingMarkers,
+} from "../../store/usfm";
 //Function to get the bible versions
 export const getVersions = (
   setVersions,
@@ -472,3 +477,43 @@ export const getChapterVideo = (setValue) => {
       console.log(error);
     });
 };
+
+export const getVerse = (verse) => {
+  if (verse?.contents.length === 1 && typeof verse?.contents[0] === "string") {
+    return verse.verseText;
+  }
+  return parseTags(verse?.contents);
+};
+
+function parseTags(tags) {
+  let verse = [];
+  if (Array.isArray(tags)) {
+    for (let item of tags) {
+      if (typeof item === "string") {
+        verse.push(item);
+      } else if (typeof item === "object") {
+        const tag = item.closing?.replace(/[^a-z+]/gi, "");
+        if (verseCarryingMarkers.includes(tag)) {
+          verse.push(parseTags(item[tag]));
+        }
+      } else {
+        console.log("Case not handled, see tag below");
+        console.log(tags);
+      }
+    }
+  }
+  let verseText = "";
+  for (let text of verse) {
+    if (
+      punctPattern1.test(text) ||
+      punctPattern2.test(verseText) ||
+      verseText.endsWith(" ") ||
+      verseText === ""
+    ) {
+      verseText += text;
+    } else if (text !== "") {
+      verseText += ` ${text}`;
+    }
+  }
+  return verseText;
+}
