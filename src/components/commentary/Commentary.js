@@ -249,7 +249,7 @@ const Commentary = (props) => {
     return str.startsWith("<br>") ? str.slice(4) : str;
   }, []);
 
-  const getImages = (str, baseUrl) => {
+  const getImages = (str) => {
     const strArr = str.split("<img");
     const images = [];
     strArr.forEach((item, i) => {
@@ -257,9 +257,8 @@ const Commentary = (props) => {
         const img = item.split("/>")[0];
         if (img.indexOf("src") !== 0) {
           const imgParts = img.split(/\s+/).find((e) => e.includes("src"));
-          const src = imgParts
-            ?.replace("src=", "")
-            ?.replace("base_url", baseUrl);
+          const src = imgParts?.replace("src=", "");
+
           images.push(src);
         }
       }
