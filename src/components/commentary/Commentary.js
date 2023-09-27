@@ -271,7 +271,7 @@ const Commentary = (props) => {
       const imageObj = { text: str, images: imageArr };
       if (typeof str === "string" && baseUrl !== "") {
         str = str.replaceAll("base_url", baseUrl);
-        const images = getImages(str, baseUrl);
+        const images = getImages(str);
         const newImages =
           images?.map((ele, i) => {
             const src = "src=" + ele;
