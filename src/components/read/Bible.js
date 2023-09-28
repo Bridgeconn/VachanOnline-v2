@@ -211,7 +211,7 @@ const useStyles = makeStyles((theme) => ({
       display: (props) => (props.printNotes ? "inline-block" : "none"),
     },
   },
-  bookRef: {
+  printHeading: {
     display: "none",
     [`@media print`]: {
       textTransform: "capitalize",
@@ -249,6 +249,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + color.GREY,
     margin: 4,
+    marginTop: 20,
     padding: "6px 10px",
     borderRadius: 4,
   },
@@ -410,10 +411,13 @@ const Bible = (props) => {
         }
       });
   };
-  function showVerse(item, chapter, verseData) {
-    const heading = parseHeading(item, classes.heading);
-    if (heading !== "") {
-      return heading;
+  function showText(item, chapter, verseData) {
+    if (verseData === "" || verseData.split("-")[0] === "1") {
+      // show chapter heading only for verse 1
+      const heading = parseHeading(item, classes.heading);
+      if (heading !== "") {
+        return heading;
+      }
     }
     if (item?.verseNumber === "" || isNaN(item?.verseNumber)) {
       return "";
@@ -462,31 +466,53 @@ const Bible = (props) => {
       </span>
     );
   }
+  function hasPara(item) {
+    if (typeof item === "object" && "contents" in item) {
+      return item?.contents.some((a) => typeof a === "object" && "p" in a);
+    }
+    return false;
+  }
+  function splitParas(segments) {
+    const paras = [];
+    let i = 0;
+    for (const item of segments) {
+      if (typeof paras[i] === "undefined") {
+        paras[i] = [];
+      }
+      paras[i].push(item);
+      if (hasPara(item)) {
+        i++;
+      }
+    }
+    return paras;
+  }
   //multi verses, passage in a same chapter
-  function showMultiVerse(item, chapter, verseData) {
+  function displayBibleText(verses, chapter, verseData) {
+    const paras = splitParas(verses);
     if (verseData !== "" && verseData?.match(/^[0-9,-]*$/g)) {
       return verseData?.split(",").map((element, i) => {
+        const notLast = i !== verseData?.split(",").length - 1;
         return (
-          <span key={element + i}>
+          <div key={element + i}>
             {verseData?.indexOf(",") !== -1 && (
-              <>
-                <Typography variant="button" className={classes.searchHeading}>
-                  {`${bookDisplay} ${chapter}:${element}`}
-                </Typography>
-                <br />
-              </>
+              // if multi sections show separate headings
+              <Typography variant="button" className={classes.searchHeading}>
+                {`${bookDisplay} ${chapter}:${element}`}
+              </Typography>
             )}
-            {verses.map((item) => showVerse(item, chapter, element))}
-            {i !== verseData?.split(",").length - 1 ? (
-              <Divider className={classes.divider} />
-            ) : (
-              ""
-            )}
-          </span>
+            {paras.map((para) => {
+              return (
+                <p>{para.map((item) => showText(item, chapter, element))}</p>
+              );
+            })}
+            {notLast ? <Divider className={classes.divider} /> : ""}
+          </div>
         );
       });
     } else {
-      return verses.map((item) => showVerse(item, chapter, verseData));
+      return paras.map((para) => {
+        return <p>{para.map((item) => showText(item, chapter, verseData))}</p>;
+      });
     }
   }
   function filterVerse(verseData, verseNumber) {
@@ -863,12 +889,10 @@ const Bible = (props) => {
           {fetchData}
           <div className={classes.text} ref={printRef}>
             <style>{getPageMargins()}</style>
-            <Typography className={classes.bookRef} variant="h4">
+            <Typography className={classes.printHeading} variant="h4">
               {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
-            {showMultiVerse(verses, chapter, verseData)}
-            <br />
-            <br />
+            {displayBibleText(verses, chapter, verseData)}
             {verseData !== "" ? (
               <Button
                 id="button"
