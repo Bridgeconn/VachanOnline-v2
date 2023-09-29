@@ -248,13 +248,30 @@ const Commentary = (props) => {
     str = str.trim();
     return str.startsWith("<br>") ? str.slice(4) : str;
   }, []);
+
+  const getImages = (str) => {
+    const strArr = str.split("<img");
+    const images = [];
+    strArr.forEach((item, i) => {
+      if (i !== 0) {
+        const img = item.split("/>")[0];
+        if (img.indexOf("src") !== 0) {
+          const imgParts = img.split(/\s+/).find((e) => e.includes("src"));
+          const src = imgParts?.replace("src=", "");
+
+          images.push(src);
+        }
+      }
+    });
+    return images;
+  };
+
   const setImages = useCallback(
     (str, imageArr) => {
       const imageObj = { text: str, images: imageArr };
       if (typeof str === "string" && baseUrl !== "") {
         str = str.replaceAll("base_url", baseUrl);
-        const rex = /(?<=src=)"?'?.*?\.(png|jpg)"?'?/g;
-        const images = str.match(rex);
+        const images = getImages(str);
         const newImages =
           images?.map((ele, i) => {
             const src = "src=" + ele;
