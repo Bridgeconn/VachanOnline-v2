@@ -9,7 +9,7 @@ import ModalVideo from "react-modal-video";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import Select from "react-select";
-import { capitalize, getShortBook } from "../common/utility";
+import { capitalize, getBookbyCode, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
@@ -102,6 +102,7 @@ const Video = (props) => {
   const classes = useStyles();
   let {
     video,
+    chapterVideo,
     bookCode,
     books,
     versionBooks,
@@ -123,12 +124,12 @@ const Video = (props) => {
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
     const youtu = "https://youtu.be/";
-    const vimeoUrl = process.env.REACT_APP_VIDEO_URL + "vimeo/";
+    const vimeoUrl = "https://vumbnail.com/";
     const youtubeUrl = "https://img.youtube.com/vi/";
     const source = url.includes("vimeo") ? "vimeo" : "youtube";
     const id = source === "vimeo" ? url.split(vimeo)[1] : url.split(youtu)[1];
-    const thumbUrl = source === "vimeo" ? vimeoUrl : youtubeUrl;
-    const imageUrl = thumbUrl + id + "/0.jpg";
+    const imageUrl =
+      source === "vimeo" ? vimeoUrl + id + ".jpg" : youtubeUrl + id + "/0.jpg";
     return { source, id, imageUrl };
   };
   const handleVideoClick = (source, id) => {
@@ -165,18 +166,38 @@ const Video = (props) => {
   }, [languageCode, languages, video]);
   //If language or book changed update videos and message to show
   React.useEffect(() => {
+    const filterVideos = (videos) => {
+      const languageData = chapterVideo[language?.value];
+      const bookData = languageData ? languageData[bookCode] : [];
+      const bookDataArr = bookData ? Object.values(bookData)?.flat() : [];
+      const vids = videos.filter((vid) => {
+        if (bookDataArr.includes(vid.url)) {
+          // return true if in chapter but not in book
+          return bookData[chapter]?.includes(vid.url) ? true : false;
+        } else {
+          //No chapter filter
+          return true;
+        }
+      });
+      return vids;
+    };
     if (language) {
       const lang = video.find((obj) => obj?.language?.code === language?.value);
       if (lang?.books?.hasOwnProperty(bookCode)) {
-        setVideos(lang.books[bookCode]);
+        const _videos = lang.books[bookCode];
+        setVideos(filterVideos(_videos));
         setMessage("");
       } else {
         setVideos([]);
         const book = getShortBook(books, language.value, bookCode);
-        setMessage(`No videos available in ${language?.label} for ${book}`);
+        setMessage(
+          `No videos available in ${language?.label} for ${
+            book ? book : getBookbyCode(bookCode)?.book
+          }`
+        );
       }
     }
-  }, [video, bookCode, language, books]);
+  }, [video, bookCode, language, books, chapterVideo, chapter]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -264,6 +285,7 @@ const mapStateToProps = (state) => {
     bookCode: state.local.panel1.bookCode,
     versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
+    chapterVideo: state.local.chapterVideo,
   };
 };
 const mapDispatchToProps = (dispatch) => {

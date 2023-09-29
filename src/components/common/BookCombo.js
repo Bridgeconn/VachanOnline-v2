@@ -13,17 +13,13 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
-import {
-  COMMENTARY,
-  PARALLELBIBLE,
-  READINGPLANS,
-  SEARCH,
-} from "../../store/views";
+import { Typography } from "@material-ui/core";
+import { MOBILEPV } from "../../store/views";
 
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
-    margin: 9,
+    margin: 4,
     padding: "6px 0 6px 12px",
     textTransform: "capitalize",
     backgroundColor: "#fff",
@@ -162,6 +158,16 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "ellipsis",
     },
   },
+  verseDisplay: {
+    display: "inline-flex",
+    fontSize: "1rem",
+    textTransform: "capitalize",
+    border: "1px solid #fff",
+    boxShadow: "1px 1px 1px 1px " + GREY,
+    margin: 4,
+    padding: "6px 10px",
+    borderRadius: 4,
+  },
 }));
 const BookCombo = (props) => {
   const {
@@ -169,6 +175,7 @@ const BookCombo = (props) => {
     bookCode,
     bookList,
     chapter,
+    verseData,
     setValue,
     minimal,
     landingPage,
@@ -178,8 +185,7 @@ const BookCombo = (props) => {
     screen,
   } = props;
   //classes for styling
-  const mobilePV = [PARALLELBIBLE, COMMENTARY, READINGPLANS, SEARCH];
-  const parallelMV = mobilePV.includes(parallelView);
+  const parallelMV = MOBILEPV.includes(parallelView);
   const styleProps = {
     screen: screen,
     parallelView: parallelMV,
@@ -249,11 +255,12 @@ const BookCombo = (props) => {
     return bookMap;
   }
   const setParams = React.useCallback(
-    (bookCode, chapter) => {
+    (bookCode, chapter, verseData) => {
       if (path.startsWith("/read") && paramVersion !== null) {
+        const verse = verseData ? "." + verseData : "";
         setSearchParams({
           version: paramVersion,
-          reference: bookCode + "+" + chapter,
+          reference: bookCode + "." + chapter + verse,
         });
       }
     },
@@ -268,9 +275,22 @@ const BookCombo = (props) => {
     if (paneNo !== 2) {
       localStorage.setItem("bookCode", bookCode);
       localStorage.setItem("chapter", chapter);
-      setParams(bookCode, chapter);
+      if (!path.startsWith("/read") && verseData !== "") {
+        setValue("verseData", "");
+      }
+      localStorage.setItem("verseData", verseData || "");
+      setParams(bookCode, chapter, verseData);
     }
-  }, [paneNo, bookCode, chapter, setParams]);
+  }, [
+    paneNo,
+    bookCode,
+    chapter,
+    verseData,
+    landingPage,
+    path,
+    setValue,
+    setParams,
+  ]);
   //on changing book code set chapter row
   React.useEffect(() => {
     setChapterRow(chapterOpenMap.get(bookCode));
@@ -387,7 +407,11 @@ const BookCombo = (props) => {
       syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
     }
   };
-  return (
+  return verseData ? (
+    <Typography variant="button" className={classes.verseDisplay}>
+      {`${bookDisplay} ${chapter}:${verseData}`}
+    </Typography>
+  ) : (
     <>
       <BigTooltip title="Choose a Bible book and chapter to read">
         <Button

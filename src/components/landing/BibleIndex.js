@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
       marginBottom: 2,
     },
+    [theme.breakpoints.only("sm")]: {
+      margin: theme.spacing(1.5),
+    },
   },
   heading: {
     color: BLACK,
@@ -66,7 +69,8 @@ const useStyles = makeStyles((theme) => ({
 const BibleIndex = (props) => {
   const classes = useStyles();
   const { panel1, setValue, versionBooks, versionSource } = props;
-  const { version, book, bookCode, sourceId, chapter, language } = panel1;
+  const { version, book, bookCode, sourceId, chapter, verseData, language } =
+    panel1;
   return (
     <div className={classes.container}>
       <Paper className={classes.bibleIndex} elevation={3}>
@@ -80,6 +84,7 @@ const BibleIndex = (props) => {
             landingPage={true}
             bookCode={bookCode}
             chapter={chapter}
+            verseData={verseData}
             language={language}
           />
           {bookCode !== "" && bookCode !== undefined ? (

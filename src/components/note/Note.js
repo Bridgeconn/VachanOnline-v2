@@ -5,17 +5,21 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
+import DialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
+import { EditorState, convertToRaw } from "draft-js";
+import { getEditorToolbar } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -25,10 +29,21 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 4,
     cursor: "pointer",
   },
+  paper: {
+    [theme.breakpoints.down("sm")]: {
+      margin: 25,
+    },
+  },
   textField: {
     "& textarea": {
       maxHeight: 190,
     },
+  },
+  dialog: {
+    padding: 0,
+  },
+  editor: {
+    padding: 10,
   },
 }));
 const styles = (theme) => ({
@@ -62,16 +77,6 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-const DialogContent = withStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    width: 500,
-    [theme.breakpoints.down("sm")]: {
-      width: 300,
-    },
-  },
-}))(MuiDialogContent);
-
 const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
@@ -92,14 +97,18 @@ function Note({
   const [open, setOpen] = React.useState(false);
   const [noteText, setNoteText] = React.useState("");
   const [alert, setAlert] = React.useState(false);
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createEmpty()
+  );
   const firebase = useFirebase();
 
   const closeAlert = () => {
     setAlert(false);
   };
 
-  const handleNoteTextChange = (e) => {
-    setNoteText(e.target.value);
+  const handleNoteTextChange = (editorState) => {
+    setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setEditorState(editorState);
   };
 
   const openNoteDialog = () => {
@@ -175,25 +184,24 @@ function Note({
         </Alert>
       </Snackbar>
       <Dialog
+        maxWidth="md"
+        fullWidth
         onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
+        aria-labelledby="new-note-dialog"
         open={open}
+        classes={{ paper: classes.paper }}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle id="new-note-dialog" onClose={handleClose}>
           Note
         </DialogTitle>
-        <DialogContent dividers>
-          <TextField
-            id="outlined-multiline-static"
-            label="Note Text"
-            multiline
-            minRows={10}
-            className={classes.textField}
-            fullWidth={true}
-            inputProps={{ maxLength: 1000 }}
-            variant="outlined"
-            value={noteText}
-            onChange={handleNoteTextChange}
+        <DialogContent dividers className={classes.dialog}>
+          <Editor
+            editorState={editorState}
+            editorStyle={{ height: "30vh" }}
+            onEditorStateChange={handleNoteTextChange}
+            placeholder="Write your note"
+            editorClassName={classes.editor}
+            toolbar={getEditorToolbar(mobileView)}
           />
         </DialogContent>
         <DialogActions>

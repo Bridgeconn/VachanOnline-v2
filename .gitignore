@@ -1,3 +1,9 @@
 /node_modules
 package-lock.json
 .env
+/build
+
+# Docusaurus user manual
+/docs/desktop/node_modules
+/docs/desktop/build
+/docs/desktop/.docusaurus

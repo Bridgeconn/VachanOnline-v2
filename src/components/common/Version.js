@@ -26,12 +26,12 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
     [theme.breakpoints.down("sm")]: {
-      minWidth: 50,
+      minWidth: 60,
       padding: "6px 10px",
     },
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
       left: theme.spacing(0),
-      marginRight: 10,
+      margin: "4px 15px 4px 0",
     },
   },
   list: {
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
       minWidth: 30,
-      maxWidth: 60,
+      maxWidth: 118,
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
@@ -139,6 +139,7 @@ const Version = (props) => {
     mobileView,
     paneNo,
     chapter,
+    verseData,
     language,
   } = props;
   const [expanded, setExpanded] = React.useState(language);
@@ -155,13 +156,18 @@ const Version = (props) => {
     let _version = localStorage.getItem("version");
     let _bookCode = localStorage.getItem("bookCode");
     let _chapter = localStorage.getItem("chapter");
+    let _verseData = localStorage.getItem("verseData");
+    _verseData = !_verseData || _verseData === "undefined" ? "" : _verseData;
     if (path.startsWith("/read")) {
       _version = urlVersion || _version;
       if (reference !== null) {
-        const [bookCode, refChapter] = reference?.split("+");
+        const [bookCode, refChapter, verseData] = reference?.split(".");
         _bookCode = bookCode || _bookCode;
         _chapter = refChapter || _chapter;
+        _verseData = verseData || _verseData;
       }
+    } else {
+      _verseData = "";
     }
     //if versions not loaded fetch versions and books for the versions
     if (versions.length === 0) {
@@ -172,7 +178,8 @@ const Version = (props) => {
         setMainValue,
         _version,
         _bookCode,
-        _chapter
+        _chapter,
+        _verseData
       );
     }
     // eslint-disable-next-line
@@ -180,7 +187,7 @@ const Version = (props) => {
 
   useEffect(() => {
     if (path.startsWith("/read") && urlVersion === null && reference === null) {
-      const _reference = bookCode + "+" + chapter;
+      const _reference = bookCode + "." + chapter + "." + verseData;
       setSearchParams({ version: version, reference: _reference });
     }
   }, [
@@ -189,6 +196,7 @@ const Version = (props) => {
     path,
     bookCode,
     chapter,
+    verseData,
     setSearchParams,
     version,
   ]);
@@ -226,6 +234,7 @@ const Version = (props) => {
       setValue("chapter", 1);
       setValue("bookCode", bookList[0].book_code);
       setValue("versesSelected", []);
+      setValue("verseData", "");
       //if parallel bible view and parallel sCroll, disable parallel scroll, show message
       if (parallelView === PARALLELBIBLE && parallelScroll) {
         setMainValue("parallelScroll", false);
@@ -239,7 +248,7 @@ const Version = (props) => {
     if (path.startsWith("/read")) {
       const reference = searchParams.get("reference")
         ? searchParams.get("reference")
-        : bookCode + "+" + chapter;
+        : bookCode + "." + chapter;
       setSearchParams({ version: _version, reference: reference });
     }
   };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import ParallelScroll from "@material-ui/icons/ImportExport";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -28,6 +28,7 @@ import {
   getReadingPlans,
   getBookbyCode,
   getSignBible,
+  getChapterVideo,
 } from "../common/utility";
 import { useMediaQuery } from "@material-ui/core";
 import BottomBar from "./BottomBar";
@@ -46,9 +47,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     borderRight: "1px solid #f7f7f7",
     overflow: "hidden",
-  },
-  hide: {
-    display: "none",
   },
   splitPane1: {
     position: "absolute",
@@ -100,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textAlign: "center",
   },
-  parallelScroll: {
+  pScroll: {
     position: "absolute",
     top: 86,
     left: "calc(50% - 18px)",
@@ -110,13 +108,13 @@ const useStyles = makeStyles((theme) => ({
 const StudyBible = (props) => {
   const theme = useTheme();
   //ref to get bible panes 1 & 2
-  const bibleText1 = React.useRef();
-  const bibleText2 = React.useRef();
-  const [noteText, setNoteText] = React.useState("");
+  const bibleText1 = useRef();
+  const bibleText2 = useRef();
+  const [pane, setPane] = useState("");
   //used to sync bibles in paralle bibles on scroll
-  const [bookObject, setBookObject] = React.useState({});
+  const [bookObject, setBookObject] = useState({});
   //flag to prevent looping of on scroll event
-  const ignoreScrollEvents = React.useRef(false);
+  const ignoreScrollEvents = useRef(false);
   let {
     setValue,
     setValue1,
@@ -172,7 +170,42 @@ const StudyBible = (props) => {
       }
     }
   }, []);
-  React.useEffect(() => {
+  const biblePane = useMemo(() => {
+    return !mobileView ? (
+      <div className={classes.splitPane1}>
+        <BiblePane setValue={setValue1} paneData={panel1} />
+      </div>
+    ) : (
+      ""
+    );
+  }, [classes.splitPane1, mobileView, panel1, setValue1]);
+  const toggleParallelScroll = React.useCallback(() => {
+    setValue("parallelScroll", !parallelScroll);
+    if (!parallelScroll) {
+      syncPanel("panel1", "panel2");
+    }
+  }, [parallelScroll, setValue, syncPanel]);
+  const parallelScrollIcon = useMemo(() => {
+    return mobileView ? null : (
+      <div onClick={toggleParallelScroll}>
+        {parallelScroll ? (
+          <Tooltip title="Parallel Scroll">
+            <ParallelScroll fontSize="large" className={classes.pScroll} />
+          </Tooltip>
+        ) : (
+          <Tooltip title="Parallel Scroll Disabled">
+            <ParallelScroll
+              fontSize="large"
+              color="disabled"
+              className={classes.pScroll}
+            />
+          </Tooltip>
+        )}
+      </div>
+    );
+  }, [classes.pScroll, mobileView, parallelScroll, toggleParallelScroll]);
+
+  useEffect(() => {
     if (isMobile) {
       setValue("mobileView", true);
     } else {
@@ -180,38 +213,41 @@ const StudyBible = (props) => {
     }
   }, [isMobile, setValue]);
   //Fetch data from APIs
-  React.useEffect(() => {
+  useEffect(() => {
     //if commentaries not loaded fetch list of commentaries
     if (commentaries.length === 0) {
       getCommentaries(setValue);
     }
   }, [commentaries.length, setValue]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //if dictionaries not loaded fetch list of dictionaries
     if (dictionaries.length === 0) {
       getDictionaries(setDictionary);
     }
   }, [dictionaries.length, setDictionary]);
-  React.useEffect(() => {
+  useEffect(() => {
     //if audio bibles not loaded fetch list of audio bibles
     if (audioBible.length === 0) {
       getAudioBibles(setValue);
     }
   }, [audioBible.length, setValue]);
-  React.useEffect(() => {
+  useEffect(() => {
     //if videos not loaded fetch list of videos
     if (video.length === 0) {
       getVideos(setValue);
     }
   }, [video.length, setValue]);
-  React.useEffect(() => {
+  useEffect(() => {
+    getChapterVideo(setValue);
+  }, [setValue]);
+  useEffect(() => {
     //if reading plans not loaded fetch reading plans
     if (readingPlans.length === 0) {
       getReadingPlans(setValue);
     }
   }, [readingPlans.length, setValue]);
-  React.useEffect(() => {
+  useEffect(() => {
     //if sign bible not loaded fetch sign bible
     if (
       signBible.length === 0 &&
@@ -220,21 +256,21 @@ const StudyBible = (props) => {
       getSignBible(setValue);
     }
   }, [signBible.length, setValue]);
-  React.useEffect(() => {
+  useEffect(() => {
     if (parallelView === views.PARALLELBIBLE) {
       copyPanel1();
     }
   }, [parallelView, copyPanel1]);
-  React.useEffect(() => {
+  useEffect(() => {
     const userPanels = [views.BOOKMARK, views.HIGHLIGHT, views.NOTE];
     //if user is on these pages and logs out, close parallel view
     if (uid === null && userPanels.includes(parallelView)) {
       setValue("parallelView", "");
     }
   }, [parallelView, setValue, uid]);
-  const [pane, setPane] = React.useState("");
+
   //Set book object on change  of pane 1 for display in notes
-  React.useEffect(() => {
+  useEffect(() => {
     let bookList = versionBooks[versionSource[panel1.sourceId]];
     if (bookList && panel1.bookCode) {
       let selectedBook = bookList.find(
@@ -247,21 +283,14 @@ const StudyBible = (props) => {
   const getRegionalBookName = React.useCallback(
     (bookCode, sourceId) => {
       const bookList = versionBooks[versionSource[sourceId]];
-      let bookObject = bookList
+      let bookObj = bookList
         ? bookList.find((element) => element.book_code === bookCode)
         : null;
-      return bookObject ? bookObject.short : getBookbyCode(bookCode).book;
+      return bookObj ? bookObj.short : getBookbyCode(bookCode).book;
     },
     [versionBooks, versionSource]
   );
-  React.useEffect(() => {
-    const toggleParallelScroll = () => {
-      setValue("parallelScroll", !parallelScroll);
-      if (!parallelScroll) {
-        syncPanel("panel1", "panel2");
-      }
-    };
-
+  useEffect(() => {
     switch (parallelView) {
       case views.SEARCH:
         setPane(
@@ -289,27 +318,7 @@ const StudyBible = (props) => {
               />
             </div>
             <>
-              {mobileView ? null : (
-                <div onClick={toggleParallelScroll}>
-                  {parallelScroll ? (
-                    <Tooltip title="Parallel Scroll">
-                      <ParallelScroll
-                        fontSize="large"
-                        className={classes.parallelScroll}
-                      />
-                    </Tooltip>
-                  ) : (
-                    <Tooltip title="Parallel Scroll Disabled">
-                      <ParallelScroll
-                        fontSize="large"
-                        color="disabled"
-                        className={classes.parallelScroll}
-                      />
-                    </Tooltip>
-                  )}
-                </div>
-              )}
-
+              {parallelScrollIcon}
               <div className={classes.splitPane2}>
                 <BiblePane
                   setValue={setValue2}
@@ -349,9 +358,7 @@ const StudyBible = (props) => {
       case views.DICTIONARY:
         setPane(
           <>
-            <div className={mobileView ? classes.hide : classes.splitPane1}>
-              <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
+            {biblePane}
             <div
               className={mobileView ? classes.biblePane : classes.splitPane2}
             >
@@ -363,9 +370,7 @@ const StudyBible = (props) => {
       case views.INFOGRAPHICS:
         setPane(
           <>
-            <div className={mobileView ? classes.hide : classes.splitPane1}>
-              <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
+            {biblePane}
             <div
               className={mobileView ? classes.biblePane : classes.splitPane2}
             >
@@ -377,9 +382,7 @@ const StudyBible = (props) => {
       case views.AUDIO:
         setPane(
           <>
-            <div className={mobileView ? classes.hide : classes.splitPane1}>
-              <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
+            {biblePane}
             <div
               className={mobileView ? classes.biblePane : classes.splitPane2}
             >
@@ -398,9 +401,7 @@ const StudyBible = (props) => {
       case views.VIDEO:
         setPane(
           <>
-            <div className={mobileView ? classes.hide : classes.splitPane1}>
-              <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
+            {biblePane}
             <div
               className={mobileView ? classes.biblePane : classes.splitPane2}
             >
@@ -418,9 +419,7 @@ const StudyBible = (props) => {
       case views.BOOKMARK:
         setPane(
           <>
-            <div className={mobileView ? classes.hide : classes.splitPane1}>
-              <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
+            {biblePane}
             <div
               className={mobileView ? classes.biblePane : classes.splitPane2}
             >
@@ -437,9 +436,7 @@ const StudyBible = (props) => {
       case views.HIGHLIGHT:
         setPane(
           <>
-            <div className={mobileView ? classes.hide : classes.splitPane1}>
-              <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
+            {biblePane}
             <div
               className={mobileView ? classes.biblePane : classes.splitPane2}
             >
@@ -456,9 +453,7 @@ const StudyBible = (props) => {
       case views.NOTE:
         setPane(
           <>
-            <div className={mobileView ? classes.hide : classes.splitPane1}>
-              <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
+            {biblePane}
             <div
               className={mobileView ? classes.biblePane : classes.splitPane2}
             >
@@ -466,9 +461,7 @@ const StudyBible = (props) => {
                 uid={uid}
                 versions={versions}
                 setValue={setValue1}
-                noteText={noteText}
                 panel1={panel1}
-                setNoteText={setNoteText}
                 versesSelected={panel1?.versesSelected}
                 book={bookObject.short}
                 getRegionalBookName={getRegionalBookName}
@@ -539,8 +532,7 @@ const StudyBible = (props) => {
     }
   }, [
     audioBible,
-    classes.biblePane1,
-    classes.parallelScroll,
+    toggleParallelScroll,
     scroll,
     panel1,
     panel2,
@@ -555,18 +547,16 @@ const StudyBible = (props) => {
     uid,
     versions,
     bookObject,
-    parallelScroll,
-    syncPanel,
+    parallelScrollIcon,
+    biblePane,
     getRegionalBookName,
     versionBooks,
     versionSource,
     classes.splitPane1,
     classes.splitPane2,
     mobileView,
-    classes.hide,
+    classes.biblePane1,
     classes.biblePane,
-
-    noteText,
   ]);
   return (
     <>
