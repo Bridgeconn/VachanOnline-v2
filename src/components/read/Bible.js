@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
@@ -283,6 +283,8 @@ const Bible = (props) => {
   const cancelToken = React.useRef();
   const firebase = useFirebase();
   const [open, setOpen] = React.useState(false);
+  const tag = useRef("");
+
   const location = useLocation();
   const path = location?.pathname;
   let {
@@ -411,6 +413,28 @@ const Bible = (props) => {
         }
       });
   };
+  function getShowHeading(verseData, verseNumber) {
+    const verseNo = parseInt(verseNumber);
+    if (verseData !== "") {
+      if (verseData?.match(/\d+-\d+/g)) {
+        const [start, end] = verseData.split("-");
+        if (parseInt(start) === verseNo + 1) {
+          return "show";
+        }
+        if (parseInt(end) === verseNo) {
+          return "skip";
+        }
+      } else if (!isNaN(verseData)) {
+        if (parseInt(verseData) === verseNo + 1) {
+          return "show";
+        }
+        if (parseInt(verseData) === verseNo) {
+          return "skip";
+        }
+      }
+    }
+    return "";
+  }
   function showText(item, chapter, verseData) {
     if (verseData === "" || verseData.split("-")[0] === "1") {
       // show chapter heading only for verse 1
@@ -421,6 +445,10 @@ const Bible = (props) => {
     }
     if (item?.verseNumber === "" || isNaN(item?.verseNumber)) {
       return "";
+    }
+    const showHeading = getShowHeading(verseData, item.verseNumber);
+    if (showHeading === "show") {
+      return getHeading(item, classes.heading);
     }
     if (!filterVerse(verseData, item.verseNumber)) {
       return "";
@@ -446,7 +474,7 @@ const Bible = (props) => {
                 {verseNo}
                 &nbsp;
               </span>
-              {getVerse(item) + " "}
+              {getVerse(item, tag) + " "}
             </span>
           </span>
           {/*If verse has note then show note icon to open notes pane */}
@@ -462,25 +490,39 @@ const Bible = (props) => {
           )}
           {verseData.includes(",") && <br />}
         </span>
-        {getHeading(item, classes.heading)}
+        {showHeading !== "skip" && getHeading(item, classes.heading)}
       </span>
     );
   }
-  function hasPara(item) {
+  function getStyle(item) {
+    let type = "";
     if (typeof item === "object" && "contents" in item) {
-      return item?.contents.some((a) => typeof a === "object" && "p" in a);
+      type = item?.contents?.reduce((acc, cur) => {
+        if (typeof cur === "object") {
+          const tag = Object.keys(cur)[0];
+          if (tag === "p") {
+            return "p";
+          }
+          if (tag === "q1" || tag === "q2") {
+            return "q";
+          }
+        }
+        return acc;
+      }, "");
     }
-    return false;
+    return type;
   }
   function splitParas(segments) {
     const paras = [];
     let i = 0;
+    let lastTag = "p";
     for (const item of segments) {
       if (typeof paras[i] === "undefined") {
-        paras[i] = [];
+        paras[i] = { tag: lastTag, items: [] };
       }
-      paras[i].push(item);
-      if (hasPara(item)) {
+      paras[i].items.push(item);
+      lastTag = getStyle(item);
+      if (lastTag !== "") {
         i++;
       }
     }
@@ -501,9 +543,10 @@ const Bible = (props) => {
               </Typography>
             )}
             {paras.map((para) => {
-              return (
-                <p>{para.map((item) => showText(item, chapter, element))}</p>
+              let text = para?.items.map((item) =>
+                showText(item, chapter, element)
               );
+              return para.tag === "p" ? <p>{text}</p> : <div>{text}</div>;
             })}
             {notLast ? <Divider className={classes.divider} /> : ""}
           </div>
@@ -511,7 +554,10 @@ const Bible = (props) => {
       });
     } else {
       return paras.map((para) => {
-        return <p>{para.map((item) => showText(item, chapter, verseData))}</p>;
+        let text = para?.items.map((item) =>
+          showText(item, chapter, verseData)
+        );
+        return para.tag === "p" ? <p>{text}</p> : <div>{text}</div>;
       });
     }
   }

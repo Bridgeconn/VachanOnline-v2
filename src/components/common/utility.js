@@ -486,6 +486,7 @@ export const getVerse = (verse) => {
 };
 
 function parseTags(tags) {
+  //To Do: if q tag split into multiple lines not single string
   let verse = [];
   if (Array.isArray(tags)) {
     for (let item of tags) {
@@ -522,9 +523,19 @@ export const parseHeading = (item, className) => {
     const [first] = item;
     if (typeof first === "object") {
       const tag = Object.keys(first)[0];
+      if (tag.match(/ms.?/)) {
+        const heading = first[tag];
+        if (heading && heading !== "" && typeof heading === "string") {
+          return (
+            <span key={heading} className={className}>
+              {heading}
+            </span>
+          );
+        }
+      }
       if (tag.match(/s.?/)) {
         const heading = first[tag][0];
-        if (heading && heading !== "") {
+        if (heading && heading !== "" && typeof heading === "string") {
           return (
             <span key={heading} className={className}>
               {heading}
