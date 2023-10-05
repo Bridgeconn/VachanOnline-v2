@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import screenshot from "../common/images/screenshot.jpg";
+import screenshot1 from "../common/images/screenshot1.png";
 import playStore from "../common/images/playStore.png";
 import Link from "@material-ui/core/Link";
 import { useMediaQuery } from "@material-ui/core";
@@ -157,7 +157,7 @@ const Landing = (props) => {
         <Grid item md={12} lg={6}>
           <div className={classes.screenshotDiv}>
             <img
-              src={screenshot}
+              src={screenshot1}
               alt="Screenshot"
               className={classes.screenshot}
             />
