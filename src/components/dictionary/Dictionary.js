@@ -175,7 +175,7 @@ const Dictionary = (props) => {
           <div className={classes.heading}>{header}</div>
           <div>{clean1(wordMeaning.definition)}</div>
           <div>{clean1(wordMeaning.translationHelp)}</div>
-          <div className={classes.heading}>Strongs</div>
+          <div className={classes.heading}>Strong's</div>
           <div>{clean2(wordMeaning.strongs)}</div>
           <div className={classes.heading}>See Also</div>
           <div className={classes.seeAlso}>{clean3(wordMeaning.seeAlso)}</div>
