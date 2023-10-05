@@ -282,7 +282,7 @@ const TopBar = (props) => {
             ? ""
             : StoriesButton()}
           {path.startsWith("/read") ? searchBox() : ""}
-          {hideIcons ? (
+          {mobileView && hideIcons ? (
             ""
           ) : (
             <>
