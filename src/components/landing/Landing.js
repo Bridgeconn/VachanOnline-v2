@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import screenshot1 from "../common/images/screenshot1.png";
+import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
 import Link from "@material-ui/core/Link";
 import { useMediaQuery } from "@material-ui/core";
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   screenshot: {
     width: "90%",
     display: "inline-block",
-    marginBottom: 30,
+    marginBottom: 10,
     [theme.breakpoints.only("md")]: {
       width: "60%",
     },
@@ -157,7 +157,7 @@ const Landing = (props) => {
         <Grid item md={12} lg={6}>
           <div className={classes.screenshotDiv}>
             <img
-              src={screenshot1}
+              src={screenshot}
               alt="Screenshot"
               className={classes.screenshot}
             />
