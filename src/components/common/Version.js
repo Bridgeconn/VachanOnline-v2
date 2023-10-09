@@ -265,7 +265,7 @@ const Version = (props) => {
         <span className={classes.lang}>{language}</span>
       </>
     );
-    return found?.languageName.toLowerCase() === language ? language : lang;
+    return lang;
   }
 
   function getLanguageByCode(versions, code) {
@@ -278,7 +278,8 @@ const Version = (props) => {
     return code;
   }
   function currentVersion(item) {
-    return item.language.code + "-" + item.version.code === version
+    return item.language.code + "-" + item.version.code.toLowerCase() ===
+      version.toLowerCase()
       ? classes.versionSelected
       : "";
   }
