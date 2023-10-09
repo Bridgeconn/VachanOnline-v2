@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   screenshot: {
     width: "90%",
     display: "inline-block",
-    marginBottom: 30,
+    marginBottom: 10,
     [theme.breakpoints.only("md")]: {
       width: "60%",
     },
