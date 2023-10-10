@@ -240,7 +240,9 @@ export const capitalize = (string) => {
 export const getShortBook = (books, lang, bookCode) => {
   if (books) {
     const id = books[lang]?.findIndex((x) => x?.book_code === bookCode);
-    return books[lang][id]?.short;
+    if (id !== undefined) {
+      return books[lang][id]?.short;
+    }
   }
 };
 const checkValidChapter = (bookCode, chapter) => {
