@@ -261,11 +261,11 @@ const Version = (props) => {
     const found = languageJson.find((lang) => lang.language === language);
     const lang = (
       <>
-        <span>{found?.languageName}</span>
+        <span>{found?.languageName || language}</span>
         <span className={classes.lang}>{language}</span>
       </>
     );
-    return found?.languageName.toLowerCase() === language ? language : lang;
+    return lang;
   }
 
   function getLanguageByCode(versions, code) {
@@ -278,7 +278,8 @@ const Version = (props) => {
     return code;
   }
   function currentVersion(item) {
-    return item.language.code + "-" + item.version.code === version
+    return item.language.code + "-" + item.version.code.toLowerCase() ===
+      version.toLowerCase()
       ? classes.versionSelected
       : "";
   }
@@ -297,7 +298,7 @@ const Version = (props) => {
     let [langCode, versionCode] = version.split("-");
     function getDisplayLanguage(language) {
       const found = languageJson.find((lang) => lang.langCode === langCode);
-      setValue("language", found?.language);
+      setValue("language", language);
       return found?.languageName || language;
     }
     const language = getLanguageByCode(versions, langCode?.toLowerCase());
