@@ -260,6 +260,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 12,
     marginBottom: 12,
   },
+  hoverVerse: {
+    background: color.LIGHTGREY,
+  },
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
@@ -316,6 +319,7 @@ const Bible = (props) => {
     versionSource,
     mobileView,
     versesSelected,
+    hoverVerse,
   } = props;
   const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : "0.5rem";
   const styleProps = {
@@ -463,7 +467,9 @@ const Bible = (props) => {
     }
     const verse = parseInt(item.verseNumber);
     const verseClass =
-      selectedVerses?.indexOf(verse) > -1
+      hoverVerse === verse && parallelScroll
+        ? `${classes.hoverVerse}`
+        : selectedVerses?.indexOf(verse) > -1
         ? `${classes.verseText} ${classes.selectedVerse}`
         : highlightVerses.indexOf(verse) > -1
         ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
@@ -482,7 +488,11 @@ const Bible = (props) => {
           ""
         )}
         <span className={lineViewClass}>
-          <span onClick={handleVerseClick} data-verse={item.verseNumber}>
+          <span
+            onMouseOver={() => setMainValue("hoverVerse", verse)}
+            onClick={handleVerseClick}
+            data-verse={item.verseNumber}
+          >
             <span className={verseClass}>
               <span className={verseNumberClass}>
                 {verseNo}
@@ -1033,6 +1043,7 @@ const mapStateToProps = (state) => {
     mobileView: state.local.mobileView,
     versions: state.local.versions,
     parallelView: state.local.parallelView,
+    hoverVerse: state.local.hoverVerse,
   };
 };
 const mapDispatchToProps = (dispatch) => {

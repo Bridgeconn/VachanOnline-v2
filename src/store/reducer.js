@@ -20,6 +20,7 @@ const defaultState = {
   },
   infographics: {},
   errorMessage: "",
+  hoverVerse: "",
   audioBible: [],
   video: [],
   chapterVideo: [],
