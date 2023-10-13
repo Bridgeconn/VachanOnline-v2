@@ -134,7 +134,7 @@ const AudioBible = (props) => {
   }, [audioBible?.length, setValue, languageCode]);
   const getPrevious = () => {
     return (
-      <Tooltip title={"previousBook"}>
+      <Tooltip title={chapter}>
         <ArrowBackIosIcon
           fontSize="large"
           className={classes.prevChapter}
@@ -147,7 +147,7 @@ const AudioBible = (props) => {
   };
   const getNext = () => {
     return (
-      <Tooltip title={"hey"}>
+      <Tooltip title={chapter}>
         <ArrowForwardIosIcon
           fontSize="large"
           className={classes.nextChapter}
