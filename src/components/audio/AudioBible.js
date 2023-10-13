@@ -4,7 +4,6 @@ import AudioCombo from "./AudioCombo";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Player from "../common/Player";
-import Tooltip from "@material-ui/core/Tooltip";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
@@ -134,28 +133,22 @@ const AudioBible = (props) => {
   }, [audioBible?.length, setValue, languageCode]);
   const getPrevious = () => {
     return (
-      <Tooltip title={chapter}>
-        <ArrowBackIosIcon
-          fontSize="large"
-          className={classes.prevChapter}
-          onClick={() =>
-            previousClick(audioBooks, bookCode, chapter, setValue1)
-          }
-        />
-      </Tooltip>
+      <ArrowBackIosIcon
+        fontSize="large"
+        className={classes.prevChapter}
+        onClick={() => previousClick(audioBooks, bookCode, chapter, setValue1)}
+      />
     );
   };
   const getNext = () => {
     return (
-      <Tooltip title={chapter}>
-        <ArrowForwardIosIcon
-          fontSize="large"
-          className={classes.nextChapter}
-          onClick={() =>
-            nextButtonClick(audioBooks, bookCode, chapter, setValue1)
-          }
-        />
-      </Tooltip>
+      <ArrowForwardIosIcon
+        fontSize="large"
+        className={classes.nextChapter}
+        onClick={() =>
+          nextButtonClick(audioBooks, bookCode, chapter, setValue1)
+        }
+      />
     );
   };
   return (
