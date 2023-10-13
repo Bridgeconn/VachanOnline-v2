@@ -21,6 +21,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography } from "@material-ui/core";
 import { BLACK, GREY } from "../../store/colorCode";
+import VideoCard from "../common/VideoCard";
 
 const drawerWidth = 400;
 
@@ -142,6 +143,33 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     color: BLACK,
   },
+  container: {
+    top: 150,
+    bottom: -16,
+    overflow: "scroll",
+    position: "absolute",
+    width: "70%",
+    margin: "0 20px",
+    padding: "12px 10px 15px 10px",
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+    "&::-webkit-scrollbar": {
+      width: "0.45em",
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.4)",
+      outline: "1px solid slategrey",
+    },
+    [theme.breakpoints.down("sm")]: {
+      top: "190px",
+      width: "100%",
+      padding: "0 10px",
+      margin: "0 3px",
+    },
+  },
 }));
 
 const Stories = (props) => {
@@ -159,6 +187,7 @@ const Stories = (props) => {
   const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+  const [playing, setPlaying] = React.useState("");
   const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
@@ -198,9 +227,19 @@ const Stories = (props) => {
   };
 
   useEffect(() => {
-    if (lang !== "") {
-      API.get(lang + "/content/" + storyId + ".md").then(function (response) {
-        setStories(response.data);
+    if (lang !== "isl") {
+      if (lang !== "") {
+        API.get(lang + "/content/" + storyId + ".md").then(function (response) {
+          setStories(response.data);
+        });
+      }
+    } else {
+      API.get(lang + "/isl_obs.json").then(function (response) {
+        let index = storyId[0] === "0" ? storyId?.split("0")[1] : storyId;
+        let islStory = response?.data?.find(
+          (el) => el?.storyNo === parseInt(index)
+        );
+        setStories(islStory);
       });
     }
   }, [API, storyId, lang]);
@@ -405,9 +444,21 @@ const Stories = (props) => {
             </Typography>
             <Divider />
           </div>
-          <div className={storyClass} style={{ fontSize: fontSize }}>
-            <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
-          </div>
+          {lang === "isl" ? (
+            <div className={classes.container}>
+              <VideoCard
+                key={stories?.storyNo}
+                video={stories}
+                playing={playing}
+                language={lang}
+                setPlaying={setPlaying}
+              />
+            </div>
+          ) : (
+            <div className={storyClass} style={{ fontSize: fontSize }}>
+              <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
+            </div>
+          )}
         </main>
       </div>
     </>
