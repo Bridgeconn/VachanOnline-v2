@@ -100,6 +100,29 @@ const PageHeader = (props) => {
               )}
             </Link>
           </div>
+          <Link
+            to={{
+              pathname: "/audiobible",
+            }}
+          >
+            {mobileLandscape ? (
+              <i className={`material-icons ${classes.islIcon}`}>queue_music</i>
+            ) : (
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                className={classes.signBible}
+                title="Sign Language Audio Bible"
+                aria-label="sign language audio bible"
+                target="_blank"
+                rel="noopener"
+                startIcon={<i className="material-icons">queue_music</i>}
+              >
+                ISL Audio
+              </Button>
+            )}
+          </Link>
           {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
             <Link
               to={{
@@ -126,7 +149,7 @@ const PageHeader = (props) => {
                   onClick={() => setParallelView(SIGNBIBLE)}
                   startIcon={<i className="material-icons">sign_language</i>}
                 >
-                  Sign Language Bible (ISLV)
+                  ISL Bible
                 </Button>
               )}
             </Link>
@@ -164,18 +187,24 @@ const PageHeader = (props) => {
           )}
           {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
             <Link to="/biblestories">
-              <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                className={classes.stories}
-                title="Bible Stories"
-                aria-label="bible stories"
-                target="_blank"
-                rel="noopener"
-              >
-                {mobileLandscape === true ? "Stories" : "Bible Stories"}{" "}
-              </Button>
+              {mobileLandscape ? (
+                <i className={`material-icons ${classes.islIcon}`}>
+                  auto_stories
+                </i>
+              ) : (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.stories}
+                  title="Bible Stories"
+                  aria-label="bible stories"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Bible Stories
+                </Button>
+              )}
             </Link>
           ) : (
             ""

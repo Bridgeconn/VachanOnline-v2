@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import Select from "react-select";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import ReactPlayer from "react-player";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import { capitalize, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
+import Player from "../common/Player";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -138,7 +137,6 @@ const Audio = (props) => {
   const [language, setLanguage] = useState("");
   const [hasAudio, setHasAudio] = useState(false);
   const [audios, setAudios] = useState(null);
-  const [playing, setPlaying] = useState("");
   const [book, setBook] = useState("");
   const [message, setMessage] = useState("");
   const [audioLangCode, setAudioLangCode] = useState("hin");
@@ -196,9 +194,6 @@ const Audio = (props) => {
     }
   }, [language, audioBible, bookCode, books, mobileView]);
   useEffect(() => {
-    setPlaying("");
-  }, [bookCode, chapter, languageCode]);
-  useEffect(() => {
     const lang = audioBible.find(
       (ele) => ele?.language?.code === audioLangCode
     );
@@ -250,38 +245,12 @@ const Audio = (props) => {
             />
             <CardContent className={classes.cardContent}>
               <List>
-                {audios?.map((audio) => {
-                  const { url, format, books, name, sourceId } = audio;
-                  const audioUrl =
-                    url + bookCode + "/" + chapter + "." + format;
-                  return books.hasOwnProperty(bookCode) ? (
-                    <ListItem
-                      key={name}
-                      value={name}
-                      className={classes.audioBible}
-                    >
-                      {name}
-                      <ReactPlayer
-                        playing={playing === sourceId}
-                        url={audioUrl}
-                        onPlay={() => setPlaying(sourceId)}
-                        controls
-                        width="100%"
-                        height="50px"
-                        className={classes.player}
-                        config={{
-                          file: {
-                            attributes: {
-                              controlsList: "nodownload",
-                            },
-                          },
-                        }}
-                      />
-                    </ListItem>
-                  ) : (
-                    ""
-                  );
-                })}
+                <Player
+                  audios={audios}
+                  bookCode={bookCode}
+                  chapter={chapter}
+                  languageCode={languageCode}
+                />
               </List>
             </CardContent>
           </Card>

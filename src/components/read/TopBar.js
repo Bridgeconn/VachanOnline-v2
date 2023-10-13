@@ -145,7 +145,7 @@ const TopBar = (props) => {
           onClick={setParallelView}
           startIcon={<i className="material-icons">sign_language</i>}
         >
-          {isTablet ? "ISLV" : "Sign Language Bible (ISLV)"}
+          {isTablet ? "ISLV" : "ISL Bible"}
         </Button>
       );
     };
@@ -200,7 +200,30 @@ const TopBar = (props) => {
       ""
     );
   };
-
+  const ISLAudioBible = () => {
+    return (
+      <>
+        <Link to="/audiobible">
+          {mobileView ? (
+            <i className={`material-icons ${classes.islIcon}`}>queue_music</i>
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              className={classes.button}
+              title="Sign Language Audio Bible"
+              aria-label="sign language audio bible"
+              target="_blank"
+              rel="noopener"
+              startIcon={<i className="material-icons">queue_music</i>}
+            >
+              ISL Audio
+            </Button>
+          )}
+        </Link>
+      </>
+    );
+  };
   const ReadButton = () => {
     return (
       <Link to="/read">
@@ -273,6 +296,9 @@ const TopBar = (props) => {
               <img src={logo} alt={"logo"} className={classes.logo} />
             </Link>
           </div>
+          {path.startsWith("/audiobible") || path.startsWith("/read")
+            ? ""
+            : ISLAudioBible()}
           <div>{ISLButton()}</div>
           {path.startsWith("/songs") || path.startsWith("/read")
             ? ""
