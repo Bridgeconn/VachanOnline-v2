@@ -160,17 +160,21 @@ const TopBar = (props) => {
   const StoriesButton = () => {
     return process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
       <Link to="/biblestories">
-        <Button
-          variant="outlined"
-          size="small"
-          className={classes.button}
-          title="Bible Stories"
-          aria-label="bible stories"
-          target="_blank"
-          rel="noopener"
-        >
-          {mobileView === true ? "Stories" : "Bible Stories"}
-        </Button>
+        {mobileView ? (
+          <i className={`material-icons ${classes.islIcon}`}>auto_stories</i>
+        ) : (
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.button}
+            title="Bible Stories"
+            aria-label="bible stories"
+            target="_blank"
+            rel="noopener"
+          >
+            Bible Stories
+          </Button>
+        )}
       </Link>
     ) : (
       ""
