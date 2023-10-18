@@ -320,6 +320,7 @@ const Bible = (props) => {
     mobileView,
     versesSelected,
     hoverVerse,
+    isHoverVerse,
   } = props;
   const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : "0.5rem";
   const styleProps = {
@@ -489,7 +490,11 @@ const Bible = (props) => {
         )}
         <span className={lineViewClass}>
           <span
-            onMouseOver={() => setMainValue("hoverVerse", verse)}
+            onMouseOver={
+              isHoverVerse
+                ? () => setMainValue("hoverVerse", verse)
+                : () => setMainValue("hoverVerse", null)
+            }
             onClick={handleVerseClick}
             data-verse={item.verseNumber}
           >

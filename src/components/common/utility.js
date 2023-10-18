@@ -84,6 +84,10 @@ const setUserSettings = (setValue) => {
     setValue("fontFamily", fontFamily);
   }
   const lineView = localStorage.getItem("lineView");
+  const isHoverVerse = localStorage.getItem("isHoverVerse");
+  if (isHoverVerse) {
+    setValue("isHoverVerse", JSON.parse(isHoverVerse));
+  }
   if (lineView) {
     setValue("lineView", JSON.parse(lineView));
   }

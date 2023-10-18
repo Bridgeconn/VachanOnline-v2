@@ -61,6 +61,7 @@ const Setting = ({
   fontSize,
   fontFamily,
   lineView,
+  isHoverVerse,
   setValue,
   settingsAnchor,
   handleClose,
@@ -93,6 +94,9 @@ const Setting = ({
 
   const setFontFamily = (event) => {
     setItem("fontFamily", event.currentTarget.getAttribute("value"));
+  };
+  const setVerseHover = (event) => {
+    setItem("isHoverVerse", event.target.checked);
   };
   const setLineView = (event) => {
     setItem("lineView", event.target.checked);
@@ -183,6 +187,25 @@ const Setting = ({
                 checked={lineView}
                 onChange={setLineView}
                 name="lineView"
+                color="default"
+              />
+            }
+          />
+        </MenuItem>
+        <MenuItem className={classes.menu}>
+          <FormControlLabel
+            labelPlacement="start"
+            label={
+              <Typography className={classes.formControlLabel}>
+                Hover Verse
+              </Typography>
+            }
+            control={
+              <Switch
+                checked={isHoverVerse}
+                onChange={setVerseHover}
+                onClick={setVerseHover}
+                name="verseHover"
                 color="default"
               />
             }
