@@ -45,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "-17px",
     marginRight: 18,
   },
+  isHoverVerse: {
+    fontSize: 17,
+    marginLeft: "-17px",
+  },
   printIcon: {
     marginRight: 20,
   },
@@ -196,7 +200,7 @@ const Setting = ({
           <FormControlLabel
             labelPlacement="start"
             label={
-              <Typography className={classes.formControlLabel}>
+              <Typography className={classes.isHoverVerse}>
                 Hover Verse
               </Typography>
             }
