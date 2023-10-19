@@ -18,7 +18,6 @@ import {
   nextButtonClick,
   previousClick,
 } from "../common/utility";
-import { bibleChapters } from "../../store/bibleData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
