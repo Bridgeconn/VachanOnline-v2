@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
   prevChapter: {
     position: "absolute",
-    top: "22%",
     cursor: "pointer",
     boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
     borderRadius: "50%",
@@ -51,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px white",
     padding: 7,
     [theme.breakpoints.up("md")]: {
-      left: (props) => (props.padding > 40 ? props.padding / 2 : 20),
+      left: (props) => (props.padding > 40 ? props.padding / 2 : 40),
     },
     [theme.breakpoints.down("sm")]: {
       left: 10,
@@ -61,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
   nextChapter: {
     position: "absolute",
-    top: "22%",
     cursor: "pointer",
     boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
     borderRadius: "50%",
@@ -69,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px white",
     padding: 7,
     [theme.breakpoints.up("md")]: {
-      right: (props) => (props.padding > 40 ? props.padding / 2 : 20),
+      right: (props) => (props.padding > 40 ? props.padding / 2 : 40),
     },
     [theme.breakpoints.down("sm")]: {
       right: 10,
@@ -114,7 +112,8 @@ const AudioBible = (props) => {
   const [audios, setAudios] = React.useState(null);
   const [audioBooks, setAudioBooks] = React.useState([]);
   const { chapter, bookCode, language } = panel1;
-  let chapters = new Array(bibleChapters[bookCode]);
+  let audioBookList = audios ? audios[0]?.books : "";
+  let chapters = new Array(audioBookList[bookCode]);
   React.useEffect(() => {
     //if versionBooks bibles not loaded fetch list of audio bibles
     if (Object.values(versionBooks).length === 0) {
@@ -136,7 +135,9 @@ const AudioBible = (props) => {
       <ArrowBackIosIcon
         fontSize="large"
         className={classes.prevChapter}
-        onClick={() => previousClick(audioBooks, bookCode, chapter, setValue1)}
+        onClick={() =>
+          previousClick(audioBooks, bookCode, chapter, setValue1, audioBookList)
+        }
       />
     );
   };
@@ -146,7 +147,13 @@ const AudioBible = (props) => {
         fontSize="large"
         className={classes.nextChapter}
         onClick={() =>
-          nextButtonClick(audioBooks, bookCode, chapter, setValue1)
+          nextButtonClick(
+            audioBooks,
+            bookCode,
+            chapter,
+            setValue1,
+            audioBookList
+          )
         }
       />
     );
@@ -168,6 +175,7 @@ const AudioBible = (props) => {
             language={language}
             mobileView={isMobile}
           />
+          {isMobile ? <Divider /> : ""}
           <Typography variant="h4" className={classes.gap}>
             Audio Bibles
           </Typography>

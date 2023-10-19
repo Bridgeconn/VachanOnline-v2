@@ -106,20 +106,20 @@ const PageHeader = (props) => {
             }}
           >
             {mobileLandscape ? (
-              <i className={`material-icons ${classes.islIcon}`}>queue_music</i>
+              <i className={`material-icons ${classes.islIcon}`}>headphones</i>
             ) : (
               <Button
                 variant="outlined"
                 size="small"
                 color="inherit"
                 className={classes.signBible}
-                title="Sign Language Audio Bible"
-                aria-label="sign language audio bible"
+                title="Audio Bible"
+                aria-label="audio bible"
                 target="_blank"
                 rel="noopener"
-                startIcon={<i className="material-icons">queue_music</i>}
+                startIcon={<i className="material-icons">headphones</i>}
               >
-                ISL Audio
+                Audio
               </Button>
             )}
           </Link>
@@ -149,7 +149,7 @@ const PageHeader = (props) => {
                   onClick={() => setParallelView(SIGNBIBLE)}
                   startIcon={<i className="material-icons">sign_language</i>}
                 >
-                  ISL Bible
+                  ISLV Bible
                 </Button>
               )}
             </Link>
@@ -201,6 +201,7 @@ const PageHeader = (props) => {
                   aria-label="bible stories"
                   target="_blank"
                   rel="noopener"
+                  startIcon={<i className="material-icons">auto_stories</i>}
                 >
                   Bible Stories
                 </Button>

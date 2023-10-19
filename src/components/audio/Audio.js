@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
 import Select from "react-select";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
-import { capitalize, getShortBook } from "../common/utility";
-import { connect } from "react-redux";
-import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
 import Player from "../common/Player";
-
+import Box from "@material-ui/core/Box";
+import * as actions from "../../store/actions";
+import { makeStyles } from "@material-ui/core/styles";
+import { capitalize, getShortBook } from "../common/utility";
+import { connect } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -63,41 +58,6 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: 15,
     },
   },
-  language: {
-    fontSize: "1.1rem",
-    textTransform: "capitalize",
-  },
-  cardRoot: {
-    border: "1px solid #dddddd",
-    boxShadow: "none",
-    marginRight: 4,
-  },
-  cardHeader: {
-    textTransform: "capitalize",
-    borderBottom: "1px solid #b7b7b785",
-    backgroundColor: "#efefef",
-    minHeight: 50,
-    padding: "0 15px",
-  },
-  cardContent: {
-    padding: 0,
-  },
-  audioBible: {
-    display: "block",
-    padding: 16,
-    fontSize: "1.1rem",
-    borderBottom: "1px solid #b7b7b785",
-    "&:last-child": {
-      borderBottom: "none",
-      paddingBottom: 0,
-    },
-  },
-  player: {
-    marginTop: 5,
-    "& audio": {
-      outlineWidth: 0,
-    },
-  },
   closeButton: {
     marginRight: 15,
     marginTop: 7,
@@ -114,9 +74,17 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.8rem",
   },
   selectBox: {
-    [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      alignItems: "center",
+    display: "flex",
+    alignItems: "center",
+  },
+  bookLabel: {
+    paddingLeft: 20,
+    verticalAlign: "middle",
+    fontSize: 20,
+    display: "inline-block",
+    [theme.breakpoints.down("md")]: {
+      fontSize: 16,
+      paddingLeft: 5,
     },
   },
 }));
@@ -206,7 +174,7 @@ const Audio = (props) => {
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h6">Audio Bibles</Typography>
+            <Typography variant="h5">Audio Bibles</Typography>
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>
@@ -217,6 +185,13 @@ const Audio = (props) => {
               onChange={(data) => setLanguage(data)}
               options={languages}
             />
+          )}
+          {mobileView ? (
+            ""
+          ) : (
+            <Typography className={classes.bookLabel}>
+              {book} {chapter}
+            </Typography>
           )}
           {mobileView && bookCode ? (
             <BookCombo
@@ -238,22 +213,12 @@ const Audio = (props) => {
           <h5 className={classes.message}>{"No audio bibles available"}</h5>
         )}
         {hasAudio ? (
-          <Card className={classes.cardRoot}>
-            <CardHeader
-              title={book + " " + chapter}
-              className={classes.cardHeader}
-            />
-            <CardContent className={classes.cardContent}>
-              <List>
-                <Player
-                  audios={audios}
-                  bookCode={bookCode}
-                  chapter={chapter}
-                  languageCode={languageCode}
-                />
-              </List>
-            </CardContent>
-          </Card>
+          <Player
+            audios={audios}
+            bookCode={bookCode}
+            chapter={chapter}
+            languageCode={languageCode}
+          />
         ) : (
           <h5 className={classes.message}>{message}</h5>
         )}

@@ -118,41 +118,46 @@ export const getAllBooks = (
     });
 };
 
-export const nextButtonClick = (audioBooks, bookCode, chapter, setValue) => {
-  let chapters = new Array(bibleChapters[bookCode]);
+export const nextButtonClick = (
+  audioBooks,
+  bookCode,
+  chapter,
+  setValue,
+  audioBookList
+) => {
+  let chapters = new Array(audioBookList[bookCode]);
   audioBooks?.find((el, i) => {
-    if (
-      chapter === chapters?.length?.toString() &&
-      el.book_code === bookCode &&
-      chapters.length.toString() === chapter
-    ) {
-      setValue("chapter", "1");
-      setValue("bookCode", audioBooks[i + 1].book_code);
-    } else if (el.book_code === bookCode) {
+    if (parseInt(chapter) < chapters?.length) {
       setValue("chapter", (parseInt(chapter) + 1).toString());
     }
+    if (parseInt(chapter) === chapters?.length && el.book_code === bookCode) {
+      setValue("chapter", "1");
+      setValue("bookCode", audioBooks[i + 1]?.book_code);
+    }
+    return el;
   });
 };
-export const previousClick = (audioBooks, bookCode, chapter, setValue) => {
-  audioBooks?.find((el, i) => {
-    if (chapter === "1" && el.book_code === bookCode) {
-      setValue("bookCode", audioBooks[i - 1]?.book_code);
-
-      setValue(
-        "chapter",
-        bibleChapters[audioBooks[i - 1]?.book_code].toString()
-      );
-    } else if (el.book_code === bookCode && parseInt(chapter) > 1) {
-      setValue("chapter", parseInt(chapter) - 1);
-    } else if (el.book_code === bookCode) {
-      setValue("bookCode", audioBooks[i - 1]?.book_code);
-
-      setValue(
-        "chapter",
-        bibleChapters[audioBooks[i - 1]?.book_code].toString()
-      );
+export const previousClick = (
+  audioBooks,
+  bookCode,
+  chapter,
+  setValue,
+  audioBookList
+) => {
+  if (parseInt(chapter) > 1) {
+    setValue("chapter", parseInt(chapter) - 1);
+    return;
+  }
+  let findBook = {};
+  audioBooks?.forEach((el, i, arr) => {
+    if (i > 0 && el.book_code === bookCode) {
+      findBook = arr[i - 1];
     }
   });
+  if (findBook) {
+    setValue("chapter", audioBookList[findBook.book_code]);
+    setValue("bookCode", findBook.book_code);
+  }
 };
 //Function to get the bible book name
 export const getBookbyCode = (abbreviation) => {
