@@ -117,6 +117,51 @@ export const getAllBooks = (
       console.log(error);
     });
 };
+
+export const nextButtonClick = (
+  audioBooks,
+  bookCode,
+  chapter,
+  setValue,
+  audioBookList
+) => {
+  const chapters = audioBookList[bookCode];
+  if (parseInt(chapter) < chapters) {
+    setValue("chapter", (parseInt(chapter) + 1).toString());
+    return;
+  }
+  audioBooks?.forEach((el, i) => {
+    if (el.book_code === bookCode) {
+      if (parseInt(chapter) === chapters) {
+        setValue("chapter", "1");
+        setValue("bookCode", audioBooks[i + 1]?.book_code);
+        return;
+      }
+    }
+  });
+};
+export const previousClick = (
+  audioBooks,
+  bookCode,
+  chapter,
+  setValue,
+  audioBookList
+) => {
+  if (parseInt(chapter) > 1) {
+    setValue("chapter", parseInt(chapter) - 1);
+    return;
+  }
+  let findBook = {};
+  audioBooks?.forEach((el, i, arr) => {
+    if (i > 0 && el.book_code === bookCode) {
+      findBook = arr[i - 1];
+    }
+  });
+  if (findBook) {
+    setValue("chapter", audioBookList[findBook.book_code]);
+    setValue("bookCode", findBook.book_code);
+  }
+};
 //Function to get the bible book name
 export const getBookbyCode = (abbreviation) => {
   return bibleBooks.find((element) => element.abbreviation === abbreviation);
@@ -219,7 +264,6 @@ export const getAudioBibleObject = (versions, sourceId) => {
     }
   }
 };
-
 //Function to get the videos
 export const getVideos = (setValue) => {
   API.get("videos")
