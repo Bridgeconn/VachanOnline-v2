@@ -144,30 +144,13 @@ const useStyles = makeStyles((theme) => ({
     color: BLACK,
   },
   container: {
-    top: 150,
-    bottom: -16,
-    overflow: "scroll",
-    position: "absolute",
-    width: "70%",
     margin: "0 20px",
     padding: "12px 10px 15px 10px",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
+    marginTop: 140,
     [theme.breakpoints.down("sm")]: {
-      top: "190px",
-      width: "100%",
       padding: "0 10px",
       margin: "0 3px",
+      marginTop: 180,
     },
   },
 }));
@@ -187,6 +170,7 @@ const Stories = (props) => {
   const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+  const [islStories, setIslStories] = React.useState(null);
   const [playing, setPlaying] = React.useState("");
   const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
@@ -221,33 +205,34 @@ const Stories = (props) => {
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
   };
-  const getLang = (event) => {
+  const changeLang = (event) => {
     setLang(event.target.value);
     window.scrollTo(0, 0);
   };
 
   useEffect(() => {
-    if (lang !== "isl") {
-      if (lang !== "") {
-        API.get(lang + "/content/" + storyId + ".md").then(function (response) {
-          setStories(response.data);
-        });
-      }
-    } else {
-      API.get(lang + "/isl_obs.json").then(function (response) {
-        let index = storyId[0] === "0" ? storyId?.split("0")[1] : storyId;
-        let islStory = response?.data?.find(
-          (el) => el?.storyNo === parseInt(index)
-        );
-        setStories(islStory);
+    if (lang !== "" && lang !== "isl") {
+      API.get(lang + "/content/" + storyId + ".md").then(function (response) {
+        setStories(response.data);
       });
     }
   }, [API, storyId, lang]);
+  useEffect(() => {
+    if (lang === "isl" && islStories) {
+      setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+      console.log(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+    }
+  }, [storyId, lang, islStories]);
 
   useEffect(() => {
     if (lang !== "") {
       API.get(lang + "/manifest.json").then(function (response) {
         setManifest(response.data);
+      });
+    }
+    if (lang === "isl") {
+      API.get(lang + "/isl_obs.json").then(function (response) {
+        setIslStories(response.data);
       });
     }
   }, [API, lang]);
@@ -284,7 +269,7 @@ const Stories = (props) => {
                   variant="outlined"
                   className={classes.mobileLangCombo}
                 >
-                  <Select value={lang} onChange={getLang}>
+                  <Select value={lang} onChange={changeLang}>
                     {languages.map((text, y) => (
                       <MenuItem key={y} value={text}>
                         {languageJson[text]}
@@ -366,7 +351,7 @@ const Stories = (props) => {
           >
             <div className={classes.drawerHeader}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <Select value={lang} onChange={getLang}>
+                <Select value={lang} onChange={changeLang}>
                   {languages.map((text, y) => (
                     <MenuItem
                       key={y}
@@ -447,16 +432,17 @@ const Stories = (props) => {
           {lang === "isl" ? (
             <div className={classes.container}>
               <VideoCard
-                key={stories?.storyNo}
                 video={stories}
                 playing={playing}
-                language={lang}
+                language={"isl"}
                 setPlaying={setPlaying}
               />
             </div>
           ) : (
             <div className={storyClass} style={{ fontSize: fontSize }}>
-              <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
+              {typeof stories === "string" && (
+                <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
+              )}
             </div>
           )}
         </main>
