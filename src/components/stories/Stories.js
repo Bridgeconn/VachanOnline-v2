@@ -2,7 +2,6 @@ import React, { useMemo, useEffect } from "react";
 import Markdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import axios from "axios";
-import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -144,12 +143,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Stories = (props) => {
+const Stories = () => {
   const API = useMemo(
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_STORIES_URL }),
     []
   );
-  let { login, userDetails } = props;
   const classes = useStyles();
   const [storyId, setStoryId] = React.useState("01");
   const [lang, setLang] = React.useState("");
@@ -162,7 +160,6 @@ const Stories = (props) => {
   const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
   const storyClass = rtlList.includes(lang)
@@ -231,7 +228,7 @@ const Stories = (props) => {
   return (
     <>
       <AppBar position="fixed">
-        <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+        <TopBar />
       </AppBar>
       <div className={classes.root}>
         {mobile === true ? (
@@ -414,11 +411,4 @@ const Stories = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    login: state.local.login,
-    userDetails: state.local.userDetails,
-  };
-};
-
-export default connect(mapStateToProps)(Stories);
+export default Stories;

@@ -125,16 +125,19 @@ export const nextButtonClick = (
   setValue,
   audioBookList
 ) => {
-  let chapters = new Array(audioBookList[bookCode]);
-  audioBooks?.find((el, i) => {
-    if (parseInt(chapter) < chapters?.length) {
-      setValue("chapter", (parseInt(chapter) + 1).toString());
+  const chapters = audioBookList[bookCode];
+  if (parseInt(chapter) < chapters) {
+    setValue("chapter", (parseInt(chapter) + 1).toString());
+    return;
+  }
+  audioBooks?.forEach((el, i) => {
+    if (el.book_code === bookCode) {
+      if (parseInt(chapter) === chapters) {
+        setValue("chapter", "1");
+        setValue("bookCode", audioBooks[i + 1]?.book_code);
+        return;
+      }
     }
-    if (parseInt(chapter) === chapters?.length && el.book_code === bookCode) {
-      setValue("chapter", "1");
-      setValue("bookCode", audioBooks[i + 1]?.book_code);
-    }
-    return el;
   });
 };
 export const previousClick = (

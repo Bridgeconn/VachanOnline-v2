@@ -101,12 +101,12 @@ const TopBar = (props) => {
   const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
-
+  const mobileView = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
-  let { login, userDetails, setParallelView, mobileView } = props;
+  let { login, userDetails, setParallelView } = props;
   React.useEffect(() => {
     setLoginButton(
       login ? (
@@ -341,10 +341,17 @@ const TopBar = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    login: state.local.login,
+    userDetails: state.local.userDetails,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: () =>
       dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
   };
 };
-export default connect(null, mapDispatchToProps)(TopBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

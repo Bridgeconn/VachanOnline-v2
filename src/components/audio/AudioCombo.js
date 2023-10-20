@@ -14,12 +14,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   container: {
-    padding: "0 30px",
+    paddingLeft: 22,
     display: "flex",
     alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
-      padding: 0,
-      margin: "auto",
+    [theme.breakpoints.only("sm")]: {
+      paddingTop: 5,
     },
   },
   margin: {

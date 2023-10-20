@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   islIcon: {
-    padding: "8px 16px 0",
+    padding: "8px 12px 0",
     color: WHITE,
   },
 }));

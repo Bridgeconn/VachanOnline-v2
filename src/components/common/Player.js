@@ -39,9 +39,6 @@ const useStyles = makeStyles((theme) => ({
       outlineWidth: 0,
     },
   },
-  container: {
-    display: "flex",
-  },
 }));
 const Player = (props) => {
   const classes = useStyles();

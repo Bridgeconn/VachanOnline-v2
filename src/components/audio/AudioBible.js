@@ -6,38 +6,28 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Player from "../common/Player";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
-
 import * as actions from "../../store/actions";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, useMediaQuery, useTheme } from "@material-ui/core";
 import { connect } from "react-redux";
-import {
-  getAllBooks,
-  getAudioBibles,
-  nextButtonClick,
-  previousClick,
-} from "../common/utility";
+import { getAllBooks, getAudioBibles } from "../common/utility";
+import { nextButtonClick, previousClick } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
     display: "flex",
-    flexDirection: "column",
     height: "100%",
-    [theme.breakpoints.only("xs")]: {
-      marginTop: (props) => (props.screenView === "single" ? 60 : 70),
-    },
+    marginBottom: 10,
     [theme.breakpoints.down("sm")]: {
       marginTop: 60,
+      marginBottom: 5,
+      flexDirection: "column-reverse",
     },
-  },
-  icon: {
-    left: 15,
-    position: "relative",
     [theme.breakpoints.only("xs")]: {
-      display: "none",
+      marginTop: 65,
+      marginBottom: 0,
     },
   },
   prevChapter: {
@@ -49,12 +39,12 @@ const useStyles = makeStyles((theme) => ({
     border: "1px white",
     padding: 7,
     [theme.breakpoints.up("md")]: {
-      left: (props) => (props.padding > 40 ? props.padding / 2 : 40),
+      left: 40,
     },
     [theme.breakpoints.down("sm")]: {
       left: 10,
       top: "unset",
-      bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
+      bottom: "1.5rem",
     },
   },
   nextChapter: {
@@ -66,38 +56,32 @@ const useStyles = makeStyles((theme) => ({
     border: "1px white",
     padding: 7,
     [theme.breakpoints.up("md")]: {
-      right: (props) => (props.padding > 40 ? props.padding / 2 : 40),
+      right: 40,
     },
     [theme.breakpoints.down("sm")]: {
       right: 10,
       top: "unset",
-      bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
+      bottom: "1.5rem",
     },
   },
   gap: {
-    margin: "0 300px",
+    margin: "0 auto",
     [theme.breakpoints.down("sm")]: {
       margin: "auto",
     },
   },
-  container: {
-    display: "flex",
-    marginBottom: 10,
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column-reverse",
-    },
-  },
-  PlayerGap: {
+  playerGap: {
     padding: "0 10%",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.only("sm")]: {
+      padding: "0 50px",
+    },
+    [theme.breakpoints.down("xs")]: {
       padding: 5,
     },
   },
 }));
 const AudioBible = (props) => {
   const {
-    login,
-    userDetails,
     panel1,
     setValue,
     setValue1,
@@ -160,29 +144,26 @@ const AudioBible = (props) => {
   return (
     <>
       <AppBar position="fixed">
-        <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+        <TopBar />
       </AppBar>
       <div className={classes.root}>
-        <div className={classes.container}>
-          <AudioCombo
-            setAudios={setAudios}
-            audioBooks={audioBooks}
-            setAudioBooks={setAudioBooks}
-            bookCode={bookCode}
-            chapter={chapter}
-            languageCode={languageCode}
-            language={language}
-            mobileView={isMobile}
-          />
-          {isMobile ? <Divider /> : ""}
-          <Typography variant="h4" className={classes.gap}>
-            Audio Bibles
-          </Typography>
-        </div>
+        <AudioCombo
+          setAudios={setAudios}
+          audioBooks={audioBooks}
+          setAudioBooks={setAudioBooks}
+          bookCode={bookCode}
+          chapter={chapter}
+          languageCode={languageCode}
+          language={language}
+          mobileView={isMobile}
+        />
+        {isMobile ? <Divider /> : ""}
+        <Typography variant="h4" className={classes.gap}>
+          Audio Bibles
+        </Typography>
       </div>
       <Divider />
-
-      <div className={classes.PlayerGap}>
+      <div className={classes.playerGap}>
         <Player
           audios={audios}
           bookCode={bookCode}
@@ -208,8 +189,6 @@ const AudioBible = (props) => {
 const mapStateToProps = (state) => {
   return {
     panel1: state.local.panel1,
-    login: state.local.login,
-    userDetails: state.local.userDetails,
     audioBible: state.local.audioBible,
     versionBooks: state.local.versionBooks,
   };
