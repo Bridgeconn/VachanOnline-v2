@@ -320,6 +320,7 @@ const Bible = (props) => {
     mobileView,
     versesSelected,
     hoverVerse,
+    isHoverVerse,
   } = props;
   const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : "0.5rem";
   const styleProps = {
@@ -467,10 +468,10 @@ const Bible = (props) => {
     }
     const verse = parseInt(item.verseNumber);
     const verseClass =
-      hoverVerse === verse && parallelScroll
-        ? `${classes.hoverVerse}`
-        : selectedVerses?.indexOf(verse) > -1
+      selectedVerses?.indexOf(verse) > -1
         ? `${classes.verseText} ${classes.selectedVerse}`
+        : hoverVerse === verse && isHoverVerse && parallelScroll
+        ? `${classes.hoverVerse}`
         : highlightVerses.indexOf(verse) > -1
         ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
         : `${classes.verseText}`;
@@ -911,6 +912,7 @@ const Bible = (props) => {
             scrollText();
           }}
           ref={props.ref1}
+          onMouseOut={() => setMainValue("hoverVerse", "")}
           className={
             audio
               ? `${classes.bibleReadingPane} ${classes.audio}`
