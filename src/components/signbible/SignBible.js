@@ -8,7 +8,7 @@ import { useTheme } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as views from "../../store/views";
 import BookCombo from "../common/BookCombo";
-import VideoCard from "./VideoCard";
+import VideoCard from "../common/VideoCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {

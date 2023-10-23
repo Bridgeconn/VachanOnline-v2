@@ -20,6 +20,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography } from "@material-ui/core";
 import { BLACK, GREY } from "../../store/colorCode";
+import VideoCard from "../common/VideoCard";
 
 const drawerWidth = 400;
 
@@ -141,6 +142,16 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     color: BLACK,
   },
+  container: {
+    margin: "0 20px",
+    padding: "12px 10px 15px 10px",
+    marginTop: 140,
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 10px",
+      margin: "0 3px",
+      marginTop: 180,
+    },
+  },
 }));
 
 const Stories = () => {
@@ -157,6 +168,8 @@ const Stories = () => {
   const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+  const [islStories, setIslStories] = React.useState(null);
+  const [playing, setPlaying] = React.useState("");
   const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
@@ -189,23 +202,34 @@ const Stories = () => {
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
   };
-  const getLang = (event) => {
+  const changeLang = (event) => {
     setLang(event.target.value);
     window.scrollTo(0, 0);
   };
 
   useEffect(() => {
-    if (lang !== "") {
+    if (lang !== "" && lang !== "isl") {
       API.get(lang + "/content/" + storyId + ".md").then(function (response) {
         setStories(response.data);
       });
     }
   }, [API, storyId, lang]);
+  useEffect(() => {
+    if (lang === "isl" && islStories) {
+      setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+      console.log(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+    }
+  }, [storyId, lang, islStories]);
 
   useEffect(() => {
     if (lang !== "") {
       API.get(lang + "/manifest.json").then(function (response) {
         setManifest(response.data);
+      });
+    }
+    if (lang === "isl") {
+      API.get(lang + "/isl_obs.json").then(function (response) {
+        setIslStories(response.data);
       });
     }
   }, [API, lang]);
@@ -242,7 +266,7 @@ const Stories = () => {
                   variant="outlined"
                   className={classes.mobileLangCombo}
                 >
-                  <Select value={lang} onChange={getLang}>
+                  <Select value={lang} onChange={changeLang}>
                     {languages.map((text, y) => (
                       <MenuItem key={y} value={text}>
                         {languageJson[text]}
@@ -324,7 +348,7 @@ const Stories = () => {
           >
             <div className={classes.drawerHeader}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <Select value={lang} onChange={getLang}>
+                <Select value={lang} onChange={changeLang}>
                   {languages.map((text, y) => (
                     <MenuItem
                       key={y}
@@ -402,9 +426,22 @@ const Stories = () => {
             </Typography>
             <Divider />
           </div>
-          <div className={storyClass} style={{ fontSize: fontSize }}>
-            <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
-          </div>
+          {lang === "isl" ? (
+            <div className={classes.container}>
+              <VideoCard
+                video={stories}
+                playing={playing}
+                language={"isl"}
+                setPlaying={setPlaying}
+              />
+            </div>
+          ) : (
+            <div className={storyClass} style={{ fontSize: fontSize }}>
+              {typeof stories === "string" && (
+                <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
+              )}
+            </div>
+          )}
         </main>
       </div>
     </>
