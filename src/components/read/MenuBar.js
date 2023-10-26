@@ -389,7 +389,7 @@ const MenuBar = (props) => {
                     />
                   </Tooltip>
                 ) : (
-                  <Tooltip title={t("studyParallelScrollDisabledToolTip")}>
+                  <Tooltip title={t("studyParallelScrollDisabled")}>
                     <ParallelScroll
                       fontSize="large"
                       color="disabled"

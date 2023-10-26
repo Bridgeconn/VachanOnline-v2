@@ -411,7 +411,7 @@ const BookCombo = (props) => {
     setValue("versesSelected", []);
     setParams(_bookCode, _chapter);
     if (parallelScroll && paneNo) {
-      syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+      syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1), t);
     }
   };
   return verseData ? (
@@ -546,8 +546,13 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    syncPanel: (from, to) => {
-      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    syncPanel: (from, to, t) => {
+      dispatch({
+        type: actions.SYNCPANEL,
+        from: from,
+        to: to,
+        t: t,
+      });
     },
   };
 };

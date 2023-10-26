@@ -80,33 +80,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImageCard({ icon, text, onClick }) {
+export default function ImageCard({ icon, type, onClick }) {
   const isLarge = useMediaQuery("(min-width:1550px)");
   const classes = useStyles({ isLarge });
   const { t } = useTranslation();
+  const heading = {
+    Read: t("landingReadTitle"),
+    Study: t("landingStudyTitle"),
+    Watch: t("landingWatchTitle"),
+    Listen: t("landingListenTitle"),
+  };
   const caption = {
     Read: t("landingReadCaption"),
     Study: t("landingStudyCaption"),
     Watch: t("landingWatchCaption"),
     Listen: t("landingListenCaption"),
   };
-  console.log(caption, text, "caption");
   return (
     <Grid item sm={3} xs={6}>
       <Link
-        to={{ pathname: text === "Read" ? "/read" : "/study" }}
+        to={{ pathname: type === "Read" ? "/read" : "/study" }}
         className={classes.link}
       >
-        <BigTooltip title={caption[text]}>
+        <BigTooltip title={caption[type]}>
           <Paper className={classes.iconBox} elevation={3} onClick={onClick}>
             <div className={classes.iconWrapper}>
               <i className={`material-icons ${classes.icon}`}>{icon}</i>
             </div>
             <div className={classes.textWrapper}>
               <Typography variant="h4" className={classes.heading}>
-                {text}
+                {heading[type]}
               </Typography>
-              <div className={classes.caption}>{caption[text]}</div>
+              <div className={classes.caption}>{caption[type]}</div>
             </div>
           </Paper>
         </BigTooltip>

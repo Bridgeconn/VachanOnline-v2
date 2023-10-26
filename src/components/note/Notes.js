@@ -556,7 +556,7 @@ function Notes(props) {
       ) : addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>
-            Note for {book} {chapter}:{" "}
+            {t("studyNotesBookChapterVerse")} {book} {chapter}:{" "}
             {versesSelected
               ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
@@ -618,7 +618,7 @@ function Notes(props) {
               <>
                 <ListItem className={classes.listHeading}>
                   <Typography variant="h5">
-                    Notes for {book} {chapter}
+                    {t("studyNotesBookChapter")} {book} {chapter}
                   </Typography>
                   {mobileView ? (
                     <Close className={classes.closeButton} />

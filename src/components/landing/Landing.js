@@ -123,16 +123,16 @@ const Landing = (props) => {
       >
         <ImageCard
           icon="volume_up"
-          text="Listen"
+          type="Listen"
           onClick={() => setValue("parallelView", AUDIO)}
         />
         <ImageCard
           icon="videocam"
-          text="Watch"
+          type="Watch"
           onClick={() => setValue("parallelView", VIDEO)}
         />
-        <ImageCard icon="local_library" text="Read" />
-        <ImageCard icon="menu_book" text="Study" />
+        <ImageCard icon="local_library" type="Read" />
+        <ImageCard icon="menu_book" type="Study" />
       </Grid>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item md={12} lg={6}>

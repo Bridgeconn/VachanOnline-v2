@@ -196,7 +196,7 @@ const StudyBible = (props) => {
             <ParallelScroll fontSize="large" className={classes.pScroll} />
           </Tooltip>
         ) : (
-          <Tooltip title={t("studyParallelScrollDisabledToolTip")}>
+          <Tooltip title={t("studyParallelScrollDisabled")}>
             <ParallelScroll
               fontSize="large"
               color="disabled"
