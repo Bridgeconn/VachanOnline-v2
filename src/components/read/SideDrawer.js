@@ -2,6 +2,7 @@ import * as React from "react";
 import * as views from "../../store/views";
 import { Drawer, makeStyles } from "@material-ui/core";
 import MenuItem from "./MenuItem";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
   list: {
@@ -13,6 +14,8 @@ const useStyles = makeStyles({
 export default function SideDrawer(props) {
   const { login, toggleDrawer, open } = props;
   const classes = useStyles();
+
+  const { t } = useTranslation();
   const Item = ({ icon, title, item }) => (
     <MenuItem icon={icon} title={title} item={item} base="drawer" />
   );
@@ -35,33 +38,49 @@ export default function SideDrawer(props) {
       <div className="bottomBar">
         <Item
           icon="comment"
-          title="Commentaries"
+          title={t("sideDrawerCommentaries")}
           item={views.DRAWERCOMMENTARY}
         />
         {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
           <Item
             icon="sign_language"
-            title="ISLV Bible"
+            title={t("sideDrawerISLVBible")}
             item={views.DRAWERSIGNBIBLE}
           />
         ) : (
           ""
         )}
-        <Item icon="image" title="Infographics" item={views.INFOGRAPHICS} />
-        <Item icon="volume_up" title="Audio Bible" item={views.AUDIO} />
-        <Item icon="videocam" title="Videos" item={views.VIDEO} />
+        <Item
+          icon="image"
+          title={t("sideDrawerInfographics")}
+          item={views.INFOGRAPHICS}
+        />
+        <Item
+          icon="volume_up"
+          title={t("sideDrawerAudioBible")}
+          item={views.AUDIO}
+        />
+        <Item
+          icon="videocam"
+          title={t("sideDrawerVideos")}
+          item={views.VIDEO}
+        />
         <Item
           icon="format_shapes"
-          title="Dictionaries"
+          title={t("sideDrawerDictionaries")}
           item={views.DICTIONARY}
         />
-        <LoginItem icon="bookmark" title="Bookmarks" item={views.BOOKMARK} />
+        <LoginItem
+          icon="bookmark"
+          title={t("studyBookmarksTitle")}
+          item={views.BOOKMARK}
+        />
         <LoginItem
           icon="border_color"
-          title="Highlights"
+          title={t("sideDrawerHighlights")}
           item={views.HIGHLIGHT}
         />
-        <LoginItem icon="note" title="Notes" item={views.NOTE} />
+        <LoginItem icon="note" title={t("sideDrawerNotes")} item={views.NOTE} />
       </div>
     </Drawer>
   );

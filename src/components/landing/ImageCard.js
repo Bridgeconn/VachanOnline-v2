@@ -5,6 +5,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BLACK } from "../../store/colorCode";
 import BigTooltip from "../common/BigTooltip";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -82,12 +83,14 @@ const useStyles = makeStyles((theme) => ({
 export default function ImageCard({ icon, text, onClick }) {
   const isLarge = useMediaQuery("(min-width:1550px)");
   const classes = useStyles({ isLarge });
+  const { t } = useTranslation();
   const caption = {
-    Read: "Read and share the Bible in your heart language",
-    Study: "Read, annotate and search Bibles and study material",
-    Watch: "See scriptures come alive in images and videos",
-    Listen: "Hear the recorded word in your heart language",
+    Read: t("landingReadCaption"),
+    Study: t("landingStudyCaption"),
+    Watch: t("landingWatchCaption"),
+    Listen: t("landingListenCaption"),
   };
+  console.log(caption, text, "caption");
   return (
     <Grid item sm={3} xs={6}>
       <Link

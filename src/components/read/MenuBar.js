@@ -19,6 +19,7 @@ import { BLACK } from "../../store/colorCode";
 import Close from "../common/Close";
 import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -128,7 +129,7 @@ const MenuBar = (props) => {
   } = props;
   const styleProps = { paneNo: paneNo };
   const classes = useStyles(styleProps);
-
+  const { t } = useTranslation();
   function goFull() {
     setFullscreen(true);
   }
@@ -182,7 +183,7 @@ const MenuBar = (props) => {
         return;
       } else {
         setHighlightIcon(
-          <Tooltip title="Select Verses">
+          <Tooltip title={t("menuBarSelectVersesToolTip")}>
             <div className={classes.info}>
               <BorderColor fontSize="small" color="disabled" />
             </div>
@@ -199,6 +200,7 @@ const MenuBar = (props) => {
     setSelectedVerses,
     refUrl,
     highlights,
+    t,
   ]);
 
   //Set note icon
@@ -218,7 +220,7 @@ const MenuBar = (props) => {
         return;
       } else {
         setNoteIcon(
-          <Tooltip title="Select Verses">
+          <Tooltip title={t("menuBarSelectVersesToolTip")}>
             <div className={classes.info}>
               <NoteIcon fontSize="small" color="disabled" />
             </div>
@@ -236,6 +238,7 @@ const MenuBar = (props) => {
     bookCode,
     chapter,
     classes.info,
+    t,
   ]);
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -281,7 +284,7 @@ const MenuBar = (props) => {
       parallelView !== AUDIO
     ) {
       setAudioIcon(
-        <Tooltip title="Audio Bible">
+        <Tooltip title={t("menuBarAudioBibleToolTip")}>
           <div className={classes.info} onClick={openAudioBible}>
             <i className="material-icons md-23">volume_up</i>
           </div>
@@ -291,7 +294,7 @@ const MenuBar = (props) => {
       setValue("audio", false);
       setAudioIcon("");
     }
-  }, [audio, audioBible, bookCode, classes.info, setValue, parallelView]);
+  }, [audio, audioBible, bookCode, classes.info, setValue, parallelView, t]);
   return (
     <div>
       <Box className={classes.read}>
@@ -335,11 +338,11 @@ const MenuBar = (props) => {
             {mobileView ? null : (
               <>
                 <div className={classes.info} onClick={handleDialogOpen}>
-                  <Tooltip title="Print Chapter">
+                  <Tooltip title={t("menuBarPrintChapterToolTip")}>
                     <PrintIcon fontSize="small" />
                   </Tooltip>
                 </div>
-                <Tooltip title="Fullscreen">
+                <Tooltip title={t("menuBarFullScreenToolTip")}>
                   <div onClick={goFull} className={classes.info}>
                     <i className="material-icons md-23">zoom_out_map</i>
                   </div>
@@ -378,7 +381,7 @@ const MenuBar = (props) => {
                 onClick={toggleParallelScroll}
               >
                 {parallelScroll ? (
-                  <Tooltip title="Parallel Scroll">
+                  <Tooltip title={t("studyParallelScrollToolTip")}>
                     <ParallelScroll
                       fontSize="large"
                       style={{ color: BLACK }}
@@ -386,7 +389,7 @@ const MenuBar = (props) => {
                     />
                   </Tooltip>
                 ) : (
-                  <Tooltip title="Parallel Scroll Disabled">
+                  <Tooltip title={t("studyParallelScrollDisabledToolTip")}>
                     <ParallelScroll
                       fontSize="large"
                       color="disabled"

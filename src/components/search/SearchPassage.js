@@ -7,6 +7,7 @@ import { SETVALUE, SETVALUE1 } from "../../store/actions";
 import { BLACK } from "../../store/colorCode";
 import { getReference } from "../common/utility";
 import BigTooltip from "../common/BigTooltip";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   searchBox: {
@@ -66,27 +67,28 @@ const SearchPassage = (props) => {
     versionSource,
   } = props;
 
+  const { t } = useTranslation();
   const bookList = versionBooks[versionSource[panel1.sourceId]];
   const searchHints = (
     <div>
-      <h5>Search Hints:-</h5>
+      <h5>{t("searchHints")}</h5>
       <h6>
-        <b>Chapter Search:</b> book chapter
+        <b>{t("chapterSearch")}</b> {t("bookChapter")}
       </h6>
       <span>
-        <i>Eg:</i> gen 49 or നഹൂം 1 or यहूदा 1
+        <i>{t("egSearchRef")}</i> gen 49 or നഹൂം 1 or यहूदा 1
       </span>
       <h6>
-        <b>Verse:</b> book chapter: verse(s)
+        <b>{t("verseSearchRef")}</b> {t("bookChapterVerses")}
       </h6>
       <span>
-        <i>Eg:</i> ഇയ്യോബ് 42:2 or genesis 12:2,3 or रूत 2:12
+        <i>{t("egSearchRef")}</i> ഇയ്യോബ് 42:2 or genesis 12:2,3 or रूत 2:12
       </span>
       <h6>
-        <b>Passage Search:</b> book chapter:verse range
+        <b>{t("passageSearch")}</b> {t("bookChapterVersesRange")}
       </h6>
       <span>
-        <i>Eg: </i>rev 1:13-16 or 1 योहान 4:8-10,16,20-25
+        <i>{t("egSearchRef")} </i>rev 1:13-16 or 1 योहान 4:8-10,16,20-25
       </span>
     </div>
   );
@@ -152,7 +154,7 @@ const SearchPassage = (props) => {
         >
           <InputBase
             className={classes.searchField}
-            placeholder="Enter Bible Reference"
+            placeholder={t("seachPlaceHolderTopbar")}
             inputProps={{ className: classes.input }}
             value={searchText}
             name="search"
@@ -168,7 +170,7 @@ const SearchPassage = (props) => {
       </BigTooltip>
       {mobileView && (
         <Button className={classes.cancelBtn} onClick={handleClose}>
-          Cancel
+          {t("cancelBtnSearchRef")}
         </Button>
       )}
     </>

@@ -21,6 +21,7 @@ const defaultState = {
   infographics: {},
   errorMessage: "",
   hoverVerse: "",
+  locale: "en",
   audioBible: [],
   video: [],
   chapterVideo: [],

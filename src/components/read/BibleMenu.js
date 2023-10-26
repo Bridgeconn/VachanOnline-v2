@@ -4,6 +4,7 @@ import List from "@material-ui/core/List";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
 import { Divider } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,23 +29,32 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BibleMenu() {
   const classes = useStyles();
+  const { t } = useTranslation();
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
-        <MenuItem icon="search" title="Search Bible" item={views.SEARCH} />
+        <MenuItem
+          icon="search"
+          title={t("studySearchBibleTitle")}
+          item={views.SEARCH}
+        />
         <Divider />
         <MenuItem
           icon="import_contacts"
-          title="Parallel Bible"
+          title={t("studyParallelBibleTitle")}
           item={views.PARALLELBIBLE}
         />
         <Divider />
-        <MenuItem icon="comment" title="Commentaries" item={views.COMMENTARY} />
+        <MenuItem
+          icon="comment"
+          title={t("studyCommentariesTitle")}
+          item={views.COMMENTARY}
+        />
         <Divider />
         {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
           <MenuItem
             icon="sign_language"
-            title="ISLV Bible"
+            title={t("studyISLVBibleTitle")}
             item={views.SIGNBIBLE}
           />
         ) : (
@@ -54,36 +64,48 @@ export default function BibleMenu() {
         <MenuItem
           class="material-icons"
           icon="image_outline"
-          title="Infographics"
+          title={t("studyInfographicsTitle")}
           item={views.INFOGRAPHICS}
           variant="outlined"
         />
         <Divider />
-        <MenuItem icon="volume_up" title="Audio Bible" item={views.AUDIO} />
+        <MenuItem
+          icon="volume_up"
+          title={t("studyAudioBibleTitle")}
+          item={views.AUDIO}
+        />
         <Divider />
-        <MenuItem icon="videocam" title="Videos" item={views.VIDEO} />
+        <MenuItem
+          icon="videocam"
+          title={t("studyVideosTitle")}
+          item={views.VIDEO}
+        />
         <Divider />
         <MenuItem
           icon="event"
-          title="Reading Plans"
+          title={t("studyReadingPlansTitle")}
           item={views.READINGPLANS}
         />
         <Divider />
         <MenuItem
           icon="format_shapes"
-          title="Dictionaries"
+          title={t("studyDictionariesTitle")}
           item={views.DICTIONARY}
         />
         <Divider />
-        <MenuItem icon="bookmark" title="Bookmarks" item={views.BOOKMARK} />
+        <MenuItem
+          icon="bookmark"
+          title={t("studyBookmarksTitle")}
+          item={views.BOOKMARK}
+        />
         <Divider />
         <MenuItem
           icon="border_color"
-          title="Highlights"
+          title={t("studyHighlightsTitle")}
           item={views.HIGHLIGHT}
         />
         <Divider />
-        <MenuItem icon="note" title="Notes" item={views.NOTE} />
+        <MenuItem icon="note" title={t("studyNotesTitle")} item={views.NOTE} />
         <Divider />
       </List>
     </div>

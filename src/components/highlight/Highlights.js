@@ -14,6 +14,7 @@ import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import * as actions from "../../store/actions";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,6 +81,8 @@ const Highlights = (props) => {
   const [highlightList, setHighlightList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
   const firebase = useFirebase();
+
+  const { t } = useTranslation();
 
   //get version for soruceId
   React.useEffect(() => {
@@ -189,7 +192,7 @@ const Highlights = (props) => {
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Highlights</Typography>
+          <Typography variant="h6">{t("studyHighlightsTitle")}</Typography>
         </Box>
         <Box>
           <Close className={classes.closeButton} />
@@ -237,7 +240,7 @@ const Highlights = (props) => {
           </List>
         ) : (
           <Typography className={classes.message}>
-            Select a verse to Highlight
+            {t("selectVerseHighlight")}
           </Typography>
         )}
       </div>

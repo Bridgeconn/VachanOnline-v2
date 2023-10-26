@@ -17,6 +17,7 @@ import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
 import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { languageJson } from "../../store/languageData";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -148,6 +149,8 @@ const Version = (props) => {
   const reference = searchParams.get("reference");
   const location = useLocation();
   const path = location?.pathname;
+
+  const { t } = useTranslation();
 
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
@@ -312,7 +315,7 @@ const Version = (props) => {
 
   return (
     <>
-      <BigTooltip title="Select a Bible in your language and version">
+      <BigTooltip title={t("commonLngDropdownToolTip")}>
         <Button
           aria-controls="simple-menu"
           aria-haspopup="true"

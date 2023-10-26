@@ -9,6 +9,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ReactPlayer from "react-player";
 import { LIGHTGREY } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
+import { t } from "i18next";
 
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
@@ -87,9 +88,17 @@ const VideoCard = ({ video, playing, setPlaying, language }) => {
           height={language === "isl" ? "500px" : "360px"}
           className={classes.player}
         />
-        <BigTooltip title={showDesc ? "Hide description" : "Show description"}>
+        <BigTooltip
+          title={
+            showDesc
+              ? t("hideDescriptionSignLang")
+              : t("showDescriptionSignLang")
+          }
+        >
           <div onClick={handleChange} className={classes.heading}>
-            <Typography className={classes.descTitle}>Description</Typography>
+            <Typography className={classes.descTitle}>
+              {t("descriptionSignLang")}
+            </Typography>
             {showDesc ? (
               <ExpandLessIcon className={classes.arrow} />
             ) : (

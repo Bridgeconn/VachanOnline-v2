@@ -13,6 +13,7 @@ import { capitalize, getBookbyCode, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -121,6 +122,8 @@ const Video = (props) => {
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
 
+  const { t } = useTranslation();
+
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
     const youtu = "https://youtu.be/";
@@ -203,7 +206,7 @@ const Video = (props) => {
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h6">Videos</Typography>{" "}
+            <Typography variant="h6">{t("studyVideosHeading")}</Typography>{" "}
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>

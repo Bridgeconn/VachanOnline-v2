@@ -31,6 +31,7 @@ import draftToHtml from "draftjs-to-html";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -181,6 +182,8 @@ function Notes(props) {
   const [editorState, setEditorState] = React.useState(
     EditorState.createWithContent(contentState)
   );
+
+  const { t } = useTranslation();
   const firebase = useFirebase();
   const closeAlert = () => {
     setAlert(false);
@@ -469,11 +472,11 @@ function Notes(props) {
         <Box className={classes.heading}>
           <Box flexGrow={1}>
             <Typography variant="h6" className={classes.notesHeading}>
-              Notes
+              {t("studyNotesHeading")}
               {Array.isArray(versesSelected) &&
               versesSelected.length &&
               !edit ? (
-                <Tooltip title="Add Note">
+                <Tooltip title={t("studyAddNoteToolTip")}>
                   <IconButton
                     aria-label="add"
                     className={classes.addNote}
@@ -483,7 +486,7 @@ function Notes(props) {
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title="Select Verses">
+                <Tooltip title={t("commonSelectVersesToolTip")}>
                   <>
                     <IconButton
                       aria-label="add"
@@ -528,7 +531,8 @@ function Notes(props) {
           <DialogActions>
             <Grid container>
               <Grid item xs={6} className={classes.lastModified}>
-                Last Modified: {new Date(modifiedTime).toLocaleString()}
+                {t("studyNotesLastModified")}{" "}
+                {new Date(modifiedTime).toLocaleString()}
               </Grid>
               <Grid item xs={6} className={classes.formButtons}>
                 <Button
@@ -536,14 +540,14 @@ function Notes(props) {
                   className={classes.button}
                   onClick={handleClose}
                 >
-                  Cancel
+                  {t("studyCancelBtn")}
                 </Button>
                 <Button
                   variant="outlined"
                   className={classes.button}
                   onClick={saveNote}
                 >
-                  Save
+                  {t("studySaveBtn")}
                 </Button>
               </Grid>
             </Grid>
@@ -567,7 +571,9 @@ function Notes(props) {
           <Grid container>
             <Grid item xs={7} className={classes.lastModified}>
               {modifiedTime &&
-                "Last Modified: " + new Date(modifiedTime).toLocaleString()}
+                t("studyNotesLastModified") +
+                  " " +
+                  new Date(modifiedTime).toLocaleString()}
             </Grid>
             <Grid item xs={5} className={classes.formButtons}>
               <Button
@@ -575,14 +581,14 @@ function Notes(props) {
                 className={classes.button}
                 onClick={resetForm}
               >
-                Cancel
+                {t("studyCancelBtn")}
               </Button>
               <Button
                 variant="outlined"
                 className={classes.button}
                 onClick={saveNote}
               >
-                Save
+                {t("studySaveBtn")}
               </Button>
             </Grid>
           </Grid>
@@ -672,7 +678,7 @@ function Notes(props) {
               ""
             )}
             <ListItem className={classes.listHeading}>
-              <Typography variant="h5">All Notes</Typography>
+              <Typography variant="h5">{t("studyAllNotesTitle")}</Typography>
             </ListItem>
             {noteList.map((note, i) => {
               return versionData[note.sourceId] !== undefined ? (
@@ -726,7 +732,7 @@ function Notes(props) {
           </List>
         ) : (
           <Typography className={classes.message}>
-            Select a verse to start making Notes
+            {t("studySelectVerseStart")}
           </Typography>
         )}
       </div>

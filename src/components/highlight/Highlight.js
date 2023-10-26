@@ -8,6 +8,7 @@ import NotInterestedIcon from "@material-ui/icons/NotInterested";
 import { useFirebase } from "react-redux-firebase";
 import * as color from "../../store/colorCode";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -50,6 +51,8 @@ function Highlight(props) {
   const firebase = useFirebase();
   const { selectedVerses, setSelectedVerses, refUrl, highlights, mobileView } =
     props;
+
+  const { t } = useTranslation();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -102,7 +105,7 @@ function Highlight(props) {
               className={color.class}
             />
           ))}
-          <Tooltip title="Clear Highlight">
+          <Tooltip title={t("ClearHighlightToolTip")}>
             <NotInterestedIcon
               data-code="clear"
               onClick={colorClicked}
@@ -114,7 +117,7 @@ function Highlight(props) {
       ) : (
         <>
           <div className={classes.info} onClick={handleClick}>
-            <Tooltip title="Highlight">
+            <Tooltip title={t("commonHighlightToolTip")}>
               <BorderColor fontSize="small" />
             </Tooltip>
           </div>
@@ -142,7 +145,7 @@ function Highlight(props) {
                   className={color.class}
                 />
               ))}
-              <Tooltip title="Clear Highlight">
+              <Tooltip title={t("ClearHighlightToolTip")}>
                 <NotInterestedIcon
                   data-code="clear"
                   onClick={colorClicked}

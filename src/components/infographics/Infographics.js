@@ -12,6 +12,7 @@ import Select from "react-select";
 import { capitalize, getShortBook } from "../common/utility";
 import BookCombo from "../common/BookCombo";
 import * as actions from "../../store/actions";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -112,6 +113,8 @@ const Infographics = (props) => {
   const [language, setLanguage] = useState("");
   const { languageCode, bookCode, chapter } = panel1;
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     //Get list of languages
     if (infographics) {
@@ -158,17 +161,25 @@ const Infographics = (props) => {
         setUrl("");
         const book = getShortBook(versionBooks, language.value, bookCode);
         const lang = language?.label;
-        setMessage(`No Infographics available in ${lang} for ${book}`);
+        setMessage(
+          t("studyNoInfographicsAvailable") +
+            " " +
+            lang +
+            " " +
+            t("studyNoInfographicsAvailable1") +
+            " " +
+            book
+        );
       }
     }
-  }, [infographics, bookCode, language, versionBooks]);
+  }, [infographics, bookCode, language, versionBooks, t]);
 
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h6">Infographics</Typography>
+            <Typography variant="h6">{t("studyInfographicsTitle")}</Typography>
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>

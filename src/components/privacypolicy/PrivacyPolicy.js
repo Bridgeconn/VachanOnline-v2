@@ -1,7 +1,11 @@
+import { useTranslation } from "react-i18next";
+
 const PrivacyPolicy = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="privacy-policy">
-      <h1>Privacy Policy</h1>
+      <h1>{t("privacyPolicyHeading")}</h1>
       <p>
         Bridge Connectivity Solutions Pvt. Ltd. built the Vachan Go app as a
         Free app. This App is provided by Bridge Connectivity Solutions at no

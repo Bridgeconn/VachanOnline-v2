@@ -6,6 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(() => ({
   subheading: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles(() => ({
 }));
 const AboutUs = ({ handleClose }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
   const addLink = (text, prefix) => {
     return (
       <Link href={prefix + text} target="_blank">
@@ -58,7 +60,7 @@ const AboutUs = ({ handleClose }) => {
         disableTypography={true}
       >
         <Typography variant="h5" gutterBottom>
-          About Us
+          {t("landingAboutUsHead")}
         </Typography>
       </DialogTitle>
       <DialogContent dividers={true}>
@@ -66,55 +68,46 @@ const AboutUs = ({ handleClose }) => {
           The Vachan Project
         </Typography>
         <Typography variant="body1" gutterBottom>
-          {addStyle("VachanOnline", "bold")} is a premier cross platform Bible
-          study tool in Indian languages. {addStyle("VachanGo", "bold")} is a
-          companion mobile app for this website.
-          {addStyle("The Vachan Project", "bold")} was established to provide
-          free access to digital scripture engagement resources. You are free to
-          use this for your personal Bible study or small groups and gatherings.
-          Please note that many of the resources available are copyrighted.
-          These are being made available here on VachanOnline under multiple
-          licensing arrangements. Hence, the content is not for further
-          redistribution in any other format or platform without explicit
-          permission from the original copyright owners.
+          {addStyle("VachanOnline", "bold")}{" "}
+          {t("landingAboutUsVachanProjectContent1")}{" "}
+          {addStyle("VachanGo", "bold")}{" "}
+          {t("landingAboutUsVachanProjectContent2")}
+          {addStyle("The Vachan Project", "bold")}{" "}
+          {t("landingAboutUsVachanProjectContent3")}
         </Typography>
         <Typography variant="h6" className={classes.subheading}>
-          Content
+          {t("landingAboutUsContentTitle")}
         </Typography>
         <Typography variant="body1" gutterBottom>
-          The content on{" "}
-          {addHyperLink("VachanOnline", "https://vachanonline.com")} and
+          {t("landingAboutUsContent1")}{" "}
+          {addHyperLink("VachanOnline", "https://vachanonline.com")}{" "}
+          {t("landingAboutUsContent2")}
           {addHyperLink(
             "VachanGo",
             "https://play.google.com/store/apps/details?id=com.bridgeconn.vachango"
           )}
-          , is being made available under a collaborative arrangement with
-          multiple partners and
+          {t("landingAboutUsContent3")}
           {addHyperLink(
             "Bridge Connectivity Solutions Pvt. Ltd. (BCS)",
             "https://www.bridgeconn.com"
           )}
-          ; who is the localization and technology partner.
+          {t("landingAboutUsContent4")}
         </Typography>
         <Typography variant="h6" className={classes.subheading}>
-          Technology
+          {t("landingAboutUsTechnologyTitle")}
         </Typography>
         <Typography variant="body1">
-          BCS team has developed this platform inspired by similar initiatives
-          in other countries. A cloud based, API driven, Biblical Computing
-          engine - VachanEngine is the back-end of this. These Vachan APIs can
-          be made available for digital content delivery on request.
+          {t("landingAboutUsTechnologyMsg")}
         </Typography>
         <Typography variant="body1" className={classes.subheading}>
           {addHyperLink(
-            "GitHub Release Notes",
+            t("landingAboutUsGithubRelease"),
             "https://github.com/Bridgeconn/VachanOnline-v2/releases"
           )}
-          .
         </Typography>
 
         <Typography variant="h6" className={classes.subheading}>
-          Contact Us
+          {t("landingAboutUsContactUs")}
         </Typography>
         <Typography variant="body1" component="div" gutterBottom>
           {addLink("thevachanproject@bridgeconn.com", "mailto:")}
@@ -122,7 +115,7 @@ const AboutUs = ({ handleClose }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} variant="outlined">
-          Close
+          {t("landingAboutUsCloseBtn")}
         </Button>
       </DialogActions>
     </>

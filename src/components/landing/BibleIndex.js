@@ -10,6 +10,7 @@ import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import BigTooltip from "../common/BigTooltip";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -71,11 +72,13 @@ const BibleIndex = (props) => {
   const { panel1, setValue, versionBooks, versionSource } = props;
   const { version, book, bookCode, sourceId, chapter, verseData, language } =
     panel1;
+
+  const { t } = useTranslation();
   return (
     <div className={classes.container}>
       <Paper className={classes.bibleIndex} elevation={3}>
         <Typography variant="h5" gutterBottom className={classes.heading}>
-          Study the Bible in your Language
+          {t("landingSelectBibleHeading")}
         </Typography>
         <div className={classes.readContainer}>
           <Version
@@ -105,9 +108,9 @@ const BibleIndex = (props) => {
               pathname: "/study",
             }}
           >
-            <BigTooltip title="Click here to read the Bible">
+            <BigTooltip title={t("landingStartBtnToolTip")}>
               <Button variant="contained" className={classes.button}>
-                Start
+                {t("landingStartBtn")}
               </Button>
             </BigTooltip>
           </Link>

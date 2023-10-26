@@ -5,6 +5,7 @@ import * as views from "../../store/views";
 import MenuIcon from "@material-ui/icons/Menu";
 import SideDrawer from "./SideDrawer";
 import { BLACK } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -43,6 +44,8 @@ export default function BottomBar({ login }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
+  const { t } = useTranslation();
+
   const toggleDrawer = (open) => (event) => {
     const key = event.key;
     if (event.type === "keydown" && (key === "Tab" || key === "Shift")) {
@@ -57,7 +60,7 @@ export default function BottomBar({ login }) {
         <span>
           <MenuItem
             icon="import_contacts"
-            title="Parallel Bible"
+            title={t("studyBottomParallelBibleMob")}
             item={views.PARALLELBIBLE}
             base="bottom"
           />
@@ -65,7 +68,7 @@ export default function BottomBar({ login }) {
         <span>
           <MenuItem
             icon="comment"
-            title="Commentaries"
+            title={t("studyBottomCommentariesMob")}
             item={views.COMMENTARY}
             base="bottom"
           />
@@ -73,7 +76,7 @@ export default function BottomBar({ login }) {
         <span>
           <MenuItem
             icon="event"
-            title="Reading Plans"
+            title={t("studyBottomReadingPlansMob")}
             item={views.READINGPLANS}
             base="bottom"
           />
@@ -81,7 +84,7 @@ export default function BottomBar({ login }) {
         <span>
           <MenuItem
             icon="search"
-            title="Search"
+            title={t("studyBottomSearchMob")}
             item={views.SEARCH}
             base="bottom"
           />
@@ -89,7 +92,7 @@ export default function BottomBar({ login }) {
         <span onClick={toggleDrawer(true)}>
           <div className={classes.menu}>
             <MenuIcon />
-            <Typography>Menu</Typography>
+            <Typography>{t("studyBottomMenuMob")}</Typography>
           </div>
         </span>
       </Toolbar>

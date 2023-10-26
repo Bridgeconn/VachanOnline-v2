@@ -15,6 +15,7 @@ import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
 import { Typography } from "@material-ui/core";
 import { MOBILEPV } from "../../store/views";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -184,6 +185,8 @@ const BookCombo = (props) => {
     syncPanel,
     screen,
   } = props;
+
+  const { t } = useTranslation();
   //classes for styling
   const parallelMV = MOBILEPV.includes(parallelView);
   const styleProps = {
@@ -369,7 +372,9 @@ const BookCombo = (props) => {
 
   function otHeader() {
     return bookList.find((item) => item.book_id <= 39) ? (
-      <ListItem className={classes.headers}>OLD TESTAMENT</ListItem>
+      <ListItem className={classes.headers}>
+        {t("commonOldTestamentHead")}
+      </ListItem>
     ) : (
       ""
     );
@@ -377,7 +382,9 @@ const BookCombo = (props) => {
   function ntHeader(item) {
     const ntBook = bookList.find((item) => item.book_id >= 40);
     return item?.book_code === ntBook?.book_code ? (
-      <ListItem className={classes.headers}>NEW TESTAMENT</ListItem>
+      <ListItem className={classes.headers}>
+        {t("commonNewTestamentHead")}
+      </ListItem>
     ) : (
       ""
     );
@@ -413,7 +420,7 @@ const BookCombo = (props) => {
     </Typography>
   ) : (
     <>
-      <BigTooltip title="Choose a Bible book and chapter to read">
+      <BigTooltip title={t("commonBookDropDownToolTip")}>
         <Button
           aria-controls="customized-menu"
           aria-haspopup="true"

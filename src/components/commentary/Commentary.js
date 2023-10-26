@@ -16,6 +16,7 @@ import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
 import { LIGHTGREY } from "../../store/colorCode";
 import { Paper } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -188,6 +189,8 @@ const Commentary = (props) => {
   const styleProps = {
     screenView: screenView,
   };
+
+  const { t } = useTranslation();
   const classes = useStyles(styleProps);
   const { version, bookCode, chapter } = panel1;
   const [visible, setVisible] = React.useState(false);
@@ -364,6 +367,7 @@ const Commentary = (props) => {
           commText += "<p>" + removeBr(item.text) + "</p>";
         }
       }
+      console.log(commentaryIntro, "intro");
       if (commText !== "") {
         const imagesObj = setImages(commText, commentaryIntro.images);
         setCommentaryText(imagesObj.text);
@@ -393,7 +397,7 @@ const Commentary = (props) => {
     <div className={classes.root}>
       <Box className={classes.title}>
         <Box flexGrow={1} className={classes.titleComment}>
-          <Typography variant="h6">Commentaries</Typography>
+          <Typography variant="h6">{t("studyCommentariesTitle")}</Typography>
         </Box>
         <Box flexGrow={1} className={classes.bookNameBox}>
           <CommentaryCombo
@@ -447,11 +451,16 @@ const Commentary = (props) => {
             ? "Loading"
             : `No commentary available for ${book} ${chapter}`}
         </h5>
+        // <h5 className={classes.message}>
+        // {message === "loading"
+        //   ? "Loading"
+        //   : t("studyNoCommentaryAvailable") + { book } + { chapter }}
+        // </h5>
       )}
       {commentaryIntro.bookIntro && (
         <div onClick={toggleIntro} className={classes.introHeading}>
           <Typography className={classes.introTitle}>
-            Introduction to {book}
+            {t("studyCommIntroTo")} {book}
           </Typography>
           {showIntro ? (
             <ExpandLessIcon className={classes.arrow} />

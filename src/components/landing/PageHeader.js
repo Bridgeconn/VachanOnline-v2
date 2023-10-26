@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,6 +14,11 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 import { WHITE } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
+//import LocaleContext from "../../LocaleContext";
+import i18n from "../../i18n";
+import LanguageIcon from "@material-ui/icons/Language";
+import { Select } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,147 +78,175 @@ const useStyles = makeStyles((theme) => ({
     padding: "8px 12px 0",
     color: WHITE,
   },
+  languageIcon: {
+    cursor: "pointer",
+    paddingLeft: 5,
+    width: "30px",
+  },
 }));
 
 const PageHeader = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
+  const [locale, setLocale] = useState(i18n.language);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
   let { login, userDetails, setParallelView } = props;
+  const multiLanguages = [
+    { value: "en", label: "English" },
+    { value: "hi", label: "Hindi" },
+  ];
+  const { t } = useTranslation();
+  i18n.on("languageChanged", (lng) => setLocale(i18n.language));
+  const handleChange = (event) => {
+    i18n.changeLanguage(event.target.value);
+  };
 
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
   return (
-    <div className={classes.root}>
-      <AppBar className={classes.appBar} position="static">
-        <Toolbar>
-          <div className={classes.links}>
-            <Link to={{ pathname: "/study" }}>
-              <img src={favicon} alt="logo" className={classes.favicon} />
-              {mobile === true ? (
-                ""
+    <>
+      {/* <LocaleContext.Provider value={{ locale, setLocale }}> */}
+      <div className={classes.root}>
+        <AppBar className={classes.appBar} position="static">
+          <Toolbar>
+            <div className={classes.links}>
+              <Link to={{ pathname: "/study" }}>
+                <img src={favicon} alt="logo" className={classes.favicon} />
+                {mobile === true ? (
+                  ""
+                ) : (
+                  <img src={logo} alt={"logo"} className={classes.logo} />
+                )}
+              </Link>
+            </div>
+            <Link
+              to={{
+                pathname: "/audiobible",
+              }}
+            >
+              {mobileLandscape ? (
+                <i className={`material-icons ${classes.islIcon}`}>
+                  headphones
+                </i>
               ) : (
-                <img src={logo} alt={"logo"} className={classes.logo} />
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.signBible}
+                  title={t("landingPageHeaderAudioToolTip")}
+                  aria-label="audio bible"
+                  target="_blank"
+                  rel="noopener"
+                  startIcon={<i className="material-icons">headphones</i>}
+                >
+                  {t("landingPageHeaderAudio")}
+                </Button>
               )}
             </Link>
-          </div>
-          <Link
-            to={{
-              pathname: "/audiobible",
-            }}
-          >
-            {mobileLandscape ? (
-              <i className={`material-icons ${classes.islIcon}`}>headphones</i>
-            ) : (
-              <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                className={classes.signBible}
-                title="Audio Bible"
-                aria-label="audio bible"
-                target="_blank"
-                rel="noopener"
-                startIcon={<i className="material-icons">headphones</i>}
+            {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
+              <Link
+                to={{
+                  pathname: "/study",
+                }}
               >
-                Audio
-              </Button>
+                {mobileLandscape ? (
+                  <i
+                    className={`material-icons ${classes.islIcon}`}
+                    onClick={() => setParallelView(SIGNBIBLE)}
+                  >
+                    sign_language
+                  </i>
+                ) : (
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    className={classes.signBible}
+                    title={t("landingPageHeaderISLVToolTip")}
+                    aria-label="sign language bible"
+                    target="_blank"
+                    rel="noopener"
+                    onClick={() => setParallelView(SIGNBIBLE)}
+                    startIcon={<i className="material-icons">sign_language</i>}
+                  >
+                    {t("landingPageHeaderISLV")}
+                  </Button>
+                )}
+              </Link>
+            ) : (
+              ""
             )}
-          </Link>
-          {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
-            <Link
-              to={{
-                pathname: "/study",
-              }}
-            >
-              {mobileLandscape ? (
-                <i
-                  className={`material-icons ${classes.islIcon}`}
-                  onClick={() => setParallelView(SIGNBIBLE)}
-                >
-                  sign_language
-                </i>
-              ) : (
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="inherit"
-                  className={classes.signBible}
-                  title="Sign Language Bible"
-                  aria-label="sign language bible"
-                  target="_blank"
-                  rel="noopener"
-                  onClick={() => setParallelView(SIGNBIBLE)}
-                  startIcon={<i className="material-icons">sign_language</i>}
-                >
-                  ISLV Bible
-                </Button>
-              )}
-            </Link>
-          ) : (
-            ""
-          )}
-          {process.env.REACT_APP_SONGS_URL !== undefined ? (
-            <Link
-              to={{
-                pathname: "/songs",
-              }}
-            >
-              {mobileLandscape ? (
-                <i className={`material-icons ${classes.islIcon}`}>
-                  music_note
-                </i>
-              ) : (
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="inherit"
-                  className={classes.signBible}
-                  title="Songs"
-                  aria-label="Song"
-                  target="_blank"
-                  rel="noopener"
-                  startIcon={<i className="material-icons">music_note</i>}
-                >
-                  songs
-                </Button>
-              )}
-            </Link>
-          ) : (
-            ""
-          )}
-          {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
-            <Link to="/biblestories">
-              {mobileLandscape ? (
-                <i className={`material-icons ${classes.islIcon}`}>
-                  auto_stories
-                </i>
-              ) : (
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="inherit"
-                  className={classes.stories}
-                  title="Bible Stories"
-                  aria-label="bible stories"
-                  target="_blank"
-                  rel="noopener"
-                  startIcon={<i className="material-icons">auto_stories</i>}
-                >
-                  Bible Stories
-                </Button>
-              )}
-            </Link>
-          ) : (
-            ""
-          )}
-          {loginButton}
-        </Toolbar>
-      </AppBar>
-    </div>
+            {process.env.REACT_APP_SONGS_URL !== undefined ? (
+              <Link
+                to={{
+                  pathname: "/songs",
+                }}
+              >
+                {mobileLandscape ? (
+                  <i className={`material-icons ${classes.islIcon}`}>
+                    music_note
+                  </i>
+                ) : (
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    className={classes.signBible}
+                    title={t("landingPageHeaderSongs")}
+                    aria-label="Song"
+                    target="_blank"
+                    rel="noopener"
+                    startIcon={<i className="material-icons">music_note</i>}
+                  >
+                    {t("landingPageHeaderSongs")}
+                  </Button>
+                )}
+              </Link>
+            ) : (
+              ""
+            )}
+            {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
+              <Link to="/biblestories">
+                {mobileLandscape ? (
+                  <i className={`material-icons ${classes.islIcon}`}>
+                    auto_stories
+                  </i>
+                ) : (
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    className={classes.stories}
+                    title={t("landingPageHeaderBibleStories")}
+                    aria-label="bible stories"
+                    target="_blank"
+                    rel="noopener"
+                    startIcon={<i className="material-icons">auto_stories</i>}
+                  >
+                    {t("landingPageHeaderBibleStories")}
+                  </Button>
+                )}
+              </Link>
+            ) : (
+              ""
+            )}
+            {loginButton}
+            <LanguageIcon className={classes.languageIcon} />
+            <Select
+              className={classes.select}
+              value={locale}
+              onChange={handleChange}
+              options={multiLanguages}
+            />
+          </Toolbar>
+        </AppBar>
+      </div>
+      {/* </LocaleContext.Provider> */}
+    </>
   );
 };
 const mapStateToProps = (state) => {

@@ -13,6 +13,7 @@ import Container from "@material-ui/core/Container";
 import Popover from "@material-ui/core/Popover";
 import Collapse from "@material-ui/core/Collapse";
 import Alert from "@material-ui/lab/Alert";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -76,6 +77,7 @@ const Login = (props) => {
   const [messageOpen, setMessageOpen] = React.useState(false);
 
   const open = Boolean(anchorEl);
+  const { t } = useTranslation();
 
   const openForm = () => {
     setAnchorEl(menuRef.current);
@@ -244,7 +246,7 @@ const Login = (props) => {
     <>
       {login ? (
         <Button aria-describedby="sign-in" variant="outlined" onClick={signOut}>
-          Sign Out
+          {t("loginSignOutBtn")}
         </Button>
       ) : (
         <>
@@ -256,7 +258,7 @@ const Login = (props) => {
             onClick={openForm}
             className={classes.signBtn}
           >
-            Sign In
+            {t("signInTopBarBtn")}
           </Button>
           <Popover
             id="sign-in"
@@ -282,11 +284,11 @@ const Login = (props) => {
                       onClose={() => setMessageOpen(false)}
                       severity="error"
                     >
-                      Sign in to use this feature
+                      {t("loginSignInWarning")}
                     </Alert>
                   </Collapse>
                   <Typography component="h1" variant="h5">
-                    Sign in
+                    {t("loginSignInTitle")}
                   </Typography>
                   <form
                     onSubmit={(e) => signIn(e)}
@@ -299,7 +301,7 @@ const Login = (props) => {
                       required
                       fullWidth
                       id="email"
-                      label="Email Address"
+                      label={t("loginEmailPlaceHolder")}
                       name="email"
                       autoComplete="email"
                       autoFocus
@@ -312,7 +314,7 @@ const Login = (props) => {
                       required
                       fullWidth
                       name="password"
-                      label="Password"
+                      label={t("loginPasswordPlaceHolder")}
                       type="password"
                       id="password"
                       autoComplete="current-password"
@@ -325,7 +327,7 @@ const Login = (props) => {
                       variant="outlined"
                       className={classes.submit}
                     >
-                      Sign In
+                      {t("loginSignInBtn")}
                     </Button>
                     <Button
                       type="submit"
@@ -334,7 +336,7 @@ const Login = (props) => {
                       onClick={signInGoogle}
                       className={classes.submit}
                     >
-                      Sign in with Google
+                      {t("loginSignInGoogleBtn")}
                     </Button>
                     {/* <Button
                       type="submit"
@@ -348,12 +350,12 @@ const Login = (props) => {
                     <Grid container className={classes.links}>
                       <Grid item xs>
                         <Link href="#" variant="body2" onClick={openForgot}>
-                          Forgot password?
+                          {t("loginForgotPswd")}
                         </Link>
                       </Grid>
                       <Grid item>
                         <Link href="#" variant="body2" onClick={openSignUp}>
-                          Don't have an account? Sign Up
+                          {t("loginSignUpMsg")}
                         </Link>
                       </Grid>
                     </Grid>
@@ -362,7 +364,7 @@ const Login = (props) => {
               ) : form === 2 ? (
                 <div className={classes.paper}>
                   <Typography component="h1" variant="h5">
-                    Sign up
+                    {t("loginSignUpTitle")}
                   </Typography>
                   <form
                     onSubmit={(e) => signUp(e)}
@@ -376,7 +378,7 @@ const Login = (props) => {
                           required
                           fullWidth
                           id="email"
-                          label="Email Address"
+                          label={t("loginEmailPlaceHolder")}
                           name="email"
                           autoComplete="email"
                           value={email}
@@ -389,7 +391,7 @@ const Login = (props) => {
                           required
                           fullWidth
                           name="password"
-                          label="Password"
+                          label={t("loginPasswordPlaceHolder")}
                           type="password"
                           id="password"
                           autoComplete="current-password"
@@ -404,7 +406,7 @@ const Login = (props) => {
                       variant="outlined"
                       className={classes.submit}
                     >
-                      Sign Up
+                      {t("loginSignUpBtn")}
                     </Button>
                     <Grid
                       container
@@ -413,12 +415,12 @@ const Login = (props) => {
                     >
                       <Grid item xs>
                         <Link href="#" variant="body2" onClick={openForgot}>
-                          Forgot password?
+                          {t("loginForgotPswd")}
                         </Link>
                       </Grid>
                       <Grid item>
                         <Link href="#" variant="body2" onClick={openSignIn}>
-                          Already have an account? Sign in
+                          {t("loginSignInMsg")}
                         </Link>
                       </Grid>
                     </Grid>
@@ -427,11 +429,10 @@ const Login = (props) => {
               ) : (
                 <div className={classes.paper}>
                   <Typography component="h1" variant="h5" gutterBottom={true}>
-                    Forgot Password
+                    {t("loginForgotPswd")}
                   </Typography>
                   <Typography component="p" variant="subtitle2" align="center">
-                    Enter your e-mail address and we'll send you a link to reset
-                    your password
+                    {t("loginPswdReset")}
                   </Typography>
                   <form
                     onSubmit={(e) => resetPassword(e)}
@@ -445,7 +446,7 @@ const Login = (props) => {
                           required
                           fullWidth
                           id="email"
-                          label="Email Address"
+                          label={t("loginEmailPlaceHolder")}
                           name="email"
                           autoComplete="email"
                           value={email}
@@ -459,7 +460,7 @@ const Login = (props) => {
                       variant="outlined"
                       className={classes.submit}
                     >
-                      Submit
+                      {t("loginSubmit")}
                     </Button>
                     <Grid
                       container
@@ -468,7 +469,7 @@ const Login = (props) => {
                     >
                       <Grid item>
                         <Link href="#" variant="body2" onClick={openSignIn}>
-                          Back to Sign in
+                          {t("loginBackSignIn")}
                         </Link>
                       </Grid>
                     </Grid>

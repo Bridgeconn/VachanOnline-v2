@@ -1,7 +1,13 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Snackbar, useMediaQuery } from "@material-ui/core";
+import {
+  Divider,
+  Menu,
+  MenuItem,
+  Snackbar,
+  useMediaQuery,
+} from "@material-ui/core";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,6 +24,10 @@ import { SETVALUE } from "../../store/actions";
 import { Tooltip } from "@material-ui/core";
 import SearchPassage from "../search/SearchPassage";
 import { Alert } from "@material-ui/lab";
+import { useTranslation } from "react-i18next";
+//import LocaleContext from "../../LocaleContext";
+import i18n from "../../i18n";
+import LanguageIcon from "@material-ui/icons/Language";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,6 +102,16 @@ const useStyles = makeStyles((theme) => ({
     padding: "8px 8px 0",
     color: BLACK,
   },
+  languageIcon: {
+    color: BLACK,
+    cursor: "pointer",
+    paddingLeft: 5,
+    width: "30px",
+  },
+  languageMenu: {
+    //maxHeight: 68 * 4.5,
+    width: 150,
+  },
 }));
 
 const TopBar = (props) => {
@@ -101,12 +121,31 @@ const TopBar = (props) => {
   const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
+  //const [locale, setLocale] = useState(i18n.language);
+  const [languageAnchor, setLanguageAnchor] = React.useState(null);
+  const open = Boolean(languageAnchor);
   const mobileView = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
-  let { login, userDetails, setParallelView } = props;
+  let { login, userDetails, setParallelView, locale, setLocale } = props;
+  console.log(locale, "locale");
+  const { t } = useTranslation();
+  i18n.on("languageChanged", (lng) => setLocale(i18n.language));
+  const handleChange = (event) => {
+    i18n.changeLanguage(event.target.value);
+  };
+  function openLanguage(event) {
+    setLanguageAnchor(event.currentTarget);
+  }
+  function closeLanguage() {
+    setLanguageAnchor(null);
+  }
+  function setLanguage(locale) {
+    setLocale(locale);
+    closeLanguage();
+  }
   React.useEffect(() => {
     setLoginButton(
       login ? (
@@ -138,14 +177,14 @@ const TopBar = (props) => {
           variant="outlined"
           size="small"
           className={classes.signBible}
-          title="Sign Language Bible"
+          title={t("ISLVTopBarBtnToolTip")}
           aria-label="sign language bible"
           target="_blank"
           rel="noOpener"
           onClick={setParallelView}
           startIcon={<i className="material-icons">sign_language</i>}
         >
-          {isTablet ? "ISLV" : "ISLV Bible"}
+          {isTablet ? t("ISLVTopBarBtnTab") : t("ISLVTopBarBtn")}
         </Button>
       );
     };
@@ -167,13 +206,13 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title="Bible Stories"
+            title={t("bibleStoriesTopBarBtn")}
             aria-label="bible stories"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">auto_stories</i>}
           >
-            Bible Stories
+            {t("bibleStoriesTopBarBtn")}
           </Button>
         )}
       </Link>
@@ -191,13 +230,13 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title="Songs"
+            title={t("songsTopBarBtn")}
             aria-label="songs"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">music_note</i>}
           >
-            Songs
+            {t("songsTopBarBtn")}
           </Button>
         )}
       </Link>
@@ -216,13 +255,13 @@ const TopBar = (props) => {
               variant="outlined"
               size="small"
               className={classes.button}
-              title="Audio Bible"
+              title={t("TopbarAudioBtnToolTip")}
               aria-label="audio bible"
               target="_blank"
               rel="noopener"
               startIcon={<i className="material-icons">headphones</i>}
             >
-              Audio
+              {t("TopbarAudioBtn")}
             </Button>
           )}
         </Link>
@@ -239,13 +278,13 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title="Read Bible"
+            title={t("readTopBarBtn")}
             aria-label="read bible"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">local_library</i>}
           >
-            {mobileView === true ? "Read" : "Read Bible"}
+            {mobileView === true ? t("readTopBarBtnMob") : t("readTopBarBtn")}
           </Button>
         )}
       </Link>
@@ -261,13 +300,15 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title="Study Bible"
+            title={t("studyBibleTopBarBtn")}
             aria-label="study bible"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">menu_book</i>}
           >
-            {mobileView === true ? "Study" : "Study Bible"}
+            {mobileView === true
+              ? t("studyTopBarBtnTab")
+              : t("studyBibleTopBarBtn")}
           </Button>
         )}
       </Link>
@@ -275,7 +316,7 @@ const TopBar = (props) => {
   };
   const FeedbackButton = () => {
     return (
-      <Tooltip title="Feedback">
+      <Tooltip title={t("feedbackTopBarBtnToolTip")}>
         <IconButton
           aria-label="feedback"
           className={classes.feedback}
@@ -292,52 +333,88 @@ const TopBar = (props) => {
     return <SearchPassage setHideIcons={setHideIcons} />;
   };
   return (
-    <div className={classes.root}>
-      <AppBar className={classes.appBar} position="static">
-        <Toolbar>
-          <div className={classes.title}>
-            <Link to="/">
-              <img src={favicon} alt={"icon"} className={classes.icon} />
-              <img src={logo} alt={"logo"} className={classes.logo} />
-            </Link>
-          </div>
-          {path.startsWith("/audiobible") || path.startsWith("/read")
-            ? ""
-            : AudioBible()}
-          <div>{ISLButton()}</div>
-          {path.startsWith("/songs") || path.startsWith("/read")
-            ? ""
-            : SongsButton()}
-
-          {path.startsWith("/biblestories") || path.startsWith("/read")
-            ? ""
-            : StoriesButton()}
-          {path.startsWith("/read") ? searchBox() : ""}
-          {mobileView && hideIcons ? (
-            ""
-          ) : (
-            <>
-              {path.startsWith("/study") ? ReadButton() : StudyButton()}
-              {FeedbackButton()}
-              {loginButton}
-            </>
-          )}
-        </Toolbar>
-      </AppBar>
-      {alert ? (
-        <Snackbar
-          open={Boolean(alert)}
-          autoHideDuration={8000}
-          onClose={handleClose}
-        >
-          <Alert variant="filled" onClose={handleClose} severity={alert}>
-            {message}
-          </Alert>
-        </Snackbar>
-      ) : (
-        ""
-      )}
-    </div>
+    <>
+      {/* <LocaleContext.Provider value={{ locale, setLocale }}> */}
+      <div className={classes.root}>
+        <AppBar className={classes.appBar} position="static">
+          <Toolbar>
+            <div className={classes.title}>
+              <Link to="/">
+                <img src={favicon} alt={"icon"} className={classes.icon} />
+                <img src={logo} alt={"logo"} className={classes.logo} />
+              </Link>
+            </div>
+            {path.startsWith("/audiobible") || path.startsWith("/read")
+              ? ""
+              : AudioBible()}
+            <div>{ISLButton()}</div>
+            {path.startsWith("/songs") || path.startsWith("/read")
+              ? ""
+              : SongsButton()}
+            {path.startsWith("/biblestories") || path.startsWith("/read")
+              ? ""
+              : StoriesButton()}
+            {path.startsWith("/read") ? searchBox() : ""}
+            {mobileView && hideIcons ? (
+              ""
+            ) : (
+              <>
+                {path.startsWith("/study") ? ReadButton() : StudyButton()}
+                {FeedbackButton()}
+                {loginButton}
+              </>
+            )}
+            <LanguageIcon
+              className={classes.languageIcon}
+              onClick={openLanguage}
+            ></LanguageIcon>
+            <Menu
+              id="long-menu"
+              anchorEl={languageAnchor}
+              keepMounted
+              open={open}
+              onClose={closeLanguage}
+              getContentAnchorEl={null}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{ vertical: "top", horizontal: "center" }}
+              PaperProps={{
+                className: classes.languageMenu,
+              }}
+              value={locale}
+              onChange={handleChange}
+            >
+              <MenuItem
+                className={classes.menu}
+                onClick={() => setLanguage("en")}
+              >
+                English
+              </MenuItem>
+              <Divider />
+              <MenuItem
+                className={classes.menu}
+                onClick={() => setLanguage("hi")}
+              >
+                Hindi
+              </MenuItem>
+            </Menu>
+          </Toolbar>
+        </AppBar>
+        {alert ? (
+          <Snackbar
+            open={Boolean(alert)}
+            autoHideDuration={8000}
+            onClose={handleClose}
+          >
+            <Alert variant="filled" onClose={handleClose} severity={alert}>
+              {message}
+            </Alert>
+          </Snackbar>
+        ) : (
+          ""
+        )}
+      </div>
+      {/* </LocaleContext.Provider> */}
+    </>
   );
 };
 
@@ -345,6 +422,7 @@ const mapStateToProps = (state) => {
   return {
     login: state.local.login,
     userDetails: state.local.userDetails,
+    locale: state.local.locale,
   };
 };
 
@@ -352,6 +430,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: () =>
       dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
+    setLocale: (value) =>
+      dispatch({ type: SETVALUE, name: "locale", value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

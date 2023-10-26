@@ -8,6 +8,7 @@ import Metadata from "../common/Metadata";
 import { getDictionaryIndex, getDictionaryWord } from "../common/utility";
 import Close from "../common/Close";
 import Typography from "@material-ui/core/Typography";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,6 +110,8 @@ const Dictionary = (props) => {
     dictionaryWord,
     wordMeaning,
   } = dictionary;
+
+  const { t } = useTranslation();
   //Need to improve the performance of the component
   React.useEffect(() => {
     //if no dictionary selected set current language dictionary
@@ -189,7 +192,7 @@ const Dictionary = (props) => {
     <div className={classes.root}>
       <Box className={classes.header}>
         <Typography variant="h6" className={classes.title}>
-          Dictionary
+          {t("studyDictionaryTitle")}
         </Typography>
         <Box flexGrow={1}>
           <DictionaryCombo
