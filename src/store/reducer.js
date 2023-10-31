@@ -26,6 +26,7 @@ const defaultState = {
   chapterVideo: [],
   readingPlans: [],
   signBible: [],
+  languageInfo: [],
   playing: "",
   versionBooks: {},
   versionSource: {},

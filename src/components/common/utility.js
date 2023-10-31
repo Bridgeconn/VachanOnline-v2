@@ -3,6 +3,7 @@ import {
   signBibleAPI,
   API,
   chapterVideoAPI,
+  languageDataAPI,
 } from "../../store/api";
 import { bibleBooks, bibleChapters } from "../../store/bibleData";
 //Function to get the bible versions
@@ -517,6 +518,16 @@ export const getChapterVideo = (setValue) => {
     ?.get("fcbh_chapter.json")
     .then(function (response) {
       setValue("chapterVideo", response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export const getLanguageData = (setValue) => {
+  languageDataAPI
+    ?.get("languageData.js")
+    .then(function (response) {
+      setValue("languageInfo", response.data);
     })
     .catch(function (error) {
       console.log(error);
