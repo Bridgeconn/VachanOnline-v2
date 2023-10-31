@@ -163,6 +163,7 @@ function Notes(props) {
     close,
     panel1,
     mobileView,
+    locale,
   } = props;
   const [noteList, setNoteList] = React.useState([]);
   const [chapterNoteList, setChapterNoteList] = React.useState([]);
@@ -556,10 +557,15 @@ function Notes(props) {
       ) : addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>
-            {t("studyNotesBookChapterVerse")} {book} {chapter}:{" "}
-            {versesSelected
-              ?.sort((a, b) => parseInt(a) - parseInt(b))
-              .join(", ")}
+            {locale === "hi"
+              ? ` ${book} ${chapter} : ${versesSelected
+                  ?.sort((a, b) => parseInt(a) - parseInt(b))
+                  .join(", ")} ${t("studyNotesBookChapter")}`
+              : `${t(
+                  "studyNotesBookChapter"
+                )} ${book} ${chapter} : ${versesSelected
+                  ?.sort((a, b) => parseInt(a) - parseInt(b))
+                  .join(", ")}`}
           </Typography>
           {/*edit note */}
           <Editor
@@ -618,7 +624,9 @@ function Notes(props) {
               <>
                 <ListItem className={classes.listHeading}>
                   <Typography variant="h5">
-                    {t("studyNotesBookChapter")} {book} {chapter}
+                    {locale === "hi"
+                      ? ` ${book} ${chapter} ${t("studyNotesBookChapter")}`
+                      : `${t("studyNotesBookChapter")} ${book} ${chapter}`}
                   </Typography>
                   {mobileView ? (
                     <Close className={classes.closeButton} />
@@ -742,6 +750,7 @@ function Notes(props) {
 const mapStateToProps = (state) => {
   return {
     mobileView: state.local.mobileView,
+    locale: state.local.locale,
   };
 };
 const mapDispatchToProps = (dispatch) => {

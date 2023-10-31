@@ -12,6 +12,7 @@ import { AppBar, useMediaQuery, useTheme } from "@material-ui/core";
 import { connect } from "react-redux";
 import { getAllBooks, getAudioBibles } from "../common/utility";
 import { nextButtonClick, previousClick } from "../common/utility";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,6 +96,7 @@ const AudioBible = (props) => {
   const [audios, setAudios] = React.useState(null);
   const [audioBooks, setAudioBooks] = React.useState([]);
   const { chapter, bookCode, language } = panel1;
+  const { t } = useTranslation();
   let audioBookList = audios ? audios[0]?.books : "";
   let chapters = new Array(audioBookList[bookCode]);
   React.useEffect(() => {
@@ -159,7 +161,7 @@ const AudioBible = (props) => {
         />
         {isMobile ? <Divider /> : ""}
         <Typography variant="h4" className={classes.gap}>
-          Audio Bibles
+          {t("sideDrawerAudioBible")}
         </Typography>
       </div>
       <Divider />

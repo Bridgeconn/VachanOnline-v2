@@ -15,10 +15,9 @@ import { SIGNBIBLE } from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 import { WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
-//import LocaleContext from "../../LocaleContext";
 import i18n from "../../i18n";
 import LanguageIcon from "@material-ui/icons/Language";
-import { Select } from "@material-ui/core";
+import { Divider, Menu, MenuItem } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
       color: "#d0d0d0",
     },
   },
+  languageMenu: {
+    width: 150,
+  },
   islBadge: {
     marginRight: 8,
   },
@@ -88,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
 const PageHeader = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
-  const [locale, setLocale] = useState(i18n.language);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
@@ -97,18 +98,32 @@ const PageHeader = (props) => {
     { value: "en", label: "English" },
     { value: "hi", label: "Hindi" },
   ];
+  const [locale, setLocale] = useState(multiLanguages[0]);
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
   const handleChange = (event) => {
-    i18n.changeLanguage(event.target.value);
+    i18n.changeLanguage(event?.value);
+    setLocale(event);
   };
+  const [languageAnchor, setLanguageAnchor] = React.useState(null);
+  const open = Boolean(languageAnchor);
 
+  function openLanguage(event) {
+    setLanguageAnchor(event.currentTarget);
+  }
+  function closeLanguage() {
+    setLanguageAnchor(null);
+  }
+  function setLanguage(locale) {
+    i18n.changeLanguage(locale);
+    setLocale(locale);
+    closeLanguage();
+  }
   React.useEffect(() => {
     setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
   }, [login, userDetails]);
   return (
     <>
-      {/* <LocaleContext.Provider value={{ locale, setLocale }}> */}
       <div className={classes.root}>
         <AppBar className={classes.appBar} position="static">
           <Toolbar>
@@ -235,17 +250,43 @@ const PageHeader = (props) => {
               ""
             )}
             {loginButton}
-            <LanguageIcon className={classes.languageIcon} />
-            <Select
-              className={classes.select}
+            <LanguageIcon
+              className={classes.languageIcon}
+              onClick={openLanguage}
+            />
+            <Menu
+              id="long-menu"
+              anchorEl={languageAnchor}
+              keepMounted
+              open={open}
+              onClose={closeLanguage}
+              getContentAnchorEl={null}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{ vertical: "top", horizontal: "center" }}
+              style={{ top: 20 }}
+              PaperProps={{
+                className: classes.languageMenu,
+              }}
               value={locale}
               onChange={handleChange}
-              options={multiLanguages}
-            />
+            >
+              <MenuItem
+                className={classes.menu}
+                onClick={() => setLanguage("en")}
+              >
+                English
+              </MenuItem>
+              <Divider />
+              <MenuItem
+                className={classes.menu}
+                onClick={() => setLanguage("hi")}
+              >
+                Hindi
+              </MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
       </div>
-      {/* </LocaleContext.Provider> */}
     </>
   );
 };

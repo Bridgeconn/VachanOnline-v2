@@ -143,6 +143,7 @@ const TopBar = (props) => {
     setLanguageAnchor(null);
   }
   function setLanguage(locale) {
+    i18n.changeLanguage(locale);
     setLocale(locale);
     closeLanguage();
   }
@@ -377,6 +378,7 @@ const TopBar = (props) => {
               getContentAnchorEl={null}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               transformOrigin={{ vertical: "top", horizontal: "center" }}
+              style={{ top: 20 }}
               PaperProps={{
                 className: classes.languageMenu,
               }}
