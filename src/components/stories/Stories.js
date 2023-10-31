@@ -236,6 +236,9 @@ const Stories = (props) => {
     } else {
       API.get(lang + "/isl_obs.json").then(function (response) {
         let index = storyId[0] === "0" ? storyId?.split("0")[1] : storyId;
+        if (response.data.length < parseInt(storyId)) {
+          index = "1";
+        }
         let islStory = response?.data?.find(
           (el) => el?.storyNo === parseInt(index)
         );
