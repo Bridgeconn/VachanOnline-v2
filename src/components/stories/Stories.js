@@ -242,6 +242,7 @@ const Stories = (props) => {
         let islStory = response?.data?.find(
           (el) => el?.storyNo === parseInt(index)
         );
+        console.log(typeof storyId, response.data, typeof response.data.length);
         setStories(islStory);
       });
     }

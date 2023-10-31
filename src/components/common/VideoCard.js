@@ -44,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.1rem",
     whiteSpace: "pre-wrap",
   },
+  islDescription: {
+    maxHeight: 200,
+    overflow: "auto",
+  },
   heading: {
     display: "flex",
     border: "1px solid " + LIGHTGREY,
@@ -59,12 +63,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.6rem",
     boxShadow: theme.shadows[2],
   },
-  headingBox: {
-    textAlign: "center",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: 20,
-    },
-  },
 }));
 
 const VideoCard = ({ video, playing, setPlaying, language }) => {
@@ -75,56 +73,48 @@ const VideoCard = ({ video, playing, setPlaying, language }) => {
     setShowDesc((prev) => !prev);
   };
   return (
-    <>
-      {language === "isl" ? (
-        <Typography variant="h4" className={classes.headingBox}>
-          {video?.storyNo}. {video?.title}
+    <Card className={classes.video} key={video?.title}>
+      <CardContent className={classes.descContainer}>
+        <Typography className={classes.titleContainer} variant="h6">
+          {language === "isl" ? video?.storyNo + "." : ""} {video?.title}
         </Typography>
-      ) : (
-        ""
-      )}
-      <Card className={classes.video} key={video?.title}>
-        <CardContent className={classes.descContainer}>
-          <Typography className={classes.titleContainer} variant="h6">
-            {video?.title}
-          </Typography>
-          <ReactPlayer
-            playing={playing === video?.url}
-            onPlay={() => setPlaying(video?.url)}
-            url={video?.url}
-            controls={true}
-            width="100%"
-            height={language === "isl" ? "500px" : "360px"}
-            className={classes.player}
-          />
-          <BigTooltip
-            title={showDesc ? "Hide description" : "Show description"}
-          >
-            <div onClick={handleChange} className={classes.heading}>
-              <Typography className={classes.descTitle}>Description</Typography>
-              {showDesc ? (
-                <ExpandLessIcon className={classes.arrow} />
-              ) : (
-                <ExpandMoreIcon className={classes.arrow} />
-              )}
-            </div>
-          </BigTooltip>
-          <Collapse in={showDesc}>
-            {language === "isl" ? (
-              video?.description?.map((el) => (
-                <Typography className={classes.description}>
-                  <b>{el?.time ? `${el.time} :` : ""}</b> {el?.text}
-                </Typography>
-              ))
+        <ReactPlayer
+          playing={playing === video?.url}
+          onPlay={() => setPlaying(video?.url)}
+          url={video?.url}
+          controls={true}
+          width="100%"
+          height={language === "isl" ? "500px" : "360px"}
+          className={classes.player}
+        />
+        <BigTooltip title={showDesc ? "Hide description" : "Show description"}>
+          <div onClick={handleChange} className={classes.heading}>
+            <Typography className={classes.descTitle}>Description</Typography>
+            {showDesc ? (
+              <ExpandLessIcon className={classes.arrow} />
             ) : (
-              <Typography className={classes.description}>
-                {video["description"]}
-              </Typography>
+              <ExpandMoreIcon className={classes.arrow} />
             )}
-          </Collapse>
-        </CardContent>
-      </Card>
-    </>
+          </div>
+        </BigTooltip>
+        <Collapse in={showDesc}>
+          {language === "isl" ? (
+            <div className={classes.islDescription}>
+              {video?.description?.map((el, i) => (
+                <Typography key={i} className={classes.description}>
+                  <b>{el?.time ? `${el.time} ` : ""}</b>
+                  {el?.text}
+                </Typography>
+              ))}
+            </div>
+          ) : (
+            <Typography className={classes.description}>
+              {video["description"]}
+            </Typography>
+          )}
+        </Collapse>
+      </CardContent>
+    </Card>
   );
 };
 
