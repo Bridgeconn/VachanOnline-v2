@@ -525,7 +525,7 @@ export const getChapterVideo = (setValue) => {
 };
 export const getLanguageData = (setValue) => {
   languageDataAPI
-    ?.get("languageData.js")
+    ?.get("languageData.json")
     .then(function (response) {
       setValue("languageInfo", response.data);
     })
