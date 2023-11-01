@@ -227,12 +227,10 @@ const Stories = (props) => {
   };
 
   useEffect(() => {
-    if (lang !== "isl") {
-      if (lang !== "") {
-        API.get(lang + "/content/" + storyId + ".md").then(function (response) {
-          setStories(response.data);
-        });
-      }
+    if (lang !== "" && lang !== "isl") {
+      API.get(lang + "/content/" + storyId + ".md").then(function (response) {
+        setStories(response.data);
+      });
     } else {
       API.get(lang + "/isl_obs.json").then(function (response) {
         let index = storyId[0] === "0" ? storyId?.split("0")[1] : storyId;
