@@ -216,8 +216,11 @@ const Stories = () => {
   }, [API, storyId, lang]);
   useEffect(() => {
     if (lang === "isl" && islStories) {
-      setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
-      console.log(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+      if (islStories.length < parseInt(storyId)) {
+        setStories(islStories?.find((el) => el?.storyNo === 1));
+      } else {
+        setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+      }
     }
   }, [storyId, lang, islStories]);
 
