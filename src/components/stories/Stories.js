@@ -2,6 +2,7 @@ import React, { useMemo, useEffect } from "react";
 import Markdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import axios from "axios";
+import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -154,11 +155,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Stories = () => {
+const Stories = (props) => {
   const API = useMemo(
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_STORIES_URL }),
     []
   );
+  let { login, userDetails } = props;
   const classes = useStyles();
   const [storyId, setStoryId] = React.useState("01");
   const [lang, setLang] = React.useState("");
@@ -173,6 +175,7 @@ const Stories = () => {
   const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
   const storyClass = rtlList.includes(lang)
@@ -212,24 +215,16 @@ const Stories = () => {
       API.get(lang + "/content/" + storyId + ".md").then(function (response) {
         setStories(response.data);
       });
-    } else {
-      API.get(lang + "/isl_obs.json").then(function (response) {
-        let index = storyId[0] === "0" ? storyId?.split("0")[1] : storyId;
-        if (response.data.length < parseInt(storyId)) {
-          index = "1";
-        }
-        let islStory = response?.data?.find(
-          (el) => el?.storyNo === parseInt(index)
-        );
-
-        setStories(islStory);
-      });
     }
   }, [API, storyId, lang]);
   useEffect(() => {
     if (lang === "isl" && islStories) {
-      setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
-      console.log(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+      console.log(islStories.length, storyId, "hey");
+      if (islStories.length < parseInt(storyId)) {
+        setStories(islStories?.find((el) => el?.storyNo === 1));
+      } else {
+        setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+      }
     }
   }, [storyId, lang, islStories]);
 
@@ -264,7 +259,7 @@ const Stories = () => {
   return (
     <>
       <AppBar position="fixed">
-        <TopBar />
+        <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
       </AppBar>
       <div className={classes.root}>
         {mobile === true ? (
@@ -460,4 +455,11 @@ const Stories = () => {
   );
 };
 
-export default Stories;
+const mapStateToProps = (state) => {
+  return {
+    login: state.local.login,
+    userDetails: state.local.userDetails,
+  };
+};
+
+export default connect(mapStateToProps)(Stories);
