@@ -101,12 +101,12 @@ const TopBar = (props) => {
   const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
-
+  const mobileView = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
-  let { login, userDetails, setParallelView, mobileView } = props;
+  let { login, userDetails, setParallelView } = props;
   React.useEffect(() => {
     setLoginButton(
       login ? (
@@ -145,7 +145,7 @@ const TopBar = (props) => {
           onClick={setParallelView}
           startIcon={<i className="material-icons">sign_language</i>}
         >
-          {isTablet ? "ISLV" : "Sign Language Bible (ISLV)"}
+          {isTablet ? "ISLV" : "ISLV Bible"}
         </Button>
       );
     };
@@ -160,17 +160,22 @@ const TopBar = (props) => {
   const StoriesButton = () => {
     return process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
       <Link to="/biblestories">
-        <Button
-          variant="outlined"
-          size="small"
-          className={classes.button}
-          title="Bible Stories"
-          aria-label="bible stories"
-          target="_blank"
-          rel="noopener"
-        >
-          {mobileView === true ? "Stories" : "Bible Stories"}
-        </Button>
+        {mobileView ? (
+          <i className={`material-icons ${classes.islIcon}`}>auto_stories</i>
+        ) : (
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.button}
+            title="Bible Stories"
+            aria-label="bible stories"
+            target="_blank"
+            rel="noopener"
+            startIcon={<i className="material-icons">auto_stories</i>}
+          >
+            Bible Stories
+          </Button>
+        )}
       </Link>
     ) : (
       ""
@@ -200,7 +205,30 @@ const TopBar = (props) => {
       ""
     );
   };
-
+  const AudioBible = () => {
+    return (
+      <>
+        <Link to="/audiobible">
+          {mobileView ? (
+            <i className={`material-icons ${classes.islIcon}`}>headphones</i>
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              className={classes.button}
+              title="Audio Bible"
+              aria-label="audio bible"
+              target="_blank"
+              rel="noopener"
+              startIcon={<i className="material-icons">headphones</i>}
+            >
+              Audio
+            </Button>
+          )}
+        </Link>
+      </>
+    );
+  };
   const ReadButton = () => {
     return (
       <Link to="/read">
@@ -273,6 +301,9 @@ const TopBar = (props) => {
               <img src={logo} alt={"logo"} className={classes.logo} />
             </Link>
           </div>
+          {path.startsWith("/audiobible") || path.startsWith("/read")
+            ? ""
+            : AudioBible()}
           <div>{ISLButton()}</div>
           {path.startsWith("/songs") || path.startsWith("/read")
             ? ""
@@ -310,10 +341,17 @@ const TopBar = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    login: state.local.login,
+    userDetails: state.local.userDetails,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: () =>
       dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
   };
 };
-export default connect(null, mapDispatchToProps)(TopBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

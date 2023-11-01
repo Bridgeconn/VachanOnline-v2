@@ -13,7 +13,6 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography } from "@material-ui/core";
 import axios from "axios";
-import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
@@ -130,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const Songs = (props) => {
+const Songs = () => {
   const [languageJson, setLanguageJson] = React.useState({});
   const [lang, setLang] = React.useState("");
   const [fontSize, setFontSize] = React.useState(20);
@@ -138,7 +137,6 @@ const Songs = (props) => {
   const [currentSong, setCurrentSong] = React.useState(null);
   const [lyrics, setLyrics] = React.useState("");
 
-  const { userDetails, login } = props;
   const theme = useTheme();
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -190,7 +188,7 @@ const Songs = (props) => {
   return (
     <>
       <AppBar position="fixed">
-        <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+        <TopBar />
       </AppBar>
       <div className={classes.root}>
         {isMobile === true ? (
@@ -347,11 +345,5 @@ const Songs = (props) => {
     </>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    login: state.local.login,
-    userDetails: state.local.userDetails,
-  };
-};
 
-export default connect(mapStateToProps, null)(Songs);
+export default Songs;
