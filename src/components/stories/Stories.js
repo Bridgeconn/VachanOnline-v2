@@ -2,7 +2,6 @@ import React, { useMemo, useEffect } from "react";
 import Markdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import axios from "axios";
-import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -144,40 +143,22 @@ const useStyles = makeStyles((theme) => ({
     color: BLACK,
   },
   container: {
-    top: 150,
-    bottom: -16,
-    overflow: "scroll",
-    position: "absolute",
-    width: "70%",
     margin: "0 20px",
     padding: "12px 10px 15px 10px",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
+    marginTop: 140,
     [theme.breakpoints.down("sm")]: {
-      top: "190px",
-      width: "100%",
       padding: "0 10px",
       margin: "0 3px",
+      marginTop: 180,
     },
   },
 }));
 
-const Stories = (props) => {
+const Stories = () => {
   const API = useMemo(
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_STORIES_URL }),
     []
   );
-  let { login, userDetails } = props;
   const classes = useStyles();
   const [storyId, setStoryId] = React.useState("01");
   const [lang, setLang] = React.useState("");
@@ -187,11 +168,11 @@ const Stories = (props) => {
   const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
+  const [islStories, setIslStories] = React.useState(null);
   const [playing, setPlaying] = React.useState("");
   const [rtlList, setRtlList] = React.useState([]);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
   const storyClass = rtlList.includes(lang)
@@ -221,7 +202,7 @@ const Stories = (props) => {
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
   };
-  const getLang = (event) => {
+  const changeLang = (event) => {
     setLang(event.target.value);
     window.scrollTo(0, 0);
   };
@@ -240,15 +221,27 @@ const Stories = (props) => {
         let islStory = response?.data?.find(
           (el) => el?.storyNo === parseInt(index)
         );
+
         setStories(islStory);
       });
     }
   }, [API, storyId, lang]);
+  useEffect(() => {
+    if (lang === "isl" && islStories) {
+      setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+      console.log(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+    }
+  }, [storyId, lang, islStories]);
 
   useEffect(() => {
     if (lang !== "") {
       API.get(lang + "/manifest.json").then(function (response) {
         setManifest(response.data);
+      });
+    }
+    if (lang === "isl") {
+      API.get(lang + "/isl_obs.json").then(function (response) {
+        setIslStories(response.data);
       });
     }
   }, [API, lang]);
@@ -271,7 +264,7 @@ const Stories = (props) => {
   return (
     <>
       <AppBar position="fixed">
-        <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+        <TopBar />
       </AppBar>
       <div className={classes.root}>
         {mobile === true ? (
@@ -285,7 +278,7 @@ const Stories = (props) => {
                   variant="outlined"
                   className={classes.mobileLangCombo}
                 >
-                  <Select value={lang} onChange={getLang}>
+                  <Select value={lang} onChange={changeLang}>
                     {languages.map((text, y) => (
                       <MenuItem key={y} value={text}>
                         {languageJson[text]}
@@ -367,7 +360,7 @@ const Stories = (props) => {
           >
             <div className={classes.drawerHeader}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <Select value={lang} onChange={getLang}>
+                <Select value={lang} onChange={changeLang}>
                   {languages.map((text, y) => (
                     <MenuItem
                       key={y}
@@ -448,16 +441,17 @@ const Stories = (props) => {
           {lang === "isl" ? (
             <div className={classes.container}>
               <VideoCard
-                key={stories?.storyNo}
                 video={stories}
                 playing={playing}
-                language={lang}
+                language={"isl"}
                 setPlaying={setPlaying}
               />
             </div>
           ) : (
             <div className={storyClass} style={{ fontSize: fontSize }}>
-              <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
+              {typeof stories === "string" && (
+                <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
+              )}
             </div>
           )}
         </main>
@@ -466,11 +460,4 @@ const Stories = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    login: state.local.login,
-    userDetails: state.local.userDetails,
-  };
-};
-
-export default connect(mapStateToProps)(Stories);
+export default Stories;
