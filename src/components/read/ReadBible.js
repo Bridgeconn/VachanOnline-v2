@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const ReadBible = (props) => {
   const theme = useTheme();
-  let { setValue, setValue1, panel1, signBible, login, userDetails } = props;
+  let { setValue, setValue1, panel1, signBible } = props;
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -42,7 +42,7 @@ const ReadBible = (props) => {
 
   return (
     <>
-      <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+      <TopBar />
       <div className={classes.biblePane1}>
         <BiblePane setValue={setValue1} paneData={panel1} singlePane={true} />
       </div>
@@ -54,8 +54,6 @@ const mapStateToProps = (state) => {
   return {
     panel1: state.local.panel1,
     signBible: state.local.signBible,
-    login: state.local.login,
-    userDetails: state.local.userDetails,
   };
 };
 

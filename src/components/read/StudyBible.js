@@ -560,7 +560,7 @@ const StudyBible = (props) => {
   ]);
   return (
     <>
-      <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+      <TopBar />
       <div className={classes.main}>
         <div className={classes.biblePane}>{pane}</div>
         {isMobile ? null : (

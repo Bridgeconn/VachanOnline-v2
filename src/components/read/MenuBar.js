@@ -107,6 +107,7 @@ const MenuBar = (props) => {
     fontSize,
     fontFamily,
     lineView,
+    isHoverVerse,
     bookCode,
     audio,
     userDetails,
@@ -358,6 +359,7 @@ const MenuBar = (props) => {
               fontSize={fontSize}
               fontFamily={fontFamily}
               lineView={lineView}
+              isHoverVerse={isHoverVerse}
               setValue={setValue}
               settingsAnchor={settingsAnchor}
               handleClose={closeSettings}

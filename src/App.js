@@ -9,6 +9,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Songs from "./components/songs/Songs";
+import AudioBible from "./components/audio/AudioBible";
 const App = () => (
   <BrowserRouter>
     <CssBaseline />
@@ -17,6 +18,7 @@ const App = () => (
       <Route path="/read" element={<ReadBible />} />
       <Route path="/study" element={<StudyBible />} />
       <Route path="/biblestories" element={<Stories />} />
+      <Route path="/audiobible" element={<AudioBible />} />
       <Route path="/songs" element={<Songs />} />
       <Route path="/privacypolicy" element={<PrivacyPolicy />} />
       <Route render={() => <h1>Page Not Found</h1>} />
