@@ -152,19 +152,10 @@ const Audio = (props) => {
         //In mobile view there is only single pane view with the book combo, it will set the first available book
         setMessage("");
       } else if (OBTBibles.includes(value)) {
-        const message =
-          t("studyAudioBibleNotAvailable") +
-          " " +
-          value +
-          " " +
-          t("studyAudioBibleNotAvailable1") +
-          "\n" +
-          t("studyAudioBibleNotAvailable2") +
-          "\n" +
-          t("studyAudioBibleNotAvailable3");
+        const message = t("audioMessage1", { value });
         setMessage(message);
       } else {
-        setMessage(`Audio bible not available in ${value} for this book`);
+        setMessage(t("audioMessage", { value }));
       }
       const obj = audioBible?.find((obj) => obj?.language?.name === lang);
       setAudioLangCode(obj?.language?.code ? obj?.language?.code : "hin");

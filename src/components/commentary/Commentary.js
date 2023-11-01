@@ -196,6 +196,10 @@ const Commentary = (props) => {
   const [visible, setVisible] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0);
 
+  const ref = {
+    book: book,
+    chapter: chapter,
+  };
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
@@ -449,13 +453,8 @@ const Commentary = (props) => {
         <h5 className={classes.message}>
           {message === "loading"
             ? "Loading"
-            : `No commentary available for ${book} ${chapter}`}
+            : t("studyNoCommentaryAvailable", { ref })}
         </h5>
-        // <h5 className={classes.message}>
-        // {message === "loading"
-        //   ? "Loading"
-        //   : t("studyNoCommentaryAvailable") + { book } + { chapter }}
-        // </h5>
       )}
       {commentaryIntro.bookIntro && (
         <div onClick={toggleIntro} className={classes.introHeading}>

@@ -144,7 +144,7 @@ const LandingFooter = (props) => {
             className={classes.companyLink}
           >
             <Typography className={classes.text}>
-              © 2020{" "}
+              {t("landingCompanyYear")}{" "}
               {mobileView ? t("landingCompanyMob") : t("landingCompanyDesktop")}
             </Typography>
           </Link>

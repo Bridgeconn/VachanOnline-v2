@@ -161,15 +161,11 @@ const Infographics = (props) => {
         setUrl("");
         const book = getShortBook(versionBooks, language.value, bookCode);
         const lang = language?.label;
-        setMessage(
-          t("studyNoInfographicsAvailable") +
-            " " +
-            lang +
-            " " +
-            t("studyNoInfographicsAvailable1") +
-            " " +
-            book
-        );
+        const ref = {
+          lang: lang,
+          book: book,
+        };
+        setMessage(t("studyNoInfographicsAvailable", { ref }));
       }
     }
   }, [infographics, bookCode, language, versionBooks, t]);

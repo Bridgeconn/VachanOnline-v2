@@ -532,7 +532,7 @@ function Notes(props) {
           <DialogActions>
             <Grid container>
               <Grid item xs={6} className={classes.lastModified}>
-                {t("studyNotesLastModified")}{" "}
+                {t("studyNotesLastModified")} :{" "}
                 {new Date(modifiedTime).toLocaleString()}
               </Grid>
               <Grid item xs={6} className={classes.formButtons}>
@@ -578,6 +578,7 @@ function Notes(props) {
             <Grid item xs={7} className={classes.lastModified}>
               {modifiedTime &&
                 t("studyNotesLastModified") +
+                  ":" +
                   " " +
                   new Date(modifiedTime).toLocaleString()}
             </Grid>

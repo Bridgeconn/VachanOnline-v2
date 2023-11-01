@@ -942,7 +942,7 @@ const Bible = (props) => {
             )}
             <div className={classes.footNotes}>
               <Typography className={classes.noteTitle} variant="h4">
-                {t("readNotes")}
+                {t("readNotes")} :
               </Typography>
               <Divider />
               <div className={classes.noteList}>
