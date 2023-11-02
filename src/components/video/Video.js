@@ -106,7 +106,6 @@ const Video = (props) => {
     chapterVideo,
     bookCode,
     books,
-    versionBooks,
     setValue,
     languageCode,
     mobileView,
@@ -122,7 +121,6 @@ const Video = (props) => {
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
   const [videoBooks, setVideoBooks] = useState([]);
-  const [videoLang, setVideoLang] = useState("hin");
 
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
@@ -156,25 +154,26 @@ const Video = (props) => {
     }
   }, [video]);
   React.useEffect(() => {
-    // for minority languages
-    if (versionBooks[language.value] === undefined) {
-      let lang = video?.find((l) => l?.language?.code === videoLang);
-      const vBookCode = Object.keys(lang?.books);
-      const vBook = bibleBooks.find((l) => l?.abbreviation === vBookCode[0]);
-      let vBookArr = [];
-      let obj1 = {
-        abbr: vBook.abbreviation,
-        book_code: vBook.abbreviation,
-        book_id: vBook.bookId,
-        long: vBook.book,
-        short: vBook.book,
-      };
-      vBookArr.push(obj1);
-      setVideoBooks(vBookArr);
-    } else {
-      setVideoBooks(versionBooks[language.value]);
+    //Mobile view set book combo bookList
+    if (mobileView && language && language?.value) {
+      let lang = video?.find((l) => l?.language?.code === language.value);
+      const bookCodes = Object.keys(lang?.books);
+      let bookArr = [];
+      bibleBooks.forEach((bookObj) => {
+        if (bookCodes.includes(bookObj?.abbreviation)) {
+          let obj = {
+            abbr: bookObj.abbreviation,
+            book_code: bookObj.abbreviation,
+            book_id: bookObj.bookId,
+            long: bookObj.book,
+            short: bookObj.book,
+          };
+          bookArr.push(obj);
+        }
+      });
+      setVideoBooks(bookArr);
     }
-  }, [language.value, languageCode, versionBooks, video, videoLang]);
+  }, [language, video, mobileView]);
   React.useEffect(() => {
     if (languages.length) {
       let lang = video?.find((l) => l?.language?.code === languageCode);
@@ -206,7 +205,6 @@ const Video = (props) => {
     };
     if (language) {
       const lang = video.find((obj) => obj?.language?.code === language?.value);
-      setVideoLang(lang.language?.code);
       if (lang?.books?.hasOwnProperty(bookCode)) {
         const _videos = lang.books[bookCode];
         setVideos(filterVideos(_videos));
@@ -307,7 +305,6 @@ const Video = (props) => {
 const mapStateToProps = (state) => {
   return {
     bookCode: state.local.panel1.bookCode,
-    versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
     chapterVideo: state.local.chapterVideo,
   };
