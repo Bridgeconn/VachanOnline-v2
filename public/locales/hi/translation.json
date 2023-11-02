@@ -170,9 +170,9 @@
     "audioMessage": "इस पुस्तक के लिए ऑडियो बाइबल {{value}} में उपलब्ध नहीं है",
     "audioMessage1": "इस पुस्तक के लिए ऑडियो बाइबल {{value}} में उपलब्ध नहीं है। \nयह केवल मरकुस, लूका, १ और २ थिस्सलुनीकियों के लिए उपलब्ध है।\nनौचालन करने के लिए बाएं पैनल में पुस्तक ड्रॉपडाउन का उपयोग करें।",
     "addBookmarkText": "बुकमार्क जोड़े",
-    "bookMarkedText": "Bookmarked",
-    "informationText": "Information",
-    "strongsText": "Strong's",
-    "seeAlsoText": "See Also",
-    "refText": "Ref"
+    "bookMarkedText": "बुकमार्क किया गया",
+    "informationText": "सूचना",
+    "strongsText": "स्ट्रॉन्गस",
+    "seeAlsoText": "यह भी देखें",
+    "refText": "संदर्भ"
 }
