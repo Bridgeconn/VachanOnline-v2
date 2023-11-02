@@ -71,24 +71,24 @@ const SearchPassage = (props) => {
   const bookList = versionBooks[versionSource[panel1.sourceId]];
   const searchHints = (
     <div>
-      <h5>{t("searchHints")}</h5>
+      <h5>{t("searchHints")}:-</h5>
       <h6>
-        <b>{t("chapterSearch")}</b> {t("bookChapter")}
+        <b>{t("chapterSearch")}:</b> {t("bookChapter")}
       </h6>
       <span>
         <i>{t("egSearchRef")}</i> gen 49 or നഹൂം 1 or यहूदा 1
       </span>
       <h6>
-        <b>{t("verseSearchRef")}</b> {t("bookChapterVerses")}
+        <b>{t("verseSearchRef")}:</b> {t("bookChapterVerses")}
       </h6>
       <span>
-        <i>{t("egSearchRef")}</i> ഇയ്യോബ് 42:2 or genesis 12:2,3 or रूत 2:12
+        <i>{t("egSearchRef")}:</i> ഇയ്യോബ് 42:2 or genesis 12:2,3 or रूत 2:12
       </span>
       <h6>
         <b>{t("passageSearch")}</b> {t("bookChapterVersesRange")}
       </h6>
       <span>
-        <i>{t("egSearchRef")} </i>rev 1:13-16 or 1 योहान 4:8-10,16,20-25
+        <i>{t("egSearchRef")}: </i>rev 1:13-16 or 1 योहान 4:8-10,16,20-25
       </span>
     </div>
   );

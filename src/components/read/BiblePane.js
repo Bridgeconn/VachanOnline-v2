@@ -156,7 +156,7 @@ const BiblePane = (props) => {
   const textSearchMessage = (
     <div className={classes.errorSearchMessage}>
       <h5>{t("readSearchNoResultFound")}</h5>
-      <b>{t("readPleaseTryMsg")}</b>
+      <b>{t("readPleaseTryMsg")}:</b>
       <br />
       {searchTextButton}
     </div>
@@ -164,12 +164,12 @@ const BiblePane = (props) => {
   const notFoundMessage = (
     <div className={classes.errorSearchMessage}>
       <h5>{t("readSearchNoResultFound")}</h5>
-      <b>{t("readPleaseTryMsg")}</b>
+      <b>{t("readPleaseTryMsg")}:</b>
       <ul className={classes.listError}>
         <li>{t("searchDoubleCheckSpell")}</li>
-        <li>{t("chapterSearchWarn")}</li>
-        <li>{t("verseSearchWarn")} psalms 5:8 or psalms 5:8,10</li>
-        <li>{t("passageSearchWarn")} psalms 5:10-15</li>
+        <li>{t("chapterSearchWarn")}:</li>
+        <li>{t("verseSearchWarn")}: psalms 5:8 or psalms 5:8,10</li>
+        <li>{t("passageSearchWarn")}: psalms 5:10-15</li>
         <li>{searchTextButton}</li>
         {navigatePoint}
       </ul>
@@ -178,7 +178,7 @@ const BiblePane = (props) => {
   const bookNotFound = (
     <div className={classes.errorSearchMessage}>
       <h5>{t("searchBookNotFound")}</h5>
-      <b>{t("readPleaseTryMsg")}</b>
+      <b>{t("readPleaseTryMsg")}:</b>
       <li>{t("searchDoubleCheckSpell")}</li>
       <li>{t("searchChapterWarning")}</li>
       <li>{t("searchChangeBibleVersion")}</li>
@@ -188,7 +188,7 @@ const BiblePane = (props) => {
   const referenceNotFound = (
     <div className={classes.errorSearchMessage}>
       <h5>{t("searchBibleRefNotFound")}</h5>
-      <b>{t("readPleaseTryMsg")}</b>
+      <b>{t("readPleaseTryMsg")}:</b>
       <ul className={classes.listError}>
         <li>{t("searchChapterWarning")}</li>
         <li>{t("searchAnotherRef")}</li>
@@ -200,7 +200,7 @@ const BiblePane = (props) => {
   const invalidFormat = (
     <div className={classes.errorSearchMessage}>
       <h5>{t("searchInvalid")}</h5>
-      <b>{t("readPleaseTryMsg")}</b>
+      <b>{t("readPleaseTryMsg")}:</b>
       <ul className={classes.listError}>
         <li>
           {t("searchWarnSplChar")} <b>, : -</b>

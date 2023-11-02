@@ -174,10 +174,10 @@ const Setting = ({
             aria-label="Large contained secondary button group"
           >
             <Button style={{ fontSize: 13 }} onClick={decreaseFontSize}>
-              {t("settingsFontSizeAMinus")}
+              {t("settingsFontSizeAMinus")}-
             </Button>
             <Button style={{ fontSize: 16 }} onClick={increaseFontSize}>
-              {t("settingsFontSizeAPlus")}
+              {t("settingsFontSizeAPlus")}+
             </Button>
           </ButtonGroup>
         </MenuItem>
