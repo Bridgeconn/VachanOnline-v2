@@ -217,7 +217,8 @@ const Stories = () => {
   useEffect(() => {
     if (lang === "isl" && islStories) {
       if (islStories.length < parseInt(storyId)) {
-        setStories(islStories?.find((el) => el?.storyNo === 1));
+        setStoryId("01");
+        setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
       } else {
         setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
       }
