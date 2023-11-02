@@ -13,6 +13,7 @@ import { capitalize, getBookbyCode, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
+import { bibleBooks } from "../../store/bibleData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -120,6 +121,8 @@ const Video = (props) => {
   const [vidLink, setVidLink] = React.useState("");
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
+  const [videoBooks, setVideoBooks] = useState([]);
+  const [videoLang, setVideoLang] = useState("hin");
 
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
@@ -153,6 +156,26 @@ const Video = (props) => {
     }
   }, [video]);
   React.useEffect(() => {
+    // for minority languages
+    if (versionBooks[language.value] === undefined) {
+      let lang = video?.find((l) => l?.language?.code === videoLang);
+      const vBookCode = Object.keys(lang?.books);
+      const vBook = bibleBooks.find((l) => l?.abbreviation === vBookCode[0]);
+      let vBookArr = [];
+      let obj1 = {
+        abbr: vBook.abbreviation,
+        book_code: vBook.abbreviation,
+        book_id: vBook.bookId,
+        long: vBook.book,
+        short: vBook.book,
+      };
+      vBookArr.push(obj1);
+      setVideoBooks(vBookArr);
+    } else {
+      setVideoBooks(versionBooks[language.value]);
+    }
+  }, [language.value, languageCode, versionBooks, video, videoLang]);
+  React.useEffect(() => {
     if (languages.length) {
       let lang = video?.find((l) => l?.language?.code === languageCode);
       //If videos not available for main panel language set first language
@@ -183,6 +206,7 @@ const Video = (props) => {
     };
     if (language) {
       const lang = video.find((obj) => obj?.language?.code === language?.value);
+      setVideoLang(lang.language?.code);
       if (lang?.books?.hasOwnProperty(bookCode)) {
         const _videos = lang.books[bookCode];
         setVideos(filterVideos(_videos));
@@ -218,7 +242,7 @@ const Video = (props) => {
           {mobileView && bookCode ? (
             <BookCombo
               bookCode={bookCode}
-              bookList={versionBooks[language.value]}
+              bookList={videoBooks}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
