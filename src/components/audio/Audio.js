@@ -177,7 +177,7 @@ const Audio = (props) => {
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h5">{t("studyAudioBibleTitle")}</Typography>
+            <Typography variant="h5">{t("audioBibleText")}</Typography>
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>

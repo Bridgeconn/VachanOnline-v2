@@ -120,7 +120,7 @@ const SignBible = (props) => {
   const { bookCode, chapter, sourceId } = panel1;
   const theme = useTheme();
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  const heading = mobileLandscape ? t("ISLVTopBarBtnTab") : t("ISLVTopBarBtn");
+  const heading = mobileLandscape ? t("ISLVTopBarBtnTab") : t("ISLVBibleText");
   function getBooks(bookName) {
     let books = Object.keys(signBible?.books);
     const filterByName = (item) => books?.includes(item?.book_code);

@@ -60,7 +60,7 @@ export default function BottomBar({ login }) {
         <span>
           <MenuItem
             icon="import_contacts"
-            title={t("studyBottomParallelBibleMob")}
+            title={t("parallelBibleText")}
             item={views.PARALLELBIBLE}
             base="bottom"
           />
@@ -68,7 +68,7 @@ export default function BottomBar({ login }) {
         <span>
           <MenuItem
             icon="comment"
-            title={t("studyBottomCommentariesMob")}
+            title={t("commentariesText")}
             item={views.COMMENTARY}
             base="bottom"
           />
@@ -76,7 +76,7 @@ export default function BottomBar({ login }) {
         <span>
           <MenuItem
             icon="event"
-            title={t("studyBottomReadingPlansMob")}
+            title={t("readingPlansText")}
             item={views.READINGPLANS}
             base="bottom"
           />

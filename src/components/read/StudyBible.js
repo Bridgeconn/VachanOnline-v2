@@ -192,7 +192,7 @@ const StudyBible = (props) => {
     return mobileView ? null : (
       <div onClick={toggleParallelScroll}>
         {parallelScroll ? (
-          <Tooltip title={t("studyParallelScrollToolTip")}>
+          <Tooltip title={t("studyParallelScroll")}>
             <ParallelScroll fontSize="large" className={classes.pScroll} />
           </Tooltip>
         ) : (

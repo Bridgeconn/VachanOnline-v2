@@ -304,7 +304,7 @@ const Stories = () => {
               </Box>
               <Box p={1}>
                 <Tooltip
-                  title={t("settingsStoriesToolTip")}
+                  title={t("commonSettings")}
                   aria-label="More"
                   aria-controls="long-menu"
                   aria-haspopup="true"
@@ -323,7 +323,7 @@ const Stories = () => {
                     className: classes.settingsMenu,
                   }}
                 >
-                  <MenuItem>{t("storiesFontSize")}</MenuItem>
+                  <MenuItem>{t("settingsFontSize")}</MenuItem>
                   <Divider />
                   <MenuItem className={classes.menu}>
                     <div className={classes.margin} />
@@ -367,7 +367,7 @@ const Stories = () => {
               </FormControl>
               <div>
                 <Tooltip
-                  title={t("settingsStoriesToolTip")}
+                  title={t("commonSettings")}
                   className={classes.settings}
                   aria-label="More"
                   aria-controls="long-menu"
@@ -386,7 +386,9 @@ const Stories = () => {
                     className: classes.settingsMenu,
                   }}
                 >
-                  <MenuItem className={classes.menu}>Font Size</MenuItem>
+                  <MenuItem className={classes.menu}>
+                    {t("settingsFontSize")}
+                  </MenuItem>
                   <Divider />
                   <MenuItem className={classes.menu}>
                     <div className={classes.margin} />
@@ -425,7 +427,7 @@ const Stories = () => {
         <main>
           <div className={classes.heading}>
             <Typography variant="h3" className={classes.text}>
-              {t("bibleStoriesTitle")}
+              {t("bibleStoriesText")}
             </Typography>
             <Divider />
           </div>

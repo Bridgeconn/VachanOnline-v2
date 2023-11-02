@@ -152,7 +152,7 @@ const PageHeader = (props) => {
                   size="small"
                   color="inherit"
                   className={classes.signBible}
-                  title={t("landingPageHeaderAudioToolTip")}
+                  title={t("audioBibleText")}
                   aria-label="audio bible"
                   target="_blank"
                   rel="noopener"
@@ -188,7 +188,7 @@ const PageHeader = (props) => {
                     onClick={() => setParallelView(SIGNBIBLE)}
                     startIcon={<i className="material-icons">sign_language</i>}
                   >
-                    {t("landingPageHeaderISLV")}
+                    {t("ISLVBibleText")}
                   </Button>
                 )}
               </Link>
@@ -211,13 +211,13 @@ const PageHeader = (props) => {
                     size="small"
                     color="inherit"
                     className={classes.signBible}
-                    title={t("landingPageHeaderSongs")}
+                    title={t("songsText")}
                     aria-label="Song"
                     target="_blank"
                     rel="noopener"
                     startIcon={<i className="material-icons">music_note</i>}
                   >
-                    {t("landingPageHeaderSongs")}
+                    {t("songsText")}
                   </Button>
                 )}
               </Link>
@@ -236,13 +236,13 @@ const PageHeader = (props) => {
                     size="small"
                     color="inherit"
                     className={classes.stories}
-                    title={t("landingPageHeaderBibleStories")}
+                    title={t("bibleStoriesText")}
                     aria-label="bible stories"
                     target="_blank"
                     rel="noopener"
                     startIcon={<i className="material-icons">auto_stories</i>}
                   >
-                    {t("landingPageHeaderBibleStories")}
+                    {t("bibleStoriesText")}
                   </Button>
                 )}
               </Link>

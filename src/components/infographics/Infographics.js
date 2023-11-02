@@ -175,7 +175,7 @@ const Infographics = (props) => {
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h6">{t("studyInfographicsTitle")}</Typography>
+            <Typography variant="h6">{t("infographicsText")}</Typography>
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>

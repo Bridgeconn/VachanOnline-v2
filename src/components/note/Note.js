@@ -167,7 +167,7 @@ function Note({
   return (
     <div>
       <div className={classes.info} onClick={openNoteDialog}>
-        <Tooltip title={t("commonAddNoteToolTip")}>
+        <Tooltip title={t("commonAddNote")}>
           <NoteIcon fontSize={mobileView ? "large" : "small"} />
         </Tooltip>
       </div>
@@ -209,10 +209,10 @@ function Note({
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleClose}>
-            {t("commonNoteCancelBtn")}
+            {t("commonCancel")}
           </Button>
           <Button variant="outlined" onClick={saveNote}>
-            {t("commonNoteSaveBtn")}
+            {t("commonSave")}
           </Button>
         </DialogActions>
       </Dialog>

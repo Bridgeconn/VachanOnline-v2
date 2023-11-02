@@ -253,7 +253,7 @@ const ReadingPlan = (props) => {
       <Box className={classes.title}>
         <Box flexGrow={1}>
           {mobileView ? null : (
-            <Typography variant="h6"> {t("ReadingPlanTitle")}</Typography>
+            <Typography variant="h6"> {t("readingPlansText")}</Typography>
           )}
         </Box>
         <Box flexGrow={1}>

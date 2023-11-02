@@ -178,14 +178,14 @@ const TopBar = (props) => {
           variant="outlined"
           size="small"
           className={classes.signBible}
-          title={t("ISLVTopBarBtnToolTip")}
+          title={t("ISLVBibleText")}
           aria-label="sign language bible"
           target="_blank"
           rel="noOpener"
           onClick={setParallelView}
           startIcon={<i className="material-icons">sign_language</i>}
         >
-          {isTablet ? t("ISLVTopBarBtnTab") : t("ISLVTopBarBtn")}
+          {isTablet ? t("ISLVTopBarBtnTab") : t("ISLVBibleText")}
         </Button>
       );
     };
@@ -207,13 +207,13 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title={t("bibleStoriesTopBarBtn")}
+            title={t("bibleStoriesText")}
             aria-label="bible stories"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">auto_stories</i>}
           >
-            {t("bibleStoriesTopBarBtn")}
+            {t("bibleStoriesText")}
           </Button>
         )}
       </Link>
@@ -231,13 +231,13 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title={t("songsTopBarBtn")}
+            title={t("songsText")}
             aria-label="songs"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">music_note</i>}
           >
-            {t("songsTopBarBtn")}
+            {t("songsText")}
           </Button>
         )}
       </Link>
@@ -256,7 +256,7 @@ const TopBar = (props) => {
               variant="outlined"
               size="small"
               className={classes.button}
-              title={t("TopbarAudioBtnToolTip")}
+              title={t("audioBibleText")}
               aria-label="audio bible"
               target="_blank"
               rel="noopener"
@@ -363,42 +363,42 @@ const TopBar = (props) => {
                 {path.startsWith("/study") ? ReadButton() : StudyButton()}
                 {FeedbackButton()}
                 {loginButton}
+                <LanguageIcon
+                  className={classes.languageIcon}
+                  onClick={openLanguage}
+                ></LanguageIcon>
+                <Menu
+                  id="long-menu"
+                  anchorEl={languageAnchor}
+                  keepMounted
+                  open={open}
+                  onClose={closeLanguage}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                  transformOrigin={{ vertical: "top", horizontal: "center" }}
+                  style={{ top: 20 }}
+                  PaperProps={{
+                    className: classes.languageMenu,
+                  }}
+                  value={locale}
+                  onChange={handleChange}
+                >
+                  <MenuItem
+                    className={classes.menu}
+                    onClick={() => setLanguage("en")}
+                  >
+                    English
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem
+                    className={classes.menu}
+                    onClick={() => setLanguage("hi")}
+                  >
+                    Hindi
+                  </MenuItem>
+                </Menu>
               </>
             )}
-            <LanguageIcon
-              className={classes.languageIcon}
-              onClick={openLanguage}
-            ></LanguageIcon>
-            <Menu
-              id="long-menu"
-              anchorEl={languageAnchor}
-              keepMounted
-              open={open}
-              onClose={closeLanguage}
-              getContentAnchorEl={null}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              transformOrigin={{ vertical: "top", horizontal: "center" }}
-              style={{ top: 20 }}
-              PaperProps={{
-                className: classes.languageMenu,
-              }}
-              value={locale}
-              onChange={handleChange}
-            >
-              <MenuItem
-                className={classes.menu}
-                onClick={() => setLanguage("en")}
-              >
-                English
-              </MenuItem>
-              <Divider />
-              <MenuItem
-                className={classes.menu}
-                onClick={() => setLanguage("hi")}
-              >
-                Hindi
-              </MenuItem>
-            </Menu>
           </Toolbar>
         </AppBar>
         {alert ? (

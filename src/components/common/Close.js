@@ -18,7 +18,7 @@ const Close = ({ close, className }) => {
   const { t } = useTranslation();
   const classes = useStyles();
   return (
-    <Tooltip title={t("commonCloseBtnToolTip")}>
+    <Tooltip title={t("commonClose")}>
       <IconButton size="small" onClick={close} className={className}>
         <CloseIcon fontSize="small" className={classes.closeButton} />
       </IconButton>

@@ -41,20 +41,20 @@ export default function BibleMenu() {
         <Divider />
         <MenuItem
           icon="import_contacts"
-          title={t("studyParallelBibleTitle")}
+          title={t("parallelBibleText")}
           item={views.PARALLELBIBLE}
         />
         <Divider />
         <MenuItem
           icon="comment"
-          title={t("studyCommentariesTitle")}
+          title={t("commentariesText")}
           item={views.COMMENTARY}
         />
         <Divider />
         {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
           <MenuItem
             icon="sign_language"
-            title={t("studyISLVBibleTitle")}
+            title={t("ISLVBibleText")}
             item={views.SIGNBIBLE}
           />
         ) : (
@@ -64,48 +64,44 @@ export default function BibleMenu() {
         <MenuItem
           class="material-icons"
           icon="image_outline"
-          title={t("studyInfographicsTitle")}
+          title={t("infographicsText")}
           item={views.INFOGRAPHICS}
           variant="outlined"
         />
         <Divider />
         <MenuItem
           icon="volume_up"
-          title={t("studyAudioBibleTitle")}
+          title={t("audioBibleText")}
           item={views.AUDIO}
         />
         <Divider />
-        <MenuItem
-          icon="videocam"
-          title={t("studyVideosTitle")}
-          item={views.VIDEO}
-        />
+        <MenuItem icon="videocam" title={t("videosText")} item={views.VIDEO} />
         <Divider />
         <MenuItem
           icon="event"
-          title={t("studyReadingPlansTitle")}
+          title={t("readingPlansText")}
           item={views.READINGPLANS}
         />
         <Divider />
         <MenuItem
           icon="format_shapes"
-          title={t("studyDictionariesTitle")}
+          title={t("dictionariesText")}
           item={views.DICTIONARY}
         />
         <Divider />
         <MenuItem
           icon="bookmark"
-          title={t("studyBookmarksTitle")}
+          title={t("bookmarksText")}
           item={views.BOOKMARK}
         />
         <Divider />
         <MenuItem
           icon="border_color"
-          title={t("studyHighlightsTitle")}
+          title={t("highlightsText")}
           item={views.HIGHLIGHT}
         />
         <Divider />
-        <MenuItem icon="note" title={t("studyNotesTitle")} item={views.NOTE} />
+        <MenuItem icon="note" title={t("commonNotes")} item={views.NOTE} />
         <Divider />
       </List>
     </div>

@@ -6,6 +6,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -21,6 +22,7 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
   const firebase = useFirebase();
   const [bookmarked, setBookmarked] = React.useState(false);
   const [bookmarks, setBookmarks] = React.useState([]);
+  const { t } = useTranslation();
 
   useFirebaseConnect(`users/${uid}/bookmarks/${sourceId}/${bookCode}`);
   const firebaseData = useSelector(
@@ -54,11 +56,11 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
   return (
     <div onClick={toggleBookmark} className={classes.info}>
       {bookmarked ? (
-        <Tooltip title="Bookmarked">
+        <Tooltip title={t("bookMarkedText")}>
           <BookmarkIcon style={{ color: "#ff0000" }} fontSize="small" />
         </Tooltip>
       ) : (
-        <Tooltip title="Add Bookmark">
+        <Tooltip title={t("addBookmarkText")}>
           <BookmarkBorderIcon fontSize="small" />
         </Tooltip>
       )}

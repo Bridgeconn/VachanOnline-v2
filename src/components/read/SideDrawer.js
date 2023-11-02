@@ -38,13 +38,13 @@ export default function SideDrawer(props) {
       <div className="bottomBar">
         <Item
           icon="comment"
-          title={t("sideDrawerCommentaries")}
+          title={t("commentariesText")}
           item={views.DRAWERCOMMENTARY}
         />
         {process.env.REACT_APP_SIGNBIBLE_URL !== undefined ? (
           <Item
             icon="sign_language"
-            title={t("sideDrawerISLVBible")}
+            title={t("ISLVBibleText")}
             item={views.DRAWERSIGNBIBLE}
           />
         ) : (
@@ -52,35 +52,27 @@ export default function SideDrawer(props) {
         )}
         <Item
           icon="image"
-          title={t("sideDrawerInfographics")}
+          title={t("infographicsText")}
           item={views.INFOGRAPHICS}
         />
-        <Item
-          icon="volume_up"
-          title={t("sideDrawerAudioBible")}
-          item={views.AUDIO}
-        />
-        <Item
-          icon="videocam"
-          title={t("sideDrawerVideos")}
-          item={views.VIDEO}
-        />
+        <Item icon="volume_up" title={t("audioBibleText")} item={views.AUDIO} />
+        <Item icon="videocam" title={t("videosText")} item={views.VIDEO} />
         <Item
           icon="format_shapes"
-          title={t("sideDrawerDictionaries")}
+          title={t("dictionariesText")}
           item={views.DICTIONARY}
         />
         <LoginItem
           icon="bookmark"
-          title={t("studyBookmarksTitle")}
+          title={t("bookmarksText")}
           item={views.BOOKMARK}
         />
         <LoginItem
           icon="border_color"
-          title={t("sideDrawerHighlights")}
+          title={t("highlightsText")}
           item={views.HIGHLIGHT}
         />
-        <LoginItem icon="note" title={t("sideDrawerNotes")} item={views.NOTE} />
+        <LoginItem icon="note" title={t("commonNotes")} item={views.NOTE} />
       </div>
     </Drawer>
   );

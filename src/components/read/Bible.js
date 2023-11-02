@@ -942,7 +942,7 @@ const Bible = (props) => {
             )}
             <div className={classes.footNotes}>
               <Typography className={classes.noteTitle} variant="h4">
-                {t("readNotes")} :
+                {t("commonNotes")} :
               </Typography>
               <Divider />
               <div className={classes.noteList}>
@@ -995,7 +995,7 @@ const Bible = (props) => {
         classes={{ paper: classes.paper }}
       >
         <DialogTitle id="mobile-edit-note-dialog" onClose={handleClose}>
-          {t("readNotesHeading")}
+          {t("commonNotes")}
         </DialogTitle>
         <DialogContent dividers className={classes.noteDialog}>
           <Editor
@@ -1009,10 +1009,10 @@ const Bible = (props) => {
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleClose}>
-            {t("readNotesCancelBtn")}
+            {t("commonCancel")}
           </Button>
           <Button variant="outlined" onClick={saveNote}>
-            {t("readNotesSaveBtn")}
+            {t("commonSave")}
           </Button>
         </DialogActions>
       </Dialog>

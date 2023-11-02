@@ -115,7 +115,7 @@ const AboutUs = ({ handleClose }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} variant="outlined">
-          {t("landingAboutUsCloseBtn")}
+          {t("commonClose")}
         </Button>
       </DialogActions>
     </>

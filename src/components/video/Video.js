@@ -152,9 +152,9 @@ const Video = (props) => {
         .sort((a, b) => a.value.localeCompare(b.value));
       setLanguages(languageList);
     } else {
-      setMessage("No Videos available");
+      setMessage(t("studyNoVideosAvailable1"));
     }
-  }, [video]);
+  }, [t, video]);
   React.useEffect(() => {
     if (languages.length) {
       let lang = video?.find((l) => l?.language?.code === languageCode);
@@ -193,20 +193,20 @@ const Video = (props) => {
       } else {
         setVideos([]);
         const book = getShortBook(books, language.value, bookCode);
-        setMessage(
-          `No videos available in ${language?.label} for ${
-            book ? book : getBookbyCode(bookCode)?.book
-          }`
-        );
+        const ref = {
+          language: language?.label,
+          book: book ? book : getBookbyCode(bookCode)?.book,
+        };
+        setMessage(t("studyNoVideosAvailable", { ref }));
       }
     }
-  }, [video, bookCode, language, books, chapterVideo, chapter]);
+  }, [video, bookCode, language, books, chapterVideo, chapter, t]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h6">{t("studyVideosHeading")}</Typography>{" "}
+            <Typography variant="h6">{t("videosText")}</Typography>{" "}
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>

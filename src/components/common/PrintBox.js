@@ -70,7 +70,7 @@ const PrintBox = (props) => {
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={handleDialogClose}>
-          {t("commonPrintCancelBtn")}
+          {t("commonCancel")}
         </Button>
         <ReactToPrint
           trigger={linkToPrint}

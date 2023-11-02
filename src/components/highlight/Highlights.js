@@ -192,7 +192,7 @@ const Highlights = (props) => {
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">{t("studyHighlightsTitle")}</Typography>
+          <Typography variant="h6">{t("highlightsText")}</Typography>
         </Box>
         <Box>
           <Close className={classes.closeButton} />

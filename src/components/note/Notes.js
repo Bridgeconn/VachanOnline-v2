@@ -473,11 +473,11 @@ function Notes(props) {
         <Box className={classes.heading}>
           <Box flexGrow={1}>
             <Typography variant="h6" className={classes.notesHeading}>
-              {t("studyNotesHeading")}
+              {t("commonNotes")}
               {Array.isArray(versesSelected) &&
               versesSelected.length &&
               !edit ? (
-                <Tooltip title={t("studyAddNoteToolTip")}>
+                <Tooltip title={t("commonAddNote")}>
                   <IconButton
                     aria-label="add"
                     className={classes.addNote}
@@ -487,7 +487,7 @@ function Notes(props) {
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title={t("commonSelectVersesToolTip")}>
+                <Tooltip title={t("commonSelectVerses")}>
                   <>
                     <IconButton
                       aria-label="add"
@@ -541,14 +541,14 @@ function Notes(props) {
                   className={classes.button}
                   onClick={handleClose}
                 >
-                  {t("studyCancelBtn")}
+                  {t("commonCancel")}
                 </Button>
                 <Button
                   variant="outlined"
                   className={classes.button}
                   onClick={saveNote}
                 >
-                  {t("studySaveBtn")}
+                  {t("commonSave")}
                 </Button>
               </Grid>
             </Grid>
@@ -588,14 +588,14 @@ function Notes(props) {
                 className={classes.button}
                 onClick={resetForm}
               >
-                {t("studyCancelBtn")}
+                {t("commonCancel")}
               </Button>
               <Button
                 variant="outlined"
                 className={classes.button}
                 onClick={saveNote}
               >
-                {t("studySaveBtn")}
+                {t("commonSave")}
               </Button>
             </Grid>
           </Grid>

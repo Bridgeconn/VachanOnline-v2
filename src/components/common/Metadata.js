@@ -9,6 +9,7 @@ import Popover from "@material-ui/core/Popover";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLACK } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -84,7 +85,7 @@ export default function Metadata({
   function handleClose() {
     setAnchorEl(null);
   }
-
+  const { t } = useTranslation();
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const checkLink = (text) => {
@@ -100,7 +101,7 @@ export default function Metadata({
     <>
       {metadataList ? (
         <>
-          <Tooltip title="Information">
+          <Tooltip title={t("informationText")}>
             <div
               aria-describedby={id}
               onClick={handleClick}

@@ -183,7 +183,7 @@ const MenuBar = (props) => {
         return;
       } else {
         setHighlightIcon(
-          <Tooltip title={t("menuBarSelectVersesToolTip")}>
+          <Tooltip title={t("commonSelectVerses")}>
             <div className={classes.info}>
               <BorderColor fontSize="small" color="disabled" />
             </div>
@@ -220,7 +220,7 @@ const MenuBar = (props) => {
         return;
       } else {
         setNoteIcon(
-          <Tooltip title={t("menuBarSelectVersesToolTip")}>
+          <Tooltip title={t("commonSelectVerses")}>
             <div className={classes.info}>
               <NoteIcon fontSize="small" color="disabled" />
             </div>
@@ -284,7 +284,7 @@ const MenuBar = (props) => {
       parallelView !== AUDIO
     ) {
       setAudioIcon(
-        <Tooltip title={t("menuBarAudioBibleToolTip")}>
+        <Tooltip title={t("audioBibleText")}>
           <div className={classes.info} onClick={openAudioBible}>
             <i className="material-icons md-23">volume_up</i>
           </div>
@@ -338,7 +338,7 @@ const MenuBar = (props) => {
             {mobileView ? null : (
               <>
                 <div className={classes.info} onClick={handleDialogOpen}>
-                  <Tooltip title={t("menuBarPrintChapterToolTip")}>
+                  <Tooltip title={t("commonPrintChapter")}>
                     <PrintIcon fontSize="small" />
                   </Tooltip>
                 </div>
@@ -381,7 +381,7 @@ const MenuBar = (props) => {
                 onClick={toggleParallelScroll}
               >
                 {parallelScroll ? (
-                  <Tooltip title={t("studyParallelScrollToolTip")}>
+                  <Tooltip title={t("studyParallelScroll")}>
                     <ParallelScroll
                       fontSize="large"
                       style={{ color: BLACK }}

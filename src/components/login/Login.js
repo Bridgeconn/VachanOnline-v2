@@ -258,7 +258,7 @@ const Login = (props) => {
             onClick={openForm}
             className={classes.signBtn}
           >
-            {t("signInTopBarBtn")}
+            {t("signInTitle")}
           </Button>
           <Popover
             id="sign-in"
@@ -288,7 +288,7 @@ const Login = (props) => {
                     </Alert>
                   </Collapse>
                   <Typography component="h1" variant="h5">
-                    {t("loginSignInTitle")}
+                    {t("signInTitle")}
                   </Typography>
                   <form
                     onSubmit={(e) => signIn(e)}
@@ -327,7 +327,7 @@ const Login = (props) => {
                       variant="outlined"
                       className={classes.submit}
                     >
-                      {t("loginSignInBtn")}
+                      {t("signInTitle")}
                     </Button>
                     <Button
                       type="submit"

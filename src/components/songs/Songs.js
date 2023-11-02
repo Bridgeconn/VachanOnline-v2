@@ -209,7 +209,7 @@ const Songs = () => {
         {isMobile === true ? (
           <Box className={classes.mobile}>
             <Box className={classes.mobileHeading}>
-              <Typography variant="h4">{t("songsPageTitleMob")}</Typography>
+              <Typography variant="h4">{t("songsText")}</Typography>
             </Box>
             <Box className={classes.mobileBox}>
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
@@ -309,7 +309,7 @@ const Songs = () => {
         )}
         <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
-            {isLarge ? t("songsPageTitleDesktop") : t("songsPageTitleMob")}
+            {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
           </Typography>
           <Typography variant="h4" className={classes.lyricsHeading}>
             {currentSong?.sno}. {currentSong?.name}

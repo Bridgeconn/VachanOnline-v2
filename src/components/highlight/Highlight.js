@@ -117,7 +117,7 @@ function Highlight(props) {
       ) : (
         <>
           <div className={classes.info} onClick={handleClick}>
-            <Tooltip title={t("commonHighlightToolTip")}>
+            <Tooltip title={t("highlightsText")}>
               <BorderColor fontSize="small" />
             </Tooltip>
           </div>

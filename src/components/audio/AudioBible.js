@@ -161,7 +161,7 @@ const AudioBible = (props) => {
         />
         {isMobile ? <Divider /> : ""}
         <Typography variant="h4" className={classes.gap}>
-          {t("sideDrawerAudioBible")}
+          {t("audioBibleText")}
         </Typography>
       </div>
       <Divider />

@@ -174,7 +174,7 @@ const Bookmarks = (props) => {
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">{t("studyBookmarksTitle")}</Typography>
+          <Typography variant="h6">{t("bookmarksText")}</Typography>
         </Box>
         <Box>
           <Close className={classes.closeButton} />

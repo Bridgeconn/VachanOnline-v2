@@ -58,7 +58,7 @@ const Setting = (props) => {
   return (
     <div>
       <Tooltip
-        title={t("songPageSettingsToolTip")}
+        title={t("commonSettings")}
         className={classes.settings}
         aria-label="More"
         aria-controls="long-menu"
@@ -77,7 +77,7 @@ const Setting = (props) => {
           className: classes.settingsMenu,
         }}
       >
-        <MenuItem className={classes.menu}>{t("songPageFontSize")}</MenuItem>
+        <MenuItem className={classes.menu}>{t("settingsFontSize")}</MenuItem>
         <Divider />
         <MenuItem className={classes.menu}>
           <div className={classes.margin} />

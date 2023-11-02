@@ -170,7 +170,7 @@ const SearchPassage = (props) => {
       </BigTooltip>
       {mobileView && (
         <Button className={classes.cancelBtn} onClick={handleClose}>
-          {t("cancelBtnSearchRef")}
+          {t("commonCancel")}
         </Button>
       )}
     </>
