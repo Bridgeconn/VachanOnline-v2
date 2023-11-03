@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
 import { useTranslation } from "react-i18next";
+import { bibleBooks } from "../../store/bibleData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,7 +107,6 @@ const Video = (props) => {
     chapterVideo,
     bookCode,
     books,
-    versionBooks,
     setValue,
     languageCode,
     mobileView,
@@ -121,6 +121,7 @@ const Video = (props) => {
   const [vidLink, setVidLink] = React.useState("");
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
+  const [videoBooks, setVideoBooks] = useState([]);
 
   const { t } = useTranslation();
 
@@ -155,6 +156,27 @@ const Video = (props) => {
       setMessage(t("studyNoVideosAvailable1"));
     }
   }, [t, video]);
+  React.useEffect(() => {
+    //Mobile view set book combo bookList
+    if (mobileView && language && language?.value) {
+      let lang = video?.find((l) => l?.language?.code === language.value);
+      const bookCodes = Object.keys(lang?.books);
+      let bookArr = [];
+      bibleBooks.forEach((bookObj) => {
+        if (bookCodes.includes(bookObj?.abbreviation)) {
+          let obj = {
+            abbr: bookObj.abbreviation,
+            book_code: bookObj.abbreviation,
+            book_id: bookObj.bookId,
+            long: bookObj.book,
+            short: bookObj.book,
+          };
+          bookArr.push(obj);
+        }
+      });
+      setVideoBooks(bookArr);
+    }
+  }, [language, video, mobileView]);
   React.useEffect(() => {
     if (languages.length) {
       let lang = video?.find((l) => l?.language?.code === languageCode);
@@ -221,7 +243,7 @@ const Video = (props) => {
           {mobileView && bookCode ? (
             <BookCombo
               bookCode={bookCode}
-              bookList={versionBooks[language.value]}
+              bookList={videoBooks}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
@@ -286,7 +308,6 @@ const Video = (props) => {
 const mapStateToProps = (state) => {
   return {
     bookCode: state.local.panel1.bookCode,
-    versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
     chapterVideo: state.local.chapterVideo,
   };

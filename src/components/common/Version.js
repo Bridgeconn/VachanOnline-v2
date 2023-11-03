@@ -12,7 +12,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import { getVersions, capitalize } from "../common/utility";
+import { getVersions, capitalize, getLanguageData } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
 import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
@@ -142,6 +142,7 @@ const Version = (props) => {
     chapter,
     verseData,
     language,
+    languageInfo,
   } = props;
   const [expanded, setExpanded] = React.useState(language);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -155,6 +156,9 @@ const Version = (props) => {
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
+  React.useEffect(() => {
+    getLanguageData(setMainValue);
+  }, [setMainValue]);
   React.useEffect(() => {
     let _version = localStorage.getItem("version");
     let _bookCode = localStorage.getItem("bookCode");
@@ -261,7 +265,7 @@ const Version = (props) => {
 
   function getFullDisplayLanguage(language) {
     language = language?.toLowerCase();
-    const found = languageJson.find((lang) => lang.language === language);
+    const found = languageInfo?.find((lang) => lang.language === language);
     const lang = (
       <>
         <span>{found?.languageName || language}</span>
@@ -300,7 +304,7 @@ const Version = (props) => {
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
     function getDisplayLanguage(language) {
-      const found = languageJson.find((lang) => lang.langCode === langCode);
+      const found = languageInfo.find((lang) => lang.langCode === langCode);
       setValue("language", language);
       return found?.languageName || language;
     }
@@ -311,7 +315,7 @@ const Version = (props) => {
     } else {
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, mobileView, setValue, version, versions]);
+  }, [landingPage, languageInfo, mobileView, setValue, version, versions]);
 
   return (
     <>
@@ -425,6 +429,7 @@ const mapStateToProps = (state) => {
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
     mobileView: state.local.mobileView,
+    languageInfo: state.local.languageInfo,
   };
 };
 const mapDispatchToProps = (dispatch) => {
