@@ -1,13 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import {
-  Divider,
-  Menu,
-  MenuItem,
-  Snackbar,
-  useMediaQuery,
-} from "@material-ui/core";
+import { Snackbar, useMediaQuery } from "@material-ui/core";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -26,7 +20,7 @@ import SearchPassage from "../search/SearchPassage";
 import { Alert } from "@material-ui/lab";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
-import LanguageIcon from "@material-ui/icons/Language";
+import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,11 +99,8 @@ const useStyles = makeStyles((theme) => ({
     color: BLACK,
     cursor: "pointer",
     marginLeft: 10,
-    width: "35px",
+    width: "25px",
     fontSize: "2rem",
-  },
-  languageMenu: {
-    width: 150,
   },
 }));
 
@@ -120,30 +111,14 @@ const TopBar = (props) => {
   const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
-  const [languageAnchor, setLanguageAnchor] = React.useState(null);
-  const open = Boolean(languageAnchor);
   const mobileView = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
-  let { login, userDetails, setParallelView, locale, setLocale } = props;
+  let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
-  const handleChange = (event) => {
-    i18n.changeLanguage(event.target.value);
-  };
-  function openLanguage(event) {
-    setLanguageAnchor(event.currentTarget);
-  }
-  function closeLanguage() {
-    setLanguageAnchor(null);
-  }
-  function setLanguage(locale) {
-    i18n.changeLanguage(locale);
-    setLocale(locale);
-    closeLanguage();
-  }
   React.useEffect(() => {
     setLoginButton(
       login ? (
@@ -358,40 +333,7 @@ const TopBar = (props) => {
               {path.startsWith("/study") ? ReadButton() : StudyButton()}
               {FeedbackButton()}
               {loginButton}
-              <LanguageIcon
-                className={classes.languageIcon}
-                onClick={openLanguage}
-              ></LanguageIcon>
-              <Menu
-                id="long-menu"
-                anchorEl={languageAnchor}
-                keepMounted
-                open={open}
-                onClose={closeLanguage}
-                getContentAnchorEl={null}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                transformOrigin={{ vertical: "top", horizontal: "center" }}
-                style={{ top: 20 }}
-                PaperProps={{
-                  className: classes.languageMenu,
-                }}
-                value={locale}
-                onChange={handleChange}
-              >
-                <MenuItem
-                  className={classes.menu}
-                  onClick={() => setLanguage("en")}
-                >
-                  English
-                </MenuItem>
-                <Divider />
-                <MenuItem
-                  className={classes.menu}
-                  onClick={() => setLanguage("hi")}
-                >
-                  Hindi
-                </MenuItem>
-              </Menu>
+              <MultiLanguageDropdown iconstyle={classes.languageIcon} />
             </>
           )}
         </Toolbar>

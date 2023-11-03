@@ -16,8 +16,9 @@ import { SETVALUE } from "../../store/actions";
 import { WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
-import LanguageIcon from "@material-ui/icons/Language";
-import { Divider, Menu, MenuItem } from "@material-ui/core";
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
   languageIcon: {
     cursor: "pointer",
     marginLeft: 10,
-    width: "35px",
+    width: "25px",
     fontSize: "2rem",
   },
 }));
@@ -91,32 +92,30 @@ const useStyles = makeStyles((theme) => ({
 const PageHeader = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
+  const [alert, setAlert] = React.useState(false);
+  const [message, setMessage] = React.useState("");
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  let { login, userDetails, setParallelView, locale, setLocale } = props;
+  let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
-  const handleChange = (event) => {
-    i18n.changeLanguage(event?.value);
-    setLocale(event);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlert("");
+    setMessage("");
   };
-  const [languageAnchor, setLanguageAnchor] = React.useState(null);
-  const open = Boolean(languageAnchor);
 
-  function openLanguage(event) {
-    setLanguageAnchor(event.currentTarget);
-  }
-  function closeLanguage() {
-    setLanguageAnchor(null);
-  }
-  function setLanguage(locale) {
-    i18n.changeLanguage(locale);
-    setLocale(locale);
-    closeLanguage();
-  }
   React.useEffect(() => {
-    setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
+    setLoginButton(
+      login ? (
+        <LoginMenu userDetails={userDetails} />
+      ) : (
+        <Login setMessage={setMessage} setAlert={setAlert} />
+      )
+    );
   }, [login, userDetails]);
   return (
     <div className={classes.root}>
@@ -243,31 +242,21 @@ const PageHeader = (props) => {
             ""
           )}
           {loginButton}
-          <LanguageIcon
-            className={classes.languageIcon}
-            onClick={openLanguage}
-          />
-          <Menu
-            id="long-menu"
-            anchorEl={languageAnchor}
-            keepMounted
-            open={open}
-            onClose={closeLanguage}
-            getContentAnchorEl={null}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            transformOrigin={{ vertical: "top", horizontal: "center" }}
-            style={{ top: 20 }}
-            PaperProps={{
-              className: classes.languageMenu,
-            }}
-            value={locale}
-            onChange={handleChange}
-          >
-            <MenuItem onClick={() => setLanguage("en")}>English</MenuItem>
-            <Divider />
-            <MenuItem onClick={() => setLanguage("hi")}>Hindi</MenuItem>
-          </Menu>
+          <MultiLanguageDropdown iconstyle={classes.languageIcon} />
         </Toolbar>
+        {alert ? (
+          <Snackbar
+            open={Boolean(alert)}
+            autoHideDuration={8000}
+            onClose={handleClose}
+          >
+            <Alert variant="filled" onClose={handleClose} severity={alert}>
+              {message}
+            </Alert>
+          </Snackbar>
+        ) : (
+          ""
+        )}
       </AppBar>
     </div>
   );

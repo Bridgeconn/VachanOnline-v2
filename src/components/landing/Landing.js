@@ -100,7 +100,7 @@ const Landing = (props) => {
         <BigTooltip title={t("landingPlayStoreToolTip")}>
           <img
             src={playStore}
-            alt="Get it on the play store"
+            alt={t("landingAlt")}
             className={classes.playStore}
           />
         </BigTooltip>

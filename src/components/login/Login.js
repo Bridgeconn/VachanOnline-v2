@@ -107,7 +107,7 @@ const Login = (props) => {
         .createUserWithEmailAndPassword(email, password)
         .then((res) => {
           setAlert("success");
-          setMessage(`Sign up with ${email} successful!`);
+          setMessage(t("loginSuccessMsg", { email }));
         })
         .catch((error) => {
           setAlert("error");

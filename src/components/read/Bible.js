@@ -898,7 +898,7 @@ const Bible = (props) => {
       setValue("versesSelected", []);
     }
   }, [path, setValue, verseData]);
-  let ref = {
+  const ref = {
     book: bookDisplay,
     chapter: chapter,
   };

@@ -201,7 +201,7 @@ function Notes(props) {
       setAddNote(true);
     }
   };
-  let ref = {
+  const ref = {
     book: book,
     chapter: chapter,
     verse: versesSelected?.sort((a, b) => parseInt(a) - parseInt(b)).join(", "),
@@ -560,15 +560,6 @@ function Notes(props) {
       ) : addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>
-            {/* {locale === "hi"
-              ? ` ${book} ${chapter} : ${versesSelected
-                  ?.sort((a, b) => parseInt(a) - parseInt(b))
-                  .join(", ")} ${t("studyNotesBookChapter")}`
-              : `${t(
-                  "studyNotesBookChapter"
-                )} ${book} ${chapter} : ${versesSelected
-                  ?.sort((a, b) => parseInt(a) - parseInt(b))
-                  .join(", ")}`} */}
             {t("studyNotesBookChapterVerse", { ref })}
           </Typography>
           {/*edit note */}

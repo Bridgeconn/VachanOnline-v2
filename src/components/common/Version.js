@@ -16,7 +16,6 @@ import { getVersions, capitalize, getLanguageData } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
 import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
-import { languageJson } from "../../store/languageData";
 import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
