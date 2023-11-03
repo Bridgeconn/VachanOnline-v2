@@ -242,7 +242,7 @@ const Version = (props) => {
       if (parallelView === PARALLELBIBLE && parallelScroll) {
         setMainValue("parallelScroll", false);
         const ver = capitalize(_version);
-        const message = `Current book not available in ${ver}, Parallel Scroll disabled`;
+        const message = t("reduxBookNotAvailable", { ver });
         setValue("message", message);
       }
     }

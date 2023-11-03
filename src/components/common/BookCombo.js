@@ -10,13 +10,12 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
-import * as actions from "../../store/actions";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
 import { Typography } from "@material-ui/core";
 import { MOBILEPV } from "../../store/views";
 import { useTranslation } from "react-i18next";
-
+import { SYNCPANEL } from "../../store/actions";
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
@@ -547,12 +546,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     syncPanel: (from, to, t) => {
-      dispatch({
-        type: actions.SYNCPANEL,
-        from: from,
-        to: to,
-        t: t,
-      });
+      dispatch({ type: SYNCPANEL, from: from, to: to, t: t });
     },
   };
 };

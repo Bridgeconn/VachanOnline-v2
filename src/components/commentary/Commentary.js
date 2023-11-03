@@ -371,7 +371,6 @@ const Commentary = (props) => {
           commText += "<p>" + removeBr(item.text) + "</p>";
         }
       }
-      console.log(commentaryIntro, "intro");
       if (commText !== "") {
         const imagesObj = setImages(commText, commentaryIntro.images);
         setCommentaryText(imagesObj.text);
@@ -459,7 +458,7 @@ const Commentary = (props) => {
       {commentaryIntro.bookIntro && (
         <div onClick={toggleIntro} className={classes.introHeading}>
           <Typography className={classes.introTitle}>
-            {t("studyCommIntroTo")} {book}
+            {t("studyCommIntroTo", { book })}
           </Typography>
           {showIntro ? (
             <ExpandLessIcon className={classes.arrow} />

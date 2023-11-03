@@ -69,7 +69,7 @@ const AboutUs = ({ handleClose }) => {
         </Typography>
         <Typography variant="body1" gutterBottom>
           {addStyle("VachanOnline", "bold")}{" "}
-          {t("landingAboutUsVachanProjectContent1")}{" "}
+          {t("landingAboutUsVachanProjectContent1")} {". "}
           {addStyle("VachanGo", "bold")}{" "}
           {t("landingAboutUsVachanProjectContent2")}
           {addStyle("The Vachan Project", "bold")}{" "}

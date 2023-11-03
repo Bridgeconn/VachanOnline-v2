@@ -163,7 +163,6 @@ function Notes(props) {
     close,
     panel1,
     mobileView,
-    locale,
   } = props;
   const [noteList, setNoteList] = React.useState([]);
   const [chapterNoteList, setChapterNoteList] = React.useState([]);
@@ -202,7 +201,11 @@ function Notes(props) {
       setAddNote(true);
     }
   };
-
+  let ref = {
+    book: book,
+    chapter: chapter,
+    verse: versesSelected?.sort((a, b) => parseInt(a) - parseInt(b)).join(", "),
+  };
   const resetForm = React.useCallback(() => {
     setNoteText("");
     setEditorState(EditorState.createEmpty());
@@ -221,12 +224,12 @@ function Notes(props) {
     //if no verse selected, show alert
     if (!versesSelected?.length) {
       setAlert(true);
-      setAlertMessage("Please select a verse");
+      setAlertMessage(t("readSelectVerse"));
       return;
     }
     if (noteText === "") {
       setAlert(true);
-      setAlertMessage("Please enter note text");
+      setAlertMessage(t("commonEnterNoteMsg"));
       return;
     }
     let noteObject = edit
@@ -557,7 +560,7 @@ function Notes(props) {
       ) : addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>
-            {locale === "hi"
+            {/* {locale === "hi"
               ? ` ${book} ${chapter} : ${versesSelected
                   ?.sort((a, b) => parseInt(a) - parseInt(b))
                   .join(", ")} ${t("studyNotesBookChapter")}`
@@ -565,7 +568,8 @@ function Notes(props) {
                   "studyNotesBookChapter"
                 )} ${book} ${chapter} : ${versesSelected
                   ?.sort((a, b) => parseInt(a) - parseInt(b))
-                  .join(", ")}`}
+                  .join(", ")}`} */}
+            {t("studyNotesBookChapterVerse", { ref })}
           </Typography>
           {/*edit note */}
           <Editor
@@ -625,9 +629,7 @@ function Notes(props) {
               <>
                 <ListItem className={classes.listHeading}>
                   <Typography variant="h5">
-                    {locale === "hi"
-                      ? ` ${book} ${chapter} ${t("studyNotesBookChapter")}`
-                      : `${t("studyNotesBookChapter")} ${book} ${chapter}`}
+                    {t("studyNotesBookChapter", { ref })}
                   </Typography>
                   {mobileView ? (
                     <Close className={classes.closeButton} />

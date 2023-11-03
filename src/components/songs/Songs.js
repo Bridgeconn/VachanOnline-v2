@@ -142,21 +142,6 @@ const Songs = () => {
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isLarge = useMediaQuery("(min-width:1150px)");
-  //const [locale, setLocale] = useState(i18n.language);
-
-  //const { t } = useTranslation();
-  //i18n.on("languageChanged", (lng) => setLocale(i18n.language));
-  // const handleChange = (event) => {
-  //   i18n.changeLanguage(event.target.value);
-  // };
-
-  // function changeLocale() {
-  //   <select value={locale} onChange={handleChange}>
-  //     <option value="en">English</option>
-  //     <option value="ma">Malayalam</option>
-  //     <option value="hi">Hindi</option>
-  //   </select>;
-  // }
   const getLang = (event) => {
     setLang(event.target.value);
   };

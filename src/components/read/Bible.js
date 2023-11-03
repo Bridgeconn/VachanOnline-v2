@@ -635,7 +635,7 @@ const Bible = (props) => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
       setIsLoading(true);
-      setLoadingText("Loading");
+      setLoadingText(t("loadingMessage"));
       //Check if there are any previous pending requests
       if (typeof cancelToken.current != typeof undefined) {
         cancelToken.current.cancel(t("Operation canceled due to new request."));
@@ -898,6 +898,10 @@ const Bible = (props) => {
       setValue("versesSelected", []);
     }
   }, [path, setValue, verseData]);
+  let ref = {
+    book: bookDisplay,
+    chapter: chapter,
+  };
   return (
     <div
       className={classes.biblePanel}
@@ -935,7 +939,7 @@ const Bible = (props) => {
                 onClick={handleChapter}
                 className={classes.readChapterButton}
               >
-                {t("readChapterBtnSearchPassage")} {bookDisplay + " " + chapter}
+                {t("readChapterBtnSearchPassage", { ref })}
               </Button>
             ) : (
               ""

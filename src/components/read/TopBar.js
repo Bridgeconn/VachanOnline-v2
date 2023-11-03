@@ -25,7 +25,6 @@ import { Tooltip } from "@material-ui/core";
 import SearchPassage from "../search/SearchPassage";
 import { Alert } from "@material-ui/lab";
 import { useTranslation } from "react-i18next";
-//import LocaleContext from "../../LocaleContext";
 import i18n from "../../i18n";
 import LanguageIcon from "@material-ui/icons/Language";
 
@@ -105,11 +104,11 @@ const useStyles = makeStyles((theme) => ({
   languageIcon: {
     color: BLACK,
     cursor: "pointer",
-    paddingLeft: 5,
-    width: "30px",
+    marginLeft: 10,
+    width: "35px",
+    fontSize: "2rem",
   },
   languageMenu: {
-    //maxHeight: 68 * 4.5,
     width: 150,
   },
 }));
@@ -121,7 +120,6 @@ const TopBar = (props) => {
   const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
-  //const [locale, setLocale] = useState(i18n.language);
   const [languageAnchor, setLanguageAnchor] = React.useState(null);
   const open = Boolean(languageAnchor);
   const mobileView = useMediaQuery(theme.breakpoints.down("sm"));
@@ -130,7 +128,6 @@ const TopBar = (props) => {
   const location = useLocation();
   const path = location?.pathname;
   let { login, userDetails, setParallelView, locale, setLocale } = props;
-  console.log(locale, "locale");
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
   const handleChange = (event) => {
@@ -334,89 +331,85 @@ const TopBar = (props) => {
     return <SearchPassage setHideIcons={setHideIcons} />;
   };
   return (
-    <>
-      {/* <LocaleContext.Provider value={{ locale, setLocale }}> */}
-      <div className={classes.root}>
-        <AppBar className={classes.appBar} position="static">
-          <Toolbar>
-            <div className={classes.title}>
-              <Link to="/">
-                <img src={favicon} alt={"icon"} className={classes.icon} />
-                <img src={logo} alt={"logo"} className={classes.logo} />
-              </Link>
-            </div>
-            {path.startsWith("/audiobible") || path.startsWith("/read")
-              ? ""
-              : AudioBible()}
-            <div>{ISLButton()}</div>
-            {path.startsWith("/songs") || path.startsWith("/read")
-              ? ""
-              : SongsButton()}
-            {path.startsWith("/biblestories") || path.startsWith("/read")
-              ? ""
-              : StoriesButton()}
-            {path.startsWith("/read") ? searchBox() : ""}
-            {mobileView && hideIcons ? (
-              ""
-            ) : (
-              <>
-                {path.startsWith("/study") ? ReadButton() : StudyButton()}
-                {FeedbackButton()}
-                {loginButton}
-                <LanguageIcon
-                  className={classes.languageIcon}
-                  onClick={openLanguage}
-                ></LanguageIcon>
-                <Menu
-                  id="long-menu"
-                  anchorEl={languageAnchor}
-                  keepMounted
-                  open={open}
-                  onClose={closeLanguage}
-                  getContentAnchorEl={null}
-                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                  transformOrigin={{ vertical: "top", horizontal: "center" }}
-                  style={{ top: 20 }}
-                  PaperProps={{
-                    className: classes.languageMenu,
-                  }}
-                  value={locale}
-                  onChange={handleChange}
+    <div className={classes.root}>
+      <AppBar className={classes.appBar} position="static">
+        <Toolbar>
+          <div className={classes.title}>
+            <Link to="/">
+              <img src={favicon} alt={"icon"} className={classes.icon} />
+              <img src={logo} alt={"logo"} className={classes.logo} />
+            </Link>
+          </div>
+          {path.startsWith("/audiobible") || path.startsWith("/read")
+            ? ""
+            : AudioBible()}
+          <div>{ISLButton()}</div>
+          {path.startsWith("/songs") || path.startsWith("/read")
+            ? ""
+            : SongsButton()}
+          {path.startsWith("/biblestories") || path.startsWith("/read")
+            ? ""
+            : StoriesButton()}
+          {path.startsWith("/read") ? searchBox() : ""}
+          {mobileView && hideIcons ? (
+            ""
+          ) : (
+            <>
+              {path.startsWith("/study") ? ReadButton() : StudyButton()}
+              {FeedbackButton()}
+              {loginButton}
+              <LanguageIcon
+                className={classes.languageIcon}
+                onClick={openLanguage}
+              ></LanguageIcon>
+              <Menu
+                id="long-menu"
+                anchorEl={languageAnchor}
+                keepMounted
+                open={open}
+                onClose={closeLanguage}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
+                style={{ top: 20 }}
+                PaperProps={{
+                  className: classes.languageMenu,
+                }}
+                value={locale}
+                onChange={handleChange}
+              >
+                <MenuItem
+                  className={classes.menu}
+                  onClick={() => setLanguage("en")}
                 >
-                  <MenuItem
-                    className={classes.menu}
-                    onClick={() => setLanguage("en")}
-                  >
-                    English
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem
-                    className={classes.menu}
-                    onClick={() => setLanguage("hi")}
-                  >
-                    Hindi
-                  </MenuItem>
-                </Menu>
-              </>
-            )}
-          </Toolbar>
-        </AppBar>
-        {alert ? (
-          <Snackbar
-            open={Boolean(alert)}
-            autoHideDuration={8000}
-            onClose={handleClose}
-          >
-            <Alert variant="filled" onClose={handleClose} severity={alert}>
-              {message}
-            </Alert>
-          </Snackbar>
-        ) : (
-          ""
-        )}
-      </div>
-      {/* </LocaleContext.Provider> */}
-    </>
+                  English
+                </MenuItem>
+                <Divider />
+                <MenuItem
+                  className={classes.menu}
+                  onClick={() => setLanguage("hi")}
+                >
+                  Hindi
+                </MenuItem>
+              </Menu>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+      {alert ? (
+        <Snackbar
+          open={Boolean(alert)}
+          autoHideDuration={8000}
+          onClose={handleClose}
+        >
+          <Alert variant="filled" onClose={handleClose} severity={alert}>
+            {message}
+          </Alert>
+        </Snackbar>
+      ) : (
+        ""
+      )}
+    </div>
   );
 };
 

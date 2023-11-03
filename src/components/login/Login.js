@@ -127,11 +127,11 @@ const Login = (props) => {
           console.log("Sign In Successful!");
         })
         .catch((error) => {
-          setAlert("error");
+          console.log("error");
           if (error.code === "auth/user-not-found") {
-            setMessage("There is no user record corresponding to this e-mail.");
+            setMessage(t("loginMessage"));
           } else if (error.code === "auth/wrong-password") {
-            setMessage("Invalid Password.");
+            setMessage(t("invalidPswd"));
           } else {
             setMessage(error.message);
           }
@@ -168,13 +168,13 @@ const Login = (props) => {
         .sendPasswordResetEmail(email)
         .then(function () {
           setAlert("success");
-          setMessage(`Reset password Email Sent to ${email}`);
+          setMessage(t("resetPswd", { email }));
           setForm(1);
         })
         .catch(function (error) {
           setAlert("error");
           if (error.code === "auth/user-not-found") {
-            setMessage("There is no user record corresponding to this e-mail.");
+            setMessage(t("loginMessage"));
           } else {
             setMessage(error.message);
           }
