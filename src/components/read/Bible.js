@@ -27,6 +27,7 @@ import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
 import { Editor } from "react-draft-wysiwyg";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   biblePanel: {
@@ -322,6 +323,7 @@ const Bible = (props) => {
     hoverVerse,
     isHoverVerse,
   } = props;
+  const { t } = useTranslation();
   const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : "0.5rem";
   const styleProps = {
     padding: padding,
@@ -394,9 +396,7 @@ const Bible = (props) => {
   );
   const showNoteMessage = () => {
     setAlert(true);
-    setAlertMessage(
-      "Notes panel already opened on right side, please use it to view/edit the note"
-    );
+    setAlertMessage(t("readNotesAlertMsg"));
     return;
   };
   const notesx = useSelector(
@@ -409,12 +409,12 @@ const Bible = (props) => {
     //if no verse selected, show alert
     if (!versesSelected?.length) {
       setAlert(true);
-      setAlertMessage("Please select a verse");
+      setAlertMessage(t("readSelectVerse"));
       return;
     }
     if (noteTextBody === "") {
       setAlert(true);
-      setAlertMessage("Please enter note text");
+      setAlertMessage(t("commonEnterNoteMsg"));
       return;
     }
     let noteObject = edit
@@ -635,10 +635,10 @@ const Bible = (props) => {
     if (sourceId && bookCode && chapter) {
       //code to get chapter content if version(sourceId), book or chapter changed
       setIsLoading(true);
-      setLoadingText("Loading");
+      setLoadingText(t("loadingMessage"));
       //Check if there are any previous pending requests
       if (typeof cancelToken.current != typeof undefined) {
-        cancelToken.current.cancel("Operation canceled due to new request.");
+        cancelToken.current.cancel(t("Operation canceled due to new request."));
       }
       //Save the cancel token for the current request
       cancelToken.current = CancelToken.source();
@@ -649,7 +649,7 @@ const Bible = (props) => {
           setPrevious(response.data.previous);
           setNext(response.data.next);
           if (response.data.chapterContent === undefined) {
-            setLoadingText("Book will be uploaded soon");
+            setLoadingText(t("readBookUploadedSoon"));
           } else {
             setLoadingText("");
 
@@ -663,7 +663,7 @@ const Bible = (props) => {
           console.log(error);
         });
     }
-  }, [sourceId, bookCode, chapter, getHeadings, isVerse]);
+  }, [sourceId, bookCode, chapter, getHeadings, isVerse, t]);
   //if audio bible show icon
   React.useEffect(() => {
     if (currentAudio) {
@@ -898,6 +898,10 @@ const Bible = (props) => {
       setValue("versesSelected", []);
     }
   }, [path, setValue, verseData]);
+  const ref = {
+    book: bookDisplay,
+    chapter: chapter,
+  };
   return (
     <div
       className={classes.biblePanel}
@@ -906,7 +910,7 @@ const Bible = (props) => {
         fontSize: fontSize,
       }}
     >
-      {!isLoading && loadingText !== "Book will be uploaded soon" ? (
+      {!isLoading && loadingText !== t("readBookUploadedSoon") ? (
         <div
           onScroll={() => {
             scrollText();
@@ -935,14 +939,14 @@ const Bible = (props) => {
                 onClick={handleChapter}
                 className={classes.readChapterButton}
               >
-                Read {bookDisplay + " " + chapter}
+                {t("readChapterBtnSearchPassage", { ref })}
               </Button>
             ) : (
               ""
             )}
             <div className={classes.footNotes}>
               <Typography className={classes.noteTitle} variant="h4">
-                Notes :
+                {t("commonNotes")} :
               </Typography>
               <Divider />
               <div className={classes.noteList}>
@@ -995,13 +999,13 @@ const Bible = (props) => {
         classes={{ paper: classes.paper }}
       >
         <DialogTitle id="mobile-edit-note-dialog" onClose={handleClose}>
-          Note
+          {t("commonNotes")}
         </DialogTitle>
         <DialogContent dividers className={classes.noteDialog}>
           <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
-            placeholder="Write your note"
+            placeholder={t("readWriteYourNote")}
             editorStyle={{ height: "30vh" }}
             editorClassName={classes.editor}
             toolbar={getEditorToolbar(true)}
@@ -1009,10 +1013,10 @@ const Bible = (props) => {
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleClose}>
-            Cancel
+            {t("commonCancel")}
           </Button>
           <Button variant="outlined" onClick={saveNote}>
-            Save
+            {t("commonSave")}
           </Button>
         </DialogActions>
       </Dialog>

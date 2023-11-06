@@ -32,6 +32,7 @@ import {
 } from "../common/utility";
 import { useMediaQuery } from "@material-ui/core";
 import BottomBar from "./BottomBar";
+import { useTranslation } from "react-i18next";
 const useStyles = makeStyles((theme) => ({
   main: {
     [theme.breakpoints.down("sm")]: {
@@ -143,6 +144,8 @@ const StudyBible = (props) => {
   const classes = useStyles();
   const { uid } = userDetails;
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const { t } = useTranslation();
   //function for moving parallel bibles scroll together
   const scroll = React.useCallback((paneNo, parallelScroll) => {
     //check flag to prevent looping of on scroll event
@@ -189,11 +192,11 @@ const StudyBible = (props) => {
     return mobileView ? null : (
       <div onClick={toggleParallelScroll}>
         {parallelScroll ? (
-          <Tooltip title="Parallel Scroll">
+          <Tooltip title={t("studyParallelScroll")}>
             <ParallelScroll fontSize="large" className={classes.pScroll} />
           </Tooltip>
         ) : (
-          <Tooltip title="Parallel Scroll Disabled">
+          <Tooltip title={t("studyParallelScrollDisabled")}>
             <ParallelScroll
               fontSize="large"
               color="disabled"
@@ -203,7 +206,7 @@ const StudyBible = (props) => {
         )}
       </div>
     );
-  }, [classes.pScroll, mobileView, parallelScroll, toggleParallelScroll]);
+  }, [classes.pScroll, mobileView, parallelScroll, t, toggleParallelScroll]);
 
   useEffect(() => {
     if (isMobile) {

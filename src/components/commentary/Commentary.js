@@ -16,6 +16,7 @@ import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
 import { LIGHTGREY } from "../../store/colorCode";
 import { Paper } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -188,11 +189,17 @@ const Commentary = (props) => {
   const styleProps = {
     screenView: screenView,
   };
+
+  const { t } = useTranslation();
   const classes = useStyles(styleProps);
   const { version, bookCode, chapter } = panel1;
   const [visible, setVisible] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0);
 
+  const ref = {
+    book: book,
+    chapter: chapter,
+  };
   const textRef = React.useRef();
   React.useEffect(() => {
     //if no commentary selected set current language commentary
@@ -393,7 +400,7 @@ const Commentary = (props) => {
     <div className={classes.root}>
       <Box className={classes.title}>
         <Box flexGrow={1} className={classes.titleComment}>
-          <Typography variant="h6">Commentaries</Typography>
+          <Typography variant="h6">{t("commentariesText")}</Typography>
         </Box>
         <Box flexGrow={1} className={classes.bookNameBox}>
           <CommentaryCombo
@@ -445,13 +452,13 @@ const Commentary = (props) => {
         <h5 className={classes.message}>
           {message === "loading"
             ? "Loading"
-            : `No commentary available for ${book} ${chapter}`}
+            : t("studyNoCommentaryAvailable", { ref })}
         </h5>
       )}
       {commentaryIntro.bookIntro && (
         <div onClick={toggleIntro} className={classes.introHeading}>
           <Typography className={classes.introTitle}>
-            Introduction to {book}
+            {t("studyCommIntroTo", { book })}
           </Typography>
           {showIntro ? (
             <ExpandLessIcon className={classes.arrow} />

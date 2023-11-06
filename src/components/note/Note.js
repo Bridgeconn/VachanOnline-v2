@@ -20,6 +20,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import { EditorState, convertToRaw } from "draft-js";
 import { getEditorToolbar } from "../common/utility";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   info: {
@@ -100,6 +101,8 @@ function Note({
   const [editorState, setEditorState] = React.useState(
     EditorState.createEmpty()
   );
+
+  const { t } = useTranslation();
   const firebase = useFirebase();
 
   const closeAlert = () => {
@@ -164,7 +167,7 @@ function Note({
   return (
     <div>
       <div className={classes.info} onClick={openNoteDialog}>
-        <Tooltip title="Add Note">
+        <Tooltip title={t("commonAddNote")}>
           <NoteIcon fontSize={mobileView ? "large" : "small"} />
         </Tooltip>
       </div>
@@ -180,7 +183,7 @@ function Note({
           onClose={closeAlert}
           severity="warning"
         >
-          Please enter note text
+          {t("commonEnterNoteMsg")}
         </Alert>
       </Snackbar>
       <Dialog
@@ -192,24 +195,24 @@ function Note({
         classes={{ paper: classes.paper }}
       >
         <DialogTitle id="new-note-dialog" onClose={handleClose}>
-          Note
+          {t("commonNoteDialogTitle")}
         </DialogTitle>
         <DialogContent dividers className={classes.dialog}>
           <Editor
             editorState={editorState}
             editorStyle={{ height: "30vh" }}
             onEditorStateChange={handleNoteTextChange}
-            placeholder="Write your note"
+            placeholder={t("commonNotePlaceholder")}
             editorClassName={classes.editor}
             toolbar={getEditorToolbar(mobileView)}
           />
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleClose}>
-            Cancel
+            {t("commonCancel")}
           </Button>
           <Button variant="outlined" onClick={saveNote}>
-            Save
+            {t("commonSave")}
           </Button>
         </DialogActions>
       </Dialog>

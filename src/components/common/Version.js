@@ -16,6 +16,7 @@ import { getVersions, capitalize, getLanguageData } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
 import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -149,6 +150,8 @@ const Version = (props) => {
   const location = useLocation();
   const path = location?.pathname;
 
+  const { t } = useTranslation();
+
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -242,7 +245,7 @@ const Version = (props) => {
       if (parallelView === PARALLELBIBLE && parallelScroll) {
         setMainValue("parallelScroll", false);
         const ver = capitalize(_version);
-        const message = `Current book not available in ${ver}, Parallel Scroll disabled`;
+        const message = t("reduxBookNotAvailable", { ver });
         setValue("message", message);
       }
     }
@@ -315,7 +318,7 @@ const Version = (props) => {
 
   return (
     <>
-      <BigTooltip title="Select a Bible in your language and version">
+      <BigTooltip title={t("commonLngDropdownToolTip")}>
         <Button
           aria-controls="simple-menu"
           aria-haspopup="true"

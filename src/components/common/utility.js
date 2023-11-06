@@ -48,7 +48,7 @@ export const getVersions = (
         }
         setPaneValue(
           "version",
-          version.language.code + "-" + version.version.code.toUpperCase()
+          version?.language?.code + "-" + version?.version?.code.toUpperCase()
         );
         setPaneValue("sourceId", version.sourceId);
         setUserSettings(setPaneValue);

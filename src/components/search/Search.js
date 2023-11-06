@@ -14,6 +14,7 @@ import * as actions from "../../store/actions";
 import { connect } from "react-redux";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -146,6 +147,8 @@ const Search = (props) => {
   const [regex, setRegex] = React.useState("");
   const [message, setMessage] = React.useState("");
 
+  const { t } = useTranslation();
+
   const pageChange = (event, value) => {
     setPage(value);
   };
@@ -212,12 +215,12 @@ const Search = (props) => {
     } else if (searchResult.keyword) {
       setMessage(
         <span>
-          No Search Results for{" "}
+          {t("studyNoSearchResult")}{" "}
           <span className={classes.keyword}>{searchResult.keyword}</span>
         </span>
       );
     }
-  }, [searchResult, classes]);
+  }, [searchResult, classes, t]);
 
   //set keyword bold
   const highlightKeyword = (versePart, index) => {
@@ -256,7 +259,7 @@ const Search = (props) => {
           >
             <InputBase
               className={classes.searchField}
-              placeholder="Enter search text"
+              placeholder={t("studyEnterSearchText")}
               inputProps={{ "aria-label": "enter search text" }}
               value={searchText}
               onChange={handleSearchTextChange}

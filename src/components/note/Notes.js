@@ -31,6 +31,7 @@ import draftToHtml from "draftjs-to-html";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -181,6 +182,8 @@ function Notes(props) {
   const [editorState, setEditorState] = React.useState(
     EditorState.createWithContent(contentState)
   );
+
+  const { t } = useTranslation();
   const firebase = useFirebase();
   const closeAlert = () => {
     setAlert(false);
@@ -198,7 +201,11 @@ function Notes(props) {
       setAddNote(true);
     }
   };
-
+  const ref = {
+    book: book,
+    chapter: chapter,
+    verse: versesSelected?.sort((a, b) => parseInt(a) - parseInt(b)).join(", "),
+  };
   const resetForm = React.useCallback(() => {
     setNoteText("");
     setEditorState(EditorState.createEmpty());
@@ -217,12 +224,12 @@ function Notes(props) {
     //if no verse selected, show alert
     if (!versesSelected?.length) {
       setAlert(true);
-      setAlertMessage("Please select a verse");
+      setAlertMessage(t("readSelectVerse"));
       return;
     }
     if (noteText === "") {
       setAlert(true);
-      setAlertMessage("Please enter note text");
+      setAlertMessage(t("commonEnterNoteMsg"));
       return;
     }
     let noteObject = edit
@@ -469,11 +476,11 @@ function Notes(props) {
         <Box className={classes.heading}>
           <Box flexGrow={1}>
             <Typography variant="h6" className={classes.notesHeading}>
-              Notes
+              {t("commonNotes")}
               {Array.isArray(versesSelected) &&
               versesSelected.length &&
               !edit ? (
-                <Tooltip title="Add Note">
+                <Tooltip title={t("commonAddNote")}>
                   <IconButton
                     aria-label="add"
                     className={classes.addNote}
@@ -483,7 +490,7 @@ function Notes(props) {
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title="Select Verses">
+                <Tooltip title={t("commonSelectVerses")}>
                   <>
                     <IconButton
                       aria-label="add"
@@ -528,7 +535,8 @@ function Notes(props) {
           <DialogActions>
             <Grid container>
               <Grid item xs={6} className={classes.lastModified}>
-                Last Modified: {new Date(modifiedTime).toLocaleString()}
+                {t("studyNotesLastModified")} :{" "}
+                {new Date(modifiedTime).toLocaleString()}
               </Grid>
               <Grid item xs={6} className={classes.formButtons}>
                 <Button
@@ -536,14 +544,14 @@ function Notes(props) {
                   className={classes.button}
                   onClick={handleClose}
                 >
-                  Cancel
+                  {t("commonCancel")}
                 </Button>
                 <Button
                   variant="outlined"
                   className={classes.button}
                   onClick={saveNote}
                 >
-                  Save
+                  {t("commonSave")}
                 </Button>
               </Grid>
             </Grid>
@@ -552,10 +560,7 @@ function Notes(props) {
       ) : addNote ? (
         <div className={classes.form}>
           <Typography variant="h6" gutterBottom>
-            Note for {book} {chapter}:{" "}
-            {versesSelected
-              ?.sort((a, b) => parseInt(a) - parseInt(b))
-              .join(", ")}
+            {t("studyNotesBookChapterVerse", { ref })}
           </Typography>
           {/*edit note */}
           <Editor
@@ -567,7 +572,10 @@ function Notes(props) {
           <Grid container>
             <Grid item xs={7} className={classes.lastModified}>
               {modifiedTime &&
-                "Last Modified: " + new Date(modifiedTime).toLocaleString()}
+                t("studyNotesLastModified") +
+                  ":" +
+                  " " +
+                  new Date(modifiedTime).toLocaleString()}
             </Grid>
             <Grid item xs={5} className={classes.formButtons}>
               <Button
@@ -575,14 +583,14 @@ function Notes(props) {
                 className={classes.button}
                 onClick={resetForm}
               >
-                Cancel
+                {t("commonCancel")}
               </Button>
               <Button
                 variant="outlined"
                 className={classes.button}
                 onClick={saveNote}
               >
-                Save
+                {t("commonSave")}
               </Button>
             </Grid>
           </Grid>
@@ -612,7 +620,7 @@ function Notes(props) {
               <>
                 <ListItem className={classes.listHeading}>
                   <Typography variant="h5">
-                    Notes for {book} {chapter}
+                    {t("studyNotesBookChapter", { ref })}
                   </Typography>
                   {mobileView ? (
                     <Close className={classes.closeButton} />
@@ -672,7 +680,7 @@ function Notes(props) {
               ""
             )}
             <ListItem className={classes.listHeading}>
-              <Typography variant="h5">All Notes</Typography>
+              <Typography variant="h5">{t("studyAllNotesTitle")}</Typography>
             </ListItem>
             {noteList.map((note, i) => {
               return versionData[note.sourceId] !== undefined ? (
@@ -726,7 +734,7 @@ function Notes(props) {
           </List>
         ) : (
           <Typography className={classes.message}>
-            Select a verse to start making Notes
+            {t("studySelectVerseStart")}
           </Typography>
         )}
       </div>
@@ -736,6 +744,7 @@ function Notes(props) {
 const mapStateToProps = (state) => {
   return {
     mobileView: state.local.mobileView,
+    locale: state.local.locale,
   };
 };
 const mapDispatchToProps = (dispatch) => {

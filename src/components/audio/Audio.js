@@ -9,6 +9,7 @@ import * as actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { capitalize, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -109,6 +110,8 @@ const Audio = (props) => {
   const [message, setMessage] = useState("");
   const [audioLangCode, setAudioLangCode] = useState("hin");
   const [audioBooks, setAudioBooks] = useState([]);
+
+  const { t } = useTranslation();
   useEffect(() => {
     if (languages.length) {
       let lang = audioBible?.find((l) => l?.language?.code === languageCode);
@@ -149,10 +152,10 @@ const Audio = (props) => {
         //In mobile view there is only single pane view with the book combo, it will set the first available book
         setMessage("");
       } else if (OBTBibles.includes(value)) {
-        const message = `Audio Bible not available in ${value} for this book.\nIt is available only for Mark, Luke, 1st and 2nd Thessalonians.\nUse the book dropdown in the left panel to navigate.`;
+        const message = t("audioMessage1", { value });
         setMessage(message);
       } else {
-        setMessage(`Audio bible not available in ${value} for this book`);
+        setMessage(t("audioMessage", { value }));
       }
       const obj = audioBible?.find((obj) => obj?.language?.name === lang);
       setAudioLangCode(obj?.language?.code ? obj?.language?.code : "hin");
@@ -160,7 +163,7 @@ const Audio = (props) => {
       setBook(getShortBook(books, obj?.language?.code, bookCode));
       setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
     }
-  }, [language, audioBible, bookCode, books, mobileView]);
+  }, [language, audioBible, bookCode, books, mobileView, t]);
   useEffect(() => {
     const lang = audioBible.find(
       (ele) => ele?.language?.code === audioLangCode
@@ -174,7 +177,7 @@ const Audio = (props) => {
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h5">Audio Bibles</Typography>
+            <Typography variant="h5">{t("audioBibleText")}</Typography>
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>
@@ -188,10 +191,12 @@ const Audio = (props) => {
           )}
           {mobileView ? (
             ""
-          ) : (
+          ) : book ? (
             <Typography className={classes.bookLabel}>
               {book} {chapter}
             </Typography>
+          ) : (
+            ""
           )}
           {mobileView && bookCode ? (
             <BookCombo
@@ -210,7 +215,9 @@ const Audio = (props) => {
       </Box>
       <div className={classes.container}>
         {(audioBible?.length === 0 || audioBible?.success === false) && (
-          <h5 className={classes.message}>{"No audio bibles available"}</h5>
+          <h5 className={classes.message}>
+            {t("studyAudioBibleNotAvailableMsg")}
+          </h5>
         )}
         {hasAudio ? (
           <Player

@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { BLACK } from "../../store/colorCode";
 import * as actions from "../../store/actions";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles(() => ({
   closeButton: {
@@ -14,9 +15,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Close = ({ close, className }) => {
+  const { t } = useTranslation();
   const classes = useStyles();
   return (
-    <Tooltip title="Close">
+    <Tooltip title={t("commonClose")}>
       <IconButton size="small" onClick={close} className={className}>
         <CloseIcon fontSize="small" className={classes.closeButton} />
       </IconButton>

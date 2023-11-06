@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Box } from "@material-ui/core";
 import BigTooltip from "../common/BigTooltip";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,6 +71,8 @@ const LanguageBar = (props) => {
     { language: "telugu", name: "తెలుగు" },
     { language: "urdu", name: "उर्दू" },
   ];
+
+  const { t } = useTranslation();
   const selectedLang = (lan) => {
     const version = versions.find((version) => version?.language === lan);
     const ver = version?.languageVersions[0];
@@ -96,7 +99,7 @@ const LanguageBar = (props) => {
                   onClick={() => selectedLang(language.language)}
                 >
                   <BigTooltip
-                    title={`Click to read the Bible in ${language.name}`}
+                    title={t("landingLangBarToolTip") + " " + language.name}
                   >
                     <Link
                       className={classes.link}

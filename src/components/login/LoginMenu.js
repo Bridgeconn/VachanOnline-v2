@@ -10,6 +10,7 @@ import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
+import { useTranslation } from "react-i18next";
 import { GREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +31,7 @@ const LoginMenu = (props) => {
   const classes = useStyles();
   const { userDetails, setValue } = props;
   const [menuOpen, setMenuOpen] = React.useState(null);
+  const { t } = useTranslation();
 
   const handleProfileMenuOpen = (event) => {
     setMenuOpen(event.currentTarget);
@@ -94,7 +96,7 @@ const LoginMenu = (props) => {
         <Divider />
         <List component="nav" aria-label="secondary mailbox folders">
           <ListItem button>
-            <ListItemText primary="Sign Out" onClick={signOut} />
+            <ListItemText primary={t("loginSignOutBtn")} onClick={signOut} />
           </ListItem>
         </List>
       </Menu>

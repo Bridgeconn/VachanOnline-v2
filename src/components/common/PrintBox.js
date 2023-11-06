@@ -9,6 +9,7 @@ import {
   FormGroup,
 } from "@material-ui/core";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import ReactToPrint from "react-to-print";
 
 const PrintBox = (props) => {
@@ -24,6 +25,8 @@ const PrintBox = (props) => {
     handleDialogClose,
   } = props;
 
+  const { t } = useTranslation();
+
   const handleNotesChange = (event) => {
     setPrintNotes(event.target.checked);
   };
@@ -31,7 +34,7 @@ const PrintBox = (props) => {
     setPrintHighlights(event.target.checked);
   };
   const linkToPrint = () => {
-    return <Button variant="outlined">Print</Button>;
+    return <Button variant="outlined">{t("commonPrintBtn")}</Button>;
   };
   return (
     <Dialog
@@ -40,7 +43,7 @@ const PrintBox = (props) => {
       open={dialogOpen}
       onClose={handleDialogClose}
     >
-      <DialogTitle>Print Chapter</DialogTitle>
+      <DialogTitle>{t("commonPrintChapter")}</DialogTitle>
       <DialogContent dividers>
         <FormGroup>
           <FormControlLabel
@@ -67,7 +70,7 @@ const PrintBox = (props) => {
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={handleDialogClose}>
-          Cancel
+          {t("commonCancel")}
         </Button>
         <ReactToPrint
           trigger={linkToPrint}

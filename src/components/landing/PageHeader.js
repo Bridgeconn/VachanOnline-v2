@@ -14,6 +14,11 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 import { WHITE } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
+import i18n from "../../i18n";
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
       color: "#d0d0d0",
     },
   },
+  languageMenu: {
+    width: 150,
+  },
   islBadge: {
     marginRight: 8,
   },
@@ -73,18 +81,41 @@ const useStyles = makeStyles((theme) => ({
     padding: "8px 12px 0",
     color: WHITE,
   },
+  languageIcon: {
+    cursor: "pointer",
+    marginLeft: 10,
+    width: "25px",
+    fontSize: "2rem",
+  },
 }));
 
 const PageHeader = (props) => {
   const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
+  const [alert, setAlert] = React.useState(false);
+  const [message, setMessage] = React.useState("");
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  let { login, userDetails, setParallelView } = props;
+  let { login, userDetails, setParallelView, setLocale } = props;
+  const { t } = useTranslation();
+  i18n.on("languageChanged", (lng) => setLocale(i18n.language));
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlert("");
+    setMessage("");
+  };
 
   React.useEffect(() => {
-    setLoginButton(login ? <LoginMenu userDetails={userDetails} /> : <Login />);
+    setLoginButton(
+      login ? (
+        <LoginMenu userDetails={userDetails} />
+      ) : (
+        <Login setMessage={setMessage} setAlert={setAlert} />
+      )
+    );
   }, [login, userDetails]);
   return (
     <div className={classes.root}>
@@ -113,13 +144,13 @@ const PageHeader = (props) => {
                 size="small"
                 color="inherit"
                 className={classes.signBible}
-                title="Audio Bible"
+                title={t("audioBibleText")}
                 aria-label="audio bible"
                 target="_blank"
                 rel="noopener"
                 startIcon={<i className="material-icons">headphones</i>}
               >
-                Audio
+                {t("landingPageHeaderAudio")}
               </Button>
             )}
           </Link>
@@ -142,14 +173,14 @@ const PageHeader = (props) => {
                   size="small"
                   color="inherit"
                   className={classes.signBible}
-                  title="Sign Language Bible"
+                  title={t("landingPageHeaderISLVToolTip")}
                   aria-label="sign language bible"
                   target="_blank"
                   rel="noopener"
                   onClick={() => setParallelView(SIGNBIBLE)}
                   startIcon={<i className="material-icons">sign_language</i>}
                 >
-                  ISLV Bible
+                  {t("ISLVBibleText")}
                 </Button>
               )}
             </Link>
@@ -172,13 +203,13 @@ const PageHeader = (props) => {
                   size="small"
                   color="inherit"
                   className={classes.signBible}
-                  title="Songs"
+                  title={t("songsText")}
                   aria-label="Song"
                   target="_blank"
                   rel="noopener"
                   startIcon={<i className="material-icons">music_note</i>}
                 >
-                  songs
+                  {t("songsText")}
                 </Button>
               )}
             </Link>
@@ -197,13 +228,13 @@ const PageHeader = (props) => {
                   size="small"
                   color="inherit"
                   className={classes.stories}
-                  title="Bible Stories"
+                  title={t("bibleStoriesText")}
                   aria-label="bible stories"
                   target="_blank"
                   rel="noopener"
                   startIcon={<i className="material-icons">auto_stories</i>}
                 >
-                  Bible Stories
+                  {t("bibleStoriesText")}
                 </Button>
               )}
             </Link>
@@ -211,7 +242,21 @@ const PageHeader = (props) => {
             ""
           )}
           {loginButton}
+          <MultiLanguageDropdown iconstyle={classes.languageIcon} />
         </Toolbar>
+        {alert ? (
+          <Snackbar
+            open={Boolean(alert)}
+            autoHideDuration={8000}
+            onClose={handleClose}
+          >
+            <Alert variant="filled" onClose={handleClose} severity={alert}>
+              {message}
+            </Alert>
+          </Snackbar>
+        ) : (
+          ""
+        )}
       </AppBar>
     </div>
   );
@@ -220,6 +265,7 @@ const mapStateToProps = (state) => {
   return {
     login: state.local.login,
     userDetails: state.local.userDetails,
+    locale: state.local.locale,
   };
 };
 
@@ -227,6 +273,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: (value) =>
       dispatch({ type: SETVALUE, name: "parallelView", value: value }),
+    setLocale: (value) =>
+      dispatch({ type: SETVALUE, name: "locale", value: value }),
   };
 };
 

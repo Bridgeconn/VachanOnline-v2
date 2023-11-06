@@ -21,6 +21,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography } from "@material-ui/core";
 import { BLACK, GREY } from "../../store/colorCode";
 import VideoCard from "../common/VideoCard";
+import { useTranslation } from "react-i18next";
 
 const drawerWidth = 400;
 
@@ -179,6 +180,8 @@ const Stories = () => {
     ? `${classes.stories} ${classes.storyDirection}`
     : classes.stories;
   const listClass = rtlList.includes(lang) ? classes.listDirection : "";
+
+  const { t } = useTranslation();
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
   }
@@ -262,7 +265,7 @@ const Stories = () => {
         {mobile === true ? (
           <Box className={classes.mobile}>
             <Box className={classes.mobileHeading}>
-              <Typography variant="h4">Bible Stories</Typography>
+              <Typography variant="h4">{t("bibleStoriesTitle")}</Typography>
             </Box>
             <Box className={classes.mobileBox}>
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
@@ -305,7 +308,7 @@ const Stories = () => {
               </Box>
               <Box p={1}>
                 <Tooltip
-                  title="Settings"
+                  title={t("commonSettings")}
                   aria-label="More"
                   aria-controls="long-menu"
                   aria-haspopup="true"
@@ -324,7 +327,7 @@ const Stories = () => {
                     className: classes.settingsMenu,
                   }}
                 >
-                  <MenuItem>Font Size</MenuItem>
+                  <MenuItem>{t("settingsFontSize")}</MenuItem>
                   <Divider />
                   <MenuItem className={classes.menu}>
                     <div className={classes.margin} />
@@ -368,7 +371,7 @@ const Stories = () => {
               </FormControl>
               <div>
                 <Tooltip
-                  title="Settings"
+                  title={t("commonSettings")}
                   className={classes.settings}
                   aria-label="More"
                   aria-controls="long-menu"
@@ -387,7 +390,9 @@ const Stories = () => {
                     className: classes.settingsMenu,
                   }}
                 >
-                  <MenuItem className={classes.menu}>Font Size</MenuItem>
+                  <MenuItem className={classes.menu}>
+                    {t("settingsFontSize")}
+                  </MenuItem>
                   <Divider />
                   <MenuItem className={classes.menu}>
                     <div className={classes.margin} />
@@ -426,7 +431,7 @@ const Stories = () => {
         <main>
           <div className={classes.heading}>
             <Typography variant="h3" className={classes.text}>
-              Bible Stories
+              {t("bibleStoriesText")}
             </Typography>
             <Divider />
           </div>

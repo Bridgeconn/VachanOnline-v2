@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import { connect } from "react-redux";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   landingFooter: {
@@ -103,6 +104,8 @@ const LandingFooter = (props) => {
   const openModal = () => {
     setOpen(true);
   };
+
+  const { t } = useTranslation();
   const handleClose = () => {
     setOpen(false);
   };
@@ -117,7 +120,7 @@ const LandingFooter = (props) => {
             className={classes.button}
             onClick={openModal}
           >
-            About Us
+            {t("landingFooterAboutUsBtn")}
           </Button>
         </Grid>
         <Grid item xs={6} sm={2}>
@@ -131,7 +134,7 @@ const LandingFooter = (props) => {
             target="_blank"
             rel="noopener"
           >
-            Feedback
+            {t("landingFooterFeedbackBtn")}
           </Button>
         </Grid>
         <Grid item xs={12} sm={5}>
@@ -141,7 +144,8 @@ const LandingFooter = (props) => {
             className={classes.companyLink}
           >
             <Typography className={classes.text}>
-              © 2020 {mobileView ? "BCS" : "Bridge Connectivity Solutions"}
+              {t("landingCompanyYear")}{" "}
+              {mobileView ? t("landingCompanyMob") : t("landingCompanyDesktop")}
             </Typography>
           </Link>
         </Grid>

@@ -17,6 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { t } from "i18next";
 
 const drawerWidth = 350;
 const useStyles = makeStyles((theme) => ({
@@ -141,7 +142,6 @@ const Songs = () => {
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isLarge = useMediaQuery("(min-width:1150px)");
-
   const getLang = (event) => {
     setLang(event.target.value);
   };
@@ -194,7 +194,7 @@ const Songs = () => {
         {isMobile === true ? (
           <Box className={classes.mobile}>
             <Box className={classes.mobileHeading}>
-              <Typography variant="h4">Songs</Typography>
+              <Typography variant="h4">{t("songsText")}</Typography>
             </Box>
             <Box className={classes.mobileBox}>
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
@@ -294,9 +294,7 @@ const Songs = () => {
         )}
         <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
-            {isLarge
-              ? "Listen to your favourite Christian Songs in your language"
-              : "Songs"}
+            {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
           </Typography>
           <Typography variant="h4" className={classes.lyricsHeading}>
             {currentSong?.sno}. {currentSong?.name}
