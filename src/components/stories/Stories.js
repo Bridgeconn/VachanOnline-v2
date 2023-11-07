@@ -265,7 +265,7 @@ const Stories = () => {
         {mobile === true ? (
           <Box className={classes.mobile}>
             <Box className={classes.mobileHeading}>
-              <Typography variant="h4">{t("bibleStoriesTitle")}</Typography>
+              <Typography variant="h4">{t("bibleStoriesText")}</Typography>
             </Box>
             <Box className={classes.mobileBox}>
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
