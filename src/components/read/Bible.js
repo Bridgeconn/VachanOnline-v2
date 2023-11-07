@@ -638,7 +638,7 @@ const Bible = (props) => {
       setLoadingText(t("loadingMessage"));
       //Check if there are any previous pending requests
       if (typeof cancelToken.current != typeof undefined) {
-        cancelToken.current.cancel(t("Operation canceled due to new request."));
+        cancelToken.current.cancel(t("readOperationCanceled"));
       }
       //Save the cancel token for the current request
       cancelToken.current = CancelToken.source();
@@ -1005,7 +1005,7 @@ const Bible = (props) => {
           <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
-            placeholder={t("readWriteYourNote")}
+            placeholder={t("commonNotePlaceholder")}
             editorStyle={{ height: "30vh" }}
             editorClassName={classes.editor}
             toolbar={getEditorToolbar(true)}
