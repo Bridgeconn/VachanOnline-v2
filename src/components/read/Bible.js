@@ -680,7 +680,7 @@ const Bible = (props) => {
       setValue("verseData", "");
       setValue("versesSelected", []);
       if (parallelScroll && paneNo) {
-        syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+        syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1), t);
       }
     }
   };
@@ -692,7 +692,7 @@ const Bible = (props) => {
       setValue("verseData", "");
       setValue("versesSelected", []);
       if (parallelScroll && paneNo) {
-        syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+        syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1), t);
       }
     }
   };
@@ -1054,8 +1054,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    syncPanel: (from, to) => {
-      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    syncPanel: (from, to, t) => {
+      dispatch({ type: actions.SYNCPANEL, from: from, to: to, t: t });
     },
     setMainValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
