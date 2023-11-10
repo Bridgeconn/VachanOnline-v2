@@ -5,21 +5,17 @@ import { Divider, Menu, MenuItem } from "@material-ui/core";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
-import { LIGHTGREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
-  languageMenu: {
+  list: {
     width: 150,
-  },
-  selected: {
-    backgroundColor: LIGHTGREY,
   },
 }));
 const MultiLanguageDropdown = (props) => {
   const classes = useStyles();
   const [languageAnchor, setLanguageAnchor] = React.useState(null);
   const open = Boolean(languageAnchor);
-  let { locale, setLocale, iconstyle } = props;
+  const { locale, setLocale, iconstyle } = props;
 
   function openLanguage(event) {
     setLanguageAnchor(event.currentTarget);
@@ -27,13 +23,12 @@ const MultiLanguageDropdown = (props) => {
   function closeLanguage() {
     setLanguageAnchor(null);
   }
-  function setLanguage(_locale) {
+  function handleClick(_locale) {
     i18n.changeLanguage(_locale);
     setLocale(_locale);
     closeLanguage();
   }
   useEffect(() => {
-    // i18n.changeLanguage(i18n.resolvedLanguage);
     setLocale(i18n.resolvedLanguage);
   }, [setLocale]);
   return (
@@ -48,22 +43,14 @@ const MultiLanguageDropdown = (props) => {
         getContentAnchorEl={null}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
-        style={{ top: 20 }}
-        PaperProps={{
-          className: classes.languageMenu,
-        }}
+        style={{ top: 17 }}
+        classes={{ list: classes.list }}
       >
-        <MenuItem
-          onClick={() => setLanguage("en")}
-          className={locale === "en" ? classes.selected : ""}
-        >
+        <MenuItem onClick={() => handleClick("en")} selected={locale === "en"}>
           English
         </MenuItem>
         <Divider />
-        <MenuItem
-          onClick={() => setLanguage("hi")}
-          className={locale === "hi" ? classes.selected : ""}
-        >
+        <MenuItem onClick={() => handleClick("hi")} selected={locale === "hi"}>
           Hindi
         </MenuItem>
       </Menu>
