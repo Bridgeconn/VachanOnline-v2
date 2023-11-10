@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LanguageIcon from "@material-ui/icons/Language";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, Menu, MenuItem } from "@material-ui/core";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
+import { LIGHTGREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   languageMenu: {
     width: 150,
+  },
+  selected: {
+    backgroundColor: LIGHTGREY,
   },
 }));
 const MultiLanguageDropdown = (props) => {
@@ -23,14 +27,15 @@ const MultiLanguageDropdown = (props) => {
   function closeLanguage() {
     setLanguageAnchor(null);
   }
-  const handleChange = (event) => {
-    i18n.changeLanguage(event.target.value);
-  };
-  function setLanguage(locale) {
-    i18n.changeLanguage(locale);
-    setLocale(locale);
+  function setLanguage(_locale) {
+    i18n.changeLanguage(_locale);
+    setLocale(_locale);
     closeLanguage();
   }
+  useEffect(() => {
+    // i18n.changeLanguage(i18n.resolvedLanguage);
+    setLocale(i18n.resolvedLanguage);
+  }, [setLocale]);
   return (
     <>
       <LanguageIcon className={iconstyle} onClick={openLanguage}></LanguageIcon>
@@ -47,12 +52,20 @@ const MultiLanguageDropdown = (props) => {
         PaperProps={{
           className: classes.languageMenu,
         }}
-        value={locale}
-        onChange={handleChange}
       >
-        <MenuItem onClick={() => setLanguage("en")}>English</MenuItem>
+        <MenuItem
+          onClick={() => setLanguage("en")}
+          className={locale === "en" ? classes.selected : ""}
+        >
+          English
+        </MenuItem>
         <Divider />
-        <MenuItem onClick={() => setLanguage("hi")}>Hindi</MenuItem>
+        <MenuItem
+          onClick={() => setLanguage("hi")}
+          className={locale === "hi" ? classes.selected : ""}
+        >
+          Hindi
+        </MenuItem>
       </Menu>
     </>
   );
