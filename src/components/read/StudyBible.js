@@ -185,9 +185,9 @@ const StudyBible = (props) => {
   const toggleParallelScroll = React.useCallback(() => {
     setValue("parallelScroll", !parallelScroll);
     if (!parallelScroll) {
-      syncPanel("panel1", "panel2");
+      syncPanel("panel1", "panel2", t);
     }
-  }, [parallelScroll, setValue, syncPanel]);
+  }, [parallelScroll, setValue, syncPanel, t]);
   const parallelScrollIcon = useMemo(() => {
     return mobileView ? null : (
       <div onClick={toggleParallelScroll}>
@@ -610,8 +610,8 @@ const mapDispatchToProps = (dispatch) => {
     setDictionary: (name, value) =>
       dispatch({ type: actions.SETDICTIONARY, name: name, value: value }),
     copyPanel1: () => dispatch({ type: actions.COPYPANEL1 }),
-    syncPanel: (from, to) => {
-      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    syncPanel: (from, to, t) => {
+      dispatch({ type: actions.SYNCPANEL, from: from, to: to, t: t });
     },
   };
 };

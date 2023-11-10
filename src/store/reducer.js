@@ -112,10 +112,7 @@ const reducer = (state = defaultState, action) => {
         bookCode = state[action.to].bookCode;
         parallelScroll = false;
         const ver = capitalize(state[action.to].version);
-        message =
-          action.t("reduxBookNotAvailable") +
-          ver +
-          action.t("studyParallelScrollDisabled");
+        message = action.t("reduxBookNotAvailable", { ver });
       }
       return {
         ...state,
