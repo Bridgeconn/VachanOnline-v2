@@ -104,6 +104,19 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
   },
+  islIcon: {
+    marginTop: -46,
+    float: "right",
+    marginRight: 5,
+    cursor: "pointer",
+    fontSize: 21,
+    color: BLACK,
+    padding: "0 5px",
+  },
+  box: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
   mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
   heading: {
     backgroundColor: "white",
@@ -370,16 +383,26 @@ const Stories = () => {
                 </Select>
               </FormControl>
               <div>
-                <Tooltip
-                  title={t("commonSettings")}
-                  className={classes.settings}
-                  aria-label="More"
-                  aria-controls="long-menu"
-                  aria-haspopup="true"
-                  onClick={openSettings}
-                >
-                  <i className="material-icons md-23">more_vert</i>
-                </Tooltip>
+                <div className={classes.box}>
+                  <Link
+                    to={process.env.REACT_APP_DOCUMENT_URL + "bibleStories"}
+                    target="_blank"
+                  >
+                    <i className={`material-icons ${classes.islIcon}`}>
+                      help_outline
+                    </i>
+                  </Link>
+                  <Tooltip
+                    title={t("commonSettings")}
+                    className={classes.settings}
+                    aria-label="More"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    onClick={openSettings}
+                  >
+                    <i className="material-icons md-23">more_vert</i>
+                  </Tooltip>
+                </div>
                 <Menu
                   id="long-menu"
                   anchorEl={settingsAnchor}

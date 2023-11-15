@@ -20,6 +20,7 @@ import Close from "../common/Close";
 import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
 import { useTranslation } from "react-i18next";
+import { Link, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -91,6 +92,12 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     fontWeight: 600,
   },
+  islIcon: {
+    color: BLACK,
+    marginTop: 19,
+    marginRight: 10,
+    fontSize: 21,
+  },
 }));
 const MenuBar = (props) => {
   let {
@@ -143,6 +150,8 @@ const MenuBar = (props) => {
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const location = useLocation();
+  const path = location?.pathname;
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
@@ -295,6 +304,7 @@ const MenuBar = (props) => {
       setAudioIcon("");
     }
   }, [audio, audioBible, bookCode, classes.info, setValue, parallelView, t]);
+  const url = path.startsWith("/read") ? "readBible" : "studyBible";
   return (
     <div>
       <Box className={classes.read}>
@@ -328,6 +338,18 @@ const MenuBar = (props) => {
             {mobileView ? null : highlightIcon}
 
             {bookmarkIcon}
+            {mobileView ? (
+              ""
+            ) : (
+              <Link
+                to={process.env.REACT_APP_DOCUMENT_URL + url}
+                target="_blank"
+              >
+                <i className={`material-icons ${classes.islIcon}`}>
+                  help_outline
+                </i>
+              </Link>
+            )}
             <Metadata
               metadataList={metadataList}
               title="Version Name (in Eng)"

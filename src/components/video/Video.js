@@ -15,6 +15,8 @@ import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
 import { useTranslation } from "react-i18next";
 import { bibleBooks } from "../../store/bibleData";
+import { BLACK } from "../../store/colorCode";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +85,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: 7,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  islIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
   },
   select: {
     width: 200,
@@ -251,7 +263,19 @@ const Video = (props) => {
             />
           ) : null}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          {mobileView ? (
+            ""
+          ) : (
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "videos"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
+          )}
           <Close className={classes.closeButton} />
         </Box>
       </Box>

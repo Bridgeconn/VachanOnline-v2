@@ -14,9 +14,10 @@ import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
-import { LIGHTGREY } from "../../store/colorCode";
+import { BLACK, LIGHTGREY } from "../../store/colorCode";
 import { Paper } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -133,6 +134,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("md")]: {
       whiteSpace: "nowrap",
     },
+  },
+  islIcon: {
+    padding: "2px 3px 0",
+    color: BLACK,
+    marginTop: 3,
+    fontSize: 21,
   },
   icons: {
     display: "flex",
@@ -424,6 +431,18 @@ const Commentary = (props) => {
         </Box>
 
         <Box className={classes.icons}>
+          {mobileView ? (
+            ""
+          ) : (
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "commentaries"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
+          )}
           <div className={classes.metadata}>
             <Metadata
               metadataList={commentary.metadata}

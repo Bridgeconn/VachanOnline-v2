@@ -7,6 +7,7 @@ import Menu from "@material-ui/core/Menu";
 import { makeStyles } from "@material-ui/core/styles";
 import { BLACK } from "../../store/colorCode";
 import { t } from "i18next";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -30,6 +31,18 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   root: {
+    color: BLACK,
+  },
+  box: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  islIcon: {
+    marginTop: -38,
+    float: "right",
+    marginRight: 5,
+    cursor: "pointer",
+    fontSize: 21,
     color: BLACK,
   },
   settingsMenu: {
@@ -57,16 +70,21 @@ const Setting = (props) => {
 
   return (
     <div>
-      <Tooltip
-        title={t("commonSettings")}
-        className={classes.settings}
-        aria-label="More"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        onClick={openSettings}
-      >
-        <i className="material-icons md-23">more_vert</i>
-      </Tooltip>
+      <div className={classes.box}>
+        <Link to={process.env.REACT_APP_DOCUMENT_URL + "songs"} target="_blank">
+          <i className={`material-icons ${classes.islIcon}`}>help_outline</i>
+        </Link>
+        <Tooltip
+          title={t("commonSettings")}
+          className={classes.settings}
+          aria-label="More"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          onClick={openSettings}
+        >
+          <i className="material-icons md-23">more_vert</i>
+        </Tooltip>
+      </div>
       <Menu
         id="long-menu"
         anchorEl={settingsAnchor}

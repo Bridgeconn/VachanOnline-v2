@@ -32,6 +32,8 @@ import { ContentState, EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -143,6 +145,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: -6,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  islIcon: {
+    padding: "4px 6px 0",
+    color: BLACK,
+    marginTop: -3,
+    fontSize: 21,
   },
   dialog: {
     padding: 0,
@@ -504,7 +516,19 @@ function Notes(props) {
               )}
             </Typography>
           </Box>
-          <Box>
+          <Box className={classes.box}>
+            {mobileView ? (
+              ""
+            ) : (
+              <Link
+                to={process.env.REACT_APP_DOCUMENT_URL + "notes"}
+                target="_blank"
+              >
+                <i className={`material-icons ${classes.islIcon}`}>
+                  help_outline
+                </i>
+              </Link>
+            )}
             <Close className={classes.closeButton} />
           </Box>
         </Box>

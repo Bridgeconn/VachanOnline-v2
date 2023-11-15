@@ -10,6 +10,8 @@ import * as views from "../../store/views";
 import BookCombo from "../common/BookCombo";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,6 +88,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: 7,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  islIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
   },
   message: {
     paddingLeft: 20,
@@ -192,7 +204,19 @@ const SignBible = (props) => {
             </Typography>
           )}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          {mobileView ? (
+            ""
+          ) : (
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "signLanguageBible"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
+          )}
           <Close className={classes.closeButton} />
         </Box>
       </Box>

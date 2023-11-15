@@ -9,6 +9,8 @@ import { getDictionaryIndex, getDictionaryWord } from "../common/utility";
 import Close from "../common/Close";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,6 +96,21 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginTop: 7,
     marginRight: 15,
+  },
+  icons: {
+    display: "flex",
+    marginTop: 4,
+    flexWrap: "nowrap",
+    marginLeft: -5,
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: 0,
+    },
+  },
+  islIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 1,
+    fontSize: 21,
   },
   seeAlso: {
     textTransform: "capitalize",
@@ -206,15 +223,27 @@ const Dictionary = (props) => {
             setDictionary={setDictionary}
           ></DictionaryWordCombo>
         </Box>
-        <Box className={classes.metadata}>
-          <Metadata
-            metadataList={selectedDictionary.metadata}
-            title="Version Name (in Eng)"
-            abbreviation="Abbreviation"
-            mobileView={mobileView}
-          ></Metadata>
-        </Box>
-        <Box>
+        <Box className={classes.icons}>
+          {mobileView ? (
+            ""
+          ) : (
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "dictionaries"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
+          )}
+          <div className={classes.metadata}>
+            <Metadata
+              metadataList={selectedDictionary.metadata}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+              mobileView={mobileView}
+            ></Metadata>
+          </div>
           <Close className={classes.closeButton} />
         </Box>
       </Box>

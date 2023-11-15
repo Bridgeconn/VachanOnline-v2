@@ -5,8 +5,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   subheading: {
@@ -31,8 +33,19 @@ const useStyles = makeStyles(() => ({
       margin: "5px 0",
     },
   },
+  islIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    fontSize: 21,
+    marginTop: -10,
+    cursor: "pointer",
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
 }));
-const AboutUs = ({ handleClose }) => {
+const AboutUs = ({ handleClose, mobileView }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const addLink = (text, prefix) => {
@@ -54,14 +67,24 @@ const AboutUs = ({ handleClose }) => {
   };
   return (
     <>
-      <DialogTitle
-        className={classes.title}
-        id="scroll-dialog-title"
-        disableTypography={true}
-      >
-        <Typography variant="h5" gutterBottom>
-          {t("landingAboutUsHead")}
-        </Typography>
+      <DialogTitle id="scroll-dialog-title" disableTypography={true}>
+        <div className={classes.box}>
+          <Typography variant="h5" gutterBottom>
+            {t("landingAboutUsHead")}
+          </Typography>
+          {mobileView ? (
+            ""
+          ) : (
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "about"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
+          )}
+        </div>
       </DialogTitle>
       <DialogContent dividers={true}>
         <Typography variant="h5" className={classes.subheading}>
@@ -121,4 +144,9 @@ const AboutUs = ({ handleClose }) => {
     </>
   );
 };
-export default AboutUs;
+const mapStateToProps = (state) => {
+  return {
+    mobileView: state.local.mobileView,
+  };
+};
+export default connect(mapStateToProps, null)(AboutUs);

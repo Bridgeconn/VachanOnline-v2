@@ -13,10 +13,11 @@ import Select from "react-select";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import { GREY } from "../../store/colorCode";
+import { BLACK, GREY } from "../../store/colorCode";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -136,6 +137,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginTop: 7,
     marginRight: 15,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  islIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
   },
   dateContainer: {
     display: "flex",
@@ -285,7 +296,19 @@ const ReadingPlan = (props) => {
             ""
           )}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          {mobileView ? (
+            ""
+          ) : (
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "readingPlans"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
+          )}
           <Close className={classes.closeButton} />
         </Box>
       </Box>

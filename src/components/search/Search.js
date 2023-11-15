@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,6 +77,12 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     borderBottom: "1px solid lightgray",
   },
+  islIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 10,
+    fontSize: 21,
+  },
   searchBox: {
     padding: "2px 4px",
     display: "flex",
@@ -125,6 +133,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15,
     padding: "5px 10px",
   },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
   pageCount: {
     display: "inline-block",
   },
@@ -137,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
 const Search = (props) => {
   const classes = useStyles();
 
-  const { setValue, sourceId, versionBooks, versionSource } = props;
+  const { setValue, sourceId, versionBooks, versionSource, mobileView } = props;
   const [searchText, setSearchText] = React.useState("");
   const [bookNames, setBookNames] = React.useState({});
   const [searchResult, setSearchResult] = React.useState({});
@@ -274,7 +286,19 @@ const Search = (props) => {
             </IconButton>
           </Paper>
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          {mobileView ? (
+            ""
+          ) : (
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "searchBible"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
+          )}
           <Close className={classes.closeButton} />
         </Box>
       </Box>
@@ -332,6 +356,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
     sourceId: state.local.panel1.sourceId,
+    mobileView: state.local.mobileView,
   };
 };
 
