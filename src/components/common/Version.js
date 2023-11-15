@@ -12,11 +12,11 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import { getVersions, capitalize } from "../common/utility";
+import { getVersions, capitalize, getLanguageData } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
 import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
-import { languageJson } from "../../store/languageData";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -141,6 +141,7 @@ const Version = (props) => {
     chapter,
     verseData,
     language,
+    languageInfo,
   } = props;
   const [expanded, setExpanded] = React.useState(language);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -149,9 +150,14 @@ const Version = (props) => {
   const location = useLocation();
   const path = location?.pathname;
 
+  const { t } = useTranslation();
+
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
+  React.useEffect(() => {
+    getLanguageData(setMainValue);
+  }, [setMainValue]);
   React.useEffect(() => {
     let _version = localStorage.getItem("version");
     let _bookCode = localStorage.getItem("bookCode");
@@ -239,7 +245,7 @@ const Version = (props) => {
       if (parallelView === PARALLELBIBLE && parallelScroll) {
         setMainValue("parallelScroll", false);
         const ver = capitalize(_version);
-        const message = `Current book not available in ${ver}, Parallel Scroll disabled`;
+        const message = t("reduxBookNotAvailable", { ver });
         setValue("message", message);
       }
     }
@@ -258,14 +264,14 @@ const Version = (props) => {
 
   function getFullDisplayLanguage(language) {
     language = language?.toLowerCase();
-    const found = languageJson.find((lang) => lang.language === language);
+    const found = languageInfo?.find((lang) => lang.language === language);
     const lang = (
       <>
-        <span>{found?.languageName}</span>
+        <span>{found?.languageName || language}</span>
         <span className={classes.lang}>{language}</span>
       </>
     );
-    return found?.languageName.toLowerCase() === language ? language : lang;
+    return lang;
   }
 
   function getLanguageByCode(versions, code) {
@@ -278,7 +284,8 @@ const Version = (props) => {
     return code;
   }
   function currentVersion(item) {
-    return item.language.code + "-" + item.version.code === version
+    return item.language.code + "-" + item.version.code.toLowerCase() ===
+      version.toLowerCase()
       ? classes.versionSelected
       : "";
   }
@@ -296,8 +303,8 @@ const Version = (props) => {
   React.useEffect(() => {
     let [langCode, versionCode] = version.split("-");
     function getDisplayLanguage(language) {
-      const found = languageJson.find((lang) => lang.langCode === langCode);
-      setValue("language", found?.language);
+      const found = languageInfo.find((lang) => lang.langCode === langCode);
+      setValue("language", language);
       return found?.languageName || language;
     }
     const language = getLanguageByCode(versions, langCode?.toLowerCase());
@@ -307,11 +314,11 @@ const Version = (props) => {
     } else {
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, mobileView, setValue, version, versions]);
+  }, [landingPage, languageInfo, mobileView, setValue, version, versions]);
 
   return (
     <>
-      <BigTooltip title="Select a Bible in your language and version">
+      <BigTooltip title={t("commonLngDropdownToolTip")}>
         <Button
           aria-controls="simple-menu"
           aria-haspopup="true"
@@ -421,6 +428,7 @@ const mapStateToProps = (state) => {
     parallelView: state.local.parallelView,
     parallelScroll: state.local.parallelScroll,
     mobileView: state.local.mobileView,
+    languageInfo: state.local.languageInfo,
   };
 };
 const mapDispatchToProps = (dispatch) => {

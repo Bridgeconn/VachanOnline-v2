@@ -11,6 +11,7 @@ import PrintIcon from "@material-ui/icons/Print";
 import Typography from "@material-ui/core/Typography";
 import Print from "../common/PrintBox";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -45,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "-17px",
     marginRight: 18,
   },
+  isHoverVerse: {
+    fontSize: 17,
+    marginLeft: "-17px",
+  },
   printIcon: {
     marginRight: 20,
   },
@@ -61,6 +66,7 @@ const Setting = ({
   fontSize,
   fontFamily,
   lineView,
+  isHoverVerse,
   setValue,
   settingsAnchor,
   handleClose,
@@ -94,6 +100,9 @@ const Setting = ({
   const setFontFamily = (event) => {
     setItem("fontFamily", event.currentTarget.getAttribute("value"));
   };
+  const setVerseHover = (event) => {
+    setItem("isHoverVerse", event.target.checked);
+  };
   const setLineView = (event) => {
     setItem("lineView", event.target.checked);
   };
@@ -106,6 +115,8 @@ const Setting = ({
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
+
+  const { t } = useTranslation();
   return (
     <>
       <Menu
@@ -125,7 +136,7 @@ const Setting = ({
         }}
       >
         <MenuItem className={classes.menu}>
-          Font Family
+          {t("settingsFontFamily")}
           <ButtonGroup
             className={classes.buttonGroup1}
             variant="contained"
@@ -140,7 +151,7 @@ const Setting = ({
               onClick={setFontFamily}
               value="Sans"
             >
-              Sans
+              {t("settingsFontSans")}
             </Button>
             <Button
               className={
@@ -151,22 +162,22 @@ const Setting = ({
               onClick={setFontFamily}
               value="Serif"
             >
-              Serif
+              {t("settingsFontSerif")}
             </Button>
           </ButtonGroup>
         </MenuItem>
         <MenuItem className={classes.menu}>
-          Font Size
+          {t("settingsFontSize")}
           <ButtonGroup
             className={classes.buttonGroup2}
             variant="contained"
             aria-label="Large contained secondary button group"
           >
             <Button style={{ fontSize: 13 }} onClick={decreaseFontSize}>
-              A -
+              {t("settingsFontSizeA")}-
             </Button>
             <Button style={{ fontSize: 16 }} onClick={increaseFontSize}>
-              A +
+              {t("settingsFontSizeA")}+
             </Button>
           </ButtonGroup>
         </MenuItem>
@@ -175,7 +186,7 @@ const Setting = ({
             labelPlacement="start"
             label={
               <Typography className={classes.formControlLabel}>
-                Line View
+                {t("settingsLineView")}
               </Typography>
             }
             control={
@@ -188,9 +199,28 @@ const Setting = ({
             }
           />
         </MenuItem>
+        <MenuItem className={classes.menu}>
+          <FormControlLabel
+            labelPlacement="start"
+            label={
+              <Typography className={classes.isHoverVerse}>
+                {t("hoverVerse")}
+              </Typography>
+            }
+            control={
+              <Switch
+                checked={isHoverVerse}
+                onChange={setVerseHover}
+                onClick={setVerseHover}
+                name="verseHover"
+                color="default"
+              />
+            }
+          />
+        </MenuItem>
         {mobileView ? (
           <MenuItem className={classes.menu} onClick={handleDialogOpen}>
-            <span className={classes.printIcon}>Print/Save</span>
+            <span className={classes.printIcon}>{t("PrintSave")}</span>
             <PrintIcon />
           </MenuItem>
         ) : null}

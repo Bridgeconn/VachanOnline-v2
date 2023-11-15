@@ -14,6 +14,7 @@ import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import * as actions from "../../store/actions";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,6 +81,8 @@ const Bookmarks = (props) => {
   const [bookmarkList, setBookmarkList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
   const firebase = useFirebase();
+
+  const { t } = useTranslation();
 
   //get version for soruceId
   React.useEffect(() => {
@@ -171,7 +174,7 @@ const Bookmarks = (props) => {
     <div className={classes.root}>
       <Box className={classes.heading}>
         <Box flexGrow={1}>
-          <Typography variant="h6">Bookmarks</Typography>
+          <Typography variant="h6">{t("bookmarksText")}</Typography>
         </Box>
         <Box>
           <Close className={classes.closeButton} />
@@ -218,7 +221,7 @@ const Bookmarks = (props) => {
           </List>
         ) : (
           <Typography className={classes.message}>
-            No bookmarks added
+            {t("studyNoBookMarks")}
           </Typography>
         )}
       </div>

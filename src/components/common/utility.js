@@ -3,6 +3,7 @@ import {
   signBibleAPI,
   API,
   chapterVideoAPI,
+  languageDataAPI,
 } from "../../store/api";
 import { bibleBooks, bibleChapters } from "../../store/bibleData";
 //Function to get the bible versions
@@ -47,7 +48,7 @@ export const getVersions = (
         }
         setPaneValue(
           "version",
-          version.language.code + "-" + version.version.code.toUpperCase()
+          version?.language?.code + "-" + version?.version?.code.toUpperCase()
         );
         setPaneValue("sourceId", version.sourceId);
         setUserSettings(setPaneValue);
@@ -84,6 +85,10 @@ const setUserSettings = (setValue) => {
     setValue("fontFamily", fontFamily);
   }
   const lineView = localStorage.getItem("lineView");
+  const isHoverVerse = localStorage.getItem("isHoverVerse");
+  if (isHoverVerse) {
+    setValue("isHoverVerse", JSON.parse(isHoverVerse));
+  }
   if (lineView) {
     setValue("lineView", JSON.parse(lineView));
   }
@@ -116,6 +121,51 @@ export const getAllBooks = (
     .catch(function (error) {
       console.log(error);
     });
+};
+
+export const nextButtonClick = (
+  audioBooks,
+  bookCode,
+  chapter,
+  setValue,
+  audioBookList
+) => {
+  const chapters = audioBookList[bookCode];
+  if (parseInt(chapter) < chapters) {
+    setValue("chapter", (parseInt(chapter) + 1).toString());
+    return;
+  }
+  audioBooks?.forEach((el, i) => {
+    if (el.book_code === bookCode) {
+      if (parseInt(chapter) === chapters) {
+        setValue("chapter", "1");
+        setValue("bookCode", audioBooks[i + 1]?.book_code);
+        return;
+      }
+    }
+  });
+};
+export const previousClick = (
+  audioBooks,
+  bookCode,
+  chapter,
+  setValue,
+  audioBookList
+) => {
+  if (parseInt(chapter) > 1) {
+    setValue("chapter", parseInt(chapter) - 1);
+    return;
+  }
+  let findBook = {};
+  audioBooks?.forEach((el, i, arr) => {
+    if (i > 0 && el.book_code === bookCode) {
+      findBook = arr[i - 1];
+    }
+  });
+  if (findBook) {
+    setValue("chapter", audioBookList[findBook.book_code]);
+    setValue("bookCode", findBook.book_code);
+  }
 };
 //Function to get the bible book name
 export const getBookbyCode = (abbreviation) => {
@@ -219,7 +269,6 @@ export const getAudioBibleObject = (versions, sourceId) => {
     }
   }
 };
-
 //Function to get the videos
 export const getVideos = (setValue) => {
   API.get("videos")
@@ -240,7 +289,9 @@ export const capitalize = (string) => {
 export const getShortBook = (books, lang, bookCode) => {
   if (books) {
     const id = books[lang]?.findIndex((x) => x?.book_code === bookCode);
-    return books[lang][id]?.short;
+    if (id !== undefined) {
+      return books[lang][id]?.short;
+    }
   }
 };
 const checkValidChapter = (bookCode, chapter) => {
@@ -467,6 +518,16 @@ export const getChapterVideo = (setValue) => {
     ?.get("fcbh_chapter.json")
     .then(function (response) {
       setValue("chapterVideo", response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export const getLanguageData = (setValue) => {
+  languageDataAPI
+    ?.get("languageData.json")
+    .then(function (response) {
+      setValue("languageInfo", response.data);
     })
     .catch(function (error) {
       console.log(error);

@@ -8,11 +8,15 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ReactPlayer from "react-player";
 import { LIGHTGREY } from "../../store/colorCode";
-import BigTooltip from "../common/BigTooltip";
+import BigTooltip from "./BigTooltip";
+import { t } from "i18next";
 
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
     padding: "10px 20px",
+    [theme.breakpoints.down("sm")]: {
+      whiteSpace: "nowrap",
+    },
   },
   descContainer: {
     padding: 0,
@@ -41,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.1rem",
     whiteSpace: "pre-wrap",
   },
+  islDescription: {
+    maxHeight: 200,
+    overflow: "auto",
+  },
   heading: {
     display: "flex",
     border: "1px solid " + LIGHTGREY,
@@ -58,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const VideoCard = ({ video, playing, setPlaying }) => {
+const VideoCard = ({ video, playing, setPlaying, language }) => {
   const classes = useStyles();
   const [showDesc, setShowDesc] = useState(false);
 
@@ -66,33 +74,53 @@ const VideoCard = ({ video, playing, setPlaying }) => {
     setShowDesc((prev) => !prev);
   };
   return (
-    <Card className={classes.video} key={video["title"]}>
+    <Card className={classes.video} key={video?.title}>
       <CardContent className={classes.descContainer}>
         <Typography className={classes.titleContainer} variant="h6">
-          {video["title"]}
+          {language === "isl" ? video?.storyNo + "." : ""} {video?.title}
         </Typography>
         <ReactPlayer
-          playing={playing === video["url"]}
-          onPlay={() => setPlaying(video["url"])}
-          url={video["url"]}
+          playing={playing === video?.url}
+          onPlay={() => setPlaying(video?.url)}
+          url={video?.url}
           controls={true}
           width="100%"
+          height={language === "isl" ? "500px" : "360px"}
           className={classes.player}
         />
-        <BigTooltip title={showDesc ? "Hide description" : "Show description"}>
+        <BigTooltip
+          title={
+            showDesc
+              ? t("hideDescriptionSignLang")
+              : t("showDescriptionSignLang")
+          }
+        >
           <div onClick={handleChange} className={classes.heading}>
-            <Typography className={classes.descTitle}>Description</Typography>
+            <Typography className={classes.descTitle}>
+              {t("descriptionSignLang")}
+            </Typography>
             {showDesc ? (
               <ExpandLessIcon className={classes.arrow} />
             ) : (
-              <ExpandMoreIcon className={classes.arrow}/>
+              <ExpandMoreIcon className={classes.arrow} />
             )}
           </div>
         </BigTooltip>
         <Collapse in={showDesc}>
-          <Typography className={classes.description}>
-            {video["description"]}
-          </Typography>
+          {language === "isl" ? (
+            <div className={classes.islDescription}>
+              {video?.description?.map((el, i) => (
+                <Typography key={i} className={classes.description}>
+                  <b>{el?.time ? `${el.time} ` : ""}</b>
+                  {el?.text}
+                </Typography>
+              ))}
+            </div>
+          ) : (
+            <Typography className={classes.description}>
+              {video["description"]}
+            </Typography>
+          )}
         </Collapse>
       </CardContent>
     </Card>

@@ -13,11 +13,11 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Box, Typography } from "@material-ui/core";
 import axios from "axios";
-import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { t } from "i18next";
 
 const drawerWidth = 350;
 const useStyles = makeStyles((theme) => ({
@@ -130,7 +130,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const Songs = (props) => {
+const Songs = () => {
   const [languageJson, setLanguageJson] = React.useState({});
   const [lang, setLang] = React.useState("");
   const [fontSize, setFontSize] = React.useState(20);
@@ -138,12 +138,10 @@ const Songs = (props) => {
   const [currentSong, setCurrentSong] = React.useState(null);
   const [lyrics, setLyrics] = React.useState("");
 
-  const { userDetails, login } = props;
   const theme = useTheme();
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isLarge = useMediaQuery("(min-width:1150px)");
-
   const getLang = (event) => {
     setLang(event.target.value);
   };
@@ -190,13 +188,13 @@ const Songs = (props) => {
   return (
     <>
       <AppBar position="fixed">
-        <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+        <TopBar />
       </AppBar>
       <div className={classes.root}>
         {isMobile === true ? (
           <Box className={classes.mobile}>
             <Box className={classes.mobileHeading}>
-              <Typography variant="h4">Songs</Typography>
+              <Typography variant="h4">{t("songsText")}</Typography>
             </Box>
             <Box className={classes.mobileBox}>
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
@@ -296,9 +294,7 @@ const Songs = (props) => {
         )}
         <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
-            {isLarge
-              ? "Listen to your favourite Christian Songs in your language"
-              : "Songs"}
+            {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
           </Typography>
           <Typography variant="h4" className={classes.lyricsHeading}>
             {currentSong?.sno}. {currentSong?.name}
@@ -347,11 +343,5 @@ const Songs = (props) => {
     </>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    login: state.local.login,
-    userDetails: state.local.userDetails,
-  };
-};
 
-export default connect(mapStateToProps, null)(Songs);
+export default Songs;

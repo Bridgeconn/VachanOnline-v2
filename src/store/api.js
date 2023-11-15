@@ -10,4 +10,7 @@ export const signBibleAPI = axios.create({
 export const chapterVideoAPI = axios.create({
   baseURL: process.env.REACT_APP_CHAPTER_VIDEOS,
 });
+export const languageDataAPI = axios.create({
+  baseURL: process.env.REACT_APP_LANGUAGE_DATA,
+});
 export const CancelToken = axios.CancelToken;

@@ -10,12 +10,12 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
-import * as actions from "../../store/actions";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
 import { Typography } from "@material-ui/core";
 import { MOBILEPV } from "../../store/views";
-
+import { useTranslation } from "react-i18next";
+import { SYNCPANEL } from "../../store/actions";
 const useStyles = makeStyles((theme) => ({
   button: {
     fontSize: "1rem",
@@ -184,6 +184,8 @@ const BookCombo = (props) => {
     syncPanel,
     screen,
   } = props;
+
+  const { t } = useTranslation();
   //classes for styling
   const parallelMV = MOBILEPV.includes(parallelView);
   const styleProps = {
@@ -369,7 +371,9 @@ const BookCombo = (props) => {
 
   function otHeader() {
     return bookList.find((item) => item.book_id <= 39) ? (
-      <ListItem className={classes.headers}>OLD TESTAMENT</ListItem>
+      <ListItem className={classes.headers}>
+        {t("commonOldTestamentHead")}
+      </ListItem>
     ) : (
       ""
     );
@@ -377,7 +381,9 @@ const BookCombo = (props) => {
   function ntHeader(item) {
     const ntBook = bookList.find((item) => item.book_id >= 40);
     return item?.book_code === ntBook?.book_code ? (
-      <ListItem className={classes.headers}>NEW TESTAMENT</ListItem>
+      <ListItem className={classes.headers}>
+        {t("commonNewTestamentHead")}
+      </ListItem>
     ) : (
       ""
     );
@@ -404,7 +410,7 @@ const BookCombo = (props) => {
     setValue("versesSelected", []);
     setParams(_bookCode, _chapter);
     if (parallelScroll && paneNo) {
-      syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1));
+      syncPanel("panel" + paneNo, "panel" + ((parseInt(paneNo) % 2) + 1), t);
     }
   };
   return verseData ? (
@@ -413,7 +419,7 @@ const BookCombo = (props) => {
     </Typography>
   ) : (
     <>
-      <BigTooltip title="Choose a Bible book and chapter to read">
+      <BigTooltip title={t("commonBookDropDownToolTip")}>
         <Button
           aria-controls="customized-menu"
           aria-haspopup="true"
@@ -539,8 +545,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    syncPanel: (from, to) => {
-      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    syncPanel: (from, to, t) => {
+      dispatch({ type: SYNCPANEL, from: from, to: to, t: t });
     },
   };
 };

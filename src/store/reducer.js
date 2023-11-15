@@ -20,11 +20,14 @@ const defaultState = {
   },
   infographics: {},
   errorMessage: "",
+  hoverVerse: "",
+  locale: "en",
   audioBible: [],
   video: [],
   chapterVideo: [],
   readingPlans: [],
   signBible: [],
+  languageInfo: [],
   playing: "",
   versionBooks: {},
   versionSource: {},
@@ -47,6 +50,7 @@ const defaultState = {
     fontSize: 16,
     fontFamily: "Sans",
     lineView: false,
+    isHoverVerse: true,
     audio: false,
     versesSelected: [],
     language: "hindi",
@@ -59,6 +63,7 @@ const defaultState = {
     fontSize: 16,
     fontFamily: "Sans",
     lineView: false,
+    isHoverVerse: true,
     audio: false,
     language: "hindi",
   },
@@ -107,7 +112,7 @@ const reducer = (state = defaultState, action) => {
         bookCode = state[action.to].bookCode;
         parallelScroll = false;
         const ver = capitalize(state[action.to].version);
-        message = `Current book not available in ${ver}, Parallel Scroll disabled`;
+        message = action.t("reduxBookNotAvailable", { ver });
       }
       return {
         ...state,

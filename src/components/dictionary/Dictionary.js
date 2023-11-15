@@ -8,6 +8,7 @@ import Metadata from "../common/Metadata";
 import { getDictionaryIndex, getDictionaryWord } from "../common/utility";
 import Close from "../common/Close";
 import Typography from "@material-ui/core/Typography";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,6 +110,8 @@ const Dictionary = (props) => {
     dictionaryWord,
     wordMeaning,
   } = dictionary;
+
+  const { t } = useTranslation();
   //Need to improve the performance of the component
   React.useEffect(() => {
     //if no dictionary selected set current language dictionary
@@ -175,21 +178,21 @@ const Dictionary = (props) => {
           <div className={classes.heading}>{header}</div>
           <div>{clean1(wordMeaning.definition)}</div>
           <div>{clean1(wordMeaning.translationHelp)}</div>
-          <div className={classes.heading}>Strongs</div>
+          <div className={classes.heading}>{t("strongsText")}</div>
           <div>{clean2(wordMeaning.strongs)}</div>
-          <div className={classes.heading}>See Also</div>
+          <div className={classes.heading}>{t("seeAlsoText")}</div>
           <div className={classes.seeAlso}>{clean3(wordMeaning.seeAlso)}</div>
-          <div className={classes.heading}>Ref</div>
+          <div className={classes.heading}>{t("refText")}</div>
           <div>{clean4(wordMeaning.ref)}</div>
         </>
       );
     }
-  }, [classes.heading, classes.seeAlso, dictionaryWord.word, wordMeaning]);
+  }, [classes.heading, classes.seeAlso, dictionaryWord.word, t, wordMeaning]);
   return (
     <div className={classes.root}>
       <Box className={classes.header}>
         <Typography variant="h6" className={classes.title}>
-          Dictionary
+          {t("studyDictionaryTitle")}
         </Typography>
         <Box flexGrow={1}>
           <DictionaryCombo

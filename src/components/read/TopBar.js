@@ -18,6 +18,9 @@ import { SETVALUE } from "../../store/actions";
 import { Tooltip } from "@material-ui/core";
 import SearchPassage from "../search/SearchPassage";
 import { Alert } from "@material-ui/lab";
+import { useTranslation } from "react-i18next";
+import i18n from "../../i18n";
+import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,6 +95,13 @@ const useStyles = makeStyles((theme) => ({
     padding: "8px 8px 0",
     color: BLACK,
   },
+  languageIcon: {
+    color: BLACK,
+    cursor: "pointer",
+    marginLeft: 10,
+    width: "25px",
+    fontSize: "2rem",
+  },
 }));
 
 const TopBar = (props) => {
@@ -101,12 +111,14 @@ const TopBar = (props) => {
   const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
-
+  const mobileView = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
-  let { login, userDetails, setParallelView, mobileView } = props;
+  let { login, userDetails, setParallelView, setLocale } = props;
+  const { t } = useTranslation();
+  i18n.on("languageChanged", (lng) => setLocale(i18n.language));
   React.useEffect(() => {
     setLoginButton(
       login ? (
@@ -138,14 +150,14 @@ const TopBar = (props) => {
           variant="outlined"
           size="small"
           className={classes.signBible}
-          title="Sign Language Bible"
+          title={t("ISLVBibleText")}
           aria-label="sign language bible"
           target="_blank"
           rel="noOpener"
           onClick={setParallelView}
           startIcon={<i className="material-icons">sign_language</i>}
         >
-          {isTablet ? "ISLV" : "Sign Language Bible (ISLV)"}
+          {isTablet ? t("ISLVTopBarBtnTab") : t("ISLVBibleText")}
         </Button>
       );
     };
@@ -160,17 +172,22 @@ const TopBar = (props) => {
   const StoriesButton = () => {
     return process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
       <Link to="/biblestories">
-        <Button
-          variant="outlined"
-          size="small"
-          className={classes.button}
-          title="Bible Stories"
-          aria-label="bible stories"
-          target="_blank"
-          rel="noopener"
-        >
-          {mobileView === true ? "Stories" : "Bible Stories"}
-        </Button>
+        {mobileView ? (
+          <i className={`material-icons ${classes.islIcon}`}>auto_stories</i>
+        ) : (
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.button}
+            title={t("bibleStoriesText")}
+            aria-label="bible stories"
+            target="_blank"
+            rel="noopener"
+            startIcon={<i className="material-icons">auto_stories</i>}
+          >
+            {t("bibleStoriesText")}
+          </Button>
+        )}
       </Link>
     ) : (
       ""
@@ -186,13 +203,13 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title="Songs"
+            title={t("songsText")}
             aria-label="songs"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">music_note</i>}
           >
-            Songs
+            {t("songsText")}
           </Button>
         )}
       </Link>
@@ -200,7 +217,30 @@ const TopBar = (props) => {
       ""
     );
   };
-
+  const AudioBible = () => {
+    return (
+      <>
+        <Link to="/audiobible">
+          {mobileView ? (
+            <i className={`material-icons ${classes.islIcon}`}>headphones</i>
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              className={classes.button}
+              title={t("audioBibleText")}
+              aria-label="audio bible"
+              target="_blank"
+              rel="noopener"
+              startIcon={<i className="material-icons">headphones</i>}
+            >
+              {t("TopbarAudioBtn")}
+            </Button>
+          )}
+        </Link>
+      </>
+    );
+  };
   const ReadButton = () => {
     return (
       <Link to="/read">
@@ -211,13 +251,13 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title="Read Bible"
+            title={t("readTopBarBtn")}
             aria-label="read bible"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">local_library</i>}
           >
-            {mobileView === true ? "Read" : "Read Bible"}
+            {mobileView === true ? t("readTopBarBtnMob") : t("readTopBarBtn")}
           </Button>
         )}
       </Link>
@@ -233,13 +273,15 @@ const TopBar = (props) => {
             variant="outlined"
             size="small"
             className={classes.button}
-            title="Study Bible"
+            title={t("studyBibleTopBarBtn")}
             aria-label="study bible"
             target="_blank"
             rel="noopener"
             startIcon={<i className="material-icons">menu_book</i>}
           >
-            {mobileView === true ? "Study" : "Study Bible"}
+            {mobileView === true
+              ? t("studyTopBarBtnTab")
+              : t("studyBibleTopBarBtn")}
           </Button>
         )}
       </Link>
@@ -247,7 +289,7 @@ const TopBar = (props) => {
   };
   const FeedbackButton = () => {
     return (
-      <Tooltip title="Feedback">
+      <Tooltip title={t("feedbackTopBarBtnToolTip")}>
         <IconButton
           aria-label="feedback"
           className={classes.feedback}
@@ -273,22 +315,25 @@ const TopBar = (props) => {
               <img src={logo} alt={"logo"} className={classes.logo} />
             </Link>
           </div>
+          {path.startsWith("/audiobible") || path.startsWith("/read")
+            ? ""
+            : AudioBible()}
           <div>{ISLButton()}</div>
           {path.startsWith("/songs") || path.startsWith("/read")
             ? ""
             : SongsButton()}
-
           {path.startsWith("/biblestories") || path.startsWith("/read")
             ? ""
             : StoriesButton()}
           {path.startsWith("/read") ? searchBox() : ""}
-          {hideIcons ? (
+          {mobileView && hideIcons ? (
             ""
           ) : (
             <>
               {path.startsWith("/study") ? ReadButton() : StudyButton()}
               {FeedbackButton()}
               {loginButton}
+              <MultiLanguageDropdown iconstyle={classes.languageIcon} />
             </>
           )}
         </Toolbar>
@@ -310,10 +355,20 @@ const TopBar = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    login: state.local.login,
+    userDetails: state.local.userDetails,
+    locale: state.local.locale,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     setParallelView: () =>
       dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
+    setLocale: (value) =>
+      dispatch({ type: SETVALUE, name: "locale", value: value }),
   };
 };
-export default connect(null, mapDispatchToProps)(TopBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

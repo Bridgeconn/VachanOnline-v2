@@ -13,6 +13,8 @@ import { capitalize, getBookbyCode, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
+import { useTranslation } from "react-i18next";
+import { bibleBooks } from "../../store/bibleData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,7 +107,6 @@ const Video = (props) => {
     chapterVideo,
     bookCode,
     books,
-    versionBooks,
     setValue,
     languageCode,
     mobileView,
@@ -120,6 +121,9 @@ const Video = (props) => {
   const [vidLink, setVidLink] = React.useState("");
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
+  const [videoBooks, setVideoBooks] = useState([]);
+
+  const { t } = useTranslation();
 
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
@@ -149,9 +153,30 @@ const Video = (props) => {
         .sort((a, b) => a.value.localeCompare(b.value));
       setLanguages(languageList);
     } else {
-      setMessage("No Videos available");
+      setMessage(t("studyNoVideosAvailable1"));
     }
-  }, [video]);
+  }, [t, video]);
+  React.useEffect(() => {
+    //Mobile view set book combo bookList
+    if (mobileView && language && language?.value) {
+      let lang = video?.find((l) => l?.language?.code === language.value);
+      const bookCodes = Object.keys(lang?.books);
+      let bookArr = [];
+      bibleBooks.forEach((bookObj) => {
+        if (bookCodes.includes(bookObj?.abbreviation)) {
+          let obj = {
+            abbr: bookObj.abbreviation,
+            book_code: bookObj.abbreviation,
+            book_id: bookObj.bookId,
+            long: bookObj.book,
+            short: bookObj.book,
+          };
+          bookArr.push(obj);
+        }
+      });
+      setVideoBooks(bookArr);
+    }
+  }, [language, video, mobileView]);
   React.useEffect(() => {
     if (languages.length) {
       let lang = video?.find((l) => l?.language?.code === languageCode);
@@ -190,20 +215,20 @@ const Video = (props) => {
       } else {
         setVideos([]);
         const book = getShortBook(books, language.value, bookCode);
-        setMessage(
-          `No videos available in ${language?.label} for ${
-            book ? book : getBookbyCode(bookCode)?.book
-          }`
-        );
+        const ref = {
+          language: language?.label,
+          book: book ? book : getBookbyCode(bookCode)?.book,
+        };
+        setMessage(t("studyNoVideosAvailable", { ref }));
       }
     }
-  }, [video, bookCode, language, books, chapterVideo, chapter]);
+  }, [video, bookCode, language, books, chapterVideo, chapter, t]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h6">Videos</Typography>{" "}
+            <Typography variant="h6">{t("videosText")}</Typography>{" "}
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>
@@ -218,7 +243,7 @@ const Video = (props) => {
           {mobileView && bookCode ? (
             <BookCombo
               bookCode={bookCode}
-              bookList={versionBooks[language.value]}
+              bookList={videoBooks}
               chapter={chapter}
               setValue={setValue}
               minimal={true}
@@ -283,7 +308,6 @@ const Video = (props) => {
 const mapStateToProps = (state) => {
   return {
     bookCode: state.local.panel1.bookCode,
-    versionBooks: state.local.versionBooks,
     mobileView: state.local.mobileView,
     chapterVideo: state.local.chapterVideo,
   };

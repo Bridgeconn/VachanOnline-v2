@@ -16,6 +16,7 @@ import LandingFooter from "./LandingFooter";
 import LanguageBar from "./LanguageBar";
 import PageHeader from "./PageHeader";
 import BigTooltip from "../common/BigTooltip";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   screenshot: {
     width: "90%",
     display: "inline-block",
-    marginBottom: 30,
+    marginBottom: 10,
     [theme.breakpoints.only("md")]: {
       width: "60%",
     },
@@ -84,6 +85,8 @@ const Landing = (props) => {
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [language, setLanguage] = React.useState("English");
   const { setValue } = props;
+
+  const { t } = useTranslation();
   React.useEffect(() => {
     if (isMobile) {
       setValue("mobileView", true);
@@ -94,10 +97,10 @@ const Landing = (props) => {
   const addLink = () => {
     return process.env.REACT_APP_DOWNLOAD_URL ? (
       <Link href={process.env.REACT_APP_DOWNLOAD_URL} target="_blank">
-        <BigTooltip title="Get the app on the Google Play Store">
+        <BigTooltip title={t("landingPlayStoreToolTip")}>
           <img
             src={playStore}
-            alt="Get it on the play store"
+            alt={t("landingAlt")}
             className={classes.playStore}
           />
         </BigTooltip>
@@ -120,37 +123,29 @@ const Landing = (props) => {
       >
         <ImageCard
           icon="volume_up"
-          text="Listen"
+          type="Listen"
           onClick={() => setValue("parallelView", AUDIO)}
         />
         <ImageCard
           icon="videocam"
-          text="Watch"
+          type="Watch"
           onClick={() => setValue("parallelView", VIDEO)}
         />
-        <ImageCard icon="local_library" text="Read" />
-        <ImageCard icon="menu_book" text="Study" />
+        <ImageCard icon="local_library" type="Read" />
+        <ImageCard icon="menu_book" type="Study" />
       </Grid>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item md={12} lg={6}>
           <div className={classes.text}>
-            <h3>Welcome to VachanOnline.com</h3>
+            <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
             <p>
-              VachanOnline.com and the companion VachanGo app is a premier
-              Scripture Engagement website in Indian Languages!
+              VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
+              {t("landingWelcomeMessage2")}
             </p>
+            <p>{t("landingWelcomeMessage3")}</p>
             <p>
-              So what is Scripture engagement? It is a way of studying the Bible
-              with resources and tools to assist you understand the Bible. With
-              a host of commentaries, videos, audio Bibles and reading plans in
-              your heart language, our desire is that you will find this website
-              to be a place where you can interact with Scripture, find
-              resources to understand it, journal your spiritual growth and
-              enjoy developing a growing relationship with God.
-            </p>
-            <p>
-              The VachanGo companion app enables you take your Bible and your
-              Notes with you wherever you go!
+              {t("landingWelcomeMessage4")} VachanGo{" "}
+              {t("landingWelcomeMessage5")}
             </p>
           </div>
         </Grid>

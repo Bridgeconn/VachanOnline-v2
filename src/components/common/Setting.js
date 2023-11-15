@@ -6,6 +6,7 @@ import Divider from "@material-ui/core/Divider";
 import Menu from "@material-ui/core/Menu";
 import { makeStyles } from "@material-ui/core/styles";
 import { BLACK } from "../../store/colorCode";
+import { t } from "i18next";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -57,7 +58,7 @@ const Setting = (props) => {
   return (
     <div>
       <Tooltip
-        title="Settings"
+        title={t("commonSettings")}
         className={classes.settings}
         aria-label="More"
         aria-controls="long-menu"
@@ -76,7 +77,7 @@ const Setting = (props) => {
           className: classes.settingsMenu,
         }}
       >
-        <MenuItem className={classes.menu}>Font Size</MenuItem>
+        <MenuItem className={classes.menu}>{t("settingsFontSize")}</MenuItem>
         <Divider />
         <MenuItem className={classes.menu}>
           <div className={classes.margin} />

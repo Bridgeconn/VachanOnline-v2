@@ -16,6 +16,7 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { GREY } from "../../store/colorCode";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -164,6 +165,8 @@ const ReadingPlan = (props) => {
   const [readingList, setReadingList] = useState([]);
   const [loading, setLoading] = React.useState(false);
 
+  const { t } = useTranslation();
+
   const months = [
     "Jan",
     "Feb",
@@ -250,7 +253,7 @@ const ReadingPlan = (props) => {
       <Box className={classes.title}>
         <Box flexGrow={1}>
           {mobileView ? null : (
-            <Typography variant="h6"> {"Reading Plans"}</Typography>
+            <Typography variant="h6"> {t("readingPlansText")}</Typography>
           )}
         </Box>
         <Box flexGrow={1}>
@@ -298,7 +301,8 @@ const ReadingPlan = (props) => {
           <Box className={classes.heading}>
             <Box flexGrow={1} className={classes.refBox}>
               <Typography variant="h6" className={classes.refText}>
-                {"Bible references for " +
+                {t("readingPlanBibleRef") +
+                  " " +
                   selectedDate.getDate() +
                   "-" +
                   months[selectedDate.getMonth()] +
@@ -325,7 +329,7 @@ const ReadingPlan = (props) => {
                   ) : (
                     <BigTooltip
                       key={i}
-                      title="The book is not available in the selected version"
+                      title={t("readingPlanBookNotAvailableToolTip")}
                       arrow
                     >
                       <span>
@@ -349,7 +353,7 @@ const ReadingPlan = (props) => {
                                 float: "right",
                               }}
                             >
-                              Book not available
+                              {t("readingPlanBookNotAvailableMob")}
                             </Typography>
                           ) : null}
                         </ListItem>
@@ -360,7 +364,7 @@ const ReadingPlan = (props) => {
               </List>
             ) : (
               <Typography className={classes.message}>
-                No reading plan available for this date.
+                {t("noReadingPlanAvailable")}
               </Typography>
             )}
           </>

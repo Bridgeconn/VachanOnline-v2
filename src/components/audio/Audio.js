@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import Select from "react-select";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import ReactPlayer from "react-player";
 import Close from "../common/Close";
+import BookCombo from "../common/BookCombo";
+import Player from "../common/Player";
 import Box from "@material-ui/core/Box";
+import * as actions from "../../store/actions";
+import { makeStyles } from "@material-ui/core/styles";
 import { capitalize, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
-import * as actions from "../../store/actions";
-import BookCombo from "../common/BookCombo";
-
+import { useTranslation } from "react-i18next";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -64,41 +59,6 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: 15,
     },
   },
-  language: {
-    fontSize: "1.1rem",
-    textTransform: "capitalize",
-  },
-  cardRoot: {
-    border: "1px solid #dddddd",
-    boxShadow: "none",
-    marginRight: 4,
-  },
-  cardHeader: {
-    textTransform: "capitalize",
-    borderBottom: "1px solid #b7b7b785",
-    backgroundColor: "#efefef",
-    minHeight: 50,
-    padding: "0 15px",
-  },
-  cardContent: {
-    padding: 0,
-  },
-  audioBible: {
-    display: "block",
-    padding: 16,
-    fontSize: "1.1rem",
-    borderBottom: "1px solid #b7b7b785",
-    "&:last-child": {
-      borderBottom: "none",
-      paddingBottom: 0,
-    },
-  },
-  player: {
-    marginTop: 5,
-    "& audio": {
-      outlineWidth: 0,
-    },
-  },
   closeButton: {
     marginRight: 15,
     marginTop: 7,
@@ -115,9 +75,17 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.8rem",
   },
   selectBox: {
-    [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      alignItems: "center",
+    display: "flex",
+    alignItems: "center",
+  },
+  bookLabel: {
+    paddingLeft: 20,
+    verticalAlign: "middle",
+    fontSize: 20,
+    display: "inline-block",
+    [theme.breakpoints.down("md")]: {
+      fontSize: 16,
+      paddingLeft: 5,
     },
   },
 }));
@@ -138,11 +106,12 @@ const Audio = (props) => {
   const [language, setLanguage] = useState("");
   const [hasAudio, setHasAudio] = useState(false);
   const [audios, setAudios] = useState(null);
-  const [playing, setPlaying] = useState("");
   const [book, setBook] = useState("");
   const [message, setMessage] = useState("");
   const [audioLangCode, setAudioLangCode] = useState("hin");
   const [audioBooks, setAudioBooks] = useState([]);
+
+  const { t } = useTranslation();
   useEffect(() => {
     if (languages.length) {
       let lang = audioBible?.find((l) => l?.language?.code === languageCode);
@@ -183,10 +152,10 @@ const Audio = (props) => {
         //In mobile view there is only single pane view with the book combo, it will set the first available book
         setMessage("");
       } else if (OBTBibles.includes(value)) {
-        const message = `Audio Bible not available in ${value} for this book.\nIt is available only for Mark, Luke, 1st and 2nd Thessalonians.\nUse the book dropdown in the left panel to navigate.`;
+        const message = t("audioMessage1", { value });
         setMessage(message);
       } else {
-        setMessage(`Audio bible not available in ${value} for this book`);
+        setMessage(t("audioMessage", { value }));
       }
       const obj = audioBible?.find((obj) => obj?.language?.name === lang);
       setAudioLangCode(obj?.language?.code ? obj?.language?.code : "hin");
@@ -194,10 +163,7 @@ const Audio = (props) => {
       setBook(getShortBook(books, obj?.language?.code, bookCode));
       setHasAudio(obj.audioBibles?.findIndex((x) => x.books[bookCode]) !== -1);
     }
-  }, [language, audioBible, bookCode, books, mobileView]);
-  useEffect(() => {
-    setPlaying("");
-  }, [bookCode, chapter, languageCode]);
+  }, [language, audioBible, bookCode, books, mobileView, t]);
   useEffect(() => {
     const lang = audioBible.find(
       (ele) => ele?.language?.code === audioLangCode
@@ -211,7 +177,7 @@ const Audio = (props) => {
       <Box className={classes.heading}>
         {mobileView ? null : (
           <Box flexGrow={1}>
-            <Typography variant="h6">Audio Bibles</Typography>
+            <Typography variant="h5">{t("audioBibleText")}</Typography>
           </Box>
         )}
         <Box flexGrow={1} className={classes.selectBox}>
@@ -222,6 +188,15 @@ const Audio = (props) => {
               onChange={(data) => setLanguage(data)}
               options={languages}
             />
+          )}
+          {mobileView ? (
+            ""
+          ) : book ? (
+            <Typography className={classes.bookLabel}>
+              {book} {chapter}
+            </Typography>
+          ) : (
+            ""
           )}
           {mobileView && bookCode ? (
             <BookCombo
@@ -240,51 +215,17 @@ const Audio = (props) => {
       </Box>
       <div className={classes.container}>
         {(audioBible?.length === 0 || audioBible?.success === false) && (
-          <h5 className={classes.message}>{"No audio bibles available"}</h5>
+          <h5 className={classes.message}>
+            {t("studyAudioBibleNotAvailableMsg")}
+          </h5>
         )}
         {hasAudio ? (
-          <Card className={classes.cardRoot}>
-            <CardHeader
-              title={book + " " + chapter}
-              className={classes.cardHeader}
-            />
-            <CardContent className={classes.cardContent}>
-              <List>
-                {audios?.map((audio) => {
-                  const { url, format, books, name, sourceId } = audio;
-                  const audioUrl =
-                    url + bookCode + "/" + chapter + "." + format;
-                  return books.hasOwnProperty(bookCode) ? (
-                    <ListItem
-                      key={name}
-                      value={name}
-                      className={classes.audioBible}
-                    >
-                      {name}
-                      <ReactPlayer
-                        playing={playing === sourceId}
-                        url={audioUrl}
-                        onPlay={() => setPlaying(sourceId)}
-                        controls
-                        width="100%"
-                        height="50px"
-                        className={classes.player}
-                        config={{
-                          file: {
-                            attributes: {
-                              controlsList: "nodownload",
-                            },
-                          },
-                        }}
-                      />
-                    </ListItem>
-                  ) : (
-                    ""
-                  );
-                })}
-              </List>
-            </CardContent>
-          </Card>
+          <Player
+            audios={audios}
+            bookCode={bookCode}
+            chapter={chapter}
+            languageCode={languageCode}
+          />
         ) : (
           <h5 className={classes.message}>{message}</h5>
         )}

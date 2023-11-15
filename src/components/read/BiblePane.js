@@ -14,6 +14,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { SEARCH } from "../../store/views";
 import { GREY } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   bible: {
@@ -100,6 +101,7 @@ const BiblePane = (props) => {
   const [printHighlights, setPrintHighlights] = React.useState(true);
   const location = useLocation();
   const path = location?.pathname;
+  const { t } = useTranslation();
 
   function goToSearch() {
     setMainValue("parallelView", SEARCH);
@@ -107,7 +109,7 @@ const BiblePane = (props) => {
   }
   const searchTextButton = (
     <>
-      If you are searching for a word in the bible, click the button{" "}
+      {t("readSearchTextErrorMsg")}{" "}
       <Link
         to={{
           pathname: "/study",
@@ -123,7 +125,7 @@ const BiblePane = (props) => {
           onClick={goToSearch}
           className={classes.searchBtn}
         >
-          Search Text
+          {t("readSearchTextBtn")}
         </Button>
       </Link>
     </>
@@ -142,43 +144,32 @@ const BiblePane = (props) => {
       onClick={resetSearch}
       className={classes.searchBtn}
     >
-      Reset Search
+      {t("readResetSearchBtn")}
     </Button>
   );
   const navigatePoint = (
     <>
-      <li>
-        Reset search and navigate to the required reference using the Book
-        dropdown above{" "}
-      </li>
+      <li>{t("readResetSearchMsg")} </li>
       {resetButton}
     </>
   );
   const textSearchMessage = (
     <div className={classes.errorSearchMessage}>
-      <h5>NO RESULTS FOUND</h5>
-      <b>Please try the following:</b>
+      <h5>{t("readSearchNoResultFound")}</h5>
+      <b>{t("readPleaseTryMsg")}:</b>
       <br />
       {searchTextButton}
     </div>
   );
   const notFoundMessage = (
     <div className={classes.errorSearchMessage}>
-      <h5>NO RESULTS FOUND</h5>
-      <b>Please try the following:</b>
+      <h5>{t("readSearchNoResultFound")}</h5>
+      <b>{t("readPleaseTryMsg")}:</b>
       <ul className={classes.listError}>
-        <li>
-          Double-check spelling, you can use either book code,full book name or
-          local book name
-        </li>
-        <li>
-          For a Chapter search, Make sure there is a space between book name and
-          chapter
-        </li>
-        <li>
-          For a verse search, use this format. eg: psalms 5:8 or psalms 5:8,10
-        </li>
-        <li>For a passage search, use this format. eg: psalms 5:10-15</li>
+        <li>{t("searchDoubleCheckSpell")}</li>
+        <li>{t("chapterSearchWarn")}:</li>
+        <li>{t("verseSearchWarn")}: psalms 5:8 or psalms 5:8,10</li>
+        <li>{t("passageSearchWarn")}: psalms 5:10-15</li>
         <li>{searchTextButton}</li>
         {navigatePoint}
       </ul>
@@ -186,53 +177,47 @@ const BiblePane = (props) => {
   );
   const bookNotFound = (
     <div className={classes.errorSearchMessage}>
-      <h5>BOOK NOT FOUND IN CURRENT BIBLE</h5>
-      <b>Please try the following:</b>
-      <li>
-        Double-check spelling, you can use either book code,full book name or
-        local book name
-      </li>
-      <li>Make sure there is a space between book name and chapter</li>
-      <li>Change Bible using Version dropdown (first dropdown)</li>
+      <h5>{t("searchBookNotFound")}</h5>
+      <b>{t("readPleaseTryMsg")}:</b>
+      <li>{t("searchDoubleCheckSpell")}</li>
+      <li>{t("searchChapterWarning")}</li>
+      <li>{t("searchChangeBibleVersion")}</li>
       {navigatePoint}
     </div>
   );
   const referenceNotFound = (
     <div className={classes.errorSearchMessage}>
-      <h5>BIBLE REFERENCE NOT FOUND IN CURRENT BIBLE</h5>
-      <b>Please try the following:</b>
+      <h5>{t("searchBibleRefNotFound")}</h5>
+      <b>{t("readPleaseTryMsg")}:</b>
       <ul className={classes.listError}>
-        <li>Make sure there is a space between book name and chapter</li>
-        <li>Search for another reference</li>
-        <li>Change Bible using Version dropdown (first dropdown)</li>
+        <li>{t("searchChapterWarning")}</li>
+        <li>{t("searchAnotherRef")}</li>
+        <li>{t("searchChangeBibleVersion")}</li>
         {navigatePoint}
       </ul>
     </div>
   );
   const invalidFormat = (
     <div className={classes.errorSearchMessage}>
-      <h5>INVALID SEARCH FORMAT</h5>
-      <b>Please try the following:</b>
+      <h5>{t("searchInvalid")}</h5>
+      <b>{t("readPleaseTryMsg")}:</b>
       <ul className={classes.listError}>
         <li>
-          Don't use special characters except <b>, : -</b>
+          {t("searchWarnSplChar")} <b>, : -</b>
         </li>
-        <li>
-          Double-check spelling, you can use either book code,full book name or
-          local book name
-        </li>
+        <li>{t("searchDoubleCheckSpell")}</li>
         <li>
           {" "}
-          Make sure there is a space between book name and chapter, eg:gen 49 or
-          നഹൂം 1 or यहूदा 1
+          {t("searchChapterWarning")} {t("egSearchRef")} gen 49 or നഹൂം 1 or
+          यहूदा 1
         </li>
         <li>
-          For a verse search, use this format. ഇയ്യോബ് 42:2 or genesis 12:2,3 or
-          रूत 2:12,13
+          {t("verseSearchFormat")}
+          {t("egSearchRef")} ഇയ്യോബ് 42:2 or genesis 12:2,3 or रूत 2:12,13
         </li>
         <li>
-          For a passage search, start verse should be less than end verse, use
-          this format. Eg:rev 1:13-16 or 1 योहान 4:8-10
+          {t("passageSearchFormat")} {t("egSearchRef")} rev 1:13-16 or 1 योहान
+          4:8-10
         </li>
         {navigatePoint}
       </ul>

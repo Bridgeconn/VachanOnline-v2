@@ -8,7 +8,8 @@ import { useTheme } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as views from "../../store/views";
 import BookCombo from "../common/BookCombo";
-import VideoCard from "./VideoCard";
+import VideoCard from "../common/VideoCard";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,16 +112,15 @@ const SignBible = (props) => {
   const styleProps = {
     parallelView: parallelView,
   };
+  const { t } = useTranslation();
   const classes = useStyles(styleProps);
   const [message, setMessage] = useState("");
   const [videos, setVideos] = useState();
   const [playing, setPlaying] = useState("");
   const { bookCode, chapter, sourceId } = panel1;
-
   const theme = useTheme();
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  const heading = mobileLandscape ? "ISLV" : "Sign Language Bible (ISLV)";
-
+  const heading = mobileLandscape ? t("ISLVTopBarBtnTab") : t("ISLVBibleText");
   function getBooks(bookName) {
     let books = Object.keys(signBible?.books);
     const filterByName = (item) => books?.includes(item?.book_code);
@@ -166,13 +166,11 @@ const SignBible = (props) => {
         setMessage("");
       } else {
         setVideos();
-        setMessage(
-          `Sign Language Bible available only for some books of the Bible. Use the book dropdown in the other panel to navigate.`
-        );
+        setMessage(t("signLangNotAvailableMsg"));
       }
       setPlaying();
     }
-  }, [signBible, bookCode, chapter, book]);
+  }, [signBible, bookCode, chapter, book, t]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>

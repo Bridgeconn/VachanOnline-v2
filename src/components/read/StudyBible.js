@@ -32,6 +32,7 @@ import {
 } from "../common/utility";
 import { useMediaQuery } from "@material-ui/core";
 import BottomBar from "./BottomBar";
+import { useTranslation } from "react-i18next";
 const useStyles = makeStyles((theme) => ({
   main: {
     [theme.breakpoints.down("sm")]: {
@@ -143,6 +144,8 @@ const StudyBible = (props) => {
   const classes = useStyles();
   const { uid } = userDetails;
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const { t } = useTranslation();
   //function for moving parallel bibles scroll together
   const scroll = React.useCallback((paneNo, parallelScroll) => {
     //check flag to prevent looping of on scroll event
@@ -182,18 +185,18 @@ const StudyBible = (props) => {
   const toggleParallelScroll = React.useCallback(() => {
     setValue("parallelScroll", !parallelScroll);
     if (!parallelScroll) {
-      syncPanel("panel1", "panel2");
+      syncPanel("panel1", "panel2", t);
     }
-  }, [parallelScroll, setValue, syncPanel]);
+  }, [parallelScroll, setValue, syncPanel, t]);
   const parallelScrollIcon = useMemo(() => {
     return mobileView ? null : (
       <div onClick={toggleParallelScroll}>
         {parallelScroll ? (
-          <Tooltip title="Parallel Scroll">
+          <Tooltip title={t("studyParallelScroll")}>
             <ParallelScroll fontSize="large" className={classes.pScroll} />
           </Tooltip>
         ) : (
-          <Tooltip title="Parallel Scroll Disabled">
+          <Tooltip title={t("studyParallelScrollDisabled")}>
             <ParallelScroll
               fontSize="large"
               color="disabled"
@@ -203,7 +206,7 @@ const StudyBible = (props) => {
         )}
       </div>
     );
-  }, [classes.pScroll, mobileView, parallelScroll, toggleParallelScroll]);
+  }, [classes.pScroll, mobileView, parallelScroll, t, toggleParallelScroll]);
 
   useEffect(() => {
     if (isMobile) {
@@ -560,7 +563,7 @@ const StudyBible = (props) => {
   ]);
   return (
     <>
-      <TopBar login={login} userDetails={userDetails} mobileView={isMobile} />
+      <TopBar />
       <div className={classes.main}>
         <div className={classes.biblePane}>{pane}</div>
         {isMobile ? null : (
@@ -607,8 +610,8 @@ const mapDispatchToProps = (dispatch) => {
     setDictionary: (name, value) =>
       dispatch({ type: actions.SETDICTIONARY, name: name, value: value }),
     copyPanel1: () => dispatch({ type: actions.COPYPANEL1 }),
-    syncPanel: (from, to) => {
-      dispatch({ type: actions.SYNCPANEL, from: from, to: to });
+    syncPanel: (from, to, t) => {
+      dispatch({ type: actions.SYNCPANEL, from: from, to: to, t: t });
     },
   };
 };
