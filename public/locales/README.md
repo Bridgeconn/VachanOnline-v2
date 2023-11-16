@@ -13,3 +13,4 @@ python3 need to install.
 csv file and csv_to_json.py files should be in the same folder.
 add csv file path inside the csv_to_json.py file in line number 5.
 run the script :- python3 csv_to_json.py.
+documentation link :- https://www.i18next.com/overview/getting-started
