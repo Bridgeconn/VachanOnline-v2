@@ -9,7 +9,7 @@
 * Open translation.json file in each language folder, then add the string with key like “key”: “string”
 * Replace that new string in the file with key. Eg : {t(“newKey”)}
 ## **For convert csv to json**
-python3 need to install.
+* Python3 need to install.
 * csv file and csv_to_json.py files should be in the same folder.
 * Add csv file path inside the csv_to_json.py file in line number 5.
 * Run the script :- python3 csv_to_json.py.
