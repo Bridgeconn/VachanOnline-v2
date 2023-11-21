@@ -117,6 +117,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     maxWidth: 300,
   },
+  islIcon: {
+    fontSize: 21,
+    float: "right",
+    marginRight: 30,
+    marginTop: 20,
+    color: BLACK,
+  },
   content: {
     flexGrow: 1,
     display: "flex",
@@ -294,7 +301,15 @@ const Songs = () => {
         )}
         <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
-            {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
+            {isLarge ? t("songsPageTitleDesktop") : t("songsText")}{" "}
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "songs"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
           </Typography>
           <Typography variant="h4" className={classes.lyricsHeading}>
             {currentSong?.sno}. {currentSong?.name}

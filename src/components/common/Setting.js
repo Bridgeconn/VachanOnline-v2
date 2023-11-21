@@ -33,18 +33,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     color: BLACK,
   },
-  box: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-  islIcon: {
-    marginTop: -38,
-    float: "right",
-    marginRight: 5,
-    cursor: "pointer",
-    fontSize: 21,
-    color: BLACK,
-  },
   settingsMenu: {
     maxHeight: 68 * 4.5,
     width: 250,
@@ -71,9 +59,6 @@ const Setting = (props) => {
   return (
     <div>
       <div className={classes.box}>
-        <Link to={process.env.REACT_APP_DOCUMENT_URL + "songs"} target="_blank">
-          <i className={`material-icons ${classes.islIcon}`}>help_outline</i>
-        </Link>
         <Tooltip
           title={t("commonSettings")}
           className={classes.settings}

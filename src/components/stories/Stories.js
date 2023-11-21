@@ -105,17 +105,13 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
   },
   islIcon: {
-    marginTop: -46,
+    marginTop: -40,
     float: "right",
-    marginRight: 5,
+    marginRight: 30,
     cursor: "pointer",
     fontSize: 21,
     color: BLACK,
     padding: "0 5px",
-  },
-  box: {
-    display: "flex",
-    justifyContent: "flex-end",
   },
   mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
   heading: {
@@ -383,26 +379,16 @@ const Stories = () => {
                 </Select>
               </FormControl>
               <div>
-                <div className={classes.box}>
-                  <Link
-                    to={process.env.REACT_APP_DOCUMENT_URL + "bibleStories"}
-                    target="_blank"
-                  >
-                    <i className={`material-icons ${classes.islIcon}`}>
-                      help_outline
-                    </i>
-                  </Link>
-                  <Tooltip
-                    title={t("commonSettings")}
-                    className={classes.settings}
-                    aria-label="More"
-                    aria-controls="long-menu"
-                    aria-haspopup="true"
-                    onClick={openSettings}
-                  >
-                    <i className="material-icons md-23">more_vert</i>
-                  </Tooltip>
-                </div>
+                <Tooltip
+                  title={t("commonSettings")}
+                  className={classes.settings}
+                  aria-label="More"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={openSettings}
+                >
+                  <i className="material-icons md-23">more_vert</i>
+                </Tooltip>
                 <Menu
                   id="long-menu"
                   anchorEl={settingsAnchor}
@@ -456,6 +442,14 @@ const Stories = () => {
             <Typography variant="h3" className={classes.text}>
               {t("bibleStoriesText")}
             </Typography>
+            <Link
+              to={process.env.REACT_APP_DOCUMENT_URL + "bibleStories"}
+              target="_blank"
+            >
+              <i className={`material-icons ${classes.islIcon}`}>
+                help_outline
+              </i>
+            </Link>
             <Divider />
           </div>
           {lang === "isl" ? (

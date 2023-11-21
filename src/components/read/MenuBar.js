@@ -338,18 +338,6 @@ const MenuBar = (props) => {
             {mobileView ? null : highlightIcon}
 
             {bookmarkIcon}
-            {mobileView ? (
-              ""
-            ) : (
-              <Link
-                to={process.env.REACT_APP_DOCUMENT_URL + url}
-                target="_blank"
-              >
-                <i className={`material-icons ${classes.islIcon}`}>
-                  help_outline
-                </i>
-              </Link>
-            )}
             <Metadata
               metadataList={metadataList}
               title="Version Name (in Eng)"
@@ -397,6 +385,18 @@ const MenuBar = (props) => {
               chapter={chapter}
               paneNo={paneNo}
             />
+            {mobileView ? (
+              ""
+            ) : (
+              <Link
+                to={process.env.REACT_APP_DOCUMENT_URL + url}
+                target="_blank"
+              >
+                <i className={`material-icons ${classes.islIcon}`}>
+                  help_outline
+                </i>
+              </Link>
+            )}
             {mobileView && paneNo === 1 ? (
               <div
                 className={classes.infoParall}

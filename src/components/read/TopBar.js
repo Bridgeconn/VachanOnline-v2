@@ -241,30 +241,6 @@ const TopBar = (props) => {
       </>
     );
   };
-  const HelpButton = () => {
-    return (
-      <>
-        <Link to={process.env.REACT_APP_DOCUMENT_URL} target="_blank">
-          {mobileView ? (
-            // <i className={`material-icons ${classes.islIcon}`}>help_outline</i>
-            ""
-          ) : (
-            <Button
-              variant="outlined"
-              size="small"
-              className={classes.button}
-              title="help"
-              aria-label="help"
-              rel="noopener"
-              startIcon={<i className="material-icons">help_outline</i>}
-            >
-              help{process.env.REACT_DOCUMENT}
-            </Button>
-          )}
-        </Link>
-      </>
-    );
-  };
   const ReadButton = () => {
     return (
       <Link to="/read">
@@ -355,7 +331,6 @@ const TopBar = (props) => {
           ) : (
             <>
               {path.startsWith("/study") ? ReadButton() : StudyButton()}
-              {HelpButton()}
               {FeedbackButton()}
               {loginButton}
               <MultiLanguageDropdown iconstyle={classes.languageIcon} />

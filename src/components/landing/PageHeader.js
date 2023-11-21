@@ -131,25 +131,6 @@ const PageHeader = (props) => {
               )}
             </Link>
           </div>
-          <Link to={process.env.REACT_APP_DOCUMENT_URL} target="_blank">
-            {mobileLandscape ? (
-              // <i className={`material-icons ${classes.islIcon}`}>help_outline</i>
-              ""
-            ) : (
-              <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                className={classes.signBible}
-                title="help"
-                aria-label="help"
-                rel="noopener"
-                startIcon={<i className="material-icons">help_outline</i>}
-              >
-                Help
-              </Button>
-            )}
-          </Link>
           <Link
             to={{
               pathname: "/audiobible",
@@ -260,6 +241,25 @@ const PageHeader = (props) => {
           ) : (
             ""
           )}
+          <Link to={process.env.REACT_APP_DOCUMENT_URL} target="_blank">
+            {mobileLandscape ? (
+              // <i className={`material-icons ${classes.islIcon}`}>help_outline</i>
+              ""
+            ) : (
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                className={classes.signBible}
+                title="help"
+                aria-label="help"
+                rel="noopener"
+                startIcon={<i className="material-icons">help_outline</i>}
+              >
+                Help
+              </Button>
+            )}
+          </Link>
           {loginButton}
           <MultiLanguageDropdown iconstyle={classes.languageIcon} />
         </Toolbar>
