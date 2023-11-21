@@ -107,10 +107,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   islIcon: {
-    padding: "8px 12px 0",
+    padding: "8px 3px 0",
     color: BLACK,
-    marginTop: 1,
-    fontSize: 21,
+    fontSize: 19.5,
+    marginTop: 4,
+    marginRight: 5,
   },
   seeAlso: {
     textTransform: "capitalize",
@@ -224,6 +225,14 @@ const Dictionary = (props) => {
           ></DictionaryWordCombo>
         </Box>
         <Box className={classes.icons}>
+          <div className={classes.metadata}>
+            <Metadata
+              metadataList={selectedDictionary.metadata}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+              mobileView={mobileView}
+            ></Metadata>
+          </div>
           {mobileView ? (
             ""
           ) : (
@@ -236,14 +245,6 @@ const Dictionary = (props) => {
               </i>
             </Link>
           )}
-          <div className={classes.metadata}>
-            <Metadata
-              metadataList={selectedDictionary.metadata}
-              title="Version Name (in Eng)"
-              abbreviation="Abbreviation"
-              mobileView={mobileView}
-            ></Metadata>
-          </div>
           <Close className={classes.closeButton} />
         </Box>
       </Box>

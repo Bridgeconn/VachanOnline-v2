@@ -12,7 +12,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FormControl from "@material-ui/core/FormControl";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
-import Link from "@material-ui/core/Link";
+import StoryLink from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import TopBar from "../read/TopBar";
@@ -22,6 +22,7 @@ import { Box, Typography } from "@material-ui/core";
 import { BLACK, GREY } from "../../store/colorCode";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 400;
 
@@ -423,14 +424,14 @@ const Stories = () => {
               <List>
                 {manifest.map((text, y) => (
                   <ListItem key={y} value={text} className={listClass}>
-                    <Link
+                    <StoryLink
                       className={classes.linkList}
                       href="#"
                       data-id={y + 1}
                       onClick={(e) => getStory(e)}
                     >
                       {y + 1 + ". " + text}
-                    </Link>
+                    </StoryLink>
                   </ListItem>
                 ))}
               </List>

@@ -5,7 +5,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
-import Link from "@material-ui/core/Link";
+import SongsLink from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ReactPlayer from "react-player";
@@ -18,6 +18,7 @@ import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { t } from "i18next";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 350;
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   linkList: {
     marginLeft: 5,
+    cursor: "pointer",
     color: BLACK,
     "&:hover": {
       color: GREY,
@@ -286,13 +288,12 @@ const Songs = () => {
                 {songs?.map((song) => (
                   <ListItem key={song.sno} className={classes.listDirection}>
                     {song.sno + "."}
-                    <Link
+                    <SongsLink
                       className={classes.linkList}
-                      href="#"
                       onClick={() => setCurrentSong(song)}
                     >
                       {song.name}
-                    </Link>
+                    </SongsLink>
                   </ListItem>
                 ))}
               </List>

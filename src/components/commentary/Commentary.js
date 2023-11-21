@@ -136,10 +136,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   islIcon: {
-    padding: "2px 3px 0",
+    padding: "2px 0 0",
     color: BLACK,
-    marginTop: 3,
-    fontSize: 21,
+    marginTop: 5,
+    marginRight: 5,
+    fontSize: 19.5,
   },
   icons: {
     display: "flex",
@@ -431,6 +432,14 @@ const Commentary = (props) => {
         </Box>
 
         <Box className={classes.icons}>
+          <div className={classes.metadata}>
+            <Metadata
+              metadataList={commentary.metadata}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+              mobileView={mobileView}
+            ></Metadata>
+          </div>
           {mobileView ? (
             ""
           ) : (
@@ -443,14 +452,6 @@ const Commentary = (props) => {
               </i>
             </Link>
           )}
-          <div className={classes.metadata}>
-            <Metadata
-              metadataList={commentary.metadata}
-              title="Version Name (in Eng)"
-              abbreviation="Abbreviation"
-              mobileView={mobileView}
-            ></Metadata>
-          </div>
           <Close className={classes.closeButton} />
         </Box>
       </Box>
