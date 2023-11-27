@@ -127,7 +127,7 @@
     "studyParallelScroll": "समानांतर स्क्रॉल",
     "studyParallelScrollDisabled": "समानांतर स्क्रॉल अक्षम किया गया",
     "readTopBarBtnTooltip": "बाइबिल पढ़ें",
-    "readingPlanBibleRef": "के लिए बाइबिल संदर्भ",
+    "readingPlanBibleRef": "{{ref.date}}-{{ref.month}}-{{ref.year}} के लिए बाइबिल संदर्भ",
     "readingPlanBookNotAvailableToolTip": "पुस्तक चयनित संस्करण में उपलब्ध नहीं है",
     "readingPlanBookNotAvailableMob": "पुस्तक उपलब्ध नहीं है",
     "noReadingPlanAvailable": "इस तिथि के लिए कोई पठन योजना उपलब्ध नहीं है.",

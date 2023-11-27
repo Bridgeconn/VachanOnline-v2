@@ -127,7 +127,7 @@
     "studyParallelScroll": "Parallel Scroll",
     "studyParallelScrollDisabled": "Parallel Scroll Disabled",
     "readTopBarBtnTooltip": "Read Bible",
-    "readingPlanBibleRef": "Bible references for",
+    "readingPlanBibleRef": "Bible references for {{ref.date}}-{{ref.month}}-{{ref.year}} ",
     "readingPlanBookNotAvailableToolTip": "The book is not available in the selected version",
     "readingPlanBookNotAvailableMob": "Book not available",
     "noReadingPlanAvailable": "No reading plan available for this date.",
