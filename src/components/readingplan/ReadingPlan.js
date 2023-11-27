@@ -181,6 +181,11 @@ const ReadingPlan = (props) => {
     "Nov",
     "Dec",
   ];
+  const ref = {
+    date: selectedDate.getDate(),
+    month: months[selectedDate.getMonth()],
+    year: selectedDate.getFullYear(),
+  };
   const getBookText = (dataRef, text) => {
     let ref = dataRef.split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
@@ -301,13 +306,7 @@ const ReadingPlan = (props) => {
           <Box className={classes.heading}>
             <Box flexGrow={1} className={classes.refBox}>
               <Typography variant="h6" className={classes.refText}>
-                {t("readingPlanBibleRef") +
-                  " " +
-                  selectedDate.getDate() +
-                  "-" +
-                  months[selectedDate.getMonth()] +
-                  "-" +
-                  selectedDate.getFullYear()}
+                {t("readingPlanBibleRef", { ref })}
               </Typography>
             </Box>
           </Box>
