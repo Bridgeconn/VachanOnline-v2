@@ -102,6 +102,10 @@ const useStyles = makeStyles((theme) => ({
     width: "25px",
     fontSize: "2rem",
   },
+  person: {
+    color: BLACK,
+    cursor: "pointer",
+  },
 }));
 
 const TopBar = (props) => {
@@ -124,7 +128,11 @@ const TopBar = (props) => {
       login ? (
         <LoginMenu userDetails={userDetails} />
       ) : (
-        <Login setMessage={setMessage} setAlert={setAlert} />
+        <Login
+          setMessage={setMessage}
+          setAlert={setAlert}
+          person={classes.person}
+        />
       )
     );
   }, [login, userDetails]);

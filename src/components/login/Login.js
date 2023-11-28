@@ -11,7 +11,7 @@ import Container from "@material-ui/core/Container";
 import Popover from "@material-ui/core/Popover";
 import Collapse from "@material-ui/core/Collapse";
 import Alert from "@material-ui/lab/Alert";
-import IconButton from "@material-ui/core/IconButton";
+import PersonIcon from "@material-ui/icons/Person";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -49,8 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   signBtn: {
-    backgroundColor: "#fff",
-    border: "1px solid #d3d3d3",
+    cursor: "pointer",
     "& hover": {
       textDecoration: "none",
     },
@@ -69,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
   const classes = useStyles();
-  const { login, openLogin, setValue, setMessage, setAlert } = props;
+  const { login, openLogin, setValue, setMessage, setAlert, person } = props;
   const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [email, setEmail] = React.useState("");
@@ -251,18 +250,11 @@ const Login = (props) => {
         </Button>
       ) : (
         <>
-          <IconButton
-            type="submit"
-            size="small"
-            aria-describedby="sign-in"
-            variant="contained"
+          <PersonIcon
+            className={person ? person : classes.signBtn}
             ref={menuRef}
-            className={classes.signBtn}
             onClick={openForm}
-            rel="noopener"
-          >
-            <i className={`material-icons`}>person</i>
-          </IconButton>
+          />
           <Popover
             id="sign-in"
             open={open}
