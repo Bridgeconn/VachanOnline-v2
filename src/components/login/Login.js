@@ -15,6 +15,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -250,11 +251,13 @@ const Login = (props) => {
         </Button>
       ) : (
         <>
-          <PersonIcon
-            className={person ? person : classes.signBtn}
-            ref={menuRef}
-            onClick={openForm}
-          />
+          <Tooltip title={t("signInTitle")}>
+            <PersonIcon
+              className={person ? person : classes.signBtn}
+              ref={menuRef}
+              onClick={openForm}
+            />
+          </Tooltip>
           <Popover
             id="sign-in"
             open={open}

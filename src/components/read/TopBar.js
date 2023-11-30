@@ -135,7 +135,7 @@ const TopBar = (props) => {
         />
       )
     );
-  }, [login, userDetails]);
+  }, [classes.person, login, userDetails]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
