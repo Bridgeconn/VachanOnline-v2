@@ -73,12 +73,13 @@ const LanguageBar = (props) => {
   ];
 
   const { t } = useTranslation();
-  const selectedLang = (lan) => {
+  const selectedLang = (lan, lanObj) => {
     const version = versions.find((version) => version?.language === lan);
     const ver = version?.languageVersions[0];
     setValue("version", ver?.language?.code + "-" + ver?.version?.code);
     setValue("sourceId", ver?.sourceId);
     setValue("language", lan);
+    setLanguage(lanObj?.name);
   };
   return (
     <Grid container className={classes.root}>
@@ -95,8 +96,8 @@ const LanguageBar = (props) => {
                   key={key}
                   px={20}
                   className={classes.toolbarLink}
-                  onMouseOver={() => setLanguage(language.name)}
-                  onClick={() => selectedLang(language.language)}
+                  onMouseOver={() => selectedLang(language?.language, language)}
+                  onClick={() => selectedLang(language?.language, language)}
                 >
                   <BigTooltip
                     title={t("landingLangBarToolTip") + " " + language.name}

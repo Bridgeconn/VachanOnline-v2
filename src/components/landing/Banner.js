@@ -1,11 +1,33 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import banner from "../common/images/banner.jpg";
+import { API } from "../../store/api";
+import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   legend: {
     position: "absolute",
-    bottom: "25%",
+    bottom: "19%",
+    width: "60%",
+    left: "20%",
+    right: "25%",
+    borderRadius: 10,
+    color: "#ffffff",
+    padding: 10,
+    fontSize: "1.75rem",
+    textAlign: "center",
+    transition: "opacity 0.35s ease-in-out",
+    background: "none",
+    opacity: 1,
+    [theme.breakpoints.only("xs")]: {
+      bottom: "3%",
+      fontSize: "1.65rem",
+    },
+  },
+  heading: {
+    position: "absolute",
+    top: "30%",
     width: "100%",
     borderRadius: 10,
     color: "#ffffff",
@@ -30,10 +52,50 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     [theme.breakpoints.only("xs")]: {
       height: "240px",
-    }, 
+    },
   },
 }));
-export default function Banner({ language }) {
+const Banner = ({ language, sourceId, panel1 }) => {
+  console.log(panel1);
+  const [allVerseData, setAllVerseData] = useState([]);
+  const [verseRef, setVerseRef] = useState({
+    b: "psa",
+    c: "119",
+    v: "105",
+  });
+  const [verseObj, setVerseObj] = useState({});
+  const APIBASE = useMemo(
+    () => axios.create({ baseURL: process.env.REACT_APP_DAILY_VERSE }),
+    []
+  );
+  let newDate = new Date();
+  const currentYear = newDate?.getFullYear();
+  const currentMonth = newDate?.getMonth() + 1;
+  const currentDay = newDate?.getDate();
+
+  useEffect(() => {
+    API.get(
+      `bibles/${sourceId ? sourceId : 104}/verses/${verseRef?.b}.${
+        verseRef?.c
+      }.${verseRef?.v}`
+    ).then(function (response) {
+      setVerseObj(response.data);
+    });
+  }, [sourceId, verseRef]);
+  useEffect(() => {
+    APIBASE.get("verseData.json").then(function (response) {
+      setAllVerseData(response?.data);
+    });
+  }, [APIBASE]);
+  useEffect(() => {
+    allVerseData[currentYear] &&
+      allVerseData[currentYear][currentMonth].map((ele) => {
+        if (ele[currentDay]) {
+          setVerseRef(ele[currentDay]);
+        }
+        return ele[currentDay];
+      });
+  }, [allVerseData, currentDay, currentMonth, currentYear]);
   const classes = useStyles();
   let verse = {
     অসমীয়া: [
@@ -94,18 +156,28 @@ export default function Banner({ language }) {
       "Noto Sans Devanagari",
     ],
   };
+
   return (
     <div className={classes.imageContainer}>
+      <h2 className={classes.heading}>Verse Of The Day</h2>
       <p
         className={classes.legend}
         style={{
           fontFamily: verse[language][2],
         }}
       >
-        {verse[language][0]}
+        {/* {verse[language][0]}
         <br />
-        {verse[language][1]}
+        {verse[language][1]} */}
+        <b>{verseObj?.reference}</b> {verseObj.verseContent?.text}
       </p>
     </div>
   );
-}
+};
+const mapStateToProps = (state) => {
+  return {
+    sourceId: state.local.panel1.sourceId,
+    panel1: state.local.panel1,
+  };
+};
+export default connect(mapStateToProps)(Banner);
