@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
   },
   signBtn: {
     cursor: "pointer",
+    padding: "0 8px",
+    boxSizing: "content-box",
     "& hover": {
       textDecoration: "none",
     },
