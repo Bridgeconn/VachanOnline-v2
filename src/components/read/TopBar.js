@@ -102,6 +102,12 @@ const useStyles = makeStyles((theme) => ({
     width: "25px",
     fontSize: "2rem",
   },
+  person: {
+    color: BLACK,
+    cursor: "pointer",
+    padding: "0 8px",
+    boxSizing: "content-box",
+  },
   toolbar: {
     padding: "0 12px",
   },
@@ -127,10 +133,14 @@ const TopBar = (props) => {
       login ? (
         <LoginMenu userDetails={userDetails} />
       ) : (
-        <Login setMessage={setMessage} setAlert={setAlert} />
+        <Login
+          setMessage={setMessage}
+          setAlert={setAlert}
+          person={classes.person}
+        />
       )
     );
-  }, [login, userDetails]);
+  }, [classes.person, login, userDetails]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {

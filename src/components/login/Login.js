@@ -1,6 +1,5 @@
 import React from "react";
 import firebase from "firebase/compat/app";
-import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,12 +7,15 @@ import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Popover from "@material-ui/core/Popover";
 import Collapse from "@material-ui/core/Collapse";
 import Alert from "@material-ui/lab/Alert";
+import PersonIcon from "@material-ui/icons/Person";
 import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,8 +50,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   signBtn: {
-    backgroundColor: "#fff",
-    border: "1px solid #d3d3d3",
+    cursor: "pointer",
+    padding: "0 8px",
+    boxSizing: "content-box",
     "& hover": {
       textDecoration: "none",
     },
@@ -68,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
   const classes = useStyles();
-  const { login, openLogin, setValue, setMessage, setAlert } = props;
+  const { login, openLogin, setValue, setMessage, setAlert, person } = props;
   const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [email, setEmail] = React.useState("");
@@ -250,16 +253,13 @@ const Login = (props) => {
         </Button>
       ) : (
         <>
-          <Button
-            aria-describedby="sign-in"
-            variant="contained"
-            size="small"
-            ref={menuRef}
-            onClick={openForm}
-            className={classes.signBtn}
-          >
-            {t("signInTitle")}
-          </Button>
+          <Tooltip title={t("signInTitle")}>
+            <PersonIcon
+              className={person ? person : classes.signBtn}
+              ref={menuRef}
+              onClick={openForm}
+            />
+          </Tooltip>
           <Popover
             id="sign-in"
             open={open}
