@@ -102,6 +102,9 @@ const useStyles = makeStyles((theme) => ({
     width: "25px",
     fontSize: "2rem",
   },
+  toolbar: {
+    padding: "0 12px",
+  },
 }));
 
 const TopBar = (props) => {
@@ -308,7 +311,7 @@ const TopBar = (props) => {
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <div className={classes.title}>
             <Link to="/">
               <img src={favicon} alt={"icon"} className={classes.icon} />
