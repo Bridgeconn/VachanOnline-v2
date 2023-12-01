@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "../../store/actions";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
   legend: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     position: "absolute",
     top: "30%",
+    textTransform: "capitalize",
     width: "100%",
     borderRadius: 10,
     color: "#ffffff",
@@ -134,9 +136,10 @@ const Banner = ({ setValue1, panel1, mobileView, multiLangName, versions }) => {
     setValue1("chapter", verseRef?.c);
     setValue1("verseData", verseRef?.v);
   };
+  const { t } = useTranslation();
   return (
     <div className={classes.imageContainer}>
-      <h2 className={classes.heading}>Verse Of The Day</h2>
+      <h2 className={classes.heading}>{t("landingVerseHeading")}</h2>
       <Link
         to={{ pathname: "/read" }}
         className={classes.link}
