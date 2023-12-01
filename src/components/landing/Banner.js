@@ -4,6 +4,8 @@ import banner from "../common/images/banner.jpg";
 import { API } from "../../store/api";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import * as actions from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   legend: {
@@ -12,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     width: "60%",
     left: "20%",
     right: "25%",
+    fontStyle: "italic",
     borderRadius: 10,
     color: "#ffffff",
     padding: 10,
@@ -55,8 +58,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const Banner = ({ language, sourceId, panel1 }) => {
-  console.log(panel1);
+const Banner = ({ language, sourceId, panel1, setValue1 }) => {
   const [allVerseData, setAllVerseData] = useState([]);
   const [verseRef, setVerseRef] = useState({
     b: "psa",
@@ -72,7 +74,6 @@ const Banner = ({ language, sourceId, panel1 }) => {
   const currentYear = newDate?.getFullYear();
   const currentMonth = newDate?.getMonth() + 1;
   const currentDay = newDate?.getDate();
-
   useEffect(() => {
     API.get(
       `bibles/${sourceId ? sourceId : 104}/verses/${verseRef?.b}.${
@@ -91,11 +92,19 @@ const Banner = ({ language, sourceId, panel1 }) => {
     allVerseData[currentYear] &&
       allVerseData[currentYear][currentMonth].map((ele) => {
         if (ele[currentDay]) {
+          setValue1("verseRef", verseRef);
           setVerseRef(ele[currentDay]);
         }
         return ele[currentDay];
       });
-  }, [allVerseData, currentDay, currentMonth, currentYear]);
+  }, [
+    allVerseData,
+    currentDay,
+    currentMonth,
+    currentYear,
+    setValue1,
+    verseRef,
+  ]);
   const classes = useStyles();
   let verse = {
     অসমীয়া: [
@@ -156,21 +165,32 @@ const Banner = ({ language, sourceId, panel1 }) => {
       "Noto Sans Devanagari",
     ],
   };
-
+  const url = () => {
+    console.log(verseRef);
+    setValue1("bookCode", verseRef?.b);
+    setValue1("chapter", verseRef?.c);
+    setValue1("verseData", verseRef?.v);
+  };
   return (
     <div className={classes.imageContainer}>
       <h2 className={classes.heading}>Verse Of The Day</h2>
-      <p
-        className={classes.legend}
-        style={{
-          fontFamily: verse[language][2],
-        }}
+      <Link
+        to={{ pathname: "/read" }}
+        className={classes.link}
+        onClick={() => url()}
       >
-        {/* {verse[language][0]}
+        <p
+          className={classes.legend}
+          style={{
+            fontFamily: verse[language][2],
+          }}
+        >
+          {/* {verse[language][0]}
         <br />
         {verse[language][1]} */}
-        <b>{verseObj?.reference}</b> {verseObj.verseContent?.text}
-      </p>
+          <b>{verseObj?.reference}</b> {verseObj.verseContent?.text}
+        </p>
+      </Link>
     </div>
   );
 };
@@ -180,4 +200,10 @@ const mapStateToProps = (state) => {
     panel1: state.local.panel1,
   };
 };
-export default connect(mapStateToProps)(Banner);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue1: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Banner);

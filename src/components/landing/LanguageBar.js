@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const LanguageBar = (props) => {
-  const { setLanguage, setValue, versions } = props;
+  const { setLanguage, setValue, versions, panel1 } = props;
   const classes = useStyles();
   const languages = [
     { language: "assamese", name: "অসমীয়া" },
@@ -79,6 +79,7 @@ const LanguageBar = (props) => {
     setValue("version", ver?.language?.code + "-" + ver?.version?.code);
     setValue("sourceId", ver?.sourceId);
     setValue("language", lan);
+    setValue("verseData", panel1?.verseRef?.v);
     setLanguage(lanObj?.name);
   };
   return (
@@ -123,6 +124,7 @@ const LanguageBar = (props) => {
 const mapStateToProps = (state) => {
   return {
     versions: state.local.versions,
+    panel1: state.local.panel1,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -47,6 +47,7 @@ const defaultState = {
     bookCode: "",
     chapter: "",
     verseData: "",
+    verseRef: {},
     fontSize: 16,
     fontFamily: "Sans",
     lineView: false,
