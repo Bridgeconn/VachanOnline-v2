@@ -15,8 +15,8 @@ import { connect } from "react-redux";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -149,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
 const Search = (props) => {
   const classes = useStyles();
 
-  const { setValue, sourceId, versionBooks, versionSource, mobileView } = props;
+  const { setValue, sourceId, versionBooks, versionSource } = props;
   const [searchText, setSearchText] = React.useState("");
   const [bookNames, setBookNames] = React.useState({});
   const [searchResult, setSearchResult] = React.useState({});
@@ -287,18 +287,7 @@ const Search = (props) => {
           </Paper>
         </Box>
         <Box className={classes.box}>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "searchBible"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"searchBible"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>
@@ -356,7 +345,6 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
     sourceId: state.local.panel1.sourceId,
-    mobileView: state.local.mobileView,
   };
 };
 

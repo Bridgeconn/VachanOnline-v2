@@ -243,7 +243,6 @@ const PageHeader = (props) => {
           )}
           <Link to={process.env.REACT_APP_DOCUMENT_URL} target="_blank">
             {mobileLandscape ? (
-              // <i className={`material-icons ${classes.islIcon}`}>help_outline</i>
               ""
             ) : (
               <Button
@@ -256,7 +255,7 @@ const PageHeader = (props) => {
                 rel="noopener"
                 startIcon={<i className="material-icons">help_outline</i>}
               >
-                Help
+                {t("landingHelpBtn")}
               </Button>
             )}
           </Link>

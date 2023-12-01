@@ -7,7 +7,6 @@ import Menu from "@material-ui/core/Menu";
 import { makeStyles } from "@material-ui/core/styles";
 import { BLACK } from "../../store/colorCode";
 import { t } from "i18next";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   menu: {

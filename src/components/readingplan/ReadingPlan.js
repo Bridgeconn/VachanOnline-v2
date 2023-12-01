@@ -17,7 +17,7 @@ import { BLACK, GREY } from "../../store/colorCode";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import Help from "../common/Help";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -297,18 +297,7 @@ const ReadingPlan = (props) => {
           )}
         </Box>
         <Box className={classes.box}>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "readingPlans"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"readingPlans"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

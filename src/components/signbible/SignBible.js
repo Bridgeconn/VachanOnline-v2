@@ -10,8 +10,8 @@ import * as views from "../../store/views";
 import BookCombo from "../common/BookCombo";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -205,18 +205,7 @@ const SignBible = (props) => {
           )}
         </Box>
         <Box className={classes.box}>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "signLanguageBible"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"signLanguageBible"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

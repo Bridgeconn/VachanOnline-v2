@@ -16,7 +16,7 @@ import BookCombo from "../common/BookCombo";
 import { useTranslation } from "react-i18next";
 import { bibleBooks } from "../../store/bibleData";
 import { BLACK } from "../../store/colorCode";
-import { Link } from "react-router-dom";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -264,18 +264,7 @@ const Video = (props) => {
           ) : null}
         </Box>
         <Box className={classes.box}>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "videos"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"videos"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

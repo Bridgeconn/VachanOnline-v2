@@ -5,12 +5,12 @@ import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Player from "../common/Player";
 import Box from "@material-ui/core/Box";
+import Help from "../common/Help";
 import * as actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { capitalize, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { BLACK } from "../../store/colorCode";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -222,18 +222,7 @@ const Audio = (props) => {
           ) : null}
         </Box>
         <Box className={classes.box}>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "audioBible"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"audioBible"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

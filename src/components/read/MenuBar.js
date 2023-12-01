@@ -20,7 +20,8 @@ import Close from "../common/Close";
 import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -385,18 +386,7 @@ const MenuBar = (props) => {
               chapter={chapter}
               paneNo={paneNo}
             />
-            {mobileView ? (
-              ""
-            ) : (
-              <Link
-                to={process.env.REACT_APP_DOCUMENT_URL + url}
-                target="_blank"
-              >
-                <i className={`material-icons ${classes.islIcon}`}>
-                  help_outline
-                </i>
-              </Link>
-            )}
+            <Help iconStyle={classes.islIcon} url={url} />
             {mobileView && paneNo === 1 ? (
               <div
                 className={classes.infoParall}

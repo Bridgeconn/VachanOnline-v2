@@ -14,10 +14,10 @@ import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
+import Help from "../common/Help";
 import { BLACK, LIGHTGREY } from "../../store/colorCode";
 import { Paper } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -440,18 +440,7 @@ const Commentary = (props) => {
               mobileView={mobileView}
             ></Metadata>
           </div>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "commentaries"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"commentaries"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

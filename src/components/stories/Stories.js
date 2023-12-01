@@ -22,7 +22,7 @@ import { Box, Typography } from "@material-ui/core";
 import { BLACK, GREY } from "../../store/colorCode";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import Help from "../common/Help";
 
 const drawerWidth = 400;
 
@@ -443,14 +443,7 @@ const Stories = () => {
             <Typography variant="h3" className={classes.text}>
               {t("bibleStoriesText")}
             </Typography>
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "bibleStories"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
+            <Help iconStyle={classes.islIcon} url={"bibleStories"} />
             <Divider />
           </div>
           {lang === "isl" ? (

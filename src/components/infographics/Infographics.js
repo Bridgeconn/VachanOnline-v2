@@ -9,11 +9,11 @@ import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import Viewer from "react-viewer";
 import Select from "react-select";
+import Help from "../common/Help";
 import { capitalize, getShortBook } from "../common/utility";
 import BookCombo from "../common/BookCombo";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
@@ -211,18 +211,7 @@ const Infographics = (props) => {
           ) : null}
         </Box>
         <Box className={classes.box}>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "infographics"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"infographics"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

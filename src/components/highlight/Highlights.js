@@ -15,8 +15,8 @@ import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -207,18 +207,7 @@ const Highlights = (props) => {
           <Typography variant="h6">{t("highlightsText")}</Typography>
         </Box>
         <Box className={classes.box}>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "highlights"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"highlights"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

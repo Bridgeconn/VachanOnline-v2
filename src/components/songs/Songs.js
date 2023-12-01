@@ -16,9 +16,9 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
+import Help from "../common/Help";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { t } from "i18next";
-import { Link } from "react-router-dom";
 
 const drawerWidth = 350;
 const useStyles = makeStyles((theme) => ({
@@ -303,14 +303,7 @@ const Songs = () => {
         <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
             {isLarge ? t("songsPageTitleDesktop") : t("songsText")}{" "}
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "songs"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
+            <Help iconStyle={classes.islIcon} url={"songs"} />
           </Typography>
           <Typography variant="h4" className={classes.lyricsHeading}>
             {currentSong?.sno}. {currentSong?.name}

@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Help from "../common/Help";
 
 const useStyles = makeStyles(() => ({
   subheading: {
@@ -72,18 +73,7 @@ const AboutUs = ({ handleClose, mobileView }) => {
           <Typography variant="h5" gutterBottom>
             {t("landingAboutUsHead")}
           </Typography>
-          {mobileView ? (
-            ""
-          ) : (
-            <Link
-              to={process.env.REACT_APP_DOCUMENT_URL + "about"}
-              target="_blank"
-            >
-              <i className={`material-icons ${classes.islIcon}`}>
-                help_outline
-              </i>
-            </Link>
-          )}
+          <Help iconStyle={classes.islIcon} url={"about"} />
         </div>
       </DialogTitle>
       <DialogContent dividers={true}>
