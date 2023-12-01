@@ -51,6 +51,6 @@ When the user accesses the **Study Bible Page** they will be directed to the Stu
 
 6. On the Study Bible page, the user has the options to take [notes](./notes), [highlight verses](./highlights) , [bookmark chapters](./bookmarks) and access to other features **(7)**.
 
-7. On the top bar there are buttons **(8)** which we can click to go to the following features: [Sign Language Bible](./signLanguageBible), [Songs](./songs), [Bible Stories](./bibleStories), [Read Bible](./readBible.mdx)
+7. On the top bar there are buttons **(8)** which we can click to go to the following features: [Sign Language Bible](./signLanguageBible), [Songs](./songs), [Bible Stories](./bibleStories), [Read Bible](./readBible)
 
 **\* Note:-** [Bookmarks](./bookmarks) , [Highlights](./highlights) and [Notes](./notes) feature required the user to [Sign In](./signIn) on VachanOnline
