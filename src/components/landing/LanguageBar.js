@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const LanguageBar = (props) => {
-  const { setLanguage, setValue, versions, panel1 } = props;
+  const { setLanguage, setValue, versions, mobileView, multiLangName } = props;
   const classes = useStyles();
   const languages = [
     { language: "assamese", name: "অসমীয়া" },
@@ -71,15 +71,25 @@ const LanguageBar = (props) => {
     { language: "telugu", name: "తెలుగు" },
     { language: "urdu", name: "उर्दू" },
   ];
-
+  React.useEffect(() => {
+    const multiLangVersion = versions.find(
+      (version) => version?.language === multiLangName
+    );
+    if (!mobileView) {
+      setValue(
+        "verseSourceId",
+        multiLangVersion?.languageVersions[0]?.sourceId
+      );
+    }
+  }, [mobileView, multiLangName, setValue, versions]);
   const { t } = useTranslation();
   const selectedLang = (lan, lanObj) => {
     const version = versions.find((version) => version?.language === lan);
     const ver = version?.languageVersions[0];
     setValue("version", ver?.language?.code + "-" + ver?.version?.code);
     setValue("sourceId", ver?.sourceId);
+    setValue("verseSourceId", version?.languageVersions[0]?.sourceId);
     setValue("language", lan);
-    setValue("verseData", panel1?.verseRef?.v);
     setLanguage(lanObj?.name);
   };
   return (
@@ -124,7 +134,8 @@ const LanguageBar = (props) => {
 const mapStateToProps = (state) => {
   return {
     versions: state.local.versions,
-    panel1: state.local.panel1,
+    mobileView: state.local.mobileView,
+    multiLangName: state.local.multiLangName,
   };
 };
 const mapDispatchToProps = (dispatch) => {
