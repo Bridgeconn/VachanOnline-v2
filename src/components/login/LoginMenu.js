@@ -12,6 +12,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import { useTranslation } from "react-i18next";
 import { GREY } from "../../store/colorCode";
+import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -67,7 +68,9 @@ const LoginMenu = (props) => {
         onClick={handleProfileMenuOpen}
         color="inherit"
       >
-        <Avatar alt={userDetails.email} src={userDetails.photoURL} />
+        <Tooltip title={t("loginSignOutBtn")}>
+          <Avatar alt={userDetails.email} src={userDetails.photoURL} />
+        </Tooltip>
       </IconButton>
       <Menu
         elevation={0}
