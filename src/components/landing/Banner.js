@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
+import BigTooltip from "../common/BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
   legend: {
@@ -145,9 +146,11 @@ const Banner = ({ setValue1, panel1, mobileView, multiLangName, versions }) => {
         className={classes.link}
         onClick={() => url()}
       >
-        <p className={classes.legend}>
-          <b>{verseObj?.reference}</b> {verseObj.verseContent?.text}
-        </p>
+        <BigTooltip title={t("landingVerseHeadingToolTip")}>
+          <p className={classes.legend}>
+            <b>{verseObj?.reference}</b> {verseObj.verseContent?.text}
+          </p>
+        </BigTooltip>
       </Link>
     </div>
   );

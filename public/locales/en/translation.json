@@ -65,6 +65,7 @@
     "landingCompanyMob": "BCS",
     "landingCompanyDesktop": "Bridge Connectivity Solutions",
     "landingLangBarToolTip": "Click to read the Bible in",
+    "landingVerseHeadingToolTip": "Click to read the Verse",
     "landingFooterAboutUsBtn": "About Us",
     "loginEmailPlaceHolder": "Email Address",
     "loginSuccessMsg": "Sign up with {{email}} successful!",
