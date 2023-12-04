@@ -21,7 +21,7 @@ import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
 import ShareIcon from "@material-ui/icons/Share";
 import { useTranslation } from "react-i18next";
-import { Button, Menu, MenuItem, Snackbar } from "@material-ui/core";
+import { Button, Menu, Snackbar } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Alert } from "@material-ui/lab";
 
@@ -97,16 +97,13 @@ const useStyles = makeStyles((theme) => ({
   },
   copyButton: {
     textTransform: "capitalize",
-    marginLeft: 90,
-    marginTop: 0,
-    paddingLeft: 30,
-    paddingRight: 30,
+    margin: "0 auto",
+    display: "block",
   },
-  menuDialog: {
-    backgroundColor: "transparent",
-    "&:hover": {
-      backgroundColor: "transparent",
-    },
+  share: {
+    width: "96%",
+    height: 50,
+    margin: 10,
   },
 }));
 const MenuBar = (props) => {
@@ -393,21 +390,16 @@ const MenuBar = (props) => {
                   },
                 }}
               >
-                <MenuItem className={classes.menuDialog}>
-                  <TextField
-                    id="outlined-read-only-input"
-                    variant="outlined"
-                    size="small"
-                    defaultValue={path}
-                    style={{
-                      width: "100%",
-                      height: 50,
-                    }}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </MenuItem>
+                <TextField
+                  id="share-url"
+                  variant="outlined"
+                  size="small"
+                  defaultValue={path}
+                  className={classes.share}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
                 <Snackbar
                   open={alert}
                   autoHideDuration={800}
@@ -423,15 +415,15 @@ const MenuBar = (props) => {
                     {copyFeedback}
                   </Alert>
                 </Snackbar>
-                <MenuItem className={classes.menuDialog}>
+                <div>
                   <Button
                     className={classes.copyButton}
-                    variant="contained"
+                    variant="outlined"
                     onClick={handleCopyClick}
                   >
                     {t("copyToClipBoardBtn")}
                   </Button>
-                </MenuItem>
+                </div>
               </Menu>
             </div>
             {mobileView ? null : noteIcon}
