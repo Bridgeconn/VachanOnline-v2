@@ -104,6 +104,8 @@ const useStyles = makeStyles((theme) => ({
   person: {
     color: BLACK,
     cursor: "pointer",
+    padding: "0 8px",
+    boxSizing: "content-box",
   },
 }));
 
