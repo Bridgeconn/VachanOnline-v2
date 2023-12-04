@@ -78,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
   },
   feedback: {
     color: BLACK,
-    marginRight: 4,
     marginTop: 2,
     "&:hover": {
       color: BLACK,
