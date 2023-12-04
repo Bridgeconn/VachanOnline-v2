@@ -11,7 +11,7 @@ const Help = ({ mobileView, iconStyle, url }) => {
         mobileView ? (
           ""
         ) : (
-          <Tooltip title={t("landingHelpBtn")}>
+          <Tooltip title={t("landingHelpBtn")} style={{ float: "right" }}>
             <Link to={process.env.REACT_APP_DOCUMENT_URL + url} target="_blank">
               <i className={`material-icons ${iconStyle}`}>help_outline</i>
             </Link>
