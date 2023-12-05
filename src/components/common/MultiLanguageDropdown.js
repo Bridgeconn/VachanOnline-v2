@@ -3,7 +3,6 @@ import LanguageIcon from "@material-ui/icons/Language";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, Menu, MenuItem, Tooltip } from "@material-ui/core";
 import i18n from "../../i18n";
-import * as actions from "../../store/actions";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
 import { useTranslation } from "react-i18next";
@@ -17,7 +16,7 @@ const MultiLanguageDropdown = (props) => {
   const classes = useStyles();
   const [languageAnchor, setLanguageAnchor] = React.useState(null);
   const open = Boolean(languageAnchor);
-  const { locale, setLocale, iconstyle, setValue } = props;
+  const { locale, setLocale, iconstyle } = props;
   const { t } = useTranslation();
   function openLanguage(event) {
     setLanguageAnchor(event.currentTarget);
@@ -25,19 +24,14 @@ const MultiLanguageDropdown = (props) => {
   function closeLanguage() {
     setLanguageAnchor(null);
   }
-  function handleClick(_locale, name) {
-    setValue("multiLangName", name);
+  function handleClick(_locale) {
     i18n.changeLanguage(_locale);
     setLocale(_locale);
     closeLanguage();
   }
   useEffect(() => {
-    setValue(
-      "multiLangName",
-      i18n.resolvedLanguage === "en" ? "english" : "hindi"
-    );
     setLocale(i18n.resolvedLanguage);
-  }, [setLocale, setValue]);
+  }, [setLocale]);
   return (
     <>
       <Tooltip title={t("multilingualTooltip")}>
@@ -58,17 +52,11 @@ const MultiLanguageDropdown = (props) => {
         style={{ top: 17 }}
         classes={{ list: classes.list }}
       >
-        <MenuItem
-          onClick={() => handleClick("en", "english")}
-          selected={locale === "en"}
-        >
+        <MenuItem onClick={() => handleClick("en")} selected={locale === "en"}>
           English
         </MenuItem>
         <Divider />
-        <MenuItem
-          onClick={() => handleClick("hi", "hindi")}
-          selected={locale === "hi"}
-        >
+        <MenuItem onClick={() => handleClick("hi")} selected={locale === "hi"}>
           Hindi
         </MenuItem>
       </Menu>
@@ -85,8 +73,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setLocale: (value) =>
       dispatch({ type: SETVALUE, name: "locale", value: value }),
-    setValue: (name, value) =>
-      dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
 export default connect(

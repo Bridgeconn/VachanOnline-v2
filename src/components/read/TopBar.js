@@ -122,10 +122,9 @@ const TopBar = (props) => {
   const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const path = location?.pathname;
-  let { login, userDetails, setParallelView, setLocale, multiLangName } = props;
+  let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
-  multiLangName(i18n.language === "en" ? "english" : "hindi");
   React.useEffect(() => {
     setLoginButton(
       login ? (
@@ -380,8 +379,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: SETVALUE, name: "parallelView", value: SIGNBIBLE }),
     setLocale: (value) =>
       dispatch({ type: SETVALUE, name: "locale", value: value }),
-    multiLangName: (value) =>
-      dispatch({ type: SETVALUE, name: "multiLangName", value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

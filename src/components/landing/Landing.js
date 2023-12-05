@@ -13,7 +13,6 @@ import Banner from "./Banner";
 import ImageCard from "./ImageCard";
 import "./Landing.css";
 import LandingFooter from "./LandingFooter";
-import LanguageBar from "./LanguageBar";
 import PageHeader from "./PageHeader";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
@@ -83,7 +82,6 @@ const Landing = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
-  const [language, setLanguage] = React.useState("English");
   const { setValue } = props;
 
   const { t } = useTranslation();
@@ -112,8 +110,7 @@ const Landing = (props) => {
   return (
     <Grid className={classes.body}>
       <PageHeader />
-      {!isMobile ? <LanguageBar setLanguage={setLanguage} /> : ""}
-      <Banner language={language} />
+      <Banner />
       <BibleIndex />
       <Grid
         container

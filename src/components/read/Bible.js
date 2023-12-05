@@ -862,6 +862,7 @@ const Bible = (props) => {
       ""
     );
   };
+
   useEffect(() => {
     if (verses?.length > 0 && verseData !== "") {
       const verseArr = verses.map((a) => a.verseNumber);

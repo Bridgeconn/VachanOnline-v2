@@ -97,10 +97,9 @@ const PageHeader = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  let { login, userDetails, setParallelView, setLocale, multiLangName } = props;
+  let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
-  multiLangName(i18n.language === "en" ? "english" : "hindi");
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -276,8 +275,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: SETVALUE, name: "parallelView", value: value }),
     setLocale: (value) =>
       dispatch({ type: SETVALUE, name: "locale", value: value }),
-    multiLangName: (value) =>
-      dispatch({ type: SETVALUE, name: "multiLangName", value: value }),
   };
 };
 
