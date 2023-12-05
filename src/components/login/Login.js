@@ -15,7 +15,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { Tooltip } from "@material-ui/core";
+import BigTooltip from "../common/BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,8 +49,10 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
-  signBtn: {
+  loginBtn: {
     cursor: "pointer",
+    marginLeft: 3,
+    fontSize: "2rem",
     padding: "0 8px",
     boxSizing: "content-box",
     "& hover": {
@@ -58,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
+      fontSize: "1.8rem",
     },
   },
   links: {
@@ -253,13 +256,13 @@ const Login = (props) => {
         </Button>
       ) : (
         <>
-          <Tooltip title={t("signInTitle")}>
+          <BigTooltip title={t("signInTitle")}>
             <PersonIcon
-              className={person ? person : classes.signBtn}
+              className={person ? person : classes.loginBtn}
               ref={menuRef}
               onClick={openForm}
             />
-          </Tooltip>
+          </BigTooltip>
           <Popover
             id="sign-in"
             open={open}
