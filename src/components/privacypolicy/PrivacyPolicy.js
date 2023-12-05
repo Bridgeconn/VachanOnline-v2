@@ -3,9 +3,9 @@ const PrivacyPolicy = () => {
     <div className="privacy-policy">
       <h1>Privacy Policy</h1>
       <p>
-        Bridge Connectivity Solutions Pvt. Ltd. built the Vachan Go app as a
-        Free app. This App is provided by Bridge Connectivity Solutions at no
-        cost and is intended for use as is.
+        Bridge Connectivity Solutions Pvt. Ltd. built the VachanOnline website
+        and Vachan Go Mobile app as free tools. These are provided by Bridge
+        Connectivity Solutions at no cost and are intended for use as is.
       </p>
       <p>
         This page is used to inform visitors regarding our policies with the
@@ -20,9 +20,9 @@ const PrivacyPolicy = () => {
         this Privacy Policy.
       </p>
       <p>
-        The terms used in this Privacy Policy have the same meanings as in our
-        Terms and Conditions, which is accessible at Vachan Go unless otherwise
-        defined in this Privacy Policy.
+        The terms used in this Privacy Policy have the same meaning as in our
+        Terms and Conditions, which is accessible at VachanOnline.com unless
+        otherwise defined in this Privacy Policy.
       </p>
       <h2>Information Collection and Use</h2>
       <p>
@@ -33,11 +33,11 @@ const PrivacyPolicy = () => {
       </p>
       <div>
         <p>
-          The app does use third party services that may collect information
+          The website does use third party services that may collect information
           used to identify you.
         </p>
         <p>
-          Link to privacy policy of third party service providers used by the
+          Link to privacy policy of third-party service providers used by the
           app
         </p>
         <ul>
@@ -63,13 +63,33 @@ const PrivacyPolicy = () => {
       </div>
       <h2>Log Data</h2>
       <p>
-        We want to inform you that whenever you use our Service, in a case of an
+        We want to inform you that whenever you use our Service, in case of an
         error in the app we collect data and information (through third party
         products) on your phone called Log Data. This Log Data may include
         information such as your device Internet Protocol (“IP”) address, device
         name, operating system version, the configuration of the app when
         utilizing our Service, the time and date of your use of the Service, and
         other statistics.
+      </p>
+      <h2>How we use the information we obtain </h2>
+      <p>
+        We use the information we obtain to understand and analyze how you use
+        our website to improve and personalize your experience. It will help us
+        to improve our services and maintain it as per our user's needs.
+        Communicate with you via email, responding to your inquiries or
+        feedback.
+      </p>
+      <h2>You Have a Choice </h2>
+      <p>
+        Regarding the personal data we collect from you, including how we get in
+        touch with you, we give you options. To change your preferences, send an
+        email to thevachanproject@bridgeconn.com requesting that your
+        information be removed from our mailing lists.
+      </p>
+      <h2>Data retention</h2>
+      <p>
+        Personal data will be kept for as long as it is necessary to achieve the
+        objectives described in this policy, unless otherwise mandated by law.
       </p>
       <h2>Cookies</h2>
       <p>
@@ -78,12 +98,37 @@ const PrivacyPolicy = () => {
         websites that you visit and are stored on your device's internal memory.
       </p>
       <p>
-        This Service does not use these “cookies” explicitly. However, the app
-        may use third party code and libraries that use “cookies” to collect
-        information and improve their services. You have the option to either
-        accept or refuse these cookies and know when a cookie is being sent to
-        your device. If you choose to refuse our cookies, you may not be able to
-        use some portions of this Service.
+        The website uses some cookies to store some things like the last viewed
+        bible version and bible reference etc. to help save your preferences on
+        your local device. The website uses third party code and libraries that
+        use “cookies” to collect information and improve their services. You
+        have the option to either accept or refuse these cookies and know when a
+        cookie is being sent to your device. If you choose to refuse our
+        cookies, you may not be able to use some portions of this Service.
+      </p>
+      <h3>Types of Cookies </h3>
+      <ol>
+        <li>Third party cookies </li>
+      </ol>
+      <ul>
+        <li>
+          <a
+            href="https://firebase.google.com/support/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Firebase
+          </a>
+        </li>
+      </ul>
+      <h3>Disabling Cookies </h3>
+      <p>
+        You can prevent the setting of cookies by adjusting the settings on your
+        browser (see your browser Help for how to do this). Be aware that
+        disabling cookies will affect the functionality of this and many other
+        websites that you visit. Disabling cookies will usually result in also
+        disabling certain functionality and features of this site. Therefore, it
+        is recommended that you do not disable cookies.{" "}
       </p>
       <h2>Service Providers</h2>
       <p>
@@ -114,7 +159,7 @@ const PrivacyPolicy = () => {
       <p>
         This Service may contain links to other sites. If you click on a
         third-party link, you will be directed to that site. Note that these
-        external sites are not operated by us. Therefore, we h2ly advise you to
+        external sites are not operated by us. Therefore, we advise you to
         review the Privacy Policy of these websites. We have no control over and
         assume no responsibility for the content, privacy policies, or practices
         of any third-party sites or services.
@@ -127,19 +172,19 @@ const PrivacyPolicy = () => {
         with personal information, we immediately delete this from our servers.
         If you are a parent or guardian and you are aware that your child has
         provided us with personal information, please contact us so that we will
-        be able to do necessary actions.
+        be able to do the necessary actions.
       </p>
       <h2>Changes to This Privacy Policy</h2>
       <p>
         We may update our Privacy Policy from time to time. Thus, you are
         advised to review this page periodically for any changes. We will notify
-        you of any changes by posting the new Privacy Policy on this page.
+        you of any changes by posting the new Privacy Policy on this page.{" "}
       </p>
-      <p>This policy is effective as of 2020-07-01</p>
+      <p>This policy is effective as of 2023-12-04.</p>
       <h2>Contact Us</h2>
       <p>
         If you have any questions or suggestions about our Privacy Policy, do
-        not hesitate to contact us at info@bridgeconn.com.
+        not hesitate to contact us at thevachanproject@bridgeconn.com.
       </p>
     </div>
   );
