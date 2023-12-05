@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   mobileToolbar: {
-    [theme.breakpoints.down("sm")]: { paddingLeft: 4, paddingRight: 4 },
+    [theme.breakpoints.down("sm")]: { paddingLeft: 8, paddingRight: 8 },
   },
   person: {
     color: BLACK,
