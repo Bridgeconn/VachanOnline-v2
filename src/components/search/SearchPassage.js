@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     width: 350,
     marginLeft: 30,
     marginRight: 10,
+    [theme.breakpoints.only("md")]: {
+      marginLeft: 0,
+      width: 300,
+    },
   },
   searchField: {
     marginLeft: theme.spacing(1),
@@ -47,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
   },
   searchTooltip: {
     width: "350px",
+    [theme.breakpoints.only("md")]: {
+      width: 300,
+    },
   },
   hints: {
     fontSize: 14,

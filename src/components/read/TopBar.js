@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     height: 60,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       display: "none",
     },
   },
@@ -113,6 +113,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     padding: "0 8px",
     boxSizing: "content-box",
+  },
+  toolbar: {
+    padding: "0 12px",
   },
 }));
 
