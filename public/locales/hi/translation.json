@@ -21,6 +21,7 @@
     "landingPageHeaderISLVToolTip": "सांकेतिक भाषा बाइबिल",
     "landingPageHeaderStoriesMob": "कहानियाँ",
     "landingPageHeaderAudio": "ऑडियो",
+    "multilingualTooltip": "भाषाएँ",
     "landingSelectBibleHeading": "अपनी भाषा में बाइबल का अध्ययन करें",
     "landingStartBtn": "शुरू करें",
     "landingHelpBtn": "मदद",
@@ -128,7 +129,7 @@
     "studyParallelScroll": "समानांतर स्क्रॉल",
     "studyParallelScrollDisabled": "समानांतर स्क्रॉल अक्षम किया गया",
     "readTopBarBtnTooltip": "बाइबिल पढ़ें",
-    "readingPlanBibleRef": "के लिए बाइबिल संदर्भ",
+    "readingPlanBibleRef": "{{ref.date}}-{{ref.month}}-{{ref.year}} के लिए बाइबिल संदर्भ",
     "readingPlanBookNotAvailableToolTip": "पुस्तक चयनित संस्करण में उपलब्ध नहीं है",
     "readingPlanBookNotAvailableMob": "पुस्तक उपलब्ध नहीं है",
     "noReadingPlanAvailable": "इस तिथि के लिए कोई पठन योजना उपलब्ध नहीं है.",
@@ -182,5 +183,9 @@
     "informationText": "सूचना",
     "strongsText": "स्ट्रॉन्गस",
     "seeAlsoText": "यह भी देखें",
-    "refText": "संदर्भ"
+    "refText": "संदर्भ",
+    "shareTooltip": "शेयर करना",
+    "copyToClipBoardBtn": "क्लिपबोर्ड पर कॉपी करें",
+    "clipBoardCopied": "कॉपी",
+    "clipBoardCopiedFailed": "क्लिपबोर्ड पर कॉपी करना विफल रहा"
 }

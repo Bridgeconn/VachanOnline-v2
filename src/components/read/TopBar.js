@@ -63,12 +63,12 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     height: 50,
     [theme.breakpoints.down("sm")]: {
-      height: 45,
+      height: 40,
     },
   },
   logo: {
     height: 60,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       display: "none",
     },
   },
@@ -78,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
   },
   feedback: {
     color: BLACK,
-    marginRight: 4,
     marginTop: 2,
     "&:hover": {
       color: BLACK,
@@ -101,6 +100,22 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
     width: "25px",
     fontSize: "2rem",
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: 0,
+    },
+  },
+  mobileToolbar: {
+    [theme.breakpoints.down("sm")]: { paddingLeft: 8, paddingRight: 8 },
+  },
+  person: {
+    color: BLACK,
+    fontSize: "2rem",
+    cursor: "pointer",
+    padding: "0 8px",
+    boxSizing: "content-box",
+  },
+  toolbar: {
+    padding: "0 12px",
   },
 }));
 
@@ -124,10 +139,14 @@ const TopBar = (props) => {
       login ? (
         <LoginMenu userDetails={userDetails} />
       ) : (
-        <Login setMessage={setMessage} setAlert={setAlert} />
+        <Login
+          setMessage={setMessage}
+          setAlert={setAlert}
+          person={classes.person}
+        />
       )
     );
-  }, [login, userDetails]);
+  }, [classes.person, login, userDetails]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -308,7 +327,7 @@ const TopBar = (props) => {
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
-        <Toolbar>
+        <Toolbar className={classes.mobileToolbar}>
           <div className={classes.title}>
             <Link to="/">
               <img src={favicon} alt={"icon"} className={classes.icon} />

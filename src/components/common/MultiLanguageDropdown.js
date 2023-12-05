@@ -5,6 +5,8 @@ import { Divider, Menu, MenuItem } from "@material-ui/core";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
+import { useTranslation } from "react-i18next";
+import BigTooltip from "./BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -16,7 +18,7 @@ const MultiLanguageDropdown = (props) => {
   const [languageAnchor, setLanguageAnchor] = React.useState(null);
   const open = Boolean(languageAnchor);
   const { locale, setLocale, iconstyle } = props;
-
+  const { t } = useTranslation();
   function openLanguage(event) {
     setLanguageAnchor(event.currentTarget);
   }
@@ -33,7 +35,12 @@ const MultiLanguageDropdown = (props) => {
   }, [setLocale]);
   return (
     <>
-      <LanguageIcon className={iconstyle} onClick={openLanguage}></LanguageIcon>
+      <BigTooltip title={t("multilingualTooltip")}>
+        <LanguageIcon
+          className={iconstyle}
+          onClick={openLanguage}
+        ></LanguageIcon>
+      </BigTooltip>
       <Menu
         id="long-menu"
         anchorEl={languageAnchor}

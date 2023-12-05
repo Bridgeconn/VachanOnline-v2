@@ -21,6 +21,7 @@
     "landingPageHeaderISLVToolTip": "Sign Language Bible",
     "landingPageHeaderStoriesMob": "Stories",
     "landingPageHeaderAudio": "Audio",
+    "multilingualTooltip": "Languages",
     "landingSelectBibleHeading": "Study the Bible in your Language",
     "landingStartBtn": "START",
     "landingHelpBtn": "Help",
@@ -128,7 +129,7 @@
     "studyParallelScroll": "Parallel Scroll",
     "studyParallelScrollDisabled": "Parallel Scroll Disabled",
     "readTopBarBtnTooltip": "Read Bible",
-    "readingPlanBibleRef": "Bible references for",
+    "readingPlanBibleRef": "Bible references for {{ref.date}}-{{ref.month}}-{{ref.year}}",
     "readingPlanBookNotAvailableToolTip": "The book is not available in the selected version",
     "readingPlanBookNotAvailableMob": "Book not available",
     "noReadingPlanAvailable": "No reading plan available for this date.",
@@ -182,5 +183,9 @@
     "informationText": "Information",
     "strongsText": "Strong's",
     "seeAlsoText": "See Also",
-    "refText": "Ref"
+    "refText": "Ref",
+    "shareTooltip" : "Share",
+    "copyToClipBoardBtn": "Copy to Clipboard",
+    "clipBoardCopied": "Copied",
+    "clipBoardCopiedFailed": "Copy to clipboard failed"
 }
