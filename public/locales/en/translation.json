@@ -184,5 +184,9 @@
   "informationText": "Information",
   "strongsText": "Strong's",
   "seeAlsoText": "See Also",
-  "refText": "Ref"
+  "refText": "Ref",
+  "shareTooltip": "Share",
+  "copyToClipBoardBtn": "Copy to Clipboard",
+  "clipBoardCopied": "Copied",
+  "clipBoardCopiedFailed": "Copy to clipboard failed"
 }

@@ -184,5 +184,9 @@
     "informationText": "सूचना",
     "strongsText": "स्ट्रॉन्गस",
     "seeAlsoText": "यह भी देखें",
-    "refText": "संदर्भ"
+    "refText": "संदर्भ",
+    "shareTooltip": "शेयर करना",
+    "copyToClipBoardBtn": "क्लिपबोर्ड पर कॉपी करें",
+    "clipBoardCopied": "कॉपी",
+    "clipBoardCopiedFailed": "क्लिपबोर्ड पर कॉपी करना विफल रहा"
 }
