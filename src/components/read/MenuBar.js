@@ -103,15 +103,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 19,
     marginRight: 10,
     fontSize: 21,
-  copyButton: {
-    textTransform: "capitalize",
-    margin: "0 auto",
-    display: "flex",
-  },
-  share: {
-    width: "96%",
-    height: 40,
-    margin: 10,
+    copyButton: {
+      textTransform: "capitalize",
+      margin: "0 auto",
+      display: "flex",
+    },
+    share: {
+      width: "96%",
+      height: 40,
+      margin: 10,
+    },
   },
 }));
 const MenuBar = (props) => {
@@ -166,7 +167,7 @@ const MenuBar = (props) => {
   const bookList = versionBooks[versionSource[sourceId]];
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const location = useLocation();
-  const path = location?.pathname;
+  const route = location?.pathname;
   const [shareAnchor, setShareAnchor] = React.useState(null);
   const [copyFeedback, setCopyFeedback] = React.useState("");
   const [alert, setAlert] = React.useState(false);
@@ -349,7 +350,7 @@ const MenuBar = (props) => {
       setAudioIcon("");
     }
   }, [audio, audioBible, bookCode, classes.info, setValue, parallelView, t]);
-  const url = path.startsWith("/read") ? "readBible" : "studyBible";
+  const url = route.startsWith("/read") ? "readBible" : "studyBible";
   return (
     <div>
       <Box className={classes.read}>
