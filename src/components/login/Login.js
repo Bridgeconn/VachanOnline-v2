@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
   signBtn: {
     cursor: "pointer",
     marginLeft: 3,
+    fontSize: "2rem",
     padding: "0 8px",
     boxSizing: "content-box",
     "& hover": {
@@ -59,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
+      fontSize: "1.5rem",
     },
   },
   links: {
