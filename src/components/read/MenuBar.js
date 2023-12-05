@@ -20,6 +20,7 @@ import Close from "../common/Close";
 import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
 import ShareIcon from "@material-ui/icons/Share";
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import { useTranslation } from "react-i18next";
 import { Button, Menu, Snackbar } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -98,11 +99,11 @@ const useStyles = makeStyles((theme) => ({
   copyButton: {
     textTransform: "capitalize",
     margin: "0 auto",
-    display: "block",
+    display: "flex",
   },
   share: {
     width: "96%",
-    height: 50,
+    height: 40,
     margin: 10,
   },
 }));
@@ -399,6 +400,7 @@ const MenuBar = (props) => {
                   InputProps={{
                     readOnly: true,
                   }}
+                  onFocus={(e) => e.target.select()}
                 />
                 <Snackbar
                   open={alert}
@@ -420,6 +422,7 @@ const MenuBar = (props) => {
                     className={classes.copyButton}
                     variant="outlined"
                     onClick={handleCopyClick}
+                    startIcon={<FileCopyOutlinedIcon />}
                   >
                     {t("copyToClipBoardBtn")}
                   </Button>
