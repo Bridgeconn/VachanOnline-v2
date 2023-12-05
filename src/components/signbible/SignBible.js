@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  islIcon: {
+  helpIcon: {
     padding: "8px 12px 0",
     color: BLACK,
     marginTop: 5,
@@ -205,7 +205,7 @@ const SignBible = (props) => {
           )}
         </Box>
         <Box className={classes.box}>
-          <Help iconStyle={classes.islIcon} url={"signLanguageBible"} />
+          <Help iconStyle={classes.helpIcon} url={"signLanguageBible"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  islIcon: {
+  helpIcon: {
     padding: "8px 12px 0",
     color: BLACK,
     marginTop: 5,
@@ -264,7 +264,7 @@ const Video = (props) => {
           ) : null}
         </Box>
         <Box className={classes.box}>
-          <Help iconStyle={classes.islIcon} url={"videos"} />
+          <Help iconStyle={classes.helpIcon} url={"videos"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

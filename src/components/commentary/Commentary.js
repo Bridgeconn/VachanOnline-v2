@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
       whiteSpace: "nowrap",
     },
   },
-  islIcon: {
+  helpIcon: {
     padding: "2px 0 0",
     color: BLACK,
     marginTop: 5,
@@ -440,7 +440,7 @@ const Commentary = (props) => {
               mobileView={mobileView}
             ></Metadata>
           </div>
-          <Help iconStyle={classes.islIcon} url={"commentaries"} />
+          <Help iconStyle={classes.helpIcon} url={"commentaries"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

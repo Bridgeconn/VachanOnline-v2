@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     maxWidth: 300,
   },
-  islIcon: {
+  helpIcon: {
     fontSize: 21,
     float: "right",
     marginRight: 30,
@@ -303,7 +303,7 @@ const Songs = () => {
         <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
             {isLarge ? t("songsPageTitleDesktop") : t("songsText")}{" "}
-            <Help iconStyle={classes.islIcon} url={"songs"} />
+            <Help iconStyle={classes.helpIcon} url={"songs"} />
           </Typography>
           <Typography variant="h4" className={classes.lyricsHeading}>
             {currentSong?.sno}. {currentSong?.name}

@@ -57,18 +57,16 @@ const Setting = (props) => {
 
   return (
     <div>
-      <div className={classes.box}>
-        <Tooltip
-          title={t("commonSettings")}
-          className={classes.settings}
-          aria-label="More"
-          aria-controls="long-menu"
-          aria-haspopup="true"
-          onClick={openSettings}
-        >
-          <i className="material-icons md-23">more_vert</i>
-        </Tooltip>
-      </div>
+      <Tooltip
+        title={t("commonSettings")}
+        className={classes.settings}
+        aria-label="More"
+        aria-controls="long-menu"
+        aria-haspopup="true"
+        onClick={openSettings}
+      >
+        <i className="material-icons md-23">more_vert</i>
+      </Tooltip>
       <Menu
         id="long-menu"
         anchorEl={settingsAnchor}

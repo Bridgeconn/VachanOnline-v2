@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 0,
     },
   },
-  islIcon: {
+  helpIcon: {
     padding: "8px 3px 0",
     color: BLACK,
     fontSize: 19.5,
@@ -233,7 +233,7 @@ const Dictionary = (props) => {
               mobileView={mobileView}
             ></Metadata>
           </div>
-          <Help iconStyle={classes.islIcon} url={"dictionaries"} />
+          <Help iconStyle={classes.helpIcon} url={"dictionaries"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

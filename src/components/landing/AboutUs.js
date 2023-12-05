@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
       margin: "5px 0",
     },
   },
-  islIcon: {
+  helpIcon: {
     padding: "8px 12px 0",
     color: BLACK,
     fontSize: 21,
@@ -73,7 +73,7 @@ const AboutUs = ({ handleClose, mobileView }) => {
           <Typography variant="h5" gutterBottom>
             {t("landingAboutUsHead")}
           </Typography>
-          <Help iconStyle={classes.islIcon} url={"about"} />
+          <Help iconStyle={classes.helpIcon} url={"about"} />
         </div>
       </DialogTitle>
       <DialogContent dividers={true}>

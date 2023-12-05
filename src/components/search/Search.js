@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     borderBottom: "1px solid lightgray",
   },
-  islIcon: {
+  helpIcon: {
     padding: "8px 12px 0",
     color: BLACK,
     marginTop: 10,
@@ -287,7 +287,7 @@ const Search = (props) => {
           </Paper>
         </Box>
         <Box className={classes.box}>
-          <Help iconStyle={classes.islIcon} url={"searchBible"} />
+          <Help iconStyle={classes.helpIcon} url={"searchBible"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

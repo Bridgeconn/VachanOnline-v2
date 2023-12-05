@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  islIcon: {
+  helpIcon: {
     padding: "4px 6px 0",
     color: BLACK,
     marginTop: -3,
@@ -189,7 +189,7 @@ const Bookmarks = (props) => {
           <Typography variant="h6">{t("bookmarksText")}</Typography>
         </Box>
         <Box className={classes.box}>
-          <Help iconStyle={classes.islIcon} url={"bookmarks"} />
+          <Help iconStyle={classes.helpIcon} url={"bookmarks"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

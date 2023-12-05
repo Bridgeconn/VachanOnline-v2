@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     fontWeight: 600,
   },
-  islIcon: {
+  helpIcon: {
     color: BLACK,
     marginTop: 19,
     marginRight: 10,
@@ -386,7 +386,7 @@ const MenuBar = (props) => {
               chapter={chapter}
               paneNo={paneNo}
             />
-            <Help iconStyle={classes.islIcon} url={url} />
+            <Help iconStyle={classes.helpIcon} url={url} />
             {mobileView && paneNo === 1 ? (
               <div
                 className={classes.infoParall}

@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  islIcon: {
+  helpIcon: {
     padding: "4px 6px 0",
     color: BLACK,
     marginTop: -3,
@@ -517,7 +517,7 @@ function Notes(props) {
             </Typography>
           </Box>
           <Box className={classes.box}>
-            <Help iconStyle={classes.islIcon} url={"notes"} />
+            <Help iconStyle={classes.helpIcon} url={"notes"} />
             <Close className={classes.closeButton} />
           </Box>
         </Box>

@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
   },
-  islIcon: {
+  helpIcon: {
     marginTop: -40,
     float: "right",
     marginRight: 30,
@@ -443,7 +443,7 @@ const Stories = () => {
             <Typography variant="h3" className={classes.text}>
               {t("bibleStoriesText")}
             </Typography>
-            <Help iconStyle={classes.islIcon} url={"bibleStories"} />
+            <Help iconStyle={classes.helpIcon} url={"bibleStories"} />
             <Divider />
           </div>
           {lang === "isl" ? (

@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  islIcon: {
+  helpIcon: {
     padding: "4px 6px 0",
     color: BLACK,
     marginTop: -3,
@@ -207,7 +207,7 @@ const Highlights = (props) => {
           <Typography variant="h6">{t("highlightsText")}</Typography>
         </Box>
         <Box className={classes.box}>
-          <Help iconStyle={classes.islIcon} url={"highlights"} />
+          <Help iconStyle={classes.helpIcon} url={"highlights"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>
