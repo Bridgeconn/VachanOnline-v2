@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
   languageIcon: {
     cursor: "pointer",
-    marginLeft: 3,
+    marginLeft: 10,
     width: "25px",
     fontSize: "2rem",
   },

@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import LanguageIcon from "@material-ui/icons/Language";
 import { makeStyles } from "@material-ui/core/styles";
-import { Divider, Menu, MenuItem } from "@material-ui/core";
+import { Divider, Menu, MenuItem, Tooltip } from "@material-ui/core";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
 import { useTranslation } from "react-i18next";
-import BigTooltip from "./BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -35,12 +34,12 @@ const MultiLanguageDropdown = (props) => {
   }, [setLocale]);
   return (
     <>
-      <BigTooltip title={t("multilingualTooltip")}>
+      <Tooltip title={t("multilingualTooltip")}>
         <LanguageIcon
           className={iconstyle}
           onClick={openLanguage}
         ></LanguageIcon>
-      </BigTooltip>
+      </Tooltip>
       <Menu
         id="long-menu"
         anchorEl={languageAnchor}
