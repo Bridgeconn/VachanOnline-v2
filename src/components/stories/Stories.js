@@ -12,7 +12,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FormControl from "@material-ui/core/FormControl";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
-import StoryLink from "@material-ui/core/Link";
+import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import TopBar from "../read/TopBar";
@@ -424,14 +424,14 @@ const Stories = () => {
               <List>
                 {manifest.map((text, y) => (
                   <ListItem key={y} value={text} className={listClass}>
-                    <StoryLink
+                    <Link
                       className={classes.linkList}
                       href="#"
                       data-id={y + 1}
                       onClick={(e) => getStory(e)}
                     >
                       {y + 1 + ". " + text}
-                    </StoryLink>
+                    </Link>
                   </ListItem>
                 ))}
               </List>

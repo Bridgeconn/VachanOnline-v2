@@ -5,7 +5,7 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
-import SongsLink from "@material-ui/core/Link";
+import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ReactPlayer from "react-player";
@@ -288,12 +288,12 @@ const Songs = () => {
                 {songs?.map((song) => (
                   <ListItem key={song.sno} className={classes.listDirection}>
                     {song.sno + "."}
-                    <SongsLink
+                    <Link
                       className={classes.linkList}
                       onClick={() => setCurrentSong(song)}
                     >
                       {song.name}
-                    </SongsLink>
+                    </Link>
                   </ListItem>
                 ))}
               </List>
@@ -302,7 +302,7 @@ const Songs = () => {
         )}
         <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
-            {isLarge ? t("songsPageTitleDesktop") : t("songsText")}{" "}
+            {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
             <Help iconStyle={classes.helpIcon} url={"songs"} />
           </Typography>
           <Typography variant="h4" className={classes.lyricsHeading}>

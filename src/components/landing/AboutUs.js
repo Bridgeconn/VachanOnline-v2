@@ -5,10 +5,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import Help from "../common/Help";
 
 const useStyles = makeStyles(() => ({
@@ -18,21 +17,6 @@ const useStyles = makeStyles(() => ({
   },
   bold: {
     fontWeight: 600,
-  },
-  underline: {
-    textDecoration: "underline",
-  },
-  space: {
-    display: "inline-block",
-    paddingTop: 10,
-  },
-  releaseNotes: {
-    color: "#3E8A61",
-  },
-  list: {
-    "& li": {
-      margin: "5px 0",
-    },
   },
   helpIcon: {
     padding: "8px 12px 0",
@@ -46,7 +30,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
   },
 }));
-const AboutUs = ({ handleClose, mobileView }) => {
+const AboutUs = ({ handleClose }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const addLink = (text, prefix) => {
@@ -134,9 +118,4 @@ const AboutUs = ({ handleClose, mobileView }) => {
     </>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    mobileView: state.local.mobileView,
-  };
-};
-export default connect(mapStateToProps, null)(AboutUs);
+export default AboutUs;

@@ -77,12 +77,6 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     borderBottom: "1px solid lightgray",
   },
-  helpIcon: {
-    padding: "8px 12px 0",
-    color: BLACK,
-    marginTop: 10,
-    fontSize: 21,
-  },
   searchBox: {
     padding: "2px 4px",
     display: "flex",
@@ -133,16 +127,22 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15,
     padding: "5px 10px",
   },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
   pageCount: {
     display: "inline-block",
   },
   closeButton: {
     marginRight: 15,
     marginTop: 11,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 10,
+    fontSize: 21,
   },
 }));
 

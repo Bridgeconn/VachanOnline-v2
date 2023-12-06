@@ -104,16 +104,16 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 10,
     fontSize: 21,
   },
-    copyButton: {
-      textTransform: "capitalize",
-      margin: "0 auto",
-      display: "flex",
-    },
-    share: {
-      width: "96%",
-      height: 40,
-      margin: 10,
-    },
+  copyButton: {
+    textTransform: "capitalize",
+    margin: "0 auto",
+    display: "flex",
+  },
+  share: {
+    width: "96%",
+    height: 40,
+    margin: 10,
+  },
 }));
 const MenuBar = (props) => {
   let {
@@ -166,14 +166,15 @@ const MenuBar = (props) => {
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const location = useLocation();
-  const route = location?.pathname;
   const [shareAnchor, setShareAnchor] = React.useState(null);
   const [copyFeedback, setCopyFeedback] = React.useState("");
   const [alert, setAlert] = React.useState(false);
   const [alertType, setAlertType] = React.useState("");
   const open = Boolean(shareAnchor);
   const path = window.location.href;
+  const location = useLocation();
+  const route = location?.pathname;
+  const url = route.startsWith("/read") ? "readBible" : "studyBible";
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
@@ -350,7 +351,6 @@ const MenuBar = (props) => {
       setAudioIcon("");
     }
   }, [audio, audioBible, bookCode, classes.info, setValue, parallelView, t]);
-  const url = route.startsWith("/read") ? "readBible" : "studyBible";
   return (
     <div>
       <Box className={classes.read}>
