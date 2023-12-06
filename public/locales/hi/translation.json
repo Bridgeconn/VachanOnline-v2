@@ -23,6 +23,8 @@
     "landingPageHeaderAudio": "ऑडियो",
     "multilingualTooltip": "भाषाएँ",
     "landingSelectBibleHeading": "अपनी भाषा में बाइबल का अध्ययन करें",
+    "landingVerseHeading": "आज का पद",
+    "landingVerseHeadingToolTip": "पद पढ़ने के लिए क्लिक करें",
     "landingStartBtn": "शुरू करें",
     "landingStartBtnToolTip": "बाइबिल पढ़ने के लिए यहां क्लिक करें",
     "landingSelectVersionToolTip": "अपनी भाषा और संस्करण में एक बाइबिल चुनें",
@@ -182,5 +184,9 @@
     "informationText": "सूचना",
     "strongsText": "स्ट्रॉन्गस",
     "seeAlsoText": "यह भी देखें",
-    "refText": "संदर्भ"
+    "refText": "संदर्भ",
+    "shareTooltip": "शेयर करना",
+    "copyToClipBoardBtn": "क्लिपबोर्ड पर कॉपी करें",
+    "clipBoardCopied": "कॉपी",
+    "clipBoardCopiedFailed": "क्लिपबोर्ड पर कॉपी करना विफल रहा"
 }

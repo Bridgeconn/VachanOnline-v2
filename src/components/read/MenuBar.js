@@ -15,11 +15,16 @@ import Note from "../note/Note";
 import PrintIcon from "@material-ui/icons/Print";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
-import { BLACK } from "../../store/colorCode";
+import { BLACK, WHITE } from "../../store/colorCode";
 import Close from "../common/Close";
 import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
+import ShareIcon from "@material-ui/icons/Share";
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import { useTranslation } from "react-i18next";
+import { Button, Menu, Snackbar } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -91,6 +96,16 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     fontWeight: 600,
   },
+  copyButton: {
+    textTransform: "capitalize",
+    margin: "0 auto",
+    display: "flex",
+  },
+  share: {
+    width: "96%",
+    height: 40,
+    margin: 10,
+  },
 }));
 const MenuBar = (props) => {
   let {
@@ -143,6 +158,12 @@ const MenuBar = (props) => {
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [shareAnchor, setShareAnchor] = React.useState(null);
+  const [copyFeedback, setCopyFeedback] = React.useState("");
+  const [alert, setAlert] = React.useState(false);
+  const [alertType, setAlertType] = React.useState("");
+  const open = Boolean(shareAnchor);
+  const path = window.location.href;
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
@@ -246,12 +267,36 @@ const MenuBar = (props) => {
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
+  const closeAlert = () => {
+    setAlert(false);
+  };
+  const handleCopyClick = async () => {
+    try {
+      await navigator.clipboard.writeText(path);
+      setAlert(true);
+      setCopyFeedback(t("clipBoardCopied"));
+      setAlertType("success");
+      handleDialogClose(true);
+    } catch (err) {
+      console.error("Unable to copy to clipboard.", err);
+      setAlert(true);
+      setCopyFeedback(t("clipBoardCopiedFailed"));
+      setAlertType("error");
+      handleDialogClose(true);
+    }
+  };
   //function to open and close settings menu
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
   }
   function closeSettings() {
     setSettingsAnchor(null);
+  }
+  function openShareDialog(event) {
+    setShareAnchor(event.currentTarget);
+  }
+  function closeShareDialog() {
+    setShareAnchor(null);
   }
   //get metadata from versions object if version changed
   React.useEffect(() => {
@@ -324,6 +369,66 @@ const MenuBar = (props) => {
         </Box>
         {errorMessage === "" ? (
           <Box className={classes.items}>
+            <div className={classes.info}>
+              <Tooltip title={t("shareTooltip")}>
+                <ShareIcon fontSize="small" onClick={openShareDialog} />
+              </Tooltip>
+              <Menu
+                id="long-menu"
+                anchorEl={shareAnchor}
+                keepMounted
+                open={open}
+                onClose={closeShareDialog}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
+                PaperProps={{
+                  style: {
+                    maxHeight: 150,
+                    marginTop: 20,
+                    width: 420,
+                    backgroundColor: WHITE,
+                  },
+                }}
+              >
+                <TextField
+                  id="share-url"
+                  variant="outlined"
+                  size="small"
+                  defaultValue={path}
+                  className={classes.share}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  onFocus={(e) => e.target.select()}
+                />
+                <Snackbar
+                  open={alert}
+                  autoHideDuration={800}
+                  onClose={closeAlert}
+                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                >
+                  <Alert
+                    elevation={6}
+                    variant="filled"
+                    onClose={closeAlert}
+                    severity={alertType}
+                  >
+                    {copyFeedback}
+                  </Alert>
+                </Snackbar>
+                <div>
+                  <Button
+                    className={classes.copyButton}
+                    variant="outlined"
+                    onClick={handleCopyClick}
+                    startIcon={<FileCopyOutlinedIcon />}
+                  >
+                    {t("copyToClipBoardBtn")}
+                  </Button>
+                </div>
+              </Menu>
+            </div>
             {mobileView ? null : noteIcon}
             {mobileView ? null : highlightIcon}
 

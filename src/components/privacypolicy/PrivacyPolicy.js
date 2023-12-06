@@ -37,13 +37,13 @@ const PrivacyPolicy = () => {
           used to identify you.
         </p>
         <p>
-          Link to privacy policy of third-party service providers used by the
-          app
+          Links to privacy policy of third-party service providers used by the
+          apps
         </p>
         <ul>
           <li>
             <a
-              href="https://www.google.com/policies/privacy/"
+              href="https://support.google.com/googleplay/answer/11416267?sjid=12183253204952748197-AP"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -52,11 +52,20 @@ const PrivacyPolicy = () => {
           </li>
           <li>
             <a
-              href="https://www.facebook.com/about/privacy/update/printable"
+              href="https://support.google.com/analytics/answer/6004245"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Facebook
+              Google Analytics
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://firebase.google.com/support/privacy)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Firebase
             </a>
           </li>
         </ul>
@@ -113,10 +122,7 @@ const PrivacyPolicy = () => {
         cookie is being sent to your device. If you choose to refuse our
         cookies, you may not be able to use some portions of this Service.
       </p>
-      <h3>Types of Cookies </h3>
-      <ol>
-        <li>Third party cookies </li>
-      </ol>
+      <h3>Third party cookies </h3>
       <ul>
         <li>
           <a
@@ -143,10 +149,10 @@ const PrivacyPolicy = () => {
         reasons:
       </p>
       <ul>
-        <li>To facilitate our Service;</li>
-        <li>To provide the Service on our behalf;</li>
-        <li>To perform Service-related services; or</li>
-        <li>To assist us in analyzing how our Service is used.</li>
+        <li>To facilitate our Service</li>
+        <li>To provide the Service on our behalf</li>
+        <li>To perform Service-related services</li>
+        <li>To assist us in analyzing how our Service is used</li>
       </ul>
       <p>
         We want to inform users of this Service that these third parties have
@@ -156,11 +162,11 @@ const PrivacyPolicy = () => {
       </p>
       <h2>Security</h2>
       <p>
-        We value your trust in providing us your Personal Information, thus we
-        are striving to use commercially acceptable means of protecting it. But
-        remember that no method of transmission over the internet, or method of
-        electronic storage is 100% secure and reliable, and we cannot guarantee
-        its absolute security.
+        We value your trust in providing us with your Personal Information, thus
+        we are striving to use commercially acceptable means of protecting it.
+        But remember that no method of transmission over the internet, or method
+        of electronic storage is 100% secure and reliable, and we cannot
+        guarantee its absolute security.
       </p>
       <h2>Links to Other Sites</h2>
       <p>

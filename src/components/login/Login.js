@@ -49,9 +49,10 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 0,
     },
   },
-  signBtn: {
+  loginBtn: {
     cursor: "pointer",
     marginLeft: 3,
+    fontSize: "2rem",
     padding: "0 8px",
     boxSizing: "content-box",
     "& hover": {
@@ -59,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       whiteSpace: "nowrap",
+      fontSize: "1.8rem",
     },
   },
   links: {
@@ -256,7 +258,7 @@ const Login = (props) => {
         <>
           <BigTooltip title={t("signInTitle")}>
             <PersonIcon
-              className={person ? person : classes.signBtn}
+              className={person ? person : classes.loginBtn}
               ref={menuRef}
               onClick={openForm}
             />
