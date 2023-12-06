@@ -241,6 +241,28 @@ const PageHeader = (props) => {
           ) : (
             ""
           )}
+          {process.env.REACT_APP_DOCUMENT_URL ? (
+            <Link to={process.env.REACT_APP_DOCUMENT_URL} target="_blank">
+              {mobileLandscape ? (
+                ""
+              ) : (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={classes.signBible}
+                  title="Help"
+                  aria-label="Help"
+                  rel="noopener"
+                  startIcon={<i className="material-icons">help_outline</i>}
+                >
+                  {t("landingHelpBtn")}
+                </Button>
+              )}
+            </Link>
+          ) : (
+            ""
+          )}
           {loginButton}
           <MultiLanguageDropdown iconstyle={classes.languageIcon} />
         </Toolbar>

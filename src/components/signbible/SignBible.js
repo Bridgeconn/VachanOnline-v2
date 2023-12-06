@@ -10,6 +10,8 @@ import * as views from "../../store/views";
 import BookCombo from "../common/BookCombo";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,6 +88,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: 7,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
   },
   message: {
     paddingLeft: 20,
@@ -192,7 +204,8 @@ const SignBible = (props) => {
             </Typography>
           )}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          <Help iconStyle={classes.helpIcon} url={"signLanguageBible"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

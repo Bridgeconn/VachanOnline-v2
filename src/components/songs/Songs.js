@@ -16,6 +16,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
+import Help from "../common/Help";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { t } from "i18next";
 
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   linkList: {
     marginLeft: 5,
+    cursor: "pointer",
     color: BLACK,
     "&:hover": {
       color: GREY,
@@ -116,6 +118,13 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
     flexGrow: 1,
     maxWidth: 300,
+  },
+  helpIcon: {
+    fontSize: 21,
+    float: "right",
+    marginRight: 30,
+    marginTop: 20,
+    color: BLACK,
   },
   content: {
     flexGrow: 1,
@@ -281,7 +290,6 @@ const Songs = () => {
                     {song.sno + "."}
                     <Link
                       className={classes.linkList}
-                      href="#"
                       onClick={() => setCurrentSong(song)}
                     >
                       {song.name}
@@ -295,6 +303,7 @@ const Songs = () => {
         <div className={classes.content}>
           <Typography variant="h3" className={classes.heading}>
             {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
+            <Help iconStyle={classes.helpIcon} url={"songs"} />
           </Typography>
           <Typography variant="h4" className={classes.lyricsHeading}>
             {currentSong?.sno}. {currentSong?.name}

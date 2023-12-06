@@ -14,7 +14,8 @@ import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
-import { LIGHTGREY } from "../../store/colorCode";
+import Help from "../common/Help";
+import { BLACK, LIGHTGREY } from "../../store/colorCode";
 import { Paper } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 
@@ -133,6 +134,13 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("md")]: {
       whiteSpace: "nowrap",
     },
+  },
+  helpIcon: {
+    padding: "2px 0 0",
+    color: BLACK,
+    marginTop: 5,
+    marginRight: 5,
+    fontSize: 19.5,
   },
   icons: {
     display: "flex",
@@ -432,6 +440,7 @@ const Commentary = (props) => {
               mobileView={mobileView}
             ></Metadata>
           </div>
+          <Help iconStyle={classes.helpIcon} url={"commentaries"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

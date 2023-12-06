@@ -15,6 +15,8 @@ import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
 import { useTranslation } from "react-i18next";
 import { bibleBooks } from "../../store/bibleData";
+import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +85,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: 7,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
   },
   select: {
     width: 200,
@@ -251,7 +263,8 @@ const Video = (props) => {
             />
           ) : null}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          <Help iconStyle={classes.helpIcon} url={"videos"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

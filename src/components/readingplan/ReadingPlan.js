@@ -13,10 +13,11 @@ import Select from "react-select";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import { GREY } from "../../store/colorCode";
+import { BLACK, GREY } from "../../store/colorCode";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
+import Help from "../common/Help";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -136,6 +137,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginTop: 7,
     marginRight: 15,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
   },
   dateContainer: {
     display: "flex",
@@ -290,7 +301,8 @@ const ReadingPlan = (props) => {
             ""
           )}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          <Help iconStyle={classes.helpIcon} url={"readingPlans"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

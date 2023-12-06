@@ -22,6 +22,7 @@ import { Box, Typography } from "@material-ui/core";
 import { BLACK, GREY } from "../../store/colorCode";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
+import Help from "../common/Help";
 
 const drawerWidth = 400;
 
@@ -103,6 +104,15 @@ const useStyles = makeStyles((theme) => ({
     top: 60,
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
+  },
+  helpIcon: {
+    marginTop: -40,
+    float: "right",
+    marginRight: 30,
+    cursor: "pointer",
+    fontSize: 21,
+    color: BLACK,
+    padding: "0 5px",
   },
   mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
   heading: {
@@ -433,6 +443,7 @@ const Stories = () => {
             <Typography variant="h3" className={classes.text}>
               {t("bibleStoriesText")}
             </Typography>
+            <Help iconStyle={classes.helpIcon} url={"bibleStories"} />
             <Divider />
           </div>
           {lang === "isl" ? (

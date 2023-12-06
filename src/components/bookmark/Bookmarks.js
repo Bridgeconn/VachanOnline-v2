@@ -13,8 +13,10 @@ import { connect, useSelector } from "react-redux";
 import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
+import Help from "../common/Help";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,6 +74,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: -6,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "4px 6px 0",
+    color: BLACK,
+    marginTop: -3,
+    fontSize: 21,
   },
 }));
 const Bookmarks = (props) => {
@@ -176,7 +188,8 @@ const Bookmarks = (props) => {
         <Box flexGrow={1}>
           <Typography variant="h6">{t("bookmarksText")}</Typography>
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          <Help iconStyle={classes.helpIcon} url={"bookmarks"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

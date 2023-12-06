@@ -22,6 +22,8 @@ import ParallelScroll from "@material-ui/icons/ImportExport";
 import ShareIcon from "@material-ui/icons/Share";
 import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import Help from "../common/Help";
 import { Button, Menu, Snackbar } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { Alert } from "@material-ui/lab";
@@ -96,6 +98,12 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     fontWeight: 600,
   },
+  helpIcon: {
+    color: BLACK,
+    marginTop: 19,
+    marginRight: 10,
+    fontSize: 21,
+  },
   copyButton: {
     textTransform: "capitalize",
     margin: "0 auto",
@@ -164,6 +172,9 @@ const MenuBar = (props) => {
   const [alertType, setAlertType] = React.useState("");
   const open = Boolean(shareAnchor);
   const path = window.location.href;
+  const location = useLocation();
+  const route = location?.pathname;
+  const url = route.startsWith("/read") ? "readBible" : "studyBible";
   React.useEffect(() => {
     if (bookList) {
       let book = bookList.find((element) => element.book_code === bookCode);
@@ -480,6 +491,7 @@ const MenuBar = (props) => {
               chapter={chapter}
               paneNo={paneNo}
             />
+            <Help iconStyle={classes.helpIcon} url={url} />
             {mobileView && paneNo === 1 ? (
               <div
                 className={classes.infoParall}

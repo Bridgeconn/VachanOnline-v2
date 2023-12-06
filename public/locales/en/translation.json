@@ -188,5 +188,6 @@
   "shareTooltip": "Share",
   "copyToClipBoardBtn": "Copy to Clipboard",
   "clipBoardCopied": "Copied",
-  "clipBoardCopiedFailed": "Copy to clipboard failed"
+  "clipBoardCopiedFailed": "Copy to clipboard failed",
+  "landingHelpBtn": "Help"
 }
