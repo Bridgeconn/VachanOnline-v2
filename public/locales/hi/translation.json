@@ -23,6 +23,8 @@
     "landingPageHeaderAudio": "ऑडियो",
     "multilingualTooltip": "भाषाएँ",
     "landingSelectBibleHeading": "अपनी भाषा में बाइबल का अध्ययन करें",
+    "landingVerseHeading": "आज का पद",
+    "landingVerseHeadingToolTip": "पद पढ़ने के लिए क्लिक करें",
     "landingStartBtn": "शुरू करें",
     "landingHelpBtn": "मदद",
     "landingStartBtnToolTip": "बाइबिल पढ़ने के लिए यहां क्लिक करें",
