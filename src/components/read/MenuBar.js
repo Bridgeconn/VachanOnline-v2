@@ -103,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 19,
     marginRight: 10,
     fontSize: 21,
+  },
     copyButton: {
       textTransform: "capitalize",
       margin: "0 auto",
@@ -113,7 +114,6 @@ const useStyles = makeStyles((theme) => ({
       height: 40,
       margin: 10,
     },
-  },
 }));
 const MenuBar = (props) => {
   let {
