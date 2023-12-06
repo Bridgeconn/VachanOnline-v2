@@ -83,8 +83,15 @@ const PrivacyPolicy = () => {
       <p>
         Regarding the personal data we collect from you, including how we get in
         touch with you, we give you options. To change your preferences, send an
-        email to thevachanproject@bridgeconn.com requesting that your
-        information be removed from our mailing lists.
+        email to{" "}
+        <a
+          href="mailto:thevachanproject@bridgeconn.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          thevachanproject@bridgeconn.com
+        </a>{" "}
+        requesting that your information be removed from our mailing lists.
       </p>
       <h2>Data retention</h2>
       <p>
@@ -184,7 +191,14 @@ const PrivacyPolicy = () => {
       <h2>Contact Us</h2>
       <p>
         If you have any questions or suggestions about our Privacy Policy, do
-        not hesitate to contact us at thevachanproject@bridgeconn.com.
+        not hesitate to contact us at {""}
+        <a
+          href="mailto:thevachanproject@bridgeconn.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          thevachanproject@bridgeconn.com
+        </a>
       </p>
     </div>
   );
