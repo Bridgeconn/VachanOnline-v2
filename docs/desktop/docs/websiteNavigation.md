@@ -12,19 +12,19 @@ On visiting the website **[VachanOnline.com](https://vachanonline.com/)**, the b
 
 From here the user can access the following features from the landing page:
 
-1. [Study Bible](./studyBible) **(1, 6, 10)**
+1. [Study Bible](./studyBible) **(1, 7, 11)**
 
-2. [Read Bible](./readBible) **(2, 9)**
+2. [Read Bible](./readBible) **(2, 10)**
 
-3. [Sign Language Bible](./signLanguageBible) **(3)**
+3. [Sign Language Bible](./signLanguageBible) **(4)**
 
-4. [Songs](./songs) **(4)**
+4. [Songs](./songs) **(5)**
 
-5. [Bible Stories](./bibleStories) **(5)**
+5. [Bible Stories](./bibleStories) **(6)**
 
-6. [Audio Bibles](./audioBible) **(7)**
+6. [Audio Bibles](./audioBible) **(3, 8)**
 
-7. [Videos](./videos) **(8)**
+7. [Videos](./videos) **(9)**
 
 At the bottom of the page in the footer also there are some links as described below
 <img src="/img/assets/bottombar.png"  width="1000px" alt="bottombar"/>

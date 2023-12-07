@@ -6,7 +6,7 @@ description: Contact the vachan Online team using the email address provided
 
 ## The Vachan Project
 
-Upon clicking the 'About Us' **(1)** button in the bottom bar on the Landing Page, a dialog box will appear, providing information about the Vachan Project and its development
+Upon clicking the **About Us (1)** button in the bottom bar on the Landing Page, a dialog box will appear, providing information about the Vachan Project and its development
 
 <img src="/img/assets/bottombar.png"  width="1000px" alt="bottombar"/>
 
