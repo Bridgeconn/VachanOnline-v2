@@ -490,7 +490,9 @@ const Bible = (props) => {
         )}
         <span className={lineViewClass}>
           <span
-            onMouseOver={() => setMainValue("hoverVerse", verse)}
+            onMouseOver={
+              mobileView ? null : () => setMainValue("hoverVerse", verse)
+            }
             onClick={handleVerseClick}
             data-verse={item.verseNumber}
           >
@@ -916,7 +918,6 @@ const Bible = (props) => {
             scrollText();
           }}
           ref={props.ref1}
-          onMouseOut={() => setMainValue("hoverVerse", "")}
           className={
             audio
               ? `${classes.bibleReadingPane} ${classes.audio}`
