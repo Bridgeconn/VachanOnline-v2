@@ -32,7 +32,7 @@ const drawerWidth = 400;
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 200,
+    minWidth: 300,
   },
   menu: {
     textAlign: "center",
@@ -156,6 +156,18 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     color: BLACK,
   },
+  languageName: {
+    float: (props) => (props.rtlList?.includes(props.lang) ? "left" : "right"),
+    textTransform: "capitalize",
+  },
+  languageNameOrigin: {
+    float: (props) => (props.rtlList?.includes(props.lang) ? "right" : "left"),
+    textTransform: "capitalize",
+  },
+  language: {
+    fontSize: "1rem",
+    width: "100%",
+  },
   container: {
     margin: "0 20px",
     padding: "12px 10px 15px 10px",
@@ -173,13 +185,10 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_STORIES_URL }),
     []
   );
-  const classes = useStyles();
   const [storyId, setStoryId] = React.useState("01");
   const [lang, setLang] = React.useState("");
   const [stories, setStories] = React.useState();
-  const [languageJson, setLanguageJson] = React.useState({});
   const [manifest, setManifest] = React.useState([]);
-  const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const [islStories, setIslStories] = React.useState(null);
@@ -189,6 +198,11 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const smallScreen = useMediaQuery("(max-width:319px)");
+  const styleProps = {
+    lang: lang,
+    rtlList: rtlList,
+  };
+  const classes = useStyles(styleProps);
   const storyClass = rtlList.includes(lang)
     ? `${classes.stories} ${classes.storyDirection}`
     : classes.stories;
@@ -213,7 +227,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     window.scrollTo(0, 0);
   };
   React.useEffect(() => {
-    getObsLanguageData(setMainValue);
+    getObsLanguageData(setMainValue, setLang);
   }, [setMainValue]);
   const storySetter = (event) => {
     let storyNum = event.target.value;
@@ -226,7 +240,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   };
 
   useEffect(() => {
-    if (lang !== "" && lang !== "isl") {
+    if (lang !== "" && lang !== "isl" && lang) {
       API.get(lang + "/content/" + storyId + ".md").then(function (response) {
         setStories(response.data);
       });
@@ -244,7 +258,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   }, [storyId, lang, islStories]);
 
   useEffect(() => {
-    if (lang !== "") {
+    if (lang !== "" && lang) {
       API.get(lang + "/manifest.json").then(function (response) {
         setManifest(response.data);
       });
@@ -255,15 +269,6 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
       });
     }
   }, [API, lang]);
-
-  useEffect(() => {
-    API.get("languages.json").then(function (response) {
-      let languageArray = Object.keys(response.data);
-      setLanguages(languageArray);
-      setLanguageJson(response.data);
-      setLang(languageArray[0] || "");
-    });
-  }, [API]);
 
   useEffect(() => {
     API.get("rtl.json").then(function (response) {
@@ -286,12 +291,26 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
                 <FormControl
                   variant="outlined"
-                  className={classes.mobileLangCombo}
+                  style={{
+                    maxWidth: smallScreen === true ? "90px" : "50%",
+                    minWidth: "180px",
+                  }}
                 >
                   <Select value={lang} onChange={changeLang}>
-                    {languages.map((text, y) => (
-                      <MenuItem key={y} value={text}>
-                        {languageJson[text]}
+                    {obsLanguageInfo.map((text, y) => (
+                      <MenuItem key={y} value={text?.langCode}>
+                        {text?.language === text?.languageName.toLowerCase() ? (
+                          `${text?.languageName}`
+                        ) : (
+                          <Typography className={classes.language}>
+                            <span className={classes.languageNameOrigin}>
+                              {`${text?.languageName}`}
+                            </span>
+                            <span className={classes.languageName}>
+                              {`${text?.language}`}
+                            </span>
+                          </Typography>
+                        )}
                       </MenuItem>
                     ))}
                   </Select>
@@ -299,7 +318,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                 <FormControl
                   variant="outlined"
                   style={{
-                    marginLeft: 20,
+                    marginLeft: 5,
                     maxWidth: smallScreen === true ? "90px" : "50%",
                   }}
                 >
@@ -371,15 +390,28 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
             <div className={classes.drawerHeader}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <Select value={lang} onChange={changeLang}>
-                  {languages.map((text, y) => (
+                  {obsLanguageInfo.map((text, y) => (
                     <MenuItem
                       key={y}
-                      value={text}
+                      value={text?.langCode}
                       className={
-                        rtlList.includes(text) ? classes.listDirection : ""
+                        rtlList.includes(text?.langCode)
+                          ? classes.listDirection
+                          : ""
                       }
                     >
-                      {languageJson[text]}
+                      {text?.language === text?.languageName.toLowerCase() ? (
+                        `${text?.languageName}`
+                      ) : (
+                        <Typography className={classes.language}>
+                          <span className={classes.languageNameOrigin}>
+                            {`${text?.languageName}`}
+                          </span>
+                          <span className={classes.languageName}>
+                            {`${text?.language}`}
+                          </span>
+                        </Typography>
+                      )}
                     </MenuItem>
                   ))}
                 </Select>

@@ -536,12 +536,12 @@ export const getLanguageData = (setValue) => {
       console.log(error);
     });
 };
-export const getObsLanguageData = (setValue) => {
+export const getObsLanguageData = (setValue, setLang) => {
   obsDataAPI
     ?.get("languageData.json")
     .then(function (response) {
-      console.log(response.data, "heykk");
       setValue("obsLanguageInfo", response.data);
+      setLang(response.data[0].langCode);
     })
     .catch(function (error) {
       console.log(error);
