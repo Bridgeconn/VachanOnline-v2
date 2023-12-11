@@ -23,6 +23,9 @@ import { BLACK, GREY } from "../../store/colorCode";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
 import Help from "../common/Help";
+import { connect } from "react-redux";
+import { getObsLanguageData } from "../common/utility";
+import * as actions from "../../store/actions";
 
 const drawerWidth = 400;
 
@@ -165,7 +168,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Stories = () => {
+const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const API = useMemo(
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_STORIES_URL }),
     []
@@ -209,7 +212,9 @@ const Stories = () => {
     setStoryId(storyNum);
     window.scrollTo(0, 0);
   };
-
+  React.useEffect(() => {
+    getObsLanguageData(setMainValue);
+  }, [setMainValue]);
   const storySetter = (event) => {
     let storyNum = event.target.value;
     if (storyNum.length < 2) storyNum = "0" + storyNum;
@@ -467,5 +472,15 @@ const Stories = () => {
     </>
   );
 };
-
-export default Stories;
+const mapStateToProps = (state) => {
+  return {
+    obsLanguageInfo: state.local.obsLanguageInfo,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setMainValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Stories);
