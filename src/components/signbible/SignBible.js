@@ -12,6 +12,8 @@ import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
+import { bibleBooks } from "../../store/bibleData";
+import parse from "html-react-parser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -138,7 +140,12 @@ const SignBible = (props) => {
     const filterByName = (item) => books?.includes(item?.book_code);
     return bookName.filter(filterByName);
   }
-
+  const availableBible = bibleBooks.filter((e) => {
+    return Object.keys(signBible["books"]).includes(e.abbreviation, e.book);
+  });
+  const avlBookNames = availableBible?.map((i) => {
+    return i.book;
+  });
   useEffect(() => {
     if (versions.length > 0) {
       //Set default version to english for ISL
@@ -159,16 +166,11 @@ const SignBible = (props) => {
         //English ESV version not available
       }
     }
-    if (!["gen", "mrk", "luk", "tit"].includes(bookCode)) {
-      //Set to genesis 1 on page load as only Genesis, Mark, Luke and Titus are available now
-      setValue("bookCode", "gen");
-      setValue("chapter", 1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue, versions]);
   useEffect(() => {
     if (signBible && bookCode) {
       let books = signBible["books"];
+      //Available book and chapter
       if (
         books &&
         books.hasOwnProperty(bookCode) &&
@@ -176,13 +178,32 @@ const SignBible = (props) => {
       ) {
         setVideos(books[bookCode][chapter]);
         setMessage("");
-      } else {
+        //available books and unavailable chapter
+      } else if (
+        books &&
+        books.hasOwnProperty(bookCode) &&
+        !books[bookCode].hasOwnProperty(chapter)
+      ) {
+        const ref = {
+          book: book,
+          chapters: Object.keys(signBible["books"][bookCode]).length,
+        };
         setVideos();
-        setMessage(t("signLangNotAvailableMsg"));
+        setMessage(t("signLangNotAvailableMsg1", { ref }));
+        //unavailable book and chapter
+      } else {
+        setMessage(
+          t("signLangNotAvailableMsg2", {
+            bookList: `<ul>${avlBookNames
+              .map((avlBookNames) => `<li>${avlBookNames}</li>`)
+              .join(" ")}
+                  </ul>`,
+          })
+        );
+        setPlaying();
       }
-      setPlaying();
     }
-  }, [signBible, bookCode, chapter, book, t]);
+  }, [signBible, bookCode, chapter, book, t, avlBookNames]);
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
@@ -222,7 +243,7 @@ const SignBible = (props) => {
                 />
               );
             })}
-          {message && <h5 className={classes.message}>{message}</h5>}
+          {message && <h5 className={classes.message}>{parse(message)}</h5>}
         </>
       </div>
     </div>
