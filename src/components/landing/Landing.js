@@ -4,7 +4,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
 import Link from "@material-ui/core/Link";
-import { useMediaQuery } from "@material-ui/core";
+import { Dialog, useMediaQuery } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { AUDIO, VIDEO } from "../../store/views";
@@ -16,6 +16,7 @@ import LandingFooter from "./LandingFooter";
 import PageHeader from "./PageHeader";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
+import MultiOptionalDropdown from "../common/MultiOptionalDropdown";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -79,12 +80,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Landing = (props) => {
+  const [open, setOpen] = React.useState(true);
+  const localeLang = localStorage.getItem("localeLang");
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const { setValue } = props;
 
   const { t } = useTranslation();
+  const handleClose = () => {
+    setOpen(false);
+  };
   React.useEffect(() => {
     if (isMobile) {
       setValue("mobileView", true);
@@ -108,57 +114,74 @@ const Landing = (props) => {
     );
   };
   return (
-    <Grid className={classes.body}>
-      <PageHeader />
-      <Banner />
-      <BibleIndex />
-      <Grid
-        container
-        justifyContent="center"
-        spacing={1}
-        className={classes.imageRow}
-      >
-        <ImageCard
-          icon="volume_up"
-          type="Listen"
-          onClick={() => setValue("parallelView", AUDIO)}
-        />
-        <ImageCard
-          icon="videocam"
-          type="Watch"
-          onClick={() => setValue("parallelView", VIDEO)}
-        />
-        <ImageCard icon="local_library" type="Read" />
-        <ImageCard icon="menu_book" type="Study" />
-      </Grid>
-      <Grid container spacing={2} className={classes.textRow}>
-        <Grid item md={12} lg={6}>
-          <div className={classes.text}>
-            <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
-            <p>
-              VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
-              {t("landingWelcomeMessage2")}
-            </p>
-            <p>{t("landingWelcomeMessage3")}</p>
-            <p>
-              {t("landingWelcomeMessage4")} VachanGo{" "}
-              {t("landingWelcomeMessage5")}
-            </p>
-          </div>
+    <>
+      {localeLang === null ? (
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          scroll="paper"
+          aria-labelledby="scroll-dialog-title"
+          aria-describedby="scroll-dialog-description"
+          fullWidth={true}
+          maxWidth="md"
+        >
+          <MultiOptionalDropdown setOpen={setOpen} />
+        </Dialog>
+      ) : (
+        ""
+      )}
+      <Grid className={classes.body}>
+        <PageHeader />
+        <Banner />
+        <BibleIndex />
+        <Grid
+          container
+          justifyContent="center"
+          spacing={1}
+          className={classes.imageRow}
+        >
+          <ImageCard
+            icon="volume_up"
+            type="Listen"
+            onClick={() => setValue("parallelView", AUDIO)}
+          />
+          <ImageCard
+            icon="videocam"
+            type="Watch"
+            onClick={() => setValue("parallelView", VIDEO)}
+          />
+          <ImageCard icon="local_library" type="Read" />
+          <ImageCard icon="menu_book" type="Study" />
         </Grid>
-        <Grid item md={12} lg={6}>
-          <div className={classes.screenshotDiv}>
-            <img
-              src={screenshot}
-              alt="Screenshot"
-              className={classes.screenshot}
-            />
-            <div>{addLink()}</div>
-          </div>
+        <Grid container spacing={2} className={classes.textRow}>
+          <Grid item md={12} lg={6}>
+            <div className={classes.text}>
+              <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
+              <p>
+                VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
+                {t("landingWelcomeMessage2")}
+              </p>
+              <p>{t("landingWelcomeMessage3")}</p>
+              <p>
+                {t("landingWelcomeMessage4")} VachanGo{" "}
+                {t("landingWelcomeMessage5")}
+              </p>
+            </div>
+          </Grid>
+          <Grid item md={12} lg={6}>
+            <div className={classes.screenshotDiv}>
+              <img
+                src={screenshot}
+                alt="Screenshot"
+                className={classes.screenshot}
+              />
+              <div>{addLink()}</div>
+            </div>
+          </Grid>
         </Grid>
+        <LandingFooter />
       </Grid>
-      <LandingFooter />
-    </Grid>
+    </>
   );
 };
 
