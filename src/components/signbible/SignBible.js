@@ -141,7 +141,7 @@ const SignBible = (props) => {
     return bookName.filter(filterByName);
   }
   const availableBible = bibleBooks?.filter((e) => {
-    return typeof signBible === "object" && signBible?.length !== 0
+    return signBible?.length !== 0
       ? Object.keys(signBible["books"]).includes(e.abbreviation, e.book)
       : null;
   });
