@@ -140,8 +140,10 @@ const SignBible = (props) => {
     const filterByName = (item) => books?.includes(item?.book_code);
     return bookName.filter(filterByName);
   }
-  const availableBible = bibleBooks.filter((e) => {
-    return Object.keys(signBible["books"]).includes(e.abbreviation, e.book);
+  const availableBible = bibleBooks?.filter((e) => {
+    return typeof signBible === "object" && signBible?.length !== 0
+      ? Object.keys(signBible["books"]).includes(e.abbreviation, e.book)
+      : null;
   });
   const avlBookNames = availableBible?.map((i) => {
     return i.book;
@@ -192,6 +194,7 @@ const SignBible = (props) => {
         setMessage(t("signLangNotAvailableMsg1", { ref }));
         //unavailable book and chapter
       } else {
+        setVideos();
         setMessage(
           t("signLangNotAvailableMsg2", {
             bookList: `<ul>${avlBookNames
