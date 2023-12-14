@@ -29,6 +29,6 @@ export const languageJson = [
 ];
 
 export const languageCode = {
-  en: "eng",
-  hi: "hin",
+  en: { code: "eng", name: "English" },
+  hi: { code: "hin", name: "Hindi" },
 };
