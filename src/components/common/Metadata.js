@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "40%",
     minWidth: 550,
+    [theme.breakpoints.down("lg")]: {
+      minWidth: 600,
+    },
     [theme.breakpoints.down("sm")]: {
       width: "95%",
       minWidth: "unset",
