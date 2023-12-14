@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   imageContainer: {
+    position: "relative",
     width: "100%",
     height: "300px",
     backgroundImage: `url(${banner})`,
@@ -46,17 +47,26 @@ const useStyles = makeStyles((theme) => ({
       top: 108,
       width: "80%",
       fontSize: "1.4rem",
+      fontFamily: "Roboto Slab",
     },
     [theme.breakpoints.down("sm")]: {
       top: 100,
       width: "90%",
       fontSize: "1.2rem",
+      fontFamily: "Roboto Slab",
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontFamily: "Roboto Slab",
+      fontSize: "1rem",
     },
   },
   reference: {
     fontStyle: "italic",
     fontSize: "1rem",
     color: WHITE,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "0.9rem",
+    },
   },
   link: {
     color: WHITE,
