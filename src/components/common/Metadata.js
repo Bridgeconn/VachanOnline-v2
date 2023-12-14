@@ -23,10 +23,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "40%",
     minWidth: 550,
-    "@media (max-width: 1350px)": {
-      minWidth: 560,
-    },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("lg")]: {
       minWidth: 600,
     },
     [theme.breakpoints.down("sm")]: {
