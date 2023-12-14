@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
   },
   loading: {
-    padding: 20,
+    fontSize: 30,
   },
   helpIcon: {
     marginTop: -40,
@@ -185,9 +185,7 @@ const Stories = () => {
   const [islStories, setIslStories] = React.useState(null);
   const [playing, setPlaying] = React.useState("");
   const [rtlList, setRtlList] = React.useState([]);
-  const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
-
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -228,19 +226,14 @@ const Stories = () => {
 
   useEffect(() => {
     if (lang !== "" && lang !== "isl") {
-      setIsLoading(true);
-      setLoadingText(t("loadingMessage"));
       API.get(lang + "/content/" + storyId + ".md").then(function (response) {
-        // if (response.data !== undefined) {
-        //   setLoadingText("");
-        // }
+        setStories(response.data);
+        setIsLoading(false);
       });
     }
-  }, [API, storyId, lang, t]);
+  }, [API, storyId, lang]);
   useEffect(() => {
     if (lang === "isl" && islStories) {
-      setIsLoading(true);
-      setLoadingText(t("loadingMessage"));
       if (islStories.length < parseInt(storyId)) {
         setStoryId("01");
         setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
@@ -249,7 +242,7 @@ const Stories = () => {
       }
       setIsLoading(false);
     }
-  }, [storyId, lang, islStories, t]);
+  }, [storyId, lang, islStories]);
 
   useEffect(() => {
     if (lang !== "") {
@@ -258,13 +251,11 @@ const Stories = () => {
       });
     }
     if (lang === "isl") {
-      // setIsLoading(true);
-      // setLoadingText(t("loadingMessage"));
       API.get(lang + "/isl_obs.json").then(function (response) {
         setIslStories(response.data);
       });
     }
-  }, [API, lang, t]);
+  }, [API, lang]);
 
   useEffect(() => {
     API.get("languages.json").then(function (response) {
@@ -453,7 +444,6 @@ const Stories = () => {
             </div>
           </Drawer>
         )}
-        {/* {!isLoading && loadingText === t("loadingMessage") ? ( */}
         <main>
           <div className={classes.heading}>
             <Typography variant="h3" className={classes.text}>
@@ -462,7 +452,11 @@ const Stories = () => {
             <Help iconStyle={classes.helpIcon} url={"bibleStories"} />
             <Divider />
           </div>
-          {lang === "isl" ? (
+          {isLoading ? (
+            <div className={`${classes.container} ${classes.loading}`}>
+              {t("loadingMessage")}...
+            </div>
+          ) : lang === "isl" ? (
             <div className={classes.container}>
               <VideoCard
                 video={stories}
@@ -479,9 +473,6 @@ const Stories = () => {
             </div>
           )}
         </main>
-        {/* ) : (
-          <h3 className={classes.loading}>{loadingText}</h3>
-        )} */}
       </div>
     </>
   );
