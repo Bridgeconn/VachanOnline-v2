@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     height: 60,
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
   },
   favicon: {
     height: 50,
@@ -87,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
     width: "25px",
     fontSize: "2rem",
   },
+  toolbar: {
+    padding: "0 12px",
+  },
 }));
 
 const PageHeader = (props) => {
@@ -120,7 +126,7 @@ const PageHeader = (props) => {
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <div className={classes.links}>
             <Link to={{ pathname: "/study" }}>
               <img src={favicon} alt="logo" className={classes.favicon} />

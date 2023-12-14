@@ -105,6 +105,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
   },
+  loading: {
+    padding: 20,
+  },
   helpIcon: {
     marginTop: -40,
     float: "right",
@@ -182,6 +185,9 @@ const Stories = () => {
   const [islStories, setIslStories] = React.useState(null);
   const [playing, setPlaying] = React.useState("");
   const [rtlList, setRtlList] = React.useState([]);
+  const [loadingText, setLoadingText] = React.useState("Loading");
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -222,21 +228,28 @@ const Stories = () => {
 
   useEffect(() => {
     if (lang !== "" && lang !== "isl") {
+      setIsLoading(true);
+      setLoadingText(t("loadingMessage"));
       API.get(lang + "/content/" + storyId + ".md").then(function (response) {
-        setStories(response.data);
+        // if (response.data !== undefined) {
+        //   setLoadingText("");
+        // }
       });
     }
-  }, [API, storyId, lang]);
+  }, [API, storyId, lang, t]);
   useEffect(() => {
     if (lang === "isl" && islStories) {
+      setIsLoading(true);
+      setLoadingText(t("loadingMessage"));
       if (islStories.length < parseInt(storyId)) {
         setStoryId("01");
         setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
       } else {
         setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
       }
+      setIsLoading(false);
     }
-  }, [storyId, lang, islStories]);
+  }, [storyId, lang, islStories, t]);
 
   useEffect(() => {
     if (lang !== "") {
@@ -245,11 +258,13 @@ const Stories = () => {
       });
     }
     if (lang === "isl") {
+      // setIsLoading(true);
+      // setLoadingText(t("loadingMessage"));
       API.get(lang + "/isl_obs.json").then(function (response) {
         setIslStories(response.data);
       });
     }
-  }, [API, lang]);
+  }, [API, lang, t]);
 
   useEffect(() => {
     API.get("languages.json").then(function (response) {
@@ -438,6 +453,7 @@ const Stories = () => {
             </div>
           </Drawer>
         )}
+        {/* {!isLoading && loadingText === t("loadingMessage") ? ( */}
         <main>
           <div className={classes.heading}>
             <Typography variant="h3" className={classes.text}>
@@ -463,6 +479,9 @@ const Stories = () => {
             </div>
           )}
         </main>
+        {/* ) : (
+          <h3 className={classes.loading}>{loadingText}</h3>
+        )} */}
       </div>
     </>
   );

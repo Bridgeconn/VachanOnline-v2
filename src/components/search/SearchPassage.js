@@ -8,6 +8,7 @@ import { BLACK } from "../../store/colorCode";
 import { getReference } from "../common/utility";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   searchBox: {
@@ -58,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
   hints: {
     fontSize: 14,
   },
+  closeBtn: {
+    cursor: "pointer",
+  },
 }));
 
 const SearchPassage = (props) => {
@@ -105,6 +109,9 @@ const SearchPassage = (props) => {
     setHideIcons(false);
     setSearchText("");
   }
+  function clearTextField() {
+    setSearchText("");
+  }
   const handleSearchTextChange = (event) => {
     setSearchText(event.target.value);
   };
@@ -148,6 +155,8 @@ const SearchPassage = (props) => {
       onClick={toggleText}
       target="_blank"
       rel="noopener"
+      disableAutoFocus={true}
+      disableEnforceFocus={true}
     >
       <i className={`material-icons ${classes.searchIcon}`}>manage_search</i>
     </IconButton>
@@ -159,6 +168,11 @@ const SearchPassage = (props) => {
           className={classes.searchBox}
           onSubmit={showSearchResult}
         >
+          <IconButton type="submit" className={classes.searchButtonMob}>
+            <i className={`material-icons ${classes.searchIcon}`}>
+              manage_search
+            </i>
+          </IconButton>
           <InputBase
             className={classes.searchField}
             placeholder={t("seachPlaceHolderTopbar")}
@@ -168,11 +182,9 @@ const SearchPassage = (props) => {
             autoComplete="off"
             onChange={handleSearchTextChange}
           />
-          <IconButton type="submit" className={classes.searchButtonMob}>
-            <i className={`material-icons ${classes.searchIcon}`}>
-              manage_search
-            </i>
-          </IconButton>
+          {searchText && (
+            <CloseIcon onClick={clearTextField} className={classes.closeBtn} />
+          )}
         </Paper>
       </BigTooltip>
       {mobileView && (

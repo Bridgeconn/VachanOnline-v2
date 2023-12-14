@@ -9,6 +9,7 @@ import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import BigTooltip from "../common/BigTooltip";
 import { languageCode } from "../../store/languageData";
+import { BLACK, LIGHTGREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -16,20 +17,22 @@ const useStyles = makeStyles((theme) => ({
     top: 70,
     width: "100%",
     borderRadius: 10,
-    color: "#ffffff",
+    color: BLACK,
+    fontWeight: 800,
+    fontFamily: "Sans",
     padding: 10,
-    fontSize: "2rem",
+    fontSize: "1.1rem",
     textAlign: "center",
     transition: "opacity 0.35s ease-in-out",
     background: "none",
     opacity: 1,
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.8rem",
+      fontSize: "1.1rem",
       top: 65,
     },
   },
   imageContainer: {
-    position: "relative",
+    //position: "relative",
     width: "100%",
     paddingTop: "22%",
     height: "300px",
@@ -37,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "round",
     backgroundSize: "cover",
     display: "flex",
+    opacity: 0.4,
     justifyContent: "center",
     "@media (max-width: 1600px)": {
       paddingTop: "25%",
@@ -50,39 +54,56 @@ const useStyles = makeStyles((theme) => ({
     bottom: 80,
     width: "70%",
     fontSize: "1.6rem",
+    fontFamily: "Roboto Slab",
     textAlign: "center",
     transition: "opacity 0.35s ease-in-out",
     background: "none",
     "@media (max-width: 1600px)": {
+      top: 105,
       width: "80%",
       bottom: 50,
     },
     [theme.breakpoints.only("md")]: {
-      top: 120,
+      top: 108,
       width: "80%",
       fontSize: "1.4rem",
     },
     [theme.breakpoints.down("sm")]: {
-      top: 120,
+      top: 100,
       width: "90%",
       fontSize: "1.2rem",
-    },
-    [theme.breakpoints.down("sm")]: {
-      top: 110,
-      width: "90%",
-      fontSize: "1.2rem",
-    },
-  },
-  link: {
-    color: "#ffffff",
-    padding: 10,
-    "&:hover": {
-      color: "#ffffff",
-      textDecoration: "none",
     },
   },
   reference: {
     fontStyle: "italic",
+    fontSize: "1rem",
+    color: BLACK,
+  },
+  link: {
+    color: BLACK,
+    marginTop: 5,
+    padding: 10,
+    "&:hover": {
+      color: BLACK,
+      textDecoration: "none",
+    },
+  },
+  bannerDiv: {
+    backgroundColor: LIGHTGREY,
+    display: "flex",
+    justifyContent: "center",
+    color: BLACK,
+    width: "100%",
+    textAlign: "center",
+    marginTop: -300,
+    border: "1px solid" + LIGHTGREY,
+    backgroundAttachment: "fixed",
+    "@media (max-width: 1600px)": {
+      paddingTop: "25%",
+    },
+    [theme.breakpoints.only("md")]: {
+      paddingTop: "25%",
+    },
   },
 }));
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
@@ -149,25 +170,29 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   };
   const { t } = useTranslation();
   return (
-    <div className={classes.imageContainer}>
-      <h3 className={classes.heading}>{t("landingVerseHeading")}</h3>
-      <BigTooltip title={t("landingVerseHeadingToolTip")}>
-        <div className={classes.verse}>
-          <Link
-            to={{ pathname: "/read" }}
-            className={classes.link}
-            onClick={() => setURL()}
-          >
-            {verseObj ? verseObj.verseContent?.text : ""}
-            <div className={classes.reference}>
-              {book
-                ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
-                : ""}
-            </div>
-          </Link>
-        </div>
-      </BigTooltip>
-    </div>
+    <>
+      <div className={classes.imageContainer} />
+      <div className={classes.bannerDiv}>
+        <h3 className={classes.heading}>{t("landingVerseHeading")}</h3>
+        <BigTooltip title={t("landingVerseHeadingToolTip")}>
+          <div className={classes.verse}>
+            <Link
+              to={{ pathname: "/read" }}
+              className={classes.link}
+              onClick={() => setURL()}
+            >
+              {verseObj ? verseObj.verseContent?.text : ""}
+              <div className={classes.reference}>
+                {book
+                  ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
+                  : ""}
+              </div>
+            </Link>
+          </div>
+        </BigTooltip>
+      </div>
+    </>
+    // </div>
   );
 };
 const mapStateToProps = (state) => {
