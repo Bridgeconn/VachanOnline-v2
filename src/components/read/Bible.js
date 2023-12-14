@@ -470,7 +470,7 @@ const Bible = (props) => {
     const verseClass =
       selectedVerses?.indexOf(verse) > -1
         ? `${classes.verseText} ${classes.selectedVerse}`
-        : hoverVerse === verse && isHoverVerse && parallelScroll
+        : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
         ? `${classes.hoverVerse}`
         : highlightVerses.indexOf(verse) > -1
         ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
