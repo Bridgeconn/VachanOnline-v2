@@ -32,7 +32,7 @@ const drawerWidth = 400;
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 300,
+    minWidth: 200,
   },
   menu: {
     textAlign: "center",
@@ -156,11 +156,8 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     color: BLACK,
   },
-  languageMobile: {
-    minWidth: 280,
-    [theme.breakpoints.down("sm")]: {
-      minWidth: 220,
-    },
+  languageMenu: {
+    minWidth: 250,
   },
   languageSelected: {
     "&:focus": {
@@ -177,8 +174,12 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
   },
   language: {
-    fontSize: "1rem",
     width: "100%",
+  },
+  languageSelect: {
+    fontSize: "1rem",
+    lineHeight: 1.2,
+    maxWidth: 200,
   },
   container: {
     margin: "0 20px",
@@ -209,7 +210,6 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const smallScreen = useMediaQuery("(max-width:319px)");
   const styleProps = {
     lang: lang,
     rtlList: rtlList,
@@ -241,13 +241,41 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const renderName = (value) => {
     let langObj = obsLanguageInfo.find((el) => el.langCode === value);
     return (
-      <Typography className={classes.language}>
+      <Typography className={classes.languageSelect}>
         <span className={classes.languageNameOrigin}>
           {`${langObj?.languageName}`}
         </span>
       </Typography>
     );
   };
+  const languageSelect = () => (
+    <Select
+      value={lang}
+      onChange={changeLang}
+      classes={{
+        selectMenu: classes.languageMenu,
+        select: classes.languageSelected,
+      }}
+      renderValue={renderName}
+    >
+      {obsLanguageInfo.map((text, y) => (
+        <MenuItem
+          key={y}
+          value={text?.langCode}
+          className={
+            rtlList.includes(text?.langCode) ? classes.listDirection : ""
+          }
+        >
+          <Typography className={classes.language}>
+            <span className={classes.languageNameOrigin}>
+              {`${text?.languageName}`}
+            </span>
+            <span className={classes.languageName}>{`${text?.language}`}</span>
+          </Typography>
+        </MenuItem>
+      ))}
+    </Select>
+  );
   React.useEffect(() => {
     getObsLanguageData(setMainValue, setLang);
   }, [setMainValue]);
@@ -314,42 +342,16 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                 <FormControl
                   variant="outlined"
                   style={{
-                    maxWidth: smallScreen === true ? "90px" : "50%",
+                    maxWidth: mobile === true ? "120px" : "50%",
                     minWidth: "180px",
                   }}
                 >
-                  <Select
-                    value={lang}
-                    onChange={changeLang}
-                    classes={{
-                      selectMenu: classes.languageMobile,
-                      select: classes.languageSelected,
-                    }}
-                    renderValue={renderName}
-                  >
-                    {obsLanguageInfo.map((text, y) => (
-                      <MenuItem key={y} value={text?.langCode}>
-                        {text?.language === text?.languageName.toLowerCase() ? (
-                          `${text?.languageName}`
-                        ) : (
-                          <Typography className={classes.language}>
-                            <span className={classes.languageNameOrigin}>
-                              {`${text?.languageName}`}
-                            </span>
-                            <span className={classes.languageName}>
-                              {`${text?.language}`}
-                            </span>
-                          </Typography>
-                        )}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  {languageSelect()}
                 </FormControl>
                 <FormControl
                   variant="outlined"
                   style={{
                     marginLeft: 5,
-                    maxWidth: smallScreen === true ? "90px" : "50%",
                   }}
                 >
                   {manifest.length > 0 && (
@@ -419,36 +421,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
           >
             <div className={classes.drawerHeader}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <Select
-                  value={lang}
-                  onChange={changeLang}
-                  classes={{
-                    selectMenu: classes.languageMobile,
-                    select: classes.languageSelected,
-                  }}
-                  renderValue={renderName}
-                >
-                  {obsLanguageInfo.map((text, y) => (
-                    <MenuItem
-                      key={y}
-                      value={text?.langCode}
-                      className={
-                        rtlList.includes(text?.langCode)
-                          ? classes.listDirection
-                          : ""
-                      }
-                    >
-                      <Typography className={classes.language}>
-                        <span className={classes.languageNameOrigin}>
-                          {`${text?.languageName}`}
-                        </span>
-                        <span className={classes.languageName}>
-                          {`${text?.language}`}
-                        </span>
-                      </Typography>
-                    </MenuItem>
-                  ))}
-                </Select>
+                {languageSelect()}
               </FormControl>
               <div>
                 <Tooltip
