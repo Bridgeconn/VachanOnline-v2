@@ -4,6 +4,7 @@ import {
   API,
   chapterVideoAPI,
   languageDataAPI,
+  obsDataAPI,
 } from "../../store/api";
 import { bibleBooks, bibleChapters } from "../../store/bibleData";
 //Function to get the bible versions
@@ -530,6 +531,17 @@ export const getLanguageData = (setValue) => {
     ?.get("languageData.json")
     .then(function (response) {
       setValue("languageInfo", response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export const getObsLanguageData = (setValue, setLang) => {
+  obsDataAPI
+    ?.get("languageData.json")
+    .then(function (response) {
+      setValue("obsLanguageInfo", response.data);
+      setLang(response.data[0].langCode);
     })
     .catch(function (error) {
       console.log(error);
