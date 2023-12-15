@@ -44,19 +44,15 @@ const useStyles = makeStyles((theme) => ({
     background: "none",
     top: 105,
     [theme.breakpoints.only("md")]: {
-      top: 108,
       width: "80%",
       fontSize: "1.4rem",
-      fontFamily: "Roboto Slab",
     },
     [theme.breakpoints.down("sm")]: {
       top: 100,
       width: "90%",
       fontSize: "1.2rem",
-      fontFamily: "Roboto Slab",
     },
     [theme.breakpoints.down("xs")]: {
-      fontFamily: "Roboto Slab",
       fontSize: "1rem",
     },
   },
@@ -79,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
       color: WHITE,
       textDecoration: "none",
       background: BLACK + "60",
+      boxShadow: "0 0 2px " + BLACK,
     },
   },
 }));

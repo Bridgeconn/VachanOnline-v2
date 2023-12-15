@@ -17,11 +17,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     height: 40,
     width: 350,
-    marginLeft: 30,
+    marginLeft: 20,
     marginRight: 10,
     [theme.breakpoints.only("md")]: {
       marginLeft: 0,
       width: 300,
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginRight: 0,
     },
   },
   searchField: {
@@ -35,15 +38,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 1,
     padding: "5px 1px 5px",
     color: BLACK,
-    paddingRight: 11,
   },
   input: {
     height: "80px",
   },
   cancelBtn: {
-    marginLeft: "-10px",
     textTransform: "capitalize",
     fontWeight: "bold",
+    paddingRight: 0,
   },
   searchIcon: {
     padding: "1px 1px 1px",
@@ -155,14 +157,16 @@ const SearchPassage = (props) => {
       onClick={toggleText}
       target="_blank"
       rel="noopener"
-      disableAutoFocus={true}
-      disableEnforceFocus={true}
     >
       <i className={`material-icons ${classes.searchIcon}`}>manage_search</i>
     </IconButton>
   ) : (
     <>
-      <BigTooltip title={searchHints} className={classes.searchTooltip}>
+      <BigTooltip
+        disableFocusListener={mobileView ? true : false}
+        title={searchHints}
+        className={classes.searchTooltip}
+      >
         <Paper
           component="form"
           className={classes.searchBox}

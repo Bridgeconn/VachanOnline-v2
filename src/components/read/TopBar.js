@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    width: "30%",
     display: "inline-block",
     [theme.breakpoints.up("md")]: {
       display: "block",

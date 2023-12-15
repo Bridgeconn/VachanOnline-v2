@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     height: 60,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
@@ -103,6 +103,7 @@ const PageHeader = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
@@ -186,7 +187,7 @@ const PageHeader = (props) => {
                   onClick={() => setParallelView(SIGNBIBLE)}
                   startIcon={<i className="material-icons">sign_language</i>}
                 >
-                  {t("ISLVBibleText")}
+                  {isTablet ? t("ISLVTopBarBtnTab") : t("ISLVBibleText")}
                 </Button>
               )}
             </Link>
