@@ -470,7 +470,7 @@ const Bible = (props) => {
     const verseClass =
       selectedVerses?.indexOf(verse) > -1
         ? `${classes.verseText} ${classes.selectedVerse}`
-        : hoverVerse === verse && isHoverVerse && parallelScroll
+        : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
         ? `${classes.hoverVerse}`
         : highlightVerses.indexOf(verse) > -1
         ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
@@ -490,7 +490,9 @@ const Bible = (props) => {
         )}
         <span className={lineViewClass}>
           <span
-            onMouseOver={() => setMainValue("hoverVerse", verse)}
+            onMouseOver={
+              mobileView ? null : () => setMainValue("hoverVerse", verse)
+            }
             onClick={handleVerseClick}
             data-verse={item.verseNumber}
           >
@@ -916,7 +918,6 @@ const Bible = (props) => {
             scrollText();
           }}
           ref={props.ref1}
-          onMouseOut={() => setMainValue("hoverVerse", "")}
           className={
             audio
               ? `${classes.bibleReadingPane} ${classes.audio}`

@@ -199,25 +199,29 @@ const Setting = ({
             }
           />
         </MenuItem>
-        <MenuItem className={classes.menu}>
-          <FormControlLabel
-            labelPlacement="start"
-            label={
-              <Typography className={classes.isHoverVerse}>
-                {t("hoverVerse")}
-              </Typography>
-            }
-            control={
-              <Switch
-                checked={isHoverVerse}
-                onChange={setVerseHover}
-                onClick={setVerseHover}
-                name="verseHover"
-                color="default"
-              />
-            }
-          />
-        </MenuItem>
+        {mobileView ? (
+          ""
+        ) : (
+          <MenuItem className={classes.menu}>
+            <FormControlLabel
+              labelPlacement="start"
+              label={
+                <Typography className={classes.isHoverVerse}>
+                  {t("hoverVerse")}
+                </Typography>
+              }
+              control={
+                <Switch
+                  checked={isHoverVerse}
+                  onChange={setVerseHover}
+                  onClick={setVerseHover}
+                  name="verseHover"
+                  color="default"
+                />
+              }
+            />
+          </MenuItem>
+        )}
         {mobileView ? (
           <MenuItem className={classes.menu} onClick={handleDialogOpen}>
             <span className={classes.printIcon}>{t("PrintSave")}</span>
