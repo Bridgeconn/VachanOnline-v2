@@ -190,5 +190,6 @@
   "copyToClipBoardBtn": "क्लिपबोर्ड पर कॉपी करें",
   "clipBoardCopied": "कॉपी",
   "clipBoardCopiedFailed": "क्लिपबोर्ड पर कॉपी करना विफल रहा",
-  "selectMultiLanguage": "भाषा का चयन करें"
+  "selectMultiLanguage": "भाषा का चयन करें",
+  "selectMultiLanguageTitle": "भाषा प्राथमिकता"
 }

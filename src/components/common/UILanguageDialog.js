@@ -26,7 +26,7 @@ const UILanguageDialog = ({ setLocale }) => {
   };
   return (
     <>
-      {localeLang === "en-US" ? (
+      {localeLang !== "en" ? (
         <Dialog
           open={open}
           onClose={handleClose}
@@ -35,7 +35,9 @@ const UILanguageDialog = ({ setLocale }) => {
           maxWidth="sm"
         >
           <DialogContent>
-            <Typography variant="h6">User Interface Language</Typography>
+            <Typography variant="h6">
+              {t("selectMultiLanguageTitle")}
+            </Typography>
             <FormControl fullWidth>
               <InputLabel id="language-select">
                 {t("selectMultiLanguage")}

@@ -190,5 +190,6 @@
   "clipBoardCopied": "Copied",
   "clipBoardCopiedFailed": "Copy to clipboard failed",
   "landingHelpBtn": "Help",
-  "selectMultiLanguage": "Select a Language"
+  "selectMultiLanguage": "Select a Language",
+  "selectMultiLanguageTitle": "Language preference"
 }
