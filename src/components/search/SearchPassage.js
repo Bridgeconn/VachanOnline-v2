@@ -8,6 +8,7 @@ import { BLACK } from "../../store/colorCode";
 import { getReference } from "../common/utility";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   searchBox: {
@@ -16,11 +17,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     height: 40,
     width: 350,
-    marginLeft: 30,
+    marginLeft: 20,
     marginRight: 10,
     [theme.breakpoints.only("md")]: {
       marginLeft: 0,
       width: 300,
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginRight: 0,
     },
   },
   searchField: {
@@ -34,15 +38,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 1,
     padding: "5px 1px 5px",
     color: BLACK,
-    paddingRight: 11,
   },
   input: {
     height: "80px",
   },
   cancelBtn: {
-    marginLeft: "-10px",
     textTransform: "capitalize",
     fontWeight: "bold",
+    paddingRight: 0,
   },
   searchIcon: {
     padding: "1px 1px 1px",
@@ -57,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
   },
   hints: {
     fontSize: 14,
+  },
+  closeBtn: {
+    cursor: "pointer",
   },
 }));
 
@@ -103,6 +109,9 @@ const SearchPassage = (props) => {
   function handleClose() {
     setShowTextBox(false);
     setHideIcons(false);
+    setSearchText("");
+  }
+  function clearTextField() {
     setSearchText("");
   }
   const handleSearchTextChange = (event) => {
@@ -153,12 +162,21 @@ const SearchPassage = (props) => {
     </IconButton>
   ) : (
     <>
-      <BigTooltip title={searchHints} className={classes.searchTooltip}>
+      <BigTooltip
+        disableFocusListener={mobileView ? true : false}
+        title={searchHints}
+        className={classes.searchTooltip}
+      >
         <Paper
           component="form"
           className={classes.searchBox}
           onSubmit={showSearchResult}
         >
+          <IconButton type="submit" className={classes.searchButtonMob}>
+            <i className={`material-icons ${classes.searchIcon}`}>
+              manage_search
+            </i>
+          </IconButton>
           <InputBase
             className={classes.searchField}
             placeholder={t("seachPlaceHolderTopbar")}
@@ -168,11 +186,9 @@ const SearchPassage = (props) => {
             autoComplete="off"
             onChange={handleSearchTextChange}
           />
-          <IconButton type="submit" className={classes.searchButtonMob}>
-            <i className={`material-icons ${classes.searchIcon}`}>
-              manage_search
-            </i>
-          </IconButton>
+          {searchText && (
+            <CloseIcon onClick={clearTextField} className={classes.closeBtn} />
+          )}
         </Paper>
       </BigTooltip>
       {mobileView && (

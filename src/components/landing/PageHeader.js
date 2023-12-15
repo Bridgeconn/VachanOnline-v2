@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     height: 60,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   favicon: {
     height: 50,
@@ -87,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
     width: "25px",
     fontSize: "2rem",
   },
+  toolbar: {
+    padding: "0 12px",
+  },
 }));
 
 const PageHeader = (props) => {
@@ -97,6 +103,7 @@ const PageHeader = (props) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
@@ -120,7 +127,7 @@ const PageHeader = (props) => {
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <div className={classes.links}>
             <Link to={{ pathname: "/study" }}>
               <img src={favicon} alt="logo" className={classes.favicon} />
@@ -180,7 +187,7 @@ const PageHeader = (props) => {
                   onClick={() => setParallelView(SIGNBIBLE)}
                   startIcon={<i className="material-icons">sign_language</i>}
                 >
-                  {t("ISLVBibleText")}
+                  {isTablet ? t("ISLVTopBarBtnTab") : t("ISLVBibleText")}
                 </Button>
               )}
             </Link>

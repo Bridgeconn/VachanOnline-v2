@@ -9,80 +9,77 @@ import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import BigTooltip from "../common/BigTooltip";
 import { languageCode } from "../../store/languageData";
+import { BLACK, WHITE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
     position: "absolute",
-    top: 70,
-    width: "100%",
-    borderRadius: 10,
-    color: "#ffffff",
-    padding: 10,
-    fontSize: "2rem",
-    textAlign: "center",
-    transition: "opacity 0.35s ease-in-out",
-    background: "none",
-    opacity: 1,
+    top: 80,
+    color: WHITE,
+    fontWeight: 800,
+    fontFamily: "Sans",
+    fontSize: "1.2rem",
+    textShadow: "1px 1px 2px " + BLACK,
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.8rem",
-      top: 65,
+      top: 75,
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1.1rem",
     },
   },
   imageContainer: {
     position: "relative",
     width: "100%",
-    paddingTop: "22%",
     height: "300px",
     backgroundImage: `url(${banner})`,
     backgroundRepeat: "round",
-    backgroundSize: "cover",
     display: "flex",
     justifyContent: "center",
-    "@media (max-width: 1600px)": {
-      paddingTop: "25%",
-    },
-    [theme.breakpoints.only("md")]: {
-      paddingTop: "25%",
-    },
   },
   verse: {
     position: "absolute",
     bottom: 80,
     width: "70%",
     fontSize: "1.6rem",
+    fontFamily: "Roboto Slab",
     textAlign: "center",
     transition: "opacity 0.35s ease-in-out",
     background: "none",
-    "@media (max-width: 1600px)": {
-      width: "80%",
-      bottom: 50,
-    },
+    top: 105,
     [theme.breakpoints.only("md")]: {
-      top: 120,
       width: "80%",
       fontSize: "1.4rem",
     },
     [theme.breakpoints.down("sm")]: {
-      top: 120,
+      top: 100,
       width: "90%",
       fontSize: "1.2rem",
     },
-    [theme.breakpoints.down("sm")]: {
-      top: 110,
-      width: "90%",
-      fontSize: "1.2rem",
-    },
-  },
-  link: {
-    color: "#ffffff",
-    padding: 10,
-    "&:hover": {
-      color: "#ffffff",
-      textDecoration: "none",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1rem",
     },
   },
   reference: {
     fontStyle: "italic",
+    fontSize: "1rem",
+    color: WHITE,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "0.9rem",
+    },
+  },
+  link: {
+    color: WHITE,
+    marginTop: 5,
+    padding: 10,
+    background: BLACK + "50",
+    display: "inline-block",
+    borderRadius: 10,
+    "&:hover": {
+      color: WHITE,
+      textDecoration: "none",
+      background: BLACK + "60",
+      boxShadow: "0 0 2px " + BLACK,
+    },
   },
 }));
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {

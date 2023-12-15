@@ -105,6 +105,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     borderBottom: "1px solid #f1ecec",
   },
+  loading: {
+    fontSize: 30,
+  },
   helpIcon: {
     marginTop: -40,
     float: "right",
@@ -182,6 +185,7 @@ const Stories = () => {
   const [islStories, setIslStories] = React.useState(null);
   const [playing, setPlaying] = React.useState("");
   const [rtlList, setRtlList] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -224,6 +228,7 @@ const Stories = () => {
     if (lang !== "" && lang !== "isl") {
       API.get(lang + "/content/" + storyId + ".md").then(function (response) {
         setStories(response.data);
+        setIsLoading(false);
       });
     }
   }, [API, storyId, lang]);
@@ -235,6 +240,7 @@ const Stories = () => {
       } else {
         setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
       }
+      setIsLoading(false);
     }
   }, [storyId, lang, islStories]);
 
@@ -446,7 +452,11 @@ const Stories = () => {
             <Help iconStyle={classes.helpIcon} url={"bibleStories"} />
             <Divider />
           </div>
-          {lang === "isl" ? (
+          {isLoading ? (
+            <div className={`${classes.container} ${classes.loading}`}>
+              {t("loadingMessage")}...
+            </div>
+          ) : lang === "isl" ? (
             <div className={classes.container}>
               <VideoCard
                 video={stories}
