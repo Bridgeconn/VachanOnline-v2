@@ -156,9 +156,21 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     color: BLACK,
   },
+  languageMobile: {
+    minWidth: 280,
+    [theme.breakpoints.down("sm")]: {
+      minWidth: 220,
+    },
+  },
+  languageSelected: {
+    "&:focus": {
+      backgroundColor: "transparent",
+    },
+  },
   languageName: {
     float: (props) => (props.rtlList?.includes(props.lang) ? "left" : "right"),
     textTransform: "capitalize",
+    color: GREY,
   },
   languageNameOrigin: {
     float: (props) => (props.rtlList?.includes(props.lang) ? "right" : "left"),
@@ -225,6 +237,16 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
     window.scrollTo(0, 0);
+  };
+  const renderName = (value) => {
+    let langObj = obsLanguageInfo.find((el) => el.langCode === value);
+    return (
+      <Typography className={classes.language}>
+        <span className={classes.languageNameOrigin}>
+          {`${langObj?.languageName}`}
+        </span>
+      </Typography>
+    );
   };
   React.useEffect(() => {
     getObsLanguageData(setMainValue, setLang);
@@ -296,7 +318,15 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                     minWidth: "180px",
                   }}
                 >
-                  <Select value={lang} onChange={changeLang}>
+                  <Select
+                    value={lang}
+                    onChange={changeLang}
+                    classes={{
+                      selectMenu: classes.languageMobile,
+                      select: classes.languageSelected,
+                    }}
+                    renderValue={renderName}
+                  >
                     {obsLanguageInfo.map((text, y) => (
                       <MenuItem key={y} value={text?.langCode}>
                         {text?.language === text?.languageName.toLowerCase() ? (
@@ -389,7 +419,15 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
           >
             <div className={classes.drawerHeader}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <Select value={lang} onChange={changeLang}>
+                <Select
+                  value={lang}
+                  onChange={changeLang}
+                  classes={{
+                    selectMenu: classes.languageMobile,
+                    select: classes.languageSelected,
+                  }}
+                  renderValue={renderName}
+                >
                   {obsLanguageInfo.map((text, y) => (
                     <MenuItem
                       key={y}
@@ -400,18 +438,14 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                           : ""
                       }
                     >
-                      {text?.language === text?.languageName.toLowerCase() ? (
-                        `${text?.languageName}`
-                      ) : (
-                        <Typography className={classes.language}>
-                          <span className={classes.languageNameOrigin}>
-                            {`${text?.languageName}`}
-                          </span>
-                          <span className={classes.languageName}>
-                            {`${text?.language}`}
-                          </span>
-                        </Typography>
-                      )}
+                      <Typography className={classes.language}>
+                        <span className={classes.languageNameOrigin}>
+                          {`${text?.languageName}`}
+                        </span>
+                        <span className={classes.languageName}>
+                          {`${text?.language}`}
+                        </span>
+                      </Typography>
                     </MenuItem>
                   ))}
                 </Select>
