@@ -26,7 +26,7 @@ const UILanguageDialog = ({ setLocale }) => {
   };
   return (
     <>
-      {localeLang !== "en" ? (
+      {!Object.keys(languageCode).includes(localeLang) ? (
         <Dialog
           open={open}
           onClose={handleClose}
@@ -58,15 +58,10 @@ const UILanguageDialog = ({ setLocale }) => {
     </>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    locale: state.local.locale,
-  };
-};
 const mapDispatchToProps = (dispatch) => {
   return {
     setLocale: (value) =>
       dispatch({ type: SETVALUE, name: "locale", value: value }),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(UILanguageDialog);
+export default connect(null, mapDispatchToProps)(UILanguageDialog);
