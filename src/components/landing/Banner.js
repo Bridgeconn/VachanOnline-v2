@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
-  const langCode = languageCode[locale];
+  const langCode = languageCode[locale].code;
   const [allVerseData, setAllVerseData] = useState();
   const [verseRef, setVerseRef] = useState({
     b: "psa",
