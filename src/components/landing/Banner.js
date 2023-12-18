@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       top: 75,
     },
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1.1rem",
+    },
   },
   imageContainer: {
     position: "relative",
