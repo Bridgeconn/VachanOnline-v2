@@ -1,16 +1,21 @@
 import React, { useEffect } from "react";
 import LanguageIcon from "@material-ui/icons/Language";
 import { makeStyles } from "@material-ui/core/styles";
-import { Divider, Menu, MenuItem } from "@material-ui/core";
+import { Menu, MenuItem } from "@material-ui/core";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import BigTooltip from "./BigTooltip";
+import { languageCode } from "../../store/languageData";
+import { LIGHTGREY } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   list: {
     width: 150,
+  },
+  languageItem: {
+    borderBottom: "1px solid " + LIGHTGREY,
   },
 }));
 const MultiLanguageDropdown = (props) => {
@@ -53,13 +58,16 @@ const MultiLanguageDropdown = (props) => {
         style={{ top: 17 }}
         classes={{ list: classes.list }}
       >
-        <MenuItem onClick={() => handleClick("en")} selected={locale === "en"}>
-          English
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => handleClick("hi")} selected={locale === "hi"}>
-          Hindi
-        </MenuItem>
+        {Object.keys(languageCode).map((text) => (
+          <MenuItem
+            key={text}
+            onClick={() => handleClick(text)}
+            selected={locale === text}
+            className={classes.languageItem}
+          >
+            {languageCode[text].name}
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );

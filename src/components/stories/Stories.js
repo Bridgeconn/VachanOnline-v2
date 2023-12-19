@@ -23,6 +23,9 @@ import { BLACK, GREY } from "../../store/colorCode";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
 import Help from "../common/Help";
+import { connect } from "react-redux";
+import { getObsLanguageData } from "../common/utility";
+import * as actions from "../../store/actions";
 
 const drawerWidth = 400;
 
@@ -156,6 +159,31 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     color: BLACK,
   },
+  languageMenu: {
+    minWidth: 250,
+  },
+  languageSelected: {
+    "&:focus": {
+      backgroundColor: "transparent",
+    },
+  },
+  languageName: {
+    float: (props) => (props.rtlList?.includes(props.lang) ? "left" : "right"),
+    textTransform: "capitalize",
+    color: GREY,
+  },
+  languageNameOrigin: {
+    float: (props) => (props.rtlList?.includes(props.lang) ? "right" : "left"),
+    textTransform: "capitalize",
+  },
+  language: {
+    width: "100%",
+  },
+  languageSelect: {
+    fontSize: "1rem",
+    lineHeight: 1.2,
+    maxWidth: 200,
+  },
   container: {
     margin: "0 20px",
     padding: "12px 10px 15px 10px",
@@ -168,18 +196,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Stories = () => {
+const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const API = useMemo(
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_STORIES_URL }),
     []
   );
-  const classes = useStyles();
   const [storyId, setStoryId] = React.useState("01");
   const [lang, setLang] = React.useState("");
   const [stories, setStories] = React.useState();
-  const [languageJson, setLanguageJson] = React.useState({});
   const [manifest, setManifest] = React.useState([]);
-  const [languages, setLanguages] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [settingsAnchor, setSettingsAnchor] = React.useState(null);
   const [islStories, setIslStories] = React.useState(null);
@@ -189,7 +214,11 @@ const Stories = () => {
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const smallScreen = useMediaQuery("(max-width:319px)");
+  const styleProps = {
+    lang: lang,
+    rtlList: rtlList,
+  };
+  const classes = useStyles(styleProps);
   const storyClass = rtlList.includes(lang)
     ? `${classes.stories} ${classes.storyDirection}`
     : classes.stories;
@@ -213,7 +242,47 @@ const Stories = () => {
     setStoryId(storyNum);
     window.scrollTo(0, 0);
   };
-
+  const renderName = (value) => {
+    let langObj = obsLanguageInfo.find((el) => el.langCode === value);
+    return (
+      <Typography className={classes.languageSelect}>
+        <span className={classes.languageNameOrigin}>
+          {`${langObj?.languageName}`}
+        </span>
+      </Typography>
+    );
+  };
+  const languageSelect = () => (
+    <Select
+      value={lang}
+      onChange={changeLang}
+      classes={{
+        selectMenu: classes.languageMenu,
+        select: classes.languageSelected,
+      }}
+      renderValue={renderName}
+    >
+      {obsLanguageInfo.map((text, y) => (
+        <MenuItem
+          key={y}
+          value={text?.langCode}
+          className={
+            rtlList.includes(text?.langCode) ? classes.listDirection : ""
+          }
+        >
+          <Typography className={classes.language}>
+            <span className={classes.languageNameOrigin}>
+              {`${text?.languageName}`}
+            </span>
+            <span className={classes.languageName}>{`${text?.language}`}</span>
+          </Typography>
+        </MenuItem>
+      ))}
+    </Select>
+  );
+  React.useEffect(() => {
+    getObsLanguageData(setMainValue, setLang);
+  }, [setMainValue]);
   const storySetter = (event) => {
     let storyNum = event.target.value;
     if (storyNum.length < 2) storyNum = "0" + storyNum;
@@ -225,7 +294,7 @@ const Stories = () => {
   };
 
   useEffect(() => {
-    if (lang !== "" && lang !== "isl") {
+    if (lang !== "" && lang !== "isl" && lang) {
       API.get(lang + "/content/" + storyId + ".md").then(function (response) {
         setStories(response.data);
         setIsLoading(false);
@@ -245,7 +314,7 @@ const Stories = () => {
   }, [storyId, lang, islStories]);
 
   useEffect(() => {
-    if (lang !== "") {
+    if (lang !== "" && lang) {
       API.get(lang + "/manifest.json").then(function (response) {
         setManifest(response.data);
       });
@@ -256,15 +325,6 @@ const Stories = () => {
       });
     }
   }, [API, lang]);
-
-  useEffect(() => {
-    API.get("languages.json").then(function (response) {
-      let languageArray = Object.keys(response.data);
-      setLanguages(languageArray);
-      setLanguageJson(response.data);
-      setLang(languageArray[0] || "");
-    });
-  }, [API]);
 
   useEffect(() => {
     API.get("rtl.json").then(function (response) {
@@ -287,21 +347,17 @@ const Stories = () => {
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
                 <FormControl
                   variant="outlined"
-                  className={classes.mobileLangCombo}
+                  style={{
+                    maxWidth: mobile === true ? "120px" : "50%",
+                    minWidth: "180px",
+                  }}
                 >
-                  <Select value={lang} onChange={changeLang}>
-                    {languages.map((text, y) => (
-                      <MenuItem key={y} value={text}>
-                        {languageJson[text]}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  {languageSelect()}
                 </FormControl>
                 <FormControl
                   variant="outlined"
                   style={{
-                    marginLeft: 20,
-                    maxWidth: smallScreen === true ? "90px" : "50%",
+                    marginLeft: 5,
                   }}
                 >
                   {manifest.length > 0 && (
@@ -371,19 +427,7 @@ const Stories = () => {
           >
             <div className={classes.drawerHeader}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <Select value={lang} onChange={changeLang}>
-                  {languages.map((text, y) => (
-                    <MenuItem
-                      key={y}
-                      value={text}
-                      className={
-                        rtlList.includes(text) ? classes.listDirection : ""
-                      }
-                    >
-                      {languageJson[text]}
-                    </MenuItem>
-                  ))}
-                </Select>
+                {languageSelect()}
               </FormControl>
               <div>
                 <Tooltip
@@ -477,5 +521,15 @@ const Stories = () => {
     </>
   );
 };
-
-export default Stories;
+const mapStateToProps = (state) => {
+  return {
+    obsLanguageInfo: state.local.obsLanguageInfo,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setMainValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Stories);

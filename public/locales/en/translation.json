@@ -136,7 +136,8 @@
   "noReadingPlanAvailable": "No reading plan available for this date.",
   "studyNoSearchResult": "No Search Results for",
   "studyEnterSearchText": "Enter search text",
-  "signLangNotAvailableMsg": "Sign Language Bible available only for some books of the Bible. Use the book dropdown in the other panel to navigate.",
+  "signLangNotAvailableMsg1": "Sign Language Bible is available in {{ref.book}} for chapter 1 to {{ref.chapters}}",
+  "signLangNotAvailableMsg2": "Sign Language Bible available only in the following books:<br> {{bookList}}",
   "hideDescriptionSignLang": "Hide description",
   "showDescriptionSignLang": "Show description",
   "descriptionSignLang": "Description",
@@ -189,5 +190,7 @@
   "copyToClipBoardBtn": "Copy to Clipboard",
   "clipBoardCopied": "Copied",
   "clipBoardCopiedFailed": "Copy to clipboard failed",
-  "landingHelpBtn": "Help"
+  "landingHelpBtn": "Help",
+  "selectMultiLanguage": "Select a Language",
+  "selectMultiLanguageTitle": "Language preference"
 }
