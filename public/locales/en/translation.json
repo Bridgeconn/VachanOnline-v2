@@ -136,7 +136,7 @@
   "noReadingPlanAvailable": "No reading plan available for this date.",
   "studyNoSearchResult": "No Search Results for",
   "studyEnterSearchText": "Enter search text",
-  "signLangNotAvailableMsg1": "Sign Language Bible is available for {{ref.book}} chapter 1 to {{ref.chapters}}",
+  "signLangNotAvailableMsg1": "Sign Language Bible is available in {{ref.book}} for chapter 1 to {{ref.chapters}}",
   "signLangNotAvailableMsg2": "Sign Language Bible available only in the following books:<br> {{bookList}}",
   "hideDescriptionSignLang": "Hide description",
   "showDescriptionSignLang": "Show description",
