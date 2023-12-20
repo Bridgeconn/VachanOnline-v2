@@ -7,9 +7,10 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
-import BigTooltip from "../common/BigTooltip";
+import Tooltip from "@material-ui/core/Tooltip";
+import { withStyles } from "@material-ui/core/styles";
 import { languageCode } from "../../store/languageData";
-import { BLACK, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -83,6 +84,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
+  const BigTooltip = withStyles((theme) => ({
+    tooltip: {
+      backgroundColor: WHITE,
+      color: BLACK,
+      boxShadow: theme.shadows[4],
+      border: "1px solid" + GREY,
+      fontSize: 16,
+      marginTop: 0,
+    },
+  }))(Tooltip);
   const langCode = languageCode[locale].code;
   const [allVerseData, setAllVerseData] = useState();
   const [verseRef, setVerseRef] = useState({
