@@ -502,12 +502,16 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
             </div>
           ) : lang === "isl" ? (
             <div className={classes.container}>
-              <VideoCard
-                video={stories}
-                playing={playing}
-                language={"isl"}
-                setPlaying={setPlaying}
-              />
+              {islStories ? (
+                <VideoCard
+                  video={stories}
+                  playing={playing}
+                  language={"isl"}
+                  setPlaying={setPlaying}
+                />
+              ) : (
+                <div className={classes.loading}>{t("loadingMessage")}...</div>
+              )}
             </div>
           ) : (
             <div className={storyClass} style={{ fontSize: fontSize }}>
