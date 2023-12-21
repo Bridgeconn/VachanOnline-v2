@@ -44,6 +44,9 @@ export const getVersions = (
             .languageVersions.find(
               (e) => e.version.code?.toUpperCase() === versionCode
             );
+          if (version === undefined) {
+            version = versions[0].languageVersions[0];
+          }
         } catch (e) {
           // last read or hindi IRV version not available use first versions
         }
