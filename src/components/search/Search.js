@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,6 +133,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: 11,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 10,
+    fontSize: 21,
   },
 }));
 
@@ -274,7 +286,8 @@ const Search = (props) => {
             </IconButton>
           </Paper>
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          <Help iconStyle={classes.helpIcon} url={"searchBible"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

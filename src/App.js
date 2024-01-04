@@ -10,6 +10,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Songs from "./components/songs/Songs";
 import AudioBible from "./components/audio/AudioBible";
+import UILanguageDialog from "./components/common/UILanguageDialog";
+
 function Loading() {
   return <>Loading...</>;
 }
@@ -17,6 +19,7 @@ const App = () => (
   <Suspense fallback={<Loading />}>
     <BrowserRouter>
       <CssBaseline />
+      <UILanguageDialog />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/read" element={<ReadBible />} />

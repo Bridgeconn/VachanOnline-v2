@@ -13,10 +13,11 @@ import Select from "react-select";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import { GREY } from "../../store/colorCode";
+import { BLACK, GREY } from "../../store/colorCode";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
+import Help from "../common/Help";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -137,6 +138,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 7,
     marginRight: 15,
   },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
+  },
   dateContainer: {
     display: "flex",
   },
@@ -181,6 +192,11 @@ const ReadingPlan = (props) => {
     "Nov",
     "Dec",
   ];
+  const ref = {
+    date: selectedDate.getDate(),
+    month: months[selectedDate.getMonth()],
+    year: selectedDate.getFullYear(),
+  };
   const getBookText = (dataRef, text) => {
     let ref = dataRef.split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
@@ -285,7 +301,8 @@ const ReadingPlan = (props) => {
             ""
           )}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          <Help iconStyle={classes.helpIcon} url={"readingPlans"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>
@@ -301,13 +318,7 @@ const ReadingPlan = (props) => {
           <Box className={classes.heading}>
             <Box flexGrow={1} className={classes.refBox}>
               <Typography variant="h6" className={classes.refText}>
-                {t("readingPlanBibleRef") +
-                  " " +
-                  selectedDate.getDate() +
-                  "-" +
-                  months[selectedDate.getMonth()] +
-                  "-" +
-                  selectedDate.getFullYear()}
+                {t("readingPlanBibleRef", { ref })}
               </Typography>
             </Box>
           </Box>

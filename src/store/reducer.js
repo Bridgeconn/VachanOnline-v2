@@ -28,6 +28,7 @@ const defaultState = {
   readingPlans: [],
   signBible: [],
   languageInfo: [],
+  obsLanguageInfo: [],
   playing: "",
   versionBooks: {},
   versionSource: {},

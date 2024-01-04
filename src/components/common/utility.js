@@ -4,6 +4,7 @@ import {
   API,
   chapterVideoAPI,
   languageDataAPI,
+  obsDataAPI,
 } from "../../store/api";
 import { bibleBooks, bibleChapters } from "../../store/bibleData";
 //Function to get the bible versions
@@ -43,6 +44,9 @@ export const getVersions = (
             .languageVersions.find(
               (e) => e.version.code?.toUpperCase() === versionCode
             );
+          if (version === undefined) {
+            version = versions[0].languageVersions[0];
+          }
         } catch (e) {
           // last read or hindi IRV version not available use first versions
         }
@@ -304,7 +308,7 @@ const checkValidChapter = (bookCode, chapter) => {
 const getBookCode = (book, bookList) => {
   let bookCode = "";
   // check the search string contains full English Book Name
-  let bookObj = bibleBooks.find((b) => b.book.toLowerCase() === book);
+  let bookObj = bookList.find((a) => a.short === book);
   if (bookObj) {
     bookCode = bookObj.abbreviation;
   } else {
@@ -384,9 +388,11 @@ export const getReference = (search, bookList) => {
   const searchArr1 = bookChapter.split(/\s+/);
   const chapter = Number(searchArr1.pop());
   const bookName = searchArr1.join(" ").toLowerCase();
-
+  const refObj = bibleBooks.find(
+    (b) => b.book.toLowerCase() === bookName || b.abbreviation === bookName
+  );
   //check the search string contains valid book
-  const bookCode = getBookCode(bookName, bookList);
+  const bookCode = getBookCode(refObj?.abbreviation, bookList);
   //If search string has book code, then check the corresponding total chapter count
   if (bookCode) {
     if (checkValidChapter(bookCode, chapter)) {
@@ -528,6 +534,17 @@ export const getLanguageData = (setValue) => {
     ?.get("languageData.json")
     .then(function (response) {
       setValue("languageInfo", response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export const getObsLanguageData = (setValue, setLang) => {
+  obsDataAPI
+    ?.get("languageData.json")
+    .then(function (response) {
+      setValue("obsLanguageInfo", response.data);
+      setLang(response.data[0].langCode);
     })
     .catch(function (error) {
       console.log(error);

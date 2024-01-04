@@ -13,4 +13,7 @@ export const chapterVideoAPI = axios.create({
 export const languageDataAPI = axios.create({
   baseURL: process.env.REACT_APP_LANGUAGE_DATA,
 });
+export const obsDataAPI = axios.create({
+  baseURL: process.env.REACT_APP_BIBLE_STORIES_URL,
+});
 export const CancelToken = axios.CancelToken;

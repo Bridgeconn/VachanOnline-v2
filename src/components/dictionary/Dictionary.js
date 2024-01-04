@@ -9,6 +9,8 @@ import { getDictionaryIndex, getDictionaryWord } from "../common/utility";
 import Close from "../common/Close";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,6 +96,22 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginTop: 7,
     marginRight: 15,
+  },
+  icons: {
+    display: "flex",
+    marginTop: 4,
+    flexWrap: "nowrap",
+    marginLeft: -5,
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: 0,
+    },
+  },
+  helpIcon: {
+    padding: "8px 3px 0",
+    color: BLACK,
+    fontSize: 19.5,
+    marginTop: 4,
+    marginRight: 5,
   },
   seeAlso: {
     textTransform: "capitalize",
@@ -206,15 +224,16 @@ const Dictionary = (props) => {
             setDictionary={setDictionary}
           ></DictionaryWordCombo>
         </Box>
-        <Box className={classes.metadata}>
-          <Metadata
-            metadataList={selectedDictionary.metadata}
-            title="Version Name (in Eng)"
-            abbreviation="Abbreviation"
-            mobileView={mobileView}
-          ></Metadata>
-        </Box>
-        <Box>
+        <Box className={classes.icons}>
+          <div className={classes.metadata}>
+            <Metadata
+              metadataList={selectedDictionary.metadata}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+              mobileView={mobileView}
+            ></Metadata>
+          </div>
+          <Help iconStyle={classes.helpIcon} url={"dictionaries"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

@@ -9,10 +9,12 @@ import Close from "../common/Close";
 import Box from "@material-ui/core/Box";
 import Viewer from "react-viewer";
 import Select from "react-select";
+import Help from "../common/Help";
 import { capitalize, getShortBook } from "../common/utility";
 import BookCombo from "../common/BookCombo";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,6 +86,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: 7,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
   },
   selectBox: {
     [theme.breakpoints.down("sm")]: {
@@ -198,7 +210,8 @@ const Infographics = (props) => {
             />
           ) : null}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          <Help iconStyle={classes.helpIcon} url={"infographics"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>

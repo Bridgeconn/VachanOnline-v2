@@ -1,111 +1,194 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import banner from "../common/images/banner.jpg";
+import { API } from "../../store/api";
+import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import * as actions from "../../store/actions";
+import { useTranslation } from "react-i18next";
+import Tooltip from "@material-ui/core/Tooltip";
+import { withStyles } from "@material-ui/core/styles";
+import { languageCode } from "../../store/languageData";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
 const useStyles = makeStyles((theme) => ({
-  legend: {
+  heading: {
     position: "absolute",
-    bottom: "25%",
-    width: "100%",
-    borderRadius: 10,
-    color: "#ffffff",
-    padding: 10,
-    fontSize: "2rem",
-    textAlign: "center",
-    transition: "opacity 0.35s ease-in-out",
-    background: "none",
-    opacity: 1,
-    [theme.breakpoints.only("xs")]: {
-      bottom: "3%",
-      fontSize: "1.65rem",
+    top: 80,
+    color: WHITE,
+    fontWeight: 800,
+    fontFamily: "Sans",
+    fontSize: "1.2rem",
+    textShadow: "1px 1px 2px " + BLACK,
+    [theme.breakpoints.down("sm")]: {
+      top: 75,
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1.1rem",
     },
   },
   imageContainer: {
     position: "relative",
     width: "100%",
-    paddingTop: "25%",
     height: "300px",
     backgroundImage: `url(${banner})`,
     backgroundRepeat: "round",
-    backgroundSize: "cover",
-    [theme.breakpoints.only("xs")]: {
-      height: "240px",
-    }, 
+    display: "flex",
+    justifyContent: "center",
+  },
+  verse: {
+    position: "absolute",
+    bottom: 80,
+    width: "70%",
+    fontSize: "1.6rem",
+    fontFamily: "Roboto Slab",
+    textAlign: "center",
+    transition: "opacity 0.35s ease-in-out",
+    background: "none",
+    top: 105,
+    [theme.breakpoints.only("md")]: {
+      width: "80%",
+      fontSize: "1.4rem",
+    },
+    [theme.breakpoints.down("sm")]: {
+      top: 100,
+      width: "90%",
+      fontSize: "1.2rem",
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1rem",
+    },
+  },
+  reference: {
+    fontStyle: "italic",
+    fontSize: "1rem",
+    color: WHITE,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "0.9rem",
+    },
+  },
+  link: {
+    color: WHITE,
+    marginTop: 5,
+    padding: 10,
+    background: BLACK + "50",
+    display: "inline-block",
+    borderRadius: 10,
+    "&:hover": {
+      color: WHITE,
+      textDecoration: "none",
+      background: BLACK + "60",
+      boxShadow: "0 0 2px " + BLACK,
+    },
   },
 }));
-export default function Banner({ language }) {
+const Banner = ({ setValue1, locale, versions, versionBooks }) => {
+  const BigTooltip = withStyles((theme) => ({
+    tooltip: {
+      backgroundColor: WHITE,
+      color: BLACK,
+      boxShadow: theme.shadows[4],
+      border: "1px solid" + GREY,
+      fontSize: 16,
+      marginTop: 0,
+    },
+  }))(Tooltip);
+  const langCode = languageCode[locale].code;
+  const [allVerseData, setAllVerseData] = useState();
+  const [verseRef, setVerseRef] = useState({
+    b: "psa",
+    c: "119",
+    v: "105",
+  });
+  const [sourceId, setSourceId] = useState("");
+  const [verseObj, setVerseObj] = useState({});
+  const [book, setBook] = useState("");
+  useEffect(() => {
+    if (process.env.REACT_APP_DAILY_VERSE) {
+      const APIBASE = axios.create({
+        baseURL: process.env.REACT_APP_DAILY_VERSE,
+      });
+      APIBASE.get("verseData.json").then(function (response) {
+        setAllVerseData(response?.data);
+      });
+    }
+  }, []);
+  useEffect(() => {
+    let newDate = new Date();
+    const currentYear = newDate?.getFullYear();
+    const currentMonth = newDate?.getMonth() + 1;
+    const currentDay = newDate?.getDate();
+    if (allVerseData) {
+      setVerseRef(allVerseData[currentYear][currentMonth][currentDay]);
+    }
+  }, [allVerseData]);
+
+  useEffect(() => {
+    const sourceId = versions.find(
+      (e) => e?.languageVersions[0]?.language?.code === langCode
+    )?.languageVersions[0]?.sourceId;
+    setSourceId(sourceId);
+  }, [langCode, versions]);
+  useEffect(() => {
+    const books = versionBooks[langCode];
+    if (verseObj?.bibleBookCode) {
+      const book = books?.find((i) => i.book_code === verseObj.bibleBookCode);
+      setBook(book?.short);
+    }
+  }, [langCode, verseObj.bibleBookCode, versionBooks]);
+  useEffect(() => {
+    if (sourceId && verseRef) {
+      const book = verseRef ? verseRef?.b : "psa";
+      const chapter = verseRef ? verseRef?.c : "119";
+      const verse = verseRef ? verseRef?.v : "105";
+      API.get(`bibles/${sourceId}/verses/${book}.${chapter}.${verse}`).then(
+        (response) => {
+          setVerseObj(response.data);
+        }
+      );
+    }
+  }, [sourceId, verseRef]);
   const classes = useStyles();
-  let verse = {
-    অসমীয়া: [
-      "তোমাৰ আদেশবোৰৰ দ্বাৰাই মই জ্ঞান লাভ কৰোঁ;",
-      "সেই বাবেই মই সকলো মিছা পথ ঘিণ কৰোঁ।",
-      "Mukti",
-    ],
-    বাঙালি: ["তোমার বাক্য আমার চরনের প্রদীপ,", "আমার পথের আলো।", "Mukti"],
-    English: [
-      "Your word is a lamp to my feet,",
-      "and a light to my path.",
-      "Roboto",
-    ],
-    ગુજરાતી: [
-      "મારા પગોને માટે તમારાં વચન દીવારૂપ છે",
-      "અને મારા માર્ગોને માટે અજવાળારૂપ છે",
-      "Shruti",
-    ],
-    हिंदी: [
-      "तेरा वचन मेरे पाँव के लिये दीपक,",
-      "और मेरे मार्ग के लिये उजियाला है।",
-      "Noto Sans Devanagari",
-    ],
-    ಕನ್ನಡ: [
-      "ನಿನ್ನ ವಾಕ್ಯವು ನನ್ನ ಕಾಲಿಗೆ ದೀಪವೂ,",
-      "ನನ್ನ ದಾರಿಗೆ ಬೆಳಕೂ ಆಗಿದೆ.",
-      "Tunga",
-    ],
-    മലയാളം: [
-      "അങ്ങയുടെ വചനം എന്റെ കാലിന് ദീപവും",
-      "എന്റെ പാതയ്ക്കു പ്രകാശവും ആകുന്നു.",
-      "Noto Serif Malayalam",
-    ],
-    मराठी: [
-      "तुझे वचन माझ्या पावलाकरता दिवा आहे,",
-      "आणि माझ्या मार्गासाठी प्रकाश आहे.",
-      "Noto Sans Devanagari",
-    ],
-    ଓଡିଆ: [
-      "ତୁମ୍ଭ ବାକ୍ୟ ମୋ’ ଚରଣ ପାଇଁ ପ୍ରଦୀପ",
-      "ଓ ମୋ’ ପଥ ପାଇଁ ଆଲୁଅ ଅଟେ।",
-      "Raavi",
-    ],
-    ਪੰਜਾਬੀ: [
-      "ਤੇਰਾ ਬਚਨ ਮੇਰੇ ਪੈਰਾਂ ਲਈ ਦੀਪਕ,",
-      "ਅਤੇ ਮੇਰੇ ਰਾਹ ਦਾ ਚਾਨਣ ਹੈ।",
-      "Kalinga",
-    ],
-    தமிழ்: [
-      "உம்முடைய வசனம் என்னுடைய கால்களுக்குத் தீபமும்,",
-      "என்னுடைய பாதைக்கு வெளிச்சமுமாக இருக்கிறது.",
-      "Noto Serif Tamil",
-    ],
-    తెలుగు: ["నీ వాక్కు నా పాదాలకు దీపం,", "నా దారిలో వెలుగు.", "Gautami"],
-    उर्दू: [
-      "तेरा कलाम मेरे क़दमों के लिए चराग़,",
-      "और मेरी राह के लिए रोशनी है।",
-      "Noto Sans Devanagari",
-    ],
+  const setURL = () => {
+    setValue1("bookCode", verseRef?.b);
+    setValue1("chapter", verseRef?.c);
+    setValue1("verseData", verseRef?.v);
   };
+  const { t } = useTranslation();
   return (
     <div className={classes.imageContainer}>
-      <p
-        className={classes.legend}
-        style={{
-          fontFamily: verse[language][2],
-        }}
-      >
-        {verse[language][0]}
-        <br />
-        {verse[language][1]}
-      </p>
+      <h3 className={classes.heading}>{t("landingVerseHeading")}</h3>
+      <BigTooltip title={t("landingVerseHeadingToolTip")}>
+        <div className={classes.verse}>
+          <Link
+            to={{ pathname: "/read" }}
+            className={classes.link}
+            onClick={() => setURL()}
+          >
+            {verseObj ? verseObj.verseContent?.text : ""}
+            <div className={classes.reference}>
+              {book
+                ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
+                : ""}
+            </div>
+          </Link>
+        </div>
+      </BigTooltip>
     </div>
   );
-}
+};
+const mapStateToProps = (state) => {
+  return {
+    versions: state.local.versions,
+    locale: state.local.locale,
+    versionBooks: state.local.versionBooks,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setValue1: (name, value) =>
+      dispatch({ type: actions.SETVALUE1, name: name, value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Banner);

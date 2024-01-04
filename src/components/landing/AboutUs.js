@@ -7,6 +7,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
 
 const useStyles = makeStyles(() => ({
   subheading: {
@@ -16,20 +18,16 @@ const useStyles = makeStyles(() => ({
   bold: {
     fontWeight: 600,
   },
-  underline: {
-    textDecoration: "underline",
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    fontSize: 21,
+    marginTop: -10,
+    cursor: "pointer",
   },
-  space: {
-    display: "inline-block",
-    paddingTop: 10,
-  },
-  releaseNotes: {
-    color: "#3E8A61",
-  },
-  list: {
-    "& li": {
-      margin: "5px 0",
-    },
+  box: {
+    display: "flex",
+    alignItems: "center",
   },
 }));
 const AboutUs = ({ handleClose }) => {
@@ -54,14 +52,13 @@ const AboutUs = ({ handleClose }) => {
   };
   return (
     <>
-      <DialogTitle
-        className={classes.title}
-        id="scroll-dialog-title"
-        disableTypography={true}
-      >
-        <Typography variant="h5" gutterBottom>
-          {t("landingAboutUsHead")}
-        </Typography>
+      <DialogTitle id="scroll-dialog-title" disableTypography={true}>
+        <div className={classes.box}>
+          <Typography variant="h5" gutterBottom>
+            {t("landingAboutUsHead")}
+          </Typography>
+          <Help iconStyle={classes.helpIcon} url={"about"} />
+        </div>
       </DialogTitle>
       <DialogContent dividers={true}>
         <Typography variant="h5" className={classes.subheading}>

@@ -54,7 +54,7 @@ const PrintBox = (props) => {
                 onChange={handleNotesChange}
               />
             }
-            label="Notes"
+            label={t("commonNotes")}
           />
           <FormControlLabel
             control={
@@ -64,7 +64,7 @@ const PrintBox = (props) => {
                 onChange={handleHighlightsChange}
               />
             }
-            label="Highlights"
+            label={t("highlightsText")}
           />
         </FormGroup>
       </DialogContent>

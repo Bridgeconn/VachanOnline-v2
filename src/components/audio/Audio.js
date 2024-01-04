@@ -5,11 +5,13 @@ import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Player from "../common/Player";
 import Box from "@material-ui/core/Box";
+import Help from "../common/Help";
 import * as actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { capitalize, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -62,6 +64,16 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 15,
     marginTop: 7,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+  },
+  helpIcon: {
+    padding: "8px 12px 0",
+    color: BLACK,
+    marginTop: 5,
+    fontSize: 21,
   },
   select: {
     width: 200,
@@ -209,7 +221,8 @@ const Audio = (props) => {
             />
           ) : null}
         </Box>
-        <Box>
+        <Box className={classes.box}>
+          <Help iconStyle={classes.helpIcon} url={"audioBible"} />
           <Close className={classes.closeButton} />
         </Box>
       </Box>
