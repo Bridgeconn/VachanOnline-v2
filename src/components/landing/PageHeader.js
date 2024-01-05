@@ -251,7 +251,7 @@ const PageHeader = (props) => {
                   size="small"
                   color="inherit"
                   className={classes.signBible}
-                  title="Help"
+                  title={t("landingHelpBtn")}
                   aria-label="Help"
                   rel="noopener"
                   startIcon={<i className="material-icons">help_outline</i>}
