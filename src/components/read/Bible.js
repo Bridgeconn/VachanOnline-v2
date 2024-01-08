@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
@@ -21,7 +21,13 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { getAudioBibleObject, getEditorToolbar } from "../common/utility";
+import {
+  getAudioBibleObject,
+  getEditorToolbar,
+  getHeading,
+  getVerse,
+  parseHeading,
+} from "../common/utility";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
@@ -149,11 +155,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: ".8em",
     color: color.MEDIUMGREY,
   },
-  sectionHeading: {
+  heading: {
     fontSize: "1.3em",
     display: "block",
     paddingTop: 12,
     fontWeight: 700,
+    textIndent: 0,
   },
   yellow: {
     backgroundColor: color.YELLOW,
@@ -211,7 +218,7 @@ const useStyles = makeStyles((theme) => ({
       display: (props) => (props.printNotes ? "inline-block" : "none"),
     },
   },
-  bookRef: {
+  printHeading: {
     display: "none",
     [`@media print`]: {
       textTransform: "capitalize",
@@ -264,10 +271,12 @@ const useStyles = makeStyles((theme) => ({
   hoverVerse: {
     background: color.LIGHTGREY,
   },
+  paraStyling: {
+    textIndent: "1.5rem",
+  },
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
-  const [headings, setHeadings] = React.useState("");
   const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
   const [previous, setPrevious] = React.useState({});
@@ -286,6 +295,7 @@ const Bible = (props) => {
   const cancelToken = React.useRef();
   const firebase = useFirebase();
   const [open, setOpen] = React.useState(false);
+  const tag = useRef("");
   const location = useLocation();
   const path = location?.pathname;
   let {
@@ -346,53 +356,6 @@ const Bible = (props) => {
   const currentAudio = getAudioBibleObject(versions, sourceId);
   const [editorState, setEditorState] = React.useState(
     EditorState.createEmpty()
-  );
-  //new usfm json structure
-  const getHeading = (contents) => {
-    if (contents) {
-      let data = contents.find((item) => Array.isArray(item));
-      if (data) {
-        for (let section of data) {
-          if (
-            Object.keys(section)[0].startsWith("s") &&
-            typeof section[Object.keys(section)[0]][0] === "string"
-          ) {
-            return section[Object.keys(section)[0]][0];
-          }
-        }
-      }
-    }
-  };
-  const isVerse = useCallback((content) => {
-    return (
-      typeof content === "object" &&
-      content !== null &&
-      "verseNumber" in content
-    );
-  }, []);
-  //new usfm json structure
-  const getHeadings = useCallback(
-    (chapter) => {
-      const headings = {};
-      let verse = 1;
-      let heading = getHeading(chapter);
-      if (heading) {
-        headings[1] = heading;
-      }
-      chapter?.forEach((item) => {
-        if (item) {
-          if (!Array.isArray(item) && isVerse(item)) {
-            heading = getHeading(item.contents);
-            if (heading) {
-              headings[verse + 1] = heading;
-            }
-            verse = parseInt(item.verseNumber);
-          }
-        }
-      });
-      return headings;
-    },
-    [isVerse]
   );
   const showNoteMessage = () => {
     setAlert(true);
@@ -462,7 +425,44 @@ const Bible = (props) => {
         }
       });
   };
-  function showVerse(item, chapter, verseData) {
+
+  function getShowHeading(verseData, verseNumber) {
+    const verseNo = parseInt(verseNumber);
+    if (verseData !== "") {
+      if (verseData?.match(/\d+-\d+/g)) {
+        const [start, end] = verseData.split("-");
+        if (parseInt(start) === verseNo + 1) {
+          return "show";
+        }
+        if (parseInt(end) === verseNo) {
+          return "skip";
+        }
+      } else if (!isNaN(verseData)) {
+        if (parseInt(verseData) === verseNo + 1) {
+          return "show";
+        }
+        if (parseInt(verseData) === verseNo) {
+          return "skip";
+        }
+      }
+    }
+    return "";
+  }
+  function showText(item, chapter, verseData) {
+    if (verseData === "" || verseData.split("-")[0] === "1") {
+      // show chapter heading only for verse 1
+      const heading = parseHeading(item, classes.heading);
+      if (heading !== "") {
+        return heading;
+      }
+    }
+    if (item?.verseNumber === "" || isNaN(item?.verseNumber)) {
+      return "";
+    }
+    const showHeading = getShowHeading(verseData, item.verseNumber);
+    if (showHeading === "show") {
+      return getHeading(item, classes.heading);
+    }
     if (!filterVerse(verseData, item.verseNumber)) {
       return "";
     }
@@ -480,14 +480,8 @@ const Bible = (props) => {
         ? `${classes.verseNumber} ${classes.firstVerse}`
         : `${classes.verseNumber}`;
     const verseNo = verse === 1 ? chapter : item.verseNumber;
-    const sectionHeading = headings[item.verseNumber] || "";
     return (
       <span key={item.verseNumber}>
-        {sectionHeading && sectionHeading !== "" ? (
-          <span className={classes.sectionHeading}>{sectionHeading}</span>
-        ) : (
-          ""
-        )}
         <span className={lineViewClass}>
           <span
             onMouseOver={
@@ -501,7 +495,7 @@ const Bible = (props) => {
                 {verseNo}
                 &nbsp;
               </span>
-              {item.verseText + " "}
+              {getVerse(item, tag) + " "}
             </span>
           </span>
           {/*If verse has note then show note icon to open notes pane */}
@@ -517,36 +511,87 @@ const Bible = (props) => {
           )}
           {verseData.includes(",") && <br />}
         </span>
+        {showHeading !== "skip" && getHeading(item, classes.heading)}
       </span>
     );
   }
+  function getStyle(item) {
+    let type = "";
+    if (typeof item === "object" && "contents" in item) {
+      type = item?.contents?.reduce((acc, cur) => {
+        if (typeof cur === "object") {
+          const tag = Object.keys(cur)[0];
+          if (tag === "p") {
+            return "p";
+          }
+          if (tag === "q1" || tag === "q2") {
+            return "q";
+          }
+        }
+        return acc;
+      }, "");
+    }
+    return type;
+  }
+  function splitParas(segments) {
+    const paras = [];
+    let i = 0;
+    let lastTag = "p";
+    for (const item of segments) {
+      if (typeof paras[i] === "undefined") {
+        paras[i] = { tag: lastTag, items: [] };
+      }
+      paras[i].items.push(item);
+      lastTag = getStyle(item);
+      if (lastTag !== "") {
+        i++;
+      }
+    }
+    return paras;
+  }
+
   //multi verses, passage in a same chapter
-  function showMultiVerse(item, chapter, verseData) {
-    if (verseData?.match(/^[0-9,-]*$/g)) {
+  function displayBibleText(verses, chapter, verseData) {
+    const paras = splitParas(verses);
+    if (verseData !== "" && verseData?.match(/^[0-9,-]*$/g)) {
       return verseData?.split(",").map((element, i) => {
+        const notLast = i !== verseData?.split(",").length - 1;
         return (
-          <span key={element + i}>
+          <div key={element + i}>
             {verseData?.indexOf(",") !== -1 && (
-              <>
-                <Typography variant="button" className={classes.searchHeading}>
-                  {`${bookDisplay} ${chapter}:${element}`}
-                </Typography>
-                <br />
-              </>
+              // if multi sections show separate headings
+              <Typography variant="button" className={classes.searchHeading}>
+                {`${bookDisplay} ${chapter}:${element}`}
+              </Typography>
             )}
-            {verses.map((item) => showVerse(item, chapter, element))}
-            {i !== verseData?.split(",").length - 1 ? (
-              <Divider className={classes.divider} />
-            ) : (
-              ""
-            )}
-          </span>
+            {paras.map((para) => {
+              let text = para?.items.map((item) =>
+                showText(item, chapter, element)
+              );
+              return para.tag === "p" ? (
+                <p className={classes.paraStyling}>{text}</p>
+              ) : (
+                <div>{text}</div>
+              );
+            })}
+            {notLast ? <Divider className={classes.divider} /> : ""}
+          </div>
         );
       });
     } else {
-      return verses.map((item) => showVerse(item, chapter, verseData));
+      return paras.map((para, i) => {
+        let text = para?.items.map((item) =>
+          showText(item, chapter, verseData)
+        );
+        return para.tag === "p" ? (
+          <p className={classes.paraStyling}>{text}</p>
+        ) : (
+          <div>{text}</div>
+        );
+      });
     }
   }
+
   function filterVerse(verseData, verseNumber) {
     if (verseData) {
       if (isNaN(verseData)) {
@@ -656,8 +701,7 @@ const Bible = (props) => {
             setLoadingText("");
 
             let contents = response.data.chapterContent.contents;
-            setVerses(contents ? contents.filter(isVerse) : []);
-            setHeadings(getHeadings(contents));
+            setVerses(contents);
           }
           setIsLoading(false);
         })
@@ -665,7 +709,7 @@ const Bible = (props) => {
           console.log(error);
         });
     }
-  }, [sourceId, bookCode, chapter, getHeadings, isVerse, t]);
+  }, [sourceId, bookCode, chapter, t]);
   //if audio bible show icon
   React.useEffect(() => {
     if (currentAudio) {
@@ -927,12 +971,10 @@ const Bible = (props) => {
           {fetchData}
           <div className={classes.text} ref={printRef}>
             <style>{getPageMargins()}</style>
-            <Typography className={classes.bookRef} variant="h4">
+            <Typography className={classes.printHeading} variant="h4">
               {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
-            {showMultiVerse(verses, chapter, verseData)}
-            <br />
-            <br />
+            {displayBibleText(verses, chapter, verseData)}
             {verseData !== "" ? (
               <Button
                 id="button"
