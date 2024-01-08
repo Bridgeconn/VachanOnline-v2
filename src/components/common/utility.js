@@ -576,9 +576,6 @@ function parseTags(tags) {
         if (verseCarryingMarkers.includes(tag)) {
           verse.push(parseTags(item[tag]));
         }
-        else if (tag === "b") {
-          
-        }
       } else {
         console.log("Case not handled, see tag below");
         console.log(tags);

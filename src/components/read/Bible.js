@@ -256,6 +256,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + color.GREY,
     margin: 4,
+    marginTop: 20,
     padding: "6px 10px",
     borderRadius: 4,
   },
@@ -569,7 +570,7 @@ const Bible = (props) => {
                 showText(item, chapter, element)
               );
               return para.tag === "p" ? (
-                <p className={classes.paraStyling}>{text}</p>
+                <p className={lineView?"":classes.paraStyling}>{text}</p>
               ) : (
                 <div>{text}</div>
               );
@@ -584,7 +585,7 @@ const Bible = (props) => {
           showText(item, chapter, verseData)
         );
         return para.tag === "p" ? (
-          <p className={classes.paraStyling}>{text}</p>
+          <p className={lineView?"":classes.paraStyling}>{text}</p>
         ) : (
           <div>{text}</div>
         );
@@ -699,7 +700,6 @@ const Bible = (props) => {
             setLoadingText(t("readBookUploadedSoon"));
           } else {
             setLoadingText("");
-
             let contents = response.data.chapterContent.contents;
             setVerses(contents);
           }
@@ -911,7 +911,7 @@ const Bible = (props) => {
 
   useEffect(() => {
     if (verses?.length > 0 && verseData !== "") {
-      const verseArr = verses.map((a) => a.verseNumber);
+      const verseArr = verses.map((a) => a?.verseNumber);
       if (isNaN(verseData)) {
         //check for verse range
         if (verseData?.match(/^[0-9-]*$/g)) {
