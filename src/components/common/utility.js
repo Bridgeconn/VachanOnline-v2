@@ -557,18 +557,22 @@ export const getObsLanguageData = (setValue, setLang) => {
     });
 };
 
-export const getVerse = (verse) => {
+export const getVerse = (verse, tag, q1, q2, q3, q4, b) => {
   if (verse?.contents?.length === 1 && typeof verse?.contents[0] === "string") {
     return verse.verseText;
   }
-  return parseTags(verse?.contents);
+  return parseTags(verse?.contents, q1, q2, q3, q4, b);
 };
 
-function parseTags(tags) {
+function parseTags(tags, q1, q2, q3, q4, b) {
   //To Do: if q tag split into multiple lines not single string
   let verse = [];
+  //split, indent and in b tag, add blank line
   if (Array.isArray(tags)) {
     for (let item of tags) {
+      if (["q1", "q2", "q3", "q4", "b"].includes(Object.keys(item)[0])) {
+        verse.push(Object.keys(item)[0]);
+      }
       if (typeof item === "string") {
         verse.push(item);
       } else if (typeof item === "object") {
@@ -582,20 +586,68 @@ function parseTags(tags) {
       }
     }
   }
-  let verseText = "";
-  for (let text of verse) {
-    if (
-      punctPattern1.test(text) ||
-      punctPattern2.test(verseText) ||
-      verseText.endsWith(" ") ||
-      verseText === ""
-    ) {
-      verseText += text;
-    } else if (text !== "") {
-      verseText += ` ${text}`;
+  let verseMap = [];
+  let verseString = "";
+  let previousText = "";
+
+  verse.forEach((item, i) => {
+    if (["q1", "q2", "q3", "q4", "b"].includes(item)) {
+      verseMap.push(verseString);
+      verseMap.push(item);
+      verseString = "";
+    } else {
+      if (
+        punctPattern1.test(item) ||
+        punctPattern2.test(previousText) ||
+        (typeof previousText === "string" && previousText?.endsWith(" ")) ||
+        previousText === ""
+      ) {
+        verseString += item;
+      } else if (item !== "") {
+        verseString += ` ${item}`;
+      }   
     }
-  }
-  return verseText;
+    if (i === verse.length - 1 && verseString !== "") {
+      verseMap.push(verseString);
+    }
+    previousText = item
+  });
+
+  let poetry = "";
+  
+  const styling = (text) => {
+    if (poetry === "q1") {
+      poetry = "";
+      return <span className={q1}>{text}</span>;
+    }
+    if (poetry === "q2") {
+      poetry = "";
+      return <span className={q2}>{text}</span>;
+    }
+    if (poetry === "q3") {
+      poetry = "";
+      return <span className={q3}>{text}</span>;
+    }
+    if (poetry === "q4") {
+      poetry = "";
+      return <span className={q4}>{text}</span>;
+    }
+    return text;
+  };
+
+  const verseText = verseMap.map((text) => {
+    if (["q1", "q2", "q3", "q4"].includes(text)) {
+      poetry = text;
+      return "";
+    } else if (text === "b") {
+      return <span className={b}></span>;
+    }  else if (text !== "") {
+      return styling(text);
+    }
+    previousText = text;
+    return "";
+  });
+ return verseText;
 }
 export const parseHeading = (item, className) => {
   if (Array.isArray(item)) {

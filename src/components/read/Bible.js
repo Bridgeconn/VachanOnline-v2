@@ -275,6 +275,26 @@ const useStyles = makeStyles((theme) => ({
   paraStyling: {
     textIndent: "1.5rem",
   },
+  poetry1: {
+    display: "block",
+    textIndent: "1rem",   
+  },
+  poetry2: {
+    display: "block",
+    textIndent: "2.5rem",
+  },
+  poetry3: {
+    display: "block",
+    textIndent: "3rem",
+  },
+  poetry4: {
+    display: "block",
+    textIndent: "3.5rem",
+  },
+  blankLine: {
+    display: "block",
+    height: 10,
+  },
 }));
 const Bible = (props) => {
   const [verses, setVerses] = React.useState([]);
@@ -496,7 +516,15 @@ const Bible = (props) => {
                 {verseNo}
                 &nbsp;
               </span>
-              {getVerse(item, tag) + " "}
+              {getVerse(
+                item,
+                tag,
+                classes.poetry1,
+                classes.poetry2,
+                classes.poetry3,
+                classes.poetry4,
+                classes.blankLine
+              )}
             </span>
           </span>
           {/*If verse has note then show note icon to open notes pane */}
@@ -570,9 +598,9 @@ const Bible = (props) => {
                 showText(item, chapter, element)
               );
               return para.tag === "p" ? (
-                <p className={lineView?"":classes.paraStyling}>{text}</p>
+                <p className={lineView ? "" : classes.paraStyling}>{text}</p>
               ) : (
-                <div>{text}</div>
+                <span>{text}</span>
               );
             })}
             {notLast ? <Divider className={classes.divider} /> : ""}
@@ -585,9 +613,9 @@ const Bible = (props) => {
           showText(item, chapter, verseData)
         );
         return para.tag === "p" ? (
-          <p className={lineView?"":classes.paraStyling}>{text}</p>
+          <p className={lineView ? "" : classes.paraStyling}>{text}</p>
         ) : (
-          <div>{text}</div>
+          <span>{text}</span>
         );
       });
     }
