@@ -7,6 +7,12 @@ import {
   obsDataAPI,
 } from "../../store/api";
 import { bibleBooks, bibleChapters } from "../../store/bibleData";
+import {
+  punctPattern1,
+  punctPattern2,
+  verseCarryingMarkers,
+} from "../../store/usfm";
+
 //Function to get the bible versions
 export const getVersions = (
   setVersions,
@@ -549,4 +555,140 @@ export const getObsLanguageData = (setValue, setLang) => {
     .catch(function (error) {
       console.log(error);
     });
+};
+
+export const getVerse = (verse, tag, q1, q2, q3, q4, b) => {
+  if (verse?.contents?.length === 1 && typeof verse?.contents[0] === "string") {
+    return verse.verseText;
+  }
+  return parseTags(verse?.contents, q1, q2, q3, q4, b);
+};
+
+function parseTags(tags, q1, q2, q3, q4, b) {
+  let verse = [];
+  if (Array.isArray(tags)) {
+    for (let item of tags) {
+      if (["q1", "q2", "q3", "q4", "b"].includes(Object.keys(item)[0])) {
+        verse.push(Object.keys(item)[0]);
+      }
+      if (typeof item === "string") {
+        verse.push(item);
+      } else if (typeof item === "object") {
+        const tag = item.closing?.replace(/[^a-z+]/gi, "");
+        if (verseCarryingMarkers.includes(tag)) {
+          verse.push(parseTags(item[tag]));
+        }
+      } else {
+        console.log("Case not handled, see tag below");
+        console.log(tags);
+      }
+    }
+  }
+  let verseMap = [];
+  let verseString = "";
+  let previousText = "";
+
+  verse.forEach((item, i) => {
+    if (["q1", "q2", "q3", "q4", "b"].includes(item)) {
+      verseMap.push(verseString);
+      verseMap.push(item);
+      verseString = "";
+    } else {
+      if (
+        punctPattern1.test(item) ||
+        punctPattern2.test(previousText) ||
+        (typeof previousText === "string" && previousText?.endsWith(" ")) ||
+        previousText === ""
+      ) {
+        verseString += item;
+      } else if (item !== "") {
+        verseString += ` ${item}`;
+      }   
+    }
+    if (i === verse.length - 1 && verseString !== "") {
+      verseMap.push(verseString);
+    }
+    previousText = item
+  });
+
+  let poetry = "";
+  
+  const styling = (text) => {
+    if (poetry === "q1") {
+      poetry = "";
+      return <span className={q1}>{text}</span>;
+    }
+    if (poetry === "q2") {
+      poetry = "";
+      return <span className={q2}>{text}</span>;
+    }
+    if (poetry === "q3") {
+      poetry = "";
+      return <span className={q3}>{text}</span>;
+    }
+    if (poetry === "q4") {
+      poetry = "";
+      return <span className={q4}>{text}</span>;
+    }
+    return text;
+  };
+
+  const verseText = verseMap.map((text) => {
+    if (["q1", "q2", "q3", "q4"].includes(text)) {
+      poetry = text;
+      return "";
+    } else if (text === "b") {
+      return <span className={b}></span>;
+    }  else if (text !== "") {
+      return styling(text);
+    }
+    previousText = text;
+    return "";
+  });
+ return verseText;
+}
+export const parseHeading = (item, className) => {
+  if (Array.isArray(item)) {
+    const [first] = item;
+    if (typeof first === "object") {
+      const tag = Object.keys(first)[0];
+      if (tag.match(/ms.?/)) {
+        const heading = first[tag];
+        if (heading && heading !== "" && typeof heading === "string") {
+          return (
+            <span key={heading} className={className}>
+              {heading}
+            </span>
+          );
+        }
+      }
+      if (tag.match(/s.?/)) {
+        const heading = first[tag][0];
+        if (heading && heading !== "" && typeof heading === "string") {
+          return (
+            <span key={heading} className={className}>
+              {heading}
+            </span>
+          );
+        }
+      }
+    }
+  }
+  return "";
+};
+export const getHeading = (item, className) => {
+  try {
+    const { contents } = item;
+    if (contents) {
+      for (item of contents) {
+        const heading = parseHeading(item, className);
+        if (heading !== "") {
+          return heading;
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  return "";
 };
