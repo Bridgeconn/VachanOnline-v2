@@ -277,19 +277,23 @@ const useStyles = makeStyles((theme) => ({
   },
   poetry1: {
     display: "block",
-    textIndent: "1rem",   
+    textIndent: "1rem", 
+    width:"max-content"  
   },
   poetry2: {
     display: "block",
     textIndent: "2.5rem",
+    width:"max-content"  
   },
   poetry3: {
     display: "block",
     textIndent: "3rem",
+    width:"max-content"  
   },
   poetry4: {
     display: "block",
     textIndent: "3.5rem",
+    width:"max-content"  
   },
   blankLine: {
     display: "block",
@@ -501,6 +505,31 @@ const Bible = (props) => {
         ? `${classes.verseNumber} ${classes.firstVerse}`
         : `${classes.verseNumber}`;
     const verseNo = verse === 1 ? chapter : item.verseNumber;
+
+    const poetry1Class = selectedVerses?.indexOf(verse)>-1? `${classes.poetry1} ${classes.selectedVerse}` : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
+    ? `${classes.hoverVerse} ${classes.poetry1}`
+    : highlightVerses.indexOf(verse) > -1
+    ? `${classes.poetry1} ${colorClasses[highlighMap[verse]]}`
+    : `${classes.poetry1}`;
+    
+    const poetry2Class = selectedVerses?.indexOf(verse)>-1? `${classes.poetry2} ${classes.selectedVerse}` : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
+    ? `${classes.hoverVerse} ${classes.poetry2}`
+    : highlightVerses.indexOf(verse) > -1
+    ? `${classes.poetry2} ${colorClasses[highlighMap[verse]]}`
+    : `${classes.poetry2}`;
+    
+    const poetry3Class = selectedVerses?.indexOf(verse)>-1? `${classes.poetry3} ${classes.selectedVerse}` : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
+    ? `${classes.hoverVerse} ${classes.poetry3}`
+    : highlightVerses.indexOf(verse) > -1
+    ? `${classes.poetry3} ${colorClasses[highlighMap[verse]]}`
+    : `${classes.poetry3}`;
+    
+    const poetry4Class = selectedVerses?.indexOf(verse)>-1? `${classes.poetry4} ${classes.selectedVerse}` : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
+    ? `${classes.hoverVerse} ${classes.poetry4}`
+    : highlightVerses.indexOf(verse) > -1
+    ? `${classes.poetry4} ${colorClasses[highlighMap[verse]]}`
+    : `${classes.poetry4}`;
+
     return (
       <span key={item.verseNumber}>
         <span className={lineViewClass}>
@@ -519,10 +548,10 @@ const Bible = (props) => {
               {getVerse(
                 item,
                 tag,
-                classes.poetry1,
-                classes.poetry2,
-                classes.poetry3,
-                classes.poetry4,
+                poetry1Class,
+                poetry2Class,
+                poetry3Class,
+                poetry4Class,
                 classes.blankLine
               )}
             </span>

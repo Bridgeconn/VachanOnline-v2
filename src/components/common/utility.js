@@ -565,9 +565,7 @@ export const getVerse = (verse, tag, q1, q2, q3, q4, b) => {
 };
 
 function parseTags(tags, q1, q2, q3, q4, b) {
-  //To Do: if q tag split into multiple lines not single string
   let verse = [];
-  //split, indent and in b tag, add blank line
   if (Array.isArray(tags)) {
     for (let item of tags) {
       if (["q1", "q2", "q3", "q4", "b"].includes(Object.keys(item)[0])) {
