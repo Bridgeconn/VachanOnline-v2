@@ -1,1 +1,31 @@
 @import "node_modules/react-modal-video/scss/modal-video.scss";
+
+// $color-bg:#000;
+// $color-text: #2b06fa;
+// :root {
+//     --clr-bg: #000;
+//     --clr-text: #2b06fa;
+
+//     --foreground: var(--clr-text);
+//     --background: var(--clr-bg);
+//     // background-color: $color-bg;
+//     // color: $color-text;
+// }
+
+.darkmode {    
+// $color-bg:#000;
+// $color-text: #2b06fa;
+// background-color: $color-bg;
+// color: $color-text;
+--background: #04fcef;
+--text: #2e09ffe7;
+
+background-color: var(--background);
+color: var(--text);
+    
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+}

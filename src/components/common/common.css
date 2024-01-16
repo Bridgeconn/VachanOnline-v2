@@ -2,14 +2,14 @@ button:focus {
   outline: none;
 }
 button:hover {
-  background-color: white;
+  background-color: "var(--background)";
 }
 .my-component {
-  background: #fff;
+  background: "var(--background)";
 }
 
 .fullscreen-enabled .my-component {
-  background: #000;
+  background: "var(--background)";
 }
 .fullscreen-enabled > div {
   height: 100vh;
@@ -29,7 +29,7 @@ button:hover {
 }
 
 .material:hover {
-  background-color: #e0e0e0;
+  background-color: "var(--background)";
   border-radius: 50%;
-  color: #000;
+  color: "var(--text)";
 }

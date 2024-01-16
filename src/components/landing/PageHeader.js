@@ -19,6 +19,7 @@ import i18n from "../../i18n";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,6 +94,9 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     padding: "0 12px",
   },
+  dark: {
+    paddingRight: 30,
+  },
 }));
 
 const PageHeader = (props) => {
@@ -114,7 +118,6 @@ const PageHeader = (props) => {
     setAlert("");
     setMessage("");
   };
-
   React.useEffect(() => {
     setLoginButton(
       login ? (
@@ -138,6 +141,10 @@ const PageHeader = (props) => {
               )}
             </Link>
           </div>
+          <div classes={classes.links}>
+            <Brightness4Icon id="dark-mode-toggle" />
+          </div>
+
           <Link
             to={{
               pathname: "/audiobible",

@@ -104,7 +104,7 @@ body {
   max-width: 1000px;
 }
 body#body {
-  background-color: white;
+  background-color: "var(--background)";
   overflow: overlay;
 }
 code {

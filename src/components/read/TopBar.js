@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
-    background: WHITE,
+    background: "var(--background)",
     padding: "0px 10px",
     marginBottom: "10px",
     border: BLACK,
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
       width: "10%",
     },
     "& a": {
-      color: "inherit",
+      color: "var(--text)",
       textDecoration: "none",
       lineHeight: "75px",
     },

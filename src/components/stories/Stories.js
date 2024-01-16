@@ -134,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.255",
   },
   linkList: {
-    color: BLACK,
+    color: "var(--text)",
     "&:hover": {
       color: GREY,
     },
@@ -164,13 +164,13 @@ const useStyles = makeStyles((theme) => ({
   },
   languageSelected: {
     "&:focus": {
-      backgroundColor: "transparent",
+      backgroundColor: "var(--background)",
     },
   },
   languageName: {
     float: (props) => (props.rtlList?.includes(props.lang) ? "left" : "right"),
     textTransform: "capitalize",
-    color: GREY,
+    color: "var(--text)",
   },
   languageNameOrigin: {
     float: (props) => (props.rtlList?.includes(props.lang) ? "right" : "left"),
@@ -218,6 +218,8 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     lang: lang,
     rtlList: rtlList,
   };
+
+  //document.body.classList.add("var(--background)");
   const classes = useStyles(styleProps);
   const storyClass = rtlList.includes(lang)
     ? `${classes.stories} ${classes.storyDirection}`
