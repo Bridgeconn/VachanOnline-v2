@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     background: "none",
     top: 105,
     "@media (max-width: 1366px)": {
-      fontSize:"1.5rem"
+      fontSize:"1.25rem"
     },
     [theme.breakpoints.only("md")]: {
       width: "80%",
