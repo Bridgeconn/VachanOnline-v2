@@ -18,7 +18,7 @@ import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
 import Help from "../common/Help";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const drawerWidth = 350;
 const useStyles = makeStyles((theme) => ({
@@ -151,6 +151,7 @@ const Songs = () => {
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isLarge = useMediaQuery("(min-width:1150px)");
+  const { t } = useTranslation();
   const getLang = (event) => {
     setLang(event.target.value);
   };
