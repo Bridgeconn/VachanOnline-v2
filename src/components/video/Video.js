@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
 import ModalVideo from "react-modal-video";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import Select from "react-select";
 import { capitalize, getBookbyCode, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       top: 60,
     },
   },
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       top: 60,
     },
   },
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 35,
     marginBottom: 20,
     minHeight: 51,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       height: 60,
       paddingBottom: 0,
       alignItems: "center",
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 2% 2% 0",
     display: "inline-block",
     verticalAlign: "top",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: "97%",
       marginBottom: 25,
     },
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     width: 200,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: 130,
     },
   },
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
   },
   selectBox: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "flex",
       alignItems: "center",
     },

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import { connect } from "react-redux";
 import * as views from "../../store/views";
 import BookCombo from "../common/BookCombo";
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       top: 60,
     },
   },
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
     height: 60,
     alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       paddingBottom: 0,
     },
   },
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
   player: {
     maxHeight: "calc(100vh - 150px)",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       maxHeight: 240,
     },
   },
@@ -133,7 +133,7 @@ const SignBible = (props) => {
   const [playing, setPlaying] = useState("");
   const { bookCode, chapter, sourceId } = panel1;
   const theme = useTheme();
-  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down('md'));
   const heading = mobileLandscape ? t("ISLVTopBarBtnTab") : t("ISLVBibleText");
   function getBooks(bookName) {
     let books = Object.keys(signBible?.books);

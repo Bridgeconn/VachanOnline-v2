@@ -3,13 +3,13 @@ import BookCombo from "../common/BookCombo";
 import Select from "react-select";
 import * as actions from "../../store/actions";
 import { capitalize } from "../common/utility";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   select: {
     width: 200,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: 150,
     },
   },

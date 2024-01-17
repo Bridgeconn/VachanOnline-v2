@@ -1,18 +1,19 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import axios from "axios";
 import "react-calendar/dist/Calendar.css";
-import Typography from "@material-ui/core/Typography";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import Typography from "@mui/material/Typography";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import Select from "react-select";
-import Tooltip from "@material-ui/core/Tooltip";
-import Button from "@material-ui/core/Button";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { BLACK, GREY } from "../../store/colorCode";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -72,12 +73,12 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     marginTop: 60,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginTop: 0,
     },
   },
   refBox: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "flex",
     },
   },
@@ -88,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "none",
     },
   },
@@ -97,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
     width: "50%",
-    [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
+    [theme.breakpoints.down('md')]: { width: 120, marginTop: 6 },
   },
   message: {
     margin: 18,
@@ -112,20 +113,20 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       boxShadow: theme.shadows[1],
       paddingLeft: 15,
     },
   },
   refText: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: "1rem",
       marginRight: 5,
     },
   },
   select: {
     width: 200,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       width: 150,
       padding: "0 15px",
     },
@@ -155,7 +156,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
   },
   list: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       bottom: 50,
       top: 0,
     },

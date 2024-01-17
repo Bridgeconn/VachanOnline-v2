@@ -1,17 +1,17 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import makeStyles from '@mui/styles/makeStyles';
+import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import Fullscreen from "react-full-screen";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from '@mui/material/Alert';
 import MenuBar from "./MenuBar";
 import Bible from "./Bible";
 import FetchHighlights from "../highlight/FetchHighlights";
 import BottomToolBar from "./BottomToolBar";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { SEARCH } from "../../store/views";
 import { GREY } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px #000000",
     lineHeight: "1.8rem",
     fontSize: "16px",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       margin: "15px 10px 15px 15px",
       padding: 8,
     },
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   listError: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       paddingInlineStart: 30,
     },
     "& li": {

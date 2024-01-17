@@ -1,13 +1,13 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
-import Popover from "@material-ui/core/Popover";
-import Paper from "@material-ui/core/Paper";
-import Tooltip from "@material-ui/core/Tooltip";
+import makeStyles from '@mui/styles/makeStyles';
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import Popover from "@mui/material/Popover";
+import Paper from "@mui/material/Paper";
+import Tooltip from "@mui/material/Tooltip";
 import { BLACK } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 
@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "40%",
     minWidth: 550,
-    [theme.breakpoints.down("lg")]: {
+    [theme.breakpoints.down('xl')]: {
       minWidth: 600,
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: "95%",
       minWidth: "unset",
     },
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "28px",
     fontSize: 16,
     paddingLeft: 14,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       paddingLeft: 5,
     },
   },
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   metaDataBox: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       maxHeight: "80vh",
       overflow: "scroll",
     },
@@ -93,7 +93,7 @@ export default function Metadata({
   const id = open ? "simple-popover" : undefined;
   const checkLink = (text) => {
     return text.startsWith("http") ? (
-      <Link href={text} key={text} target="_blank">
+      <Link href={text} key={text} target="_blank" underline="hover">
         {text + " "}
       </Link>
     ) : (

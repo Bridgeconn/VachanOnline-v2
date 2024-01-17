@@ -1,10 +1,11 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import { useTheme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
-import Link from "@material-ui/core/Link";
-import { useMediaQuery } from "@material-ui/core";
+import Link from "@mui/material/Link";
+import { useMediaQuery } from "@mui/material";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { AUDIO, VIDEO } from "../../store/views";
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 7%",
     maxWidth: 280,
     display: "inline-block",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: "30%",
     },
   },
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
       width: "calc(100% - 30px)",
     },
     textAlign: "center",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       marginTop: -10,
     },
   },
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     marginTop: 50,
     paddingLeft: 30,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       paddingLeft: 0,
       textAlign: "center",
       margin: 20,
@@ -94,7 +95,10 @@ const Landing = (props) => {
   }, [isMobile, setValue]);
   const addLink = () => {
     return process.env.REACT_APP_DOWNLOAD_URL ? (
-      <Link href={process.env.REACT_APP_DOWNLOAD_URL} target="_blank">
+      <Link
+        href={process.env.REACT_APP_DOWNLOAD_URL}
+        target="_blank"
+        underline="hover">
         <BigTooltip title={t("landingPlayStoreToolTip")}>
           <img
             src={playStore}

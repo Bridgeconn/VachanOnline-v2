@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import Box from "@material-ui/core/Box";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
+import Collapse from "@mui/material/Collapse";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import Box from "@mui/material/Box";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import CommentaryCombo from "./CommentaryCombo";
@@ -16,7 +16,7 @@ import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
 import Help from "../common/Help";
 import { BLACK, LIGHTGREY } from "../../store/colorCode";
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       marginTop: (props) => (props.screenView === "single" ? 60 : 0),
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginTop: 60,
     },
   },
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       paddingLeft: 5,
       paddingBottom: 0,
       marginBottom: 0,
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   titleComment: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "none",
     },
   },
@@ -121,17 +121,17 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "middle",
     fontSize: 20,
     display: "inline-block",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 16,
       paddingLeft: 5,
     },
   },
   bookNameBox: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "flex",
       alignItems: "center",
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       whiteSpace: "nowrap",
     },
   },
@@ -146,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     marginTop: 4,
     marginLeft: -5,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 0,
     },
   },
@@ -158,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 10,
     marginTop: -6,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginTop: "0.2rem",
     },
   },

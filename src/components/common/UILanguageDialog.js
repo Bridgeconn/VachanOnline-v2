@@ -1,6 +1,6 @@
 import React from "react";
-import { Dialog, DialogContent, MenuItem, Select } from "@material-ui/core";
-import { FormControl, InputLabel, Typography } from "@material-ui/core";
+import { Dialog, DialogContent, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import i18n from "../../i18n";
@@ -24,39 +24,37 @@ const UILanguageDialog = ({ setLocale }) => {
     setLocale(event.target.value);
     setOpen(false);
   };
-  return (
-    <>
-      {!Object.keys(languageCode).includes(localeLang) ? (
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          scroll="paper"
-          fullWidth={true}
-          maxWidth="sm"
-        >
-          <DialogContent>
-            <Typography variant="h6">
-              {t("selectMultiLanguageTitle")}
-            </Typography>
-            <FormControl fullWidth>
-              <InputLabel id="language-select">
-                {t("selectMultiLanguage")}
-              </InputLabel>
-              <Select value={lang} onChange={handleChange}>
-                {Object.keys(languageCode).map((text) => (
-                  <MenuItem key={text} value={text}>
-                    {languageCode[text].name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </DialogContent>
-        </Dialog>
-      ) : (
-        ""
-      )}
-    </>
-  );
+  return <>
+    {!Object.keys(languageCode).includes(localeLang) ? (
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll="paper"
+        fullWidth={true}
+        maxWidth="sm"
+      >
+        <DialogContent>
+          <Typography variant="h6">
+            {t("selectMultiLanguageTitle")}
+          </Typography>
+          <FormControl variant="standard" fullWidth>
+            <InputLabel id="language-select">
+              {t("selectMultiLanguage")}
+            </InputLabel>
+            <Select variant="standard" value={lang} onChange={handleChange}>
+              {Object.keys(languageCode).map((text) => (
+                <MenuItem key={text} value={text}>
+                  {languageCode[text].name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </DialogContent>
+      </Dialog>
+    ) : (
+      ""
+    )}
+  </>;
 };
 const mapDispatchToProps = (dispatch) => {
   return {

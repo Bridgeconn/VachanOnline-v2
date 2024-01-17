@@ -1,7 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { connect } from "react-redux";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import { getAudioBibleObject } from "../common/utility";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
@@ -9,24 +9,24 @@ import Version from "../common/Version";
 import Metadata from "../common/Metadata";
 import Bookmark from "../bookmark/Bookmark";
 import Highlight from "../highlight/Highlight";
-import NoteIcon from "@material-ui/icons/NoteOutlined";
-import BorderColor from "@material-ui/icons/BorderColor";
+import NoteIcon from "@mui/icons-material/NoteOutlined";
+import BorderColor from "@mui/icons-material/BorderColor";
 import Note from "../note/Note";
-import PrintIcon from "@material-ui/icons/Print";
+import PrintIcon from "@mui/icons-material/Print";
 import { AUDIO } from "../../store/views";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 import { BLACK, WHITE } from "../../store/colorCode";
 import Close from "../common/Close";
 import Print from "../common/PrintBox";
-import ParallelScroll from "@material-ui/icons/ImportExport";
-import ShareIcon from "@material-ui/icons/Share";
-import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
+import ParallelScroll from "@mui/icons-material/ImportExport";
+import ShareIcon from "@mui/icons-material/Share";
+import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import Help from "../common/Help";
-import { Button, Menu, Snackbar } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import { Alert } from "@material-ui/lab";
+import { Button, Menu, Snackbar } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { Alert } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -45,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
       padding: "0 5.5px",
       top: (props) => (props.paneNo === 2 ? 0 : 60),
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       boxShadow: theme.shadows[1],
     },
   },
   selectBox: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "flex",
       alignItems: "center",
     },

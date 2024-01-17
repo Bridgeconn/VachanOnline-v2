@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 import { connect } from "react-redux";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import Viewer from "react-viewer";
 import Select from "react-select";
 import Help from "../common/Help";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       top: 60,
     },
   },
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       top: 60,
     },
   },
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 12,
     paddingLeft: 35,
     minHeight: 51,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       alignItems: "center",
       height: 60,
       paddingBottom: 0,
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 20,
     marginTop: 10,
     cursor: "pointer",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: "99%",
       marginRight: 0,
     },
@@ -98,14 +98,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 21,
   },
   selectBox: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "flex",
       alignItems: "center",
     },
   },
   select: {
     width: 200,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: 130,
     },
   },

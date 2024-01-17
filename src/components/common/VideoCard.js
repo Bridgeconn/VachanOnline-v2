@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Collapse from "@material-ui/core/Collapse";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import makeStyles from '@mui/styles/makeStyles';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ReactPlayer from "react-player";
 import { LIGHTGREY } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
@@ -14,7 +14,7 @@ import { t } from "i18next";
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
     padding: "10px 20px",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       whiteSpace: "nowrap",
     },
   },
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   player: {
     maxHeight: "calc(100vh - 150px)",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       maxHeight: 240,
     },
   },

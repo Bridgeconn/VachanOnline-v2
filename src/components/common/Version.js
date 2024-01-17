@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import List from "@material-ui/core/List";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import ListItem from "@material-ui/core/ListItem";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
+import List from "@mui/material/List";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import ListItem from "@mui/material/ListItem";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
 import { getVersions, capitalize, getLanguageData } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 60,
       padding: "6px 10px",
     },
@@ -73,13 +73,13 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     left: 5,
     position: "relative",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       left: 0,
       display: "none",
     },
   },
   versionName: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       whiteSpace: "nowrap",
       minWidth: 30,
       maxWidth: 118,
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid " + GREY + "70",
   },
   label: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: "unset",
     },
   },

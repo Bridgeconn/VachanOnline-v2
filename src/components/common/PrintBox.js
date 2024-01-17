@@ -7,7 +7,7 @@ import {
   DialogTitle,
   FormControlLabel,
   FormGroup,
-} from "@material-ui/core";
+} from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import ReactToPrint from "react-to-print";

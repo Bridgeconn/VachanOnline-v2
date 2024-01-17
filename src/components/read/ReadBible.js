@@ -1,5 +1,6 @@
-import { useMediaQuery } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
@@ -21,7 +22,7 @@ const ReadBible = (props) => {
   const theme = useTheme();
   let { setValue, setValue1, panel1, signBible } = props;
   const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   React.useEffect(() => {
     if (isMobile) {

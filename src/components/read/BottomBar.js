@@ -1,8 +1,9 @@
 import React from "react";
-import { AppBar, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
-import MenuIcon from "@material-ui/icons/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
 import SideDrawer from "./SideDrawer";
 import { BLACK } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";

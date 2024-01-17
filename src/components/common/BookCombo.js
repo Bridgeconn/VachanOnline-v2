@@ -1,18 +1,18 @@
 import React from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import makeStyles from '@mui/styles/makeStyles';
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { MOBILEPV } from "../../store/views";
 import { useTranslation } from "react-i18next";
 import { SYNCPANEL } from "../../store/actions";
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       padding: 6,
       maxWidth: (props) => (props.parallelView ? 110 : 165),
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('sm')]: {
       maxWidth: 165,
       padding: (props) =>
         props.screen === "info" ||
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     left: 3,
     position: "relative",
     width: 30,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       left: 0,
       display: "none",
     },
@@ -114,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: WHITE,
       color: BLACK,
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       "&:hover": {
         backgroundColor: LIGHTGREY,
       },
@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
   },
   bookNameBox: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       whiteSpace: "nowrap",
       minWidth: 130,
       maxWidth: 150,

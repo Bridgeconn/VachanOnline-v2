@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import LanguageIcon from "@material-ui/icons/Language";
-import { makeStyles } from "@material-ui/core/styles";
-import { Menu, MenuItem } from "@material-ui/core";
+import LanguageIcon from "@mui/icons-material/Language";
+import makeStyles from '@mui/styles/makeStyles';
+import { Menu, MenuItem } from "@mui/material";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";

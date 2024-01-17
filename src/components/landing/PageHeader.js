@@ -1,23 +1,23 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import makeStyles from '@mui/styles/makeStyles';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import Login from "../login/Login";
 import LoginMenu from "../login/LoginMenu";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 import { WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
-import { Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { Snackbar } from "@mui/material";
+import { Alert } from '@mui/material';
 import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     background: "rgba(0,0,0,0.5)",
     paddingLeft: 10,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       padding: 0,
     },
   },
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     height: 60,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "none",
     },
   },
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "inherit",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "none",
     },
   },
@@ -101,9 +101,9 @@ const PageHeader = (props) => {
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down('md'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
   let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));

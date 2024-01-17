@@ -1,15 +1,15 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import firebase from "firebase/compat/app";
-import Menu from "@material-ui/core/Menu";
-import IconButton from "@material-ui/core/IconButton";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
+import Menu from "@mui/material/Menu";
+import IconButton from "@mui/material/IconButton";
+import ListItemText from "@mui/material/ListItemText";
+import Avatar from "@mui/material/Avatar";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
 import { useTranslation } from "react-i18next";
 import { GREY } from "../../store/colorCode";
 import BigTooltip from "../common/BigTooltip";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "1px 1px 4px 1px " + GREY,
   },
   emailText: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: "0.75rem",
     },
   },
@@ -58,53 +58,51 @@ const LoginMenu = (props) => {
         console.log("Error Signing Out");
       });
   };
-  return (
-    <>
-      <IconButton
-        edge="end"
-        aria-label="account of current user"
-        aria-controls="profileMenu"
-        aria-haspopup="true"
-        onClick={handleProfileMenuOpen}
-        color="inherit"
-      >
-        <BigTooltip title={t("loginSignOutBtn")}>
-          <Avatar alt={userDetails.email} src={userDetails.photoURL} />
-        </BigTooltip>
-      </IconButton>
-      <Menu
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        anchorEl={menuOpen}
-        keepMounted
-        open={Boolean(menuOpen)}
-        onClose={handleClose}
-        classes={{
-          paper: classes.paper,
-        }}
-      >
-        <List component="nav" aria-label="main mailbox folders">
-          <ListItem button>
-            <ListItemText primary={userDetails.email} />
-          </ListItem>
-        </List>
-        <Divider />
-        <List component="nav" aria-label="secondary mailbox folders">
-          <ListItem button>
-            <ListItemText primary={t("loginSignOutBtn")} onClick={signOut} />
-          </ListItem>
-        </List>
-      </Menu>
-    </>
-  );
+  return <>
+    <IconButton
+      edge="end"
+      aria-label="account of current user"
+      aria-controls="profileMenu"
+      aria-haspopup="true"
+      onClick={handleProfileMenuOpen}
+      color="inherit"
+      size="large">
+      <BigTooltip title={t("loginSignOutBtn")}>
+        <Avatar alt={userDetails.email} src={userDetails.photoURL} />
+      </BigTooltip>
+    </IconButton>
+    <Menu
+      elevation={0}
+      getContentAnchorEl={null}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+      anchorEl={menuOpen}
+      keepMounted
+      open={Boolean(menuOpen)}
+      onClose={handleClose}
+      classes={{
+        paper: classes.paper,
+      }}
+    >
+      <List component="nav" aria-label="main mailbox folders">
+        <ListItem button>
+          <ListItemText primary={userDetails.email} />
+        </ListItem>
+      </List>
+      <Divider />
+      <List component="nav" aria-label="secondary mailbox folders">
+        <ListItem button>
+          <ListItemText primary={t("loginSignOutBtn")} onClick={signOut} />
+        </ListItem>
+      </List>
+    </Menu>
+  </>;
 };
 const mapStateToProps = (state) => {
   return {

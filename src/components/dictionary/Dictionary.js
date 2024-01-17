@@ -1,13 +1,13 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { connect } from "react-redux";
 import DictionaryCombo from "./DictionaryCombo";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import DictionaryWordCombo from "./DictionaryWordCombo";
 import Metadata from "../common/Metadata";
 import { getDictionaryIndex, getDictionaryWord } from "../common/utility";
 import Close from "../common/Close";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 82,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginTop: 60,
     },
   },
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       padding: 0,
       height: 60,
       alignItems: "center",
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginRight: 10,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "none",
     },
   },
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       textAlign: "justify",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       top: 120,
       left: 20,
     },
@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 4,
     flexWrap: "nowrap",
     marginLeft: -5,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 0,
     },
   },

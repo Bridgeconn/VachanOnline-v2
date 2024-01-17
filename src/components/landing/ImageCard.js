@@ -1,6 +1,6 @@
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Grid, Paper, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
 import { Link } from "react-router-dom";
 import { BLACK } from "../../store/colorCode";
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("md")]: {
       margin: 8,
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       margin: 0,
     },
     "&:hover": {
@@ -32,14 +32,14 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("lg")]: {
       margin: "0 5px",
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: "column",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: "95%",
       margin: "auto",
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('sm')]: {
       width: "90%",
       margin: "0 auto",
     },
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "5.5rem",
     color: BLACK,
     marginRight: 10,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: "4.5rem",
     },
     [theme.breakpoints.only("xs")]: {
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     height: (props) => (props.isLarge ? 85 : 115),
     display: "flex",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       display: "none",
     },
   },

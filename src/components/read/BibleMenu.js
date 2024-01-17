@@ -1,9 +1,9 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
+import makeStyles from '@mui/styles/makeStyles';
+import List from "@mui/material/List";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
-import { Divider } from "@material-ui/core";
+import { Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({

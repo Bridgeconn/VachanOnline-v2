@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as views from "../../store/views";
-import { Drawer, makeStyles } from "@material-ui/core";
+import { Drawer } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import MenuItem from "./MenuItem";
 import { useTranslation } from "react-i18next";
 

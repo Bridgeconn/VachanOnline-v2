@@ -1,4 +1,4 @@
-import { Tooltip } from "@material-ui/core";
+import { Tooltip } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";

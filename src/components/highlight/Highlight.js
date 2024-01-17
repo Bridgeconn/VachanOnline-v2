@@ -1,10 +1,10 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import BorderColor from "@material-ui/icons/BorderColor";
-import Tooltip from "@material-ui/core/Tooltip";
-import Popover from "@material-ui/core/Popover";
-import Circle from "@material-ui/icons/LensRounded";
-import NotInterestedIcon from "@material-ui/icons/NotInterested";
+import makeStyles from '@mui/styles/makeStyles';
+import BorderColor from "@mui/icons-material/BorderColor";
+import Tooltip from "@mui/material/Tooltip";
+import Popover from "@mui/material/Popover";
+import Circle from "@mui/icons-material/LensRounded";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useFirebase } from "react-redux-firebase";
 import * as color from "../../store/colorCode";
 import { connect } from "react-redux";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   colorBox: {
     padding: 6,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "flex",
     },
   },

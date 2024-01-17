@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
-import NoteIcon from "@material-ui/icons/NoteOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
+import NoteIcon from "@mui/icons-material/NoteOutlined";
+import Tooltip from "@mui/material/Tooltip";
 import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
-import { Button, Divider, Snackbar, Typography } from "@material-ui/core";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import { Button, Divider, Snackbar, Typography } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import parse from "html-react-parser";
 import { useFirebase } from "react-redux-firebase";
 import {
@@ -19,8 +19,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+} from "@mui/material";
+import { Alert } from '@mui/material';
 import {
   getAudioBibleObject,
   getEditorToolbar,
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       margin: 25,
     },
   },
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: (props) => (props.padding > 40 ? props.padding : 40),
       paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       paddingRight: 15,
       paddingLeft: 15,
       lineHeight: "1.8em",
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       left: (props) => (props.padding > 40 ? props.padding / 2 : 20),
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       left: 10,
       top: "unset",
       bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       right: (props) => (props.padding > 40 ? props.padding / 2 : 20),
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       right: 10,
       top: "unset",
       bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
@@ -125,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     bottom: "10px",
     left: 35,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       bottom: (props) => props.audioBottom,
     },
   },
@@ -139,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginBottom: 50,
       padding: "0 0 50px 5px",
     },

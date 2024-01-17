@@ -1,19 +1,19 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from "@material-ui/icons/Search";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Pagination from "@material-ui/lab/Pagination";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Pagination from '@mui/material/Pagination';
 import { searchBible } from "../common/utility";
 import * as actions from "../../store/actions";
 import { connect } from "react-redux";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 6,
     paddingLeft: 15,
     borderBottom: "1px solid #f1ecec",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       boxShadow: theme.shadows[1],
     },
   },
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2em",
     position: "relative",
     bottom: 2,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       bottom: 20,
     },
   },
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
   pageDisplay: {
     position: "absolute",
     right: 10,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       right: "unset",
       left: 5,
       bottom: 1,
@@ -281,7 +281,7 @@ const Search = (props) => {
               className={classes.searchButton}
               aria-label="search"
               onClick={search}
-            >
+              size="large">
               <SearchIcon />
             </IconButton>
           </Paper>

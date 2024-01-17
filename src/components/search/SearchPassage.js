@@ -1,6 +1,6 @@
-import { InputBase, Paper, Button } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
+import { InputBase, Paper, Button } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
 import { connect } from "react-redux";
 import { SETVALUE, SETVALUE1 } from "../../store/actions";
@@ -8,7 +8,7 @@ import { BLACK } from "../../store/colorCode";
 import { getReference } from "../common/utility";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "@mui/icons-material/Close";
 
 const useStyles = makeStyles((theme) => ({
   searchBox: {
@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 0,
       width: 300,
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginRight: 0,
     },
   },
   searchField: {
     marginLeft: theme.spacing(1),
     flex: 1,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: 155,
     },
   },
@@ -157,7 +157,7 @@ const SearchPassage = (props) => {
       onClick={toggleText}
       target="_blank"
       rel="noopener"
-    >
+      size="large">
       <i className={`material-icons ${classes.searchIcon}`}>manage_search</i>
     </IconButton>
   ) : (
@@ -172,7 +172,7 @@ const SearchPassage = (props) => {
           className={classes.searchBox}
           onSubmit={showSearchResult}
         >
-          <IconButton type="submit" className={classes.searchButtonMob}>
+          <IconButton type="submit" className={classes.searchButtonMob} size="large">
             <i className={`material-icons ${classes.searchIcon}`}>
               manage_search
             </i>

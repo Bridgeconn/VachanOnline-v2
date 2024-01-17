@@ -1,23 +1,24 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Snackbar, useMediaQuery } from "@material-ui/core";
-import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
+import { useTheme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import { Snackbar, useMediaQuery } from "@mui/material";
+import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
 import Login from "../login/Login";
 import logo from "../common/images/logo1.png";
 import favicon from "../common/images/favicon_black.png";
 import LoginMenu from "../login/LoginMenu";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 import { BLACK, WHITE } from "../../store/colorCode";
 import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
-import { Tooltip } from "@material-ui/core";
+import { Tooltip } from "@mui/material";
 import SearchPassage from "../search/SearchPassage";
-import { Alert } from "@material-ui/lab";
+import { Alert } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "absolute",
     height: 74,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       height: 60,
     },
   },
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "10px",
     border: BLACK,
     zIndex: 900,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginBottom: 0,
       padding: 0,
     },
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       display: "block",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       width: "10%",
     },
     "& a": {
@@ -61,13 +62,13 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     height: 50,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       height: 40,
     },
   },
   logo: {
     height: 60,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('lg')]: {
       display: "none",
     },
   },
@@ -81,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: BLACK,
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       display: "none",
     },
   },
@@ -99,12 +100,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
     width: "25px",
     fontSize: "2rem",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: 0,
     },
   },
   mobileToolbar: {
-    [theme.breakpoints.down("sm")]: { paddingLeft: 8, paddingRight: 8 },
+    [theme.breakpoints.down('md')]: { paddingLeft: 8, paddingRight: 8 },
   },
   person: {
     color: BLACK,
@@ -125,9 +126,9 @@ const TopBar = (props) => {
   const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
-  const mobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
-  const isMobilePortrait = useMediaQuery(theme.breakpoints.down("xs"));
+  const mobileView = useMediaQuery(theme.breakpoints.down('md'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const isMobilePortrait = useMediaQuery(theme.breakpoints.down('sm'));
   const location = useLocation();
   const path = location?.pathname;
   let { login, userDetails, setParallelView, setLocale } = props;
@@ -314,7 +315,7 @@ const TopBar = (props) => {
           href="https://forms.office.com/r/qiV0Ym335M"
           target="_blank"
           rel="noopener"
-        >
+          size="large">
           <FeedbackOutlinedIcon />
         </IconButton>
       </Tooltip>
