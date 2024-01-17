@@ -194,8 +194,10 @@ const Video = (props) => {
       let lang = video?.find((l) => l?.language?.code === languageCode);
       //If videos not available for main panel language set first language
       if (lang === undefined) {
-        setLanguage(languages[0]);
+        console.log(lang,"language1")
+        setLanguage(languages[0],languageCode);
       } else {
+        console.log(lang,"language2",languageCode)
         const name = capitalize(lang?.language?.name);
         setLanguage({ value: lang?.language?.code, label: name });
       }
@@ -205,6 +207,8 @@ const Video = (props) => {
   React.useEffect(() => {
     const filterVideos = (videos) => {
       const languageData = chapterVideo[language?.value];
+      // console.log(languageData,"language")
+       
       const bookData = languageData ? languageData[bookCode] : [];
       const bookDataArr = bookData ? Object.values(bookData)?.flat() : [];
       const vids = videos.filter((vid) => {
@@ -219,7 +223,10 @@ const Video = (props) => {
       return vids;
     };
     if (language) {
+      console.log(language,"language")
+      
       const lang = video.find((obj) => obj?.language?.code === language?.value);
+      console.log(lang,"langName")
       if (lang?.books?.hasOwnProperty(bookCode)) {
         const _videos = lang.books[bookCode];
         setVideos(filterVideos(_videos));
@@ -235,6 +242,9 @@ const Video = (props) => {
       }
     }
   }, [video, bookCode, language, books, chapterVideo, chapter, t]);
+  
+  console.log(language,"langTExt")
+  
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
