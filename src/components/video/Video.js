@@ -235,7 +235,6 @@ const Video = (props) => {
       }
     }
   }, [video, bookCode, language, books, chapterVideo, chapter, t]);
-
   return (
     <div className={classes.root}>
       <Box className={classes.heading}>
