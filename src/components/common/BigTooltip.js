@@ -1,5 +1,5 @@
 import Tooltip from "@mui/material/Tooltip";
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from "@mui/styles";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
 const BigTooltip = withStyles((theme) => ({

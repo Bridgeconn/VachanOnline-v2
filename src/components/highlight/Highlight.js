@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import BorderColor from "@mui/icons-material/BorderColor";
 import Tooltip from "@mui/material/Tooltip";
 import Popover from "@mui/material/Popover";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   colorBox: {
     padding: 6,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "flex",
     },
   },

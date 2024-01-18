@@ -1,7 +1,7 @@
 import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Button from "@mui/material/Button";
@@ -17,7 +17,7 @@ import { WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import { Snackbar } from "@mui/material";
-import { Alert } from '@mui/material';
+import { Alert } from "@mui/material";
 import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     background: "rgba(0,0,0,0.5)",
     paddingLeft: 10,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       padding: 0,
     },
   },
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     height: 60,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "none",
     },
   },
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "inherit",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "none",
     },
   },
@@ -101,9 +101,9 @@ const PageHeader = (props) => {
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const mobileLandscape = useMediaQuery(theme.breakpoints.down('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
   let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import List from "@mui/material/List";
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       minWidth: 60,
       padding: "6px 10px",
     },
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     "&:before": {
       display: "none",
     },
-    "&$expanded": {
+    "&.Mui-expanded": {
       margin: "auto",
     },
   },
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #b7b7b726",
     minHeight: 40,
     maxHeight: 40,
-    "&$expanded": {
+    "&.Mui-expanded": {
       minHeight: 40,
       maxHeight: 40,
       boxShadow: theme.shadows[4],
@@ -73,13 +73,13 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     left: 5,
     position: "relative",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       left: 0,
       display: "none",
     },
   },
   versionName: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       whiteSpace: "nowrap",
       minWidth: 30,
       maxWidth: 118,
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid " + GREY + "70",
   },
   label: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       justifyContent: "unset",
     },
   },

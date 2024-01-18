@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import LanguageIcon from "@mui/icons-material/Language";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { Menu, MenuItem } from "@mui/material";
 import i18n from "../../i18n";
 import { connect } from "react-redux";

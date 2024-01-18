@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import ParallelScroll from "@mui/icons-material/ImportExport";
 import Tooltip from "@mui/material/Tooltip";
 import { connect } from "react-redux";
@@ -36,7 +36,7 @@ import BottomBar from "./BottomBar";
 import { useTranslation } from "react-i18next";
 const useStyles = makeStyles((theme) => ({
   main: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       position: "absolute",
       height: "calc(100% - 3.6rem)",
       width: "100%",
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
   biblePane: {
     position: "absolute",
     height: "100%",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       width: "100%",
     },
     [theme.breakpoints.up("md")]: {
@@ -144,7 +144,7 @@ const StudyBible = (props) => {
   //if mobile then true, used to change layout
   const classes = useStyles();
   const { uid } = userDetails;
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { t } = useTranslation();
   //function for moving parallel bibles scroll together

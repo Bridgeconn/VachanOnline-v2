@@ -7,7 +7,7 @@ import Player from "../common/Player";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import * as actions from "../../store/actions";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { AppBar, useMediaQuery, useTheme } from "@mui/material";
 import { connect } from "react-redux";
 import { getAllBooks, getAudioBibles } from "../common/utility";
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     height: "100%",
     marginBottom: 10,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: 60,
       marginBottom: 5,
       flexDirection: "column-reverse",
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       left: 40,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       left: 10,
       top: "unset",
       bottom: "1.5rem",
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       right: 40,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       right: 10,
       top: "unset",
       bottom: "1.5rem",
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
   gap: {
     margin: "0 auto",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       margin: "auto",
     },
   },
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("sm")]: {
       padding: "0 50px",
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       padding: 5,
     },
   },
@@ -92,7 +92,7 @@ const AudioBible = (props) => {
   } = props;
   const theme = useTheme();
   const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [audios, setAudios] = React.useState(null);
   const [audioBooks, setAudioBooks] = React.useState([]);
   const { chapter, bookCode, language } = panel1;

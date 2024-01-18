@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as views from "../../store/views";
 import { Drawer } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import MenuItem from "./MenuItem";
 import { useTranslation } from "react-i18next";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import List from "@mui/material/List";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";

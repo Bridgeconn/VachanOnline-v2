@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import banner from "../common/images/banner.jpg";
 import { API } from "../../store/api";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import Tooltip from "@mui/material/Tooltip";
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from "@mui/styles";
 import { languageCode } from "../../store/languageData";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 
@@ -21,10 +21,10 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Sans",
     fontSize: "1.2rem",
     textShadow: "1px 1px 2px " + BLACK,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       top: 75,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "1.1rem",
     },
   },
@@ -51,12 +51,12 @@ const useStyles = makeStyles((theme) => ({
       width: "80%",
       fontSize: "1.4rem",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       top: 100,
       width: "90%",
       fontSize: "1.2rem",
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "1rem",
     },
   },
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     fontStyle: "italic",
     fontSize: "1rem",
     color: WHITE,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "0.9rem",
     },
   },

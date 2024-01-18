@@ -10,11 +10,11 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Popover from "@mui/material/Popover";
 import Collapse from "@mui/material/Collapse";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import PersonIcon from "@mui/icons-material/Person";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import BigTooltip from "../common/BigTooltip";
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     "& hover": {
       textDecoration: "none",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginLeft: "20%",
       width: "60%",
       marginTop: 0,
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     "& hover": {
       textDecoration: "none",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       whiteSpace: "nowrap",
       fontSize: "1.8rem",
     },
@@ -248,99 +248,100 @@ const Login = (props) => {
       setValue("openLogin", false);
     }
   }, [openLogin, setValue]);
-  return <>
-    {login ? (
-      <Button aria-describedby="sign-in" variant="outlined" onClick={signOut}>
-        {t("loginSignOutBtn")}
-      </Button>
-    ) : (
-      <>
-        <BigTooltip title={t("signInTitle")}>
-          <PersonIcon
-            className={person ? person : classes.loginBtn}
-            ref={menuRef}
-            onClick={openForm}
-          />
-        </BigTooltip>
-        <Popover
-          id="sign-in"
-          open={open}
-          anchorEl={anchorEl}
-          onClose={closeForm}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-        >
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            {form === 1 ? (
-              <div className={classes.paper}>
-                <Collapse in={messageOpen} className={classes.message}>
-                  <Alert
-                    variant="filled"
-                    onClose={() => setMessageOpen(false)}
-                    severity="error"
-                  >
-                    {t("loginSignInWarning")}
-                  </Alert>
-                </Collapse>
-                <Typography component="h1" variant="h5">
-                  {t("signInTitle")}
-                </Typography>
-                <form
-                  onSubmit={(e) => signIn(e)}
-                  className={classes.form}
-                  noValidate
-                >
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label={t("loginEmailPlaceHolder")}
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label={t("loginPasswordPlaceHolder")}
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="outlined"
-                    className={classes.submit}
-                  >
+  return (
+    <>
+      {login ? (
+        <Button aria-describedby="sign-in" variant="outlined" onClick={signOut}>
+          {t("loginSignOutBtn")}
+        </Button>
+      ) : (
+        <>
+          <BigTooltip title={t("signInTitle")}>
+            <PersonIcon
+              className={person ? person : classes.loginBtn}
+              ref={menuRef}
+              onClick={openForm}
+            />
+          </BigTooltip>
+          <Popover
+            id="sign-in"
+            open={open}
+            anchorEl={anchorEl}
+            onClose={closeForm}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              {form === 1 ? (
+                <div className={classes.paper}>
+                  <Collapse in={messageOpen} className={classes.message}>
+                    <Alert
+                      variant="filled"
+                      onClose={() => setMessageOpen(false)}
+                      severity="error"
+                    >
+                      {t("loginSignInWarning")}
+                    </Alert>
+                  </Collapse>
+                  <Typography component="h1" variant="h5">
                     {t("signInTitle")}
-                  </Button>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="outlined"
-                    onClick={signInGoogle}
-                    className={classes.submit}
+                  </Typography>
+                  <form
+                    onSubmit={(e) => signIn(e)}
+                    className={classes.form}
+                    noValidate
                   >
-                    {t("loginSignInGoogleBtn")}
-                  </Button>
-                  {/* <Button
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="email"
+                      label={t("loginEmailPlaceHolder")}
+                      name="email"
+                      autoComplete="email"
+                      autoFocus
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="password"
+                      label={t("loginPasswordPlaceHolder")}
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="outlined"
+                      className={classes.submit}
+                    >
+                      {t("signInTitle")}
+                    </Button>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="outlined"
+                      onClick={signInGoogle}
+                      className={classes.submit}
+                    >
+                      {t("loginSignInGoogleBtn")}
+                    </Button>
+                    {/* <Button
                     type="submit"
                     fullWidth
                     variant="outlined"
@@ -349,140 +350,166 @@ const Login = (props) => {
                   >
                     Sign in with Facebook
                   </Button> */}
-                  <Grid container className={classes.links}>
-                    <Grid item xs>
-                      <Link href="#" variant="body2" onClick={openForgot} underline="hover">
-                        {t("loginForgotPswd")}
-                      </Link>
+                    <Grid container className={classes.links}>
+                      <Grid item xs>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openForgot}
+                          underline="hover"
+                        >
+                          {t("loginForgotPswd")}
+                        </Link>
+                      </Grid>
+                      <Grid item>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openSignUp}
+                          underline="hover"
+                        >
+                          {t("loginSignUpMsg")}
+                        </Link>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Link href="#" variant="body2" onClick={openSignUp} underline="hover">
-                        {t("loginSignUpMsg")}
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </form>
-              </div>
-            ) : form === 2 ? (
-              <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                  {t("loginSignUpTitle")}
-                </Typography>
-                <form
-                  onSubmit={(e) => signUp(e)}
-                  className={classes.form}
-                  noValidate
-                >
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="email"
-                        label={t("loginEmailPlaceHolder")}
-                        name="email"
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        label={t("loginPasswordPlaceHolder")}
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="outlined"
-                    className={classes.submit}
+                  </form>
+                </div>
+              ) : form === 2 ? (
+                <div className={classes.paper}>
+                  <Typography component="h1" variant="h5">
+                    {t("loginSignUpTitle")}
+                  </Typography>
+                  <form
+                    onSubmit={(e) => signUp(e)}
+                    className={classes.form}
+                    noValidate
                   >
-                    {t("loginSignUpBtn")}
-                  </Button>
-                  <Grid
-                    container
-                    justifyContent="flex-end"
-                    className={classes.links}
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label={t("loginEmailPlaceHolder")}
+                          name="email"
+                          autoComplete="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="password"
+                          label={t("loginPasswordPlaceHolder")}
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="outlined"
+                      className={classes.submit}
+                    >
+                      {t("loginSignUpBtn")}
+                    </Button>
+                    <Grid
+                      container
+                      justifyContent="flex-end"
+                      className={classes.links}
+                    >
+                      <Grid item xs>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openForgot}
+                          underline="hover"
+                        >
+                          {t("loginForgotPswd")}
+                        </Link>
+                      </Grid>
+                      <Grid item>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openSignIn}
+                          underline="hover"
+                        >
+                          {t("loginSignInMsg")}
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </div>
+              ) : (
+                <div className={classes.paper}>
+                  <Typography component="h1" variant="h5" gutterBottom={true}>
+                    {t("loginForgotPswd")}
+                  </Typography>
+                  <Typography component="p" variant="subtitle2" align="center">
+                    {t("loginPswdReset")}
+                  </Typography>
+                  <form
+                    onSubmit={(e) => resetPassword(e)}
+                    className={classes.form}
+                    noValidate
                   >
-                    <Grid item xs>
-                      <Link href="#" variant="body2" onClick={openForgot} underline="hover">
-                        {t("loginForgotPswd")}
-                      </Link>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label={t("loginEmailPlaceHolder")}
+                          name="email"
+                          autoComplete="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Link href="#" variant="body2" onClick={openSignIn} underline="hover">
-                        {t("loginSignInMsg")}
-                      </Link>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="outlined"
+                      className={classes.submit}
+                    >
+                      {t("loginSubmit")}
+                    </Button>
+                    <Grid
+                      container
+                      justifyContent="flex-end"
+                      className={classes.links}
+                    >
+                      <Grid item>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openSignIn}
+                          underline="hover"
+                        >
+                          {t("loginBackSignIn")}
+                        </Link>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </form>
-              </div>
-            ) : (
-              <div className={classes.paper}>
-                <Typography component="h1" variant="h5" gutterBottom={true}>
-                  {t("loginForgotPswd")}
-                </Typography>
-                <Typography component="p" variant="subtitle2" align="center">
-                  {t("loginPswdReset")}
-                </Typography>
-                <form
-                  onSubmit={(e) => resetPassword(e)}
-                  className={classes.form}
-                  noValidate
-                >
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="email"
-                        label={t("loginEmailPlaceHolder")}
-                        name="email"
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="outlined"
-                    className={classes.submit}
-                  >
-                    {t("loginSubmit")}
-                  </Button>
-                  <Grid
-                    container
-                    justifyContent="flex-end"
-                    className={classes.links}
-                  >
-                    <Grid item>
-                      <Link href="#" variant="body2" onClick={openSignIn} underline="hover">
-                        {t("loginBackSignIn")}
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </form>
-              </div>
-            )}
-          </Container>
-        </Popover>
-      </>
-    )}
-  </>;
+                  </form>
+                </div>
+              )}
+            </Container>
+          </Popover>
+        </>
+      )}
+    </>
+  );
 };
 const mapStateToProps = (state) => {
   return {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Close from "../common/Close";
 import Box from "@mui/material/Box";
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       top: 60,
     },
   },
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
     height: 60,
     alignItems: "center",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       paddingBottom: 0,
     },
   },
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
   player: {
     maxHeight: "calc(100vh - 150px)",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       maxHeight: 240,
     },
   },
@@ -133,7 +133,7 @@ const SignBible = (props) => {
   const [playing, setPlaying] = useState("");
   const { bookCode, chapter, sourceId } = panel1;
   const theme = useTheme();
-  const mobileLandscape = useMediaQuery(theme.breakpoints.down('md'));
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down("md"));
   const heading = mobileLandscape ? t("ISLVTopBarBtnTab") : t("ISLVBibleText");
   function getBooks(bookName) {
     let books = Object.keys(signBible?.books);

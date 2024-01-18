@@ -4,7 +4,7 @@ import Slider from "@mui/material/Slider";
 import Tooltip from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
 import Menu from "@mui/material/Menu";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { BLACK } from "../../store/colorCode";
 import { t } from "i18next";
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     float: "right",
     marginRight: 5,
     cursor: "pointer",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: 0,
     },
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     marginTop: 94,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: 60,
     },
   },
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       height: 60,
       marginBottom: 0,
       paddingBottom: 0,
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       top: 120,
     },
   },
@@ -241,7 +241,8 @@ const Highlights = (props) => {
                       data-chapter={highlight.chapter}
                       data-verse={highlight.verse}
                       onClick={(e) => deleteHighlight(e)}
-                      size="large">
+                      size="large"
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>

@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from "react";
 import Markdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import axios from "axios";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Drawer from "@mui/material/Drawer";
 import MenuItem from "@mui/material/MenuItem";
 import Slider from "@mui/material/Slider";
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     display: "flex",
-    [theme.breakpoints.down('md')]: { display: "block" },
+    [theme.breakpoints.down("md")]: { display: "block" },
   },
   drawer: {
     width: drawerWidth,
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       width: "70%",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       "& img": {
         width: "95%",
       },
@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 62,
     textAlign: "center",
     paddingTop: 10,
-    [theme.breakpoints.down('md')]: { display: "none" },
+    [theme.breakpoints.down("md")]: { display: "none" },
     width: "calc(100% - 400px)",
   },
   text: {
@@ -188,7 +188,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 20px",
     padding: "12px 10px 15px 10px",
     marginTop: 140,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       padding: "0 10px",
       margin: "0 3px",
       marginTop: 180,
@@ -213,7 +213,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('md'));
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const styleProps = {
     lang: lang,
     rtlList: rtlList,
@@ -261,7 +261,8 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
         selectMenu: classes.languageMenu,
         select: classes.languageSelected,
       }}
-      renderValue={renderName}>
+      renderValue={renderName}
+    >
       {obsLanguageInfo.map((text, y) => (
         <MenuItem
           key={y}
@@ -332,196 +333,200 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     });
   }, [API]);
 
-  return <>
-    <AppBar position="fixed">
-      <TopBar />
-    </AppBar>
-    <div className={classes.root}>
-      {mobile === true ? (
-        <Box className={classes.mobile}>
-          <Box className={classes.mobileHeading}>
-            <Typography variant="h4">{t("bibleStoriesText")}</Typography>
+  return (
+    <>
+      <AppBar position="fixed">
+        <TopBar />
+      </AppBar>
+      <div className={classes.root}>
+        {mobile === true ? (
+          <Box className={classes.mobile}>
+            <Box className={classes.mobileHeading}>
+              <Typography variant="h4">{t("bibleStoriesText")}</Typography>
+            </Box>
+            <Box className={classes.mobileBox}>
+              <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
+                <FormControl
+                  variant="outlined"
+                  style={{
+                    maxWidth: mobile === true ? "120px" : "50%",
+                    minWidth: "180px",
+                  }}
+                >
+                  {languageSelect()}
+                </FormControl>
+                <FormControl
+                  variant="outlined"
+                  style={{
+                    marginLeft: 5,
+                  }}
+                >
+                  {manifest.length > 0 && (
+                    <Select
+                      variant="standard"
+                      value={String(parseInt(storyId))}
+                      onChange={storySetter}
+                    >
+                      {manifest.map((text, y) => (
+                        <MenuItem
+                          className={listClass}
+                          key={y}
+                          value={String(y + 1)}
+                        >
+                          {y + 1 + ". " + text}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                </FormControl>
+              </Box>
+              <Box p={1}>
+                <Tooltip
+                  title={t("commonSettings")}
+                  aria-label="More"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={openSettings}
+                  className={classes.mobileTooltip}
+                >
+                  <i className="material-icons md-23">more_vert</i>
+                </Tooltip>
+                <Menu
+                  id="long-menu"
+                  anchorEl={settingsAnchor}
+                  keepMounted
+                  open={open}
+                  onClose={closeSettings}
+                  PaperProps={{
+                    className: classes.settingsMenu,
+                  }}
+                >
+                  <MenuItem>{t("settingsFontSize")}</MenuItem>
+                  <Divider />
+                  <MenuItem className={classes.menu}>
+                    <div className={classes.margin} />
+                    <Slider
+                      defaultValue={20}
+                      value={fontSize}
+                      onChange={handleSliderChange}
+                      valueLabelDisplay="on"
+                      min={12}
+                      max={30}
+                      classes={{ root: classes.slider }}
+                    />
+                  </MenuItem>
+                </Menu>
+              </Box>
+            </Box>
           </Box>
-          <Box className={classes.mobileBox}>
-            <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
-              <FormControl
-                variant="outlined"
-                style={{
-                  maxWidth: mobile === true ? "120px" : "50%",
-                  minWidth: "180px",
-                }}
-              >
+        ) : (
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <div className={classes.drawerHeader}>
+              <FormControl variant="outlined" className={classes.formControl}>
                 {languageSelect()}
               </FormControl>
-              <FormControl
-                variant="outlined"
-                style={{
-                  marginLeft: 5,
-                }}
-              >
-                {manifest.length > 0 && (
-                  <Select
-                    variant="standard"
-                    value={String(parseInt(storyId))}
-                    onChange={storySetter}>
-                    {manifest.map((text, y) => (
-                      <MenuItem
-                        className={listClass}
-                        key={y}
-                        value={String(y + 1)}
-                      >
-                        {y + 1 + ". " + text}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-              </FormControl>
-            </Box>
-            <Box p={1}>
-              <Tooltip
-                title={t("commonSettings")}
-                aria-label="More"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={openSettings}
-                className={classes.mobileTooltip}
-              >
-                <i className="material-icons md-23">more_vert</i>
-              </Tooltip>
-              <Menu
-                id="long-menu"
-                anchorEl={settingsAnchor}
-                keepMounted
-                open={open}
-                onClose={closeSettings}
-                PaperProps={{
-                  className: classes.settingsMenu,
-                }}
-              >
-                <MenuItem>{t("settingsFontSize")}</MenuItem>
-                <Divider />
-                <MenuItem className={classes.menu}>
-                  <div className={classes.margin} />
-                  <Slider
-                    defaultValue={20}
-                    value={fontSize}
-                    onChange={handleSliderChange}
-                    valueLabelDisplay="on"
-                    min={12}
-                    max={30}
-                    classes={{ root: classes.slider }}
-                  />
-                </MenuItem>
-              </Menu>
-            </Box>
-          </Box>
-        </Box>
-      ) : (
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              {languageSelect()}
-            </FormControl>
-            <div>
-              <Tooltip
-                title={t("commonSettings")}
-                className={classes.settings}
-                aria-label="More"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={openSettings}
-              >
-                <i className="material-icons md-23">more_vert</i>
-              </Tooltip>
-              <Menu
-                id="long-menu"
-                anchorEl={settingsAnchor}
-                keepMounted
-                open={open}
-                onClose={closeSettings}
-                PaperProps={{
-                  className: classes.settingsMenu,
-                }}
-              >
-                <MenuItem className={classes.menu}>
-                  {t("settingsFontSize")}
-                </MenuItem>
-                <Divider />
-                <MenuItem className={classes.menu}>
-                  <div className={classes.margin} />
-                  <Slider
-                    defaultValue={20}
-                    value={fontSize}
-                    onChange={handleSliderChange}
-                    valueLabelDisplay="on"
-                    min={12}
-                    max={30}
-                    classes={{ root: classes.slider }}
-                  />
-                </MenuItem>
-              </Menu>
+              <div>
+                <Tooltip
+                  title={t("commonSettings")}
+                  className={classes.settings}
+                  aria-label="More"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={openSettings}
+                >
+                  <i className="material-icons md-23">more_vert</i>
+                </Tooltip>
+                <Menu
+                  id="long-menu"
+                  anchorEl={settingsAnchor}
+                  keepMounted
+                  open={open}
+                  onClose={closeSettings}
+                  PaperProps={{
+                    className: classes.settingsMenu,
+                  }}
+                >
+                  <MenuItem className={classes.menu}>
+                    {t("settingsFontSize")}
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem className={classes.menu}>
+                    <div className={classes.margin} />
+                    <Slider
+                      defaultValue={20}
+                      value={fontSize}
+                      onChange={handleSliderChange}
+                      valueLabelDisplay="on"
+                      min={12}
+                      max={30}
+                      classes={{ root: classes.slider }}
+                    />
+                  </MenuItem>
+                </Menu>
+              </div>
             </div>
-          </div>
-          <Divider />
-          <div className={classes.drawerContainer}>
-            <List>
-              {manifest.map((text, y) => (
-                <ListItem key={y} value={text} className={listClass}>
-                  <Link
-                    className={classes.linkList}
-                    href="#"
-                    data-id={y + 1}
-                    onClick={(e) => getStory(e)}
-                    underline="hover">
-                    {y + 1 + ". " + text}
-                  </Link>
-                </ListItem>
-              ))}
-            </List>
-          </div>
-        </Drawer>
-      )}
-      <main>
-        <div className={classes.heading}>
-          <Typography variant="h3" className={classes.text}>
-            {t("bibleStoriesText")}
-          </Typography>
-          <Help iconStyle={classes.helpIcon} url={"bibleStories"} />
-          <Divider />
-        </div>
-        {isLoading ? (
-          <div className={`${classes.container} ${classes.loading}`}>
-            {t("loadingMessage")}...
-          </div>
-        ) : lang === "isl" ? (
-          <div className={classes.container}>
-            {islStories ? (
-              <VideoCard
-                video={stories}
-                playing={playing}
-                language={"isl"}
-                setPlaying={setPlaying}
-              />
-            ) : (
-              <div className={classes.loading}>{t("loadingMessage")}...</div>
-            )}
-          </div>
-        ) : (
-          <div className={storyClass} style={{ fontSize: fontSize }}>
-            {typeof stories === "string" && (
-              <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
-            )}
-          </div>
+            <Divider />
+            <div className={classes.drawerContainer}>
+              <List>
+                {manifest.map((text, y) => (
+                  <ListItem key={y} value={text} className={listClass}>
+                    <Link
+                      className={classes.linkList}
+                      href="#"
+                      data-id={y + 1}
+                      onClick={(e) => getStory(e)}
+                      underline="hover"
+                    >
+                      {y + 1 + ". " + text}
+                    </Link>
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          </Drawer>
         )}
-      </main>
-    </div>
-  </>;
+        <main>
+          <div className={classes.heading}>
+            <Typography variant="h3" className={classes.text}>
+              {t("bibleStoriesText")}
+            </Typography>
+            <Help iconStyle={classes.helpIcon} url={"bibleStories"} />
+            <Divider />
+          </div>
+          {isLoading ? (
+            <div className={`${classes.container} ${classes.loading}`}>
+              {t("loadingMessage")}...
+            </div>
+          ) : lang === "isl" ? (
+            <div className={classes.container}>
+              {islStories ? (
+                <VideoCard
+                  video={stories}
+                  playing={playing}
+                  language={"isl"}
+                  setPlaying={setPlaying}
+                />
+              ) : (
+                <div className={classes.loading}>{t("loadingMessage")}...</div>
+              )}
+            </div>
+          ) : (
+            <div className={storyClass} style={{ fontSize: fontSize }}>
+              {typeof stories === "string" && (
+                <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
+              )}
+            </div>
+          )}
+        </main>
+      </div>
+    </>
+  );
 };
 const mapStateToProps = (state) => {
   return {

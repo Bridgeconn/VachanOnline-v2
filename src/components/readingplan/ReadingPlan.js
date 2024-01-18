@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
-import makeStyles from '@mui/styles/makeStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from "@mui/styles";
+import { withStyles } from "@mui/styles";
 import Close from "../common/Close";
 import Box from "@mui/material/Box";
 import axios from "axios";
@@ -73,12 +73,12 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     marginTop: 60,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: 0,
     },
   },
   refBox: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "flex",
     },
   },
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "2.75em",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "none",
     },
   },
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
     width: "50%",
-    [theme.breakpoints.down('md')]: { width: 120, marginTop: 6 },
+    [theme.breakpoints.down("md")]: { width: 120, marginTop: 6 },
   },
   message: {
     margin: 18,
@@ -113,20 +113,20 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       boxShadow: theme.shadows[1],
       paddingLeft: 15,
     },
   },
   refText: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       fontSize: "1rem",
       marginRight: 5,
     },
   },
   select: {
     width: 200,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       width: 150,
       padding: "0 15px",
     },
@@ -156,7 +156,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
   },
   list: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       bottom: 50,
       top: 0,
     },

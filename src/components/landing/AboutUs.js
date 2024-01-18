@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -50,70 +50,72 @@ const AboutUs = ({ handleClose }) => {
   const addStyle = (text, style) => {
     return <span className={classes[style]}>{" " + text}</span>;
   };
-  return <>
-    <DialogTitle id="scroll-dialog-title">
-      <div className={classes.box}>
-        <Typography variant="h5" gutterBottom>
-          {t("landingAboutUsHead")}
+  return (
+    <>
+      <DialogTitle id="scroll-dialog-title">
+        <div className={classes.box}>
+          <Typography variant="h5" gutterBottom>
+            {t("landingAboutUsHead")}
+          </Typography>
+          <Help iconStyle={classes.helpIcon} url={"about"} />
+        </div>
+      </DialogTitle>
+      <DialogContent dividers={true}>
+        <Typography variant="h5" className={classes.subheading}>
+          The Vachan Project
         </Typography>
-        <Help iconStyle={classes.helpIcon} url={"about"} />
-      </div>
-    </DialogTitle>
-    <DialogContent dividers={true}>
-      <Typography variant="h5" className={classes.subheading}>
-        The Vachan Project
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {addStyle("VachanOnline", "bold")}{" "}
-        {t("landingAboutUsVachanProjectContent1")} {". "}
-        {addStyle("VachanGo", "bold")}{" "}
-        {t("landingAboutUsVachanProjectContent2")}
-        {addStyle("The Vachan Project", "bold")}{" "}
-        {t("landingAboutUsVachanProjectContent3")}
-      </Typography>
-      <Typography variant="h6" className={classes.subheading}>
-        {t("landingAboutUsContentTitle")}
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {t("landingAboutUsContent1")}{" "}
-        {addHyperLink("VachanOnline", "https://vachanonline.com")}{" "}
-        {t("landingAboutUsContent2")}
-        {addHyperLink(
-          "VachanGo",
-          "https://play.google.com/store/apps/details?id=com.bridgeconn.vachango"
-        )}
-        {t("landingAboutUsContent3")}
-        {addHyperLink(
-          "Bridge Connectivity Solutions Pvt. Ltd. (BCS)",
-          "https://www.bridgeconn.com"
-        )}
-        {t("landingAboutUsContent4")}
-      </Typography>
-      <Typography variant="h6" className={classes.subheading}>
-        {t("landingAboutUsTechnologyTitle")}
-      </Typography>
-      <Typography variant="body1">
-        {t("landingAboutUsTechnologyMsg")}
-      </Typography>
-      <Typography variant="body1" className={classes.subheading}>
-        {addHyperLink(
-          t("landingAboutUsGithubRelease"),
-          "https://github.com/Bridgeconn/VachanOnline-v2/releases"
-        )}
-      </Typography>
+        <Typography variant="body1" gutterBottom>
+          {addStyle("VachanOnline", "bold")}{" "}
+          {t("landingAboutUsVachanProjectContent1")} {". "}
+          {addStyle("VachanGo", "bold")}{" "}
+          {t("landingAboutUsVachanProjectContent2")}
+          {addStyle("The Vachan Project", "bold")}{" "}
+          {t("landingAboutUsVachanProjectContent3")}
+        </Typography>
+        <Typography variant="h6" className={classes.subheading}>
+          {t("landingAboutUsContentTitle")}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          {t("landingAboutUsContent1")}{" "}
+          {addHyperLink("VachanOnline", "https://vachanonline.com")}{" "}
+          {t("landingAboutUsContent2")}
+          {addHyperLink(
+            "VachanGo",
+            "https://play.google.com/store/apps/details?id=com.bridgeconn.vachango"
+          )}
+          {t("landingAboutUsContent3")}
+          {addHyperLink(
+            "Bridge Connectivity Solutions Pvt. Ltd. (BCS)",
+            "https://www.bridgeconn.com"
+          )}
+          {t("landingAboutUsContent4")}
+        </Typography>
+        <Typography variant="h6" className={classes.subheading}>
+          {t("landingAboutUsTechnologyTitle")}
+        </Typography>
+        <Typography variant="body1">
+          {t("landingAboutUsTechnologyMsg")}
+        </Typography>
+        <Typography variant="body1" className={classes.subheading}>
+          {addHyperLink(
+            t("landingAboutUsGithubRelease"),
+            "https://github.com/Bridgeconn/VachanOnline-v2/releases"
+          )}
+        </Typography>
 
-      <Typography variant="h6" className={classes.subheading}>
-        {t("landingAboutUsContactUs")}
-      </Typography>
-      <Typography variant="body1" component="div" gutterBottom>
-        {addLink("thevachanproject@bridgeconn.com", "mailto:")}
-      </Typography>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={handleClose} variant="outlined">
-        {t("commonClose")}
-      </Button>
-    </DialogActions>
-  </>;
+        <Typography variant="h6" className={classes.subheading}>
+          {t("landingAboutUsContactUs")}
+        </Typography>
+        <Typography variant="body1" component="div" gutterBottom>
+          {addLink("thevachanproject@bridgeconn.com", "mailto:")}
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} variant="outlined">
+          {t("commonClose")}
+        </Button>
+      </DialogActions>
+    </>
+  );
 };
 export default AboutUs;

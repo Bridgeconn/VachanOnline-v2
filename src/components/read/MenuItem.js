@@ -3,7 +3,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import * as views from "../../store/views";
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 5,
     paddingLeft: 13,
     boxShadow: "inset 1px 0px 3px 1px " + GREY,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       padding: (props) =>
         props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
       "&:hover": {
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "rgba(0,0,0,0.1)",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       padding: (props) =>
         props.base === "drawer" ? "8px 10px 8px 20px" : "4px 7px 0px",
       "&:hover": {
@@ -67,23 +67,23 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     fontSize: "36px",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       fontSize: "28px",
     },
   },
   drawerMenu: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "flex",
       alignItems: "center",
     },
   },
   bottomMenu: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       textAlign: "center",
     },
   },
   drawerText: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       color: "#000",
       margin: "5px 15px",
       textTransform: "capitalize",

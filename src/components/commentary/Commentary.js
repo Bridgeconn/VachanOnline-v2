@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Collapse from "@mui/material/Collapse";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       marginTop: (props) => (props.screenView === "single" ? 60 : 0),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: 60,
     },
   },
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     display: "flex",
     width: "100%",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       paddingLeft: 5,
       paddingBottom: 0,
       marginBottom: 0,
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   titleComment: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "none",
     },
   },
@@ -121,17 +121,17 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "middle",
     fontSize: 20,
     display: "inline-block",
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       fontSize: 16,
       paddingLeft: 5,
     },
   },
   bookNameBox: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "flex",
       alignItems: "center",
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       whiteSpace: "nowrap",
     },
   },
@@ -146,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     marginTop: 4,
     marginLeft: -5,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginLeft: 0,
     },
   },
@@ -158,7 +158,7 @@ const useStyles = makeStyles((theme) => ({
   closeButton: {
     marginRight: 10,
     marginTop: -6,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: "0.2rem",
     },
   },

@@ -1,6 +1,6 @@
 import { InputBase, Paper, Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import React from "react";
 import { connect } from "react-redux";
 import { SETVALUE, SETVALUE1 } from "../../store/actions";
@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 0,
       width: 300,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginRight: 0,
     },
   },
   searchField: {
     marginLeft: theme.spacing(1),
     flex: 1,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       width: 155,
     },
   },
@@ -157,7 +157,8 @@ const SearchPassage = (props) => {
       onClick={toggleText}
       target="_blank"
       rel="noopener"
-      size="large">
+      size="large"
+    >
       <i className={`material-icons ${classes.searchIcon}`}>manage_search</i>
     </IconButton>
   ) : (
@@ -172,7 +173,11 @@ const SearchPassage = (props) => {
           className={classes.searchBox}
           onSubmit={showSearchResult}
         >
-          <IconButton type="submit" className={classes.searchButtonMob} size="large">
+          <IconButton
+            type="submit"
+            className={classes.searchButtonMob}
+            size="large"
+          >
             <i className={`material-icons ${classes.searchIcon}`}>
               manage_search
             </i>

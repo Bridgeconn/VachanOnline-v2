@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
 import Tooltip from "@mui/material/Tooltip";
@@ -13,7 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddBox from "@mui/icons-material/AddBox";
 import EditIcon from "@mui/icons-material/Edit";
 import Grid from "@mui/material/Grid";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
@@ -42,13 +42,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     height: "calc( 100vh - 5.278rem)",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginTop: 60,
       height: "calc( 100vh - 60px)",
     },
   },
   paper: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       margin: 25,
     },
   },
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     height: "3.4em",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       height: 60,
       marginBottom: 0,
       paddingBottom: 0,
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   ".rdw-editor-main": {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       width: "80vw",
       height: "30vh",
     },
@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginBottom: 60,
     },
   },
@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
   listHeading: {
     borderBottom: "1px solid darkgray",
     fontWeight: 600,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       justifyContent: "space-between",
     },
   },
@@ -117,14 +117,14 @@ const useStyles = makeStyles((theme) => ({
   lastModified: {
     color: "#0000008a",
     paddingTop: 18,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       paddingTop: 5,
       display: "inline-block",
     },
   },
   formButtons: {
     textAlign: "right",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "flex",
       justifyContent: "center",
     },
@@ -497,14 +497,20 @@ function Notes(props) {
                     aria-label="add"
                     className={classes.addNote}
                     onClick={clickAddNote}
-                    size="large">
+                    size="large"
+                  >
                     <AddBox />
                   </IconButton>
                 </Tooltip>
               ) : (
                 <Tooltip title={t("commonSelectVerses")}>
                   <>
-                    <IconButton aria-label="add" className={classes.addNote} disabled size="large">
+                    <IconButton
+                      aria-label="add"
+                      className={classes.addNote}
+                      disabled
+                      size="large"
+                    >
                       <AddBox />
                     </IconButton>
                   </>
@@ -663,7 +669,8 @@ function Notes(props) {
                             data-chapter={note.chapter}
                             data-index={note.index}
                             onClick={(event) => editNote(event)}
-                            size="large">
+                            size="large"
+                          >
                             <EditIcon />
                           </IconButton>
                         )}
@@ -675,7 +682,8 @@ function Notes(props) {
                           data-chapter={note.chapter}
                           data-index={note.index}
                           onClick={(e) => deleteNote(e)}
-                          size="large">
+                          size="large"
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
@@ -719,7 +727,8 @@ function Notes(props) {
                         data-chapter={note.chapter}
                         data-index={note.index}
                         onClick={(event) => editNote(event)}
-                        size="large">
+                        size="large"
+                      >
                         <EditIcon />
                       </IconButton>
                     )}
@@ -731,7 +740,8 @@ function Notes(props) {
                       data-chapter={note.chapter}
                       data-index={note.index}
                       onClick={(e) => deleteNote(e)}
-                      size="large">
+                      size="large"
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>

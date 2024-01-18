@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from '@mui/styles';
 import List from "@mui/material/List";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     boxShadow: "1px 1px 1px 1px " + GREY,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       maxWidth: 130,
       margin: "9px 5px",
     },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     "&:before": {
       display: "none",
     },
-    "&$expanded": {
+    "&.Mui-expanded": {
       margin: "auto",
     },
   },
@@ -56,14 +56,14 @@ const useStyles = makeStyles((theme) => ({
   summaryPanel: {
     textTransform: "capitalize",
     borderBottom: "1px solid #b7b7b726",
-    "&$expanded": {
+    "&.Mui-expanded": {
       minHeight: 50,
       backgroundColor: LIGHTGREY,
     },
   },
   content: {
     margin: "10px 0",
-    "&$expanded": {
+    "&.Mui-expanded": {
       margin: "12px 0",
     },
   },
@@ -116,9 +116,11 @@ const CommentaryCombo = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
   const classesI = `material-icons ${classes.icon}`;
-  function currentVersion(item){
-    return item?.code === commentary?.code && item?.metadata["Language Name"] === commentary?.metadata["Language Name"] ? classes.versionSelected : "";
-    
+  function currentVersion(item) {
+    return item?.code === commentary?.code &&
+      item?.metadata["Language Name"] === commentary?.metadata["Language Name"]
+      ? classes.versionSelected
+      : "";
   }
   React.useEffect(() => {
     if (commentaryLang) {
@@ -186,20 +188,18 @@ const CommentaryCombo = (props) => {
               <AccordionDetails style={{ padding: 0 }}>
                 <List className={classes.expansionDetails}>
                   {languages.commentaries.map((item, i) => {
-                    var versionActive = currentVersion(item)
-                    return(
-                    <ListItem
-                      key={i}
-                      value={encodeURIComponent(JSON.stringify(item))}
-                      className={`${classes.commentary} ${versionActive}`}
-                      onClick={(e) => setCommentary(e, languages.language)}
-                    >
-                      {item.code.toUpperCase()} : {item.name}
-                    </ListItem>
-                    )
+                    var versionActive = currentVersion(item);
+                    return (
+                      <ListItem
+                        key={i}
+                        value={encodeURIComponent(JSON.stringify(item))}
+                        className={`${classes.commentary} ${versionActive}`}
+                        onClick={(e) => setCommentary(e, languages.language)}
+                      >
+                        {item.code.toUpperCase()} : {item.name}
+                      </ListItem>
+                    );
                   })}
-                
-                    
                 </List>
               </AccordionDetails>
             </Accordion>

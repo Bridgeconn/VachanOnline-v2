@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import Box from "@mui/material/Box";
 import { getAudioBibleObject } from "../common/utility";
@@ -26,7 +26,7 @@ import { useLocation } from "react-router-dom";
 import Help from "../common/Help";
 import { Button, Menu, Snackbar } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { Alert } from '@mui/material';
+import { Alert } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   read: {
@@ -45,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
       padding: "0 5.5px",
       top: (props) => (props.paneNo === 2 ? 0 : 60),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       boxShadow: theme.shadows[1],
     },
   },
   selectBox: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "flex",
       alignItems: "center",
     },

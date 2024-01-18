@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
 import Link from "@mui/material/Link";
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 7%",
     maxWidth: 280,
     display: "inline-block",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       width: "30%",
     },
   },
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
       width: "calc(100% - 30px)",
     },
     textAlign: "center",
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       marginTop: -10,
     },
   },
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     marginTop: 50,
     paddingLeft: 30,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       paddingLeft: 0,
       textAlign: "center",
       margin: 20,
@@ -98,7 +98,8 @@ const Landing = (props) => {
       <Link
         href={process.env.REACT_APP_DOWNLOAD_URL}
         target="_blank"
-        underline="hover">
+        underline="hover"
+      >
         <BigTooltip title={t("landingPlayStoreToolTip")}>
           <img
             src={playStore}

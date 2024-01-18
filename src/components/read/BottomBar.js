@@ -1,6 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
 import MenuIcon from "@mui/icons-material/Menu";

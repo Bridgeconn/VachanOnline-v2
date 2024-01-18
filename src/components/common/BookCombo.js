@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import List from "@mui/material/List";
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       padding: 6,
       maxWidth: (props) => (props.parallelView ? 110 : 165),
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       maxWidth: 165,
       padding: (props) =>
         props.screen === "info" ||
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     left: 3,
     position: "relative",
     width: 30,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       left: 0,
       display: "none",
     },
@@ -114,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: WHITE,
       color: BLACK,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       "&:hover": {
         backgroundColor: LIGHTGREY,
       },
@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
   },
   bookNameBox: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       whiteSpace: "nowrap",
       minWidth: 130,
       maxWidth: 150,

@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import firebase from "firebase/compat/app";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "1px 1px 4px 1px " + GREY,
   },
   emailText: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       fontSize: "0.75rem",
     },
   },
@@ -58,51 +58,54 @@ const LoginMenu = (props) => {
         console.log("Error Signing Out");
       });
   };
-  return <>
-    <IconButton
-      edge="end"
-      aria-label="account of current user"
-      aria-controls="profileMenu"
-      aria-haspopup="true"
-      onClick={handleProfileMenuOpen}
-      color="inherit"
-      size="large">
-      <BigTooltip title={t("loginSignOutBtn")}>
-        <Avatar alt={userDetails.email} src={userDetails.photoURL} />
-      </BigTooltip>
-    </IconButton>
-    <Menu
-      elevation={0}
-      getContentAnchorEl={null}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "center",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "center",
-      }}
-      anchorEl={menuOpen}
-      keepMounted
-      open={Boolean(menuOpen)}
-      onClose={handleClose}
-      classes={{
-        paper: classes.paper,
-      }}
-    >
-      <List component="nav" aria-label="main mailbox folders">
-        <ListItem button>
-          <ListItemText primary={userDetails.email} />
-        </ListItem>
-      </List>
-      <Divider />
-      <List component="nav" aria-label="secondary mailbox folders">
-        <ListItem button>
-          <ListItemText primary={t("loginSignOutBtn")} onClick={signOut} />
-        </ListItem>
-      </List>
-    </Menu>
-  </>;
+  return (
+    <>
+      <IconButton
+        edge="end"
+        aria-label="account of current user"
+        aria-controls="profileMenu"
+        aria-haspopup="true"
+        onClick={handleProfileMenuOpen}
+        color="inherit"
+        size="large"
+      >
+        <BigTooltip title={t("loginSignOutBtn")}>
+          <Avatar alt={userDetails.email} src={userDetails.photoURL} />
+        </BigTooltip>
+      </IconButton>
+      <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        anchorEl={menuOpen}
+        keepMounted
+        open={Boolean(menuOpen)}
+        onClose={handleClose}
+        classes={{
+          paper: classes.paper,
+        }}
+      >
+        <List component="nav" aria-label="main mailbox folders">
+          <ListItem button>
+            <ListItemText primary={userDetails.email} />
+          </ListItem>
+        </List>
+        <Divider />
+        <List component="nav" aria-label="secondary mailbox folders">
+          <ListItem button>
+            <ListItemText primary={t("loginSignOutBtn")} onClick={signOut} />
+          </ListItem>
+        </List>
+      </Menu>
+    </>
+  );
 };
 const mapStateToProps = (state) => {
   return {

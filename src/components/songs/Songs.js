@@ -13,7 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
 import Help from "../common/Help";
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     display: "flex",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       flexDirection: "column",
       marginTop: 61,
     },
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     background:
       "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 100.2%)",
     textAlign: "center",
-    [theme.breakpoints.down('md')]: { display: "none" },
+    [theme.breakpoints.down("md")]: { display: "none" },
     lineHeight: "1.8",
     height: 56,
   },
@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mobileBox: {
     display: "flex",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       alignItems: "center",
     },
   },
@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
     height: "calc(100vh - 65px)",
     marginTop: 65,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       height: "calc(100vh - 160px)",
       marginTop: 0,
     },
@@ -149,7 +149,7 @@ const Songs = () => {
 
   const theme = useTheme();
   const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isLarge = useMediaQuery("(min-width:1150px)");
   const getLang = (event) => {
     setLang(event.target.value);
@@ -194,24 +194,82 @@ const Songs = () => {
       });
     }
   }, [API, currentSong, lang]);
-  return <>
-    <AppBar position="fixed">
-      <TopBar />
-    </AppBar>
-    <div className={classes.root}>
-      {isMobile === true ? (
-        <Box className={classes.mobile}>
-          <Box className={classes.mobileHeading}>
-            <Typography variant="h4">{t("songsText")}</Typography>
+  return (
+    <>
+      <AppBar position="fixed">
+        <TopBar />
+      </AppBar>
+      <div className={classes.root}>
+        {isMobile === true ? (
+          <Box className={classes.mobile}>
+            <Box className={classes.mobileHeading}>
+              <Typography variant="h4">{t("songsText")}</Typography>
+            </Box>
+            <Box className={classes.mobileBox}>
+              <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
+                <FormControl
+                  variant="outlined"
+                  size="small"
+                  className={classes.mobileLangCombo}
+                >
+                  <Select variant="standard" value={lang} onChange={getLang}>
+                    {Object.keys(languageJson).map((text) => (
+                      <MenuItem
+                        key={text}
+                        value={text}
+                        className={classes.listDirection}
+                      >
+                        {languageJson[text]}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl
+                  variant="outlined"
+                  size="small"
+                  className={classes.songList}
+                >
+                  {songs?.length > 0 && currentSong && (
+                    <Select
+                      variant="standard"
+                      value={JSON.stringify(currentSong)}
+                      onChange={songSelect}
+                    >
+                      {songs?.map((song, y) => (
+                        <MenuItem
+                          className={classes.listDirection}
+                          key={y}
+                          data-id={y + 1}
+                          value={JSON.stringify(song)}
+                        >
+                          {song?.sno + ". " + song?.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                </FormControl>
+              </Box>
+              <Box p={1}>
+                <Setting fontSize={fontSize} setFontSize={setFontSize} />
+              </Box>
+            </Box>
+            <Divider />
           </Box>
-          <Box className={classes.mobileBox}>
-            <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
+        ) : (
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <div className={classes.drawerHeader}>
               <FormControl
                 variant="outlined"
                 size="small"
-                className={classes.mobileLangCombo}
+                className={classes.formControl}
               >
-                <Select variant="standard" value={lang} onChange={getLang}>
+                <Select variant="standard" value={lang}>
                   {Object.keys(languageJson).map((text) => (
                     <MenuItem
                       key={text}
@@ -223,132 +281,78 @@ const Songs = () => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl
-                variant="outlined"
-                size="small"
-                className={classes.songList}
-              >
-                {songs?.length > 0 && currentSong && (
-                  <Select
-                    variant="standard"
-                    value={JSON.stringify(currentSong)}
-                    onChange={songSelect}>
-                    {songs?.map((song, y) => (
-                      <MenuItem
-                        className={classes.listDirection}
-                        key={y}
-                        data-id={y + 1}
-                        value={JSON.stringify(song)}
-                      >
-                        {song?.sno + ". " + song?.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-              </FormControl>
-            </Box>
-            <Box p={1}>
               <Setting fontSize={fontSize} setFontSize={setFontSize} />
-            </Box>
-          </Box>
-          <Divider />
-        </Box>
-      ) : (
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <FormControl
-              variant="outlined"
-              size="small"
-              className={classes.formControl}
-            >
-              <Select variant="standard" value={lang}>
-                {Object.keys(languageJson).map((text) => (
-                  <MenuItem
-                    key={text}
-                    value={text}
-                    className={classes.listDirection}
-                  >
-                    {languageJson[text]}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Setting fontSize={fontSize} setFontSize={setFontSize} />
-          </div>
-          <Divider />
-          <div className={classes.drawerContainer}>
-            <List>
-              {songs?.map((song) => (
-                <ListItem key={song.sno} className={classes.listDirection}>
-                  {song.sno + "."}
-                  <Link
-                    className={classes.linkList}
-                    onClick={() => setCurrentSong(song)}
-                    underline="hover">
-                    {song.name}
-                  </Link>
-                </ListItem>
-              ))}
-            </List>
-          </div>
-        </Drawer>
-      )}
-      <div className={classes.content}>
-        <Typography variant="h3" className={classes.heading}>
-          {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
-          <Help iconStyle={classes.helpIcon} url={"songs"} />
-        </Typography>
-        <Typography variant="h4" className={classes.lyricsHeading}>
-          {currentSong?.sno}. {currentSong?.name}
-        </Typography>
-        <Divider />
-        <div className={classes.box} style={{ fontSize: fontSize }}>
-          {lyrics}
-        </div>
-        {currentSong?.url !== undefined ? (
-          <div className={classes.playerBox}>
+            </div>
             <Divider />
-            <ReactPlayer
-              url={
-                process.env.REACT_APP_SONGS_URL +
-                lang +
-                "/" +
-                currentSong?.url
-              }
-              controls
-              width="calc(100% - 20px)"
-              height="50px"
-              className={classes.player}
-              onError={() =>
-                console.log(
-                  "error",
-                  process.env.REACT_APP_SONGS_URL +
-                    lang +
-                    "/" +
-                    currentSong?.url
-                )
-              }
-              config={{
-                file: {
-                  attributes: {
-                    controlsList: "nodownload",
-                  },
-                },
-              }}
-            />
-          </div>
-        ) : (
-          ""
+            <div className={classes.drawerContainer}>
+              <List>
+                {songs?.map((song) => (
+                  <ListItem key={song.sno} className={classes.listDirection}>
+                    {song.sno + "."}
+                    <Link
+                      className={classes.linkList}
+                      onClick={() => setCurrentSong(song)}
+                      underline="hover"
+                    >
+                      {song.name}
+                    </Link>
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          </Drawer>
         )}
+        <div className={classes.content}>
+          <Typography variant="h3" className={classes.heading}>
+            {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
+            <Help iconStyle={classes.helpIcon} url={"songs"} />
+          </Typography>
+          <Typography variant="h4" className={classes.lyricsHeading}>
+            {currentSong?.sno}. {currentSong?.name}
+          </Typography>
+          <Divider />
+          <div className={classes.box} style={{ fontSize: fontSize }}>
+            {lyrics}
+          </div>
+          {currentSong?.url !== undefined ? (
+            <div className={classes.playerBox}>
+              <Divider />
+              <ReactPlayer
+                url={
+                  process.env.REACT_APP_SONGS_URL +
+                  lang +
+                  "/" +
+                  currentSong?.url
+                }
+                controls
+                width="calc(100% - 20px)"
+                height="50px"
+                className={classes.player}
+                onError={() =>
+                  console.log(
+                    "error",
+                    process.env.REACT_APP_SONGS_URL +
+                      lang +
+                      "/" +
+                      currentSong?.url
+                  )
+                }
+                config={{
+                  file: {
+                    attributes: {
+                      controlsList: "nodownload",
+                    },
+                  },
+                }}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
-    </div>
-  </>;
+    </>
+  );
 };
 
 export default Songs;

@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import AboutUs from "./AboutUs";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
 import { connect } from "react-redux";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
       display: "inline-block",
       paddingTop: theme.spacing(3),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       flexWrap: "nowrap",
     },
   },
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "right",
     display: "inline-block",
     float: "right",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       float: "unset",
       fontSize: 12,
     },
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: GREY,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       fontSize: 12,
     },
   },
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: GREY,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       fontSize: 12,
     },
   },
@@ -109,54 +109,59 @@ const LandingFooter = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  return <>
-    <Grid container className={classes.landingFooter}>
-      <Grid item xs={6} sm={5} className={classes.rightLinks}>
-        <Button
-          variant="outlined"
-          size="small"
-          className={classes.button}
-          onClick={openModal}>
-          {t("landingFooterAboutUsBtn")}
-        </Button>
+  return (
+    <>
+      <Grid container className={classes.landingFooter}>
+        <Grid item xs={6} sm={5} className={classes.rightLinks}>
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.button}
+            onClick={openModal}
+          >
+            {t("landingFooterAboutUsBtn")}
+          </Button>
+        </Grid>
+        <Grid item xs={6} sm={2}>
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.feedback}
+            startIcon={<FeedbackIcon />}
+            href="https://forms.office.com/r/qiV0Ym335M"
+            target="_blank"
+            rel="noopener"
+          >
+            {t("landingFooterFeedbackBtn")}
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={5}>
+          <Link
+            href="https://www.bridgeconn.com/"
+            target="_blank"
+            className={classes.companyLink}
+            underline="hover"
+          >
+            <Typography className={classes.text}>
+              {t("landingCompanyYear")}{" "}
+              {mobileView ? t("landingCompanyMob") : t("landingCompanyDesktop")}
+            </Typography>
+          </Link>
+        </Grid>
       </Grid>
-      <Grid item xs={6} sm={2}>
-        <Button
-          variant="outlined"
-          size="small"
-          className={classes.feedback}
-          startIcon={<FeedbackIcon />}
-          href="https://forms.office.com/r/qiV0Ym335M"
-          target="_blank"
-          rel="noopener">
-          {t("landingFooterFeedbackBtn")}
-        </Button>
-      </Grid>
-      <Grid item xs={12} sm={5}>
-        <Link
-          href="https://www.bridgeconn.com/"
-          target="_blank"
-          className={classes.companyLink}
-          underline="hover">
-          <Typography className={classes.text}>
-            {t("landingCompanyYear")}{" "}
-            {mobileView ? t("landingCompanyMob") : t("landingCompanyDesktop")}
-          </Typography>
-        </Link>
-      </Grid>
-    </Grid>
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      scroll="paper"
-      aria-labelledby="scroll-dialog-title"
-      aria-describedby="scroll-dialog-description"
-      fullWidth={true}
-      maxWidth="md"
-    >
-      <AboutUs handleClose={handleClose} />
-    </Dialog>
-  </>;
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <AboutUs handleClose={handleClose} />
+      </Dialog>
+    </>
+  );
 };
 
 const mapStateToProps = (state) => {

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import BigTooltip from "../common/BigTooltip";
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     marginBottom: -40,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       marginBottom: -10,
     },
   },
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
     padding: "15px 30px",
     backgroundColor: WHITE,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       bottom: 25,
       width: "100%",
     },
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     "& hover": {
       textDecoration: "none",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       margin: 0,
       width: "60%",
       marginTop: 0,
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 10,
   },
   readContainer: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       display: "flex",
       whiteSpace: "nowrap",
       alignItems: "center",

@@ -7,7 +7,7 @@ import Player from "../common/Player";
 import Box from "@mui/material/Box";
 import Help from "../common/Help";
 import * as actions from "../../store/actions";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { capitalize, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 82,
     bottom: 0,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       top: 60,
     },
   },
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.4)",
       outline: "1px solid slategrey",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       top: 60,
       height: "calc(100vh - 160px)",
     },
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 35,
     marginBottom: 20,
     minHeight: 51,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       alignItems: "center",
       height: 60,
       paddingBottom: 0,
@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     width: 200,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       width: 150,
     },
   },
@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "middle",
     fontSize: 20,
     display: "inline-block",
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down("lg")]: {
       fontSize: 16,
       paddingLeft: 5,
     },

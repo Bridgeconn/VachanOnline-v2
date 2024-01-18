@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
@@ -8,7 +8,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Pagination from '@mui/material/Pagination';
+import Pagination from "@mui/material/Pagination";
 import { searchBible } from "../common/utility";
 import * as actions from "../../store/actions";
 import { connect } from "react-redux";
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 6,
     paddingLeft: 15,
     borderBottom: "1px solid #f1ecec",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       boxShadow: theme.shadows[1],
     },
   },
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2em",
     position: "relative",
     bottom: 2,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       bottom: 20,
     },
   },
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
   pageDisplay: {
     position: "absolute",
     right: 10,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       right: "unset",
       left: 5,
       bottom: 1,
@@ -281,7 +281,8 @@ const Search = (props) => {
               className={classes.searchButton}
               aria-label="search"
               onClick={search}
-              size="large">
+              size="large"
+            >
               <SearchIcon />
             </IconButton>
           </Paper>

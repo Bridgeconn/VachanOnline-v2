@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
@@ -20,7 +20,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { Alert } from '@mui/material';
+import { Alert } from "@mui/material";
 import {
   getAudioBibleObject,
   getEditorToolbar,
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       margin: 25,
     },
   },
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: (props) => (props.padding > 40 ? props.padding : 40),
       paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       paddingRight: 15,
       paddingLeft: 15,
       lineHeight: "1.8em",
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       left: (props) => (props.padding > 40 ? props.padding / 2 : 20),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       left: 10,
       top: "unset",
       bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       right: (props) => (props.padding > 40 ? props.padding / 2 : 20),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       right: 10,
       top: "unset",
       bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
@@ -125,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     bottom: "10px",
     left: 35,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       bottom: (props) => props.audioBottom,
     },
   },
@@ -139,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginBottom: 50,
       padding: "0 0 50px 5px",
     },

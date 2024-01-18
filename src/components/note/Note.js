@@ -1,6 +1,6 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from "@mui/styles";
+import { withStyles } from "@mui/styles";
 import NoteIcon from "@mui/icons-material/NoteOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   paper: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       margin: 25,
     },
   },
@@ -71,7 +71,8 @@ const DialogTitle = withStyles(styles)((props) => {
           aria-label="close"
           className={classes.closeButton}
           onClick={onClose}
-          size="large">
+          size="large"
+        >
           <CloseIcon />
         </IconButton>
       ) : null}

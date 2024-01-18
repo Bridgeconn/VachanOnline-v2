@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Tooltip from "@mui/material/Tooltip";
 import { connect } from "react-redux";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import { BLACK } from "../../store/colorCode";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";

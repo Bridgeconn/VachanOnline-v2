@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import List from "@mui/material/List";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: "1px solid #fff",
     margin: "0 10px",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       width: "50%",
     },
     [theme.breakpoints.up("md")]: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   menuRoot: {
     backgroundColor: "#eaeaea",
     boxShadow: "none",
-    "&$expanded": {
+    "&.Mui-expanded": {
       margin: 0,
     },
   },
@@ -44,13 +44,13 @@ const useStyles = makeStyles((theme) => ({
   summaryPanel: {
     textTransform: "capitalize",
     borderBottom: "1px solid #b7b7b726",
-    "&$expanded": {
+    "&.Mui-expanded": {
       minHeight: 50,
     },
   },
   content: {
     margin: "10px 0",
-    "&$expanded": {
+    "&.Mui-expanded": {
       margin: "12px 0",
     },
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "40%",
     minWidth: 550,
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down("xl")]: {
       minWidth: 600,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       width: "95%",
       minWidth: "unset",
     },
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "28px",
     fontSize: 16,
     paddingLeft: 14,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       paddingLeft: 5,
     },
   },
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   metaDataBox: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       maxHeight: "80vh",
       overflow: "scroll",
     },

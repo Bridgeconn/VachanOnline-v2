@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@mui/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ReactPlayer from "react-player";
@@ -14,7 +14,7 @@ import { t } from "i18next";
 const useStyles = makeStyles((theme) => ({
   titleContainer: {
     padding: "10px 20px",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       whiteSpace: "nowrap",
     },
   },
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   player: {
     maxHeight: "calc(100vh - 150px)",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       maxHeight: 240,
     },
   },
