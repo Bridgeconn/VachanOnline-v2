@@ -134,6 +134,10 @@ const Setting = ({
             marginTop: 50,
           },
         }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
       >
         <MenuItem className={classes.menu}>
           {t("settingsFontFamily")}

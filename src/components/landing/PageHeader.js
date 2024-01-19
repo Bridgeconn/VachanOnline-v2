@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     background: "rgba(0,0,0,0.5)",
     paddingLeft: 10,
+    zIndex: 1,
     [theme.breakpoints.down("md")]: {
       padding: 0,
     },
@@ -278,6 +279,7 @@ const PageHeader = (props) => {
             open={Boolean(alert)}
             autoHideDuration={8000}
             onClose={handleClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
             <Alert variant="filled" onClose={handleClose} severity={alert}>
               {message}

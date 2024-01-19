@@ -76,6 +76,10 @@ const Setting = (props) => {
         PaperProps={{
           className: classes.settingsMenu,
         }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
       >
         <MenuItem className={classes.menu}>{t("settingsFontSize")}</MenuItem>
         <Divider />

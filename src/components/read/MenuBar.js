@@ -404,7 +404,6 @@ const MenuBar = (props) => {
               >
                 <TextField
                   id="share-url"
-                  variant="outlined"
                   size="small"
                   defaultValue={path}
                   className={classes.share}

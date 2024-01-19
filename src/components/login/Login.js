@@ -299,7 +299,6 @@ const Login = (props) => {
                     noValidate
                   >
                     <TextField
-                      variant="outlined"
                       margin="normal"
                       required
                       fullWidth
@@ -312,7 +311,6 @@ const Login = (props) => {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
-                      variant="outlined"
                       margin="normal"
                       required
                       fullWidth
@@ -387,7 +385,6 @@ const Login = (props) => {
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
                         <TextField
-                          variant="outlined"
                           required
                           fullWidth
                           id="email"
@@ -400,7 +397,6 @@ const Login = (props) => {
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
-                          variant="outlined"
                           required
                           fullWidth
                           name="password"
@@ -465,7 +461,6 @@ const Login = (props) => {
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
                         <TextField
-                          variant="outlined"
                           required
                           fullWidth
                           id="email"

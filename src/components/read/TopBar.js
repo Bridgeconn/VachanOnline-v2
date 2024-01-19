@@ -363,6 +363,7 @@ const TopBar = (props) => {
           open={Boolean(alert)}
           autoHideDuration={8000}
           onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
           <Alert variant="filled" onClose={handleClose} severity={alert}>
             {message}

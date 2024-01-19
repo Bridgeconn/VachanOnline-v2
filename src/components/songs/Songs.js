@@ -207,11 +207,7 @@ const Songs = () => {
             </Box>
             <Box className={classes.mobileBox}>
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
-                <FormControl
-                  variant="outlined"
-                  size="small"
-                  className={classes.mobileLangCombo}
-                >
+                <FormControl size="small" className={classes.mobileLangCombo}>
                   <Select variant="standard" value={lang} onChange={getLang}>
                     {Object.keys(languageJson).map((text) => (
                       <MenuItem
@@ -224,11 +220,7 @@ const Songs = () => {
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl
-                  variant="outlined"
-                  size="small"
-                  className={classes.songList}
-                >
+                <FormControl size="small" className={classes.songList}>
                   {songs?.length > 0 && currentSong && (
                     <Select
                       variant="standard"
@@ -264,11 +256,7 @@ const Songs = () => {
             }}
           >
             <div className={classes.drawerHeader}>
-              <FormControl
-                variant="outlined"
-                size="small"
-                className={classes.formControl}
-              >
+              <FormControl size="small" className={classes.formControl}>
                 <Select variant="standard" value={lang}>
                   {Object.keys(languageJson).map((text) => (
                     <MenuItem

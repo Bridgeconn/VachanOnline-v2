@@ -258,8 +258,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
       value={lang}
       onChange={changeLang}
       classes={{
-        selectMenu: classes.languageMenu,
-        select: classes.languageSelected,
+        select: `${classes.languageSelected} ${classes.languageMenu}`,
       }}
       renderValue={renderName}
     >
@@ -347,7 +346,6 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
             <Box className={classes.mobileBox}>
               <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
                 <FormControl
-                  variant="outlined"
                   style={{
                     maxWidth: mobile === true ? "120px" : "50%",
                     minWidth: "180px",
@@ -356,7 +354,6 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                   {languageSelect()}
                 </FormControl>
                 <FormControl
-                  variant="outlined"
                   style={{
                     marginLeft: 5,
                   }}
@@ -400,6 +397,10 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                   PaperProps={{
                     className: classes.settingsMenu,
                   }}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
                 >
                   <MenuItem>{t("settingsFontSize")}</MenuItem>
                   <Divider />
@@ -428,7 +429,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
             }}
           >
             <div className={classes.drawerHeader}>
-              <FormControl variant="outlined" className={classes.formControl}>
+              <FormControl className={classes.formControl}>
                 {languageSelect()}
               </FormControl>
               <div>
@@ -450,6 +451,10 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                   onClose={closeSettings}
                   PaperProps={{
                     className: classes.settingsMenu,
+                  }}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
                   }}
                 >
                   <MenuItem className={classes.menu}>
