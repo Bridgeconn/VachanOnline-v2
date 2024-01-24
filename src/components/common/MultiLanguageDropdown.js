@@ -52,7 +52,6 @@ const MultiLanguageDropdown = (props) => {
         keepMounted
         open={open}
         onClose={closeLanguage}
-        getContentAnchorEl={null}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
         style={{ top: 17 }}

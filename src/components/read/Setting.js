@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -13,54 +12,18 @@ import Print from "../common/PrintBox";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-const useStyles = makeStyles((theme) => ({
-  btn: {
-    marginRight: theme.spacing(1),
-    display: "inline-block",
-    textTransform: "none",
-    textAlign: "center",
-    fontSize: 16,
-  },
-  serif: {
-    fontFamily: '"Roboto Slab", "serif"',
-    textTransform: "none",
-    fontSize: 16,
-  },
-  sans: {
-    fontFamily: '"Roboto", "sans-serif"',
-    textTransform: "none",
-    fontSize: 16,
-  },
-  menu: {
-    textAlign: "left",
-    width: "100%",
-    display: "inline-block",
-    fontSize: 18,
-  },
-  selected: {
-    background: "#c7c7c7",
-    boxShadow: "inset 1px 1px 5px #9a9a9a",
-  },
-  formControlLabel: {
-    fontSize: 18,
-    marginLeft: "-17px",
-    marginRight: 18,
-  },
-  isHoverVerse: {
-    fontSize: 17,
-    marginLeft: "-17px",
-  },
-  printIcon: {
-    marginRight: 20,
-  },
-  buttonGroup1: {
-    marginLeft: 15,
-  },
-
-  buttonGroup2: {
-    marginLeft: 35,
-  },
-}));
+const StyleMenuItem = (props) => (
+  <MenuItem
+    sx={{
+      textAlign: "left",
+      width: "100%",
+      display: "inline-block",
+      fontSize: 18,
+    }}
+  >
+    {props.children}
+  </MenuItem>
+);
 const ITEM_HEIGHT = 68;
 const Setting = ({
   fontSize,
@@ -80,7 +43,6 @@ const Setting = ({
   mobileView,
   paneNo,
 }) => {
-  const classes = useStyles();
   const open = Boolean(settingsAnchor);
 
   function setItem(key, value) {
@@ -139,41 +101,56 @@ const Setting = ({
           horizontal: "left",
         }}
       >
-        <MenuItem className={classes.menu}>
+        <StyleMenuItem>
           {t("settingsFontFamily")}
           <ButtonGroup
-            className={classes.buttonGroup1}
+            sx={{ marginLeft: 1.875 }}
             variant="contained"
             aria-label="Large contained secondary button group"
           >
             <Button
-              className={
-                fontFamily === "Sans"
-                  ? `${classes.sans} ${classes.selected}`
-                  : classes.sans
-              }
+              sx={{
+                fontFamily: '"Roboto", "sans-serif"',
+                textTransform: "none",
+                fontSize: 16,
+                ...(fontFamily === "Sans" && {
+                  background: "#c7c7c7",
+                  boxShadow: "inset 1px 1px 5px #9a9a9a",
+                }),
+              }}
               onClick={setFontFamily}
               value="Sans"
             >
               {t("settingsFontSans")}
             </Button>
             <Button
-              className={
-                fontFamily === "Serif"
-                  ? `${classes.serif} ${classes.selected}`
-                  : classes.serif
-              }
+              sx={{
+                fontFamily: '"Roboto Slab", "serif"',
+                textTransform: "none",
+                fontSize: 16,
+                ...(fontFamily === "Serif" && {
+                  background: "#c7c7c7",
+                  boxShadow: "inset 1px 1px 5px #9a9a9a",
+                }),
+              }}
               onClick={setFontFamily}
               value="Serif"
             >
               {t("settingsFontSerif")}
             </Button>
           </ButtonGroup>
-        </MenuItem>
-        <MenuItem className={classes.menu}>
+        </StyleMenuItem>
+        <MenuItem
+          sx={{
+            textAlign: "left",
+            width: "100%",
+            display: "inline-block",
+            fontSize: 18,
+          }}
+        >
           {t("settingsFontSize")}
           <ButtonGroup
-            className={classes.buttonGroup2}
+            sx={{ marginLeft: 4.375 }}
             variant="contained"
             aria-label="Large contained secondary button group"
           >
@@ -185,11 +162,13 @@ const Setting = ({
             </Button>
           </ButtonGroup>
         </MenuItem>
-        <MenuItem className={classes.menu}>
+        <StyleMenuItem>
           <FormControlLabel
             labelPlacement="start"
             label={
-              <Typography className={classes.formControlLabel}>
+              <Typography
+                sx={{ fontSize: 18, marginLeft: -2.125, marginRight: 2.25 }}
+              >
                 {t("settingsLineView")}
               </Typography>
             }
@@ -202,15 +181,15 @@ const Setting = ({
               />
             }
           />
-        </MenuItem>
+        </StyleMenuItem>
         {mobileView ? (
           ""
         ) : (
-          <MenuItem className={classes.menu}>
+          <StyleMenuItem>
             <FormControlLabel
               labelPlacement="start"
               label={
-                <Typography className={classes.isHoverVerse}>
+                <Typography sx={{ fontSize: 17, marginLeft: -2.125 }}>
                   {t("hoverVerse")}
                 </Typography>
               }
@@ -224,13 +203,13 @@ const Setting = ({
                 />
               }
             />
-          </MenuItem>
+          </StyleMenuItem>
         )}
         {mobileView ? (
-          <MenuItem className={classes.menu} onClick={handleDialogOpen}>
-            <span className={classes.printIcon}>{t("PrintSave")}</span>
+          <StyleMenuItem onClick={handleDialogOpen}>
+            <span sx={{ marginRight: 2.5 }}>{t("PrintSave")}</span>
             <PrintIcon />
-          </MenuItem>
+          </StyleMenuItem>
         ) : null}
       </Menu>
       <Print

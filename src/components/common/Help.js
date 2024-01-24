@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 const Help = ({ mobileView, iconStyle, url }) => {
   const { t } = useTranslation();
   return (
@@ -13,7 +14,7 @@ const Help = ({ mobileView, iconStyle, url }) => {
         ) : (
           <Tooltip title={t("landingHelpBtn")} style={{ float: "right" }}>
             <Link to={process.env.REACT_APP_DOCUMENT_URL + url} target="_blank">
-              <i className={`material-icons ${iconStyle}`}>help_outline</i>
+              <HelpOutlineIcon fontSize="small" sx={iconStyle} />
             </Link>
           </Tooltip>
         )
