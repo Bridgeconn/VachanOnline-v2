@@ -161,6 +161,9 @@ const useStyles = makeStyles((theme) => ({
   },
   languageMenu: {
     minWidth: 250,
+    [theme.breakpoints.down("sm")]: {
+      minWidth: 120,
+    },
   },
   languageSelected: {
     "&:focus": {
