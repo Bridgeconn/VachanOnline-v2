@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
   verse: {
     position: "absolute",
     bottom: 80,
-    width: "70%",
-    fontSize: "1.6rem",
+    width: "85%",
+    fontSize: "1.25rem",
     fontFamily: "Roboto Slab",
     textAlign: "center",
     transition: "opacity 0.35s ease-in-out",
@@ -49,12 +49,12 @@ const useStyles = makeStyles((theme) => ({
     top: 105,
     [theme.breakpoints.only("md")]: {
       width: "80%",
-      fontSize: "1.4rem",
+      fontSize: "1.2rem",
     },
     [theme.breakpoints.down("sm")]: {
       top: 100,
       width: "90%",
-      fontSize: "1.2rem",
+      fontSize: "1.1rem",
     },
     [theme.breakpoints.down("xs")]: {
       fontSize: "1rem",
@@ -81,6 +81,13 @@ const useStyles = makeStyles((theme) => ({
       background: BLACK + "60",
       boxShadow: "0 0 2px " + BLACK,
     },
+  },
+  verseText: {
+    display: "-webkit-box",
+    WebkitLineClamp: 3,
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    WebkitBoxOrient: "vertical",
   },
 }));
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
@@ -166,7 +173,9 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
             className={classes.link}
             onClick={() => setURL()}
           >
+            <span className={classes.verseText}>
             {verseObj ? verseObj.verseContent?.text : ""}
+            </span>
             <div className={classes.reference}>
               {book
                 ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
