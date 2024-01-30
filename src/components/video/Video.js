@@ -220,13 +220,14 @@ const Video = (props) => {
     };
     if (language) {
       const lang = video.find((obj) => obj?.language?.code === language?.value);
-      const avlChapters = chapterVideo[language?.value]?.[bookCode]
-        ? Object.keys(chapterVideo[language?.value]?.[bookCode])
-        : [];
-      if (
-        lang?.books?.hasOwnProperty(bookCode) &&
-        avlChapters.includes(chapter.toString())
-      ) {
+      let chapterAvail = true;
+      if (chapterVideo[language?.value] !== undefined) {
+        const avlChapters = chapterVideo[language?.value]?.[bookCode]
+          ? Object.keys(chapterVideo[language?.value]?.[bookCode])
+          : [];
+        chapterAvail = avlChapters.includes(chapter.toString());
+      }
+      if (lang?.books?.hasOwnProperty(bookCode) && chapterAvail) {
         const _videos = lang.books[bookCode];
         setVideos(filterVideos(_videos));
         setMessage("");
