@@ -148,6 +148,12 @@ const useStyles = makeStyles((theme) => ({
     width: "fit-content",
     overflow: "hidden",
     textOverflow: "ellipsis",
+    [theme.breakpoints.only("md")]: {
+      maxWidth: (props) => (props.parallelView ? 100 : 130),
+    },
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 100,
+    },
   },
   bookNameBox: {
     [theme.breakpoints.down("sm")]: {

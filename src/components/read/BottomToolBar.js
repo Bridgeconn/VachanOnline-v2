@@ -4,7 +4,12 @@ import Highlight from "../highlight/Highlight";
 import CloseIcon from "@material-ui/icons/Close";
 import Note from "../note/Note";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  outerDiv:{
+    display:"flex",
+    justifyContent:"center",
+    width:"100%"
+  },
   root: {
     width: "100%",
     position: "absolute",
@@ -12,6 +17,9 @@ const useStyles = makeStyles({
     boxShadow: "0 -1px 4px #b3b6bf",
     display: "flex",
     alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      width: "350px",
+    },
     padding: "0 20px",
     backgroundColor: "white",
     height: 45,
@@ -24,8 +32,8 @@ const useStyles = makeStyles({
   note: {
     marginBottom: 20,
     marginLeft: 15,
-  },
-});
+  }
+}));
 export default function BottomToolBar(props) {
   const {
     userDetails,
@@ -92,6 +100,7 @@ export default function BottomToolBar(props) {
     chapter,
   ]);
   return (
+    <div className={classes.outerDiv}>
     <div className={classes.root}>
       <div className={classes.items}>
         {highlightIcon}
@@ -100,6 +109,7 @@ export default function BottomToolBar(props) {
       <div onClick={clearSelection}>
         <CloseIcon />
       </div>
+    </div>
     </div>
   );
 }
