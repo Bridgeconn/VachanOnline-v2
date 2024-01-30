@@ -312,10 +312,6 @@ const BiblePane = (props) => {
           paneNo={paneNo}
           setFullscreen={setFullscreen}
           setValue={setValue}
-          selectedVerses={selectedVerses}
-          setSelectedVerses={setSelectedVerses}
-          highlights={highlights}
-          refUrl={refUrl}
           printRef={printRef}
           printNotes={printNotes}
           setPrintNotes={setPrintNotes}

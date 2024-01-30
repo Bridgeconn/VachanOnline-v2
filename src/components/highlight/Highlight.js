@@ -33,8 +33,7 @@ const useStyles = makeStyles((theme) => ({
 function Highlight(props) {
   const classes = useStyles();
   const firebase = useFirebase();
-  const { selectedVerses, setSelectedVerses, refUrl, highlights} =
-    props;
+  const { selectedVerses, setSelectedVerses, refUrl, highlights } = props;
 
   const { t } = useTranslation();
   const colors = [
@@ -68,26 +67,24 @@ function Highlight(props) {
     });
   };
   return (
-    <div>
-        <div className={classes.colorBox}>
-          {colors.map((color, i) => (
-            <Circle
-              key={i}
-              data-code={color.code}
-              onClick={colorClicked}
-              fontSize="large"
-              className={color.class}
-            />
-          ))}
-          <Tooltip title={t("ClearHighlightToolTip")}>
-            <NotInterestedIcon
-              data-code="clear"
-              onClick={colorClicked}
-              fontSize="large"
-              color="disabled"
-            />
-          </Tooltip>
-        </div>
+    <div className={classes.colorBox}>
+      {colors.map((color, i) => (
+        <Circle
+          key={i}
+          data-code={color.code}
+          onClick={colorClicked}
+          fontSize="large"
+          className={color.class}
+        />
+      ))}
+      <Tooltip title={t("ClearHighlightToolTip")}>
+        <NotInterestedIcon
+          data-code="clear"
+          onClick={colorClicked}
+          fontSize="large"
+          color="disabled"
+        />
+      </Tooltip>
     </div>
   );
 }

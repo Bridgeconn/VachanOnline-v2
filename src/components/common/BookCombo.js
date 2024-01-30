@@ -144,15 +144,15 @@ const useStyles = makeStyles((theme) => ({
   },
   bookName: {
     whiteSpace: "nowrap",
-    minWidth: 40,
+    minWidth: 100,
     width: "fit-content",
     overflow: "hidden",
     textOverflow: "ellipsis",
     [theme.breakpoints.only("md")]: {
-      maxWidth: (props) => (props.parallelView ? 75 : 130)
+      maxWidth: (props) => (props.parallelView ? 100 : 130),
     },
     [theme.breakpoints.down("sm")]: {
-      maxWidth: 90,
+      maxWidth: 100,
     },
   },
   bookNameBox: {

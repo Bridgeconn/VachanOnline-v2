@@ -7,10 +7,6 @@ import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import Bookmark from "../bookmark/Bookmark";
-import Highlight from "../highlight/Highlight";
-import NoteIcon from "@material-ui/icons/NoteOutlined";
-import BorderColor from "@material-ui/icons/BorderColor";
-import Note from "../note/Note";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLACK, WHITE } from "../../store/colorCode";
@@ -62,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
   info: {
     padding: 0,
     width: "30px",
-    [theme.breakpoints.only("xs")]: {
-      width: "20",
+    [theme.breakpoints.only("sm")]: {
+      width: 25,
     },
     marginTop: 20,
     marginRight: 2,
@@ -74,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     width: 22,
     marginTop: 15,
-    marginRight: 0,
+    marginRight: 4,
     color: "default",
     cursor: "pointer",
   },
@@ -104,8 +100,8 @@ const useStyles = makeStyles((theme) => ({
   helpIcon: {
     color: BLACK,
     marginTop: 19,
-    marginRight:2,
-    fontSize: 20,
+    marginRight: 4,
+    fontSize: 21,
   },
   copyButton: {
     textTransform: "capitalize",
@@ -116,9 +112,6 @@ const useStyles = makeStyles((theme) => ({
     width: "96%",
     height: 40,
     margin: 10,
-  },
-  closeButton: {
-    marginLeft: -6,
   },
 }));
 const MenuBar = (props) => {
@@ -141,10 +134,6 @@ const MenuBar = (props) => {
     bookCode,
     audio,
     userDetails,
-    selectedVerses,
-    setSelectedVerses,
-    refUrl,
-    highlights,
     parallelView,
     printRef,
     printNotes,
@@ -167,11 +156,8 @@ const MenuBar = (props) => {
   const [audioBible, setAudioBible] = React.useState({});
   const [audioIcon, setAudioIcon] = React.useState("");
   const [bookmarkIcon, setBookmarkIcon] = React.useState("");
-  const [highlightIcon, setHighlightIcon] = React.useState("");
-  const [noteIcon, setNoteIcon] = React.useState("");
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
-  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [shareAnchor, setShareAnchor] = React.useState(null);
   const [copyFeedback, setCopyFeedback] = React.useState("");
   const [alert, setAlert] = React.useState(false);
@@ -206,81 +192,6 @@ const MenuBar = (props) => {
     setBookmarkIcon("");
   }, [userDetails, sourceId, bookCode, chapter]);
 
-  //Set highlight icon
-  React.useEffect(() => {
-    if (userDetails.uid !== null) {
-      if (selectedVerses && selectedVerses.length > 0) {
-        setHighlightIcon(
-          <Highlight
-            selectedVerses={selectedVerses}
-            setSelectedVerses={setSelectedVerses}
-            refUrl={refUrl}
-            highlights={highlights}
-          />
-        );
-        return;
-      } else {
-        setHighlightIcon(
-          <Tooltip title={t("commonSelectVerses")}>
-            <div className={classes.info}>
-              <BorderColor fontSize="small" color="disabled" />
-            </div>
-          </Tooltip>
-        );
-      }
-    } else {
-      setHighlightIcon("");
-    }
-  }, [
-    userDetails,
-    selectedVerses,
-    classes.info,
-    setSelectedVerses,
-    refUrl,
-    highlights,
-    t,
-  ]);
-
-  //Set note icon
-  React.useEffect(() => {
-    if (userDetails.uid !== null) {
-      if (selectedVerses && selectedVerses.length > 0) {
-        setNoteIcon(
-          <Note
-            uid={userDetails.uid}
-            selectedVerses={selectedVerses}
-            setSelectedVerses={setSelectedVerses}
-            sourceId={sourceId}
-            bookCode={bookCode}
-            chapter={chapter}
-          />
-        );
-        return;
-      } else {
-        setNoteIcon(
-          <Tooltip title={t("commonSelectVerses")}>
-            <div className={classes.info}>
-              <NoteIcon fontSize="small" color="disabled" />
-            </div>
-          </Tooltip>
-        );
-      }
-    } else {
-      setNoteIcon("");
-    }
-  }, [
-    userDetails,
-    selectedVerses,
-    setSelectedVerses,
-    sourceId,
-    bookCode,
-    chapter,
-    classes.info,
-    t,
-  ]);
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
   const closeAlert = () => {
     setAlert(false);
   };
@@ -290,13 +201,13 @@ const MenuBar = (props) => {
       setAlert(true);
       setCopyFeedback(t("clipBoardCopied"));
       setAlertType("success");
-      handleDialogClose(true);
+      closeShareDialog();
     } catch (err) {
       console.error("Unable to copy to clipboard.", err);
       setAlert(true);
       setCopyFeedback(t("clipBoardCopiedFailed"));
       setAlertType("error");
-      handleDialogClose(true);
+      closeShareDialog();
     }
   };
   //function to open and close settings menu
@@ -416,21 +327,6 @@ const MenuBar = (props) => {
                   }}
                   onFocus={(e) => e.target.select()}
                 />
-                <Snackbar
-                  open={alert}
-                  autoHideDuration={800}
-                  onClose={closeAlert}
-                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                >
-                  <Alert
-                    elevation={6}
-                    variant="filled"
-                    onClose={closeAlert}
-                    severity={alertType}
-                  >
-                    {copyFeedback}
-                  </Alert>
-                </Snackbar>
                 <div>
                   <Button
                     className={classes.copyButton}
@@ -442,14 +338,33 @@ const MenuBar = (props) => {
                   </Button>
                 </div>
               </Menu>
+              <Snackbar
+                open={alert}
+                autoHideDuration={800}
+                onClose={closeAlert}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              >
+                <Alert
+                  elevation={6}
+                  variant="filled"
+                  onClose={closeAlert}
+                  severity={alertType}
+                >
+                  {copyFeedback}
+                </Alert>
+              </Snackbar>
             </div>
             {bookmarkIcon}
             {audioIcon}
-            <Tooltip title={t("menuBarFullScreenToolTip")}>
-                  <div onClick={goFull} className={classes.info}>
-                    <i className="material-icons md-23">zoom_out_map</i>
-                  </div>
-                </Tooltip>
+            {parallelView ? (
+              ""
+            ) : (
+              <Tooltip title={t("menuBarFullScreenToolTip")}>
+                <div onClick={goFull} className={classes.info}>
+                  <i className="material-icons md-23">zoom_out_map</i>
+                </div>
+              </Tooltip>
+            )}
             <div
               className={classes.settings}
               aria-label="More"
@@ -504,7 +419,7 @@ const MenuBar = (props) => {
             ) : (
               ""
             )}
-            {paneNo === 2 ? <Close className={classes.closeButton}/> : ""}
+            {paneNo === 2 ? <Close /> : ""}
           </Box>
         ) : (
           ""
