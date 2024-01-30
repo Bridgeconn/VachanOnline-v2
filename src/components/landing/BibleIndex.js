@@ -11,12 +11,15 @@ import Version from "../common/Version";
 import BigTooltip from "../common/BigTooltip";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
+import { Dialog, Grid } from "@material-ui/core";
+import WhatsNew from "./WhatsNew";
+import FeaturesList from "./FeaturesList";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     display: "flex",
-    marginBottom: -40,
+    marginBottom: -50,
     [theme.breakpoints.down("xs")]: {
       marginBottom: -10,
     },
@@ -65,58 +68,138 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
   },
+  landingButton: {
+    textTransform: "capitalize",
+    width: "100%",
+  },
 }));
 
 const BibleIndex = (props) => {
   const classes = useStyles();
   const { panel1, setValue, versionBooks, versionSource } = props;
+  const [whatsNewOpen, setWhatsNewOpen] = React.useState(false);
+  const [featuresOpen, setFeaturesOpen] = React.useState(false);
   const { version, book, bookCode, sourceId, chapter, verseData, language } =
     panel1;
 
   const { t } = useTranslation();
+  const openWhatsNew = () => {
+    setWhatsNewOpen(true);
+  };
+
+  const whatsNewClose = () => {
+    setWhatsNewOpen(false);
+  };
+  const openFeatures = () => {
+    setFeaturesOpen(true);
+  };
+
+  const featuresClose = () => {
+    setFeaturesOpen(false);
+  };
   return (
-    <div className={classes.container}>
-      <Paper className={classes.bibleIndex} elevation={3}>
-        <Typography variant="h5" gutterBottom className={classes.heading}>
-          {t("landingSelectBibleHeading")}
-        </Typography>
-        <div className={classes.readContainer}>
-          <Version
-            setValue={props.setValue}
-            version={version}
-            landingPage={true}
-            bookCode={bookCode}
-            chapter={chapter}
-            verseData={verseData}
-            language={language}
-          />
-          {bookCode !== "" && bookCode !== undefined ? (
-            <BookCombo
-              book={book}
-              bookCode={bookCode}
-              bookList={versionBooks[versionSource[sourceId]]}
-              chapter={chapter}
-              setValue={setValue}
-              minimal={false}
+    <>
+      <div className={classes.container}>
+        <Paper className={classes.bibleIndex} elevation={3}>
+          <Typography variant="h5" gutterBottom className={classes.heading}>
+            {t("landingSelectBibleHeading")}
+          </Typography>
+          <div className={classes.readContainer}>
+            <Version
+              setValue={props.setValue}
+              version={version}
               landingPage={true}
+              bookCode={bookCode}
+              chapter={chapter}
+              verseData={verseData}
+              language={language}
             />
-          ) : (
-            ""
-          )}
-          <Link
-            to={{
-              pathname: "/study",
-            }}
+            {bookCode !== "" && bookCode !== undefined ? (
+              <BookCombo
+                book={book}
+                bookCode={bookCode}
+                bookList={versionBooks[versionSource[sourceId]]}
+                chapter={chapter}
+                setValue={setValue}
+                minimal={false}
+                landingPage={true}
+              />
+            ) : (
+              ""
+            )}
+            <Link
+              to={{
+                pathname: "/study",
+              }}
+            >
+              <BigTooltip title={t("landingStartBtnToolTip")}>
+                <Button variant="contained" className={classes.button}>
+                  {t("landingStartBtn")}
+                </Button>
+              </BigTooltip>
+            </Link>
+          </div>
+        </Paper>
+      </div>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        style={{ width: "100%", marginTop: -23 }}
+      >
+        <Grid item>
+          <Button
+            variant="outlined"
+            size="medium"
+            color="default"
+            className={classes.landingButton}
+            onClick={openWhatsNew}
           >
-            <BigTooltip title={t("landingStartBtnToolTip")}>
-              <Button variant="contained" className={classes.button}>
-                {t("landingStartBtn")}
-              </Button>
-            </BigTooltip>
-          </Link>
-        </div>
-      </Paper>
-    </div>
+            {t("WhatsNew")}
+          </Button>
+        </Grid>
+        <Grid item style={{ marginLeft: 10 }}>
+          <Button
+            variant="outlined"
+            size="medium"
+            color="default"
+            className={classes.landingButton}
+            onClick={openFeatures}
+          >
+            {t("featuresList")}
+          </Button>
+        </Grid>
+      </Grid>
+      <Dialog
+        open={whatsNewOpen}
+        onClose={whatsNewClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <WhatsNew handleClose={whatsNewClose} />
+      </Dialog>
+      <Dialog
+        open={featuresOpen}
+        onClose={featuresClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <FeaturesList handleClose={featuresClose} />
+      </Dialog>
+      {/* <Button variant="outlined" className={classes.landingButton1}>
+          What's New
+        </Button>
+        <Button variant="outlined" className={classes.landingButton2}>
+          Features List
+        </Button> */}
+    </>
   );
 };
 
