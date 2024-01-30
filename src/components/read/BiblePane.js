@@ -354,8 +354,7 @@ const BiblePane = (props) => {
             </Fullscreen>
           </Grid>
         </Grid>
-        {mobileView &&
-        errorMessage === "" &&
+        {errorMessage === "" &&
         userDetails.uid !== null &&
         selectedVerses?.length > 0 ? (
           <BottomToolBar

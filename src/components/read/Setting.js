@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Print from "../common/PrintBox";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
+import Metadata from "../common/Metadata";
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -60,6 +61,13 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup2: {
     marginLeft: 35,
   },
+  infoLabel: {
+    marginRight: 20,
+  },
+  infoIcon: {
+    display: "inline-block",
+    marginTop: "-15px",
+  },
 }));
 const ITEM_HEIGHT = 68;
 const Setting = ({
@@ -79,10 +87,10 @@ const Setting = ({
   chapter,
   mobileView,
   paneNo,
+  metadataList,
 }) => {
   const classes = useStyles();
   const open = Boolean(settingsAnchor);
-
   function setItem(key, value) {
     setValue(key, value);
     if (paneNo !== 2) {
@@ -115,7 +123,6 @@ const Setting = ({
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
-
   const { t } = useTranslation();
   return (
     <>
@@ -222,12 +229,21 @@ const Setting = ({
             />
           </MenuItem>
         )}
-        {mobileView ? (
-          <MenuItem className={classes.menu} onClick={handleDialogOpen}>
-            <span className={classes.printIcon}>{t("PrintSave")}</span>
-            <PrintIcon />
-          </MenuItem>
-        ) : null}
+        <MenuItem className={classes.menu}>
+          <span className={classes.infoLabel}>{t("informationText")}</span>
+          <div className={classes.infoIcon}>
+            <Metadata
+              metadataList={metadataList}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+              mobileView={mobileView}
+            ></Metadata>
+          </div>
+        </MenuItem>
+        <MenuItem className={classes.menu} onClick={handleDialogOpen}>
+          <span className={classes.printIcon}>{t("PrintSave")}</span>
+          <PrintIcon />
+        </MenuItem>
       </Menu>
       <Print
         dialogOpen={dialogOpen}
