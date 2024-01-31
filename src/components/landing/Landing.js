@@ -4,7 +4,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
 import Link from "@material-ui/core/Link";
-import { useMediaQuery } from "@material-ui/core";
+import { Dialog, Paper, useMediaQuery } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { AUDIO, VIDEO } from "../../store/views";
@@ -16,6 +16,8 @@ import LandingFooter from "./LandingFooter";
 import PageHeader from "./PageHeader";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
+import WhatsNew from "./WhatsNew";
+import FeaturesList from "./FeaturesList";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -76,6 +78,20 @@ const useStyles = makeStyles((theme) => ({
   storeLink: {
     textAlign: "center",
   },
+  iconBox: {
+    margin: "0 auto",
+    justifyContent: "center",
+    padding: "15px 5px",
+    display: "flex",
+    fontSize: "1.4rem",
+    width: 250,
+    marginBottom: 5,
+    cursor: "pointer",
+    [theme.breakpoints.only("xs")]: {
+      width: "43%",
+      fontSize: "1.3rem",
+    },
+  },
 }));
 
 const Landing = (props) => {
@@ -83,6 +99,23 @@ const Landing = (props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const { setValue } = props;
+  const [whatsNewOpen, setWhatsNewOpen] = React.useState(false);
+  const [featuresOpen, setFeaturesOpen] = React.useState(false);
+
+  const openWhatsNew = () => {
+    setWhatsNewOpen(true);
+  };
+
+  const whatsNewClose = () => {
+    setWhatsNewOpen(false);
+  };
+  const openFeatures = () => {
+    setFeaturesOpen(true);
+  };
+
+  const featuresClose = () => {
+    setFeaturesOpen(false);
+  };
 
   const { t } = useTranslation();
   React.useEffect(() => {
@@ -118,6 +151,19 @@ const Landing = (props) => {
         spacing={1}
         className={classes.imageRow}
       >
+        <Paper className={classes.iconBox} elevation={3} onClick={openWhatsNew}>
+          {t("WhatsNew")}
+        </Paper>
+        <Paper className={classes.iconBox} elevation={3} onClick={openFeatures}>
+          {t("featuresList")}
+        </Paper>
+      </Grid>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={1}
+        className={classes.imageRow}
+      >
         <ImageCard
           icon="volume_up"
           type="Listen"
@@ -131,6 +177,28 @@ const Landing = (props) => {
         <ImageCard icon="local_library" type="Read" />
         <ImageCard icon="menu_book" type="Study" />
       </Grid>
+      <Dialog
+        open={whatsNewOpen}
+        onClose={whatsNewClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <WhatsNew handleClose={whatsNewClose} />
+      </Dialog>
+      <Dialog
+        open={featuresOpen}
+        onClose={featuresClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <FeaturesList handleClose={featuresClose} />
+      </Dialog>
       <Grid container spacing={2} className={classes.textRow}>
         <Grid item md={12} lg={6}>
           <div className={classes.text}>
