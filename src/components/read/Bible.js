@@ -74,7 +74,10 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up("md")]: {
       paddingRight: (props) => (props.padding > 40 ? props.padding : 40),
-      paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
+      paddingLeft: (props) => {
+        console.log(props.padding);
+        return props.padding > 40 ? props.padding : 40;
+      },
     },
     [theme.breakpoints.down("sm")]: {
       paddingRight: 15,
@@ -661,7 +664,9 @@ const Bible = (props) => {
           showText(item, chapter, verseData)
         );
         return para.tag === "p" ? (
-          <p className={lineView ? "" : classes.paraStyling}>{text}</p>
+          <p className={lineView ? "" : classes.paraStyling} key={i}>
+            {text}
+          </p>
         ) : (
           <span>{text}</span>
         );

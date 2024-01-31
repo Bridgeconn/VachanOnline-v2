@@ -80,7 +80,6 @@ const BiblePane = (props) => {
     singlePane,
     userDetails,
     toggleParallelScroll,
-    mobileView,
     setMainValue,
     errorMessage,
   } = props;
