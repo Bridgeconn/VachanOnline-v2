@@ -141,7 +141,7 @@
   "hideDescriptionSignLang": "Hide description",
   "showDescriptionSignLang": "Show description",
   "descriptionSignLang": "Description",
-  "studyNoVideosAvailable": "No videos available in {{ref.language}} for {{ref.book}}",
+  "studyNoVideosAvailable": "No videos available in {{ref.language}} for {{ref.book}} {{ref.chapter}}",
   "studyNoVideosAvailable1": "No Videos available",
   "studyNoCommentaryAvailable": "No commentary available for {{ref.book}} {{ref.chapter}}",
   "studyAudioBibleNotAvailableMsg": "No audio bibles available",

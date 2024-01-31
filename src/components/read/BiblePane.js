@@ -80,7 +80,6 @@ const BiblePane = (props) => {
     singlePane,
     userDetails,
     toggleParallelScroll,
-    mobileView,
     setMainValue,
     errorMessage,
   } = props;
@@ -312,10 +311,6 @@ const BiblePane = (props) => {
           paneNo={paneNo}
           setFullscreen={setFullscreen}
           setValue={setValue}
-          selectedVerses={selectedVerses}
-          setSelectedVerses={setSelectedVerses}
-          highlights={highlights}
-          refUrl={refUrl}
           printRef={printRef}
           printNotes={printNotes}
           setPrintNotes={setPrintNotes}
@@ -354,8 +349,7 @@ const BiblePane = (props) => {
             </Fullscreen>
           </Grid>
         </Grid>
-        {mobileView &&
-        errorMessage === "" &&
+        {errorMessage === "" &&
         userDetails.uid !== null &&
         selectedVerses?.length > 0 ? (
           <BottomToolBar

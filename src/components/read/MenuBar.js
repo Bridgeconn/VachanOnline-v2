@@ -6,18 +6,11 @@ import { getAudioBibleObject } from "../common/utility";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
-import Metadata from "../common/Metadata";
 import Bookmark from "../bookmark/Bookmark";
-import Highlight from "../highlight/Highlight";
-import NoteIcon from "@material-ui/icons/NoteOutlined";
-import BorderColor from "@material-ui/icons/BorderColor";
-import Note from "../note/Note";
-import PrintIcon from "@material-ui/icons/Print";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BLACK, WHITE } from "../../store/colorCode";
 import Close from "../common/Close";
-import Print from "../common/PrintBox";
 import ParallelScroll from "@material-ui/icons/ImportExport";
 import ShareIcon from "@material-ui/icons/Share";
 import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
@@ -36,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #f1ecec",
     position: "absolute",
     height: 60,
+    [theme.breakpoints.only("md")]: {
+      padding: "0 10px 0 28px",
+    },
     top: 72,
     [theme.breakpoints.only("sm")]: {
       padding: "0 4px",
@@ -50,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   selectBox: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       display: "flex",
       alignItems: "center",
     },
@@ -62,8 +58,11 @@ const useStyles = makeStyles((theme) => ({
   info: {
     padding: 0,
     width: "30px",
+    [theme.breakpoints.only("sm")]: {
+      width: 25,
+    },
     marginTop: 20,
-    marginRight: 4,
+    marginRight: 2,
     color: "default",
     cursor: "pointer",
   },
@@ -101,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
   helpIcon: {
     color: BLACK,
     marginTop: 19,
-    marginRight: 10,
+    marginRight: 4,
     fontSize: 21,
   },
   copyButton: {
@@ -135,10 +134,6 @@ const MenuBar = (props) => {
     bookCode,
     audio,
     userDetails,
-    selectedVerses,
-    setSelectedVerses,
-    refUrl,
-    highlights,
     parallelView,
     printRef,
     printNotes,
@@ -161,11 +156,8 @@ const MenuBar = (props) => {
   const [audioBible, setAudioBible] = React.useState({});
   const [audioIcon, setAudioIcon] = React.useState("");
   const [bookmarkIcon, setBookmarkIcon] = React.useState("");
-  const [highlightIcon, setHighlightIcon] = React.useState("");
-  const [noteIcon, setNoteIcon] = React.useState("");
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
-  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [shareAnchor, setShareAnchor] = React.useState(null);
   const [copyFeedback, setCopyFeedback] = React.useState("");
   const [alert, setAlert] = React.useState(false);
@@ -200,84 +192,6 @@ const MenuBar = (props) => {
     setBookmarkIcon("");
   }, [userDetails, sourceId, bookCode, chapter]);
 
-  //Set highlight icon
-  React.useEffect(() => {
-    if (userDetails.uid !== null) {
-      if (selectedVerses && selectedVerses.length > 0) {
-        setHighlightIcon(
-          <Highlight
-            selectedVerses={selectedVerses}
-            setSelectedVerses={setSelectedVerses}
-            refUrl={refUrl}
-            highlights={highlights}
-          />
-        );
-        return;
-      } else {
-        setHighlightIcon(
-          <Tooltip title={t("commonSelectVerses")}>
-            <div className={classes.info}>
-              <BorderColor fontSize="small" color="disabled" />
-            </div>
-          </Tooltip>
-        );
-      }
-    } else {
-      setHighlightIcon("");
-    }
-  }, [
-    userDetails,
-    selectedVerses,
-    classes.info,
-    setSelectedVerses,
-    refUrl,
-    highlights,
-    t,
-  ]);
-
-  //Set note icon
-  React.useEffect(() => {
-    if (userDetails.uid !== null) {
-      if (selectedVerses && selectedVerses.length > 0) {
-        setNoteIcon(
-          <Note
-            uid={userDetails.uid}
-            selectedVerses={selectedVerses}
-            setSelectedVerses={setSelectedVerses}
-            sourceId={sourceId}
-            bookCode={bookCode}
-            chapter={chapter}
-          />
-        );
-        return;
-      } else {
-        setNoteIcon(
-          <Tooltip title={t("commonSelectVerses")}>
-            <div className={classes.info}>
-              <NoteIcon fontSize="small" color="disabled" />
-            </div>
-          </Tooltip>
-        );
-      }
-    } else {
-      setNoteIcon("");
-    }
-  }, [
-    userDetails,
-    selectedVerses,
-    setSelectedVerses,
-    sourceId,
-    bookCode,
-    chapter,
-    classes.info,
-    t,
-  ]);
-  const handleDialogOpen = () => {
-    setDialogOpen(true);
-  };
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
   const closeAlert = () => {
     setAlert(false);
   };
@@ -287,13 +201,13 @@ const MenuBar = (props) => {
       setAlert(true);
       setCopyFeedback(t("clipBoardCopied"));
       setAlertType("success");
-      handleDialogClose(true);
+      closeShareDialog();
     } catch (err) {
       console.error("Unable to copy to clipboard.", err);
       setAlert(true);
       setCopyFeedback(t("clipBoardCopiedFailed"));
       setAlertType("error");
-      handleDialogClose(true);
+      closeShareDialog();
     }
   };
   //function to open and close settings menu
@@ -413,21 +327,6 @@ const MenuBar = (props) => {
                   }}
                   onFocus={(e) => e.target.select()}
                 />
-                <Snackbar
-                  open={alert}
-                  autoHideDuration={800}
-                  onClose={closeAlert}
-                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                >
-                  <Alert
-                    elevation={6}
-                    variant="filled"
-                    onClose={closeAlert}
-                    severity={alertType}
-                  >
-                    {copyFeedback}
-                  </Alert>
-                </Snackbar>
                 <div>
                   <Button
                     className={classes.copyButton}
@@ -439,31 +338,32 @@ const MenuBar = (props) => {
                   </Button>
                 </div>
               </Menu>
+              <Snackbar
+                open={alert}
+                autoHideDuration={800}
+                onClose={closeAlert}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              >
+                <Alert
+                  elevation={6}
+                  variant="filled"
+                  onClose={closeAlert}
+                  severity={alertType}
+                >
+                  {copyFeedback}
+                </Alert>
+              </Snackbar>
             </div>
-            {mobileView ? null : noteIcon}
-            {mobileView ? null : highlightIcon}
-
             {bookmarkIcon}
-            <Metadata
-              metadataList={metadataList}
-              title="Version Name (in Eng)"
-              abbreviation="Abbreviation"
-              mobileView={mobileView}
-            ></Metadata>
             {audioIcon}
-            {mobileView ? null : (
-              <>
-                <div className={classes.info} onClick={handleDialogOpen}>
-                  <Tooltip title={t("commonPrintChapter")}>
-                    <PrintIcon fontSize="small" />
-                  </Tooltip>
+            {parallelView ? (
+              ""
+            ) : (
+              <Tooltip title={t("menuBarFullScreenToolTip")}>
+                <div onClick={goFull} className={classes.info}>
+                  <i className="material-icons md-23">zoom_out_map</i>
                 </div>
-                <Tooltip title={t("menuBarFullScreenToolTip")}>
-                  <div onClick={goFull} className={classes.info}>
-                    <i className="material-icons md-23">zoom_out_map</i>
-                  </div>
-                </Tooltip>
-              </>
+              </Tooltip>
             )}
             <div
               className={classes.settings}
@@ -490,6 +390,7 @@ const MenuBar = (props) => {
               bookDisplay={bookDisplay}
               chapter={chapter}
               paneNo={paneNo}
+              metadataList={metadataList}
             />
             <Help iconStyle={classes.helpIcon} url={url} />
             {mobileView && paneNo === 1 ? (
@@ -524,18 +425,6 @@ const MenuBar = (props) => {
           ""
         )}
       </Box>
-
-      <Print
-        dialogOpen={dialogOpen}
-        handleDialogClose={handleDialogClose}
-        bookDisplay={bookDisplay}
-        printRef={printRef}
-        setPrintNotes={setPrintNotes}
-        setPrintHighlights={setPrintHighlights}
-        printNotes={printNotes}
-        printHighlights={printHighlights}
-        chapter={chapter}
-      />
     </div>
   );
 };

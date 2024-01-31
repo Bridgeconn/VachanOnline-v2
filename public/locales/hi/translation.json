@@ -142,7 +142,7 @@
   "hideDescriptionSignLang": "विवरण छिपाएँ",
   "showDescriptionSignLang": "विवरण दिखाएं",
   "descriptionSignLang": "विवरण",
-  "studyNoVideosAvailable": "{{ref.book}} के लिए {{ref.language}} में कोई वीडियो उपलब्ध नहीं है।",
+  "studyNoVideosAvailable": "{{ref.book}} {{ref.chapter}} के लिए {{ref.language}} में कोई वीडियो उपलब्ध नहीं है।",
   "studyNoVideosAvailable1": "कोई वीडियो उपलब्ध नहीं है।",
   "studyNoCommentaryAvailable": "{{ref.book}} {{ref.chapter}} के लिए कोई कमेंट्री उपलब्ध नहीं है",
   "studyAudioBibleNotAvailableMsg": "कोई ऑडियो बाइबिल उपलब्ध नहीं है",

@@ -9,12 +9,15 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
-  info: {
+  bookmark: {
     padding: 0,
     width: "30px",
     marginTop: 20,
     marginRight: 4,
     cursor: "pointer",
+    [theme.breakpoints.only("sm")]: {
+      width: 25,
+    },
   },
 }));
 export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
@@ -54,7 +57,7 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
       .set(newBookmarks, function (error) {});
   }
   return (
-    <div onClick={toggleBookmark} className={classes.info}>
+    <div onClick={toggleBookmark} className={classes.bookmark}>
       {bookmarked ? (
         <Tooltip title={t("bookMarkedText")}>
           <BookmarkIcon style={{ color: "#ff0000" }} fontSize="small" />
