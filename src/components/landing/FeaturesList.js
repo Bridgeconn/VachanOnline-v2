@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   },
   link: {
     fontSize: 14,
-    paddingLeft: 8,
+    paddingLeft: 10,
   },
 }));
 const FeaturesList = ({ handleClose }) => {
@@ -26,7 +26,7 @@ const FeaturesList = ({ handleClose }) => {
   const addHyperLink = (text, url) => {
     return (
       <Link className={classes.link} href={url} target="_blank">
-        {` ${text}`}
+        {text}
       </Link>
     );
   };
