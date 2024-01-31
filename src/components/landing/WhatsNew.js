@@ -6,24 +6,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { useTranslation } from "react-i18next";
-import { BLACK } from "../../store/colorCode";
 import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(() => ({
-  subheading: {
-    fontWeight: 600,
-    margin: "20px 0 10px",
-  },
-  bold: {
-    fontWeight: 600,
-  },
-  helpIcon: {
-    padding: "8px 12px 0",
-    color: BLACK,
-    fontSize: 21,
-    marginTop: -10,
-    cursor: "pointer",
-  },
   box: {
     marginBottom: -10,
     display: "flex",
@@ -44,7 +29,7 @@ const WhatsNew = ({ handleClose }) => {
     <>
       <DialogTitle id="scroll-dialog-title" disableTypography={true}>
         <div className={classes.box}>
-          <Typography variant="h6" gutterBottom style={{ fontWeight: 800 }}>
+          <Typography variant="h5" gutterBottom>
             {t("WhatsNew")}
           </Typography>
         </div>
@@ -52,14 +37,14 @@ const WhatsNew = ({ handleClose }) => {
       <DialogContent dividers={true}>
         <span>
           <Typography gutterBottom style={{ fontWeight: 800, fontSize: 17 }}>
-            {t("featureAdditions")}:-
+            {t("featureAdditions")}:
           </Typography>
           <ul style={{ fontSize: 16 }}>
             {/* v1.7.0 */}
             <li>{t("multiLanguageInterface")}</li>
             <li>{t("audioBibleListening")}</li>
             <li>{t("openBibleStories")}</li>
-            <li>{t("highlightbibleverse")}</li>
+            <li>{t("highlightBibleVerse")}</li>
             {/* v1.6.0 */}
             <li>{t("richTextEditor")}</li>
             <li>{t("userManual")}</li>
@@ -72,20 +57,20 @@ const WhatsNew = ({ handleClose }) => {
             gutterBottom
             style={{ fontWeight: 800, fontSize: 17, paddingLeft: 2 }}
           >
-            {t("enhancements")}:-
+            {t("enhancements")}:
           </Typography>
           <ul style={{ fontSize: 16 }}>
             {/* v1.7.0 */}
-            <li>{t("bibleVideosmobile")}</li>
+            <li>{t("bibleVideosMobile")}</li>
             <li>{t("updateLandingPage")}</li>
             {/* v1.6.0 */}
             <li>{t("FCBHGospelVideos")} </li>
             {/* v1.5.0 */}
             <li>{t("addOTandNTheader")}</li>
-            <li>{t("commentaryshowbookintro")}</li>
-            <li>{t("commentaryimagesopen")}</li>
+            <li>{t("commentaryShowBookIntro")}</li>
+            <li>{t("commentaryImagesOpen")}</li>
             <li>{t("readingPlanImprovedDateSelector")}</li>
-            <li> {t("ISLVvideos")}</li>
+            <li> {t("ISLVVideos")}</li>
             <li> {t("UXImprovements")}</li>
           </ul>
           {addHyperLink(
