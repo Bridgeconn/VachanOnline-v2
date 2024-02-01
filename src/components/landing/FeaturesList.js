@@ -7,6 +7,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { useTranslation } from "react-i18next";
 import Link from "@material-ui/core/Link";
+import { Dialog } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   box: {
@@ -19,10 +20,18 @@ const useStyles = makeStyles(() => ({
     paddingLeft: 10,
   },
 }));
-const FeaturesList = ({ handleClose }) => {
+const FeaturesList = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const baseURL = "https://vachandev-um.netlify.app/";
+  const [featuresOpen, setFeaturesOpen] = React.useState(false);
+
+  const openFeatures = () => {
+    setFeaturesOpen(true);
+  };
+
+  const featuresClose = () => {
+    setFeaturesOpen(false);
+  };
   const addHyperLink = (text, url) => {
     return (
       <Link className={classes.link} href={url} target="_blank">
@@ -32,90 +41,69 @@ const FeaturesList = ({ handleClose }) => {
   };
   return (
     <>
-      <DialogTitle id="scroll-dialog-title" disableTypography={true}>
-        <div className={classes.box}>
-          <Typography variant="h5" gutterBottom>
-            {t("featuresList")}
-          </Typography>
-        </div>
-      </DialogTitle>
-      <DialogContent dividers={true}>
-        <span>
-          <ul style={{ fontSize: 16 }}>
-            <li>
-              {t("readTopBarBtn")}
-              {addHyperLink(t("learnMore"), baseURL + "readBible")}
-            </li>
-            <li>
-              {t("studyBibleTopBarBtn")}
-              {addHyperLink(t("learnMore"), baseURL + "studyBible")}
-            </li>
-            <li>
-              {t("ISLVTopBarBtnToolTip")}
-              {addHyperLink(t("learnMore"), baseURL + "signLanguageBible")}
-            </li>
-            <li>{t("searchPassage")} </li>
-            <li>
-              {t("bibleTextSearch")}
-              {addHyperLink(t("learnMore"), baseURL + "searchBible")}
-            </li>
-            <li>
-              {t("songsText")}
-              {addHyperLink(t("learnMore"), baseURL + "songs")}
-            </li>
-            <li>
-              {t("openBibleStories")}
-              {addHyperLink(t("learnMore"), baseURL + "bibleStories")}
-            </li>
-            <li>
-              {t("commentariesText")}
-              {addHyperLink(t("learnMore"), baseURL + "commentaries")}
-            </li>
-            <li>
-              {t("infographicsText")}
-              {addHyperLink(t("learnMore"), baseURL + "infographics")}
-            </li>
-            <li>
-              {t("audioBibleText")}
-              {addHyperLink(t("learnMore"), baseURL + "audioBible")}
-            </li>
-            <li>
-              {t("videosText")}
-              {addHyperLink(t("learnMore"), baseURL + "videos")}
-            </li>
-            <li>
-              {t("readingPlansText")}
-              {addHyperLink(t("learnMore"), baseURL + "readingPlans")}
-            </li>
-            <li>
-              {t("dictionariesText")}
-              {addHyperLink(t("learnMore"), baseURL + "dictionaries")}
-            </li>
-            <li>
-              {t("personalisation")}
-              {addHyperLink(t("learnMore"), baseURL + "signIn")}
-            </li>
-            <li>
-              {t("bookmarksText")}, {t("highlightsText")}
-              {addHyperLink(t("learnMore"), baseURL + "bookmarks")}
-            </li>
-            <li>
-              {t("richTextNotes")}
-              {addHyperLink(t("learnMore"), baseURL + "/notes")}
-            </li>
-            <li>{t("oralBibles")}</li>
-            <li>{t("mobileFriendly")}</li>
-            <li>{t("multiLanguageInterface")}</li>
-            <li>{t("printSavePdf")} </li>
-          </ul>
-          {addHyperLink(t("learnWebsite"), baseURL + "websiteNavigation")}
-        </span>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} variant="outlined">
-          {t("commonClose")}
-        </Button>
-      </DialogActions>
+      <Button
+        variant="outlined"
+        size="small"
+        color="default"
+        className={classes.button}
+        onClick={openFeatures}
+      >
+        {t("featuresList")}
+      </Button>
+      <Dialog
+        open={featuresOpen}
+        onClose={featuresClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <DialogTitle id="scroll-dialog-title" disableTypography={true}>
+          <div className={classes.box}>
+            <Typography variant="h5" gutterBottom>
+              {t("featuresList")}
+            </Typography>
+          </div>
+        </DialogTitle>
+        <DialogContent dividers={true}>
+          <span>
+            <ul style={{ fontSize: 16 }}>
+              <li>{t("readTopBarBtn")}</li>
+              <li>{t("studyBibleTopBarBtn")}</li>
+              <li>{t("ISLVTopBarBtnToolTip")}</li>
+              <li>{t("searchPassage")} </li>
+              <li>{t("bibleTextSearch")}</li>
+              <li>{t("songsText")}</li>
+              <li>{t("openBibleStories")}</li>
+              <li>{t("commentariesText")}</li>
+              <li>{t("infographicsText")}</li>
+              <li>{t("audioBibleText")}</li>
+              <li>{t("videosText")}</li>
+              <li>{t("readingPlansText")}</li>
+              <li>{t("dictionariesText")}</li>
+              <li>{t("personalisation")}</li>
+              <li>
+                {t("bookmarksText")}, {t("highlightsText")}
+              </li>
+              <li>{t("richTextNotes")}</li>
+              <li>{t("oralBibles")}</li>
+              <li>{t("mobileFriendly")}</li>
+              <li>{t("multiLanguageInterface")}</li>
+              <li>{t("printSavePdf")} </li>
+            </ul>
+            {addHyperLink(
+              t("learnWebsite"),
+              "https://vachandev-um.netlify.app"
+            )}
+          </span>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={featuresClose} variant="outlined">
+            {t("commonClose")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
