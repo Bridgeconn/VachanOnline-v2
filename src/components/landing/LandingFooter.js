@@ -5,11 +5,14 @@ import Button from "@material-ui/core/Button";
 import AboutUs from "./AboutUs";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
-import { connect } from "react-redux";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
+import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
+import IconButton from "@material-ui/core/IconButton";
+import WhatsNew from "./WhatsNew";
+import { useMediaQuery } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   landingFooter: {
@@ -100,9 +103,19 @@ const useStyles = makeStyles((theme) => ({
 const LandingFooter = (props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const { mobileView } = props;
+  const [whatsNewOpen, setWhatsNewOpen] = React.useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
   const openModal = () => {
     setOpen(true);
+  };
+  const openWhatsNew = () => {
+    setWhatsNewOpen(true);
+  };
+
+  const whatsNewClose = () => {
+    setWhatsNewOpen(false);
   };
 
   const { t } = useTranslation();
@@ -112,7 +125,7 @@ const LandingFooter = (props) => {
   return (
     <>
       <Grid container className={classes.landingFooter}>
-        <Grid item xs={6} sm={5} className={classes.rightLinks}>
+        <Grid item xs={4} sm={3} className={classes.rightLinks}>
           <Button
             variant="outlined"
             size="small"
@@ -123,21 +136,45 @@ const LandingFooter = (props) => {
             {t("landingFooterAboutUsBtn")}
           </Button>
         </Grid>
-        <Grid item xs={6} sm={2}>
+        <Grid item xs={4} sm={3} className={classes.rightLinks}>
           <Button
             variant="outlined"
             size="small"
             color="default"
-            className={classes.feedback}
-            startIcon={<FeedbackIcon />}
-            href="https://forms.office.com/r/qiV0Ym335M"
-            target="_blank"
-            rel="noopener"
+            className={classes.button}
+            onClick={openWhatsNew}
           >
-            {t("landingFooterFeedbackBtn")}
+            {t("WhatsNew")}
           </Button>
         </Grid>
-        <Grid item xs={12} sm={5}>
+        <Grid item xs={5} sm={1} md={2}>
+          {isTablet ? (
+            <IconButton
+              aria-label="feedback"
+              className={classes.feedback}
+              href="https://forms.office.com/r/qiV0Ym335M"
+              target="_blank"
+              rel="noopener"
+            >
+              <FeedbackOutlinedIcon />
+            </IconButton>
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              color="default"
+              className={classes.feedback}
+              startIcon={<FeedbackIcon />}
+              href="https://forms.office.com/r/qiV0Ym335M"
+              target="_blank"
+              rel="noopener"
+            >
+              {t("landingFooterFeedbackBtn")}
+            </Button>
+          )}
+        </Grid>
+
+        <Grid item xs={6} sm={5} md={4}>
           <Link
             href="https://www.bridgeconn.com/"
             target="_blank"
@@ -145,7 +182,7 @@ const LandingFooter = (props) => {
           >
             <Typography className={classes.text}>
               {t("landingCompanyYear")}{" "}
-              {mobileView ? t("landingCompanyMob") : t("landingCompanyDesktop")}
+              {isMobile ? t("landingCompanyMob") : t("landingCompanyDesktop")}
             </Typography>
           </Link>
         </Grid>
@@ -161,13 +198,19 @@ const LandingFooter = (props) => {
       >
         <AboutUs handleClose={handleClose} />
       </Dialog>
+      <Dialog
+        open={whatsNewOpen}
+        onClose={whatsNewClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <WhatsNew handleClose={whatsNewClose} />
+      </Dialog>
     </>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    mobileView: state.local.mobileView,
-  };
-};
-export default connect(mapStateToProps)(LandingFooter);
+export default LandingFooter;
