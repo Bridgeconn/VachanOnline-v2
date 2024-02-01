@@ -43,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       float: "unset",
       fontSize: 12,
+      padding: "unset",
+      paddingTop: 6,
     },
   },
   link: {
