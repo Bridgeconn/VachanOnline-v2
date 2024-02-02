@@ -17,7 +17,6 @@ const useStyles = makeStyles(() => ({
   },
   link: {
     fontSize: 14,
-    paddingLeft: 10,
   },
 }));
 const FeaturesList = () => {
@@ -41,15 +40,9 @@ const FeaturesList = () => {
   };
   return (
     <>
-      <Button
-        variant="outlined"
-        size="small"
-        color="default"
-        className={classes.button}
-        onClick={openFeatures}
-      >
+      <Link className={classes.link} href="#" onClick={openFeatures}>
         {t("featuresList")}
-      </Button>
+      </Link>
       <Dialog
         open={featuresOpen}
         onClose={featuresClose}
