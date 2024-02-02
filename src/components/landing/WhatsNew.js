@@ -75,18 +75,12 @@ const WhatsNew = ({ handleClose }) => {
             {t("enhancements")}:
           </Typography>
           <ul style={{ fontSize: 16 }}>
-            {/* v1.7.0 */}
-            <li>{t("bibleVideosMobile")}</li>
-            <li>{t("updateLandingPage")}</li>
             {/* v1.6.0 */}
             <li>{t("FCBHGospelVideos")} </li>
             {/* v1.5.0 */}
-            <li>{t("addOTandNTheader")}</li>
             <li>{t("commentaryShowBookIntro")}</li>
-            <li>{t("commentaryImagesOpen")}</li>
             <li>{t("readingPlanImprovedDateSelector")}</li>
             <li> {t("ISLVVideos")}</li>
-            <li> {t("UXImprovements")}</li>
           </ul>
           <div style={{ paddingBottom: 10 }}>
             <FeaturesList />
