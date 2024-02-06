@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
@@ -17,77 +16,7 @@ import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 94,
-    [theme.breakpoints.down("md")]: {
-      marginTop: 60,
-    },
-  },
-  heading: {
-    paddingBottom: 10,
-    paddingLeft: 15,
-    marginBottom: 20,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    height: "2.75em",
-    [theme.breakpoints.down("md")]: {
-      height: 60,
-      marginBottom: 0,
-      paddingBottom: 0,
-      alignItems: "center",
-    },
-  },
-  list: {
-    position: "absolute",
-    right: 0,
-    left: 0,
-    top: 135,
-    bottom: 0,
-    overflow: "scroll",
-    marginBottom: -15,
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.down("md")]: {
-      top: 120,
-    },
-  },
-  message: {
-    margin: 18,
-  },
-  listItem: {
-    borderBottom: "1px solid lightgray",
-  },
-  closeButton: {
-    marginRight: 15,
-    marginTop: -6,
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
-  helpIcon: {
-    padding: "4px 6px 0",
-    color: BLACK,
-    marginTop: -3,
-    fontSize: 21,
-  },
-}));
 const Highlights = (props) => {
-  const classes = useStyles();
   const { uid, versions, setValue, getRegionalBookName, close, mobileView } =
     props;
   const [highlightList, setHighlightList] = React.useState([]);
@@ -201,24 +130,60 @@ const Highlights = (props) => {
   };
 
   return (
-    <div className={classes.root}>
-      <Box className={classes.heading}>
+    <Box sx={{ width: "100%", marginTop: { lg: 11, xs: 7.5 } }}>
+      <Box
+        sx={{
+          paddingBottom: { lg: 1.25, xs: 0 },
+          paddingLeft: 1.875,
+          marginBottom: { lg: 2.5, xs: 0 },
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          alignItems: "center",
+          height: { lg: "2.75em", xs: 60 },
+        }}
+      >
         <Box flexGrow={1}>
           <Typography variant="h6">{t("highlightsText")}</Typography>
         </Box>
-        <Box className={classes.box}>
-          <Help iconStyle={classes.helpIcon} url={"highlights"} />
-          <Close className={classes.closeButton} />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Help
+            iconStyle={{ color: BLACK, marginTop: -0.375, fontSize: 21 }}
+            url={"highlights"}
+          />
+          <Close className={{ marginRight: 1.875, marginTop: 0.375 }} />
         </Box>
       </Box>
-      <div className={classes.list}>
-        {highlights && Object.keys(highlights).length !== 0 ? (
+      <Box
+        sx={{
+          position: "absolute",
+          right: 0,
+          left: 0,
+          top: { lg: 135, xs: 120 },
+          bottom: 0,
+          overflow: "scroll",
+          marginBottom: -1.875,
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "&::-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "&::-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+        }}
+      >
+        {highlightList && highlightList.length !== 0 ? (
           <List component="nav">
             {highlightList.map((highlight, i) => {
               return versionData[highlight.sourceId] !== undefined ? (
                 <ListItem
                   key={i}
-                  className={classes.listItem}
+                  sx={{ borderBottom: "1px solid lightgray" }}
                   data-sourceid={highlight.sourceId}
                   data-bookcode={highlight.bookCode}
                   data-chapter={highlight.chapter}
@@ -253,12 +218,12 @@ const Highlights = (props) => {
             })}
           </List>
         ) : (
-          <Typography className={classes.message}>
+          <Typography sx={{ margin: 2.25 }}>
             {t("selectVerseHighlight")}
           </Typography>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

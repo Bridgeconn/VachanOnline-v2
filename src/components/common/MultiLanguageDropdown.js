@@ -41,10 +41,7 @@ const MultiLanguageDropdown = (props) => {
   return (
     <>
       <BigTooltip title={t("multilingualTooltip")}>
-        <LanguageIcon
-          className={iconstyle}
-          onClick={openLanguage}
-        ></LanguageIcon>
+        <LanguageIcon sx={iconstyle} onClick={openLanguage}></LanguageIcon>
       </BigTooltip>
       <Menu
         id="long-menu"

@@ -19,6 +19,7 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
 import Help from "../common/Help";
+import { styled } from "@mui/system";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
@@ -31,141 +32,23 @@ const BigTooltip = withStyles((theme) => ({
 }))(Tooltip);
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 82,
-    [theme.breakpoints.only("xs")]: {
-      marginTop: 5,
-    },
-    [theme.breakpoints.only("sm")]: {
-      marginTop: 70,
-    },
-  },
-  main: {
-    top: 134,
-    bottom: 0,
-    paddingTop: 30,
-    overflow: "auto",
-    position: "absolute",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.only("xs")]: {
-      width: "100%",
-      padding: "0 5px",
-      top: 57,
-    },
-    [theme.breakpoints.only("sm")]: {
-      width: "100%",
-      top: 123,
-      paddingTop: 0,
-    },
-  },
-  container: {
-    width: "100%",
-    marginTop: 60,
-    [theme.breakpoints.down("md")]: {
-      marginTop: 0,
-    },
-  },
-  refBox: {
-    [theme.breakpoints.down("md")]: {
-      display: "flex",
-    },
-  },
-  heading: {
-    paddingBottom: 10,
-    paddingLeft: 15,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    height: "2.75em",
-    [theme.breakpoints.down("md")]: {
-      display: "none",
-    },
-  },
   calendar: {
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
     width: "50%",
-    [theme.breakpoints.down("md")]: { width: 120, marginTop: 6 },
-  },
-  message: {
-    margin: 18,
-  },
-  listItem: {
-    borderBottom: "1px solid lightgray",
-  },
-  title: {
-    paddingLeft: 35,
-    paddingBottom: 12,
-    marginBottom: 20,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    [theme.breakpoints.down("md")]: {
-      boxShadow: theme.shadows[1],
-      paddingLeft: 15,
-    },
-  },
-  refText: {
-    [theme.breakpoints.down("md")]: {
-      fontSize: "1rem",
-      marginRight: 5,
-    },
+    [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
   },
   select: {
     width: 200,
-    [theme.breakpoints.down("lg")]: {
-      width: 150,
-      padding: "0 15px",
-    },
+    padding: "0 15px",
     [theme.breakpoints.only("xs")]: {
-      width: 200,
+      width: 190,
       padding: "0 15px",
     },
-  },
-  closeButton: {
-    marginTop: 7,
-    marginRight: 15,
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
-  helpIcon: {
-    padding: "8px 12px 0",
-    color: BLACK,
-    marginTop: 5,
-    fontSize: 21,
-  },
-  dateContainer: {
-    display: "flex",
-  },
-  loading: {
-    paddingLeft: 20,
-  },
-  list: {
-    [theme.breakpoints.down("md")]: {
-      bottom: 50,
-      top: 0,
-    },
-  },
-  date: {
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
   },
 }));
+const Heading = styled("h3")({ paddingLeft: 20 });
 
 const ReadingPlan = (props) => {
   const classes = useStyles();
@@ -229,7 +112,12 @@ const ReadingPlan = (props) => {
       variant="contained"
       onClick={onClick}
       ref={ref}
-      classes={{ root: classes.date }}
+      sx={{
+        [`&.MuiButton-root`]: {
+          textTransform: "capitalize",
+          backgroundColor: "#fff",
+        },
+      }}
     >
       {value}
     </Button>
@@ -266,8 +154,18 @@ const ReadingPlan = (props) => {
   }, [planData, selectedDate]);
 
   return (
-    <div className={classes.root}>
-      <Box className={classes.title}>
+    <Box sx={{ width: "100%", marginTop: { lg: 10.25, sm: 8.75, xs: 0.625 } }}>
+      <Box
+        sx={{
+          paddingLeft: { lg: 4.375, xs: 1.875 },
+          paddingBottom: 1.5,
+          marginBottom: 2.5,
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          boxShadow: { lg: 0, xs: 1 },
+        }}
+      >
         <Box flexGrow={1}>
           {mobileView ? null : (
             <Typography variant="h6"> {t("readingPlansText")}</Typography>
@@ -275,7 +173,7 @@ const ReadingPlan = (props) => {
         </Box>
         <Box flexGrow={1}>
           {plan ? (
-            <div className={mobileView ? classes.dateContainer : null}>
+            <Box sx={{ display: { lg: "block", xs: "flex" } }}>
               <Select
                 className={classes.select}
                 defaultValue={plan}
@@ -297,17 +195,50 @@ const ReadingPlan = (props) => {
                   customInput={<CustomInput />}
                 />
               ) : null}
-            </div>
+            </Box>
           ) : (
             ""
           )}
         </Box>
-        <Box className={classes.box}>
-          <Help iconStyle={classes.helpIcon} url={"readingPlans"} />
-          <Close className={classes.closeButton} />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              marginTop: 0.625,
+              fontSize: 21,
+            }}
+            url={"readingPlans"}
+          />
+          <Close
+            className={{ marginTop: 0.875, marginRight: { lg: 1.875, xs: 0 } }}
+          />
         </Box>
       </Box>
-      <Box className={classes.main}>
+      <Box
+        sx={{
+          top: { lg: 134, sm: 123, xs: 57 },
+          bottom: 0,
+          paddingTop: { lg: 3.75, sm: 0, xs: 0 },
+          paddingRight: { xs: 0 },
+          paddingBottom: { xs: 0.625 },
+          paddingLeft: { xs: 0.625 },
+          overflow: "auto",
+          position: "absolute",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          width: { lg: "auto", sm: "100%", xs: "100%" },
+          "-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+        }}
+      >
         {mobileView ? null : (
           <Calendar
             className={classes.calendar}
@@ -315,23 +246,47 @@ const ReadingPlan = (props) => {
             value={selectedDate}
           />
         )}
-        <div className={classes.container}>
-          <Box className={classes.heading}>
-            <Box flexGrow={1} className={classes.refBox}>
-              <Typography variant="h6" className={classes.refText}>
+        <Box sx={{ width: "100%", marginTop: { lg: 7.5, sm: 0 } }}>
+          <Box
+            sx={{
+              paddingBottom: 1.25,
+              paddingLeft: 1.875,
+              borderBottom: "1px solid #f1ecec",
+              display: { lg: "flex", xs: "none" },
+              width: "100%",
+              height: "2.75em",
+            }}
+          >
+            <Box flexGrow={1} sx={{ display: { lg: "block", xs: "flex" } }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: { lg: "1.25rem", xs: "1rem" },
+                  marginRight: { lg: 0, xs: 0.625 },
+                }}
+              >
                 {t("readingPlanBibleRef", { ref })}
               </Typography>
             </Box>
           </Box>
           <>
             {loading ? (
-              <h3 className={classes.loading}>Loading</h3>
+              <Heading>Loading</Heading>
             ) : readingList.length !== 0 ? (
-              <List component="nav" className={classes.list}>
+              <List
+                component="nav"
+                sx={{
+                  bottom: { lg: "auto", xs: 50 },
+                  top: { lg: "auto", xs: 0 },
+                }}
+              >
                 {readingList.map((reading, i) => {
                   const bookText = getBookText(reading.ref, reading.text);
                   return bookText ? (
-                    <ListItem key={i} className={classes.listItem} button>
+                    <ListItem
+                      key={i}
+                      sx={{ borderBottom: "1px solid lightgray" }}
+                    >
                       <ListItemText
                         primary={bookText}
                         data-ref={reading.ref}
@@ -345,12 +300,15 @@ const ReadingPlan = (props) => {
                       arrow
                     >
                       <span>
-                        <ListItem key={i} className={classes.listItem} button>
+                        <ListItem
+                          key={i}
+                          sx={{ borderBottom: "1px solid lightgray" }}
+                        >
                           <Button
                             aria-label="Book not available"
-                            style={{
+                            sx={{
                               textTransform: "none",
-                              marginLeft: "-8px",
+                              marginLeft: -1,
                             }}
                             disabled
                             endIcon={<ErrorOutlineIcon />}
@@ -359,7 +317,7 @@ const ReadingPlan = (props) => {
                           </Button>
                           {mobileView ? (
                             <Typography
-                              style={{
+                              sx={{
                                 color: GREY,
                                 fontSize: "0.9rem",
                                 float: "right",
@@ -375,14 +333,14 @@ const ReadingPlan = (props) => {
                 })}
               </List>
             ) : (
-              <Typography className={classes.message}>
+              <Typography sx={{ margin: 2.25 }}>
                 {t("noReadingPlanAvailable")}
               </Typography>
             )}
           </>
-        </div>
+        </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 export default ReadingPlan;

@@ -143,7 +143,7 @@ const Bookmarks = (props) => {
             }}
             url={"bookmarks"}
           />
-          <Close sx={{ mr: 1.875, mt: -0.75 }} />
+          <Close className={{ marginRight: 1.875, marginTop: -0.085 }} />
         </Box>
       </Box>
       <Box
@@ -157,13 +157,13 @@ const Bookmarks = (props) => {
           mb: -1.875,
           scrollbarWidth: "thin",
           scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          "::-webkit-scrollbar": {
+          "-webkit-scrollbar": {
             width: "0.45em",
           },
-          "::-webkit-scrollbar-track": {
+          "-webkit-scrollbar-track": {
             WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
           },
-          "::-webkit-scrollbar-thumb": {
+          "-webkit-scrollbar-thumb": {
             backgroundColor: "rgba(0,0,0,.4)",
             outline: "1px solid slategrey",
           },
