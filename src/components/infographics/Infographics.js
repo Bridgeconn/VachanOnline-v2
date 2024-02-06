@@ -15,104 +15,17 @@ import BookCombo from "../common/BookCombo";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
+import { styled } from "@mui/system";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    position: "absolute",
-    top: 82,
-    bottom: 0,
-    [theme.breakpoints.down("md")]: {
-      top: 60,
-    },
-  },
-  container: {
-    top: 52,
-    bottom: 0,
-    overflow: "scroll",
-    position: "absolute",
-    width: "100%",
-    padding: "12px 4px 0 15px",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.down("md")]: {
-      top: 60,
-    },
-  },
-  heading: {
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    paddingBottom: 12,
-    paddingLeft: 35,
-    minHeight: 51,
-    [theme.breakpoints.down("md")]: {
-      alignItems: "center",
-      height: 60,
-      paddingBottom: 0,
-    },
-  },
-  title: {
-    paddingTop: 4,
-    borderTop: "1px solid #f1ecec",
-    width: "100%",
-    height: "2em",
-  },
-  card: {
-    minWidth: 170,
-    width: 170,
-    display: "inline-block",
-    marginRight: 20,
-    marginTop: 10,
-    cursor: "pointer",
-    [theme.breakpoints.down("md")]: {
-      width: "99%",
-      marginRight: 0,
-    },
-  },
-  image: {
-    objectFit: "contain",
-  },
-  closeButton: {
-    marginRight: 15,
-    marginTop: 7,
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
-  helpIcon: {
-    padding: "8px 12px 0",
-    color: BLACK,
-    marginTop: 5,
-    fontSize: 21,
-  },
-  selectBox: {
-    [theme.breakpoints.down("md")]: {
-      display: "flex",
-      alignItems: "center",
-    },
-  },
   select: {
     width: 200,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       width: 130,
     },
   },
-  message: {
-    paddingLeft: 20,
-  },
 }));
+const Heading = styled("h5")({ paddingLeft: 20 });
 const Infographics = (props) => {
   const classes = useStyles();
   let { infographics, panel1, versionBooks, setValue, mobileView } = props;
@@ -160,7 +73,7 @@ const Infographics = (props) => {
       const found = langObj.books?.find((e) => e.bookCode === bookCode);
       if (found) {
         setBookData(
-          found.infographics.map((item) => {
+          found.infographics?.map((item) => {
             item.src = langObj.url + item.fileName;
             item.alt = item.title;
             return item;
@@ -183,14 +96,38 @@ const Infographics = (props) => {
   }, [infographics, bookCode, language, versionBooks, t]);
 
   return (
-    <div className={classes.root}>
-      <Box className={classes.heading}>
+    <Box
+      sx={{
+        width: "100%",
+        position: "absolute",
+        top: { lg: 82, xs: 60 },
+        bottom: 0,
+      }}
+    >
+      <Box
+        sx={{
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          paddingBottom: { lg: 1.5, xs: 0 },
+          paddingLeft: 4.375,
+          minHeight: 51,
+          height: { lg: "auto", xs: 60 },
+          alignItems: "center",
+        }}
+      >
         {mobileView ? null : (
           <Box flexGrow={1}>
             <Typography variant="h6">{t("infographicsText")}</Typography>
           </Box>
         )}
-        <Box flexGrow={1} className={classes.selectBox}>
+        <Box
+          flexGrow={1}
+          sx={{
+            display: { lg: "block", xs: "flex" },
+            alignItems: { lg: "flex-start", xs: "center" },
+          }}
+        >
           {languages && languages?.length !== 0 && (
             <Select
               className={classes.select}
@@ -210,18 +147,52 @@ const Infographics = (props) => {
             />
           ) : null}
         </Box>
-        <Box className={classes.box}>
-          <Help iconStyle={classes.helpIcon} url={"infographics"} />
-          <Close className={classes.closeButton} />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Help
+            iconStyle={{ color: BLACK, marginTop: 0.625, fontSize: 21 }}
+            url={"infographics"}
+          />
+          <Close className={{ marginRight: 1.875, marginTop: 0.875 }} />
         </Box>
       </Box>
-      <div className={classes.container}>
+      <Box
+        sx={{
+          top: { lg: 52, xs: 60 },
+          bottom: 0,
+          overflow: "scroll",
+          position: "absolute",
+          width: "100%",
+          paddingTop: 1.5,
+          paddingRight: 0.5,
+          paddingBottom: 0,
+          paddingLeft: 1.875,
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "&::-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "&::-webkit-scrollbar-track": {
+            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+        }}
+      >
         {bookData?.length > 0 &&
           bookData.map((pic, index) => {
             return (
               <Card
                 key={index}
-                className={classes.card}
+                sx={{
+                  minWidth: 170,
+                  width: { lg: 170, xs: "99%" },
+                  display: "inline-block",
+                  marginRight: { lg: 2.5, xs: 0 },
+                  marginTop: 1.25,
+                  cursor: "pointer",
+                }}
                 onClick={() => {
                   setVisible(true);
                   setActiveIndex(index);
@@ -231,19 +202,27 @@ const Infographics = (props) => {
                   component="img"
                   alt={pic.title}
                   height="200"
-                  className={classes.image}
+                  sx={{ objectFit: "contain" }}
                   image={url + "/thumbs/" + pic.fileName}
                   title={pic.title}
                 />
                 <CardContent>
-                  <Typography className={classes.title} gutterBottom>
+                  <Typography
+                    sx={{
+                      paddingTop: 0.5,
+                      borderTop: "1px solid #f1ecec",
+                      width: "100%",
+                      height: "2em",
+                    }}
+                    gutterBottom
+                  >
                     {pic.title}
                   </Typography>
                 </CardContent>
               </Card>
             );
           })}
-        {message && <h5 className={classes.message}>{message}</h5>}
+        {message && <Heading>{message}</Heading>}
         <Viewer
           visible={visible}
           onClose={() => {
@@ -253,8 +232,8 @@ const Infographics = (props) => {
           activeIndex={activeIndex}
           scalable={false}
         />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

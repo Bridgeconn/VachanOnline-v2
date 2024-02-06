@@ -11,63 +11,10 @@ import Tooltip from "@mui/material/Tooltip";
 import { withStyles } from "@mui/styles";
 import { languageCode } from "../../store/languageData";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { styled } from "@mui/system";
+import { Box } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
-  heading: {
-    position: "absolute",
-    top: 80,
-    color: WHITE,
-    fontWeight: 800,
-    fontFamily: "Sans",
-    fontSize: "1.2rem",
-    textShadow: "1px 1px 2px " + BLACK,
-    [theme.breakpoints.down("md")]: {
-      top: 75,
-    },
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "1.1rem",
-    },
-  },
-  imageContainer: {
-    position: "relative",
-    width: "100%",
-    height: "300px",
-    backgroundImage: `url(${banner})`,
-    backgroundRepeat: "round",
-    display: "flex",
-    justifyContent: "center",
-  },
-  verse: {
-    position: "absolute",
-    bottom: 80,
-    width: "70%",
-    fontSize: "1.6rem",
-    fontFamily: "Roboto Slab",
-    textAlign: "center",
-    transition: "opacity 0.35s ease-in-out",
-    background: "none",
-    top: 105,
-    [theme.breakpoints.only("md")]: {
-      width: "80%",
-      fontSize: "1.4rem",
-    },
-    [theme.breakpoints.down("md")]: {
-      top: 100,
-      width: "90%",
-      fontSize: "1.2rem",
-    },
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "1rem",
-    },
-  },
-  reference: {
-    fontStyle: "italic",
-    fontSize: "1rem",
-    color: WHITE,
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "0.9rem",
-    },
-  },
   link: {
     color: WHITE,
     marginTop: 5,
@@ -83,6 +30,23 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+const Heading = styled("h3")(({ theme }) => ({
+  position: "absolute",
+  top: 80,
+  color: WHITE,
+  fontWeight: 800,
+  fontFamily: "Sans",
+  fontSize: "1.2rem",
+  textShadow: "1px 1px 2px " + BLACK,
+  [theme.breakpoints.down("sm")]: {
+    top: 75,
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.1rem",
+  },
+}));
+
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   const BigTooltip = withStyles((theme) => ({
     tooltip: {
@@ -157,25 +121,53 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   };
   const { t } = useTranslation();
   return (
-    <div className={classes.imageContainer}>
-      <h3 className={classes.heading}>{t("landingVerseHeading")}</h3>
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        height: "300px",
+        backgroundImage: `url(${banner})`,
+        backgroundRepeat: "round",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <Heading>{t("landingVerseHeading")}</Heading>
       <BigTooltip title={t("landingVerseHeadingToolTip")}>
-        <div className={classes.verse}>
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 80,
+            width: { lg: "70%", sm: "80%", xs: "90%" },
+            fontSize: { lg: "1.6rem", sm: "1.4rem", xs: "1rem" },
+            fontFamily: "Roboto Slab",
+            textAlign: "center",
+            transition: "opacity 0.35s ease-in-out",
+            background: "none",
+            top: { lg: 105, xs: 100 },
+          }}
+        >
           <Link
             to={{ pathname: "/read" }}
             className={classes.link}
             onClick={() => setURL()}
           >
             {verseObj ? verseObj.verseContent?.text : ""}
-            <div className={classes.reference}>
+            <Box
+              sx={{
+                fontStyle: "italic",
+                fontSize: { lg: "1rem", xs: "0.9rem" },
+                color: WHITE,
+              }}
+            >
               {book
                 ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
                 : ""}
-            </div>
+            </Box>
           </Link>
-        </div>
+        </Box>
       </BigTooltip>
-    </div>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

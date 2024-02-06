@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import BorderColor from "@mui/icons-material/BorderColor";
 import Tooltip from "@mui/material/Tooltip";
 import Popover from "@mui/material/Popover";
@@ -9,44 +8,14 @@ import { useFirebase } from "react-redux-firebase";
 import * as color from "../../store/colorCode";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { Box } from "@mui/material";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  info: {
-    padding: 0,
-    width: "30px",
-    marginTop: 20,
-    marginRight: 4,
-    cursor: "pointer",
-  },
-  colorBox: {
-    padding: 6,
-    [theme.breakpoints.down("md")]: {
-      display: "flex",
-    },
-  },
-  popover: {
-    marginTop: 4,
-    borderRadius: 10,
-  },
-  yellow: {
-    color: color.YELLOW,
-  },
-  green: {
-    color: color.GREEN,
-  },
-  cyan: {
-    color: color.CYAN,
-  },
-  pink: {
-    color: color.PINK,
-  },
-  orange: {
-    color: color.ORANGE,
-  },
-}));
-
+const ColorBox = styled("div")({
+  padding: 6,
+  display: "flex",
+});
 function Highlight(props) {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const firebase = useFirebase();
   const { selectedVerses, setSelectedVerses, refUrl, highlights, mobileView } =
@@ -61,11 +30,11 @@ function Highlight(props) {
     setAnchorEl(null);
   };
   const colors = [
-    { code: "a", class: classes.yellow },
-    { code: "b", class: classes.green },
-    { code: "c", class: classes.cyan },
-    { code: "d", class: classes.pink },
-    { code: "e", class: classes.orange },
+    { code: "a", class: { color: color.YELLOW } },
+    { code: "b", class: { color: color.GREEN } },
+    { code: "c", class: { color: color.CYAN } },
+    { code: "d", class: { color: color.PINK } },
+    { code: "e", class: { color: color.ORANGE } },
   ];
   const open = Boolean(anchorEl);
   const colorClicked = (event) => {
@@ -95,14 +64,14 @@ function Highlight(props) {
   return (
     <div>
       {mobileView ? (
-        <div className={classes.colorBox}>
+        <ColorBox>
           {colors.map((color, i) => (
             <Circle
               key={i}
               data-code={color.code}
               onClick={colorClicked}
               fontSize="large"
-              className={color.class}
+              sx={color.class}
             />
           ))}
           <Tooltip title={t("ClearHighlightToolTip")}>
@@ -113,14 +82,23 @@ function Highlight(props) {
               color="disabled"
             />
           </Tooltip>
-        </div>
+        </ColorBox>
       ) : (
         <>
-          <div className={classes.info} onClick={handleClick}>
+          <Box
+            sx={{
+              padding: 0,
+              width: "30px",
+              marginTop: 2.5,
+              marginRight: 0.5,
+              cursor: "pointer",
+            }}
+            onClick={handleClick}
+          >
             <Tooltip title={t("highlightsText")}>
               <BorderColor fontSize="small" />
             </Tooltip>
-          </div>
+          </Box>
           <Popover
             open={open}
             anchorEl={anchorEl}
@@ -133,16 +111,21 @@ function Highlight(props) {
               vertical: "top",
               horizontal: "center",
             }}
-            classes={{ paper: classes.popover }}
+            sx={{
+              [`&.MuiPopover-paper `]: {
+                marginTop: 0.5,
+                borderRadius: 10,
+              },
+            }}
           >
-            <div className={classes.colorBox}>
+            <ColorBox>
               {colors.map((color, i) => (
                 <Circle
                   key={i}
                   data-code={color.code}
                   onClick={colorClicked}
                   fontSize="large"
-                  className={color.class}
+                  sx={color.class}
                 />
               ))}
               <Tooltip title={t("ClearHighlightToolTip")}>
@@ -153,7 +136,7 @@ function Highlight(props) {
                   color="disabled"
                 />
               </Tooltip>
-            </div>
+            </ColorBox>
           </Popover>
         </>
       )}

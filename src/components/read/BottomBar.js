@@ -1,6 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import MenuItem from "./MenuItem";
 import * as views from "../../store/views";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -8,41 +7,7 @@ import SideDrawer from "./SideDrawer";
 import { BLACK } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    top: "auto",
-    bottom: 0,
-    boxShadow: "0 -1px 4px #7e7676",
-  },
-  toolBar: {
-    padding: 0,
-    display: "flex",
-    justifyContent: "space-evenly",
-    [theme.breakpoints.only("sm")]: {
-      minHeight: 56,
-    },
-  },
-  text: {
-    fontSize: 10,
-    margin: "2px 5px",
-    padding: "0 2px",
-    whiteSpace: "nowrap",
-  },
-  menu: {
-    width: 45,
-    paddingTop: 6,
-    paddingLeft: 10,
-    color: BLACK,
-    "& p": {
-      color: "#000",
-      fontSize: "0.65rem",
-      paddingTop: 5,
-    },
-  },
-}));
-
 export default function BottomBar({ login }) {
-  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const { t } = useTranslation();
@@ -56,8 +21,20 @@ export default function BottomBar({ login }) {
   };
 
   return (
-    <AppBar position="fixed" color="inherit" className={classes.appBar}>
-      <Toolbar className={`bottomBar ${classes.toolBar}`}>
+    <AppBar
+      position="fixed"
+      color="inherit"
+      sx={{ top: "auto", bottom: 0, boxShadow: "0 -1px 4px #7e7676" }}
+    >
+      <Toolbar
+        className={`bottomBar`}
+        sx={{
+          padding: 0,
+          display: "flex",
+          justifyContent: "space-evenly",
+          minHeight: 56,
+        }}
+      >
         <span>
           <MenuItem
             icon="import_contacts"
@@ -91,10 +68,22 @@ export default function BottomBar({ login }) {
           />
         </span>
         <span onClick={toggleDrawer(true)}>
-          <div className={classes.menu}>
+          <Box
+            sx={{
+              width: 45,
+              paddingTop: 0.75,
+              paddingLeft: 1.25,
+              color: BLACK,
+              "& p": {
+                color: "#000",
+                fontSize: "0.65rem",
+                paddingTop: 0.625,
+              },
+            }}
+          >
             <MenuIcon />
             <Typography>{t("studyBottomMenuMob")}</Typography>
-          </div>
+          </Box>
         </span>
       </Toolbar>
       <SideDrawer toggleDrawer={toggleDrawer} open={open} login={login} />
