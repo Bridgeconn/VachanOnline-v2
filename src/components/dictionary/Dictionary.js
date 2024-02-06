@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/system";
 import { connect } from "react-redux";
 import DictionaryCombo from "./DictionaryCombo";
 import Box from "@mui/material/Box";
@@ -11,114 +11,16 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 82,
-    [theme.breakpoints.down("md")]: {
-      marginTop: 60,
-    },
-  },
-  header: {
-    paddingLeft: 35,
-    paddingBottom: 8,
-    marginBottom: 20,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    [theme.breakpoints.down("md")]: {
-      padding: 0,
-      height: 60,
-      alignItems: "center",
-    },
-  },
-  title: {
-    marginRight: 10,
-    [theme.breakpoints.down("md")]: {
-      display: "none",
-    },
-  },
-  text: {
-    position: "absolute",
-    right: 0,
-    left: 35,
-    padding: "20px 20px 20px 0",
-    top: 135,
-    bottom: 0,
-    color: "#464545",
-    fontFamily: "Roboto,Noto Sans",
-    overflow: "scroll",
-    fontSize: "1rem",
-    fontWeight: 400,
-    lineHeight: 1.5,
-    letterSpacing: "0.00938em",
-    marginBottom: -15,
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "& span": {
-      fontWeight: 600,
-      display: "block",
-    },
-    "& p": {
-      marginBottom: 10,
-    },
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.up("sm")]: {
-      textAlign: "justify",
-    },
-    [theme.breakpoints.down("md")]: {
-      top: 120,
-      left: 20,
-    },
-  },
-  heading: {
-    fontWeight: "bold",
-    fontSize: "1.2em",
-    padding: "10px 0",
-    textTransform: "capitalize",
-  },
-  loading: {
-    paddingLeft: 20,
-  },
-  metadata: {
-    marginTop: -10,
-  },
-  closeButton: {
-    marginTop: 7,
-    marginRight: 15,
-  },
-  icons: {
-    display: "flex",
-    marginTop: 4,
-    flexWrap: "nowrap",
-    marginLeft: -5,
-    [theme.breakpoints.down("md")]: {
-      marginLeft: 0,
-    },
-  },
-  helpIcon: {
-    padding: "8px 3px 0",
-    color: BLACK,
-    fontSize: 19.5,
-    marginTop: 4,
-    marginRight: 5,
-  },
-  seeAlso: {
-    textTransform: "capitalize",
-  },
-}));
+const Heading = styled("div")({
+  fontWeight: "bold",
+  fontSize: "1.2em",
+  padding: "10px 0",
+  textTransform: "capitalize",
+});
+const LoadingHeading = styled("h3")({
+  paddingLeft: 20,
+});
 const Dictionary = (props) => {
-  const classes = useStyles();
   const [dictionaryText, setDictionaryText] = React.useState("");
   let { dictionary, version, setDictionary, mobileView } = props;
   let {
@@ -193,23 +95,42 @@ const Dictionary = (props) => {
       }
       setDictionaryText(
         <>
-          <div className={classes.heading}>{header}</div>
+          <Heading>{header}</Heading>
           <div>{clean1(wordMeaning.definition)}</div>
           <div>{clean1(wordMeaning.translationHelp)}</div>
-          <div className={classes.heading}>{t("strongsText")}</div>
+          <Heading>{t("strongsText")}</Heading>
           <div>{clean2(wordMeaning.strongs)}</div>
-          <div className={classes.heading}>{t("seeAlsoText")}</div>
-          <div className={classes.seeAlso}>{clean3(wordMeaning.seeAlso)}</div>
-          <div className={classes.heading}>{t("refText")}</div>
+          <Heading>{t("seeAlsoText")}</Heading>
+          <Box sx={{ textTransform: "capitalize" }}>
+            {clean3(wordMeaning.seeAlso)}
+          </Box>
+          <Heading>{t("refText")}</Heading>
           <div>{clean4(wordMeaning.ref)}</div>
         </>
       );
     }
-  }, [classes.heading, classes.seeAlso, dictionaryWord.word, t, wordMeaning]);
+  }, [dictionaryWord.word, t, wordMeaning]);
   return (
-    <div className={classes.root}>
-      <Box className={classes.header}>
-        <Typography variant="h6" className={classes.title}>
+    <Box sx={{ width: "100%", marginTop: { lg: 10.25, xs: 7.5 } }}>
+      <Box
+        sx={{
+          paddingLeft: { lg: 4.375, xs: 0 },
+          paddingBottom: { lg: 1, xs: 0 },
+          marginBottom: 2.5,
+          height: { lg: "auto", xs: 60 },
+          alignItems: "center",
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            marginRight: 1.25,
+            display: { lg: "block", xs: "none" },
+          }}
+        >
           {t("studyDictionaryTitle")}
         </Typography>
         <Box flexGrow={1}>
@@ -224,25 +145,78 @@ const Dictionary = (props) => {
             setDictionary={setDictionary}
           ></DictionaryWordCombo>
         </Box>
-        <Box className={classes.icons}>
-          <div className={classes.metadata}>
+        <Box
+          sx={{
+            display: "flex",
+            marginTop: 0.5,
+            flexWrap: "nowrap",
+            marginLeft: { lg: -0.625, xs: 0 },
+          }}
+        >
+          <Box sx={{ marginTop: -1.25 }}>
             <Metadata
               metadataList={selectedDictionary.metadata}
               title="Version Name (in Eng)"
               abbreviation="Abbreviation"
               mobileView={mobileView}
             ></Metadata>
-          </div>
-          <Help iconStyle={classes.helpIcon} url={"dictionaries"} />
-          <Close className={classes.closeButton} />
+          </Box>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              fontSize: 19.5,
+              marginTop: 1.375,
+              marginRight: 0.625,
+            }}
+            url={"dictionaries"}
+          />
+          <Close className={{ marginTop: 0.875, marginRight: 1.875 }} />
         </Box>
       </Box>
       {dictionaryText.length === 0 ? (
-        <h3 className={classes.loading}>Loading</h3>
+        <LoadingHeading>Loading</LoadingHeading>
       ) : (
-        <div className={classes.text}>{dictionaryText}</div>
+        <Box
+          sx={{
+            position: "absolute",
+            right: 0,
+            left: { lg: 35, xs: 20 },
+            top: { lg: 135, xs: 120 },
+            bottom: 0,
+            color: "#464545",
+            fontFamily: "Roboto,Noto Sans",
+            overflow: "scroll",
+            fontSize: "1rem",
+            fontWeight: 400,
+            lineHeight: 1.5,
+            letterSpacing: "0.00938em",
+            marginBottom: -1.875,
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            textAlign: { lg: "left", xs: "justify" },
+            "& span": {
+              fontWeight: 600,
+              display: "block",
+            },
+            "& p": {
+              marginBottom: 10,
+            },
+            "-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+          }}
+        >
+          {dictionaryText}
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

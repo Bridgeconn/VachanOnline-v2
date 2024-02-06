@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import Box from "@mui/material/Box";
 import { getAudioBibleObject } from "../common/utility";
@@ -27,94 +26,17 @@ import Help from "../common/Help";
 import { Button, Menu, Snackbar } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Alert } from "@mui/material";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  read: {
-    display: "flex",
-    width: "100%",
-    padding: "0 10px 0 44px",
-    borderBottom: "1px solid #f1ecec",
-    position: "absolute",
-    height: 60,
-    top: 72,
-    [theme.breakpoints.only("sm")]: {
-      padding: "0 4px",
-      top: 61,
-    },
-    [theme.breakpoints.only("xs")]: {
-      padding: "0 5.5px",
-      top: (props) => (props.paneNo === 2 ? 0 : 60),
-    },
-    [theme.breakpoints.down("md")]: {
-      boxShadow: theme.shadows[1],
-    },
-  },
-  selectBox: {
-    [theme.breakpoints.down("md")]: {
-      display: "flex",
-      alignItems: "center",
-    },
-  },
-  select: {
-    marginTop: "-8px",
-    backgroundColor: "red",
-  },
-  info: {
-    padding: 0,
-    width: "30px",
-    marginTop: 20,
-    marginRight: 4,
-    color: "default",
-    cursor: "pointer",
-  },
-  infoParall: {
-    padding: 0,
-    width: 22,
-    marginTop: 15,
-    marginRight: 4,
-    color: "default",
-    cursor: "pointer",
-  },
-  settings: {
-    padding: 0,
-    width: "30px",
-    marginTop: 20,
-    marginLeft: "-5px",
-    marginRight: "-5px",
-    color: "default",
-    cursor: "pointer",
-  },
-  items: {
-    display: "flex",
-    [theme.breakpoints.only("sm")]: {
-      marginLeft: -16,
-    },
-  },
-  verseDisplay: {
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
-    width: 100,
-    paddingLeft: 20,
-    fontWeight: 600,
-  },
-  helpIcon: {
-    color: BLACK,
-    marginTop: 19,
-    marginRight: 10,
-    fontSize: 21,
-  },
-  copyButton: {
-    textTransform: "capitalize",
-    margin: "0 auto",
-    display: "flex",
-  },
-  share: {
-    width: "96%",
-    height: 40,
-    margin: 10,
-  },
-}));
+const StyleDiv = styled("div")({
+  padding: 0,
+  width: "30px",
+  marginTop: 20,
+  marginRight: 4,
+  color: "default",
+  cursor: "pointer",
+});
+
 const MenuBar = (props) => {
   let {
     setValue,
@@ -150,8 +72,6 @@ const MenuBar = (props) => {
     toggleParallelScroll,
     errorMessage,
   } = props;
-  const styleProps = { paneNo: paneNo };
-  const classes = useStyles(styleProps);
   const { t } = useTranslation();
   function goFull() {
     setFullscreen(true);
@@ -216,24 +136,16 @@ const MenuBar = (props) => {
       } else {
         setHighlightIcon(
           <Tooltip title={t("commonSelectVerses")}>
-            <div className={classes.info}>
+            <StyleDiv>
               <BorderColor fontSize="small" color="disabled" />
-            </div>
+            </StyleDiv>
           </Tooltip>
         );
       }
     } else {
       setHighlightIcon("");
     }
-  }, [
-    userDetails,
-    selectedVerses,
-    classes.info,
-    setSelectedVerses,
-    refUrl,
-    highlights,
-    t,
-  ]);
+  }, [userDetails, selectedVerses, setSelectedVerses, refUrl, highlights, t]);
 
   //Set note icon
   React.useEffect(() => {
@@ -253,9 +165,9 @@ const MenuBar = (props) => {
       } else {
         setNoteIcon(
           <Tooltip title={t("commonSelectVerses")}>
-            <div className={classes.info}>
+            <StyleDiv>
               <NoteIcon fontSize="small" color="disabled" />
-            </div>
+            </StyleDiv>
           </Tooltip>
         );
       }
@@ -269,7 +181,6 @@ const MenuBar = (props) => {
     sourceId,
     bookCode,
     chapter,
-    classes.info,
     t,
   ]);
   const handleDialogOpen = () => {
@@ -341,20 +252,39 @@ const MenuBar = (props) => {
     ) {
       setAudioIcon(
         <Tooltip title={t("audioBibleText")}>
-          <div className={classes.info} onClick={openAudioBible}>
+          <StyleDiv onClick={openAudioBible}>
             <i className="material-icons md-23">volume_up</i>
-          </div>
+          </StyleDiv>
         </Tooltip>
       );
     } else {
       setValue("audio", false);
       setAudioIcon("");
     }
-  }, [audio, audioBible, bookCode, classes.info, setValue, parallelView, t]);
+  }, [audio, audioBible, bookCode, setValue, parallelView, t]);
   return (
     <div>
-      <Box className={classes.read}>
-        <Box flexGrow={1} className={classes.selectBox}>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          paddingRight: { lg: 1.25, sm: 0.5, xs: 0.6875 },
+          paddingLeft: { lg: 5.5, sm: 0.5, xs: 0.6875 },
+          paddingY: 0,
+          borderBottom: "1px solid #f1ecec",
+          position: "absolute",
+          height: 60,
+          boxShadow: { lg: 0, xs: 1 },
+          top: { lg: 72, sm: 61, xs: props.paneNo === 2 ? 0 : 60 },
+        }}
+      >
+        <Box
+          flexGrow={1}
+          sx={{
+            display: { lg: "block", xs: "flex" },
+            alignItems: { lg: "flex-start", xs: "center" },
+          }}
+        >
           <Version
             setValue={setValue}
             version={version}
@@ -379,8 +309,8 @@ const MenuBar = (props) => {
           )}
         </Box>
         {errorMessage === "" ? (
-          <Box className={classes.items}>
-            <div className={classes.info}>
+          <Box sx={{ display: "flex", marginLeft: { lg: 0, xs: -2 } }}>
+            <StyleDiv>
               <Tooltip title={t("shareTooltip")}>
                 <ShareIcon fontSize="small" onClick={openShareDialog} />
               </Tooltip>
@@ -406,7 +336,7 @@ const MenuBar = (props) => {
                   id="share-url"
                   size="small"
                   defaultValue={path}
-                  className={classes.share}
+                  sx={{ width: "96%", height: 40, margin: 1.25 }}
                   InputProps={{
                     readOnly: true,
                   }}
@@ -429,7 +359,12 @@ const MenuBar = (props) => {
                 </Snackbar>
                 <div>
                   <Button
-                    className={classes.copyButton}
+                    sx={{
+                      textTransform: "capitalize",
+                      marginX: "auto",
+                      marginY: 0,
+                      display: "flex",
+                    }}
                     variant="outlined"
                     onClick={handleCopyClick}
                     startIcon={<FileCopyOutlinedIcon />}
@@ -438,7 +373,7 @@ const MenuBar = (props) => {
                   </Button>
                 </div>
               </Menu>
-            </div>
+            </StyleDiv>
             {mobileView ? null : noteIcon}
             {mobileView ? null : highlightIcon}
 
@@ -452,27 +387,35 @@ const MenuBar = (props) => {
             {audioIcon}
             {mobileView ? null : (
               <>
-                <div className={classes.info} onClick={handleDialogOpen}>
+                <StyleDiv onClick={handleDialogOpen}>
                   <Tooltip title={t("commonPrintChapter")}>
                     <PrintIcon fontSize="small" />
                   </Tooltip>
-                </div>
+                </StyleDiv>
                 <Tooltip title={t("menuBarFullScreenToolTip")}>
-                  <div onClick={goFull} className={classes.info}>
+                  <StyleDiv onClick={goFull}>
                     <i className="material-icons md-23">zoom_out_map</i>
-                  </div>
+                  </StyleDiv>
                 </Tooltip>
               </>
             )}
-            <div
-              className={classes.settings}
+            <Box
+              sx={{
+                padding: 0,
+                width: "30px",
+                marginTop: 2.5,
+                marginLeft: -0.625,
+                marginRight: -0.625,
+                color: "default",
+                cursor: "pointer",
+              }}
               aria-label="More"
               aria-controls="long-menu"
               aria-haspopup="true"
               onClick={openSettings}
             >
               <i className="material-icons md-23">settings</i>
-            </div>
+            </Box>
             <Setting
               fontSize={fontSize}
               fontFamily={fontFamily}
@@ -490,30 +433,37 @@ const MenuBar = (props) => {
               chapter={chapter}
               paneNo={paneNo}
             />
-            <Help iconStyle={classes.helpIcon} url={url} />
+            <Help
+              iconStyle={{
+                color: BLACK,
+                marginTop: 2.375,
+                marginRight: 1.25,
+                fontSize: 21,
+              }}
+              url={url}
+            />
             {mobileView && paneNo === 1 ? (
-              <div
-                className={classes.infoParall}
+              <Box
+                sx={{
+                  padding: 0,
+                  width: 22,
+                  marginTop: 1.875,
+                  marginRight: 0.5,
+                  color: "default",
+                  cursor: "pointer",
+                }}
                 onClick={toggleParallelScroll}
               >
                 {parallelScroll ? (
                   <Tooltip title={t("studyParallelScroll")}>
-                    <ParallelScroll
-                      fontSize="large"
-                      style={{ color: BLACK }}
-                      className={classes.parallelScroll}
-                    />
+                    <ParallelScroll fontSize="large" style={{ color: BLACK }} />
                   </Tooltip>
                 ) : (
                   <Tooltip title={t("studyParallelScrollDisabled")}>
-                    <ParallelScroll
-                      fontSize="large"
-                      color="disabled"
-                      className={classes.parallelScroll}
-                    />
+                    <ParallelScroll fontSize="large" color="disabled" />
                   </Tooltip>
                 )}
-              </div>
+              </Box>
             ) : (
               ""
             )}

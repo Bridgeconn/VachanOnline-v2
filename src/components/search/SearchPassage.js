@@ -9,63 +9,18 @@ import { getReference } from "../common/utility";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
+import { styled } from "@mui/system";
 
 const useStyles = makeStyles((theme) => ({
-  searchBox: {
-    padding: "4px 4px",
-    display: "flex",
-    alignItems: "center",
-    height: 40,
-    width: 350,
-    marginLeft: 20,
-    marginRight: 10,
-    [theme.breakpoints.only("md")]: {
-      marginLeft: 0,
-      width: 300,
-    },
-    [theme.breakpoints.down("md")]: {
-      marginRight: 0,
-    },
-  },
-  searchField: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-    [theme.breakpoints.down("md")]: {
-      width: 155,
-    },
-  },
-  searchButtonMob: {
-    marginTop: 1,
-    padding: "5px 1px 5px",
-    color: BLACK,
-  },
   input: {
     height: "80px",
   },
-  cancelBtn: {
-    textTransform: "capitalize",
-    fontWeight: "bold",
-    paddingRight: 0,
-  },
-  searchIcon: {
-    padding: "1px 1px 1px",
-    color: BLACK,
-    fontSize: "33px",
-  },
-  searchTooltip: {
-    width: "350px",
-    [theme.breakpoints.only("md")]: {
-      width: 300,
-    },
-  },
-  hints: {
-    fontSize: 14,
-  },
-  closeBtn: {
-    cursor: "pointer",
-  },
 }));
-
+const I = styled("i")({
+  padding: "1px 1px 1px",
+  color: BLACK,
+  fontSize: "33px",
+});
 const SearchPassage = (props) => {
   const classes = useStyles();
   const [searchText, setSearchText] = React.useState("");
@@ -153,37 +108,55 @@ const SearchPassage = (props) => {
   return mobileView && !showTextBox ? (
     <IconButton
       type="submit"
-      className={classes.searchButtonMob}
+      sx={{
+        marginTop: 0.125,
+        paddingX: 0.125,
+        paddingY: 0.625,
+        color: BLACK,
+      }}
       onClick={toggleText}
       target="_blank"
       rel="noopener"
       size="large"
     >
-      <i className={`material-icons ${classes.searchIcon}`}>manage_search</i>
+      <I className={`material-icons `}>manage_search</I>
     </IconButton>
   ) : (
     <>
       <BigTooltip
         disableFocusListener={mobileView ? true : false}
         title={searchHints}
-        className={classes.searchTooltip}
+        sx={{
+          width: { lg: 350, xs: 300 },
+        }}
       >
         <Paper
           component="form"
-          className={classes.searchBox}
           onSubmit={showSearchResult}
+          sx={{
+            paddingX: 0.4,
+            paddingY: 0.4,
+            display: "flex",
+            alignItems: "center",
+            height: 40,
+            width: { lg: 350, xs: 300 },
+            marginLeft: { lg: 2.5, xs: 0 },
+            marginRight: { lg: 1.25, xs: 0 },
+          }}
         >
           <IconButton
             type="submit"
             className={classes.searchButtonMob}
             size="large"
           >
-            <i className={`material-icons ${classes.searchIcon}`}>
-              manage_search
-            </i>
+            <I className={`material-icons`}>manage_search</I>
           </IconButton>
           <InputBase
-            className={classes.searchField}
+            sx={{
+              marginLeft: 1,
+              flex: 1,
+              width: { lg: "auto", xs: 155 },
+            }}
             placeholder={t("seachPlaceHolderTopbar")}
             inputProps={{ className: classes.input }}
             value={searchText}
@@ -192,12 +165,19 @@ const SearchPassage = (props) => {
             onChange={handleSearchTextChange}
           />
           {searchText && (
-            <CloseIcon onClick={clearTextField} className={classes.closeBtn} />
+            <CloseIcon onClick={clearTextField} sx={{ cursor: "pointer" }} />
           )}
         </Paper>
       </BigTooltip>
       {mobileView && (
-        <Button className={classes.cancelBtn} onClick={handleClose}>
+        <Button
+          sx={{
+            textTransform: "capitalize",
+            fontWeight: "bold",
+            paddingRight: 0,
+          }}
+          onClick={handleClose}
+        >
           {t("commonCancel")}
         </Button>
       )}

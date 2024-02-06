@@ -1,8 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import { makeStyles } from "@mui/styles";
-import { Snackbar, useMediaQuery } from "@mui/material";
+import { Box, Snackbar, useMediaQuery } from "@mui/material";
 import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,106 +21,24 @@ import { Alert } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    top: 0,
-    display: "flex",
-    width: "100%",
-    position: "absolute",
-    height: 74,
-    [theme.breakpoints.down("md")]: {
-      height: 60,
-    },
-  },
-  appBar: {
-    background: WHITE,
-    padding: "0px 10px",
-    marginBottom: "10px",
-    border: BLACK,
-    zIndex: 900,
-    [theme.breakpoints.down("md")]: {
-      marginBottom: 0,
-      padding: 0,
-    },
-  },
-  title: {
-    flexGrow: 1,
-    display: "inline-block",
-    [theme.breakpoints.up("md")]: {
-      display: "block",
-    },
-    [theme.breakpoints.down("md")]: {
-      width: "10%",
-    },
-    "& a": {
-      color: "inherit",
-      textDecoration: "none",
-      lineHeight: "75px",
-    },
-  },
-  icon: {
-    height: 50,
-    [theme.breakpoints.down("md")]: {
-      height: 40,
-    },
-  },
-  logo: {
-    height: 60,
-    [theme.breakpoints.down("lg")]: {
-      display: "none",
-    },
-  },
-  button: {
-    marginRight: 4,
-    marginTop: 2,
-  },
-  feedback: {
-    color: BLACK,
-    marginTop: 2,
-    "&:hover": {
-      color: BLACK,
-    },
-    [theme.breakpoints.down("md")]: {
-      display: "none",
-    },
-  },
-  signBible: {
-    marginTop: 2,
-    marginRight: 10,
-  },
-  islIcon: {
-    padding: "8px 8px 0",
-    color: BLACK,
-  },
-  languageIcon: {
-    color: BLACK,
-    cursor: "pointer",
-    marginLeft: 10,
-    width: "25px",
-    fontSize: "2rem",
-    [theme.breakpoints.down("md")]: {
-      marginLeft: 0,
-    },
-  },
-  mobileToolbar: {
-    [theme.breakpoints.down("md")]: { paddingLeft: 8, paddingRight: 8 },
-  },
-  person: {
-    color: BLACK,
-    fontSize: "2rem",
-    cursor: "pointer",
-    padding: "0 8px",
-    boxSizing: "content-box",
-  },
-  toolbar: {
-    padding: "0 12px",
+const ImageStyle = styled("img")(({ theme }) => ({
+  height: 50,
+  [theme.breakpoints.down("sm")]: {
+    height: 40,
   },
 }));
+const ImageStyleLogo = styled("img")(({ theme }) => ({
+  height: 60,
+  [theme.breakpoints.down("lg")]: {
+    display: "none",
+  },
+}));
+const I = styled("i")({ padding: "6px 6px 0", color: BLACK });
 
 const TopBar = (props) => {
   const theme = useTheme();
-  const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
@@ -142,11 +59,18 @@ const TopBar = (props) => {
         <Login
           setMessage={setMessage}
           setAlert={setAlert}
-          person={classes.person}
+          person={{
+            color: BLACK,
+            fontSize: "2rem",
+            cursor: "pointer",
+            paddingX: 1,
+            paddingY: 0,
+            boxSizing: "content-box",
+          }}
         />
       )
     );
-  }, [classes.person, login, userDetails]);
+  }, [login, userDetails]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -158,17 +82,14 @@ const TopBar = (props) => {
   const ISLButton = () => {
     const Btn = () => {
       return mobileView ? (
-        <i
-          className={`material-icons ${classes.islIcon}`}
-          onClick={setParallelView}
-        >
+        <I className={`material-icons `} onClick={setParallelView}>
           sign_language
-        </i>
+        </I>
       ) : (
         <Button
           variant="outlined"
           size="small"
-          className={classes.signBible}
+          sx={{ marginTop: 0.25, marginRight: 1.25 }}
           title={t("ISLVBibleText")}
           aria-label="sign language bible"
           target="_blank"
@@ -192,12 +113,12 @@ const TopBar = (props) => {
     return process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
       <Link to="/biblestories">
         {mobileView ? (
-          <i className={`material-icons ${classes.islIcon}`}>auto_stories</i>
+          <I className={`material-icons`}>auto_stories</I>
         ) : (
           <Button
             variant="outlined"
             size="small"
-            className={classes.button}
+            sx={{ marginRight: 0.5, marginTop: 0.25 }}
             title={t("bibleStoriesText")}
             aria-label="bible stories"
             target="_blank"
@@ -216,12 +137,12 @@ const TopBar = (props) => {
     return process.env.REACT_APP_SONGS_URL !== undefined ? (
       <Link to="/songs">
         {mobileView ? (
-          <i className={`material-icons ${classes.islIcon}`}>music_note</i>
+          <I className={`material-icons`}>music_note</I>
         ) : (
           <Button
             variant="outlined"
             size="small"
-            className={classes.button}
+            sx={{ marginRight: 0.5, marginTop: 0.25 }}
             title={t("songsText")}
             aria-label="songs"
             target="_blank"
@@ -241,12 +162,12 @@ const TopBar = (props) => {
       <>
         <Link to="/audiobible">
           {mobileView ? (
-            <i className={`material-icons ${classes.islIcon}`}>headphones</i>
+            <I className={`material-icons`}>headphones</I>
           ) : (
             <Button
               variant="outlined"
               size="small"
-              className={classes.button}
+              sx={{ marginRight: 0.5, marginTop: 0.25 }}
               title={t("audioBibleText")}
               aria-label="audio bible"
               target="_blank"
@@ -264,12 +185,12 @@ const TopBar = (props) => {
     return (
       <Link to="/read">
         {isMobilePortrait ? (
-          <i className={`material-icons ${classes.islIcon}`}>local_library</i>
+          <I className={`material-icons`}>local_library</I>
         ) : (
           <Button
             variant="outlined"
             size="small"
-            className={classes.button}
+            sx={{ marginRight: 0.5, marginTop: 0.25 }}
             title={t("readTopBarBtn")}
             aria-label="read bible"
             target="_blank"
@@ -286,12 +207,12 @@ const TopBar = (props) => {
     return (
       <Link to="/study">
         {isMobilePortrait ? (
-          <i className={`material-icons ${classes.islIcon}`}>menu_book</i>
+          <I className={`material-icons`}>menu_book</I>
         ) : (
           <Button
             variant="outlined"
             size="small"
-            className={classes.button}
+            sx={{ marginRight: 0.5, marginTop: 0.25 }}
             title={t("studyBibleTopBarBtn")}
             aria-label="study bible"
             target="_blank"
@@ -311,7 +232,14 @@ const TopBar = (props) => {
       <Tooltip title={t("feedbackTopBarBtnToolTip")}>
         <IconButton
           aria-label="feedback"
-          className={classes.feedback}
+          sx={{
+            color: BLACK,
+            marginTop: 0.25,
+            "&:hover": {
+              color: BLACK,
+            },
+            display: { lg: "block", xs: "none" },
+          }}
           href="https://forms.office.com/r/qiV0Ym335M"
           target="_blank"
           rel="noopener"
@@ -326,15 +254,44 @@ const TopBar = (props) => {
     return <SearchPassage setHideIcons={setHideIcons} />;
   };
   return (
-    <div className={classes.root}>
-      <AppBar className={classes.appBar} position="static">
-        <Toolbar className={classes.mobileToolbar}>
-          <div className={classes.title}>
+    <Box
+      sx={{
+        top: 0,
+        display: "flex",
+        width: "100%",
+        position: "absolute",
+        height: { lg: 74, xs: 60 },
+      }}
+    >
+      <AppBar
+        sx={{
+          background: WHITE,
+          paddingX: { lg: 1.25, xs: 0 },
+          paddingY: { lg: 0, xs: 0 },
+          marginBottom: { lg: 1.25, xs: 0 },
+          border: BLACK,
+          zIndex: 900,
+        }}
+        position="static"
+      >
+        <Toolbar sx={{ paddingX: 1 }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { lg: "inline-block", xs: "block" },
+              width: { lg: "auto", xs: "10%" },
+              "& a": {
+                color: "inherit",
+                textDecoration: "none",
+                lineHeight: "75px",
+              },
+            }}
+          >
             <Link to="/">
-              <img src={favicon} alt={"icon"} className={classes.icon} />
-              <img src={logo} alt={"logo"} className={classes.logo} />
+              <ImageStyle src={favicon} alt={"icon"} />
+              <ImageStyleLogo src={logo} alt={"logo"} />
             </Link>
-          </div>
+          </Box>
           {path.startsWith("/audiobible") || path.startsWith("/read")
             ? ""
             : AudioBible()}
@@ -353,7 +310,15 @@ const TopBar = (props) => {
               {path.startsWith("/study") ? ReadButton() : StudyButton()}
               {FeedbackButton()}
               {loginButton}
-              <MultiLanguageDropdown iconstyle={classes.languageIcon} />
+              <MultiLanguageDropdown
+                iconstyle={{
+                  color: BLACK,
+                  cursor: "pointer",
+                  marginLeft: { lg: 1.25, xs: 0.75 },
+                  width: "25px",
+                  fontSize: "2rem",
+                }}
+              />
             </>
           )}
         </Toolbar>
@@ -372,7 +337,7 @@ const TopBar = (props) => {
       ) : (
         ""
       )}
-    </div>
+    </Box>
   );
 };
 

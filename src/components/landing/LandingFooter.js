@@ -5,100 +5,12 @@ import Button from "@mui/material/Button";
 import AboutUs from "./AboutUs";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import Typography from "@mui/material/Typography";
-import { makeStyles } from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
 import { connect } from "react-redux";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 
-const useStyles = makeStyles((theme) => ({
-  landingFooter: {
-    bottom: 0,
-    position: "fixed",
-    background: WHITE,
-    boxShadow:
-      "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
-    borderTop: "1px solid" + GREY,
-    color: "#fff",
-    padding: "5px 15px",
-    marginTop: 40,
-    textAlign: "center",
-    zIndex: 1000,
-    "&div": {
-      display: "inline-block",
-      paddingTop: theme.spacing(3),
-    },
-    [theme.breakpoints.down("md")]: {
-      flexWrap: "nowrap",
-    },
-  },
-  text: {
-    padding: theme.spacing(1),
-    textAlign: "right",
-    display: "inline-block",
-    float: "right",
-    [theme.breakpoints.down("md")]: {
-      float: "unset",
-      fontSize: 12,
-    },
-  },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-    borderRight: "1px solid #fff",
-    display: "inline-block",
-    padding: "0px 10px",
-    fontSize: 16,
-    marginTop: 8,
-    "&:hover": {
-      color: "inherit",
-    },
-    "&:last-child": {
-      borderRight: 0,
-    },
-  },
-  companyLink: {
-    color: BLACK,
-    "&:hover": {
-      color: BLACK,
-      textDecoration: "none",
-    },
-  },
-  button: {
-    marginTop: 3,
-    textTransform: "unset",
-    padding: "2px 10px",
-    fontSize: 16,
-    "&:hover": {
-      color: GREY,
-    },
-    [theme.breakpoints.down("md")]: {
-      fontSize: 12,
-    },
-  },
-  feedback: {
-    marginTop: 3,
-    textTransform: "unset",
-    padding: "2px 10px",
-    fontSize: 16,
-    "&:hover": {
-      color: GREY,
-    },
-    [theme.breakpoints.down("md")]: {
-      fontSize: 12,
-    },
-  },
-  rightLinks: {
-    textAlign: "left",
-    [theme.breakpoints.only("xs")]: {
-      textAlign: "center",
-      whiteSpace: "nowrap",
-      marginRight: 15,
-    },
-  },
-}));
 const LandingFooter = (props) => {
-  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { mobileView } = props;
   const openModal = () => {
@@ -111,12 +23,51 @@ const LandingFooter = (props) => {
   };
   return (
     <>
-      <Grid container className={classes.landingFooter}>
-        <Grid item xs={6} sm={5} className={classes.rightLinks}>
+      <Grid
+        container
+        sx={{
+          bottom: 0,
+          position: "fixed",
+          background: WHITE,
+          boxShadow:
+            "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
+          borderTop: "1px solid" + GREY,
+          color: "#fff",
+          paddingX: 1.875,
+          paddingY: 0.625,
+          marginTop: 0.625,
+          textAlign: "center",
+          zIndex: 1000,
+          flexWrap: { lg: "wrap", xs: "nowrap" },
+          "&div": {
+            display: "inline-block",
+            paddingTop: 3,
+          },
+        }}
+      >
+        <Grid
+          item
+          xs={6}
+          sm={5}
+          sx={{
+            textAlign: { lg: "left", xs: "center" },
+            whiteSpace: { lg: "wrap", xs: "nowrap" },
+            marginRight: { lg: 0, xs: 1.875 },
+          }}
+        >
           <Button
             variant="outlined"
             size="small"
-            className={classes.button}
+            sx={{
+              marginTop: 0.375,
+              textTransform: "unset",
+              paddingX: 1.25,
+              paddingY: 0.25,
+              fontSize: { lg: 16, xs: 12 },
+              "&:hover": {
+                color: GREY,
+              },
+            }}
             onClick={openModal}
           >
             {t("landingFooterAboutUsBtn")}
@@ -126,7 +77,16 @@ const LandingFooter = (props) => {
           <Button
             variant="outlined"
             size="small"
-            className={classes.feedback}
+            sx={{
+              marginTop: 0.375,
+              textTransform: "unset",
+              paddingX: 1.25,
+              paddingY: 0.25,
+              fontSize: { lg: 16, xs: 12 },
+              "&:hover": {
+                color: GREY,
+              },
+            }}
             startIcon={<FeedbackIcon />}
             href="https://forms.office.com/r/qiV0Ym335M"
             target="_blank"
@@ -139,10 +99,24 @@ const LandingFooter = (props) => {
           <Link
             href="https://www.bridgeconn.com/"
             target="_blank"
-            className={classes.companyLink}
+            sx={{
+              color: BLACK,
+              "&:hover": {
+                color: BLACK,
+                textDecoration: "none",
+              },
+            }}
             underline="hover"
           >
-            <Typography className={classes.text}>
+            <Typography
+              sx={{
+                padding: 1,
+                textAlign: "right",
+                display: "inline-block",
+                float: { lg: "right", xs: "unset" },
+                fontSize: { lg: "1rem", xs: 12 },
+              }}
+            >
               {t("landingCompanyYear")}{" "}
               {mobileView ? t("landingCompanyMob") : t("landingCompanyDesktop")}
             </Typography>

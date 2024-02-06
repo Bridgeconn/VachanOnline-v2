@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import List from "@mui/material/List";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -9,70 +8,9 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
-    border: "1px solid #fff",
-    margin: "0 10px",
-    [theme.breakpoints.down("md")]: {
-      width: "50%",
-    },
-    [theme.breakpoints.up("md")]: {
-      left: theme.spacing(0),
-    },
-  },
-  list: {
-    padding: 0,
-  },
-  menuRoot: {
-    backgroundColor: "#eaeaea",
-    boxShadow: "none",
-    "&.Mui-expanded": {
-      margin: 0,
-    },
-  },
-  expanded: {},
-  expansionDetails: {
-    backgroundColor: "white",
-    boxShadow: "none",
-    padding: "0 0 0 20px",
-    width: "100%",
-  },
-  summaryPanel: {
-    textTransform: "capitalize",
-    borderBottom: "1px solid #b7b7b726",
-    "&.Mui-expanded": {
-      minHeight: 50,
-    },
-  },
-  content: {
-    margin: "10px 0",
-    "&.Mui-expanded": {
-      margin: "12px 0",
-    },
-  },
-  icon: {
-    left: 15,
-    position: "relative",
-  },
-  paper: {
-    maxHeight: "calc(100vh - 170px)",
-    width: 300,
-    border: "1px solid #d3d4d5",
-  },
-  language: {
-    fontSize: "1rem",
-  },
-  dictionary: {
-    fontSize: "1rem",
-    cursor: "pointer",
-  },
-}));
+import { styled } from "@mui/system";
+const I = styled("i")({ left: 15, position: "relative" });
 const DictionaryCombo = (props) => {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
@@ -88,7 +26,6 @@ const DictionaryCombo = (props) => {
       JSON.parse(decodeURIComponent(event.currentTarget.getAttribute("value")))
     );
   };
-  const classesI = `material-icons ${classes.icon}`;
   return (
     <>
       <Button
@@ -96,10 +33,19 @@ const DictionaryCombo = (props) => {
         aria-haspopup="true"
         onClick={handleClick}
         variant="contained"
-        classes={{ root: classes.button }}
+        sx={{
+          fontSize: "1rem",
+          textTransform: "capitalize",
+          backgroundColor: "#fff",
+          border: "1px solid #fff",
+          marginY: 0,
+          marginX: 1.25,
+          width: { lg: "auto", md: "50%", sm: "50%" },
+          left: { xs: 0 },
+        }}
       >
         {props.selectedDictionary.code}
-        <i className={classesI}>keyboard_arrow_downn</i>
+        <I className={`material-icons`}>keyboard_arrow_downn</I>
       </Button>
       {!props.dictionaries || props.dictionaries.length === 0 ? (
         ""
@@ -120,40 +66,75 @@ const DictionaryCombo = (props) => {
           keepMounted
           open={Boolean(anchorEl)}
           onClose={handleClose}
-          classes={{
-            list: classes.list,
-            paper: classes.paper,
+          sx={{
+            [`.MuiMenu-paper`]: {
+              maxHeight: "calc(100vh - 170px)",
+              width: 300,
+              border: "1px solid #d3d4d5",
+            },
+            [`.MuiMenu-list`]: {
+              padding: 0,
+            },
           }}
         >
           {props.dictionaries.map((languages, i) => (
             <Accordion
               defaultExpanded={true}
-              classes={{
-                root: classes.menuRoot,
-                expanded: classes.expanded,
+              sx={{
+                backgroundColor: "#eaeaea",
+                boxShadow: "none",
+                "&.Mui-expanded": {
+                  margin: 0,
+                },
               }}
               key={i}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                classes={{
-                  root: classes.summaryPanel,
-                  expanded: classes.expanded,
-                  content: classes.content,
+                sx={{
+                  [`.MuiAccordionSummary-root`]: {
+                    textTransform: "capitalize",
+                    borderBottom: "1px solid #b7b7b726",
+                    "&.Mui-expanded": {
+                      minHeight: 50,
+                    },
+                  },
+                  [`.MuiAccordionSummary-content`]: {
+                    marginTop: 1.25,
+                    margginRight: 1.25,
+                    marginLeft: 0,
+                    marginBottom: 0,
+                    "&.Mui-expanded": {
+                      marginTop: 1.5,
+                      marginRight: 1.5,
+                      marginLeft: 0,
+                      marginBottom: 0,
+                    },
+                  },
                 }}
               >
-                <Typography className={classes.language}>
+                <Typography sx={{ fontSize: "1rem" }}>
                   {languages.language}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails style={{ padding: 0 }}>
-                <List className={classes.expansionDetails}>
+                <List
+                  sx={{
+                    backgroundColor: "white",
+                    boxShadow: "none",
+                    paddingTop: 0,
+                    paddingRight: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 2.5,
+                    width: "100%",
+                  }}
+                >
                   {languages.dictionaries.map((item, i) => (
                     <ListItem
                       key={i}
                       value={encodeURIComponent(JSON.stringify(item))}
                       onClick={setDictionary}
-                      className={classes.dictionary}
+                      sx={{ fontSize: "1rem", cursor: "pointer" }}
                     >
                       {item.code} : {item.name}
                     </ListItem>

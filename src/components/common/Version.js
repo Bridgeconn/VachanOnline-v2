@@ -17,60 +17,9 @@ import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
 import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
-    border: "1px solid #fff",
-    boxShadow: "1px 1px 1px 1px " + GREY,
-    [theme.breakpoints.down("md")]: {
-      minWidth: 60,
-      padding: "6px 10px",
-    },
-    [theme.breakpoints.up("sm")]: {
-      left: theme.spacing(0),
-      margin: "4px 15px 4px 0",
-    },
-  },
-  list: {
-    padding: 0,
-  },
-  menuRoot: {
-    backgroundColor: WHITE,
-    boxShadow: "none",
-    border: "1px solid #00000020",
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:before": {
-      display: "none",
-    },
-    "&.Mui-expanded": {
-      margin: "auto",
-    },
-  },
-  expanded: {},
-  expansionDetails: {
-    backgroundColor: WHITE,
-    boxShadow: "inset 1px 2px 2px 0px " + GREY,
-    padding: "4px 0px 1px 1px",
-    width: "100%",
-  },
-  summaryPanel: {
-    textTransform: "capitalize",
-    borderBottom: "1px solid #b7b7b726",
-    minHeight: 40,
-    maxHeight: 40,
-    "&.Mui-expanded": {
-      minHeight: 40,
-      maxHeight: 40,
-      boxShadow: theme.shadows[4],
-      backgroundColor: LIGHTGREY,
-    },
-  },
-  icon: {
+import { styled } from "@mui/system";
+const I = styled("i")(({ theme }) => ({
+  [`&.material-icons`]: {
     left: 5,
     position: "relative",
     [theme.breakpoints.down("md")]: {
@@ -78,23 +27,22 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
-  versionName: {
-    [theme.breakpoints.down("md")]: {
-      whiteSpace: "nowrap",
-      minWidth: 30,
-      maxWidth: 118,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
+}));
+const VersionName = styled("div")(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    whiteSpace: "nowrap",
+    minWidth: 30,
+    maxWidth: 118,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
-  paper: {
-    maxHeight: "calc(100vh - 170px)",
-    width: 300,
-  },
-  language: {
-    fontSize: "1rem",
-    width: "100%",
-  },
+}));
+const StyleSpan = styled("span")({
+  color: GREY,
+  fontSize: "0.9rem",
+  float: "right",
+});
+const useStyles = makeStyles((theme) => ({
   version: {
     fontSize: "1rem",
     cursor: "pointer",
@@ -104,19 +52,6 @@ const useStyles = makeStyles((theme) => ({
   versionSelected: {
     boxShadow: "inset 0 0 30px " + LIGHTGREY,
     border: "1px solid " + GREY + "70",
-  },
-  label: {
-    [theme.breakpoints.down("md")]: {
-      justifyContent: "unset",
-    },
-  },
-  expansionDetailsRoot: {
-    padding: 0,
-  },
-  lang: {
-    color: GREY,
-    fontSize: "0.9rem",
-    float: "right",
   },
 }));
 const Version = (props) => {
@@ -268,7 +203,7 @@ const Version = (props) => {
     const lang = (
       <>
         <span>{found?.languageName || language}</span>
-        <span className={classes.lang}>{language}</span>
+        <StyleSpan className={classes.lang}>{language}</StyleSpan>
       </>
     );
     return lang;
@@ -324,17 +259,25 @@ const Version = (props) => {
           aria-haspopup="true"
           onClick={handleClick}
           variant="contained"
-          style={landingPage && mobileView ? { marginRight: 15 } : {}}
-          classes={
-            landingPage
-              ? { root: classes.button }
-              : { root: classes.button, label: classes.label }
-          }
+          style={landingPage && mobileView ? { marginRight: 1.875 } : {}}
+          sx={{
+            fontSize: "1rem",
+            textTransform: "capitalize",
+            backgroundColor: "#fff",
+            border: "1px solid #fff",
+            boxShadow: "1px 1px 1px 1px " + GREY,
+            marginY: { lg: 0.5, xs: "unset" },
+            marginRight: { lg: 1.875, xs: "unset" },
+            marginLeft: { lg: 0, xs: "unset" },
+            paddingX: { xs: 1.25 },
+            paddingY: { xs: 0.75 },
+            minWidth: { lg: "unset", xs: 60 },
+            left: 0,
+            justifyContent: landingPage ? "unset" : "",
+          }}
         >
-          <div className={classes.versionName}>{displayVersion}</div>
-          <i className={`material-icons ${classes.icon}`}>
-            keyboard_arrow_down
-          </i>
+          <VersionName>{displayVersion}</VersionName>
+          <I className={`material-icons`}>keyboard_arrow_down</I>
         </Button>
       </BigTooltip>
       {versions.length === 0 ? (
@@ -357,9 +300,14 @@ const Version = (props) => {
             keepMounted
             open={Boolean(anchorEl)}
             onClose={handleClose}
-            classes={{
-              list: classes.list,
-              paper: classes.paper,
+            sx={{
+              [`.MuiMenu-paper`]: {
+                maxHeight: "calc(100vh - 170px)",
+                width: 300,
+              },
+              [`.MuiMenu-list`]: {
+                padding: 0,
+              },
             }}
           >
             {versions.sort(sortVersionLanguages).map((version, i) => (
@@ -367,9 +315,21 @@ const Version = (props) => {
                 square
                 expanded={expanded === version.language}
                 onChange={handleChange(version.language)}
-                classes={{
-                  root: classes.menuRoot,
-                  expanded: classes.expanded,
+                sx={{
+                  [`&.MuiAccordion-root`]: {
+                    backgroundColor: WHITE,
+                    boxShadow: "none",
+                    border: "1px solid #00000020",
+                    "&:not(:last-child)": {
+                      borderBottom: 0,
+                    },
+                    "&:before": {
+                      display: "none",
+                    },
+                    "&.Mui-expanded": {
+                      margin: "auto",
+                    },
+                  },
                 }}
                 key={i}
               >
@@ -379,17 +339,35 @@ const Version = (props) => {
                     root: classes.summaryPanel,
                     expanded: classes.expanded,
                   }}
+                  sx={{
+                    textTransform: "capitalize",
+                    borderBottom: "1px solid #b7b7b726",
+                    minHeight: 40,
+                    maxHeight: 40,
+                    "&.Mui-expanded": {
+                      minHeight: 40,
+                      maxHeight: 40,
+                      boxShadow: 4,
+                      backgroundColor: LIGHTGREY,
+                    },
+                  }}
                 >
-                  <Typography className={classes.language}>
+                  <Typography sx={{ fontSize: "1rem", width: "100%" }}>
                     {getFullDisplayLanguage(version.language)}
                   </Typography>
                 </AccordionSummary>
-                <AccordionDetails
-                  classes={{
-                    root: classes.expansionDetailsRoot,
-                  }}
-                >
-                  <List className={classes.expansionDetails}>
+                <AccordionDetails sx={{ padding: 0 }}>
+                  <List
+                    sx={{
+                      backgroundColor: WHITE,
+                      boxShadow: "inset 1px 2px 2px 0px " + GREY,
+                      paddingTop: 0.5,
+                      paddingRight: 0,
+                      paddingBottom: 0.125,
+                      paddingLeft: 0.125,
+                      width: "100%",
+                    }}
+                  >
                     {version.languageVersions.map((item, i) => {
                       var versionActive = currentVersion(item);
                       return (
