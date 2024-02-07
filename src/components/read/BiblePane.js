@@ -1,11 +1,11 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import Fullscreen from "react-full-screen";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import MenuBar from "./MenuBar";
 import Bible from "./Bible";
 import FetchHighlights from "../highlight/FetchHighlights";
@@ -15,61 +15,12 @@ import { Button } from "@mui/material";
 import { SEARCH } from "../../store/views";
 import { GREY } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  bible: {
-    display: "flex",
-    width: "100%",
-    padding: "0px 0px",
-    position: "absolute",
-    top: 135,
-    bottom: 0,
-    overflow: "auto",
-    marginBottom: -15,
-    [theme.breakpoints.only("xs")]: {
-      top: (props) => (props?.paneNo === 2 ? 61 : 121),
-    },
-    [theme.breakpoints.only("sm")]: {
-      top: 122,
-    },
-  },
-  fullscreen: {
-    backgroundColor: "#fff",
-  },
-  errorSearchMessage: {
-    margin: "0 auto",
-    width: "90vw",
-    marginTop: 20,
-    maxWidth: 1191,
-    padding: 15,
-    paddingLeft: 25,
-    border: "1px #000000",
-    lineHeight: "1.8rem",
-    fontSize: "16px",
-    [theme.breakpoints.down("md")]: {
-      margin: "15px 10px 15px 15px",
-      padding: 8,
-    },
-    [theme.breakpoints.up("md")]: {
-      boxShadow: "1px 1px 1px 1px " + GREY,
-    },
-  },
-  listError: {
-    [theme.breakpoints.down("md")]: {
-      paddingInlineStart: 30,
-    },
-    "& li": {
-      marginTop: 5,
-    },
-  },
-  searchBtn: {
-    boxShadow: "1px 1px 1px 1px " + GREY,
-    margin: 5,
-    padding: "6px 10px",
-    borderRadius: 4,
-  },
+const CustomFullScreen = styled(Fullscreen)(({ theme }) => ({
+  backgroundColor: "#fff",
 }));
-
 const BiblePane = (props) => {
   const {
     setValue,
@@ -84,10 +35,8 @@ const BiblePane = (props) => {
     setMainValue,
     errorMessage,
   } = props;
-  const styleProps = {
-    paneNo: paneNo,
-  };
-  const classes = useStyles(styleProps);
+
+  const theme = useTheme();
   const [fullscreen, setFullscreen] = React.useState(false);
   const [selectedVerses, setSelectedVerses] = React.useState([]);
   const [highlights, setHighlights] = React.useState([]);
@@ -123,7 +72,12 @@ const BiblePane = (props) => {
           target="_blank"
           rel="noOpener"
           onClick={goToSearch}
-          className={classes.searchBtn}
+          sx={{
+            boxShadow: "1px 1px 1px 1px " + GREY,
+            margin: "5px",
+            padding: "6px 10px",
+            borderRadius: "4px",
+          }}
         >
           {t("readSearchTextBtn")}
         </Button>
@@ -142,7 +96,12 @@ const BiblePane = (props) => {
       target="_blank"
       rel="noOpener"
       onClick={resetSearch}
-      className={classes.searchBtn}
+      sx={{
+        boxShadow: "1px 1px 1px 1px " + GREY,
+        margin: "5px",
+        padding: "6px 10px",
+        borderRadius: "4px",
+      }}
     >
       {t("readResetSearchBtn")}
     </Button>
@@ -154,18 +113,65 @@ const BiblePane = (props) => {
     </>
   );
   const textSearchMessage = (
-    <div className={classes.errorSearchMessage}>
+    <Box
+      sx={{
+        margin: "0 auto",
+        width: "90vw",
+        marginTop: "20px",
+        maxWidth: "1191px",
+        padding: "15px",
+        paddingLeft: "25px",
+        border: "1px #000000",
+        lineHeight: "1.8rem",
+        fontSize: "16px",
+        [theme.breakpoints.down("md")]: {
+          margin: "15px 10px 15px 15px",
+          padding: "8px",
+        },
+        [theme.breakpoints.up("md")]: {
+          boxShadow: "1px 1px 1px 1px " + GREY,
+        },
+      }}
+    >
       <h5>{t("readSearchNoResultFound")}</h5>
       <b>{t("readPleaseTryMsg")}:</b>
       <br />
       {searchTextButton}
-    </div>
+    </Box>
   );
   const notFoundMessage = (
-    <div className={classes.errorSearchMessage}>
+    <Box
+      sx={{
+        margin: "0 auto",
+        width: "90vw",
+        marginTop: "20px",
+        maxWidth: "1191px",
+        padding: "15px",
+        paddingLeft: "25px",
+        border: "1px #000000",
+        lineHeight: "1.8rem",
+        fontSize: "16px",
+        [theme.breakpoints.down("md")]: {
+          margin: "15px 10px 15px 15px",
+          padding: "8px",
+        },
+        [theme.breakpoints.up("md")]: {
+          boxShadow: "1px 1px 1px 1px " + GREY,
+        },
+      }}
+    >
       <h5>{t("readSearchNoResultFound")}</h5>
       <b>{t("readPleaseTryMsg")}:</b>
-      <ul className={classes.listError}>
+      <ul
+        sx={{
+          [theme.breakpoints.down("md")]: {
+            paddingInlineStart: "30px",
+          },
+          "& li": {
+            marginTop: "5px",
+          },
+        }}
+      >
         <li>{t("searchDoubleCheckSpell")}</li>
         <li>{t("chapterSearchWarn")}:</li>
         <li>{t("verseSearchWarn")}: psalms 5:8 or psalms 5:8,10</li>
@@ -173,35 +179,110 @@ const BiblePane = (props) => {
         <li>{searchTextButton}</li>
         {navigatePoint}
       </ul>
-    </div>
+    </Box>
   );
   const bookNotFound = (
-    <div className={classes.errorSearchMessage}>
+    <Box
+      sx={{
+        margin: "0 auto",
+        width: "90vw",
+        marginTop: "20px",
+        maxWidth: "1191px",
+        padding: "15px",
+        paddingLeft: "25px",
+        border: "1px #000000",
+        lineHeight: "1.8rem",
+        fontSize: "16px",
+        [theme.breakpoints.down("md")]: {
+          margin: "15px 10px 15px 15px",
+          padding: "8px",
+        },
+        [theme.breakpoints.up("md")]: {
+          boxShadow: "1px 1px 1px 1px " + GREY,
+        },
+      }}
+    >
       <h5>{t("searchBookNotFound")}</h5>
       <b>{t("readPleaseTryMsg")}:</b>
       <li>{t("searchDoubleCheckSpell")}</li>
       <li>{t("searchChapterWarning")}</li>
       <li>{t("searchChangeBibleVersion")}</li>
       {navigatePoint}
-    </div>
+    </Box>
   );
   const referenceNotFound = (
-    <div className={classes.errorSearchMessage}>
+    <Box
+      sx={{
+        margin: "0 auto",
+        width: "90vw",
+        marginTop: "20px",
+        maxWidth: "1191px",
+        padding: "15px",
+        paddingLeft: "25px",
+        border: "1px #000000",
+        lineHeight: "1.8rem",
+        fontSize: "16px",
+        [theme.breakpoints.down("md")]: {
+          margin: "15px 10px 15px 15px",
+          padding: "8px",
+        },
+        [theme.breakpoints.up("md")]: {
+          boxShadow: "1px 1px 1px 1px " + GREY,
+        },
+      }}
+    >
       <h5>{t("searchBibleRefNotFound")}</h5>
       <b>{t("readPleaseTryMsg")}:</b>
-      <ul className={classes.listError}>
+      <ul
+        sx={{
+          [theme.breakpoints.down("md")]: {
+            paddingInlineStart: "30px",
+          },
+          "& li": {
+            marginTop: "5px",
+          },
+        }}
+      >
         <li>{t("searchChapterWarning")}</li>
         <li>{t("searchAnotherRef")}</li>
         <li>{t("searchChangeBibleVersion")}</li>
         {navigatePoint}
       </ul>
-    </div>
+    </Box>
   );
   const invalidFormat = (
-    <div className={classes.errorSearchMessage}>
+    <Box
+      sx={{
+        margin: "0 auto",
+        width: "90vw",
+        marginTop: "20px",
+        maxWidth: "1191px",
+        padding: "15px",
+        paddingLeft: "25px",
+        border: "1px #000000",
+        lineHeight: "1.8rem",
+        fontSize: "16px",
+        [theme.breakpoints.down("md")]: {
+          margin: "15px 10px 15px 15px",
+          padding: "8px",
+        },
+        [theme.breakpoints.up("md")]: {
+          boxShadow: "1px 1px 1px 1px " + GREY,
+        },
+      }}
+    >
       <h5>{t("searchInvalid")}</h5>
       <b>{t("readPleaseTryMsg")}:</b>
-      <ul className={classes.listError}>
+      <ul
+        sx={{
+          [theme.breakpoints.down("md")]: {
+            paddingInlineStart: "30px",
+          },
+          "& li": {
+            marginTop: "5px",
+          },
+        }}
+      >
         <li>
           {t("searchWarnSplChar")} <b>, : -</b>
         </li>
@@ -221,7 +302,7 @@ const BiblePane = (props) => {
         </li>
         {navigatePoint}
       </ul>
-    </div>
+    </Box>
   );
   function showMessage() {
     if (errorMessage === "textSearch") {
@@ -305,7 +386,7 @@ const BiblePane = (props) => {
   }, [userDetails, sourceId, bookCode, chapter, setHighlights, setRefUrl]);
   return (
     <>
-      <div>
+      <Box>
         {fetchHighlights}
         <MenuBar
           {...paneData}
@@ -323,12 +404,29 @@ const BiblePane = (props) => {
           printHighlights={printHighlights}
           setPrintHighlights={setPrintHighlights}
         />
-        <Grid container className={classes.bible}>
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            width: "100%",
+            padding: "0px 0px",
+            position: "absolute",
+            top: "135px",
+            bottom: 0,
+            overflow: "auto",
+            marginBottom: "-15px",
+            [theme.breakpoints.only("xs")]: {
+              top: paneNo === 2 ? "61px" : "121px",
+            },
+            [theme.breakpoints.only("sm")]: {
+              top: "122px",
+            },
+          }}
+        >
           <Grid item xs={12}>
-            <Fullscreen
+            <CustomFullScreen
               enabled={fullscreen}
               onChange={(fullscreen) => setFullscreen(fullscreen)}
-              className={classes.fullscreen}
             >
               {errorMessage === "" ? (
                 <Bible
@@ -351,7 +449,7 @@ const BiblePane = (props) => {
                 showMessage()
               )}
               {alertMessage}
-            </Fullscreen>
+            </CustomFullScreen>
           </Grid>
         </Grid>
         {mobileView &&
@@ -373,7 +471,7 @@ const BiblePane = (props) => {
             userDetails={userDetails}
           />
         ) : null}
-      </div>
+      </Box>
     </>
   );
 };
