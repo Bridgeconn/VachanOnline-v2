@@ -6,6 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Popover from "@mui/material/Popover";
@@ -14,42 +15,13 @@ import Alert from "@mui/material/Alert";
 import PersonIcon from "@mui/icons-material/Person";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { makeStyles } from "@mui/styles";
 import BigTooltip from "../common/BigTooltip";
+import { useTheme } from "@mui/material/styles";
+import { BLACK } from "../../store/colorCode";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(1, 0, 1),
-  },
-  button: {
-    margin: theme.spacing(1.5),
-    backgroundColor: "#fff",
-    border: "1px solid #fff",
-    "& hover": {
-      textDecoration: "none",
-    },
-    [theme.breakpoints.down("md")]: {
-      marginLeft: "20%",
-      width: "60%",
-      marginTop: 0,
-    },
-  },
-  loginBtn: {
+const Login = (props) => {
+  const theme = useTheme();
+  const newStyles ={
     cursor: "pointer",
     marginLeft: 3,
     fontSize: "2rem",
@@ -62,18 +34,7 @@ const useStyles = makeStyles((theme) => ({
       whiteSpace: "nowrap",
       fontSize: "1.8rem",
     },
-  },
-  links: {
-    marginTop: 10,
-  },
-  message: {
-    position: "relative",
-    bottom: 20,
-  },
-}));
-
-const Login = (props) => {
-  const classes = useStyles();
+  }
   const { login, openLogin, setValue, setMessage, setAlert, person } = props;
   const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -81,6 +42,7 @@ const Login = (props) => {
   const [password, setPassword] = React.useState("");
   const [form, setForm] = React.useState(1);
   const [messageOpen, setMessageOpen] = React.useState(false);
+  const loginStyles = person ? person : newStyles
 
   const open = Boolean(anchorEl);
   const { t } = useTranslation();
@@ -258,7 +220,9 @@ const Login = (props) => {
         <>
           <BigTooltip title={t("signInTitle")}>
             <PersonIcon
-              className={person ? person : classes.loginBtn}
+              sx={
+               loginStyles
+               }
               ref={menuRef}
               onClick={openForm}
             />
@@ -280,8 +244,21 @@ const Login = (props) => {
             <Container component="main" maxWidth="xs">
               <CssBaseline />
               {form === 1 ? (
-                <div className={classes.paper}>
-                  <Collapse in={messageOpen} className={classes.message}>
+                <Box
+                  sx={{
+                    marginTop: theme.spacing(8),
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Collapse
+                    in={messageOpen}
+                    sx={{
+                      position: "relative",
+                      bottom: "20px",
+                    }}
+                  >
                     <Alert
                       variant="filled"
                       onClose={() => setMessageOpen(false)}
@@ -295,7 +272,11 @@ const Login = (props) => {
                   </Typography>
                   <form
                     onSubmit={(e) => signIn(e)}
-                    className={classes.form}
+                    sx={{
+                      width: "100%", // Fix IE 11 issue.
+                      marginTop: theme.spacing(3),
+                      marginBottom: theme.spacing(3),
+                    }}
                     noValidate
                   >
                     <TextField
@@ -326,7 +307,10 @@ const Login = (props) => {
                       type="submit"
                       fullWidth
                       variant="outlined"
-                      className={classes.submit}
+                      sx={{
+                        margin: theme.spacing(1, 0, 1),
+                        color: BLACK, borderColor: BLACK
+                        }}
                     >
                       {t("signInTitle")}
                     </Button>
@@ -335,7 +319,10 @@ const Login = (props) => {
                       fullWidth
                       variant="outlined"
                       onClick={signInGoogle}
-                      className={classes.submit}
+                      sx={{
+                        margin: theme.spacing(1, 0, 1),
+                        color: BLACK, borderColor: BLACK
+                      }}
                     >
                       {t("loginSignInGoogleBtn")}
                     </Button>
@@ -348,7 +335,7 @@ const Login = (props) => {
                   >
                     Sign in with Facebook
                   </Button> */}
-                    <Grid container className={classes.links}>
+                    <Grid container sx={{ marginTop: "10px" }}>
                       <Grid item xs>
                         <Link
                           href="#"
@@ -371,15 +358,26 @@ const Login = (props) => {
                       </Grid>
                     </Grid>
                   </form>
-                </div>
+                </Box>
               ) : form === 2 ? (
-                <div className={classes.paper}>
+                <Box
+                  sx={{
+                    marginTop: theme.spacing(8),
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
                   <Typography component="h1" variant="h5">
                     {t("loginSignUpTitle")}
                   </Typography>
                   <form
                     onSubmit={(e) => signUp(e)}
-                    className={classes.form}
+                    sx={{
+                      width: "100%", // Fix IE 11 issue.
+                      marginTop: theme.spacing(3),
+                      marginBottom: theme.spacing(3),
+                    }}
                     noValidate
                   >
                     <Grid container spacing={2}>
@@ -413,14 +411,18 @@ const Login = (props) => {
                       type="submit"
                       fullWidth
                       variant="outlined"
-                      className={classes.submit}
+                      sx={{
+                        margin: theme.spacing(1, 0, 1),
+                      }}
                     >
                       {t("loginSignUpBtn")}
                     </Button>
                     <Grid
                       container
                       justifyContent="flex-end"
-                      className={classes.links}
+                      sx={{
+                        marginTop: "10px",
+                      }}
                     >
                       <Grid item xs>
                         <Link
@@ -444,9 +446,16 @@ const Login = (props) => {
                       </Grid>
                     </Grid>
                   </form>
-                </div>
+                </Box>
               ) : (
-                <div className={classes.paper}>
+                <Box
+                  sx={{
+                    marginTop: theme.spacing(8),
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
                   <Typography component="h1" variant="h5" gutterBottom={true}>
                     {t("loginForgotPswd")}
                   </Typography>
@@ -455,7 +464,11 @@ const Login = (props) => {
                   </Typography>
                   <form
                     onSubmit={(e) => resetPassword(e)}
-                    className={classes.form}
+                    sx={{
+                      width: "100%", // Fix IE 11 issue.
+                      marginTop: theme.spacing(3),
+                      marginBottom: theme.spacing(3),
+                    }}
                     noValidate
                   >
                     <Grid container spacing={2}>
@@ -476,14 +489,16 @@ const Login = (props) => {
                       type="submit"
                       fullWidth
                       variant="outlined"
-                      className={classes.submit}
+                      sx={{
+                        margin: theme.spacing(1, 0, 1),
+                      }}
                     >
                       {t("loginSubmit")}
                     </Button>
                     <Grid
                       container
                       justifyContent="flex-end"
-                      className={classes.links}
+                      sx={{ marginTop: "10px" }}
                     >
                       <Grid item>
                         <Link
@@ -497,7 +512,7 @@ const Login = (props) => {
                       </Grid>
                     </Grid>
                   </form>
-                </div>
+                </Box>
               )}
             </Container>
           </Popover>

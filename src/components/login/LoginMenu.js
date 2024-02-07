@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import firebase from "firebase/compat/app";
@@ -13,23 +12,10 @@ import Divider from "@mui/material/Divider";
 import { useTranslation } from "react-i18next";
 import { GREY } from "../../store/colorCode";
 import BigTooltip from "../common/BigTooltip";
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    width: "100%",
-    maxWidth: 300,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: "1px 1px 4px 1px " + GREY,
-  },
-  emailText: {
-    [theme.breakpoints.down("md")]: {
-      fontSize: "0.75rem",
-    },
-  },
-}));
+import { useTheme } from "@mui/material/styles";
 
 const LoginMenu = (props) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const { userDetails, setValue } = props;
   const [menuOpen, setMenuOpen] = React.useState(null);
   const { t } = useTranslation();
@@ -88,9 +74,14 @@ const LoginMenu = (props) => {
         keepMounted
         open={Boolean(menuOpen)}
         onClose={handleClose}
-        classes={{
-          paper: classes.paper,
-        }}
+        sx={{
+          "& .MuiPaper-root":{
+            width: "100%",
+            maxWidth: "300px",
+            backgroundColor: theme.palette.background.paper,
+            boxShadow: "1px 1px 4px 1px " + GREY,
+          }
+             }}
       >
         <List component="nav" aria-label="main mailbox folders">
           <ListItem button>

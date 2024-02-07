@@ -1,53 +1,18 @@
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { Grid, Paper, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import React from "react";
+import { Grid, Paper, Typography, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import { BLACK } from "../../store/colorCode";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
-const useStyles = makeStyles((theme) => ({
-  link: {
-    display: "block",
-    margin: 10,
-    [theme.breakpoints.only("lg")]: {
-      display: "unset",
-    },
-    [theme.breakpoints.only("md")]: {
-      margin: 8,
-    },
-    [theme.breakpoints.down("md")]: {
-      margin: 0,
-    },
-    "&:hover": {
-      textDecoration: "none",
-    },
-  },
-  iconBox: {
-    margin: "0 auto",
-    textAlign: "center",
-    padding: "15px 30px",
-    display: "flex",
-    [theme.breakpoints.only("lg")]: {
-      margin: "0 5px",
-    },
-    [theme.breakpoints.down("lg")]: {
-      flexDirection: "column",
-    },
-    [theme.breakpoints.down("md")]: {
-      width: "95%",
-      margin: "auto",
-    },
-    [theme.breakpoints.down("sm")]: {
-      width: "90%",
-      margin: "0 auto",
-    },
-  },
-  icon: {
+const I = styled("i")(({ theme }) => ({
+  [`&.material-icons`]: {
     fontSize: "5.5rem",
     color: BLACK,
-    marginRight: 10,
+    marginRight: "10px",
     [theme.breakpoints.down("lg")]: {
       fontSize: "4.5rem",
     },
@@ -55,34 +20,28 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "3.5rem",
     },
   },
-  caption: {
-    fontSize: 20,
-    height: (props) => (props.isLarge ? 85 : 115),
-    display: "flex",
-    [theme.breakpoints.down("lg")]: {
-      display: "none",
-    },
+}));
+
+const LinkButton = styled(Link)(({ theme }) => ({
+  display: "block",
+  margin: "10px",
+  [theme.breakpoints.only("lg")]: {
+    display: "unset",
   },
-  heading: {
-    marginBottom: 8,
-    [theme.breakpoints.only("xs")]: {
-      fontSize: "1.8rem",
-    },
+  [theme.breakpoints.only("md")]: {
+    margin: "8px",
   },
-  iconWrapper: {
-    [theme.breakpoints.only("lg")]: {
-      display: "flex",
-      alignItems: "center",
-    },
+  [theme.breakpoints.down("md")]: {
+    margin: "0px",
   },
-  textWrapper: {
-    alignItems: "center",
+  "&:hover": {
+    textDecoration: "none",
   },
 }));
 
 export default function ImageCard({ icon, type, onClick }) {
+  const theme = useTheme();
   const isLarge = useMediaQuery("(min-width:1550px)");
-  const classes = useStyles({ isLarge });
   const { t } = useTranslation();
   const heading = {
     Read: t("landingReadTitle"),
@@ -98,24 +57,78 @@ export default function ImageCard({ icon, type, onClick }) {
   };
   return (
     <Grid item sm={3} xs={6}>
-      <Link
+      <LinkButton
         to={{ pathname: type === "Read" ? "/read" : "/study" }}
-        className={classes.link}
       >
         <BigTooltip title={caption[type]}>
-          <Paper className={classes.iconBox} elevation={3} onClick={onClick}>
-            <div className={classes.iconWrapper}>
-              <i className={`material-icons ${classes.icon}`}>{icon}</i>
-            </div>
-            <div className={classes.textWrapper}>
-              <Typography variant="h4" className={classes.heading}>
+          <Paper
+            sx={{
+              "&.MuiPaper-root": {
+                margin: "0 auto",
+                textAlign: "center",
+                padding: "15px 30px",
+                display: "flex",
+                [theme.breakpoints.only("lg")]: {
+                  margin: "0 5px",
+                },
+                [theme.breakpoints.down("lg")]: {
+                  flexDirection: "column",
+                },
+                [theme.breakpoints.down("md")]: {
+                  width: "95%",
+                  margin: "auto",
+                },
+                [theme.breakpoints.down("sm")]: {
+                  width: "90%",
+                  margin: "0 auto",
+                },
+              },
+            }}
+            elevation={3}
+            onClick={onClick}
+          >
+            <Box
+              sx={{
+                [theme.breakpoints.only("lg")]: {
+                  display: "flex",
+                  alignItems: "center",
+                },
+              }}
+            >
+              <I className={`material-icons`}>{icon}</I>
+            </Box>
+            <Box
+              sx={{
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  marginBottom: "8px",
+                  [theme.breakpoints.only("xs")]: {
+                    fontSize: "1.8rem",
+                  },
+                }}
+              >
                 {heading[type]}
               </Typography>
-              <div className={classes.caption}>{caption[type]}</div>
-            </div>
+              <Box
+                sx={{
+                  fontSize: "20px",
+                  height: isLarge ? "85px" : "115px",
+                  display: "flex",
+                  [theme.breakpoints.down("xl")]: {
+                    display: "none",
+                  },
+                }}
+              >
+                {caption[type]}
+              </Box>
+            </Box>
           </Paper>
         </BigTooltip>
-      </Link>
+      </LinkButton>
     </Grid>
   );
 }
