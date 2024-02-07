@@ -120,10 +120,10 @@ const PageHeader = (props) => {
       login ? (
         <LoginMenu userDetails={userDetails} />
       ) : (
-        <Login setMessage={setMessage} setAlert={setAlert} />
+        <Login setMessage={setMessage} setAlert={setAlert} message={message} />
       )
     );
-  }, [login, userDetails]);
+  }, [login, message, userDetails]);
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static">

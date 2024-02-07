@@ -69,7 +69,7 @@
   "landingLangBarToolTip": "बाइबल पढ़ने के लिए क्लिक करें",
   "landingFooterAboutUsBtn": "हमारे बारे में",
   "loginEmailPlaceHolder": "ईमेल पता",
-  "loginSuccessMsg": "{{ईमेल}} के साथ साइन अप सफल!",
+  "loginSuccessMsg": "{{email}} के साथ साइन अप सफल!",
   "loginSignInGoogleBtn": "गूगल के साथ साइन इन करें",
   "loginPasswordPlaceHolder": "पासवर्ड",
   "loginSignOutBtn": "साइन आउट करें",

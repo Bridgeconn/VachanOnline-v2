@@ -74,7 +74,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
   const classes = useStyles();
-  const { login, openLogin, setValue, setMessage, setAlert, person } = props;
+  const { login, openLogin, setValue, setMessage, setAlert, person, message } =
+    props;
   const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [email, setEmail] = React.useState("");
@@ -135,8 +136,10 @@ const Login = (props) => {
         .catch((error) => {
           console.log("error");
           if (error.code === "auth/user-not-found") {
+            setMessageOpen(true);
             setMessage(t("loginMessage"));
           } else if (error.code === "auth/wrong-password") {
+            setMessageOpen(true);
             setMessage(t("invalidPswd"));
           } else {
             setMessage(error.message);
@@ -287,7 +290,7 @@ const Login = (props) => {
                       onClose={() => setMessageOpen(false)}
                       severity="error"
                     >
-                      {t("loginSignInWarning")}
+                      {message ? message : t("loginSignInWarning")}
                     </Alert>
                   </Collapse>
                   <Typography component="h1" variant="h5">
