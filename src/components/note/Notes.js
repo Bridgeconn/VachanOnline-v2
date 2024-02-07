@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
 import Tooltip from "@mui/material/Tooltip";
@@ -34,137 +33,15 @@ import htmlToDraft from "html-to-draftjs";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: "5.278rem",
-    display: "flex",
-    flexDirection: "column",
-    height: "calc( 100vh - 5.278rem)",
-    [theme.breakpoints.down("md")]: {
-      marginTop: 60,
-      height: "calc( 100vh - 60px)",
-    },
-  },
-  paper: {
-    [theme.breakpoints.down("md")]: {
-      margin: 25,
-    },
-  },
-  heading: {
-    paddingBottom: 10,
-    paddingLeft: 15,
-    marginBottom: 10,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    height: "3.4em",
-    [theme.breakpoints.down("md")]: {
-      height: 60,
-      marginBottom: 0,
-      paddingBottom: 0,
-      alignItems: "center",
-    },
-  },
-
-  ".rdw-editor-main": {
-    [theme.breakpoints.down("lg")]: {
-      width: "80vw",
-      height: "30vh",
-    },
-  },
-  notesHeading: {
-    display: "flex",
-  },
-  list: {
-    overflow: "auto",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.down("md")]: {
-      marginBottom: 60,
-    },
-  },
-  message: {
-    margin: 18,
-  },
-  listHeading: {
-    borderBottom: "1px solid darkgray",
-    fontWeight: 600,
-    [theme.breakpoints.down("lg")]: {
-      justifyContent: "space-between",
-    },
-  },
-  listItem: {
-    borderBottom: "1px solid lightgray",
-    paddingTop: 4,
-    paddingBottom: 4,
-  },
-  form: {
-    paddingLeft: 10,
-    borderBottom: "1px solid gray",
-  },
-  lastModified: {
-    color: "#0000008a",
-    paddingTop: 18,
-    [theme.breakpoints.down("lg")]: {
-      paddingTop: 5,
-      display: "inline-block",
-    },
-  },
-  formButtons: {
-    textAlign: "right",
-    [theme.breakpoints.down("md")]: {
-      display: "flex",
-      justifyContent: "center",
-    },
-  },
-  button: {
-    margin: "10px 5px",
-  },
-  addNote: {
-    position: "relative",
-    bottom: 5,
-    padding: theme.spacing(1),
-  },
-  noteBody: {
-    "& textarea": {
-      maxHeight: 114,
-    },
-  },
-  closeButton: {
-    marginRight: 15,
-    marginTop: -6,
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
-  helpIcon: {
-    padding: "4px 6px 0",
-    color: BLACK,
-    marginTop: -3,
-    fontSize: 21,
-  },
-  dialog: {
-    padding: 0,
-  },
-  editor: {
-    padding: 10,
-  },
+const CustomEditor = styled(Editor)(({ padding }) => ({
+  padding: padding,
 }));
 
 function Notes(props) {
+  const theme = useTheme();
   const {
     uid,
     versions,
@@ -200,9 +77,6 @@ function Notes(props) {
   const closeAlert = () => {
     setAlert(false);
   };
-  const styleProps = { addNote: addNote };
-  const classes = useStyles(styleProps);
-
   const handleNoteTextChange = (editorState) => {
     setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
     setEditorState(editorState);
@@ -483,11 +357,39 @@ function Notes(props) {
   };
 
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        width: "100%",
+        marginTop: "5.278rem",
+        display: "flex",
+        flexDirection: "column",
+        height: "calc( 100vh - 5.278rem)",
+        [theme.breakpoints.down("md")]: {
+          marginTop: "60px",
+          height: "calc( 100vh - 60px)",
+        },
+      }}
+    >
       {mobileView ? null : (
-        <Box className={classes.heading}>
+        <Box
+          sx={{
+            paddingBottom: "10px",
+            paddingLeft: "15px",
+            marginBottom: "10px",
+            borderBottom: "1px solid #f1ecec",
+            display: "flex",
+            width: "100%",
+            height: "3.4em",
+            [theme.breakpoints.down("md")]: {
+              height: "60px",
+              marginBottom: "0px",
+              paddingBottom: "0px",
+              alignItems: "center",
+            },
+          }}
+        >
           <Box flexGrow={1}>
-            <Typography variant="h6" className={classes.notesHeading}>
+            <Typography variant="h6" sx={{ display: "flex" }}>
               {t("commonNotes")}
               {Array.isArray(versesSelected) &&
               versesSelected.length &&
@@ -495,7 +397,11 @@ function Notes(props) {
                 <Tooltip title={t("commonAddNote")}>
                   <IconButton
                     aria-label="add"
-                    className={classes.addNote}
+                    sx={{
+                      position: "relative",
+                      bottom: "5px",
+                      padding: theme.spacing(1),
+                    }}
                     onClick={clickAddNote}
                     size="large"
                   >
@@ -507,7 +413,11 @@ function Notes(props) {
                   <>
                     <IconButton
                       aria-label="add"
-                      className={classes.addNote}
+                      sx={{
+                        position: "relative",
+                        bottom: "5px",
+                        padding: theme.spacing(1),
+                      }}
                       disabled
                       size="large"
                     >
@@ -518,9 +428,16 @@ function Notes(props) {
               )}
             </Typography>
           </Box>
-          <Box className={classes.box}>
-            <Help iconStyle={classes.helpIcon} url={"notes"} />
-            <Close className={classes.closeButton} />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Help
+              iconStyle={{
+                color: BLACK,
+                marginTop: "-3px",
+                fontSize: "21px",
+              }}
+              url={"notes"}
+            />
+            <Close sx={{ marginRight: "15px", marginTop: "-6px" }} />
           </Box>
         </Box>
       )}
@@ -530,7 +447,13 @@ function Notes(props) {
           onClose={handleClose}
           aria-labelledby="note-title"
           open={open}
-          classes={{ paper: classes.paper }}
+          sx={{
+            [theme.breakpoints.down("md")]: {
+              "& .MuiPaper-root": {
+                margin: "25px",
+              },
+            },
+          }}
         >
           <DialogTitle id="note-title" onClose={handleClose}>
             Note for {book} {chapter}:{" "}
@@ -538,32 +461,53 @@ function Notes(props) {
               ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </DialogTitle>
-          <DialogContent dividers className={classes.dialog}>
-            <Editor
+          <DialogContent dividers sx={{ padding: "0px" }}>
+            <CustomEditor
               editorState={editorState}
               editorStyle={{ height: "30vh", overflow: "auto" }}
               onEditorStateChange={handleNoteTextChange}
-              editorClassName={classes.editor}
               toolbar={getEditorToolbar(true)}
+              padding="10px"
             />
           </DialogContent>
           <DialogActions>
             <Grid container>
-              <Grid item xs={6} className={classes.lastModified}>
+              <Grid
+                item
+                xs={6}
+                sx={{
+                  color: "#0000008a",
+                  paddingTop: "18px",
+                  [theme.breakpoints.down("lg")]: {
+                    paddingTop: "5px",
+                    display: "inline-block",
+                  },
+                }}
+              >
                 {t("studyNotesLastModified")} :{" "}
                 {new Date(modifiedTime).toLocaleString()}
               </Grid>
-              <Grid item xs={6} className={classes.formButtons}>
+              <Grid
+                item
+                xs={6}
+                sx={{
+                  textAlign: "right",
+                  [theme.breakpoints.down("md")]: {
+                    display: "flex",
+                    justifyContent: "center",
+                  },
+                }}
+              >
                 <Button
                   variant="outlined"
-                  className={classes.button}
+                  sx={{ margin: "10px 5px",color:BLACK,borderColor:BLACK }}
                   onClick={handleClose}
                 >
                   {t("commonCancel")}
                 </Button>
                 <Button
                   variant="outlined"
-                  className={classes.button}
+                  sx={{ margin: "10px 5px",color:BLACK,borderColor:BLACK }}
                   onClick={saveNote}
                 >
                   {t("commonSave")}
@@ -573,36 +517,58 @@ function Notes(props) {
           </DialogActions>
         </Dialog>
       ) : addNote ? (
-        <div className={classes.form}>
+        <Box sx={{ paddingLeft: "10px", borderBottom: "1px solid gray" }}>
           <Typography variant="h6" gutterBottom>
             {t("studyNotesBookChapterVerse", { ref })}
           </Typography>
           {/*edit note */}
-          <Editor
+          <CustomEditor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
             editorStyle={{ height: "30vh" }}
             toolbar={getEditorToolbar(false)}
+            padding="0px"
           />
           <Grid container>
-            <Grid item xs={7} className={classes.lastModified}>
+            <Grid
+              item
+              xs={7}
+              sx={{
+                color: "#0000008a",
+                paddingTop: "18px",
+                [theme.breakpoints.down("lg")]: {
+                  paddingTop: "5px",
+                  display: "inline-block",
+                },
+              }}
+            >
               {modifiedTime &&
                 t("studyNotesLastModified") +
                   ":" +
                   " " +
                   new Date(modifiedTime).toLocaleString()}
             </Grid>
-            <Grid item xs={5} className={classes.formButtons}>
+            <Grid
+              item
+              xs={5}
+              sx={{
+                textAlign: "right",
+                [theme.breakpoints.down("md")]: {
+                  display: "flex",
+                  justifyContent: "center",
+                },
+              }}
+            >
               <Button
                 variant="outlined"
-                className={classes.button}
+                sx={{ margin: "10px 5px",color:BLACK,borderColor:BLACK }}
                 onClick={resetForm}
               >
                 {t("commonCancel")}
               </Button>
               <Button
                 variant="outlined"
-                className={classes.button}
+                sx={{ margin: "10px 5px",color:BLACK,borderColor:BLACK }}
                 onClick={saveNote}
               >
                 {t("commonSave")}
@@ -624,28 +590,59 @@ function Notes(props) {
               {alertMessage}
             </Alert>
           </Snackbar>
-        </div>
+        </Box>
       ) : (
         ""
       )}
-      <div className={classes.list}>
+      <Box
+        sx={{
+          overflow: "auto",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "&::-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "&::-webkit-scrollbar-track": {
+            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+          [theme.breakpoints.down("md")]: {
+            marginBottom: "60px",
+          },
+        }}
+      >
         {notes && Object.keys(notes).length !== 0 ? (
           <List component="nav">
             {chapterNoteList && Object.keys(chapterNoteList).length !== 0 ? (
               <>
-                <ListItem className={classes.listHeading}>
+                <ListItem
+                  sx={{
+                    borderBottom: "1px solid darkgray",
+                    fontWeight: 600,
+                    [theme.breakpoints.down("lg")]: {
+                      justifyContent: "space-between",
+                    },
+                  }}
+                >
                   <Typography variant="h5">
                     {t("studyNotesBookChapter", { ref })}
                   </Typography>
                   {mobileView ? (
-                    <Close className={classes.closeButton} />
+                    <Close sx={{ marginRight: "15px", marginTop: "-6px" }} />
                   ) : null}
                 </ListItem>
                 {chapterNoteList.map((note, i) => {
                   return versionData[note.sourceId] !== undefined ? (
                     <ListItem
                       key={i}
-                      className={classes.listItem}
+                      sx={{
+                        borderBottom: "1px solid lightgray",
+                        paddingTop: "4px",
+                        paddingBottom: "4px",
+                      }}
                       data-sourceid={note.sourceId}
                       data-bookcode={note.bookCode}
                       data-chapter={note.chapter}
@@ -696,14 +693,26 @@ function Notes(props) {
             ) : (
               ""
             )}
-            <ListItem className={classes.listHeading}>
+            <ListItem
+              sx={{
+                borderBottom: "1px solid darkgray",
+                fontWeight: 600,
+                [theme.breakpoints.down("lg")]: {
+                  justifyContent: "space-between",
+                },
+              }}
+            >
               <Typography variant="h5">{t("studyAllNotesTitle")}</Typography>
             </ListItem>
             {noteList.map((note, i) => {
               return versionData[note.sourceId] !== undefined ? (
                 <ListItem
                   key={i}
-                  className={classes.listItem}
+                  sx={{
+                    borderBottom: "1px solid lightgray",
+                    paddingTop: "4px",
+                    paddingBottom: "4px",
+                  }}
                   data-sourceid={note.sourceId}
                   data-bookcode={note.bookCode}
                   data-chapter={note.chapter}
@@ -752,12 +761,12 @@ function Notes(props) {
             })}
           </List>
         ) : (
-          <Typography className={classes.message}>
+          <Typography sx={{ margin: "18px" }}>
             {t("studySelectVerseStart")}
           </Typography>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 const mapStateToProps = (state) => {
