@@ -33,6 +33,20 @@ const ImagePlayStore = styled("img")(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     width: "30%",
   },
+  iconBox: {
+    margin: "0 auto",
+    justifyContent: "center",
+    padding: "15px 5px",
+    display: "flex",
+    fontSize: "1.4rem",
+    width: 250,
+    marginBottom: 5,
+    cursor: "pointer",
+    [theme.breakpoints.only("xs")]: {
+      width: "43%",
+      fontSize: "1.3rem",
+    },
+  },
 }));
 const Landing = (props) => {
   const theme = useTheme();

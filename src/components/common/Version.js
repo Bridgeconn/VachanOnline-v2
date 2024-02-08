@@ -17,6 +17,8 @@ import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
 import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 import { styled } from "@mui/system";
 const I = styled("i")(({ theme }) => ({
   [`&.material-icons`]: {
@@ -84,6 +86,7 @@ const Version = (props) => {
   const reference = searchParams.get("reference");
   const location = useLocation();
   const path = location?.pathname;
+  const nonHdView = useMediaQuery("(max-width:1280px)");
 
   const { t } = useTranslation();
 
@@ -243,13 +246,22 @@ const Version = (props) => {
       return found?.languageName || language;
     }
     const language = getLanguageByCode(versions, langCode?.toLowerCase());
-    if (mobileView) {
+    if (mobileView || (nonHdView && parallelView)) {
       getDisplayLanguage(language);
       setDisplayVersion(versionCode);
     } else {
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, languageInfo, mobileView, setValue, version, versions]);
+  }, [
+    landingPage,
+    languageInfo,
+    mobileView,
+    setValue,
+    version,
+    versions,
+    nonHdView,
+    parallelView,
+  ]);
 
   return (
     <>

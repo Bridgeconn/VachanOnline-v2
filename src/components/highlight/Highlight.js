@@ -1,14 +1,11 @@
 import React from "react";
-import BorderColor from "@mui/icons-material/BorderColor";
-import Tooltip from "@mui/material/Tooltip";
-import Popover from "@mui/material/Popover";
-import Circle from "@mui/icons-material/LensRounded";
-import NotInterestedIcon from "@mui/icons-material/NotInterested";
+import Tooltip from "@material-ui/core/Tooltip";
+import Circle from "@material-ui/icons/LensRounded";
+import NotInterestedIcon from "@material-ui/icons/NotInterested";
 import { useFirebase } from "react-redux-firebase";
 import * as color from "../../store/colorCode";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
 const ColorBox = styled("div")({
@@ -16,19 +13,10 @@ const ColorBox = styled("div")({
   display: "flex",
 });
 function Highlight(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const firebase = useFirebase();
-  const { selectedVerses, setSelectedVerses, refUrl, highlights, mobileView } =
-    props;
+  const { selectedVerses, setSelectedVerses, refUrl, highlights } = props;
 
   const { t } = useTranslation();
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const colors = [
     { code: "a", class: { color: color.YELLOW } },
     { code: "b", class: { color: color.GREEN } },
@@ -36,11 +24,9 @@ function Highlight(props) {
     { code: "d", class: { color: color.PINK } },
     { code: "e", class: { color: color.ORANGE } },
   ];
-  const open = Boolean(anchorEl);
   const colorClicked = (event) => {
     const color = event.currentTarget.getAttribute("data-code");
     //close popover
-    setAnchorEl(null);
     //append a if no color set ie default yellow for old data
     //remove old highlights for selected verses
     let newHighlights = highlights
@@ -63,83 +49,25 @@ function Highlight(props) {
   };
   return (
     <div>
-      {mobileView ? (
-        <ColorBox>
-          {colors.map((color, i) => (
-            <Circle
-              key={i}
-              data-code={color.code}
-              onClick={colorClicked}
-              fontSize="large"
-              sx={color.class}
-            />
-          ))}
-          <Tooltip title={t("ClearHighlightToolTip")}>
-            <NotInterestedIcon
-              data-code="clear"
-              onClick={colorClicked}
-              fontSize="large"
-              color="disabled"
-            />
-          </Tooltip>
-        </ColorBox>
-      ) : (
-        <>
-          <Box
-            sx={{
-              padding: 0,
-              width: "30px",
-              marginTop: 2.5,
-              marginRight: 0.5,
-              cursor: "pointer",
-            }}
-            onClick={handleClick}
-          >
-            <Tooltip title={t("highlightsText")}>
-              <BorderColor fontSize="small" />
-            </Tooltip>
-          </Box>
-          <Popover
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-            sx={{
-              [`&.MuiPopover-paper `]: {
-                marginTop: 0.5,
-                borderRadius: 10,
-              },
-            }}
-          >
-            <ColorBox>
-              {colors.map((color, i) => (
-                <Circle
-                  key={i}
-                  data-code={color.code}
-                  onClick={colorClicked}
-                  fontSize="large"
-                  sx={color.class}
-                />
-              ))}
-              <Tooltip title={t("ClearHighlightToolTip")}>
-                <NotInterestedIcon
-                  data-code="clear"
-                  onClick={colorClicked}
-                  fontSize="large"
-                  color="disabled"
-                />
-              </Tooltip>
-            </ColorBox>
-          </Popover>
-        </>
-      )}
+      <ColorBox>
+        {colors.map((color, i) => (
+          <Circle
+            key={i}
+            data-code={color.code}
+            onClick={colorClicked}
+            fontSize="large"
+            sx={color.class}
+          />
+        ))}
+        <Tooltip title={t("ClearHighlightToolTip")}>
+          <NotInterestedIcon
+            data-code="clear"
+            onClick={colorClicked}
+            fontSize="large"
+            color="disabled"
+          />
+        </Tooltip>
+      </ColorBox>
     </div>
   );
 }

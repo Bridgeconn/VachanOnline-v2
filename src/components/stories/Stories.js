@@ -2,23 +2,23 @@ import React, { useMemo, useEffect } from "react";
 import Markdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import axios from "axios";
-import { makeStyles } from "@mui/styles";
-import Drawer from "@mui/material/Drawer";
-import MenuItem from "@mui/material/MenuItem";
-import Slider from "@mui/material/Slider";
-import Select from "@mui/material/Select";
-import Menu from "@mui/material/Menu";
-import Tooltip from "@mui/material/Tooltip";
-import FormControl from "@mui/material/FormControl";
-import AppBar from "@mui/material/AppBar";
-import Divider from "@mui/material/Divider";
-import Link from "@mui/material/Link";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import { makeStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import MenuItem from "@material-ui/core/MenuItem";
+import Slider from "@material-ui/core/Slider";
+import Select from "@material-ui/core/Select";
+import Menu from "@material-ui/core/Menu";
+import Tooltip from "@material-ui/core/Tooltip";
+import FormControl from "@material-ui/core/FormControl";
+import AppBar from "@material-ui/core/AppBar";
+import Divider from "@material-ui/core/Divider";
+import Link from "@material-ui/core/Link";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 import TopBar from "../read/TopBar";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { Box, Typography } from "@mui/material";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Box, Typography } from "@material-ui/core";
 import { BLACK, GREY } from "../../store/colorCode";
 import VideoCard from "../common/VideoCard";
 import { useTranslation } from "react-i18next";
@@ -26,50 +26,49 @@ import Help from "../common/Help";
 import { connect } from "react-redux";
 import { getObsLanguageData } from "../common/utility";
 import * as actions from "../../store/actions";
-import { styled } from "@mui/system";
 
 const drawerWidth = 400;
 
 const useStyles = makeStyles((theme) => ({
-  //   formControl: {
-  //     margin: theme.spacing(1),
-  //     minWidth: 200,
-  //   },
-  //   menu: {
-  //     textAlign: "center",
-  //     width: "100%",
-  //     display: "inline-block",
-  //     fontSize: 18,
-  //   },
-  //   margin: {
-  //     height: theme.spacing(5),
-  //   },
-  //   settings: {
-  //     padding: 0,
-  //     width: "30px",
-  //     marginTop: -46,
-  //     float: "right",
-  //     marginLeft: "-10px",
-  //     marginRight: "20px",
-  //     cursor: "pointer",
-  //   },
-  //   root: {
-  //     display: "flex",
-  //     [theme.breakpoints.down("md")]: { display: "block" },
-  //   },
-  //   drawer: {
-  //     width: drawerWidth,
-  //     flexShrink: 0,
-  //     zIndex: 1000,
-  //   },
-  //   drawerPaper: {
-  //     width: drawerWidth,
-  //   },
-  //   drawerHeader: {
-  //     marginTop: 60,
-  //   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 200,
+  },
+  menu: {
+    textAlign: "center",
+    width: "100%",
+    display: "inline-block",
+    fontSize: 18,
+  },
+  margin: {
+    height: theme.spacing(5),
+  },
+  settings: {
+    padding: 0,
+    width: "30px",
+    marginTop: -46,
+    float: "right",
+    marginLeft: "-10px",
+    marginRight: "20px",
+    cursor: "pointer",
+  },
+  root: {
+    display: "flex",
+    [theme.breakpoints.down("sm")]: { display: "block" },
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    zIndex: 1000,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    marginTop: 60,
+  },
   stories: {
-    marginTop: 50,
+    marginTop: 200,
     paddingLeft: 20,
     paddingRight: 30,
     [theme.breakpoints.up("md")]: { marginTop: 140 },
@@ -79,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       width: "70%",
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       "& img": {
         width: "95%",
       },
@@ -98,70 +97,73 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "right",
   },
 
-  //   drawerContainer: {
-  //     overflow: "auto",
-  //     fontSize: "1.2rem",
-  //   },
-  //   mobile: {
-  //     width: "100%",
-  //     position: "fixed",
-  //     top: 60,
-  //     backgroundColor: "white",
-  //     borderBottom: "1px solid #f1ecec",
-  //   },
-  //   loading: {
-  //     fontSize: 30,
-  //   },
-  //   helpIcon: {
-  //     marginTop: -40,
-  //     float: "right",
-  //     marginRight: 30,
-  //     cursor: "pointer",
-  //     fontSize: 21,
-  //     color: BLACK,
-  //     padding: "0 5px",
-  //   },
-  //   mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
-  //   heading: {
-  //     backgroundColor: "white",
-  //     position: "fixed",
-  //     marginTop: 62,
-  //     textAlign: "center",
-  //     paddingTop: 10,
-  //     [theme.breakpoints.down("md")]: { display: "none" },
-  //     width: "calc(100% - 400px)",
-  //   },
-  //   text: {
-  //     lineHeight: "1.255",
-  //   },
-  //   linkList: {
-  //     color: BLACK,
-  //     "&:hover": {
-  //       color: GREY,
-  //     },
-  //   },
-  //   mobileBox: {
-  //     display: "flex",
-  //   },
-  //   mobileLangCombo: {
-  //     minWidth: 100,
-  //   },
-  //   mobileComboBox: {
-  //     maxWidth: "90%",
-  //     display: "flex",
-  //   },
-  //   mobileTooltip: {
-  //     marginTop: 15,
-  //   },
-  //   settingsMenu: {
-  //     maxHeight: 68 * 4.5,
-  //     width: 250,
-  //   },
-  //   slider: {
-  //     color: BLACK,
-  //   },
+  drawerContainer: {
+    overflow: "auto",
+    fontSize: "1.2rem",
+  },
+  mobile: {
+    width: "100%",
+    position: "fixed",
+    top: 60,
+    backgroundColor: "white",
+    borderBottom: "1px solid #f1ecec",
+  },
+  loading: {
+    fontSize: 30,
+  },
+  helpIcon: {
+    marginTop: -40,
+    float: "right",
+    marginRight: 30,
+    cursor: "pointer",
+    fontSize: 21,
+    color: BLACK,
+    padding: "0 5px",
+  },
+  mobileHeading: { textAlign: "center", borderBottom: "1px solid #f1ecec" },
+  heading: {
+    backgroundColor: "white",
+    position: "fixed",
+    marginTop: 62,
+    textAlign: "center",
+    paddingTop: 10,
+    [theme.breakpoints.down("sm")]: { display: "none" },
+    width: "calc(100% - 400px)",
+  },
+  text: {
+    lineHeight: "1.255",
+  },
+  linkList: {
+    color: BLACK,
+    "&:hover": {
+      color: GREY,
+    },
+  },
+  mobileBox: {
+    display: "flex",
+  },
+  mobileLangCombo: {
+    minWidth: 100,
+  },
+  mobileComboBox: {
+    maxWidth: "90%",
+    display: "flex",
+  },
+  mobileTooltip: {
+    marginTop: 15,
+  },
+  settingsMenu: {
+    maxHeight: 68 * 4.5,
+    width: 250,
+  },
+  slider: {
+    color: BLACK,
+  },
   languageMenu: {
     minWidth: 250,
+    [theme.breakpoints.down("sm")]: {
+      minWidth: 120,
+    },
   },
   languageSelected: {
     "&:focus": {
@@ -177,27 +179,26 @@ const useStyles = makeStyles((theme) => ({
     float: (props) => (props.rtlList?.includes(props.lang) ? "right" : "left"),
     textTransform: "capitalize",
   },
-
-  //   language: {
-  //     width: "100%",
-  //   },
-  //   languageSelect: {
-  //     fontSize: "1rem",
-  //     lineHeight: 1.2,
-  //     maxWidth: 200,
-  //   },
-  //   container: {
-  //     margin: "0 20px",
-  //     padding: "12px 10px 15px 10px",
-  //     marginTop: 140,
-  //     [theme.breakpoints.down("md")]: {
-  //       padding: "0 10px",
-  //       margin: "0 3px",
-  //       marginTop: 180,
-  //     },
-  //   },
+  language: {
+    width: "100%",
+  },
+  languageSelect: {
+    fontSize: "1rem",
+    lineHeight: 1.2,
+    maxWidth: 200,
+  },
+  container: {
+    margin: "0 20px",
+    padding: "12px 10px 15px 10px",
+    marginTop: 140,
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 10px",
+      margin: "0 3px",
+      marginTop: 180,
+    },
+  },
 }));
-const I = styled("i")({ marginRight: 7, position: "relative" });
+
 const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const API = useMemo(
     () => axios.create({ baseURL: process.env.REACT_APP_BIBLE_STORIES_URL }),
@@ -215,59 +216,17 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const open = Boolean(settingsAnchor);
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("md"));
-  // const styleProps = {
-  //   lang: lang,
-  //   rtlList: rtlList,
-  // };
-  const classes = useStyles();
-  const storyClass = {
-    marginTop: 6.25,
-    paddingLeft: 2.5,
-    paddingRight: 3.75,
-    [theme.breakpoints.up("md")]: { marginTop: 17.5 },
-    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
-    "& img": {
-      margin: "auto",
-      display: "flex",
-      width: "70%",
-    },
-    [theme.breakpoints.down("md")]: {
-      "& img": {
-        width: "95%",
-      },
-    },
-    "& h1": {
-      textAlign: "center",
-    },
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const styleProps = {
+    lang: lang,
+    rtlList: rtlList,
   };
-  const storyDir = {
-    direction: "rtl",
-    textAlign: "right",
-    paddingRight: "6.25px",
-    marginTop: "6.25px",
-    paddingLeft: 2.5,
-    //paddingRight: 30,
-    [theme.breakpoints.up("md")]: { marginTop: 17.5 },
-    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
-    "& img": {
-      margin: "auto",
-      display: "flex",
-      width: "70%",
-    },
-    [theme.breakpoints.down("md")]: {
-      "& img": {
-        width: "95%",
-      },
-    },
-    "& h1": {
-      textAlign: "center",
-    },
-  };
-  const storyStyling = rtlList.includes(lang) ? storyDir : storyClass;
-  // const listClass = rtlList.includes(lang)
-  //   ? { direction: "rtl", textAlign: "right" }
-  //   : "";
+  const classes = useStyles(styleProps);
+  const storyClass = rtlList.includes(lang)
+    ? `${classes.stories} ${classes.storyDirection}`
+    : classes.stories;
+  const listClass = rtlList.includes(lang) ? classes.listDirection : "";
+
   const { t } = useTranslation();
   function openSettings(event) {
     setSettingsAnchor(event.currentTarget);
@@ -289,14 +248,8 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const renderName = (value) => {
     let langObj = obsLanguageInfo.find((el) => el.langCode === value);
     return (
-      <Typography sx={{ fontSize: "1rem", lineHeight: 1.2, maxWidth: 200 }}>
-        <span
-          //className={classes.languageNameOrigin}
-          sx={{
-            float: rtlList?.includes(lang) ? "right" : "left",
-            textTransform: rtlList?.includes(lang) ? "capitalize" : "",
-          }}
-        >
+      <Typography className={classes.languageSelect}>
+        <span className={classes.languageNameOrigin}>
           {`${langObj?.languageName}`}
         </span>
       </Typography>
@@ -304,45 +257,27 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   };
   const languageSelect = () => (
     <Select
-      variant="outlined"
       value={lang}
       onChange={changeLang}
       classes={{
-        select: `${classes.languageSelected} ${classes.languageMenu}`,
+        selectMenu: classes.languageMenu,
+        select: classes.languageSelected,
       }}
-      // sx={{
-      //   [`&.MuiSelect-select`]: {
-      //     backgroundColor: "transparent",
-      //     minWidth: 250,
-      //   },
-      // }}
       renderValue={renderName}
     >
       {obsLanguageInfo.map((text, y) => (
         <MenuItem
           key={y}
           value={text?.langCode}
-          sx={{
-            direction: rtlList.includes(text?.langCode) ? "rtl" : "",
-            textAlign: rtlList.includes(text?.langCode) ? "right" : "",
-          }}
+          className={
+            rtlList.includes(text?.langCode) ? classes.listDirection : ""
+          }
         >
-          <Typography sx={{ width: "100%" }}>
-            <span
-              sx={{
-                float: rtlList?.includes(lang) ? "right" : "left",
-                textTransform: rtlList?.includes(lang) ? "capitalize" : "",
-              }}
-            >
+          <Typography className={classes.language}>
+            <span className={classes.languageNameOrigin}>
               {`${text?.languageName}`}
             </span>
-            <span
-              sx={{
-                float: rtlList?.includes(lang) ? "left" : "right",
-                textTransform: rtlList?.includes(lang) ? "capitalize" : "",
-                color: rtlList?.includes(lang) ? GREY : "",
-              }}
-            >{`${text?.language}`}</span>
+            <span className={classes.languageName}>{`${text?.language}`}</span>
           </Typography>
         </MenuItem>
       ))}
@@ -405,30 +340,16 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
       <AppBar position="fixed">
         <TopBar />
       </AppBar>
-      <Box
-        sx={{
-          display: "flex",
-          [theme.breakpoints.down("md")]: { display: "block" },
-        }}
-      >
+      <div className={classes.root}>
         {mobile === true ? (
-          <Box
-            sx={{
-              width: "100%",
-              position: "fixed",
-              top: 60,
-              backgroundColor: "white",
-              borderBottom: "1px solid #f1ecec",
-            }}
-          >
-            <Box
-              sx={{ textAlign: "center", borderBottom: "1px solid #f1ecec" }}
-            >
+          <Box className={classes.mobile}>
+            <Box className={classes.mobileHeading}>
               <Typography variant="h4">{t("bibleStoriesText")}</Typography>
             </Box>
-            <Box sx={{ display: "flex" }}>
-              <Box p={1} flexGrow={1} sx={{ maxWidth: "90%", display: "flex" }}>
+            <Box className={classes.mobileBox}>
+              <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
                 <FormControl
+                  variant="outlined"
                   style={{
                     maxWidth: mobile === true ? "120px" : "50%",
                     minWidth: "180px",
@@ -437,27 +358,19 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                   {languageSelect()}
                 </FormControl>
                 <FormControl
+                  variant="outlined"
                   style={{
                     marginLeft: 5,
                   }}
                 >
                   {manifest.length > 0 && (
                     <Select
-                      variant="outlined"
                       value={String(parseInt(storyId))}
                       onChange={storySetter}
                     >
                       {manifest.map((text, y) => (
                         <MenuItem
-                          sx={{
-                            direction: rtlList.includes(text?.langCode)
-                              ? "rtl"
-                              : "",
-                            textAlign: rtlList.includes(text?.langCode)
-                              ? "right"
-                              : "",
-                          }}
-                          //className={listClass}
+                          className={listClass}
                           key={y}
                           value={String(y + 1)}
                         >
@@ -475,9 +388,9 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                   aria-controls="long-menu"
                   aria-haspopup="true"
                   onClick={openSettings}
-                  sx={{ marginTop: 1.875 }}
+                  className={classes.mobileTooltip}
                 >
-                  <I className="material-icons">more_vert</I>
+                  <i className="material-icons md-23">more_vert</i>
                 </Tooltip>
                 <Menu
                   id="long-menu"
@@ -488,22 +401,11 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                   PaperProps={{
                     className: classes.settingsMenu,
                   }}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                  }}
                 >
                   <MenuItem>{t("settingsFontSize")}</MenuItem>
                   <Divider />
-                  <MenuItem
-                    sx={{
-                      textAlign: "center",
-                      width: "100%",
-                      display: "inline-block",
-                      fontSize: 18,
-                    }}
-                  >
-                    <Box sx={{ height: theme.spacing(5) }} />
+                  <MenuItem className={classes.menu}>
+                    <div className={classes.margin} />
                     <Slider
                       defaultValue={20}
                       value={fontSize}
@@ -511,7 +413,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                       valueLabelDisplay="on"
                       min={12}
                       max={30}
-                      sx={{ [`&.MuiSlider-root`]: { color: BLACK } }}
+                      classes={{ root: classes.slider }}
                     />
                   </MenuItem>
                 </Menu>
@@ -520,38 +422,26 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
           </Box>
         ) : (
           <Drawer
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              zIndex: 1000,
-              "& .MuiDrawer-paper": {
-                width: drawerWidth,
-              },
-            }}
+            className={classes.drawer}
             variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
           >
-            <Box sx={{ marginTop: 7.5 }}>
-              <FormControl sx={{ margin: theme.spacing(1), minWidth: 200 }}>
+            <div className={classes.drawerHeader}>
+              <FormControl variant="outlined" className={classes.formControl}>
                 {languageSelect()}
               </FormControl>
-              <Box>
+              <div>
                 <Tooltip
                   title={t("commonSettings")}
-                  sx={{
-                    padding: 0,
-                    width: "30px",
-                    marginTop: -5.75,
-                    float: "right",
-                    marginLeft: "-1.25px",
-                    marginRight: "2.25px",
-                    cursor: "pointer",
-                  }}
+                  className={classes.settings}
                   aria-label="More"
                   aria-controls="long-menu"
                   aria-haspopup="true"
                   onClick={openSettings}
                 >
-                  <I className="material-icons">more_vert</I>
+                  <i className="material-icons md-23">more_vert</i>
                 </Tooltip>
                 <Menu
                   id="long-menu"
@@ -560,36 +450,15 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                   open={open}
                   onClose={closeSettings}
                   PaperProps={{
-                    style: {
-                      maxHeight: 68 * 4.5,
-                      width: 250,
-                    },
-                  }}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
+                    className: classes.settingsMenu,
                   }}
                 >
-                  <MenuItem
-                    sx={{
-                      textAlign: "center",
-                      width: "100%",
-                      display: "inline-block",
-                      fontSize: 18,
-                    }}
-                  >
+                  <MenuItem className={classes.menu}>
                     {t("settingsFontSize")}
                   </MenuItem>
                   <Divider />
-                  <MenuItem
-                    sx={{
-                      textAlign: "center",
-                      width: "100%",
-                      display: "inline-block",
-                      fontSize: 18,
-                    }}
-                  >
-                    <Box sx={{ height: theme.spacing(5) }} />
+                  <MenuItem className={classes.menu}>
+                    <div className={classes.margin} />
                     <Slider
                       defaultValue={20}
                       value={fontSize}
@@ -597,103 +466,45 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                       valueLabelDisplay="on"
                       min={12}
                       max={30}
-                      sx={{ [`&.MuiSlider-root`]: { color: BLACK } }}
+                      classes={{ root: classes.slider }}
                     />
                   </MenuItem>
                 </Menu>
-              </Box>
-            </Box>
+              </div>
+            </div>
             <Divider />
-            <Box sx={{ overflow: "auto", fontSize: "1.2rem" }}>
+            <div className={classes.drawerContainer}>
               <List>
                 {manifest.map((text, y) => (
-                  <ListItem
-                    key={y}
-                    value={text}
-                    sx={{
-                      direction: rtlList.includes(text?.langCode) ? "rtl" : "",
-                      textAlign: rtlList.includes(text?.langCode)
-                        ? "right"
-                        : "",
-                    }}
-                  >
+                  <ListItem key={y} value={text} className={listClass}>
                     <Link
-                      sx={{
-                        color: BLACK,
-                        "&:hover": {
-                          color: GREY,
-                        },
-                      }}
+                      className={classes.linkList}
                       href="#"
                       data-id={y + 1}
                       onClick={(e) => getStory(e)}
-                      underline="hover"
                     >
                       {y + 1 + ". " + text}
                     </Link>
                   </ListItem>
                 ))}
               </List>
-            </Box>
+            </div>
           </Drawer>
         )}
         <main>
-          <Box
-            sx={{
-              backgroundColor: "white",
-              position: "fixed",
-              marginTop: 7.75,
-              textAlign: "center",
-              paddingTop: 1.25,
-              [theme.breakpoints.down("md")]: { display: "none" },
-              width: "calc(100% - 400px)",
-            }}
-          >
-            <Typography variant="h3" sx={{ lineHeight: "1.255" }}>
+          <div className={classes.heading}>
+            <Typography variant="h3" className={classes.text}>
               {t("bibleStoriesText")}
             </Typography>
-            <Help
-              iconStyle={{
-                marginTop: -5,
-                float: "right",
-                marginRight: 3.75,
-                cursor: "pointer",
-                fontSize: 21,
-                color: BLACK,
-                padding: "0 0.625px",
-              }}
-              url={"bibleStories"}
-            />
+            <Help iconStyle={classes.helpIcon} url={"bibleStories"} />
             <Divider />
-          </Box>
+          </div>
           {isLoading ? (
-            <Box
-              sx={`${{
-                margin: "0 2.5px",
-                padding: "1.5px 1.25px 1.875px 1.25px",
-                marginTop: 17.5,
-                [theme.breakpoints.down("md")]: {
-                  padding: "0 1.25px",
-                  margin: "0 0.375px",
-                  marginTop: 22.5,
-                },
-              }} ${{ fontSize: 30 }}`}
-            >
+            <div className={`${classes.container} ${classes.loading}`}>
               {t("loadingMessage")}...
-            </Box>
+            </div>
           ) : lang === "isl" ? (
-            <Box
-              sx={{
-                margin: "0 2.5px",
-                padding: "1.5px 1.25px 1.875px 1.25px",
-                marginTop: 17.5,
-                [theme.breakpoints.down("md")]: {
-                  padding: "0 1.25px",
-                  margin: "0 0.375px",
-                  marginTop: 22.5,
-                },
-              }}
-            >
+            <div className={classes.container}>
               {islStories ? (
                 <VideoCard
                   video={stories}
@@ -702,18 +513,18 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                   setPlaying={setPlaying}
                 />
               ) : (
-                <Box sx={{ fontSize: 30 }}>{t("loadingMessage")}...</Box>
+                <div className={classes.loading}>{t("loadingMessage")}...</div>
               )}
-            </Box>
+            </div>
           ) : (
-            <Box sx={storyStyling} style={{ fontSize: fontSize }}>
+            <div className={storyClass} style={{ fontSize: fontSize }}>
               {typeof stories === "string" && (
                 <Markdown rehypePlugins={[rehypeHighlight]}>{stories}</Markdown>
               )}
-            </Box>
+            </div>
           )}
         </main>
-      </Box>
+      </div>
     </>
   );
 };

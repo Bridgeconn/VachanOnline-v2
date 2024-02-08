@@ -358,10 +358,16 @@ const BookCombo = (props) => {
             <Box
               sx={{
                 whiteSpace: "nowrap",
-                minWidth: 100,
+                minWidth: "100px",
                 width: "fit-content",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
+                [theme.breakpoints.only("md")]: {
+                  maxWidth: (props) => (props.parallelView ? "100px" : "130px"),
+                },
+                [theme.breakpoints.down("sm")]: {
+                  maxWidth: "100px",
+                },
               }}
             >{`${bookDisplay}  ${chapter}`}</Box>
           ) : (

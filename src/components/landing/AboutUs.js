@@ -9,6 +9,7 @@ import Link from "@mui/material/Link";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
+import FeaturesList from "./FeaturesList";
 
 const useStyles = makeStyles(() => ({
   subheading: {
@@ -102,7 +103,7 @@ const AboutUs = ({ handleClose }) => {
             "https://github.com/Bridgeconn/VachanOnline-v2/releases"
           )}
         </Typography>
-
+        <FeaturesList />
         <Typography variant="h6" className={classes.subheading}>
           {t("landingAboutUsContactUs")}
         </Typography>

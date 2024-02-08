@@ -316,7 +316,7 @@ const getBookCode = (book, bookList) => {
   // check the search string contains full English Book Name
   let bookObj = bookList.find((a) => a.short === book);
   if (bookObj) {
-    bookCode = bookObj.abbreviation;
+    bookCode = bookObj.book_code;
   } else {
     bookObj = bookList.find(
       (b) =>
@@ -324,7 +324,7 @@ const getBookCode = (book, bookList) => {
         b.short.toLowerCase() === book ||
         b.long.toLowerCase() === book ||
         b.book_code.toLowerCase() === book
-    );
+        );
     if (bookObj) {
       bookCode = bookObj.book_code;
     }
@@ -397,8 +397,11 @@ export const getReference = (search, bookList) => {
   const refObj = bibleBooks.find(
     (b) => b.book.toLowerCase() === bookName || b.abbreviation === bookName
   );
+  const refObjLocal = bookList.find(
+    (b) => b.short === bookName || b.abbr === bookName
+  );
   //check the search string contains valid book
-  const bookCode = getBookCode(refObj?.abbreviation, bookList);
+  const bookCode = getBookCode(refObj?.abbreviation?refObj?.abbreviation:refObjLocal?.abbr, bookList);
   //If search string has book code, then check the corresponding total chapter count
   if (bookCode) {
     if (checkValidChapter(bookCode, chapter)) {

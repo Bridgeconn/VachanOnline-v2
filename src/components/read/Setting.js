@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Print from "../common/PrintBox";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
+import Metadata from "../common/Metadata";
 
 const StyleMenuItem = (props) => (
   <MenuItem
@@ -42,9 +43,9 @@ const Setting = ({
   chapter,
   mobileView,
   paneNo,
+  metadataList,
 }) => {
   const open = Boolean(settingsAnchor);
-
   function setItem(key, value) {
     setValue(key, value);
     if (paneNo !== 2) {
@@ -77,7 +78,6 @@ const Setting = ({
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
-
   const { t } = useTranslation();
   return (
     <>
@@ -205,12 +205,26 @@ const Setting = ({
             />
           </StyleMenuItem>
         )}
-        {mobileView ? (
-          <StyleMenuItem onClick={handleDialogOpen}>
-            <span sx={{ marginRight: 2.5 }}>{t("PrintSave")}</span>
-            <PrintIcon />
-          </StyleMenuItem>
-        ) : null}
+        <StyleMenuItem>
+          <span sx={{ marginRight: "20px" }}>{t("informationText")}</span>
+          <div
+            sx={{
+              display: "inline-block",
+              marginTop: "-15px",
+            }}
+          >
+            <Metadata
+              metadataList={metadataList}
+              title="Version Name (in Eng)"
+              abbreviation="Abbreviation"
+              mobileView={mobileView}
+            ></Metadata>
+          </div>
+        </StyleMenuItem>
+        <StyleMenuItem onClick={handleDialogOpen}>
+          <span sx={{ marginRight: 2.5 }}>{t("PrintSave")}</span>
+          <PrintIcon />
+        </StyleMenuItem>
       </Menu>
       <Print
         dialogOpen={dialogOpen}

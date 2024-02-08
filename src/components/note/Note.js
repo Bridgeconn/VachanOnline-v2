@@ -25,7 +25,7 @@ import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
 import { BLACK } from "../../store/colorCode";
 
-const CustomEditor = styled(Editor)(({}) => ({
+const CustomEditor = styled(Editor)(() => ({
   padding: "10px",
 }));
 
@@ -201,7 +201,7 @@ function Note({
             editorStyle={{ height: "30vh" }}
             onEditorStateChange={handleNoteTextChange}
             placeholder={t("commonNotePlaceholder")}
-              toolbar={getEditorToolbar(mobileView)}
+            toolbar={getEditorToolbar(mobileView)}
           />
         </DialogContent>
         <CustomDialogActions>

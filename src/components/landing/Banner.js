@@ -29,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0 0 2px " + BLACK,
     },
   },
+  verseText: {
+    display: "-webkit-box",
+    WebkitLineClamp: 3,
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    WebkitBoxOrient: "vertical",
+  },
 }));
 
 const Heading = styled("h3")(({ theme }) => ({
@@ -152,7 +159,9 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
             className={classes.link}
             onClick={() => setURL()}
           >
-            {verseObj ? verseObj.verseContent?.text : ""}
+            <span className={classes.verseText}>
+              {verseObj ? verseObj.verseContent?.text : ""}
+            </span>
             <Box
               sx={{
                 fontStyle: "italic",

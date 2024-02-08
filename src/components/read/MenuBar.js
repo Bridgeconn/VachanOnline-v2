@@ -5,18 +5,11 @@ import { getAudioBibleObject } from "../common/utility";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
-import Metadata from "../common/Metadata";
 import Bookmark from "../bookmark/Bookmark";
-import Highlight from "../highlight/Highlight";
-import NoteIcon from "@mui/icons-material/NoteOutlined";
-import BorderColor from "@mui/icons-material/BorderColor";
-import Note from "../note/Note";
-import PrintIcon from "@mui/icons-material/Print";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@mui/material/Tooltip";
 import { BLACK, WHITE } from "../../store/colorCode";
 import Close from "../common/Close";
-import Print from "../common/PrintBox";
 import ParallelScroll from "@mui/icons-material/ImportExport";
 import ShareIcon from "@mui/icons-material/Share";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
@@ -27,17 +20,22 @@ import { Button, Menu, Snackbar } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Alert } from "@mui/material";
 import { styled } from "@mui/system";
+import { useTheme } from "@mui/material/styles";
 
-const StyleDiv = styled("div")({
+const StyleDiv = styled("div")(({ theme }) => ({
   padding: 0,
   width: "30px",
   marginTop: 20,
-  marginRight: 4,
+  marginRight: 2,
   color: "default",
   cursor: "pointer",
-});
+  [theme.breakpoints.only("sm")]: {
+    width: "25px",
+  },
+}));
 
 const MenuBar = (props) => {
+  const theme = useTheme();
   let {
     setValue,
     paneNo,
@@ -57,10 +55,6 @@ const MenuBar = (props) => {
     bookCode,
     audio,
     userDetails,
-    selectedVerses,
-    setSelectedVerses,
-    refUrl,
-    highlights,
     parallelView,
     printRef,
     printNotes,
@@ -81,11 +75,8 @@ const MenuBar = (props) => {
   const [audioBible, setAudioBible] = React.useState({});
   const [audioIcon, setAudioIcon] = React.useState("");
   const [bookmarkIcon, setBookmarkIcon] = React.useState("");
-  const [highlightIcon, setHighlightIcon] = React.useState("");
-  const [noteIcon, setNoteIcon] = React.useState("");
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
-  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [shareAnchor, setShareAnchor] = React.useState(null);
   const [copyFeedback, setCopyFeedback] = React.useState("");
   const [alert, setAlert] = React.useState(false);
@@ -120,75 +111,6 @@ const MenuBar = (props) => {
     setBookmarkIcon("");
   }, [userDetails, sourceId, bookCode, chapter]);
 
-  //Set highlight icon
-  React.useEffect(() => {
-    if (userDetails.uid !== null) {
-      if (selectedVerses && selectedVerses.length > 0) {
-        setHighlightIcon(
-          <Highlight
-            selectedVerses={selectedVerses}
-            setSelectedVerses={setSelectedVerses}
-            refUrl={refUrl}
-            highlights={highlights}
-          />
-        );
-        return;
-      } else {
-        setHighlightIcon(
-          <Tooltip title={t("commonSelectVerses")}>
-            <StyleDiv>
-              <BorderColor fontSize="small" color="disabled" />
-            </StyleDiv>
-          </Tooltip>
-        );
-      }
-    } else {
-      setHighlightIcon("");
-    }
-  }, [userDetails, selectedVerses, setSelectedVerses, refUrl, highlights, t]);
-
-  //Set note icon
-  React.useEffect(() => {
-    if (userDetails.uid !== null) {
-      if (selectedVerses && selectedVerses.length > 0) {
-        setNoteIcon(
-          <Note
-            uid={userDetails.uid}
-            selectedVerses={selectedVerses}
-            setSelectedVerses={setSelectedVerses}
-            sourceId={sourceId}
-            bookCode={bookCode}
-            chapter={chapter}
-          />
-        );
-        return;
-      } else {
-        setNoteIcon(
-          <Tooltip title={t("commonSelectVerses")}>
-            <StyleDiv>
-              <NoteIcon fontSize="small" color="disabled" />
-            </StyleDiv>
-          </Tooltip>
-        );
-      }
-    } else {
-      setNoteIcon("");
-    }
-  }, [
-    userDetails,
-    selectedVerses,
-    setSelectedVerses,
-    sourceId,
-    bookCode,
-    chapter,
-    t,
-  ]);
-  const handleDialogOpen = () => {
-    setDialogOpen(true);
-  };
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
   const closeAlert = () => {
     setAlert(false);
   };
@@ -198,13 +120,13 @@ const MenuBar = (props) => {
       setAlert(true);
       setCopyFeedback(t("clipBoardCopied"));
       setAlertType("success");
-      handleDialogClose(true);
+      closeShareDialog();
     } catch (err) {
       console.error("Unable to copy to clipboard.", err);
       setAlert(true);
       setCopyFeedback(t("clipBoardCopiedFailed"));
       setAlertType("error");
-      handleDialogClose(true);
+      closeShareDialog();
     }
   };
   //function to open and close settings menu
@@ -276,13 +198,16 @@ const MenuBar = (props) => {
           height: 60,
           boxShadow: { lg: 0, xs: 1 },
           top: { lg: 72, sm: 61, xs: props.paneNo === 2 ? 0 : 60 },
+          [theme.breakpoints.only("md")]: {
+            padding: "0 10px 0 28px",
+          },
         }}
       >
         <Box
           flexGrow={1}
           sx={{
-            display: { lg: "block", xs: "flex" },
-            alignItems: { lg: "flex-start", xs: "center" },
+            display: { lg: "block", md: "flex", xs: "flex" },
+            alignItems: { lg: "flex-start", md: "center", xs: "center" },
           }}
         >
           <Version
@@ -342,21 +267,6 @@ const MenuBar = (props) => {
                   }}
                   onFocus={(e) => e.target.select()}
                 />
-                <Snackbar
-                  open={alert}
-                  autoHideDuration={800}
-                  onClose={closeAlert}
-                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                >
-                  <Alert
-                    elevation={6}
-                    variant="filled"
-                    onClose={closeAlert}
-                    severity={alertType}
-                  >
-                    {copyFeedback}
-                  </Alert>
-                </Snackbar>
                 <div>
                   <Button
                     sx={{
@@ -373,31 +283,32 @@ const MenuBar = (props) => {
                   </Button>
                 </div>
               </Menu>
+              <Snackbar
+                open={alert}
+                autoHideDuration={800}
+                onClose={closeAlert}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              >
+                <Alert
+                  elevation={6}
+                  variant="filled"
+                  onClose={closeAlert}
+                  severity={alertType}
+                >
+                  {copyFeedback}
+                </Alert>
+              </Snackbar>
             </StyleDiv>
-            {mobileView ? null : noteIcon}
-            {mobileView ? null : highlightIcon}
-
             {bookmarkIcon}
-            <Metadata
-              metadataList={metadataList}
-              title="Version Name (in Eng)"
-              abbreviation="Abbreviation"
-              mobileView={mobileView}
-            ></Metadata>
             {audioIcon}
-            {mobileView ? null : (
-              <>
-                <StyleDiv onClick={handleDialogOpen}>
-                  <Tooltip title={t("commonPrintChapter")}>
-                    <PrintIcon fontSize="small" />
-                  </Tooltip>
+            {parallelView ? (
+              ""
+            ) : (
+              <Tooltip title={t("menuBarFullScreenToolTip")}>
+                <StyleDiv onClick={goFull}>
+                  <i className="material-icons md-23">zoom_out_map</i>
                 </StyleDiv>
-                <Tooltip title={t("menuBarFullScreenToolTip")}>
-                  <StyleDiv onClick={goFull}>
-                    <i className="material-icons md-23">zoom_out_map</i>
-                  </StyleDiv>
-                </Tooltip>
-              </>
+              </Tooltip>
             )}
             <Box
               sx={{
@@ -432,12 +343,13 @@ const MenuBar = (props) => {
               bookDisplay={bookDisplay}
               chapter={chapter}
               paneNo={paneNo}
+              metadataList={metadataList}
             />
             <Help
               iconStyle={{
                 color: BLACK,
                 marginTop: 2.375,
-                marginRight: 1.25,
+                marginRight: "2px",
                 fontSize: 21,
               }}
               url={url}
@@ -473,18 +385,6 @@ const MenuBar = (props) => {
           ""
         )}
       </Box>
-
-      <Print
-        dialogOpen={dialogOpen}
-        handleDialogClose={handleDialogClose}
-        bookDisplay={bookDisplay}
-        printRef={printRef}
-        setPrintNotes={setPrintNotes}
-        setPrintHighlights={setPrintHighlights}
-        printNotes={printNotes}
-        printHighlights={printHighlights}
-        chapter={chapter}
-      />
     </div>
   );
 };

@@ -609,7 +609,9 @@ const Bible = (props) => {
           showText(item, chapter, verseData)
         );
         return para.tag === "p" ? (
-          <p className={lineView ? "" : classes.paraStyling}>{text}</p>
+          <p className={lineView ? "" : classes.paraStyling} key={i}>
+            {text}
+          </p>
         ) : (
           <span>{text}</span>
         );

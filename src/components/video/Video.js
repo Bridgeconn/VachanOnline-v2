@@ -136,7 +136,14 @@ const Video = (props) => {
     };
     if (language) {
       const lang = video.find((obj) => obj?.language?.code === language?.value);
-      if (lang?.books?.hasOwnProperty(bookCode)) {
+      let chapterAvail = true;
+      if (chapterVideo[language?.value] !== undefined) {
+        const avlChapters = chapterVideo[language?.value]?.[bookCode]
+          ? Object.keys(chapterVideo[language?.value]?.[bookCode])
+          : [];
+        chapterAvail = avlChapters.includes(chapter.toString());
+      }
+      if (lang?.books?.hasOwnProperty(bookCode) && chapterAvail) {
         const _videos = lang.books[bookCode];
         setVideos(filterVideos(_videos));
         setMessage("");
@@ -146,6 +153,7 @@ const Video = (props) => {
         const ref = {
           language: language?.label,
           book: book ? book : getBookbyCode(bookCode)?.book,
+          chapter: chapter,
         };
         setMessage(t("studyNoVideosAvailable", { ref }));
       }

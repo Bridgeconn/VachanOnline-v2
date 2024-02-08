@@ -6,15 +6,29 @@ import AboutUs from "./AboutUs";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
-import { connect } from "react-redux";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
+import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
+import IconButton from "@material-ui/core/IconButton";
+import WhatsNew from "./WhatsNew";
+import { useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@mui/material/styles";
 
 const LandingFooter = (props) => {
   const [open, setOpen] = React.useState(false);
-  const { mobileView } = props;
+  const [whatsNewOpen, setWhatsNewOpen] = React.useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
   const openModal = () => {
     setOpen(true);
+  };
+  const openWhatsNew = () => {
+    setWhatsNewOpen(true);
+  };
+
+  const whatsNewClose = () => {
+    setWhatsNewOpen(false);
   };
 
   const { t } = useTranslation();
@@ -29,8 +43,7 @@ const LandingFooter = (props) => {
           bottom: 0,
           position: "fixed",
           background: WHITE,
-          boxShadow:
-            "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
+          boxShadow: 3,
           borderTop: "1px solid" + GREY,
           color: "#fff",
           paddingX: 1.875,
@@ -47,8 +60,8 @@ const LandingFooter = (props) => {
       >
         <Grid
           item
-          xs={6}
-          sm={5}
+          xs={4}
+          sm={3}
           sx={{
             textAlign: { lg: "left", xs: "center" },
             whiteSpace: { lg: "wrap", xs: "nowrap" },
@@ -73,10 +86,11 @@ const LandingFooter = (props) => {
             {t("landingFooterAboutUsBtn")}
           </Button>
         </Grid>
-        <Grid item xs={6} sm={2}>
+        <Grid item xs={4} sm={3}>
           <Button
             variant="outlined"
             size="small"
+            color="default"
             sx={{
               marginTop: 0.375,
               textTransform: "unset",
@@ -87,15 +101,56 @@ const LandingFooter = (props) => {
                 color: GREY,
               },
             }}
-            startIcon={<FeedbackIcon />}
-            href="https://forms.office.com/r/qiV0Ym335M"
-            target="_blank"
-            rel="noopener"
+            onClick={openWhatsNew}
           >
-            {t("landingFooterFeedbackBtn")}
+            {t("WhatsNew")}
           </Button>
         </Grid>
-        <Grid item xs={12} sm={5}>
+        <Grid item xs={5} sm={1} md={2}>
+          {isTablet ? (
+            <IconButton
+              aria-label="feedback"
+              sx={{
+                marginTop: 0.375,
+                textTransform: "unset",
+                paddingX: 1.25,
+                paddingY: 0.25,
+                fontSize: { lg: 16, xs: 12 },
+                "&:hover": {
+                  color: GREY,
+                },
+              }}
+              href="https://forms.office.com/r/qiV0Ym335M"
+              target="_blank"
+              rel="noopener"
+            >
+              <FeedbackOutlinedIcon />
+            </IconButton>
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{
+                marginTop: 0.375,
+                textTransform: "unset",
+                paddingX: 1.25,
+                paddingY: 0.25,
+                fontSize: { lg: 16, xs: 12 },
+                "&:hover": {
+                  color: GREY,
+                },
+              }}
+              startIcon={<FeedbackIcon />}
+              href="https://forms.office.com/r/qiV0Ym335M"
+              target="_blank"
+              rel="noopener"
+            >
+              {t("landingFooterFeedbackBtn")}
+            </Button>
+          )}
+        </Grid>
+
+        <Grid item xs={6} sm={5} md={4}>
           <Link
             href="https://www.bridgeconn.com/"
             target="_blank"
@@ -118,7 +173,7 @@ const LandingFooter = (props) => {
               }}
             >
               {t("landingCompanyYear")}{" "}
-              {mobileView ? t("landingCompanyMob") : t("landingCompanyDesktop")}
+              {isMobile ? t("landingCompanyMob") : t("landingCompanyDesktop")}
             </Typography>
           </Link>
         </Grid>
@@ -134,13 +189,19 @@ const LandingFooter = (props) => {
       >
         <AboutUs handleClose={handleClose} />
       </Dialog>
+      <Dialog
+        open={whatsNewOpen}
+        onClose={whatsNewClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <WhatsNew handleClose={whatsNewClose} />
+      </Dialog>
     </>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    mobileView: state.local.mobileView,
-  };
-};
-export default connect(mapStateToProps)(LandingFooter);
+export default LandingFooter;

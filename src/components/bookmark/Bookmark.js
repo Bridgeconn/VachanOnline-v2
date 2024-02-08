@@ -7,8 +7,10 @@ import { useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
+  const theme = useTheme();
   const firebase = useFirebase();
   const [bookmarked, setBookmarked] = React.useState(false);
   const [bookmarks, setBookmarks] = React.useState([]);
@@ -52,6 +54,9 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
         mt: 2.5,
         mr: 0.5,
         cursor: "pointer",
+        [theme.breakpoints.only("sm")]: {
+          width: "25px",
+        },
       }}
     >
       {bookmarked ? (
