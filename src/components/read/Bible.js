@@ -20,7 +20,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { Alert } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import {
   getAudioBibleObject,
   getEditorToolbar,
@@ -34,28 +34,74 @@ import draftToHtml from "draftjs-to-html";
 import { Editor } from "react-draft-wysiwyg";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
+
+const CustomReactPlayer = styled(ReactPlayer)(({ theme, audioBottom }) => ({
+  position: "sticky",
+  bottom: "10px",
+  left: "35px",
+  [theme.breakpoints.down("md")]: {
+    bottom: audioBottom,
+  },
+  width: "calc(100% - 70px)",
+  height: "50px",
+}));
+
+const CustomEditor = styled(Editor)(({ theme }) => ({
+  padding: "10px",
+  height: "30vh",
+}));
+
+const ArrowBack = styled(ArrowBackIosIcon)(
+  ({ theme, padding, audioBottom }) => ({
+    position: "absolute",
+    top: "45%",
+    cursor: "pointer",
+    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
+    borderRadius: "50%",
+    backgroundColor: "rgb(255, 255, 255)",
+    border: "1px white",
+    padding: "7px",
+    [theme.breakpoints.up("md")]: {
+      left: padding > 5 ? padding / 2 : 2.5,
+    },
+    [theme.breakpoints.down("md")]: {
+      left: "10px",
+      top: "unset",
+      bottom: audioBottom === "0.5rem" ? "1.5rem" : "4.5rem",
+    },
+  })
+);
+
+const ArrowForward = styled(ArrowForwardIosIcon)(
+  ({ theme, padding, audioBottom }) => ({
+    position: "absolute",
+    top: "45%",
+    cursor: "pointer",
+    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
+    borderRadius: "50%",
+    backgroundColor: "rgb(255, 255, 255)",
+    border: "1px white",
+    padding: "7px",
+    [theme.breakpoints.up("md")]: {
+      right: padding > 5 ? padding / 2 : 2.5,
+    },
+    [theme.breakpoints.down("md")]: {
+      right: "10px",
+      top: "unset",
+      bottom: audioBottom === "0.5rem" ? "1.5rem" : "4.5rem",
+    },
+  })
+);
+const LoadingHeading = styled("h3")({
+  paddingLeft: 20,
+});
 
 const useStyles = makeStyles((theme) => ({
-  biblePanel: {
-    position: "absolute",
-    backgroundColor: "#fff",
-    width: "100%",
-    height: "100%",
-    borderRight: "1px solid " + color.LIGHTGREY,
-    "& p": {
-      textAlign: "justify",
-      color: "#464545",
-      marginBottom: 5,
-    },
-  },
-  paper: {
-    [theme.breakpoints.down("md")]: {
-      margin: 25,
-    },
-  },
   bibleReadingPane: {
     position: "absolute",
-    paddingTop: 20,
+    paddingTop: "20px",
     height: "100%",
     overflow: "scroll",
     lineHeight: "2em",
@@ -73,84 +119,22 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
     [theme.breakpoints.up("md")]: {
-      paddingRight: (props) => (props.padding > 40 ? props.padding : 40),
-      paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
+      paddingRight: (props) => (props.padding > 5 ? props.padding : 5),
+      paddingLeft: (props) => (props.padding > 5 ? props.padding : 5),
     },
     [theme.breakpoints.down("md")]: {
-      paddingRight: 15,
-      paddingLeft: 15,
+      paddingRight: "15px",
+      paddingLeft: "15px",
       lineHeight: "1.8em",
     },
   },
-  prevChapter: {
-    position: "absolute",
-    top: "45%",
-    cursor: "pointer",
-    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
-    borderRadius: "50%",
-    backgroundColor: "rgb(255, 255, 255)",
-    border: "1px white",
-    padding: 7,
-    [theme.breakpoints.up("md")]: {
-      left: (props) => (props.padding > 40 ? props.padding / 2 : 20),
-    },
-    [theme.breakpoints.down("md")]: {
-      left: 10,
-      top: "unset",
-      bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
-    },
-  },
-  nextChapter: {
-    position: "absolute",
-    top: "45%",
-    cursor: "pointer",
-    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
-    borderRadius: "50%",
-    backgroundColor: "rgb(255, 255, 255)",
-    border: "1px white",
-    padding: 7,
-    [theme.breakpoints.up("md")]: {
-      right: (props) => (props.padding > 40 ? props.padding / 2 : 20),
-    },
-    [theme.breakpoints.down("md")]: {
-      right: 10,
-      top: "unset",
-      bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
-    },
-  },
-  loading: {
-    padding: 20,
-  },
-  player: {
-    position: "sticky",
-    bottom: "10px",
-    left: 35,
-    [theme.breakpoints.down("md")]: {
-      bottom: (props) => props.audioBottom,
-    },
-  },
-  text: {
-    padding: "12px 25px 30px",
-    marginBottom: 20,
-    maxWidth: 1191,
-    [`@media print`]: {
-      fontSize: "1.2rem",
-    },
-    [theme.breakpoints.up("md")]: {
-      boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
-    },
-    [theme.breakpoints.down("md")]: {
-      marginBottom: 50,
-      padding: "0 0 50px 5px",
-    },
-  },
   verseText: {
-    paddingTop: 4,
+    paddingTop: "4px",
   },
   verseNumber: {
     fontWeight: 600,
-    paddingLeft: 3,
-    bottom: 4,
+    paddingLeft: "3px",
+    bottom: "4px",
     position: "relative",
     fontSize: ".8em",
     color: color.MEDIUMGREY,
@@ -158,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontSize: "1.3em",
     display: "block",
-    paddingTop: 12,
+    paddingTop: "12px",
     fontWeight: 700,
     textIndent: 0,
   },
@@ -210,64 +194,12 @@ const useStyles = makeStyles((theme) => ({
   },
   firstVerse: {
     fontSize: "1.8em",
-    bottom: -2,
+    bottom: "-2px",
     color: color.BLACK,
-  },
-  noteIcon: {
-    [`@media print`]: {
-      display: (props) => (props.printNotes ? "inline-block" : "none"),
-    },
-  },
-  printHeading: {
-    display: "none",
-    [`@media print`]: {
-      textTransform: "capitalize",
-      display: "block",
-      textAlign: "center",
-    },
-  },
-  footNotes: {
-    display: "none",
-    [`@media print`]: {
-      display: (props) => (props.printNotes ? "block" : "none"),
-      marginTop: 200,
-    },
   },
   underline: {
     color: "grey",
     textDecoration: "underline",
-  },
-  noteTitle: {
-    paddingBottom: 20,
-  },
-  noteList: {
-    paddingTop: 20,
-  },
-  noteDialog: {
-    padding: 0,
-  },
-  editor: {
-    padding: 10,
-  },
-  readChapterButton: {
-    display: "inline-flex",
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    border: "1px solid #fff",
-    boxShadow: "1px 1px 1px 1px " + color.GREY,
-    margin: 4,
-    marginTop: 20,
-    padding: "6px 10px",
-    borderRadius: 4,
-  },
-  searchHeading: {
-    textTransform: "capitalize",
-    fontWeight: 600,
-    fontSize: 14,
-  },
-  divider: {
-    marginTop: 12,
-    marginBottom: 12,
   },
   hoverVerse: {
     background: color.LIGHTGREY,
@@ -297,10 +229,11 @@ const useStyles = makeStyles((theme) => ({
   },
   blankLine: {
     display: "block",
-    height: 10,
+    height: "10px",
   },
 }));
 const Bible = (props) => {
+  const theme = useTheme();
   const [verses, setVerses] = React.useState([]);
   const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
@@ -578,7 +511,11 @@ const Bible = (props) => {
           {/*If verse has note then show note icon to open notes pane */}
           {notes && notes.includes(verse) ? (
             <NoteIcon
-              className={classes.noteIcon}
+              sx={{
+                [`@media print`]: {
+                  display: printNotes ? "inline-block" : "none",
+                },
+              }}
               fontSize="small"
               color="disabled"
               onClick={() => openNoteDialog(verse)}
@@ -634,10 +571,17 @@ const Bible = (props) => {
       return verseData?.split(",").map((element, i) => {
         const notLast = i !== verseData?.split(",").length - 1;
         return (
-          <div key={element + i}>
+          <Box key={element + i}>
             {verseData?.indexOf(",") !== -1 && (
               // if multi sections show separate headings
-              <Typography variant="button" className={classes.searchHeading}>
+              <Typography
+                variant="button"
+                sx={{
+                  textTransform: "capitalize",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                }}
+              >
                 {`${bookDisplay} ${chapter}:${element}`}
               </Typography>
             )}
@@ -651,8 +595,12 @@ const Bible = (props) => {
                 <span>{text}</span>
               );
             })}
-            {notLast ? <Divider className={classes.divider} /> : ""}
-          </div>
+            {notLast ? (
+              <Divider sx={{ marginTop: "12px", marginBottom: "12px" }} />
+            ) : (
+              ""
+            )}
+          </Box>
         );
       });
     } else {
@@ -953,9 +901,10 @@ const Bible = (props) => {
     }
     return previous && Object.values(previous).length !== 0 ? (
       <Tooltip title={previousBook + " " + previous.chapterId}>
-        <ArrowBackIosIcon
+        <ArrowBack
           fontSize="large"
-          className={classes.prevChapter}
+          padding={padding}
+          audioBottom={audioBottom}
           onClick={prevClick}
         />
       </Tooltip>
@@ -974,9 +923,10 @@ const Bible = (props) => {
     }
     return next && Object.values(next).length !== 0 ? (
       <Tooltip title={nextBook + " " + next.chapterId}>
-        <ArrowForwardIosIcon
+        <ArrowForward
           fontSize="large"
-          className={classes.nextChapter}
+          padding={padding}
+          audioBottom={audioBottom}
           onClick={nextClick}
         />
       </Tooltip>
@@ -1025,15 +975,26 @@ const Bible = (props) => {
     chapter: chapter,
   };
   return (
-    <div
-      className={classes.biblePanel}
+    <Box
+      sx={{
+        position: "absolute",
+        backgroundColor: "#fff",
+        width: "100%",
+        height: "100%",
+        borderRight: "1px solid " + color.LIGHTGREY,
+        "& p": {
+          textAlign: "justify",
+          color: "#464545",
+          marginBottom: "5px",
+        },
+      }}
       style={{
         fontFamily: font,
         fontSize: fontSize,
       }}
     >
       {!isLoading && loadingText !== t("readBookUploadedSoon") ? (
-        <div
+        <Box
           onScroll={() => {
             scrollText();
           }}
@@ -1045,9 +1006,36 @@ const Bible = (props) => {
           }
         >
           {fetchData}
-          <div className={classes.text} ref={printRef}>
+          <Box
+            sx={{
+              padding: "12px 25px 30px",
+              marginBottom: "20px",
+              maxWidth: "1191px",
+              [`@media print`]: {
+                fontSize: "1.2rem",
+              },
+              [theme.breakpoints.up("md")]: {
+                boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
+              },
+              [theme.breakpoints.down("md")]: {
+                marginBottom: "50px",
+                padding: "0 0 50px 5px",
+              },
+            }}
+            ref={printRef}
+          >
             <style>{getPageMargins()}</style>
-            <Typography className={classes.printHeading} variant="h4">
+            <Typography
+              sx={{
+                display: "none",
+                [`@media print`]: {
+                  textTransform: "capitalize",
+                  display: "block",
+                  textAlign: "center",
+                },
+              }}
+              variant="h4"
+            >
               {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
             {displayBibleText(verses, chapter, verseData)}
@@ -1056,19 +1044,39 @@ const Bible = (props) => {
                 id="button"
                 variant="outlined"
                 onClick={handleChapter}
-                className={classes.readChapterButton}
+                sx={{
+                  display: "inline-flex",
+                  fontSize: "1rem",
+                  textTransform: "capitalize",
+                  border: "1px solid #fff",
+                  boxShadow: "1px 1px 1px 1px " + color.GREY,
+                  margin: "4px",
+                  marginTop: "20px",
+                  padding: "6px 10px",
+                  borderRadius: "4px",
+                  color: color.BLACK,
+                  borderColor: color.BLACK,
+                }}
               >
                 {t("readChapterBtnSearchPassage", { ref })}
               </Button>
             ) : (
               ""
             )}
-            <div className={classes.footNotes}>
-              <Typography className={classes.noteTitle} variant="h4">
+            <Box
+              sx={{
+                display: "none",
+                [`@media print`]: {
+                  display: printNotes ? "block" : "none",
+                  marginTop: "200px",
+                },
+              }}
+            >
+              <Typography sx={{ paddingBottom: "20px" }} variant="h4">
                 {t("commonNotes")} :
               </Typography>
               <Divider />
-              <div className={classes.noteList}>
+              <Box sx={{ paddingTop: "20px" }}>
                 {notesText?.map((item, i) => {
                   return (
                     <ul key={i}>
@@ -1080,11 +1088,11 @@ const Bible = (props) => {
                     </ul>
                   );
                 })}
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
           {audio ? (
-            <ReactPlayer
+            <CustomReactPlayer
               url={audioUrl}
               playing={playing === paneNo}
               onPlay={() => {
@@ -1093,7 +1101,6 @@ const Bible = (props) => {
               controls
               width="calc(100% - 70px)"
               height="50px"
-              className={classes.player}
               config={{
                 file: {
                   attributes: {
@@ -1105,9 +1112,9 @@ const Bible = (props) => {
           ) : (
             ""
           )}
-        </div>
+        </Box>
       ) : (
-        <h3 className={classes.loading}>{loadingText}</h3>
+        <LoadingHeading>{loadingText}</LoadingHeading>
       )}
       {getPrevious()}
       {getNext()}
@@ -1115,18 +1122,22 @@ const Bible = (props) => {
         onClose={handleClose}
         aria-labelledby="mobile-edit-note-dialog"
         open={open}
-        classes={{ paper: classes.paper }}
+        sx={{
+          "& .MuiPaper-root": {
+            [theme.breakpoints.down("md")]: {
+              margin: "25px",
+            },
+          },
+        }}
       >
         <DialogTitle id="mobile-edit-note-dialog" onClose={handleClose}>
           {t("commonNotes")}
         </DialogTitle>
-        <DialogContent dividers className={classes.noteDialog}>
-          <Editor
+        <DialogContent dividers sx={{ padding: 0 }}>
+          <CustomEditor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
             placeholder={t("commonNotePlaceholder")}
-            editorStyle={{ height: "30vh" }}
-            editorClassName={classes.editor}
             toolbar={getEditorToolbar(true)}
           />
         </DialogContent>
@@ -1154,7 +1165,7 @@ const Bible = (props) => {
           {alertMessage}
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
   );
 };
 
