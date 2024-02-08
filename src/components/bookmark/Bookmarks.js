@@ -143,7 +143,7 @@ const Bookmarks = (props) => {
             }}
             url={"bookmarks"}
           />
-          <Close className={{ marginRight: 1.875, marginTop: -0.085 }} />
+          <Close sx={{ marginRight: 1.875, marginTop: -0.085 }} />
         </Box>
       </Box>
       <Box

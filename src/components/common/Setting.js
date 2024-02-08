@@ -4,44 +4,48 @@ import Slider from "@mui/material/Slider";
 import Tooltip from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
 import Menu from "@mui/material/Menu";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/system";
 import { BLACK } from "../../store/colorCode";
 import { t } from "i18next";
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  menu: {
-    textAlign: "center",
-    width: "100%",
-    display: "inline-block",
-    fontSize: 18,
-  },
-  margin: {
-    height: theme.spacing(5),
-  },
-  settings: {
-    padding: 0,
-    width: 30,
-    marginTop: -38,
-    float: "right",
-    marginRight: 5,
-    cursor: "pointer",
-    [theme.breakpoints.down("md")]: {
-      marginTop: 0,
-    },
-  },
-  root: {
-    color: BLACK,
-  },
-  settingsMenu: {
-    maxHeight: 68 * 4.5,
-    width: 250,
-  },
+const StyledMenuItem = styled(MenuItem)(() => ({
+  textAlign: "center",
+  width: "100%",
+  display: "inline-block",
+  fontSize: 18,
 }));
 
+const StyledSlider = styled(Slider)({
+  color: BLACK,
+  height: 1,
+  marginTop: 5,
+  "& .MuiSlider-valueLabel": {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: "unset",
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: "50% 50% 50% 0",
+    backgroundColor: BLACK,
+    transformOrigin: "bottom left",
+    transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
+    "&::before": { display: "none" },
+    "&.MuiSlider-valueLabelOpen": {
+      transform: "translate(50%, -100%) rotate(-45deg) scale(1)",
+    },
+    "& > *": {
+      transform: "rotate(45deg)",
+    },
+  },
+});
+
 const Setting = (props) => {
+  const theme = useTheme();
   const { fontSize, setFontSize } = props;
   const [settingsAnchor, setSettingsAnchor] = useState(null);
-  const classes = useStyles();
 
   const open = Boolean(settingsAnchor);
 
@@ -59,7 +63,17 @@ const Setting = (props) => {
     <div>
       <Tooltip
         title={t("commonSettings")}
-        className={classes.settings}
+        sx={{
+          padding: 0,
+          width: 30,
+          marginTop: -38,
+          float: "right",
+          marginRight: 5,
+          cursor: "pointer",
+          [theme.breakpoints.down("md")]: {
+            marginTop: 0,
+          },
+        }}
         aria-label="More"
         aria-controls="long-menu"
         aria-haspopup="true"
@@ -73,28 +87,30 @@ const Setting = (props) => {
         keepMounted
         open={open}
         onClose={closeSettings}
-        PaperProps={{
-          className: classes.settingsMenu,
-        }}
         anchorOrigin={{
           vertical: "top",
           horizontal: "left",
         }}
       >
-        <MenuItem className={classes.menu}>{t("settingsFontSize")}</MenuItem>
-        <Divider />
-        <MenuItem className={classes.menu}>
-          <div className={classes.margin} />
-          <Slider
-            defaultValue={20}
-            value={fontSize}
-            onChange={handleSliderChange}
-            valueLabelDisplay="on"
-            min={12}
-            max={30}
-            classes={{ root: classes.root }}
-          />
-        </MenuItem>
+        <Box sx={{ width: "250px" }}>
+          <StyledMenuItem>{t("settingsFontSize")}</StyledMenuItem>
+          <Divider />
+          <StyledMenuItem>
+            <Box
+              sx={{
+                height: theme.spacing(5),
+              }}
+            />
+            <StyledSlider
+              defaultValue={20}
+              value={fontSize}
+              onChange={handleSliderChange}
+              valueLabelDisplay="on"
+              min={12}
+              max={30}
+            />
+          </StyledMenuItem>
+        </Box>
       </Menu>
     </div>
   );
