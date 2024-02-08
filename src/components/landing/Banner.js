@@ -11,6 +11,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
 import { languageCode } from "../../store/languageData";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import ShareIcon from "@material-ui/icons/Share";
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
+import { Button, Menu, Snackbar, TextField } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -89,8 +93,19 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     WebkitBoxOrient: "vertical",
   },
+  copyButton: {
+    textTransform: "capitalize",
+    margin: "15px auto",
+    display: "flex",
+  },
+  share: {
+    width: "94%",
+    height: 30,
+    margin: 7,
+    paddingBottom: 10,
+  },
 }));
-const Banner = ({ setValue1, locale, versions, versionBooks }) => {
+const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
   const BigTooltip = withStyles((theme) => ({
     tooltip: {
       backgroundColor: WHITE,
@@ -111,6 +126,57 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   const [sourceId, setSourceId] = useState("");
   const [verseObj, setVerseObj] = useState({});
   const [book, setBook] = useState("");
+  const [shareAnchor, setShareAnchor] = React.useState(null);
+  const [copyFeedback, setCopyFeedback] = React.useState("");
+  const [alert, setAlert] = React.useState(false);
+  const [alertType, setAlertType] = React.useState("");
+  const open = Boolean(shareAnchor);
+  const lang = panel1.version.split("-")[0];
+  const avl = versionBooks[lang]?.filter((e) => {
+    return e.book_code === verseRef.b;
+  });
+  const path =
+    avl?.length !== 0
+      ? window.location.href +
+        "read?version=" +
+        panel1.version +
+        "&reference=" +
+        verseRef?.b +
+        "." +
+        verseRef?.c +
+        "." +
+        verseRef?.v
+      : window.location.href +
+        "read?version=eng-ESV&reference=" +
+        verseRef?.b +
+        "." +
+        verseRef?.c +
+        "." +
+        verseRef?.v;
+  function openShareDialog(event) {
+    setShareAnchor(event.currentTarget);
+  }
+  function closeShareDialog() {
+    setShareAnchor(null);
+  }
+  const closeAlert = () => {
+    setAlert(false);
+  };
+  const handleCopyClick = async () => {
+    try {
+      await navigator.clipboard.writeText(path);
+      setAlert(true);
+      setCopyFeedback(t("clipBoardCopied"));
+      setAlertType("success");
+      closeShareDialog();
+    } catch (err) {
+      console.error("Unable to copy to clipboard.", err);
+      setAlert(true);
+      setCopyFeedback(t("clipBoardCopiedFailed"));
+      setAlertType("error");
+      closeShareDialog();
+    }
+  };
   useEffect(() => {
     if (process.env.REACT_APP_DAILY_VERSE) {
       const APIBASE = axios.create({
@@ -143,7 +209,7 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
       const book = books?.find((i) => i.book_code === verseObj.bibleBookCode);
       setBook(book?.short);
     }
-  }, [langCode, verseObj.bibleBookCode, versionBooks]);
+  }, [book, langCode, verseObj.bibleBookCode, versionBooks]);
   useEffect(() => {
     if (sourceId && verseRef) {
       const book = verseRef ? verseRef?.b : "psa";
@@ -165,7 +231,88 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   const { t } = useTranslation();
   return (
     <div className={classes.imageContainer}>
-      <h3 className={classes.heading}>{t("landingVerseHeading")}</h3>
+      <h3 className={classes.heading}>
+        {t("landingVerseHeading")}
+        <Tooltip title={t("shareVerseOfTheDayTooltip")}>
+          <ShareIcon
+            fontSize="small"
+            onClick={openShareDialog}
+            style={{ color: BLACK, cursor: "pointer" }}
+          />
+        </Tooltip>
+        <Menu
+          id="long-menu"
+          anchorEl={shareAnchor}
+          keepMounted
+          open={open}
+          onClose={closeShareDialog}
+          getContentAnchorEl={null}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          transformOrigin={{ vertical: "top", horizontal: "center" }}
+          PaperProps={{
+            style: {
+              maxHeight: 450,
+              marginTop: 20,
+              width: 420,
+              backgroundColor: WHITE,
+              alignItems: "left",
+              paddingLeft: 15,
+            },
+          }}
+        >
+          <div style={{ fontWeight: 800, paddingBottom: 10, fontSize: 16 }}>
+            {book
+              ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
+              : ""}
+          </div>
+          <span
+            style={{
+              paddingBottom: 10,
+              fontSize: "1rem",
+              fontFamily: "Roboto Slab",
+            }}
+          >
+            {verseObj ? verseObj.verseContent?.text : ""}
+          </span>
+
+          <TextField
+            id="share-url"
+            variant="outlined"
+            size="small"
+            defaultValue={path}
+            className={classes.share}
+            InputProps={{
+              readOnly: true,
+            }}
+            onFocus={(e) => e.target.select()}
+          />
+          <div>
+            <Button
+              className={classes.copyButton}
+              variant="outlined"
+              onClick={handleCopyClick}
+              startIcon={<FileCopyOutlinedIcon />}
+            >
+              {t("copyToClipBoardBtn")}
+            </Button>
+          </div>
+        </Menu>
+        <Snackbar
+          open={alert}
+          autoHideDuration={800}
+          onClose={closeAlert}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            elevation={6}
+            variant="filled"
+            onClose={closeAlert}
+            severity={alertType}
+          >
+            {copyFeedback}
+          </Alert>
+        </Snackbar>
+      </h3>
       <BigTooltip title={t("landingVerseHeadingToolTip")}>
         <div className={classes.verse}>
           <Link
@@ -174,7 +321,7 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
             onClick={() => setURL()}
           >
             <span className={classes.verseText}>
-            {verseObj ? verseObj.verseContent?.text : ""}
+              {verseObj ? verseObj.verseContent?.text : ""}
             </span>
             <div className={classes.reference}>
               {book
@@ -192,6 +339,7 @@ const mapStateToProps = (state) => {
     versions: state.local.versions,
     locale: state.local.locale,
     versionBooks: state.local.versionBooks,
+    panel1: state.local.panel1,
   };
 };
 const mapDispatchToProps = (dispatch) => {
