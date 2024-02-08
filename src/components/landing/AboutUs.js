@@ -1,38 +1,21 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
 import FeaturesList from "./FeaturesList";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles(() => ({
-  subheading: {
-    fontWeight: 600,
-    margin: "20px 0 10px",
-  },
-  bold: {
-    fontWeight: 600,
-  },
-  helpIcon: {
-    padding: "8px 12px 0",
-    color: BLACK,
-    fontSize: 21,
-    marginTop: -10,
-    cursor: "pointer",
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
-}));
+const BoldSpan = styled("span")({
+  fontWeight: 600,
+});
 const AboutUs = ({ handleClose }) => {
-  const classes = useStyles();
   const { t } = useTranslation();
   const addLink = (text, prefix) => {
     return (
@@ -48,34 +31,35 @@ const AboutUs = ({ handleClose }) => {
       </Link>
     );
   };
-  const addStyle = (text, style) => {
-    return <span className={classes[style]}>{" " + text}</span>;
-  };
   return (
     <>
       <DialogTitle id="scroll-dialog-title">
-        <div className={classes.box}>
-          <Typography variant="h5" gutterBottom>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h5" sx={{ flexGrow: 1 }} gutterBottom>
             {t("landingAboutUsHead")}
           </Typography>
-          <Help iconStyle={classes.helpIcon} url={"about"} />
-        </div>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              fontSize: 21,
+              marginTop: "-10px",
+              cursor: "pointer",
+            }}
+            url={"about"}
+          />
+        </Box>
       </DialogTitle>
       <DialogContent dividers={true}>
-        <Typography variant="h5" className={classes.subheading}>
-          The Vachan Project
-        </Typography>
+        <Typography variant="h5">The Vachan Project</Typography>
         <Typography variant="body1" gutterBottom>
-          {addStyle("VachanOnline", "bold")}{" "}
-          {t("landingAboutUsVachanProjectContent1")} {". "}
-          {addStyle("VachanGo", "bold")}{" "}
-          {t("landingAboutUsVachanProjectContent2")}
-          {addStyle("The Vachan Project", "bold")}{" "}
+          <BoldSpan> VachanOnline </BoldSpan>
+          {t("landingAboutUsVachanProjectContent1")}{". "}
+          <BoldSpan>VachanGo </BoldSpan>
+          {t("landingAboutUsVachanProjectContent2")}{". "}
+          <BoldSpan>The Vachan Project </BoldSpan>
           {t("landingAboutUsVachanProjectContent3")}
         </Typography>
-        <Typography variant="h6" className={classes.subheading}>
-          {t("landingAboutUsContentTitle")}
-        </Typography>
+        <Typography variant="h5">{t("landingAboutUsContentTitle")}</Typography>
         <Typography variant="body1" gutterBottom>
           {t("landingAboutUsContent1")}{" "}
           {addHyperLink("VachanOnline", "https://vachanonline.com")}{" "}
@@ -91,22 +75,20 @@ const AboutUs = ({ handleClose }) => {
           )}
           {t("landingAboutUsContent4")}
         </Typography>
-        <Typography variant="h6" className={classes.subheading}>
+        <Typography variant="h5">
           {t("landingAboutUsTechnologyTitle")}
         </Typography>
         <Typography variant="body1">
           {t("landingAboutUsTechnologyMsg")}
         </Typography>
-        <Typography variant="body1" className={classes.subheading}>
+        <Typography variant="h6">
           {addHyperLink(
             t("landingAboutUsGithubRelease"),
             "https://github.com/Bridgeconn/VachanOnline-v2/releases"
           )}
         </Typography>
         <FeaturesList />
-        <Typography variant="h6" className={classes.subheading}>
-          {t("landingAboutUsContactUs")}
-        </Typography>
+        <Typography variant="h6">{t("landingAboutUsContactUs")}</Typography>
         <Typography variant="body1" component="div" gutterBottom>
           {addLink("thevachanproject@bridgeconn.com", "mailto:")}
         </Typography>

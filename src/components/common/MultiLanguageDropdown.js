@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import LanguageIcon from "@mui/icons-material/Language";
-import { makeStyles } from "@mui/styles";
 import { Menu, MenuItem } from "@mui/material";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
@@ -10,16 +9,7 @@ import BigTooltip from "./BigTooltip";
 import { languageCode } from "../../store/languageData";
 import { LIGHTGREY } from "../../store/colorCode";
 
-const useStyles = makeStyles((theme) => ({
-  list: {
-    width: 150,
-  },
-  languageItem: {
-    borderBottom: "1px solid " + LIGHTGREY,
-  },
-}));
 const MultiLanguageDropdown = (props) => {
-  const classes = useStyles();
   const [languageAnchor, setLanguageAnchor] = React.useState(null);
   const open = Boolean(languageAnchor);
   const { locale, setLocale, iconstyle } = props;
@@ -51,15 +41,15 @@ const MultiLanguageDropdown = (props) => {
         onClose={closeLanguage}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
-        style={{ top: 17 }}
-        classes={{ list: classes.list }}
+        style={{ top: "17px" }}
+        sx={{ "& .MuiMenu-list": { width: "150px" } }}
       >
         {Object.keys(languageCode).map((text) => (
           <MenuItem
             key={text}
             onClick={() => handleClick(text)}
             selected={locale === text}
-            className={classes.languageItem}
+            sx={{ borderBottom: "1px solid " + LIGHTGREY }}
           >
             {languageCode[text].name}
           </MenuItem>

@@ -1,20 +1,11 @@
 import * as React from "react";
 import * as views from "../../store/views";
 import { Drawer } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import MenuItem from "./MenuItem";
 import { useTranslation } from "react-i18next";
 
-const useStyles = makeStyles({
-  list: {
-    width: 220,
-    paddingTop: 10,
-  },
-});
-
 export default function SideDrawer(props) {
   const { login, toggleDrawer, open } = props;
-  const classes = useStyles();
 
   const { t } = useTranslation();
   const Item = ({ icon, title, item }) => (
@@ -32,7 +23,12 @@ export default function SideDrawer(props) {
     <Drawer
       anchor={"right"}
       open={open}
-      classes={{ paper: classes.list }}
+      sx={{
+        "& .MuiPaper-root": {
+          width: "220px",
+          paddingTop: "10px",
+        },
+      }}
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >

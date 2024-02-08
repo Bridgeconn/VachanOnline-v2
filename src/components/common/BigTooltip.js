@@ -1,14 +1,16 @@
-import Tooltip from "@mui/material/Tooltip";
-import { withStyles } from "@mui/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { styled } from "@mui/system";
 
-const BigTooltip = withStyles((theme) => ({
-  tooltip: {
+const BigTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: WHITE,
     color: BLACK,
     boxShadow: theme.shadows[4],
     border: "1px solid" + GREY,
     fontSize: 16,
   },
-}))(Tooltip);
+}));
 export default BigTooltip;
