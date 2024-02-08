@@ -90,7 +90,6 @@ const LandingFooter = (props) => {
           <Button
             variant="outlined"
             size="small"
-            color="default"
             sx={{
               marginTop: 0.375,
               textTransform: "unset",
