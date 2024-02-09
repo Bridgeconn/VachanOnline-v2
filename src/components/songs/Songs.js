@@ -168,7 +168,12 @@ const Songs = () => {
             variant="permanent"
           >
             <Box
-              sx={{ marginTop: 8.125, backgroundColor: "rgb(137, 191, 221)" }}
+              sx={{
+                marginTop: 8.125,
+                backgroundColor: "rgb(137, 191, 221)",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
             >
               <FormControl
                 size="small"

@@ -1,6 +1,5 @@
 import { InputBase, Paper, Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import { makeStyles } from "@mui/styles";
 import React from "react";
 import { connect } from "react-redux";
 import { SETVALUE, SETVALUE1 } from "../../store/actions";
@@ -11,18 +10,12 @@ import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  input: {
-    height: "80px",
-  },
-}));
-const I = styled("i")({
+const Icon = styled("i")({
   padding: "1px 1px 1px",
   color: BLACK,
   fontSize: "33px",
 });
 const SearchPassage = (props) => {
-  const classes = useStyles();
   const [searchText, setSearchText] = React.useState("");
   const [showTextBox, setShowTextBox] = React.useState(false);
   let {
@@ -119,7 +112,7 @@ const SearchPassage = (props) => {
       rel="noopener"
       size="large"
     >
-      <I className={`material-icons `}>manage_search</I>
+      <Icon className={`material-icons `}>manage_search</Icon>
     </IconButton>
   ) : (
     <>
@@ -144,21 +137,17 @@ const SearchPassage = (props) => {
             marginRight: { lg: 1.25, xs: 0 },
           }}
         >
-          <IconButton
-            type="submit"
-            className={classes.searchButtonMob}
-            size="large"
-          >
-            <I className={`material-icons`}>manage_search</I>
+          <IconButton type="submit" size="large">
+            <Icon className={`material-icons`}>manage_search</Icon>
           </IconButton>
           <InputBase
             sx={{
               marginLeft: 1,
               flex: 1,
               width: { lg: "auto", xs: 155 },
+              "& .MuiInputBase-input": { height: "80px" },
             }}
             placeholder={t("seachPlaceHolderTopbar")}
-            inputProps={{ className: classes.input }}
             value={searchText}
             name="search"
             autoComplete="off"

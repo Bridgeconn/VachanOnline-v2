@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import banner from "../common/images/banner.jpg";
 import { API } from "../../store/api";
-import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "../../store/actions";
@@ -13,30 +12,7 @@ import { languageCode } from "../../store/languageData";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { styled } from "@mui/system";
 import { Box } from "@mui/material";
-
-const useStyles = makeStyles((theme) => ({
-  link: {
-    color: WHITE,
-    marginTop: 5,
-    padding: 10,
-    background: BLACK + "50",
-    display: "inline-block",
-    borderRadius: 10,
-    "&:hover": {
-      color: WHITE,
-      textDecoration: "none",
-      background: BLACK + "60",
-      boxShadow: "0 0 2px " + BLACK,
-    },
-  },
-  verseText: {
-    display: "-webkit-box",
-    WebkitLineClamp: 3,
-    textOverflow: "ellipsis",
-    overflow: "hidden",
-    WebkitBoxOrient: "vertical",
-  },
-}));
+import { useTheme } from "@mui/material/styles";
 
 const Heading = styled("h3")(({ theme }) => ({
   position: "absolute",
@@ -54,7 +30,65 @@ const Heading = styled("h3")(({ theme }) => ({
   },
 }));
 
+const StyledLink = styled(Link)(({ theme }) => ({
+  color: WHITE,
+  marginTop: 5,
+  padding: 10,
+  background: BLACK + "50",
+  display: "inline-block",
+  borderRadius: 10,
+  "&:hover": {
+    color: WHITE,
+    textDecoration: "none",
+    background: BLACK + "60",
+    boxShadow: "0 0 2px " + BLACK,
+  },
+}));
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  bottom: "80px",
+  width: "85%",
+  fontSize: "1.25rem",
+  fontFamily: "Roboto Slab",
+  textAlign: "center",
+  transition: "opacity 0.35s ease-in-out",
+  background: "none",
+  top: "105px",
+  [theme.breakpoints.only("md")]: {
+    width: "80%",
+    fontSize: "1.2rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    top: "100px",
+    width: "90%",
+    fontSize: "1.1rem",
+  },
+  [theme.breakpoints.down("xs")]: {
+    fontSize: "1rem",
+  },
+}));
+
+const VerseText = styled(Box)(() => ({
+  display: "-webkit-box",
+  WebkitLineClamp: 3,
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  WebkitBoxOrient: "vertical",
+}));
+
+const ContainerBox = styled(Box)(() => ({
+  position: "relative",
+  width: "100%",
+  height: "300px",
+  backgroundImage: `url(${banner})`,
+  backgroundRepeat: "round",
+  display: "flex",
+  justifyContent: "center",
+}));
+
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
+  const theme = useTheme();
   const BigTooltip = withStyles((theme) => ({
     tooltip: {
       backgroundColor: WHITE,
@@ -120,7 +154,6 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
       );
     }
   }, [sourceId, verseRef]);
-  const classes = useStyles();
   const setURL = () => {
     setValue1("bookCode", verseRef?.b);
     setValue1("chapter", verseRef?.c);
@@ -128,55 +161,30 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   };
   const { t } = useTranslation();
   return (
-    <Box
-      sx={{
-        position: "relative",
-        width: "100%",
-        height: "300px",
-        backgroundImage: `url(${banner})`,
-        backgroundRepeat: "round",
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
+    <ContainerBox>
       <Heading>{t("landingVerseHeading")}</Heading>
       <BigTooltip title={t("landingVerseHeadingToolTip")}>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 80,
-            width: { lg: "70%", sm: "80%", xs: "90%" },
-            fontSize: { lg: "1.6rem", sm: "1.4rem", xs: "1rem" },
-            fontFamily: "Roboto Slab",
-            textAlign: "center",
-            transition: "opacity 0.35s ease-in-out",
-            background: "none",
-            top: { lg: 105, xs: 100 },
-          }}
-        >
-          <Link
-            to={{ pathname: "/read" }}
-            className={classes.link}
-            onClick={() => setURL()}
-          >
-            <span className={classes.verseText}>
-              {verseObj ? verseObj.verseContent?.text : ""}
-            </span>
+        <StyledBox>
+          <StyledLink to={{ pathname: "/read" }} onClick={() => setURL()}>
+            <VerseText>{verseObj ? verseObj.verseContent?.text : ""}</VerseText>
             <Box
               sx={{
                 fontStyle: "italic",
-                fontSize: { lg: "1rem", xs: "0.9rem" },
+                fontSize: "1rem",
                 color: WHITE,
+                [theme.breakpoints.down("xs")]: {
+                  fontSize: "0.9rem",
+                },
               }}
             >
               {book
                 ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
                 : ""}
             </Box>
-          </Link>
-        </Box>
+          </StyledLink>
+        </StyledBox>
       </BigTooltip>
-    </Box>
+    </ContainerBox>
   );
 };
 const mapStateToProps = (state) => {

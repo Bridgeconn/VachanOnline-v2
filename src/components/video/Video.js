@@ -3,7 +3,6 @@ import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import ModalVideo from "react-modal-video";
 import Close from "../common/Close";
@@ -18,17 +17,16 @@ import { useTranslation } from "react-i18next";
 import { bibleBooks } from "../../store/bibleData";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  select: {
-    width: 200,
-    [theme.breakpoints.down("md")]: {
-      width: 130,
-    },
+const StyledSelect = styled(Select)(({ theme }) => ({
+  width: 200,
+  [theme.breakpoints.down("md")]: {
+    width: 130,
   },
 }));
+
 const Video = (props) => {
-  const classes = useStyles();
   let {
     video,
     chapterVideo,
@@ -202,8 +200,7 @@ const Video = (props) => {
           }}
         >
           {languages && languages?.length !== 0 && (
-            <Select
-              className={classes.select}
+            <StyledSelect
               value={language}
               onChange={(data) => setLanguage(data)}
               options={languages}

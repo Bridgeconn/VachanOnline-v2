@@ -1,7 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
-import { makeStyles } from "@mui/styles";
-import { withStyles } from "@mui/styles";
 import Close from "../common/Close";
 import Box from "@mui/material/Box";
 import axios from "axios";
@@ -11,7 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Select from "react-select";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { BLACK, GREY } from "../../store/colorCode";
@@ -21,37 +19,46 @@ import { useTranslation } from "react-i18next";
 import Help from "../common/Help";
 import { styled } from "@mui/system";
 
-const BigTooltip = withStyles((theme) => ({
-  tooltip: {
+const BigTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: "#ffd580",
     color: "rgba(0, 0, 0, 0.87)",
     boxShadow: theme.shadows[4],
     border: "1px solid orange",
     fontSize: 16,
   },
-}))(Tooltip);
+}));
 
-const useStyles = makeStyles((theme) => ({
-  calendar: {
-    display: "block",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "50%",
-    [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
-  },
-  select: {
-    width: 200,
+const StyledSelect = styled(Select)(({ theme }) => ({
+  width: 200,
+  padding: "0 15px",
+  [theme.breakpoints.only("xs")]: {
+    width: 190,
     padding: "0 15px",
-    [theme.breakpoints.only("xs")]: {
-      width: 190,
-      padding: "0 15px",
-    },
   },
 }));
+
+const StyledDatePicker = styled(ReactDatePicker)(({ theme }) => ({
+  display: "block",
+  marginLeft: "auto",
+  marginRight: "auto",
+  width: "50%",
+  [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
+}));
+
+const StyledCalendar = styled(Calendar)(({ theme }) => ({
+  display: "block",
+  marginLeft: "auto",
+  marginRight: "auto",
+  width: "50%",
+  [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
+}));
+
 const Heading = styled("h3")({ paddingLeft: 20 });
 
 const ReadingPlan = (props) => {
-  const classes = useStyles();
   const { setValue1, bookList, mobileView, readingPlans } = props;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [plans, setPlans] = useState([]);
@@ -174,16 +181,14 @@ const ReadingPlan = (props) => {
         <Box flexGrow={1}>
           {plan ? (
             <Box sx={{ display: { lg: "block", xs: "flex" } }}>
-              <Select
-                className={classes.select}
+              <StyledSelect
                 defaultValue={plan}
                 onChange={(data) => setPlan(data)}
                 options={plans}
                 isSearchable={false}
               />
               {mobileView ? (
-                <ReactDatePicker
-                  className={classes.calendar}
+                <StyledDatePicker
                   selected={selectedDate}
                   onChange={(date) => setSelectedDate(date)}
                   withPortal
@@ -226,7 +231,7 @@ const ReadingPlan = (props) => {
           position: "absolute",
           scrollbarWidth: "thin",
           scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          width: { lg: "auto", sm: "100%", xs: "100%" },
+          width: "100%",
           "-webkit-scrollbar": {
             width: "0.45em",
           },
@@ -240,8 +245,7 @@ const ReadingPlan = (props) => {
         }}
       >
         {mobileView ? null : (
-          <Calendar
-            className={classes.calendar}
+          <StyledCalendar
             onChange={(date) => setSelectedDate(date)}
             value={selectedDate}
           />

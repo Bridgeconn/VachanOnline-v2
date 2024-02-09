@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import List from "@mui/material/List";
@@ -44,20 +43,8 @@ const StyleSpan = styled("span")({
   fontSize: "0.9rem",
   float: "right",
 });
-const useStyles = makeStyles((theme) => ({
-  version: {
-    fontSize: "1rem",
-    cursor: "pointer",
-    backgroundColor: WHITE,
-    borderBottom: "1px solid " + LIGHTGREY,
-  },
-  versionSelected: {
-    boxShadow: "inset 0 0 30px " + LIGHTGREY,
-    border: "1px solid " + GREY + "70",
-  },
-}));
+
 const Version = (props) => {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [displayVersion, setDisplayVersion] = React.useState("Loading...");
   const {
@@ -206,7 +193,7 @@ const Version = (props) => {
     const lang = (
       <>
         <span>{found?.languageName || language}</span>
-        <StyleSpan className={classes.lang}>{language}</StyleSpan>
+        <StyleSpan>{language}</StyleSpan>
       </>
     );
     return lang;
@@ -222,10 +209,10 @@ const Version = (props) => {
     return code;
   }
   function currentVersion(item) {
-    return item.language.code + "-" + item.version.code.toLowerCase() ===
+    return (
+      item.language.code + "-" + item.version.code.toLowerCase() ===
       version.toLowerCase()
-      ? classes.versionSelected
-      : "";
+    );
   }
   React.useEffect(() => {
     if (version !== "Loading..." && paneNo !== 2) {
@@ -347,10 +334,6 @@ const Version = (props) => {
               >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
-                  classes={{
-                    root: classes.summaryPanel,
-                    expanded: classes.expanded,
-                  }}
                   sx={{
                     textTransform: "capitalize",
                     borderBottom: "1px solid #b7b7b726",
@@ -381,21 +364,40 @@ const Version = (props) => {
                     }}
                   >
                     {version.languageVersions.map((item, i) => {
-                      var versionActive = currentVersion(item);
-                      return (
+                      const verCode = item.version?.code?.toUpperCase();
+                      const val = item.language.code + "-" + verCode;
+                      const display = verCode + " : " + item.version.name;
+                      return currentVersion(item) ? (
                         <ListItem
                           key={i}
-                          value={
-                            item.language.code +
-                            "-" +
-                            item.version.code.toUpperCase()
-                          }
+                          value={val}
                           data-sourceid={item.sourceId}
-                          className={`${classes.version} ${versionActive}`}
+                          sx={{
+                            fontSize: "1rem",
+                            cursor: "pointer",
+                            backgroundColor: WHITE,
+                            borderBottom: "1px solid " + LIGHTGREY,
+                            boxShadow: "inset 0 0 30px " + LIGHTGREY,
+                            border: "1px solid " + GREY + "70",
+                          }}
                           onClick={setVersion}
                         >
-                          {item.version.code.toUpperCase()} :{" "}
-                          {item.version.name}
+                          {display}
+                        </ListItem>
+                      ) : (
+                        <ListItem
+                          key={i}
+                          value={val}
+                          data-sourceid={item.sourceId}
+                          sx={{
+                            fontSize: "1rem",
+                            cursor: "pointer",
+                            backgroundColor: WHITE,
+                            borderBottom: "1px solid " + LIGHTGREY,
+                          }}
+                          onClick={setVersion}
+                        >
+                          {display}
                         </ListItem>
                       );
                     })}

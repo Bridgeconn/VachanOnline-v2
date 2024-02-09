@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -17,17 +16,15 @@ import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  select: {
-    width: 200,
-    [theme.breakpoints.down("sm")]: {
-      width: 130,
-    },
+const StyledSelect = styled(Select)(({ theme }) => ({
+  width: 200,
+  [theme.breakpoints.down("sm")]: {
+    width: 130,
   },
 }));
+
 const Heading = styled("h5")({ paddingLeft: 20 });
 const Infographics = (props) => {
-  const classes = useStyles();
   let { infographics, panel1, versionBooks, setValue, mobileView } = props;
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
@@ -129,8 +126,7 @@ const Infographics = (props) => {
           }}
         >
           {languages && languages?.length !== 0 && (
-            <Select
-              className={classes.select}
+            <StyledSelect
               value={language}
               onChange={(data) => setLanguage(data)}
               options={languages}

@@ -17,6 +17,8 @@ const StyledMenuItem = styled(MenuItem)(() => ({
   fontSize: 18,
 }));
 
+const StyledIcon = styled("i")(() => ({ marginTop: "18px" }));
+
 const StyledSlider = styled(Slider)({
   color: BLACK,
   height: 1,
@@ -63,23 +65,12 @@ const Setting = (props) => {
     <div>
       <Tooltip
         title={t("commonSettings")}
-        sx={{
-          padding: 0,
-          width: 30,
-          marginTop: -38,
-          float: "right",
-          marginRight: 5,
-          cursor: "pointer",
-          [theme.breakpoints.down("md")]: {
-            marginTop: 0,
-          },
-        }}
         aria-label="More"
         aria-controls="long-menu"
         aria-haspopup="true"
         onClick={openSettings}
       >
-        <i className="material-icons md-23">more_vert</i>
+        <StyledIcon className="material-icons md-23">more_vert</StyledIcon>
       </Tooltip>
       <Menu
         id="long-menu"
