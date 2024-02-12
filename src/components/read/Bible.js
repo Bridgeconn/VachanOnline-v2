@@ -99,35 +99,6 @@ const LoadingHeading = styled("h3")({
 });
 
 const useStyles = makeStyles((theme) => ({
-  bibleReadingPane: {
-    position: "absolute",
-    paddingTop: "20px",
-    height: "100%",
-    overflow: "scroll",
-    lineHeight: "2em",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    width: "100%",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.up("md")]: {
-      paddingRight: (props) => (props.padding > 5 ? props.padding : 5),
-      paddingLeft: (props) => (props.padding > 5 ? props.padding : 5),
-    },
-    [theme.breakpoints.down("md")]: {
-      paddingRight: "15px",
-      paddingLeft: "15px",
-      lineHeight: "1.8em",
-    },
-  },
   verseText: {
     paddingTop: "4px",
   },
@@ -1001,11 +972,35 @@ const Bible = (props) => {
             scrollText();
           }}
           ref={props.ref1}
-          className={
-            audio
-              ? `${classes.bibleReadingPane} ${classes.audio}`
-              : classes.bibleReadingPane
-          }
+          sx={{
+            position: "absolute",
+            paddingTop: "20px",
+            height: "100%",
+            overflow: "scroll",
+            lineHeight: "2em",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            width: "100%",
+            "&::-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "&::-webkit-scrollbar-track": {
+              "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+            [theme.breakpoints.up("md")]: {
+              paddingRight: (props) => (props.padding > 5 ? props.padding : 5),
+              paddingLeft: (props) => (props.padding > 5 ? props.padding : 5),
+            },
+            [theme.breakpoints.down("md")]: {
+              paddingRight: "15px",
+              paddingLeft: "15px",
+              lineHeight: "1.8em",
+            },
+          }}
         >
           {fetchData}
           <Box
