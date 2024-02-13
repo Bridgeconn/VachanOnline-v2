@@ -8,10 +8,10 @@ import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
-import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
-import IconButton from "@material-ui/core/IconButton";
+import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
+import IconButton from "@mui/material/IconButton";
 import WhatsNew from "./WhatsNew";
-import { useMediaQuery } from "@material-ui/core";
+import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 const LandingFooter = (props) => {
@@ -19,7 +19,7 @@ const LandingFooter = (props) => {
   const [whatsNewOpen, setWhatsNewOpen] = React.useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const openModal = () => {
     setOpen(true);
   };
@@ -122,6 +122,7 @@ const LandingFooter = (props) => {
               href="https://forms.office.com/r/qiV0Ym335M"
               target="_blank"
               rel="noopener"
+              size="large"
             >
               <FeedbackOutlinedIcon />
             </IconButton>

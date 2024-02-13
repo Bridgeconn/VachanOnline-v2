@@ -1,7 +1,7 @@
 import React from "react";
-import Tooltip from "@material-ui/core/Tooltip";
-import Circle from "@material-ui/icons/LensRounded";
-import NotInterestedIcon from "@material-ui/icons/NotInterested";
+import Tooltip from "@mui/material/Tooltip";
+import Circle from "@mui/icons-material/LensRounded";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useFirebase } from "react-redux-firebase";
 import * as color from "../../store/colorCode";
 import { connect } from "react-redux";

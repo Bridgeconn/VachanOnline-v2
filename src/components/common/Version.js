@@ -16,8 +16,7 @@ import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
 import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled } from "@mui/system";
 const I = styled("i")(({ theme }) => ({
   [`&.material-icons`]: {
