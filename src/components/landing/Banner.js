@@ -6,8 +6,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
-import Tooltip from "@mui/material/Tooltip";
-import { withStyles } from "@mui/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { languageCode } from "../../store/languageData";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { styled } from "@mui/system";
@@ -87,18 +86,20 @@ const ContainerBox = styled(Box)(() => ({
   justifyContent: "center",
 }));
 
+const BigTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: WHITE,
+    color: BLACK,
+    boxShadow: theme.shadows[4],
+    border: "1px solid" + GREY,
+    fontSize: 16,
+    marginTop: 0,
+  },
+}));
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   const theme = useTheme();
-  const BigTooltip = withStyles((theme) => ({
-    tooltip: {
-      backgroundColor: WHITE,
-      color: BLACK,
-      boxShadow: theme.shadows[4],
-      border: "1px solid" + GREY,
-      fontSize: 16,
-      marginTop: 0,
-    },
-  }))(Tooltip);
   const langCode = languageCode[locale].code;
   const [allVerseData, setAllVerseData] = useState();
   const [verseRef, setVerseRef] = useState({

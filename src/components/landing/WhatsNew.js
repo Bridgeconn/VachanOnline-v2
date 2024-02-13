@@ -1,37 +1,18 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Button from "@material-ui/core/Button";
+import Typography from "@mui/material/Typography";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
-import Link from "@material-ui/core/Link";
+import Link from "@mui/material/Link";
 import FeaturesList from "./FeaturesList";
 import { GREY } from "../../store/colorCode";
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  box: {
-    marginBottom: -10,
-    display: "flex",
-    alignItems: "center",
-  },
-  button: {
-    marginTop: 3,
-    textTransform: "unset",
-    padding: "2px 10px",
-    fontSize: 16,
-    height: 30,
-    "&:hover": {
-      color: GREY,
-    },
-    [theme.breakpoints.down("sm")]: {
-      fontSize: 12,
-    },
-  },
-}));
 const WhatsNew = ({ handleClose }) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const { t } = useTranslation();
   const addHyperLink = (text, url) => {
     return (
@@ -42,12 +23,18 @@ const WhatsNew = ({ handleClose }) => {
   };
   return (
     <>
-      <DialogTitle id="scroll-dialog-title" disableTypography={true}>
-        <div className={classes.box}>
+      <DialogTitle id="scroll-dialog-title">
+        <Box
+          sx={{
+            marginBottom: "-10px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <Typography variant="h5" gutterBottom>
             {t("WhatsNew")}
           </Typography>
-        </div>
+        </Box>
       </DialogTitle>
       <DialogContent dividers={true}>
         <span>
@@ -92,8 +79,19 @@ const WhatsNew = ({ handleClose }) => {
         <Button
           variant="outlined"
           size="small"
-          color="default"
-          className={classes.button}
+          sx={{
+            marginTop: "3px",
+            textTransform: "unset",
+            padding: "2px 10px",
+            fontSize: 16,
+            height: "30px",
+            "&:hover": {
+              color: GREY,
+            },
+            [theme.breakpoints.down("md")]: {
+              fontSize: 12,
+            },
+          }}
           onClick={handleClose}
         >
           {t("commonClose")}

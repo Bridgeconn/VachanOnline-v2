@@ -12,6 +12,7 @@ import Print from "../common/PrintBox";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Metadata from "../common/Metadata";
+import { Box } from "@mui/material";
 
 const StyleMenuItem = (props) => (
   <MenuItem
@@ -21,6 +22,7 @@ const StyleMenuItem = (props) => (
       display: "inline-block",
       fontSize: 18,
     }}
+    {...props}
   >
     {props.children}
   </MenuItem>
@@ -206,8 +208,10 @@ const Setting = ({
           </StyleMenuItem>
         )}
         <StyleMenuItem>
-          <span sx={{ marginRight: "20px" }}>{t("informationText")}</span>
-          <div
+          <Box sx={{ marginRight: "20px", display: "inline" }}>
+            {t("informationText")}
+          </Box>
+          <Box
             sx={{
               display: "inline-block",
               marginTop: "-15px",
@@ -219,10 +223,12 @@ const Setting = ({
               abbreviation="Abbreviation"
               mobileView={mobileView}
             ></Metadata>
-          </div>
+          </Box>
         </StyleMenuItem>
         <StyleMenuItem onClick={handleDialogOpen}>
-          <span sx={{ marginRight: 2.5 }}>{t("PrintSave")}</span>
+          <Box sx={{ marginRight: 2.5, display: "inline" }}>
+            {t("PrintSave")}
+          </Box>
           <PrintIcon />
         </StyleMenuItem>
       </Menu>

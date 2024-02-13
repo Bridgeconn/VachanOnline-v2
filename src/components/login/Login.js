@@ -21,7 +21,7 @@ import { BLACK } from "../../store/colorCode";
 
 const Login = (props) => {
   const theme = useTheme();
-  const newStyles ={
+  const newStyles = {
     cursor: "pointer",
     marginLeft: 3,
     fontSize: "2rem",
@@ -34,7 +34,7 @@ const Login = (props) => {
       whiteSpace: "nowrap",
       fontSize: "1.8rem",
     },
-  }
+  };
   const { login, openLogin, setValue, setMessage, setAlert, person } = props;
   const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -42,7 +42,7 @@ const Login = (props) => {
   const [password, setPassword] = React.useState("");
   const [form, setForm] = React.useState(1);
   const [messageOpen, setMessageOpen] = React.useState(false);
-  const loginStyles = person ? person : newStyles
+  const loginStyles = person ? person : newStyles;
 
   const open = Boolean(anchorEl);
   const { t } = useTranslation();
@@ -219,13 +219,7 @@ const Login = (props) => {
       ) : (
         <>
           <BigTooltip title={t("signInTitle")}>
-            <PersonIcon
-              sx={
-               loginStyles
-               }
-              ref={menuRef}
-              onClick={openForm}
-            />
+            <PersonIcon sx={loginStyles} ref={menuRef} onClick={openForm} />
           </BigTooltip>
           <Popover
             id="sign-in"
@@ -309,8 +303,9 @@ const Login = (props) => {
                       variant="outlined"
                       sx={{
                         margin: theme.spacing(1, 0, 1),
-                        color: BLACK, borderColor: BLACK
-                        }}
+                        color: BLACK,
+                        borderColor: BLACK,
+                      }}
                     >
                       {t("signInTitle")}
                     </Button>
@@ -321,20 +316,20 @@ const Login = (props) => {
                       onClick={signInGoogle}
                       sx={{
                         margin: theme.spacing(1, 0, 1),
-                        color: BLACK, borderColor: BLACK
+                        color: BLACK,
+                        borderColor: BLACK,
                       }}
                     >
                       {t("loginSignInGoogleBtn")}
                     </Button>
                     {/* <Button
-                    type="submit"
-                    fullWidth
-                    variant="outlined"
-                    onClick={signInFacebook}
-                    className={classes.submit}
-                  >
-                    Sign in with Facebook
-                  </Button> */}
+                      type="submit"
+                      fullWidth
+                      variant="outlined"
+                      onClick={signInFacebook}
+                    >
+                      Sign in with Facebook
+                    </Button> */}
                     <Grid container sx={{ marginTop: "10px" }}>
                       <Grid item xs>
                         <Link

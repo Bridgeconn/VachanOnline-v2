@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from "react";
-import { makeStyles } from "@mui/styles";
+import React, { useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
@@ -98,111 +97,6 @@ const LoadingHeading = styled("h3")({
   paddingLeft: 20,
 });
 
-const useStyles = makeStyles((theme) => ({
-  verseText: {
-    paddingTop: "4px",
-  },
-  verseNumber: {
-    fontWeight: 600,
-    paddingLeft: "3px",
-    bottom: "4px",
-    position: "relative",
-    fontSize: ".8em",
-    color: color.MEDIUMGREY,
-  },
-  heading: {
-    fontSize: "1.3em",
-    display: "block",
-    paddingTop: "12px",
-    fontWeight: 700,
-    textIndent: 0,
-  },
-  yellow: {
-    backgroundColor: color.YELLOW,
-  },
-  green: {
-    backgroundColor: color.GREEN,
-  },
-  cyan: {
-    backgroundColor: color.CYAN,
-  },
-  pink: {
-    backgroundColor: color.PINK,
-  },
-  orange: {
-    backgroundColor: color.ORANGE,
-  },
-  [`@media print`]: {
-    yellow: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.YELLOW : "unset",
-    },
-    green: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.GREEN : "unset",
-    },
-    cyan: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.CYAN : "unset",
-    },
-    pink: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.PINK : "unset",
-    },
-    orange: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.ORANGE : "unset",
-    },
-  },
-  selectedVerse: {
-    backgroundColor: "#d9e8ef",
-    [`@media print`]: {
-      backgroundColor: "unset",
-    },
-  },
-  lineView: {
-    display: "table",
-  },
-  firstVerse: {
-    fontSize: "1.8em",
-    bottom: "-2px",
-    color: color.BLACK,
-  },
-  underline: {
-    color: "grey",
-    textDecoration: "underline",
-  },
-  hoverVerse: {
-    background: color.LIGHTGREY,
-  },
-  paraStyling: {
-    textIndent: "1.5rem",
-  },
-  poetry1: {
-    display: "block",
-    textIndent: "1rem",
-    width: "max-content",
-  },
-  poetry2: {
-    display: "block",
-    textIndent: "2.5rem",
-    width: "max-content",
-  },
-  poetry3: {
-    display: "block",
-    textIndent: "3rem",
-    width: "max-content",
-  },
-  poetry4: {
-    display: "block",
-    textIndent: "3.5rem",
-    width: "max-content",
-  },
-  blankLine: {
-    display: "block",
-    height: "10px",
-  },
-}));
 const Bible = (props) => {
   const theme = useTheme();
   const [verses, setVerses] = React.useState([]);
@@ -224,7 +118,6 @@ const Bible = (props) => {
   const cancelToken = React.useRef();
   const firebase = useFirebase();
   const [open, setOpen] = React.useState(false);
-  const tag = useRef("");
   const location = useLocation();
   const path = location?.pathname;
   let {
@@ -264,15 +157,6 @@ const Bible = (props) => {
   } = props;
   const { t } = useTranslation();
   const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : "0.5rem";
-  const styleProps = {
-    padding: padding,
-    singlePane: singlePane,
-    printNotes: printNotes,
-    printHighlights: printHighlights,
-    paneNo: paneNo,
-    audioBottom: audioBottom,
-  };
-  const classes = useStyles(styleProps);
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
   const [previousBook, setPreviousBook] = React.useState("");
@@ -286,6 +170,13 @@ const Bible = (props) => {
   const [editorState, setEditorState] = React.useState(
     EditorState.createEmpty()
   );
+  const headingSx = {
+    fontSize: "1.3em",
+    display: "block",
+    paddingTop: "12px",
+    fontWeight: 700,
+    textIndent: 0,
+  };
   const showNoteMessage = () => {
     setAlert(true);
     setAlertMessage(t("readNotesAlertMsg"));
@@ -380,7 +271,7 @@ const Bible = (props) => {
   function showText(item, chapter, verseData) {
     if (verseData === "" || verseData.split("-")[0] === "1") {
       // show chapter heading only for verse 1
-      const heading = parseHeading(item, classes.heading);
+      const heading = parseHeading(item, headingSx);
       if (heading !== "") {
         return heading;
       }
@@ -397,144 +288,64 @@ const Bible = (props) => {
     }
     const showHeading = getShowHeading(verseData, item.verseNumber);
     if (showHeading === "show") {
-      return getHeading(item, classes.heading);
+      return getHeading(item, headingSx);
     }
     if (!filterVerse(verseData, item.verseNumber)) {
       return "";
     }
     const verse = parseInt(item.verseNumber);
-    const verseClass =
-      selectedVerses?.indexOf(verse) > -1
-        ? `${classes.verseText} ${classes.selectedVerse}`
-        : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-        ? `${classes.hoverVerse}`
-        : highlightVerses.indexOf(verse) > -1
-        ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
-        : `${classes.verseText}`;
-    const verseNumberClass =
-      verse === 1
-        ? `${classes.verseNumber} ${classes.firstVerse}`
-        : `${classes.verseNumber}`;
+
+    const verseNumber = {
+      fontWeight: 600,
+      paddingLeft: "3px",
+      bottom: verse === 1 ? "-2px" : "4px",
+      position: "relative",
+      fontSize: verse === 1 ? "1.8em" : ".8em",
+      color: verse === 1 ? color.BLACK : color.MEDIUMGREY,
+      display: "inline",
+    };
+
     const verseNo = verse === 1 ? chapter : item.verseNumber;
 
-    // const poetry1Class =
-    //   selectedVerses?.indexOf(verse) > -1
-    //     ? `${classes.poetry1} ${classes.selectedVerse}`
-    //     : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-    //     ? `${classes.hoverVerse} ${classes.poetry1}`
-    //     : highlightVerses.indexOf(verse) > -1
-    //     ? `${classes.poetry1} ${colorClasses[highlighMap[verse]]}`
-    //     : `${classes.poetry1}`;
-
-    // const poetry2Class =
-    //   selectedVerses?.indexOf(verse) > -1
-    //     ? `${classes.poetry2} ${classes.selectedVerse}`
-    //     : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-    //     ? `${classes.hoverVerse} ${classes.poetry2}`
-    //     : highlightVerses.indexOf(verse) > -1
-    //     ? `${classes.poetry2} ${colorClasses[highlighMap[verse]]}`
-    //     : `${classes.poetry2}`;
-
-    // const poetry3Class =
-    //   selectedVerses?.indexOf(verse) > -1
-    //     ? `${classes.poetry3} ${classes.selectedVerse}`
-    //     : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-    //     ? `${classes.hoverVerse} ${classes.poetry3}`
-    //     : highlightVerses.indexOf(verse) > -1
-    //     ? `${classes.poetry3} ${colorClasses[highlighMap[verse]]}`
-    //     : `${classes.poetry3}`;
-
-    // const poetry4Class =
-    //   selectedVerses?.indexOf(verse) > -1
-    //     ? `${classes.poetry4} ${classes.selectedVerse}`
-    //     : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-    //     ? `${classes.hoverVerse} ${classes.poetry4}`
-    //     : highlightVerses.indexOf(verse) > -1
-    //     ? `${classes.poetry4} ${colorClasses[highlighMap[verse]]}`
-    //     : `${classes.poetry4}`;
-
-    const sx1 = {
+    const bgColorSx = {
+      backgroundColor:
+        selectedVerses?.indexOf(verse) > -1
+          ? "#d9e8ef"
+          : !mobileView &&
+            hoverVerse === verse &&
+            isHoverVerse &&
+            parallelScroll
+          ? color.LIGHTGREY
+          : highlightVerses.indexOf(verse) > -1
+          ? colors[highlighMap[verse]]
+          : "transparent",
+      [`@media print`]: {
+        backgroundColor: printHighlights
+          ? colors[highlighMap[verse]]
+          : "transparent",
+      },
+    };
+    const poetrySx = {
       "&.poetry1": {
-        display: "block",
         textIndent: "1rem",
-        width: "max-content",
       },
-      "&.selectedVerse": {
-        backgroundColor: "#d9e8ef",
-        [`@media print`]: {
-          backgroundColor: "unset",
-        },
-      },
-      "&.hoverVerse": {
-        background: color.LIGHTGREY,
-      },
-      "&.highlightVerse": {
-        color: (verse) => theme.palette[highlighMap[verse]], // Assuming dynamic colors from theme
-      },
-    };
-
-    const sx2 = {
       "&.poetry2": {
-        display: "block",
         textIndent: "2.5rem",
-        width: "max-content",
       },
-      "&.selectedVerse": {
-        backgroundColor: "#d9e8ef",
-        [`@media print`]: {
-          backgroundColor: "unset",
-        },
-      },
-      "&.hoverVerse": {
-        background: color.LIGHTGREY,
-      },
-      "&.highlightVerse": {
-        color: (verse) => theme.palette[highlighMap[verse]], // Assuming dynamic colors from theme
-      },
-    };
-    const sx3 = {
       "&.poetry3": {
-        display: "block",
         textIndent: "3rem",
-        width: "max-content",    
       },
-      "&.selectedVerse": {
-        backgroundColor: "#d9e8ef",
-        [`@media print`]: {
-          backgroundColor: "unset",
-        },
-      },
-      "&.hoverVerse": {
-        background: color.LIGHTGREY,
-      },
-      "&.highlightVerse": {
-        color: (verse) => theme.palette[highlighMap[verse]], // Assuming dynamic colors from theme
-      },
-    };
-
-    const sx4 = {
       "&.poetry4": {
-        display: "block",
         textIndent: "3.5rem",
-        width: "max-content",
       },
-      "&.selectedVerse": {
-        backgroundColor: "#d9e8ef",
-        [`@media print`]: {
-          backgroundColor: "unset",
-        },
-      },
-      "&.hoverVerse": {
-        background: color.LIGHTGREY,
-      },
-      "&.highlightVerse": {
-        color: (verse) => theme.palette[highlighMap[verse]], // Assuming dynamic colors from theme
-      },
+      display: "block",
+      width: "max-content",
+      ...bgColorSx,
     };
 
     return (
       <span key={item.verseNumber}>
-        <span className={lineViewClass}>
+        <Box sx={{ display: lineView ? "table" : "inline" }}>
           <span
             onMouseOver={
               mobileView ? null : () => setMainValue("hoverVerse", verse)
@@ -542,13 +353,19 @@ const Bible = (props) => {
             onClick={handleVerseClick}
             data-verse={item.verseNumber}
           >
-            <span className={verseClass}>
-              <span className={verseNumberClass}>
+            <Box
+              sx={{
+                paddingTop: "4px",
+                display: "inline",
+                ...bgColorSx,
+              }}
+            >
+              <Box sx={verseNumber}>
                 {verseNo}
                 &nbsp;
-              </span>
-              {getVerse(item, tag, sx1, sx2, sx3, sx4)}
-            </span>
+              </Box>
+              {getVerse(item, poetrySx)}
+            </Box>
           </span>
           {/*If verse has note then show note icon to open notes pane */}
           {notes && notes.includes(verse) ? (
@@ -566,8 +383,8 @@ const Bible = (props) => {
             ""
           )}
           {verseData.includes(",") && <br />}
-        </span>
-        {showHeading !== "skip" && getHeading(item, classes.heading)}
+        </Box>
+        {showHeading !== "skip" && getHeading(item, headingSx)}
       </span>
     );
   }
@@ -632,7 +449,9 @@ const Bible = (props) => {
                 showText(item, chapter, element)
               );
               return para.tag === "p" ? (
-                <p className={lineView ? "" : classes.paraStyling}>{text}</p>
+                <Box sx={{ textIndent: lineView ? "unset" : "1.5rem" }}>
+                  {text}
+                </Box>
               ) : (
                 <span>{text}</span>
               );
@@ -651,9 +470,9 @@ const Bible = (props) => {
           showText(item, chapter, verseData)
         );
         return para.tag === "p" ? (
-          <p className={lineView ? "" : classes.paraStyling} key={i}>
+          <Box sx={{ textIndent: lineView ? "unset" : "1.5rem" }} key={i}>
             {text}
-          </p>
+          </Box>
         ) : (
           <span>{text}</span>
         );
@@ -725,12 +544,12 @@ const Bible = (props) => {
       setFont(fontFamily === "Sans" ? sans[language] : serif[language]);
     }
   }, [version, fontFamily]);
-  const colorClasses = {
-    a: classes.yellow,
-    b: classes.green,
-    c: classes.cyan,
-    d: classes.pink,
-    e: classes.orange,
+  const colors = {
+    a: color.YELLOW,
+    b: color.GREEN,
+    c: color.CYAN,
+    d: color.PINK,
+    e: color.ORANGE,
   };
   React.useEffect(() => {
     if (highlights) {
@@ -903,7 +722,6 @@ const Bible = (props) => {
       setNotes([]);
     }
   }, [bookCode, chapter, sourceId, userDetails]);
-  const lineViewClass = lineView ? classes.lineView : "";
   React.useEffect(() => {
     setMainValue("playing", "");
   }, [sourceId, bookCode, chapter, setMainValue]);
@@ -936,8 +754,10 @@ const Bible = (props) => {
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };
-  const addStyle = (text, style) => {
-    return <span className={classes[style]}>{" " + text}</span>;
+  const addStyle = (text) => {
+    return (
+      <Box sx={{ color: "grey", textDecoration: "underline" }}>{text}</Box>
+    );
   };
   const getPrevious = () => {
     if (parallelScroll && paneNo === 2 && mobileView) {
@@ -1031,8 +851,6 @@ const Bible = (props) => {
           color: "#464545",
           marginBottom: "5px",
         },
-      }}
-      style={{
         fontFamily: font,
         fontSize: fontSize,
       }}
@@ -1063,8 +881,8 @@ const Bible = (props) => {
               outline: "1px solid slategrey",
             },
             [theme.breakpoints.up("md")]: {
-              paddingRight: (props) => (props.padding > 5 ? props.padding : 5),
-              paddingLeft: (props) => (props.padding > 5 ? props.padding : 5),
+              paddingRight: () => (padding > 5 ? padding / 8 : 5),
+              paddingLeft: () => (padding > 5 ? padding / 8 : 5),
             },
             [theme.breakpoints.down("md")]: {
               paddingRight: "15px",
@@ -1090,6 +908,7 @@ const Bible = (props) => {
                 padding: "0 0 50px 5px",
               },
             }}
+            onMouseLeave={() => setMainValue("hoverVerse", "")}
             ref={printRef}
           >
             <style>{getPageMargins()}</style>

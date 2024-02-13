@@ -402,7 +402,10 @@ export const getReference = (search, bookList) => {
     (b) => b.short === bookName || b.abbr === bookName
   );
   //check the search string contains valid book
-  const bookCode = getBookCode(refObj?.abbreviation?refObj?.abbreviation:refObjLocal?.abbr, bookList);
+  const bookCode = getBookCode(
+    refObj?.abbreviation ? refObj?.abbreviation : refObjLocal?.abbr,
+    bookList
+  );
   //If search string has book code, then check the corresponding total chapter count
   if (bookCode) {
     if (checkValidChapter(bookCode, chapter)) {
@@ -561,14 +564,14 @@ export const getObsLanguageData = (setValue, setLang) => {
     });
 };
 
-export const getVerse = (verse, tag, sx1, sx2, sx3, sx4) => {
+export const getVerse = (verse, sx) => {
   if (verse?.contents?.length === 1 && typeof verse?.contents[0] === "string") {
     return verse.verseText;
   }
-  return parseTags(verse?.contents, sx1, sx2, sx3, sx4);
+  return parseTags(verse?.contents, sx);
 };
 
-function parseTags(tags, sx1, sx2, sx3, sx4) {
+function parseTags(tags, sx) {
   let verse = [];
   if (Array.isArray(tags)) {
     for (let item of tags) {
@@ -621,7 +624,7 @@ function parseTags(tags, sx1, sx2, sx3, sx4) {
     if (poetry === "q1") {
       poetry = "";
       return (
-        <Box sx={sx1} className="poetry1">
+        <Box sx={sx} className="poetry1">
           {text}
         </Box>
       );
@@ -629,7 +632,7 @@ function parseTags(tags, sx1, sx2, sx3, sx4) {
     if (poetry === "q2") {
       poetry = "";
       return (
-        <Box sx={sx2} className="poetry2">
+        <Box sx={sx} className="poetry2">
           {text}
         </Box>
       );
@@ -637,7 +640,7 @@ function parseTags(tags, sx1, sx2, sx3, sx4) {
     if (poetry === "q3") {
       poetry = "";
       return (
-        <Box sx={sx3} className="poetry3">
+        <Box sx={sx} className="poetry3">
           {text}
         </Box>
       );
@@ -645,7 +648,7 @@ function parseTags(tags, sx1, sx2, sx3, sx4) {
     if (poetry === "q4") {
       poetry = "";
       return (
-        <Box sx={sx4} className="poetry4">
+        <Box sx={sx} className="poetry4">
           {text}
         </Box>
       );
@@ -667,7 +670,7 @@ function parseTags(tags, sx1, sx2, sx3, sx4) {
   });
   return verseText;
 }
-export const parseHeading = (item, className) => {
+export const parseHeading = (item, headingSx) => {
   if (Array.isArray(item)) {
     const [first] = item;
     if (typeof first === "object") {
@@ -676,9 +679,9 @@ export const parseHeading = (item, className) => {
         const heading = first[tag];
         if (heading && heading !== "" && typeof heading === "string") {
           return (
-            <span key={heading} className={className}>
+            <Box key={heading} sx={headingSx}>
               {heading}
-            </span>
+            </Box>
           );
         }
       }
@@ -686,9 +689,9 @@ export const parseHeading = (item, className) => {
         const heading = first[tag][0];
         if (heading && heading !== "" && typeof heading === "string") {
           return (
-            <span key={heading} className={className}>
+            <Box key={heading} sx={headingSx}>
               {heading}
-            </span>
+            </Box>
           );
         }
       }
@@ -696,12 +699,12 @@ export const parseHeading = (item, className) => {
   }
   return "";
 };
-export const getHeading = (item, className) => {
+export const getHeading = (item, headingSx) => {
   try {
     const { contents } = item;
     if (contents) {
       for (item of contents) {
-        const heading = parseHeading(item, className);
+        const heading = parseHeading(item, headingSx);
         if (heading !== "") {
           return heading;
         }
