@@ -417,41 +417,120 @@ const Bible = (props) => {
         : `${classes.verseNumber}`;
     const verseNo = verse === 1 ? chapter : item.verseNumber;
 
-    const poetry1Class =
-      selectedVerses?.indexOf(verse) > -1
-        ? `${classes.poetry1} ${classes.selectedVerse}`
-        : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-        ? `${classes.hoverVerse} ${classes.poetry1}`
-        : highlightVerses.indexOf(verse) > -1
-        ? `${classes.poetry1} ${colorClasses[highlighMap[verse]]}`
-        : `${classes.poetry1}`;
+    // const poetry1Class =
+    //   selectedVerses?.indexOf(verse) > -1
+    //     ? `${classes.poetry1} ${classes.selectedVerse}`
+    //     : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
+    //     ? `${classes.hoverVerse} ${classes.poetry1}`
+    //     : highlightVerses.indexOf(verse) > -1
+    //     ? `${classes.poetry1} ${colorClasses[highlighMap[verse]]}`
+    //     : `${classes.poetry1}`;
 
-    const poetry2Class =
-      selectedVerses?.indexOf(verse) > -1
-        ? `${classes.poetry2} ${classes.selectedVerse}`
-        : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-        ? `${classes.hoverVerse} ${classes.poetry2}`
-        : highlightVerses.indexOf(verse) > -1
-        ? `${classes.poetry2} ${colorClasses[highlighMap[verse]]}`
-        : `${classes.poetry2}`;
+    // const poetry2Class =
+    //   selectedVerses?.indexOf(verse) > -1
+    //     ? `${classes.poetry2} ${classes.selectedVerse}`
+    //     : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
+    //     ? `${classes.hoverVerse} ${classes.poetry2}`
+    //     : highlightVerses.indexOf(verse) > -1
+    //     ? `${classes.poetry2} ${colorClasses[highlighMap[verse]]}`
+    //     : `${classes.poetry2}`;
 
-    const poetry3Class =
-      selectedVerses?.indexOf(verse) > -1
-        ? `${classes.poetry3} ${classes.selectedVerse}`
-        : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-        ? `${classes.hoverVerse} ${classes.poetry3}`
-        : highlightVerses.indexOf(verse) > -1
-        ? `${classes.poetry3} ${colorClasses[highlighMap[verse]]}`
-        : `${classes.poetry3}`;
+    // const poetry3Class =
+    //   selectedVerses?.indexOf(verse) > -1
+    //     ? `${classes.poetry3} ${classes.selectedVerse}`
+    //     : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
+    //     ? `${classes.hoverVerse} ${classes.poetry3}`
+    //     : highlightVerses.indexOf(verse) > -1
+    //     ? `${classes.poetry3} ${colorClasses[highlighMap[verse]]}`
+    //     : `${classes.poetry3}`;
 
-    const poetry4Class =
-      selectedVerses?.indexOf(verse) > -1
-        ? `${classes.poetry4} ${classes.selectedVerse}`
-        : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
-        ? `${classes.hoverVerse} ${classes.poetry4}`
-        : highlightVerses.indexOf(verse) > -1
-        ? `${classes.poetry4} ${colorClasses[highlighMap[verse]]}`
-        : `${classes.poetry4}`;
+    // const poetry4Class =
+    //   selectedVerses?.indexOf(verse) > -1
+    //     ? `${classes.poetry4} ${classes.selectedVerse}`
+    //     : !mobileView && hoverVerse === verse && isHoverVerse && parallelScroll
+    //     ? `${classes.hoverVerse} ${classes.poetry4}`
+    //     : highlightVerses.indexOf(verse) > -1
+    //     ? `${classes.poetry4} ${colorClasses[highlighMap[verse]]}`
+    //     : `${classes.poetry4}`;
+
+    const sx1 = {
+      "&.poetry1": {
+        display: "block",
+        textIndent: "1rem",
+        width: "max-content",
+      },
+      "&.selectedVerse": {
+        backgroundColor: "#d9e8ef",
+        [`@media print`]: {
+          backgroundColor: "unset",
+        },
+      },
+      "&.hoverVerse": {
+        background: color.LIGHTGREY,
+      },
+      "&.highlightVerse": {
+        color: (verse) => theme.palette[highlighMap[verse]], // Assuming dynamic colors from theme
+      },
+    };
+
+    const sx2 = {
+      "&.poetry2": {
+        display: "block",
+        textIndent: "2.5rem",
+        width: "max-content",
+      },
+      "&.selectedVerse": {
+        backgroundColor: "#d9e8ef",
+        [`@media print`]: {
+          backgroundColor: "unset",
+        },
+      },
+      "&.hoverVerse": {
+        background: color.LIGHTGREY,
+      },
+      "&.highlightVerse": {
+        color: (verse) => theme.palette[highlighMap[verse]], // Assuming dynamic colors from theme
+      },
+    };
+    const sx3 = {
+      "&.poetry3": {
+        display: "block",
+        textIndent: "3rem",
+        width: "max-content",    
+      },
+      "&.selectedVerse": {
+        backgroundColor: "#d9e8ef",
+        [`@media print`]: {
+          backgroundColor: "unset",
+        },
+      },
+      "&.hoverVerse": {
+        background: color.LIGHTGREY,
+      },
+      "&.highlightVerse": {
+        color: (verse) => theme.palette[highlighMap[verse]], // Assuming dynamic colors from theme
+      },
+    };
+
+    const sx4 = {
+      "&.poetry4": {
+        display: "block",
+        textIndent: "3.5rem",
+        width: "max-content",
+      },
+      "&.selectedVerse": {
+        backgroundColor: "#d9e8ef",
+        [`@media print`]: {
+          backgroundColor: "unset",
+        },
+      },
+      "&.hoverVerse": {
+        background: color.LIGHTGREY,
+      },
+      "&.highlightVerse": {
+        color: (verse) => theme.palette[highlighMap[verse]], // Assuming dynamic colors from theme
+      },
+    };
 
     return (
       <span key={item.verseNumber}>
@@ -468,15 +547,7 @@ const Bible = (props) => {
                 {verseNo}
                 &nbsp;
               </span>
-              {getVerse(
-                item,
-                tag,
-                poetry1Class,
-                poetry2Class,
-                poetry3Class,
-                poetry4Class,
-                classes.blankLine
-              )}
+              {getVerse(item, tag, sx1, sx2, sx3, sx4)}
             </span>
           </span>
           {/*If verse has note then show note icon to open notes pane */}

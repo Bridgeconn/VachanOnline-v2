@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import {
   readingPlanAPI,
   signBibleAPI,
@@ -324,7 +325,7 @@ const getBookCode = (book, bookList) => {
         b.short.toLowerCase() === book ||
         b.long.toLowerCase() === book ||
         b.book_code.toLowerCase() === book
-        );
+    );
     if (bookObj) {
       bookCode = bookObj.book_code;
     }
@@ -560,14 +561,14 @@ export const getObsLanguageData = (setValue, setLang) => {
     });
 };
 
-export const getVerse = (verse, tag, q1, q2, q3, q4, b) => {
+export const getVerse = (verse, tag, sx1, sx2, sx3, sx4) => {
   if (verse?.contents?.length === 1 && typeof verse?.contents[0] === "string") {
     return verse.verseText;
   }
-  return parseTags(verse?.contents, q1, q2, q3, q4, b);
+  return parseTags(verse?.contents, sx1, sx2, sx3, sx4);
 };
 
-function parseTags(tags, q1, q2, q3, q4, b) {
+function parseTags(tags, sx1, sx2, sx3, sx4) {
   let verse = [];
   if (Array.isArray(tags)) {
     for (let item of tags) {
@@ -606,32 +607,48 @@ function parseTags(tags, q1, q2, q3, q4, b) {
         verseString += item;
       } else if (item !== "") {
         verseString += ` ${item}`;
-      }   
+      }
     }
     if (i === verse.length - 1 && verseString !== "") {
       verseMap.push(verseString);
     }
-    previousText = item
+    previousText = item;
   });
 
   let poetry = "";
-  
+
   const styling = (text) => {
     if (poetry === "q1") {
       poetry = "";
-      return <span className={q1}>{text}</span>;
+      return (
+        <Box sx={sx1} className="poetry1">
+          {text}
+        </Box>
+      );
     }
     if (poetry === "q2") {
       poetry = "";
-      return <span className={q2}>{text}</span>;
+      return (
+        <Box sx={sx2} className="poetry2">
+          {text}
+        </Box>
+      );
     }
     if (poetry === "q3") {
       poetry = "";
-      return <span className={q3}>{text}</span>;
+      return (
+        <Box sx={sx3} className="poetry3">
+          {text}
+        </Box>
+      );
     }
     if (poetry === "q4") {
       poetry = "";
-      return <span className={q4}>{text}</span>;
+      return (
+        <Box sx={sx4} className="poetry4">
+          {text}
+        </Box>
+      );
     }
     return text;
   };
@@ -641,14 +658,14 @@ function parseTags(tags, q1, q2, q3, q4, b) {
       poetry = text;
       return "";
     } else if (text === "b") {
-      return <span className={b}></span>;
-    }  else if (text !== "") {
+      return <Box sx={{ display: "block", height: "10px" }}></Box>;
+    } else if (text !== "") {
       return styling(text);
     }
     previousText = text;
     return "";
   });
- return verseText;
+  return verseText;
 }
 export const parseHeading = (item, className) => {
   if (Array.isArray(item)) {
