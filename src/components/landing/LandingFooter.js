@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import WhatsNew from "./WhatsNew";
-import { useMediaQuery } from "@material-ui/core";
+import { Badge, useMediaQuery } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   landingFooter: {
@@ -139,15 +139,18 @@ const LandingFooter = (props) => {
           </Button>
         </Grid>
         <Grid item xs={4} sm={3} className={classes.rightLinks}>
-          <Button
-            variant="outlined"
-            size="small"
-            color="default"
-            className={classes.button}
-            onClick={openWhatsNew}
-          >
-            {t("WhatsNew")}
-          </Button>
+          <Badge color="error" variant="dot">
+            <Button
+              variant="outlined"
+              size="small"
+              color="default"
+              className={classes.button}
+              onClick={openWhatsNew}
+              style={{ fontWeight: 800 }}
+            >
+              {t("WhatsNew")}
+            </Button>
+          </Badge>
         </Grid>
         <Grid item xs={5} sm={1} md={2}>
           {isTablet ? (

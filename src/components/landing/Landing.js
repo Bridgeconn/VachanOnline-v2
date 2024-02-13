@@ -152,7 +152,6 @@ const Landing = (props) => {
               VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
               {t("landingWelcomeMessage2")}
             </p>
-            <p>{t("landingWelcomeMessage3")}</p>
             <p>
               {t("landingWelcomeMessage4")} VachanGo{" "}
               {t("landingWelcomeMessage5")}

@@ -61,7 +61,7 @@ const FeaturesList = () => {
         </DialogTitle>
         <DialogContent dividers={true}>
           <span>
-            <ul style={{ fontSize: 16 }}>
+            <ul style={{ fontSize: 16, paddingLeft: 17 }}>
               <li>{t("readTopBarBtn")}</li>
               <li>{t("studyBibleTopBarBtn")}</li>
               <li>{t("ISLVTopBarBtnToolTip")}</li>
