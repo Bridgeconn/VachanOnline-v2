@@ -89,13 +89,13 @@ const Setting = ({
         keepMounted
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          style: {
+        sx={{
+          "& .MuiMenu-paper": {
             maxHeight: ITEM_HEIGHT * 5.5,
-            width: 280,
+            width: "280px",
             backgroundColor: WHITE,
             color: BLACK,
-            marginTop: 50,
+            marginTop: "35px",
           },
         }}
         anchorOrigin={{

@@ -7,11 +7,11 @@ import { BLACK } from "../../store/colorCode";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 
-const Close = ({ close, className }) => {
+const Close = ({ close, sx }) => {
   const { t } = useTranslation();
   return (
     <Tooltip title={t("commonClose")}>
-      <IconButton size="small" onClick={close} sx={className}>
+      <IconButton size="small" onClick={close} sx={sx}>
         <CloseIcon sx={{ color: BLACK }} />
       </IconButton>
     </Tooltip>

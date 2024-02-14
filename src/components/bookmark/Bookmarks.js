@@ -175,8 +175,7 @@ const Bookmarks = (props) => {
               return versionData[bookmark.sourceId] !== undefined ? (
                 <ListItem
                   key={i}
-                  sx={{ borderBottom: "1px solid lightgray" }}
-                  button
+                  sx={{ borderBottom: "1px solid lightgray",cursor:"pointer"}}
                   onClick={mobileView ? close : null}
                 >
                   <ListItemText

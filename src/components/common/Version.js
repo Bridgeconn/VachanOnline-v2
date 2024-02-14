@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { getVersions, capitalize, getLanguageData } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
-import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled } from "@mui/system";
@@ -272,6 +272,7 @@ const Version = (props) => {
             minWidth: { lg: "unset", xs: 60 },
             left: 0,
             justifyContent: landingPage ? "unset" : "",
+            color:BLACK
           }}
         >
           <VersionName>{displayVersion}</VersionName>

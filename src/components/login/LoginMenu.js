@@ -84,13 +84,13 @@ const LoginMenu = (props) => {
              }}
       >
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem button>
+          <ListItem >
             <ListItemText primary={userDetails.email} />
           </ListItem>
         </List>
         <Divider />
         <List component="nav" aria-label="secondary mailbox folders">
-          <ListItem button>
+          <ListItem >
             <ListItemText primary={t("loginSignOutBtn")} onClick={signOut} />
           </ListItem>
         </List>

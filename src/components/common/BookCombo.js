@@ -307,6 +307,7 @@ const BookCombo = (props) => {
         paddingX: 1.25,
         paddingY: 0.75,
         borderRadius: 1,
+        color:BLACK
       }}
     >
       {`${bookDisplay} ${chapter}:${verseData}`}
@@ -351,6 +352,7 @@ const BookCombo = (props) => {
               boxShadow: "1px 1px 1px 1px " + GREY,
               maxWidth: { lg: "unset", xs: props.parallelView ? 110 : 140 },
               margin: { lg: 0.5, xs: 1.125 },
+              color:BLACK
             },
           }}
         >
@@ -441,7 +443,6 @@ const BookCombo = (props) => {
                   <ListItem
                     value={item.short}
                     data-bookcode={item.book_code}
-                    button
                     onClick={(event) => bookClicked(event)}
                     sx={{
                       marginTop: 0.375,
@@ -503,7 +504,6 @@ const BookCombo = (props) => {
                       {selectedChapterList.map((chapterObject, i) => {
                         return (
                           <ListItem
-                            button
                             key={chapterObject.number}
                             data-bookcode={chapterObject.bibleBookCode}
                             data-chapter={chapterObject.number}

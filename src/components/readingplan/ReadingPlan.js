@@ -18,6 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
 import Help from "../common/Help";
 import { styled } from "@mui/system";
+import { ListItemButton } from "@mui/material";
 
 const BigTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -287,7 +288,7 @@ const ReadingPlan = (props) => {
                 {readingList.map((reading, i) => {
                   const bookText = getBookText(reading.ref, reading.text);
                   return bookText ? (
-                    <ListItem
+                    <ListItemButton
                       key={i}
                       sx={{ borderBottom: "1px solid lightgray" }}
                     >
@@ -296,7 +297,7 @@ const ReadingPlan = (props) => {
                         data-ref={reading.ref}
                         onClick={(e) => openChapter(e)}
                       />
-                    </ListItem>
+                    </ListItemButton>
                   ) : (
                     <BigTooltip
                       key={i}

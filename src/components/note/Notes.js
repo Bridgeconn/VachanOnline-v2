@@ -34,11 +34,6 @@ import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
 import { useTheme } from "@mui/material/styles";
-import { styled } from "@mui/system";
-
-const CustomEditor = styled(Editor)(({ padding }) => ({
-  padding: padding,
-}));
 
 function Notes(props) {
   const theme = useTheme();
@@ -437,7 +432,7 @@ function Notes(props) {
               }}
               url={"notes"}
             />
-            <Close sx={{ marginRight: "15px", marginTop: "-6px" }} />
+            <Close sx={{ marginRight: "15px" }} />
           </Box>
         </Box>
       )}
@@ -462,12 +457,11 @@ function Notes(props) {
               .join(", ")}
           </DialogTitle>
           <DialogContent dividers sx={{ padding: "0px" }}>
-            <CustomEditor
+            <Editor
               editorState={editorState}
-              editorStyle={{ height: "30vh", overflow: "auto" }}
+              editorStyle={{ height: "30vh", overflow: "auto",padding:"10px"}}
               onEditorStateChange={handleNoteTextChange}
               toolbar={getEditorToolbar(true)}
-              padding="10px"
             />
           </DialogContent>
           <DialogActions>
@@ -500,14 +494,14 @@ function Notes(props) {
               >
                 <Button
                   variant="outlined"
-                  sx={{ margin: "10px 5px",color:BLACK,borderColor:BLACK }}
+                  sx={{ margin: "10px 5px", color: BLACK, borderColor: BLACK }}
                   onClick={handleClose}
                 >
                   {t("commonCancel")}
                 </Button>
                 <Button
                   variant="outlined"
-                  sx={{ margin: "10px 5px",color:BLACK,borderColor:BLACK }}
+                  sx={{ margin: "10px 5px", color: BLACK, borderColor: BLACK }}
                   onClick={saveNote}
                 >
                   {t("commonSave")}
@@ -522,12 +516,11 @@ function Notes(props) {
             {t("studyNotesBookChapterVerse", { ref })}
           </Typography>
           {/*edit note */}
-          <CustomEditor
+          <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
-            editorStyle={{ height: "30vh" }}
+            editorStyle={{ height: "30vh",padding:"0px" }}
             toolbar={getEditorToolbar(false)}
-            padding="0px"
           />
           <Grid container>
             <Grid
@@ -561,14 +554,14 @@ function Notes(props) {
             >
               <Button
                 variant="outlined"
-                sx={{ margin: "10px 5px",color:BLACK,borderColor:BLACK }}
+                sx={{ margin: "10px 5px", color: BLACK, borderColor: BLACK }}
                 onClick={resetForm}
               >
                 {t("commonCancel")}
               </Button>
               <Button
                 variant="outlined"
-                sx={{ margin: "10px 5px",color:BLACK,borderColor:BLACK }}
+                sx={{ margin: "10px 5px", color: BLACK, borderColor: BLACK }}
                 onClick={saveNote}
               >
                 {t("commonSave")}
@@ -631,7 +624,7 @@ function Notes(props) {
                     {t("studyNotesBookChapter", { ref })}
                   </Typography>
                   {mobileView ? (
-                    <Close sx={{ marginRight: "15px", marginTop: "-6px" }} />
+                    <Close sx={{ marginRight: "15px" }} />
                   ) : null}
                 </ListItem>
                 {chapterNoteList.map((note, i) => {
@@ -642,13 +635,13 @@ function Notes(props) {
                         borderBottom: "1px solid lightgray",
                         paddingTop: "4px",
                         paddingBottom: "4px",
+                        cursor:"pointer"
                       }}
                       data-sourceid={note.sourceId}
                       data-bookcode={note.bookCode}
                       data-chapter={note.chapter}
                       data-index={note.index}
                       onClick={openRef}
-                      button
                     >
                       <ListItemText
                         primary={`${versionData[note.sourceId][0]} ${
@@ -718,7 +711,6 @@ function Notes(props) {
                   data-chapter={note.chapter}
                   data-index={note.index}
                   onClick={openRef}
-                  button
                 >
                   <ListItemText
                     primary={`${versionData[note.sourceId][0]} ${note.book} ${

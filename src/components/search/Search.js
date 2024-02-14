@@ -68,7 +68,8 @@ const Search = (props) => {
       let end = start + 99 < total ? start + 99 : total;
       setPageData(searchResult.result.slice(start - 1, end));
       setPageInfo(
-        <span
+        <Box
+          component="span"
           sx={{
             position: "absolute",
             right: "10px",
@@ -79,7 +80,8 @@ const Search = (props) => {
             },
           }}
         >
-          <span
+          <Box
+            component="span"
             sx={{
               display: "inline-block",
               fontSize: "15px",
@@ -87,7 +89,7 @@ const Search = (props) => {
             }}
           >
             {start} - {end} of {Number(total).toLocaleString()}
-          </span>
+          </Box>
           {total > 100 ? (
             <Pagination
               count={Math.ceil(total / 100)}
@@ -98,13 +100,13 @@ const Search = (props) => {
           ) : (
             ""
           )}
-        </span>
+        </Box>
       );
     } else {
       setPageData("");
       setPageInfo("");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchResult, page]);
 
   //search result changed
@@ -116,9 +118,9 @@ const Search = (props) => {
       setMessage(
         <span>
           {t("studyNoSearchResult")}{" "}
-          <span sx={{ fontWeight: 600, fontSize: "1.1em" }}>
+          <Box component="span" sx={{ fontWeight: 600, fontSize: "1.1em" }}>
             {searchResult.keyword}
-          </span>
+          </Box>
         </span>
       );
     }
@@ -126,17 +128,27 @@ const Search = (props) => {
 
   //set keyword bold
   const highlightKeyword = (versePart, index) => {
-    const styles = { fontWeight: 600, fontSize: "1.1em" };
-    const className =
-      versePart.localeCompare(searchResult.keyword, undefined, {
-        sensitivity: "base",
-      }) === 0
-        ? styles
-        : "";
     return (
-      <span key={index} sx={className}>
+      <Box
+        component="span"
+        key={index}
+        sx={{
+          fontWeight:
+            versePart.localeCompare(searchResult.keyword, undefined, {
+              sensitivity: "base",
+            }) === 0
+              ? 600
+              : "unset",
+          fontSize:
+            versePart.localeCompare(searchResult.keyword, undefined, {
+              sensitivity: "base",
+            }) === 0
+              ? "1.1em"
+              : "unset",
+        }}
+      >
         {versePart}
-      </span>
+      </Box>
     );
   };
 
@@ -217,19 +229,12 @@ const Search = (props) => {
         >
           <Help
             iconStyle={{
-              // padding: "8px 12px 0",
               color: BLACK,
-              // marginTop: "10px",
               fontSize: "21px",
             }}
             url={"searchBible"}
           />
-          <Close
-            sx={{
-              marginRight: "15px",
-              marginTop: "11px",
-            }}
-          />
+          <Close sx={{ marginRight: "15px", marginTop: "3px" }} />
         </Box>
       </Box>
       <Box
@@ -277,7 +282,8 @@ const Search = (props) => {
                   textAlign: "center",
                 }}
               >
-                <span
+                <Box
+                  component="span"
                   sx={{
                     fontWeight: 600,
                     fontSize: "1.2em",
@@ -289,7 +295,7 @@ const Search = (props) => {
                   }}
                 >
                   {searchResult.keyword}
-                </span>
+                </Box>
                 {pageInfo}
               </Typography>
             </ListItem>
@@ -298,6 +304,7 @@ const Search = (props) => {
                 <ListItem
                   key={i}
                   sx={{
+                    cursor:"pointer",
                     borderBottom: "1px solid lightgray",
                   }}
                   data-bookcode={result.bookCode}
@@ -307,9 +314,9 @@ const Search = (props) => {
                 >
                   <ListItemText
                     sx={{
-                      "&.primary": {
+                      "&.MuiListItemText-primary": {
                         fontWeight: 600,
-                      },
+                      }                      
                     }}
                     primary={`${result.book} ${result.chapter}:${result.verse} `}
                     secondary={

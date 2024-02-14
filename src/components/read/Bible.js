@@ -47,11 +47,6 @@ const CustomReactPlayer = styled(ReactPlayer)(({ theme, audioBottom }) => ({
   height: "50px",
 }));
 
-const CustomEditor = styled(Editor)(({ theme }) => ({
-  padding: "10px",
-  height: "30vh",
-}));
-
 const ArrowBack = styled(ArrowBackIosIcon)(
   ({ theme, padding, audioBottom }) => ({
     position: "absolute",
@@ -1021,8 +1016,9 @@ const Bible = (props) => {
           {t("commonNotes")}
         </DialogTitle>
         <DialogContent dividers sx={{ padding: 0 }}>
-          <CustomEditor
+          <Editor
             editorState={editorState}
+            editorStyle={{ padding: "10px", height: "30vh" }}
             onEditorStateChange={handleNoteTextChange}
             placeholder={t("commonNotePlaceholder")}
             toolbar={getEditorToolbar(true)}

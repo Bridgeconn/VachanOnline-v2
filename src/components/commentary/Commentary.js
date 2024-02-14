@@ -383,7 +383,7 @@ const Commentary = (props) => {
           <Close
             sx={{
               marginRight: "10px",
-              marginTop: "-8px",
+              marginTop: "-7px",
               [theme.breakpoints.down("md")]: {
                 marginTop: "0.2rem",
               },

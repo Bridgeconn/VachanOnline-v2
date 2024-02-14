@@ -25,10 +25,6 @@ import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
 import { BLACK } from "../../store/colorCode";
 
-const CustomEditor = styled(Editor)(() => ({
-  padding: "10px",
-}));
-
 const StyledDialogTitle = styled(MuiDialogTitle)(({ theme }) => ({
   root: {
     margin: "0px",
@@ -196,9 +192,9 @@ function Note({
           {t("commonNoteDialogTitle")}
         </CustomDialogTitle>
         <DialogContent dividers sx={{ padding: "0px" }}>
-          <CustomEditor
+          <Editor
             editorState={editorState}
-            editorStyle={{ height: "30vh" }}
+            editorStyle={{ height: "30vh",padding:"10px" }}
             onEditorStateChange={handleNoteTextChange}
             placeholder={t("commonNotePlaceholder")}
             toolbar={getEditorToolbar(mobileView)}

@@ -15,14 +15,14 @@ import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
 
 const CustomSelect = styled(Select)(({ theme }) => ({
-  width: 200,
+  width: "200px",
   [theme.breakpoints.down("md")]: {
-    width: 150,
+    width: "150px",
   },
 }));
 const Audio = (props) => {
   const theme = useTheme();
-const {
+  const {
     audioBible,
     bookCode,
     chapter,
@@ -183,7 +183,7 @@ const {
           }}
         >
           <Help
-            sx={{
+            iconStyle={{
               padding: "8px 12px 0",
               color: BLACK,
               marginTop: "5px",

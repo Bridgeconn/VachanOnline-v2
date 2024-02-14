@@ -2,7 +2,6 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -16,6 +15,7 @@ import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
+import { ListItemButton } from "@mui/material";
 const Highlights = (props) => {
   const { uid, versions, setValue, getRegionalBookName, close, mobileView } =
     props;
@@ -181,7 +181,7 @@ const Highlights = (props) => {
           <List component="nav">
             {highlightList.map((highlight, i) => {
               return versionData[highlight.sourceId] !== undefined ? (
-                <ListItem
+                <ListItemButton
                   key={i}
                   sx={{ borderBottom: "1px solid lightgray" }}
                   data-sourceid={highlight.sourceId}
@@ -189,7 +189,6 @@ const Highlights = (props) => {
                   data-chapter={highlight.chapter}
                   data-book={highlight.book}
                   onClick={openHighlight}
-                  button
                 >
                   <ListItemText
                     onClick={mobileView ? close : null}
@@ -211,7 +210,7 @@ const Highlights = (props) => {
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
-                </ListItem>
+                </ListItemButton>
               ) : (
                 ""
               );

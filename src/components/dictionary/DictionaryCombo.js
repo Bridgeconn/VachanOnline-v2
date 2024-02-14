@@ -9,6 +9,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
+import { BLACK } from "../../store/colorCode";
 const I = styled("i")({ left: 15, position: "relative" });
 const DictionaryCombo = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -42,7 +43,8 @@ const DictionaryCombo = (props) => {
           marginX: 1.25,
           width: { lg: "auto", md: "50%", sm: "50%" },
           left: { xs: 0 },
-        }}
+          color:BLACK
+        }}      
       >
         {props.selectedDictionary.code}
         <I className={`material-icons`}>keyboard_arrow_downn</I>

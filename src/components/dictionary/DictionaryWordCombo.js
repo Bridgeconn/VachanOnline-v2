@@ -9,6 +9,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
+import { BLACK } from "../../store/colorCode";
 
 const SpanStyle = styled("span")({
   display: "inline-block",
@@ -53,6 +54,7 @@ const DictionaryWordCombo = (props) => {
           whiteSpace: { lg: "wrap", xs: "nowrap" },
           left: 0,
           marginRight: 1.25,
+          color:BLACK
         }}
       >
         <SpanStyle>{dictionaryWord.word}</SpanStyle>

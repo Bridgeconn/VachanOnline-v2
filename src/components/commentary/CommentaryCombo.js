@@ -2,7 +2,6 @@ import React from "react";
 import List from "@mui/material/List";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
-import ListItem from "@mui/material/ListItem";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -13,6 +12,7 @@ import * as actions from "../../store/actions";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { styled } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
+import ListItemButton from "@mui/material/ListItemButton";
 
 const I = styled("i")(({ theme }) => ({
   [`&.material-icons`]: {
@@ -51,11 +51,6 @@ const CommentaryCombo = (props) => {
   function currentVersion(item) {
     return item?.code === commentary?.code &&
       item?.metadata["Language Name"] === commentary?.metadata["Language Name"]
-      ? {
-          boxShadow: "inset 0 0 30px " + LIGHTGREY,
-          border: "1px solid " + GREY + "70",
-        }
-      : "";
   }
   React.useEffect(() => {
     if (commentaryLang) {
@@ -84,7 +79,7 @@ const CommentaryCombo = (props) => {
               left: theme.spacing(0),
               marginRight: "10px",
             },
-            color:BLACK,
+            color: BLACK,
           },
         }}
       >
@@ -141,7 +136,7 @@ const CommentaryCombo = (props) => {
                   },
                 },
                 "&.Mui-expanded": {
-                  margin: "none",
+                  margin: "0px",
                 },
               }}
               key={i}
@@ -182,19 +177,22 @@ const CommentaryCombo = (props) => {
                   {languages.commentaries.map((item, i) => {
                     var versionActive = currentVersion(item);
                     return (
-                      <ListItem
+                      <ListItemButton
+                        selected={versionActive}
                         key={i}
                         value={encodeURIComponent(JSON.stringify(item))}
                         sx={{
                           "&.Mui-selected": {
-                            fontSize: versionActive ? "1rem" : "",
-                            cursor: versionActive ? "pointer" : "",
+                            fontSize: "1rem",
+                            cursor:  "default",
+                            boxShadow: "inset 0 0 30px " + LIGHTGREY,
+                            border: "1px solid " + GREY + "70",
                           },
                         }}
                         onClick={(e) => setCommentary(e, languages.language)}
                       >
                         {item.code.toUpperCase()} : {item.name}
-                      </ListItem>
+                      </ListItemButton>
                     );
                   })}
                 </List>
