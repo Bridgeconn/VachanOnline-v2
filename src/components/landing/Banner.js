@@ -15,18 +15,22 @@ import ShareIcon from "@material-ui/icons/Share";
 import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import { Button, Menu, Snackbar, TextField } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import { capitalize } from "../common/utility";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
     position: "absolute",
-    top: 80,
+    top: 72,
     color: WHITE,
     fontWeight: 800,
     fontFamily: "Sans",
     fontSize: "1.2rem",
     textShadow: "1px 1px 2px " + BLACK,
+    background: BLACK + "50",
+    borderRadius: 10,
+    padding: "4px 15px",
     [theme.breakpoints.down("sm")]: {
-      top: 75,
+      top: 70,
     },
     [theme.breakpoints.down("xs")]: {
       fontSize: "1.1rem",
@@ -95,14 +99,19 @@ const useStyles = makeStyles((theme) => ({
   },
   copyButton: {
     textTransform: "capitalize",
-    margin: "15px auto",
-    display: "flex",
+    margin: "10px auto",
   },
-  share: {
+  shareLink: {
     width: "94%",
-    height: 30,
     margin: 7,
-    paddingBottom: 10,
+    color: WHITE,
+  },
+  shareIcon: {
+    color: WHITE,
+    cursor: "pointer",
+    textShadow: "1px 1px 2px " + BLACK,
+    marginTop: -1,
+    marginLeft: 8,
   },
 }));
 const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
@@ -135,6 +144,15 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
   const avl = versionBooks[lang]?.filter((e) => {
     return e.book_code === verseRef.b;
   });
+
+  const versionCode = versions.find(
+    (e) => e?.languageVersions[0]?.language?.code === langCode
+  )?.languageVersions[0]?.version?.code;
+  const version = capitalize(langCode + "-" + versionCode);
+  const verseOfTheDayRef = book
+    ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber} ` + version
+    : "";
+  const verseOfTheDayText = verseObj ? verseObj.verseContent?.text : "";
   const path =
     avl?.length !== 0
       ? window.location.href +
@@ -153,6 +171,9 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
         verseRef?.c +
         "." +
         verseRef?.v;
+
+  const textContent =
+    verseOfTheDayRef + "\n" + verseOfTheDayText + "\n\n" + path;
   function openShareDialog(event) {
     setShareAnchor(event.currentTarget);
   }
@@ -164,7 +185,7 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
   };
   const handleCopyClick = async () => {
     try {
-      await navigator.clipboard.writeText(path);
+      await navigator.clipboard.writeText(textContent);
       setAlert(true);
       setCopyFeedback(t("clipBoardCopied"));
       setAlertType("success");
@@ -237,7 +258,7 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
           <ShareIcon
             fontSize="small"
             onClick={openShareDialog}
-            style={{ color: BLACK, cursor: "pointer" }}
+            className={classes.shareIcon}
           />
         </Tooltip>
         <Menu
@@ -260,33 +281,19 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
             },
           }}
         >
-          <div style={{ fontWeight: 800, paddingBottom: 10, fontSize: 16 }}>
-            {book
-              ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
-              : ""}
-          </div>
-          <span
-            style={{
-              paddingBottom: 10,
-              fontSize: "1rem",
-              fontFamily: "Roboto Slab",
-            }}
-          >
-            {verseObj ? verseObj.verseContent?.text : ""}
-          </span>
-
-          <TextField
-            id="share-url"
-            variant="outlined"
-            size="small"
-            defaultValue={path}
-            className={classes.share}
-            InputProps={{
-              readOnly: true,
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-          <div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <TextField
+              id="share-url"
+              variant="outlined"
+              size="small"
+              value={textContent}
+              className={classes.shareLink}
+              multiline
+              InputProps={{
+                readOnly: true,
+              }}
+              onFocus={(e) => e.target.select()}
+            />
             <Button
               className={classes.copyButton}
               variant="outlined"
