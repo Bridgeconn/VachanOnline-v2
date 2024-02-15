@@ -270,11 +270,11 @@ const Commentary = (props) => {
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        [theme.breakpoints.only("xs")]: {
-          marginTop: screenView === "single" ? "60px" : "0px",
-        },
         [theme.breakpoints.down("md")]: {
           marginTop: "60px",
+        },
+        [theme.breakpoints.only("xs")]: {
+          marginTop: screenView === "single" ? "60px" : "0px",
         },
       }}
     >
@@ -405,11 +405,11 @@ const Commentary = (props) => {
         ""
       )}
       {message && (
-        <h5 sx={{ padding: "20px 15px 2px 15px" }}>
+        <Box component="h5" sx={{ padding: "20px 15px 2px 15px" }}>
           {message === "loading"
             ? "Loading"
             : t("studyNoCommentaryAvailable", { ref })}
-        </h5>
+        </Box>
       )}
       {commentaryIntro.bookIntro && (
         <Box
@@ -417,7 +417,7 @@ const Commentary = (props) => {
           sx={{
             fontSize: "1.2rem",
             width: "100%",
-            border: "1px solid "+LIGHTGREY,
+            border: "1px solid " + LIGHTGREY,
             display: "flex",
             padding: "10px 20px",
             boxShadow:
@@ -457,7 +457,7 @@ const Commentary = (props) => {
             width: "0.45em",
           },
           "&::-webkit-scrollbar-track": {
-            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
           },
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: "rgba(0,0,0,.4)",

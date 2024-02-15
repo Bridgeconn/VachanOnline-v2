@@ -54,7 +54,7 @@ const DictionaryWordCombo = (props) => {
           whiteSpace: { lg: "wrap", xs: "nowrap" },
           left: 0,
           marginRight: 1.25,
-          color:BLACK
+          color: BLACK,
         }}
       >
         <SpanStyle>{dictionaryWord.word}</SpanStyle>
@@ -65,7 +65,6 @@ const DictionaryWordCombo = (props) => {
       ) : (
         <Menu
           elevation={0}
-          getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "center",

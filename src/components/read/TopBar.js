@@ -89,7 +89,16 @@ const TopBar = (props) => {
         <Button
           variant="outlined"
           size="small"
-          sx={{ marginTop: 0.25, marginRight: 1.25 }}
+          sx={{
+            marginTop: 0.25,
+            marginRight: 1.25,
+            color: BLACK,
+            border: "1px solid rgba(0, 0, 0, 0.23)",
+            "&:hover": {
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+            },
+          }}
           title={t("ISLVBibleText")}
           aria-label="sign language bible"
           target="_blank"
@@ -118,7 +127,16 @@ const TopBar = (props) => {
           <Button
             variant="outlined"
             size="small"
-            sx={{ marginRight: 0.5, marginTop: 0.25 }}
+            sx={{
+              marginRight: 0.5,
+              marginTop: 0.25,
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              "&:hover": {
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
             title={t("bibleStoriesText")}
             aria-label="bible stories"
             target="_blank"
@@ -142,7 +160,16 @@ const TopBar = (props) => {
           <Button
             variant="outlined"
             size="small"
-            sx={{ marginRight: 0.5, marginTop: 0.25 }}
+            sx={{
+              marginRight: 0.5,
+              marginTop: 0.25,
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              "&:hover": {
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
             title={t("songsText")}
             aria-label="songs"
             target="_blank"
@@ -167,7 +194,16 @@ const TopBar = (props) => {
             <Button
               variant="outlined"
               size="small"
-              sx={{ marginRight: 0.5, marginTop: 0.25 }}
+              sx={{
+                marginRight: 0.5,
+                marginTop: 0.25,
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+                "&:hover": {
+                  color: BLACK,
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                },
+              }}
               title={t("audioBibleText")}
               aria-label="audio bible"
               target="_blank"
@@ -190,7 +226,16 @@ const TopBar = (props) => {
           <Button
             variant="outlined"
             size="small"
-            sx={{ marginRight: 0.5, marginTop: 0.25 }}
+            sx={{
+              marginRight: 0.5,
+              marginTop: 0.25,
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              "&:hover": {
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
             title={t("readTopBarBtn")}
             aria-label="read bible"
             target="_blank"
@@ -212,7 +257,16 @@ const TopBar = (props) => {
           <Button
             variant="outlined"
             size="small"
-            sx={{ marginRight: 0.5, marginTop: 0.25 }}
+            sx={{
+              marginRight: 0.5,
+              marginTop: 0.25,
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              "&:hover": {
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
             title={t("studyBibleTopBarBtn")}
             aria-label="study bible"
             target="_blank"

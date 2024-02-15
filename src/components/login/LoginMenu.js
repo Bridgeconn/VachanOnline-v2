@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import { ListItemButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { useTranslation } from "react-i18next";
 import { GREY } from "../../store/colorCode";
@@ -61,7 +61,6 @@ const LoginMenu = (props) => {
       </IconButton>
       <Menu
         elevation={0}
-        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "center",
@@ -75,24 +74,24 @@ const LoginMenu = (props) => {
         open={Boolean(menuOpen)}
         onClose={handleClose}
         sx={{
-          "& .MuiPaper-root":{
+          "& .MuiPaper-root": {
             width: "100%",
             maxWidth: "300px",
             backgroundColor: theme.palette.background.paper,
             boxShadow: "1px 1px 4px 1px " + GREY,
-          }
-             }}
+          },
+        }}
       >
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem >
+          <ListItemButton>
             <ListItemText primary={userDetails.email} />
-          </ListItem>
+          </ListItemButton>
         </List>
         <Divider />
         <List component="nav" aria-label="secondary mailbox folders">
-          <ListItem >
+          <ListItemButton>
             <ListItemText primary={t("loginSignOutBtn")} onClick={signOut} />
-          </ListItem>
+          </ListItemButton>
         </List>
       </Menu>
     </>

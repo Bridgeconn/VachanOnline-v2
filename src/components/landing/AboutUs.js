@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useTranslation } from "react-i18next";
-import { BLACK } from "../../store/colorCode";
+import { BLACK, GREY } from "../../store/colorCode";
 import Help from "../common/Help";
 import FeaturesList from "./FeaturesList";
 import { styled } from "@mui/system";
@@ -53,9 +53,11 @@ const AboutUs = ({ handleClose }) => {
         <Typography variant="h5">The Vachan Project</Typography>
         <Typography variant="body1" gutterBottom>
           <BoldSpan> VachanOnline </BoldSpan>
-          {t("landingAboutUsVachanProjectContent1")}{". "}
+          {t("landingAboutUsVachanProjectContent1")}
+          {". "}
           <BoldSpan>VachanGo </BoldSpan>
-          {t("landingAboutUsVachanProjectContent2")}{". "}
+          {t("landingAboutUsVachanProjectContent2")}
+          {". "}
           <BoldSpan>The Vachan Project </BoldSpan>
           {t("landingAboutUsVachanProjectContent3")}
         </Typography>
@@ -94,7 +96,18 @@ const AboutUs = ({ handleClose }) => {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant="outlined">
+        <Button
+          onClick={handleClose}
+          variant="outlined"
+          sx={{
+            color: BLACK,
+            border: "1px solid rgba(0, 0, 0, 0.23)",
+            "&:hover": {
+              color: GREY,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+            },
+          }}
+        >
           {t("commonClose")}
         </Button>
       </DialogActions>

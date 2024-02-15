@@ -10,22 +10,22 @@ export default function BibleMenu() {
   return (
     <Box
       sx={{
-          width: "100%",
-          height: "calc(100vh - 50px)",
-          overflowY: "auto",
-          overflowX: "hidden",
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(0,0,0,.4) rgba(0,0,0,.1)",
-          "&::-webkit-scrollbar": {
-            width: "0.4em",
-          },
-          "&::-webkit-scrollbar-track": {
-            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.4)",
-            outline: "1px solid slategrey",
-          },
+        width: "100%",
+        height: "calc(100vh - 50px)",
+        overflowY: "auto",
+        overflowX: "hidden",
+        scrollbarWidth: "thin",
+        scrollbarColor: "rgba(0,0,0,.4) rgba(0,0,0,.1)",
+        "&::-webkit-scrollbar": {
+          width: "0.4em",
+        },
+        "&::-webkit-scrollbar-track": {
+          WebKitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "rgba(0,0,0,.4)",
+          outline: "1px solid slategrey",
+        },
       }}
     >
       <List component="nav" aria-label="main mailbox folders">

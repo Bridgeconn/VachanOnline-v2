@@ -79,7 +79,10 @@ const LandingFooter = (props) => {
               fontSize: { lg: 16, xs: 12 },
               "&:hover": {
                 color: GREY,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
               },
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
             }}
             onClick={openModal}
           >
@@ -98,7 +101,10 @@ const LandingFooter = (props) => {
               fontSize: { lg: 16, xs: 12 },
               "&:hover": {
                 color: GREY,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
               },
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
             }}
             onClick={openWhatsNew}
           >
@@ -138,7 +144,10 @@ const LandingFooter = (props) => {
                 fontSize: { lg: 16, xs: 12 },
                 "&:hover": {
                   color: GREY,
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
                 },
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
               }}
               startIcon={<FeedbackIcon />}
               href="https://forms.office.com/r/qiV0Ym335M"

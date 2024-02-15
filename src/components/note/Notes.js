@@ -405,7 +405,7 @@ function Notes(props) {
                 </Tooltip>
               ) : (
                 <Tooltip title={t("commonSelectVerses")}>
-                  <>
+                  <span>
                     <IconButton
                       aria-label="add"
                       sx={{
@@ -418,7 +418,7 @@ function Notes(props) {
                     >
                       <AddBox />
                     </IconButton>
-                  </>
+                  </span>
                 </Tooltip>
               )}
             </Typography>
@@ -459,7 +459,11 @@ function Notes(props) {
           <DialogContent dividers sx={{ padding: "0px" }}>
             <Editor
               editorState={editorState}
-              editorStyle={{ height: "30vh", overflow: "auto",padding:"10px"}}
+              editorStyle={{
+                height: "30vh",
+                overflow: "auto",
+                padding: "10px",
+              }}
               onEditorStateChange={handleNoteTextChange}
               toolbar={getEditorToolbar(true)}
             />
@@ -519,7 +523,7 @@ function Notes(props) {
           <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
-            editorStyle={{ height: "30vh",padding:"0px" }}
+            editorStyle={{ height: "30vh", padding: "0px" }}
             toolbar={getEditorToolbar(false)}
           />
           <Grid container>
@@ -596,7 +600,7 @@ function Notes(props) {
             width: "0.45em",
           },
           "&::-webkit-scrollbar-track": {
-            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
           },
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: "rgba(0,0,0,.4)",
@@ -623,9 +627,7 @@ function Notes(props) {
                   <Typography variant="h5">
                     {t("studyNotesBookChapter", { ref })}
                   </Typography>
-                  {mobileView ? (
-                    <Close sx={{ marginRight: "15px" }} />
-                  ) : null}
+                  {mobileView ? <Close sx={{ marginRight: "15px" }} /> : null}
                 </ListItem>
                 {chapterNoteList.map((note, i) => {
                   return versionData[note.sourceId] !== undefined ? (
@@ -635,7 +637,7 @@ function Notes(props) {
                         borderBottom: "1px solid lightgray",
                         paddingTop: "4px",
                         paddingBottom: "4px",
-                        cursor:"pointer"
+                        cursor: "pointer",
                       }}
                       data-sourceid={note.sourceId}
                       data-bookcode={note.bookCode}

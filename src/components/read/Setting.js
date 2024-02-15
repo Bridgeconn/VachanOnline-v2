@@ -115,10 +115,16 @@ const Setting = ({
                 fontFamily: '"Roboto", "sans-serif"',
                 textTransform: "none",
                 fontSize: 16,
+                color: "rgba(0, 0, 0, 0.87)",
+                backgroundColor: "#e0e0e0",
                 ...(fontFamily === "Sans" && {
                   background: "#c7c7c7",
                   boxShadow: "inset 1px 1px 5px #9a9a9a",
                 }),
+                "&:hover": {
+                  color: "rgba(0, 0, 0, 0.87)",
+                  backgroundColor: "lightgray",
+                },
               }}
               onClick={setFontFamily}
               value="Sans"
@@ -130,6 +136,12 @@ const Setting = ({
                 fontFamily: '"Roboto Slab", "serif"',
                 textTransform: "none",
                 fontSize: 16,
+                color: "rgba(0, 0, 0, 0.87)",
+                "&:hover": {
+                  color: "rgba(0, 0, 0, 0.87)",
+                  backgroundColor: "lightgray",
+                },
+                backgroundColor: "#e0e0e0",
                 ...(fontFamily === "Serif" && {
                   background: "#c7c7c7",
                   boxShadow: "inset 1px 1px 5px #9a9a9a",
@@ -156,10 +168,32 @@ const Setting = ({
             variant="contained"
             aria-label="Large contained secondary button group"
           >
-            <Button style={{ fontSize: 13 }} onClick={decreaseFontSize}>
+            <Button
+              sx={{
+                fontSize: 13,
+                color: "rgba(0, 0, 0, 0.87)",
+                backgroundColor: "#e0e0e0",
+                "&:hover": {
+                  color: "rgba(0, 0, 0, 0.87)",
+                  backgroundColor: "lightgray",
+                },
+              }}
+              onClick={decreaseFontSize}
+            >
               {t("settingsFontSizeA")}-
             </Button>
-            <Button style={{ fontSize: 16 }} onClick={increaseFontSize}>
+            <Button
+              sx={{
+                fontSize: 16,
+                color: "rgba(0, 0, 0, 0.87)",
+                backgroundColor: "#e0e0e0",
+                "&:hover": {
+                  color: "rgba(0, 0, 0, 0.87)",
+                  backgroundColor: "lightgray",
+                },
+              }}
+              onClick={increaseFontSize}
+            >
               {t("settingsFontSizeA")}+
             </Button>
           </ButtonGroup>

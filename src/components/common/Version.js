@@ -272,7 +272,10 @@ const Version = (props) => {
             minWidth: { lg: "unset", xs: 60 },
             left: 0,
             justifyContent: landingPage ? "unset" : "",
-            color:BLACK
+            color: BLACK,
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
+            },
           }}
         >
           <VersionName>{displayVersion}</VersionName>
@@ -285,7 +288,6 @@ const Version = (props) => {
         <>
           <Menu
             elevation={0}
-            getContentAnchorEl={null}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "center",

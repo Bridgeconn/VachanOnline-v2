@@ -43,8 +43,8 @@ const DictionaryCombo = (props) => {
           marginX: 1.25,
           width: { lg: "auto", md: "50%", sm: "50%" },
           left: { xs: 0 },
-          color:BLACK
-        }}      
+          color: BLACK,
+        }}
       >
         {props.selectedDictionary.code}
         <I className={`material-icons`}>keyboard_arrow_downn</I>
@@ -54,7 +54,6 @@ const DictionaryCombo = (props) => {
       ) : (
         <Menu
           elevation={0}
-          getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "center",

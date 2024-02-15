@@ -8,7 +8,7 @@ import Version from "../common/Version";
 import Bookmark from "../bookmark/Bookmark";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@mui/material/Tooltip";
-import { BLACK, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import Close from "../common/Close";
 import ParallelScroll from "@mui/icons-material/ImportExport";
 import ShareIcon from "@mui/icons-material/Share";
@@ -25,7 +25,7 @@ import { useTheme } from "@mui/material/styles";
 const StyleDiv = styled("div")(({ theme }) => ({
   padding: 0,
   width: "30px",
-  marginTop: 20,
+  marginTop: "20px",
   marginRight: 2,
   color: "default",
   cursor: "pointer",
@@ -237,7 +237,11 @@ const MenuBar = (props) => {
           <Box sx={{ display: "flex", marginLeft: { lg: 0, xs: -2 } }}>
             <StyleDiv>
               <Tooltip title={t("shareTooltip")}>
-                <ShareIcon fontSize="small" onClick={openShareDialog} />
+                <ShareIcon
+                  fontSize="small"
+                  sx={{ marginTop: "-4px" }}
+                  onClick={openShareDialog}
+                />
               </Tooltip>
               <Menu
                 id="long-menu"
@@ -245,14 +249,13 @@ const MenuBar = (props) => {
                 keepMounted
                 open={open}
                 onClose={closeShareDialog}
-                getContentAnchorEl={null}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
-                PaperProps={{
-                  style: {
-                    maxHeight: 150,
-                    marginTop: 20,
-                    width: 420,
+                sx={{
+                  "& .MuiPaper-root": {
+                    maxHeight: "150px",
+                    marginTop: "20px",
+                    width: "420px",
                     backgroundColor: WHITE,
                   },
                 }}
@@ -274,6 +277,12 @@ const MenuBar = (props) => {
                       marginX: "auto",
                       marginY: 0,
                       display: "flex",
+                      "&:hover": {
+                        color: GREY,
+                        border: "1px solid rgba(0, 0, 0, 0.23)",
+                      },
+                      color: BLACK,
+                      border: "1px solid rgba(0, 0, 0, 0.23)",
                     }}
                     variant="outlined"
                     onClick={handleCopyClick}

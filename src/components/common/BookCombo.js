@@ -11,7 +11,7 @@ import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
-import { Box, Typography } from "@mui/material";
+import { Box, ListItemButton, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { SYNCPANEL } from "../../store/actions";
 import { styled } from "@mui/system";
@@ -307,7 +307,7 @@ const BookCombo = (props) => {
         paddingX: 1.25,
         paddingY: 0.75,
         borderRadius: 1,
-        color:BLACK
+        color: BLACK,
       }}
     >
       {`${bookDisplay} ${chapter}:${verseData}`}
@@ -352,7 +352,10 @@ const BookCombo = (props) => {
               boxShadow: "1px 1px 1px 1px " + GREY,
               maxWidth: { lg: "unset", xs: props.parallelView ? 110 : 140 },
               margin: { lg: 0.5, xs: 1.125 },
-              color:BLACK
+              color: BLACK,
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+              },
             },
           }}
         >
@@ -394,7 +397,6 @@ const BookCombo = (props) => {
       ) : (
         <Menu
           elevation={0}
-          getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left",
@@ -440,7 +442,7 @@ const BookCombo = (props) => {
               return (
                 <React.Fragment key={item.book_id}>
                   {ntHeader(item)}
-                  <ListItem
+                  <ListItemButton
                     value={item.short}
                     data-bookcode={item.book_code}
                     onClick={(event) => bookClicked(event)}
@@ -492,7 +494,7 @@ const BookCombo = (props) => {
                         },
                       }}
                     />
-                  </ListItem>
+                  </ListItemButton>
                   {/* if chapterRow equal to current book index show chapters */}
                   {chapterRow === item.book_code &&
                   selectedChapterList?.length !== 0 ? (
@@ -503,7 +505,7 @@ const BookCombo = (props) => {
                     >
                       {selectedChapterList.map((chapterObject, i) => {
                         return (
-                          <ListItem
+                          <ListItemButton
                             key={chapterObject.number}
                             data-bookcode={chapterObject.bibleBookCode}
                             data-chapter={chapterObject.number}
@@ -543,7 +545,7 @@ const BookCombo = (props) => {
                             ref={i === 0 ? firstChapterRef : null}
                           >
                             {chapterObject.number}
-                          </ListItem>
+                          </ListItemButton>
                         );
                       })}
                     </List>

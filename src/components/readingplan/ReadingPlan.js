@@ -125,6 +125,7 @@ const ReadingPlan = (props) => {
           textTransform: "capitalize",
           backgroundColor: "#fff",
         },
+        color: BLACK,
       }}
     >
       {value}

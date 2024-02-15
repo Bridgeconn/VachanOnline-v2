@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import Link from "@mui/material/Link";
 import { Dialog } from "@mui/material";
 import { Box } from "@mui/material";
+import { BLACK, GREY } from "../../store/colorCode";
 
 const FeaturesList = () => {
   const { t } = useTranslation();
@@ -99,7 +100,18 @@ const FeaturesList = () => {
           </span>
         </DialogContent>
         <DialogActions>
-          <Button onClick={featuresClose} variant="outlined">
+          <Button
+            onClick={featuresClose}
+            variant="outlined"
+            sx={{
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              "&:hover": {
+                color: GREY,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
+          >
             {t("commonClose")}
           </Button>
         </DialogActions>

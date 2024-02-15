@@ -29,21 +29,21 @@ const BibleIndex = (props) => {
         [theme.breakpoints.down("sm")]: {
           marginBottom: "-10px",
         },
-        justifyContent:"center"
+        justifyContent: "center",
       }}
     >
       <Paper
         sx={{
-            margin: "auto",
-            position: "relative",
-            bottom: "70px",
-            height: "auto",
-            padding: "15px 30px",
-            backgroundColor: WHITE,
-            [theme.breakpoints.down("sm")]: {
-              bottom: "25px",
-              width: "100%",
-            },
+          margin: "auto",
+          position: "relative",
+          bottom: "70px",
+          height: "auto",
+          padding: "15px 30px",
+          backgroundColor: WHITE,
+          [theme.breakpoints.down("sm")]: {
+            bottom: "25px",
+            width: "100%",
+          },
         }}
         elevation={3}
       >
@@ -104,8 +104,9 @@ const BibleIndex = (props) => {
                   backgroundColor: "#fff",
                   boxShadow: "1px 1px 1px 1px " + GREY,
                   height: "42px",
-                  "& hover": {
+                  "&:hover": {
                     textDecoration: "none",
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
                   },
                   [theme.breakpoints.down("md")]: {
                     margin: "0px",
@@ -116,7 +117,7 @@ const BibleIndex = (props) => {
                   [theme.breakpoints.only("sm")]: {
                     margin: theme.spacing(1.5),
                   },
-                  color:BLACK
+                  color: BLACK,
                 }}
               >
                 {t("landingStartBtn")}

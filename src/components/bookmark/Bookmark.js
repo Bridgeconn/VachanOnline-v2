@@ -51,7 +51,7 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
       sx={{
         padding: 0,
         width: "30px",
-        mt: 2.5,
+        mt: 2.25,
         mr: 0.5,
         cursor: "pointer",
         [theme.breakpoints.only("sm")]: {

@@ -49,8 +49,10 @@ const CommentaryCombo = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
   function currentVersion(item) {
-    return item?.code === commentary?.code &&
+    return (
+      item?.code === commentary?.code &&
       item?.metadata["Language Name"] === commentary?.metadata["Language Name"]
+    );
   }
   React.useEffect(() => {
     if (commentaryLang) {
@@ -91,7 +93,6 @@ const CommentaryCombo = (props) => {
       ) : (
         <Menu
           elevation={0}
-          getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left",
@@ -184,7 +185,7 @@ const CommentaryCombo = (props) => {
                         sx={{
                           "&.Mui-selected": {
                             fontSize: "1rem",
-                            cursor:  "default",
+                            cursor: "default",
                             boxShadow: "inset 0 0 30px " + LIGHTGREY,
                             border: "1px solid " + GREY + "70",
                           },

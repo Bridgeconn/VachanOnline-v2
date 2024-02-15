@@ -61,6 +61,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
         }}
       >
         <Box
+          component="span"
           sx={{
             float: "left",
             textTransform: "capitalize",
@@ -81,7 +82,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
             backgroundColor: "transparent",
           },
         },
-        minWidth: "250px",
+        minWidth: "280px",
         [theme.breakpoints.down("sm")]: {
           minWidth: "120px",
         },
@@ -96,6 +97,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
         >
           <Typography sx={{ width: "100%" }}>
             <Box
+              component="span"
               sx={{
                 float: "left",
                 textTransform: "capitalize",
@@ -104,6 +106,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
               {`${text?.languageName}`}
             </Box>
             <Box
+              component="span"
               sx={{
                 float: "right",
                 textTransform: "capitalize",
@@ -289,6 +292,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                           color: GREY,
                         },
                       }}
+                      underline="hover"
                       href="#"
                       data-id={y + 1}
                       onClick={(e) => getStory(e)}

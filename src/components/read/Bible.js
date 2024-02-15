@@ -36,19 +36,19 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
 
-const CustomReactPlayer = styled(ReactPlayer)(({ theme, audioBottom }) => ({
+const CustomReactPlayer = styled(ReactPlayer)(({ theme, audiobottom }) => ({
   position: "sticky",
   bottom: "10px",
   left: "35px",
   [theme.breakpoints.down("md")]: {
-    bottom: audioBottom,
+    bottom: audiobottom,
   },
   width: "calc(100% - 70px)",
   height: "50px",
 }));
 
 const ArrowBack = styled(ArrowBackIosIcon)(
-  ({ theme, padding, audioBottom }) => ({
+  ({ theme, padding, audiobottom }) => ({
     position: "absolute",
     top: "45%",
     cursor: "pointer",
@@ -63,13 +63,13 @@ const ArrowBack = styled(ArrowBackIosIcon)(
     [theme.breakpoints.down("md")]: {
       left: "10px",
       top: "unset",
-      bottom: audioBottom === "0.5rem" ? "1.5rem" : "4.5rem",
+      bottom: audiobottom === "0.5rem" ? "1.5rem" : "4.5rem",
     },
   })
 );
 
 const ArrowForward = styled(ArrowForwardIosIcon)(
-  ({ theme, padding, audioBottom }) => ({
+  ({ theme, padding, audiobottom }) => ({
     position: "absolute",
     top: "45%",
     cursor: "pointer",
@@ -84,7 +84,7 @@ const ArrowForward = styled(ArrowForwardIosIcon)(
     [theme.breakpoints.down("md")]: {
       right: "10px",
       top: "unset",
-      bottom: audioBottom === "0.5rem" ? "1.5rem" : "4.5rem",
+      bottom: audiobottom === "0.5rem" ? "1.5rem" : "4.5rem",
     },
   })
 );
@@ -763,7 +763,7 @@ const Bible = (props) => {
         <ArrowBack
           fontSize="large"
           padding={padding}
-          audioBottom={audioBottom}
+          audiobottom={audioBottom}
           onClick={prevClick}
         />
       </Tooltip>
@@ -785,7 +785,7 @@ const Bible = (props) => {
         <ArrowForward
           fontSize="large"
           padding={padding}
-          audioBottom={audioBottom}
+          audiobottom={audioBottom}
           onClick={nextClick}
         />
       </Tooltip>
@@ -869,7 +869,7 @@ const Bible = (props) => {
               width: "0.45em",
             },
             "&::-webkit-scrollbar-track": {
-              "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
             },
             "&::-webkit-scrollbar-thumb": {
               backgroundColor: "rgba(0,0,0,.4)",
