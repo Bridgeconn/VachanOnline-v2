@@ -114,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 8,
   },
 }));
-const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
+const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   const BigTooltip = withStyles((theme) => ({
     tooltip: {
       backgroundColor: WHITE,
@@ -140,11 +140,6 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
   const [alert, setAlert] = React.useState(false);
   const [alertType, setAlertType] = React.useState("");
   const open = Boolean(shareAnchor);
-  const lang = panel1.version.split("-")[0];
-  const avl = versionBooks[lang]?.filter((e) => {
-    return e.book_code === verseRef.b;
-  });
-
   const versionCode = versions.find(
     (e) => e?.languageVersions[0]?.language?.code === langCode
   )?.languageVersions[0]?.version?.code;
@@ -153,25 +148,17 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
     ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber} ` + version
     : "";
   const verseOfTheDayText = verseObj ? verseObj.verseContent?.text : "";
+  const refVersionData =
+    verseOfTheDayRef?.split(" ")[2]?.split("-")[0].toLowerCase() +
+    "-" +
+    verseOfTheDayRef?.split(" ")[2]?.split("-")[1];
+  const refBCVData = verseRef?.b + "." + verseRef?.c + "." + verseRef?.v;
   const path =
-    avl?.length !== 0
-      ? window.location.href +
-        "read?version=" +
-        panel1.version +
-        "&reference=" +
-        verseRef?.b +
-        "." +
-        verseRef?.c +
-        "." +
-        verseRef?.v
-      : window.location.href +
-        "read?version=eng-ESV&reference=" +
-        verseRef?.b +
-        "." +
-        verseRef?.c +
-        "." +
-        verseRef?.v;
-
+    window.location.href +
+    "read?version=" +
+    refVersionData +
+    "&reference=" +
+    refBCVData;
   const textContent =
     verseOfTheDayRef + "\n" + verseOfTheDayText + "\n\n" + path;
   function openShareDialog(event) {
@@ -230,7 +217,7 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1 }) => {
       const book = books?.find((i) => i.book_code === verseObj.bibleBookCode);
       setBook(book?.short);
     }
-  }, [book, langCode, verseObj.bibleBookCode, versionBooks]);
+  }, [langCode, verseObj.bibleBookCode, versionBooks]);
   useEffect(() => {
     if (sourceId && verseRef) {
       const book = verseRef ? verseRef?.b : "psa";
@@ -346,7 +333,6 @@ const mapStateToProps = (state) => {
     versions: state.local.versions,
     locale: state.local.locale,
     versionBooks: state.local.versionBooks,
-    panel1: state.local.panel1,
   };
 };
 const mapDispatchToProps = (dispatch) => {
