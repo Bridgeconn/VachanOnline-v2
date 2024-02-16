@@ -106,7 +106,7 @@ const BibleIndex = (props) => {
                   height: "42px",
                   "&:hover": {
                     textDecoration: "none",
-                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                    backgroundColor: BLACK + "0a",
                   },
                   [theme.breakpoints.down("md")]: {
                     margin: "0px",

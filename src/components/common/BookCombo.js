@@ -20,7 +20,7 @@ const I = styled("i")(({ theme }) => ({
     left: 3,
     position: "relative",
     width: 30,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("lg")]: {
       left: 0,
       display: "none",
     },
@@ -354,7 +354,7 @@ const BookCombo = (props) => {
               margin: { lg: 0.5, xs: 1.125 },
               color: BLACK,
               "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.04)",
+                backgroundColor: BLACK + "0a",
               },
             },
           }}
@@ -471,7 +471,7 @@ const BookCombo = (props) => {
                       color: BLACK,
                       "&:hover": {
                         border: "1px solid #ccc",
-                        backgroundColor: { lg: WHITE, md: LIGHTGREY },
+                        backgroundColor: BLACK + "0a",
                         color: BLACK,
                       },
                     }}
@@ -534,11 +534,7 @@ const BookCombo = (props) => {
                               color: BLACK,
                               "&:hover": {
                                 border: "1px solid #ccc",
-                                backgroundColor:
-                                  openBookCode === bookCode &&
-                                  chapterObject.number === parseInt(chapter)
-                                    ? GREY
-                                    : "rgba(0, 0, 0, 0.04)",
+                                backgroundColor: BLACK + "0a",
                               },
                             }}
                             onClick={clickChapter}

@@ -13,7 +13,7 @@ import BottomToolBar from "./BottomToolBar";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@mui/material";
 import { SEARCH } from "../../store/views";
-import { GREY } from "../../store/colorCode";
+import { BLACK, GREY } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
@@ -76,6 +76,12 @@ const BiblePane = (props) => {
             margin: "5px",
             padding: "6px 10px",
             borderRadius: "4px",
+            color: BLACK,
+            border: "1px solid rgba(0, 0, 0, 0.23)",
+            "&:hover": {
+              backgroundColor: BLACK + "0a",
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+            },
           }}
         >
           {t("readSearchTextBtn")}
@@ -100,6 +106,12 @@ const BiblePane = (props) => {
         margin: "5px",
         padding: "6px 10px",
         borderRadius: "4px",
+        color: BLACK,
+        border: "1px solid rgba(0, 0, 0, 0.23)",
+        "&:hover": {
+          backgroundColor: BLACK + "0a",
+          border: "1px solid rgba(0, 0, 0, 0.23)",
+        },
       }}
     >
       {t("readResetSearchBtn")}

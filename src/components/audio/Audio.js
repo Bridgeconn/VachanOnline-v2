@@ -108,11 +108,8 @@ const Audio = (props) => {
       sx={{
         width: "100%",
         position: "absolute",
-        top: "82px",
+        top: { lg: "78px", md: "68px", xs: 0 },
         bottom: 0,
-        [theme.breakpoints.down("md")]: {
-          top: "60px",
-        },
       }}
     >
       <Box
@@ -133,7 +130,7 @@ const Audio = (props) => {
         }}
       >
         {mobileView ? null : (
-          <Box flexGrow={1}>
+          <Box flexGrow={1} sx={{ display: { lg: "block", md: "none" } }}>
             <Typography variant="h5">{t("audioBibleText")}</Typography>
           </Box>
         )}
@@ -198,7 +195,7 @@ const Audio = (props) => {
         sx={{
           top: "52px",
           bottom: 0,
-          overflow: "scroll",
+          overflow: "auto",
           position: "absolute",
           width: "100%",
           padding: "20px 4px 20px 15px",

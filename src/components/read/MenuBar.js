@@ -8,7 +8,7 @@ import Version from "../common/Version";
 import Bookmark from "../bookmark/Bookmark";
 import { AUDIO } from "../../store/views";
 import Tooltip from "@mui/material/Tooltip";
-import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { BLACK, WHITE } from "../../store/colorCode";
 import Close from "../common/Close";
 import ParallelScroll from "@mui/icons-material/ImportExport";
 import ShareIcon from "@mui/icons-material/Share";
@@ -278,7 +278,7 @@ const MenuBar = (props) => {
                       marginY: 0,
                       display: "flex",
                       "&:hover": {
-                        color: GREY,
+                        backgroundColor: BLACK + "0a",
                         border: "1px solid rgba(0, 0, 0, 0.23)",
                       },
                       color: BLACK,

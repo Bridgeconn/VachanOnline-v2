@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { useTranslation } from "react-i18next";
-import { BLACK, GREY } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
 import FeaturesList from "./FeaturesList";
 import { styled } from "@mui/system";
@@ -103,7 +103,7 @@ const AboutUs = ({ handleClose }) => {
             color: BLACK,
             border: "1px solid rgba(0, 0, 0, 0.23)",
             "&:hover": {
-              color: GREY,
+              backgroundColor: BLACK + "0a",
               border: "1px solid rgba(0, 0, 0, 0.23)",
             },
           }}

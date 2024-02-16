@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import Link from "@mui/material/Link";
 import { Dialog } from "@mui/material";
 import { Box } from "@mui/material";
-import { BLACK, GREY } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 
 const FeaturesList = () => {
   const { t } = useTranslation();
@@ -107,7 +107,7 @@ const FeaturesList = () => {
               color: BLACK,
               border: "1px solid rgba(0, 0, 0, 0.23)",
               "&:hover": {
-                color: GREY,
+                backgroundColor: BLACK + "0a",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
               },
             }}

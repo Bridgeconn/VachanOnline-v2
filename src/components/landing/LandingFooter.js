@@ -78,7 +78,7 @@ const LandingFooter = (props) => {
               paddingY: 0.25,
               fontSize: { lg: 16, xs: 12 },
               "&:hover": {
-                color: GREY,
+                backgroundColor: BLACK + "0a",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
               },
               color: BLACK,
@@ -100,7 +100,7 @@ const LandingFooter = (props) => {
               paddingY: 0.25,
               fontSize: { lg: 16, xs: 12 },
               "&:hover": {
-                color: GREY,
+                backgroundColor: BLACK + "0a",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
               },
               color: BLACK,
@@ -122,7 +122,9 @@ const LandingFooter = (props) => {
                 paddingY: 0.25,
                 fontSize: { lg: 16, xs: 12 },
                 "&:hover": {
-                  color: GREY,
+                  color: BLACK,
+                  backgroundColor: WHITE,
+                  border: "none",
                 },
               }}
               href="https://forms.office.com/r/qiV0Ym335M"
@@ -143,7 +145,8 @@ const LandingFooter = (props) => {
                 paddingY: 0.25,
                 fontSize: { lg: 16, xs: 12 },
                 "&:hover": {
-                  color: GREY,
+                  color: BLACK,
+                  backgroundColor: BLACK + "0a",
                   border: "1px solid rgba(0, 0, 0, 0.23)",
                 },
                 color: BLACK,
@@ -166,7 +169,7 @@ const LandingFooter = (props) => {
             sx={{
               color: BLACK,
               "&:hover": {
-                color: BLACK,
+                color: GREY,
                 textDecoration: "none",
               },
             }}

@@ -97,7 +97,7 @@ const Infographics = (props) => {
       sx={{
         width: "100%",
         position: "absolute",
-        top: { lg: 82, xs: 60 },
+        top: { lg: 81, xs: 62 },
         bottom: 0,
       }}
     >

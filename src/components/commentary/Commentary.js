@@ -270,8 +270,8 @@ const Commentary = (props) => {
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        [theme.breakpoints.down("md")]: {
-          marginTop: "60px",
+        [theme.breakpoints.down("lg")]: {
+          marginTop: "71px",
         },
         [theme.breakpoints.only("xs")]: {
           marginTop: screenView === "single" ? "60px" : "0px",
@@ -281,13 +281,12 @@ const Commentary = (props) => {
       <Box
         sx={{
           paddingLeft: "35px",
-          paddingBottom: "7px",
+          paddingBottom: { sm: "7px", xs: "0" },
           borderBottom: "1px solid #f1ecec",
           display: "flex",
           width: "100%",
           [theme.breakpoints.down("md")]: {
             paddingLeft: "5px",
-            paddingBottom: "0px",
             marginBottom: "0px",
             alignItems: "center",
             boxShadow: theme.shadows[1],
@@ -297,7 +296,7 @@ const Commentary = (props) => {
         <Box
           flexGrow={1}
           sx={{
-            [theme.breakpoints.down("md")]: {
+            [theme.breakpoints.down("lg")]: {
               display: "none",
             },
           }}

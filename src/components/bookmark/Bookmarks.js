@@ -116,7 +116,7 @@ const Bookmarks = (props) => {
     <Box
       sx={{
         width: "100%",
-        marginTop: { xs: 7.5, lg: 11.75 },
+        marginTop: { xs: 7.75, lg: 11 },
       }}
     >
       <Box
@@ -175,7 +175,10 @@ const Bookmarks = (props) => {
               return versionData[bookmark.sourceId] !== undefined ? (
                 <ListItem
                   key={i}
-                  sx={{ borderBottom: "1px solid lightgray",cursor:"pointer"}}
+                  sx={{
+                    borderBottom: "1px solid lightgray",
+                    cursor: "pointer",
+                  }}
                   onClick={mobileView ? close : null}
                 >
                   <ListItemText

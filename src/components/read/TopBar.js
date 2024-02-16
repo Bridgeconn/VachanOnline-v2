@@ -95,7 +95,7 @@ const TopBar = (props) => {
             color: BLACK,
             border: "1px solid rgba(0, 0, 0, 0.23)",
             "&:hover": {
-              color: BLACK,
+              backgroundColor: BLACK + "0a",
               border: "1px solid rgba(0, 0, 0, 0.23)",
             },
           }}
@@ -133,7 +133,7 @@ const TopBar = (props) => {
               color: BLACK,
               border: "1px solid rgba(0, 0, 0, 0.23)",
               "&:hover": {
-                color: BLACK,
+                backgroundColor: BLACK + "0a",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
               },
             }}
@@ -166,7 +166,7 @@ const TopBar = (props) => {
               color: BLACK,
               border: "1px solid rgba(0, 0, 0, 0.23)",
               "&:hover": {
-                color: BLACK,
+                backgroundColor: BLACK + "0a",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
               },
             }}
@@ -200,7 +200,7 @@ const TopBar = (props) => {
                 color: BLACK,
                 border: "1px solid rgba(0, 0, 0, 0.23)",
                 "&:hover": {
-                  color: BLACK,
+                  backgroundColor: BLACK + "0a",
                   border: "1px solid rgba(0, 0, 0, 0.23)",
                 },
               }}
@@ -232,7 +232,7 @@ const TopBar = (props) => {
               color: BLACK,
               border: "1px solid rgba(0, 0, 0, 0.23)",
               "&:hover": {
-                color: BLACK,
+                backgroundColor: BLACK + "0a",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
               },
             }}
@@ -263,7 +263,7 @@ const TopBar = (props) => {
               color: BLACK,
               border: "1px solid rgba(0, 0, 0, 0.23)",
               "&:hover": {
-                color: BLACK,
+                backgroundColor: BLACK + "0a",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
               },
             }}

@@ -285,11 +285,13 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                       direction: rtlList.includes(lang) ? "rtl" : "ltr",
                     }}
                   >
+                    {y + 1 + "."}
                     <Link
                       sx={{
+                        marginLeft: 0.625,
                         color: BLACK,
                         "&:hover": {
-                          color: GREY,
+                          color: BLACK,
                         },
                       }}
                       underline="hover"
@@ -297,7 +299,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
                       data-id={y + 1}
                       onClick={(e) => getStory(e)}
                     >
-                      {y + 1 + ". " + text}
+                      {text}
                     </Link>
                   </ListItem>
                 ))}

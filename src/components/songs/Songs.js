@@ -17,7 +17,7 @@ import axios from "axios";
 import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
 import Help from "../common/Help";
-import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { BLACK, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 
 const drawerWidth = 350;
@@ -197,15 +197,21 @@ const Songs = () => {
             <Box sx={{ overflow: "auto", fontSize: "1.2rem" }}>
               <List>
                 {songs?.map((song) => (
-                  <ListItem key={song.sno} sx={{ textAlign: "left" }}>
+                  <ListItem
+                    key={song.sno}
+                    sx={{
+                      textAlign: "left",
+                    }}
+                  >
                     {song.sno + "."}
                     <Link
+                      href="#"
                       sx={{
                         marginLeft: 0.625,
                         cursor: "pointer",
                         color: BLACK,
                         "&:hover": {
-                          color: GREY,
+                          color: BLACK,
                         },
                       }}
                       onClick={() => setCurrentSong(song)}

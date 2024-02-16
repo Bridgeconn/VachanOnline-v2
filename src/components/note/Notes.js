@@ -355,87 +355,84 @@ function Notes(props) {
     <Box
       sx={{
         width: "100%",
-        marginTop: "5.278rem",
+        marginTop: { lg: "81px", md: "71px", xs: "72px" },
         display: "flex",
         flexDirection: "column",
         height: "calc( 100vh - 5.278rem)",
         [theme.breakpoints.down("md")]: {
-          marginTop: "60px",
           height: "calc( 100vh - 60px)",
         },
       }}
     >
-      {mobileView ? null : (
-        <Box
-          sx={{
-            paddingBottom: "10px",
-            paddingLeft: "15px",
-            marginBottom: "10px",
-            borderBottom: "1px solid #f1ecec",
-            display: "flex",
-            width: "100%",
-            height: "3.4em",
-            [theme.breakpoints.down("md")]: {
-              height: "60px",
-              marginBottom: "0px",
-              paddingBottom: "0px",
-              alignItems: "center",
-            },
-          }}
-        >
-          <Box flexGrow={1}>
-            <Typography variant="h6" sx={{ display: "flex" }}>
-              {t("commonNotes")}
-              {Array.isArray(versesSelected) &&
-              versesSelected.length &&
-              !edit ? (
-                <Tooltip title={t("commonAddNote")}>
+      <Box
+        sx={{
+          paddingBottom: "10px",
+          paddingLeft: "15px",
+          marginBottom: "10px",
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          height: "60px",
+          [theme.breakpoints.down("md")]: {
+            height: "60px",
+            marginBottom: "0px",
+            paddingBottom: "5px",
+            alignItems: "center",
+          },
+        }}
+      >
+        <Box flexGrow={1}>
+          <Typography variant="h6" sx={{ display: "flex" }}>
+            {t("commonNotes")}
+            {Array.isArray(versesSelected) && versesSelected.length && !edit ? (
+              <Tooltip title={t("commonAddNote")}>
+                <IconButton
+                  aria-label="add"
+                  sx={{
+                    position: "relative",
+                    bottom: "5px",
+                    padding: theme.spacing(1),
+                    display: mobileView ? "none" : "",
+                  }}
+                  onClick={clickAddNote}
+                  size="large"
+                >
+                  <AddBox />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title={t("commonSelectVerses")}>
+                <span>
                   <IconButton
                     aria-label="add"
                     sx={{
                       position: "relative",
                       bottom: "5px",
                       padding: theme.spacing(1),
+                      display: mobileView ? "none" : "",
                     }}
-                    onClick={clickAddNote}
+                    disabled
                     size="large"
                   >
                     <AddBox />
                   </IconButton>
-                </Tooltip>
-              ) : (
-                <Tooltip title={t("commonSelectVerses")}>
-                  <span>
-                    <IconButton
-                      aria-label="add"
-                      sx={{
-                        position: "relative",
-                        bottom: "5px",
-                        padding: theme.spacing(1),
-                      }}
-                      disabled
-                      size="large"
-                    >
-                      <AddBox />
-                    </IconButton>
-                  </span>
-                </Tooltip>
-              )}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Help
-              iconStyle={{
-                color: BLACK,
-                marginTop: "-3px",
-                fontSize: "21px",
-              }}
-              url={"notes"}
-            />
-            <Close sx={{ marginRight: "15px" }} />
-          </Box>
+                </span>
+              </Tooltip>
+            )}
+          </Typography>
         </Box>
-      )}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              marginTop: "-3px",
+              fontSize: "21px",
+            }}
+            url={"notes"}
+          />
+          <Close sx={{ marginRight: "15px" }} />
+        </Box>
+      </Box>
       {mobileView ? (
         /* mobile view edit list */
         <Dialog
@@ -627,7 +624,6 @@ function Notes(props) {
                   <Typography variant="h5">
                     {t("studyNotesBookChapter", { ref })}
                   </Typography>
-                  {mobileView ? <Close sx={{ marginRight: "15px" }} /> : null}
                 </ListItem>
                 {chapterNoteList.map((note, i) => {
                   return versionData[note.sourceId] !== undefined ? (

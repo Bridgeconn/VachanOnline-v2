@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import ReactToPrint from "react-to-print";
+import { BLACK } from "../../store/colorCode";
 
 const PrintBox = (props) => {
   const {
@@ -34,7 +35,21 @@ const PrintBox = (props) => {
     setPrintHighlights(event.target.checked);
   };
   const linkToPrint = () => {
-    return <Button variant="outlined">{t("commonPrintBtn")}</Button>;
+    return (
+      <Button
+        variant="outlined"
+        sx={{
+          color: BLACK,
+          border: "1px solid rgba(0, 0, 0, 0.23)",
+          "&:hover": {
+            backgroundColor: BLACK + "0a",
+            border: "1px solid rgba(0, 0, 0, 0.23)",
+          },
+        }}
+      >
+        {t("commonPrintBtn")}
+      </Button>
+    );
   };
   return (
     <Dialog
@@ -69,7 +84,18 @@ const PrintBox = (props) => {
         </FormGroup>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={handleDialogClose}>
+        <Button
+          variant="outlined"
+          sx={{
+            color: BLACK,
+            border: "1px solid rgba(0, 0, 0, 0.23)",
+            "&:hover": {
+              backgroundColor: BLACK + "0a",
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+            },
+          }}
+          onClick={handleDialogClose}
+        >
           {t("commonCancel")}
         </Button>
         <ReactToPrint

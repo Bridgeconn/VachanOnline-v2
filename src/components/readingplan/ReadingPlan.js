@@ -163,7 +163,7 @@ const ReadingPlan = (props) => {
   }, [planData, selectedDate]);
 
   return (
-    <Box sx={{ width: "100%", marginTop: { lg: 10.25, sm: 8.75, xs: 0.625 } }}>
+    <Box sx={{ width: "100%", marginTop: { lg: 10.125, sm: 8.75, xs: 0.625 } }}>
       <Box
         sx={{
           paddingLeft: { lg: 4.375, xs: 1.875 },

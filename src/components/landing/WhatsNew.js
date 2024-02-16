@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import Link from "@mui/material/Link";
 import FeaturesList from "./FeaturesList";
-import { BLACK, GREY } from "../../store/colorCode";
+import { BLACK } from "../../store/colorCode";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
@@ -87,7 +87,7 @@ const WhatsNew = ({ handleClose }) => {
             color: BLACK,
             border: "1px solid rgba(0, 0, 0, 0.23)",
             "&:hover": {
-              color: GREY,
+              backgroundColor: BLACK + "0a",
               border: "1px solid rgba(0, 0, 0, 0.23)",
             },
             [theme.breakpoints.down("md")]: {

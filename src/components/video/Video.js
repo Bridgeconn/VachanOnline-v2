@@ -162,11 +162,8 @@ const Video = (props) => {
       sx={{
         width: "100%",
         position: "absolute",
-        top: 82,
+        top: { lg: 82, md: 71, xs: 60 },
         bottom: 0,
-        [theme.breakpoints.down("md")]: {
-          top: 60,
-        },
       }}
     >
       <Box

@@ -167,12 +167,12 @@ const Search = (props) => {
     <Box
       sx={{
         width: "100%",
-        marginTop: "78px",
+        marginTop: "77px",
+        [theme.breakpoints.down("lg")]: {
+          marginTop: "66px",
+        },
         [theme.breakpoints.only("xs")]: {
           marginTop: "4px",
-        },
-        [theme.breakpoints.only("sm")]: {
-          marginTop: "66px",
         },
       }}
     >
@@ -304,7 +304,7 @@ const Search = (props) => {
                 <ListItem
                   key={i}
                   sx={{
-                    cursor:"pointer",
+                    cursor: "pointer",
                     borderBottom: "1px solid lightgray",
                   }}
                   data-bookcode={result.bookCode}
@@ -316,7 +316,7 @@ const Search = (props) => {
                     sx={{
                       "&.MuiListItemText-primary": {
                         fontWeight: 600,
-                      }                      
+                      },
                     }}
                     primary={`${result.book} ${result.chapter}:${result.verse} `}
                     secondary={

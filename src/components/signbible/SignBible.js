@@ -116,7 +116,11 @@ const SignBible = (props) => {
       sx={{
         width: "100%",
         position: "absolute",
-        top: { lg: 72, xs: parallelView === "DRAWERSIGNBIBLE" ? 60 : 0 },
+        top: {
+          lg: 72,
+          sm: 62,
+          xs: parallelView === "DRAWERSIGNBIBLE" ? 60 : 0,
+        },
         bottom: 0,
       }}
     >

@@ -4,7 +4,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
-import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import * as views from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 import { styled } from "@mui/system";
@@ -62,10 +62,7 @@ const MenuItem = (props) => {
         paddingBottom: { lg: 0.625, xs: base === "drawer" ? 1 : 0 },
         paddingLeft: { lg: 1.625, xs: base === "drawer" ? 2.5 : 0.875 },
         "&:hover": {
-          backgroundColor:
-            parallelView === item
-              ? { lg: "tranparent", xs: "transparent" }
-              : { lg: "tranparent", xs: "rgba(0,0,0,0.1)" },
+          backgroundColor: parallelView === item ? "transparent" : LIGHTGREY,
         },
         boxShadow: parallelView === item ? "inset 1px 0px 3px 1px " + GREY : 0,
       }}

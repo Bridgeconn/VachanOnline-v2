@@ -5,7 +5,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { BLACK, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import PrintIcon from "@mui/icons-material/Print";
 import Typography from "@mui/material/Typography";
 import Print from "../common/PrintBox";
@@ -106,7 +106,12 @@ const Setting = ({
         <StyleMenuItem>
           {t("settingsFontFamily")}
           <ButtonGroup
-            sx={{ marginLeft: 1.875 }}
+            sx={{
+              marginLeft: 1.875,
+              "& .MuiButtonGroup-firstButton": {
+                borderColor: LIGHTGREY,
+              },
+            }}
             variant="contained"
             aria-label="Large contained secondary button group"
           >
@@ -164,7 +169,12 @@ const Setting = ({
         >
           {t("settingsFontSize")}
           <ButtonGroup
-            sx={{ marginLeft: 4.375 }}
+            sx={{
+              marginLeft: 4.375,
+              "& .MuiButtonGroup-firstButton": {
+                borderColor: GREY + "50",
+              },
+            }}
             variant="contained"
             aria-label="Large contained secondary button group"
           >

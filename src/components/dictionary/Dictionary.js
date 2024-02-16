@@ -111,7 +111,7 @@ const Dictionary = (props) => {
     }
   }, [dictionaryWord.word, t, wordMeaning]);
   return (
-    <Box sx={{ width: "100%", marginTop: { lg: 10.25, xs: 7.5 } }}>
+    <Box sx={{ width: "100%", marginTop: { lg: 10.125, xs: 7.75 } }}>
       <Box
         sx={{
           paddingLeft: { lg: 4.375, xs: 0 },

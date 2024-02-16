@@ -274,7 +274,7 @@ const Version = (props) => {
             justifyContent: landingPage ? "unset" : "",
             color: BLACK,
             "&:hover": {
-              backgroundColor: "rgba(0, 0, 0, 0.04)",
+              backgroundColor: BLACK + "0a",
             },
           }}
         >
