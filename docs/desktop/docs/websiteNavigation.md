@@ -26,12 +26,26 @@ From here the user can access the following features from the landing page:
 
 7. [Videos](./videos) **(8)**
 
+
+### Multi Language UI
+
+1. The website offers bilingual functionality in both English and Hindi. To switch between languages, users can click on the multilanguage UI icon and select their preferred language. The user interface adapts accordingly to display content in the chosen language.
+2. For **first-time visitors**, upon accessing the website, a dialogue box appears presenting the option to select a language preference. Once the user selects their preferred language, the UI adjusts accordingly, and the choice is saved in the website's memory. The user interface will automatically appear in the language that was previously selected on every visit to the website.
+
+### Verse of the day
+
+Every day, a new verse is featured on the landing page, available for users to share with friends and family. To share the verse, users simply click on the share icon next to it and then select the "copy to clipboard" button. A confirmation message will appear, indicating that the verse has been copied. Users can then paste the URL into any browser or messaging app such as Facebook or WhatsApp to share it. The shared link directs recipients to the specific verse of the day, where they can also choose to read the entire chapter by clicking on a "Read more" button.
+
+### Footer
+
 At the bottom of the page in the footer also there are some links as described below
 <img src="/img/assets/bottombar.png"  width="1000px" alt="bottombar"/>
 
 1. [About Us](./about) **(1)**
 
 2. [Feedback](./about#feedback) **(2)**
+
+3. What's New
 
 ## Study Bible Page
 

@@ -7,3 +7,7 @@ package-lock.json
 /docs/desktop/node_modules
 /docs/desktop/build
 /docs/desktop/.docusaurus
+
+/docs/mobile/node_modules
+/docs/mobile/build
+/docs/mobile/.docusaurus
