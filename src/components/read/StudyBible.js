@@ -33,6 +33,7 @@ import {
 import { useMediaQuery } from "@material-ui/core";
 import BottomBar from "./BottomBar";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
 const useStyles = makeStyles((theme) => ({
   main: {
     [theme.breakpoints.down("sm")]: {
@@ -563,6 +564,9 @@ const StudyBible = (props) => {
   ]);
   return (
     <>
+      <Helmet>
+        <meta name="description" content="study the bible with more features" />
+      </Helmet>
       <TopBar />
       <div className={classes.main}>
         <div className={classes.biblePane}>{pane}</div>

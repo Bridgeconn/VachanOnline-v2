@@ -16,6 +16,8 @@ import LandingFooter from "./LandingFooter";
 import PageHeader from "./PageHeader";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
+
 const useStyles = makeStyles((theme) => ({
   body: {
     backgroundColor: "white",
@@ -121,57 +123,62 @@ const Landing = (props) => {
     );
   };
   return (
-    <Grid className={classes.body}>
-      <PageHeader />
-      <Banner />
-      <BibleIndex />
-      <Grid
-        container
-        justifyContent="center"
-        spacing={1}
-        className={classes.imageRow}
-      >
-        <ImageCard
-          icon="volume_up"
-          type="Listen"
-          onClick={() => setValue("parallelView", AUDIO)}
-        />
-        <ImageCard
-          icon="videocam"
-          type="Watch"
-          onClick={() => setValue("parallelView", VIDEO)}
-        />
-        <ImageCard icon="local_library" type="Read" />
-        <ImageCard icon="menu_book" type="Study" />
-      </Grid>
-      <Grid container spacing={2} className={classes.textRow}>
-        <Grid item md={12} lg={6}>
-          <div className={classes.text}>
-            <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
-            <p>
-              VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
-              {t("landingWelcomeMessage2")}
-            </p>
-            <p>{t("landingWelcomeMessage3")}</p>
-            <p>
-              {t("landingWelcomeMessage4")} VachanGo{" "}
-              {t("landingWelcomeMessage5")}
-            </p>
-          </div>
+    <div>
+      <Helmet>
+        <meta name="description" content="bible reading platform" />
+      </Helmet>
+      <Grid className={classes.body}>
+        <PageHeader />
+        <Banner />
+        <BibleIndex />
+        <Grid
+          container
+          justifyContent="center"
+          spacing={1}
+          className={classes.imageRow}
+        >
+          <ImageCard
+            icon="volume_up"
+            type="Listen"
+            onClick={() => setValue("parallelView", AUDIO)}
+          />
+          <ImageCard
+            icon="videocam"
+            type="Watch"
+            onClick={() => setValue("parallelView", VIDEO)}
+          />
+          <ImageCard icon="local_library" type="Read" />
+          <ImageCard icon="menu_book" type="Study" />
         </Grid>
-        <Grid item md={12} lg={6}>
-          <div className={classes.screenshotDiv}>
-            <img
-              src={screenshot}
-              alt="Screenshot"
-              className={classes.screenshot}
-            />
-            <div>{addLink()}</div>
-          </div>
+        <Grid container spacing={2} className={classes.textRow}>
+          <Grid item md={12} lg={6}>
+            <div className={classes.text}>
+              <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
+              <p>
+                VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
+                {t("landingWelcomeMessage2")}
+              </p>
+              <p>{t("landingWelcomeMessage3")}</p>
+              <p>
+                {t("landingWelcomeMessage4")} VachanGo{" "}
+                {t("landingWelcomeMessage5")}
+              </p>
+            </div>
+          </Grid>
+          <Grid item md={12} lg={6}>
+            <div className={classes.screenshotDiv}>
+              <img
+                src={screenshot}
+                alt="Screenshot"
+                className={classes.screenshot}
+              />
+              <div>{addLink()}</div>
+            </div>
+          </Grid>
         </Grid>
+        <LandingFooter />
       </Grid>
-      <LandingFooter />
-    </Grid>
+    </div>
   );
 };
 
