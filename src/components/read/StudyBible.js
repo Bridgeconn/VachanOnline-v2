@@ -37,7 +37,7 @@ import { useTranslation } from "react-i18next";
 
 const StudyBible = (props) => {
   const theme = useTheme();
-const biblePaneStyling = {
+  const biblePaneStyling = {
     position: "absolute",
     height: "100%",
     [theme.breakpoints.down("md")]: {
@@ -150,7 +150,7 @@ const biblePaneStyling = {
     ) : (
       ""
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mobileView, panel1, setValue1]);
   const toggleParallelScroll = React.useCallback(() => {
     setValue("parallelScroll", !parallelScroll);
@@ -679,7 +679,7 @@ const biblePaneStyling = {
           </Box>
         );
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     audioBible,
     toggleParallelScroll,

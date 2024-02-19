@@ -107,10 +107,10 @@ const CommentaryCombo = (props) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
           sx={{
-            "&. MuiList-root": {
+            "& .MuiList-root": {
               padding: 0,
             },
-            "&. MuiPaper-root": {
+            "& .MuiPaper-root": {
               maxHeight: "calc(100vh - 170px)",
               width: "300px",
               border: "1px solid #d3d4d5",
@@ -154,7 +154,7 @@ const CommentaryCombo = (props) => {
                     },
                   },
                   "&.Mui-expanded": {},
-                  "&.MuiAccordionSummary-content": {
+                  "& .MuiAccordionSummary-content": {
                     margin: "10px 0",
                     "&.Mui-expanded": {
                       margin: "12px 0",

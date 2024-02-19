@@ -29,7 +29,7 @@ const Heading = styled("h3")(({ theme }) => ({
   },
 }));
 
-const StyledLink = styled(Link)(({ theme }) => ({
+const StyledLink = styled(Link)(() => ({
   color: WHITE,
   marginTop: 5,
   padding: 10,

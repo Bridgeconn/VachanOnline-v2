@@ -476,6 +476,7 @@ function Notes(props) {
                   [theme.breakpoints.down("lg")]: {
                     paddingTop: "5px",
                     display: "inline-block",
+                    fontSize: "0.875rem",
                   },
                 }}
               >
@@ -495,14 +496,30 @@ function Notes(props) {
               >
                 <Button
                   variant="outlined"
-                  sx={{ margin: "10px 5px", color: BLACK, borderColor: BLACK }}
+                  sx={{
+                    margin: "10px 5px",
+                    color: BLACK,
+                    borderColor: BLACK,
+                    "&:hover": {
+                      backgroundColor: BLACK + "0a",
+                      border: "1px solid rgba(0, 0, 0, 0.23)",
+                    },
+                  }}
                   onClick={handleClose}
                 >
                   {t("commonCancel")}
                 </Button>
                 <Button
                   variant="outlined"
-                  sx={{ margin: "10px 5px", color: BLACK, borderColor: BLACK }}
+                  sx={{
+                    margin: "10px 5px",
+                    color: BLACK,
+                    borderColor: BLACK,
+                    "&:hover": {
+                      backgroundColor: BLACK + "0a",
+                      border: "1px solid rgba(0, 0, 0, 0.23)",
+                    },
+                  }}
                   onClick={saveNote}
                 >
                   {t("commonSave")}
@@ -533,6 +550,7 @@ function Notes(props) {
                 [theme.breakpoints.down("lg")]: {
                   paddingTop: "5px",
                   display: "inline-block",
+                  fontSize: "0.875rem",
                 },
               }}
             >
@@ -555,14 +573,30 @@ function Notes(props) {
             >
               <Button
                 variant="outlined"
-                sx={{ margin: "10px 5px", color: BLACK, borderColor: BLACK }}
+                sx={{
+                  margin: "10px 5px",
+                  color: BLACK,
+                  borderColor: BLACK,
+                  "&:hover": {
+                    backgroundColor: BLACK + "0a",
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
+                  },
+                }}
                 onClick={resetForm}
               >
                 {t("commonCancel")}
               </Button>
               <Button
                 variant="outlined"
-                sx={{ margin: "10px 5px", color: BLACK, borderColor: BLACK }}
+                sx={{
+                  margin: "10px 5px",
+                  color: BLACK,
+                  borderColor: BLACK,
+                  "&:hover": {
+                    backgroundColor: BLACK + "0a",
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
+                  },
+                }}
                 onClick={saveNote}
               >
                 {t("commonSave")}
@@ -703,6 +737,7 @@ function Notes(props) {
                     borderBottom: "1px solid lightgray",
                     paddingTop: "4px",
                     paddingBottom: "4px",
+                    cursor: "pointer",
                   }}
                   data-sourceid={note.sourceId}
                   data-bookcode={note.bookCode}

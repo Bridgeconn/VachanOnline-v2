@@ -225,7 +225,7 @@ const ReadingPlan = (props) => {
         sx={{
           top: { lg: 134, sm: 123, xs: 57 },
           bottom: 0,
-          paddingTop: { lg: 3.75, sm: 0, xs: 0 },
+          paddingTop: { md: 3.75, sm: 0, xs: 0 },
           paddingRight: { xs: 0 },
           paddingBottom: { xs: 0.625 },
           paddingLeft: { xs: 0.625 },
@@ -252,13 +252,13 @@ const ReadingPlan = (props) => {
             value={selectedDate}
           />
         )}
-        <Box sx={{ width: "100%", marginTop: { lg: 7.5, sm: 0 } }}>
+        <Box sx={{ width: "100%", marginTop: { md: 7.5, sm: 0 } }}>
           <Box
             sx={{
               paddingBottom: 1.25,
               paddingLeft: 1.875,
               borderBottom: "1px solid #f1ecec",
-              display: { lg: "flex", xs: "none" },
+              display: { md: "flex", xs: "none" },
               width: "100%",
               height: "2.75em",
             }}
@@ -267,8 +267,7 @@ const ReadingPlan = (props) => {
               <Typography
                 variant="h6"
                 sx={{
-                  fontSize: { lg: "1.25rem", xs: "1rem" },
-                  marginRight: { lg: 0, xs: 0.625 },
+                  fontSize: "1.25rem",
                 }}
               >
                 {t("readingPlanBibleRef", { ref })}
@@ -282,8 +281,8 @@ const ReadingPlan = (props) => {
               <List
                 component="nav"
                 sx={{
-                  bottom: { lg: "auto", xs: 50 },
-                  top: { lg: "auto", xs: 0 },
+                  bottom: 50,
+                  top: 0,
                 }}
               >
                 {readingList.map((reading, i) => {

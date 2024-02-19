@@ -39,7 +39,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const [rtlList, setRtlList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { t } = useTranslation();
 
@@ -57,13 +57,12 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
         sx={{
           fontSize: "1rem",
           lineHeight: 1.2,
-          maxWidth: 200,
         }}
       >
         <Box
           component="span"
           sx={{
-            float: "left",
+            float: rtlList?.includes(lang) ? "right" : "left",
             textTransform: "capitalize",
           }}
         >
@@ -81,10 +80,6 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
           "&:focus": {
             backgroundColor: "transparent",
           },
-        },
-        minWidth: "280px",
-        [theme.breakpoints.down("sm")]: {
-          minWidth: "120px",
         },
       }}
       renderValue={renderName}
@@ -178,7 +173,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
       <Box
         sx={{
           display: "flex",
-          [theme.breakpoints.down("sm")]: { display: "block" },
+          [theme.breakpoints.down("md")]: { display: "block" },
         }}
       >
         {mobile === true ? (
@@ -196,46 +191,38 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
             >
               <Typography variant="h4">{t("bibleStoriesText")}</Typography>
             </Box>
-            <Box sx={{ display: "flex" }}>
-              <Box p={1} flexGrow={1} sx={{ maxWidth: "90%" }}>
-                <FormControl
-                  variant="outlined"
-                  style={{
-                    maxWidth: mobile === true ? "120px" : "50%",
-                    minWidth: "180px",
-                  }}
-                >
-                  {languageSelect()}
-                </FormControl>
-                <FormControl
-                  variant="outlined"
-                  style={{
-                    marginLeft: 5,
-                  }}
-                >
-                  {manifest.length > 0 && (
-                    <Select
-                      value={String(parseInt(storyId))}
-                      onChange={storySetter}
-                    >
-                      {manifest.map((text, y) => (
-                        <MenuItem
-                          sx={{
-                            direction: rtlList.includes(lang) ? "rtl" : "ltr",
-                          }}
-                          key={y}
-                          value={String(y + 1)}
-                        >
-                          {y + 1 + ". " + text}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  )}
-                </FormControl>
-              </Box>
-              <Box p={1}>
-                <Setting fontSize={fontSize} setFontSize={setFontSize} />
-              </Box>
+            <Box sx={{ p: 1, display: "flex" }}>
+              <FormControl variant="outlined" sx={{ minWidth: "120px" }}>
+                {languageSelect()}
+              </FormControl>
+              <FormControl
+                variant="outlined"
+                sx={{
+                  ml: 1,
+                  flexGrow: 1,
+                  width: "50%",
+                }}
+              >
+                {manifest.length > 0 && (
+                  <Select
+                    value={String(parseInt(storyId))}
+                    onChange={storySetter}
+                  >
+                    {manifest.map((text, y) => (
+                      <MenuItem
+                        sx={{
+                          direction: rtlList.includes(lang) ? "rtl" : "ltr",
+                        }}
+                        key={y}
+                        value={String(y + 1)}
+                      >
+                        {y + 1 + ". " + text}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </FormControl>
+              <Setting fontSize={fontSize} setFontSize={setFontSize} />
             </Box>
           </Box>
         ) : (
@@ -315,7 +302,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
               marginTop: "62px",
               textAlign: "center",
               paddingTop: "10px",
-              [theme.breakpoints.down("sm")]: { display: "none" },
+              [theme.breakpoints.down("md")]: { display: "none" },
               width: "calc(100% - 400px)",
             }}
           >

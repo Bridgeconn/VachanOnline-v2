@@ -231,7 +231,7 @@ const Songs = () => {
             display: "flex",
             flexDirection: "column",
             fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
-            height: "calc(100vh - 65px)",
+            height: "calc(100vh - 72px)",
             marginTop: 8.125,
             [theme.breakpoints.down("md")]: {
               height: "calc(100vh - 160px)",

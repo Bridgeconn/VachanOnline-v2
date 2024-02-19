@@ -72,7 +72,7 @@ export default function Metadata({
             sx={{
               [`& .${popoverClasses.paper}`]: {
                 width: { lg: "40%", xs: "95%" },
-                minWidth: { lg: 550, md: 600, xs: "unset" },
+                minWidth: { md: 600, xs: "unset" },
               },
             }}
           >
@@ -170,7 +170,7 @@ export default function Metadata({
                             sx={{
                               lineHeight: "28px",
                               fontSize: 16,
-                              paddingLeft: { sm: 0.625, lg: 1.75 },
+                              paddingLeft: { xs: 0.625, lg: 1.75 },
                             }}
                           >
                             {metadataList[item].split(" ").map(checkLink)}

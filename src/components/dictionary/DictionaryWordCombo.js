@@ -55,6 +55,9 @@ const DictionaryWordCombo = (props) => {
           left: 0,
           marginRight: 1.25,
           color: BLACK,
+          "&:hover": {
+            backgroundColor: BLACK + "0a",
+          },
         }}
       >
         <SpanStyle>{dictionaryWord.word}</SpanStyle>
@@ -106,14 +109,14 @@ const DictionaryWordCombo = (props) => {
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 sx={{
-                  [`&.MuiAccordionSummary-root`]: {
+                  "&.MuiAccordionSummary-root": {
                     textTransform: "capitalize",
                     borderBottom: "1px solid #b7b7b726",
                     "&.Mui-expanded": {
                       minHeight: 50,
                     },
                   },
-                  [`&.MuiAccordionSummary-content`]: {
+                  "& .MuiAccordionSummary-content": {
                     marginTop: 1.25,
                     marginRight: 1.25,
                     marginBottom: 0,

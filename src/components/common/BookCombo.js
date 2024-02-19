@@ -38,6 +38,7 @@ const BookCombo = (props) => {
     minimal,
     landingPage,
     parallelScroll,
+    parallelView,
     syncPanel,
     screen,
   } = props;
@@ -330,18 +331,14 @@ const BookCombo = (props) => {
               paddingRight: {
                 lg: 0.75,
                 xs:
-                  props.screen === "info" ||
-                  props.screen === "audio" ||
-                  props.screen === "video"
+                  screen === "info" || screen === "audio" || screen === "video"
                     ? 0.5
                     : 0.75,
               },
               paddingLeft: {
                 lg: 1.5,
                 xs:
-                  props.screen === "info" ||
-                  props.screen === "audio" ||
-                  screen === "video"
+                  screen === "info" || screen === "audio" || screen === "video"
                     ? 0.5
                     : 0.75,
               },
@@ -350,7 +347,7 @@ const BookCombo = (props) => {
               backgroundColor: "#fff",
               border: "1px solid #fff",
               boxShadow: "1px 1px 1px 1px " + GREY,
-              maxWidth: { lg: "unset", xs: props.parallelView ? 110 : 140 },
+              maxWidth: { lg: "unset", xs: parallelView ? 120 : 140 },
               margin: { lg: 0.5, xs: 1.125 },
               color: BLACK,
               "&:hover": {
@@ -368,10 +365,10 @@ const BookCombo = (props) => {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 [theme.breakpoints.only("md")]: {
-                  maxWidth: (props) => (props.parallelView ? "100px" : "130px"),
+                  maxWidth: parallelView ? "120px" : "130px",
                 },
                 [theme.breakpoints.down("sm")]: {
-                  maxWidth: "100px",
+                  maxWidth: "120px",
                 },
               }}
             >{`${bookDisplay}  ${chapter}`}</Box>
@@ -379,7 +376,7 @@ const BookCombo = (props) => {
             <Box
               sx={{
                 whiteSpace: { lg: "wrap", xs: "nowrap" },
-                minWidth: { lg: "unset", xs: 130 },
+                minWidth: { sm: "unset", xs: 110 },
                 maxWidth: { lg: "unset", xs: 150 },
                 overflow: "hidden",
                 textOverflow: "ellipsis",
