@@ -1,26 +1,18 @@
 import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Tooltip from "@mui/material/Tooltip";
 import { connect } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
 import { BLACK } from "../../store/colorCode";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 
-const useStyles = makeStyles(() => ({
-  closeButton: {
-    color: BLACK,
-  },
-}));
-
-const Close = ({ close, className }) => {
+const Close = ({ close, sx }) => {
   const { t } = useTranslation();
-  const classes = useStyles();
   return (
     <Tooltip title={t("commonClose")}>
-      <IconButton size="small" onClick={close} className={className}>
-        <CloseIcon fontSize="small" className={classes.closeButton} />
+      <IconButton size="small" onClick={close} sx={sx}>
+        <CloseIcon sx={{ color: BLACK }} />
       </IconButton>
     </Tooltip>
   );

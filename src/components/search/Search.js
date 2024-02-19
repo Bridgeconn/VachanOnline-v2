@@ -1,154 +1,25 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from "@material-ui/icons/Search";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Pagination from "@material-ui/lab/Pagination";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Pagination from "@mui/material/Pagination";
 import { searchBible } from "../common/utility";
 import * as actions from "../../store/actions";
 import { connect } from "react-redux";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 78,
-    [theme.breakpoints.only("xs")]: {
-      marginTop: 4,
-    },
-    [theme.breakpoints.only("sm")]: {
-      marginTop: 66,
-    },
-  },
-  heading: {
-    display: "flex",
-    paddingBottom: 6,
-    paddingLeft: 15,
-    borderBottom: "1px solid #f1ecec",
-    [theme.breakpoints.down("sm")]: {
-      boxShadow: theme.shadows[1],
-    },
-  },
-  list: {
-    position: "absolute",
-    right: 0,
-    left: 0,
-    top: 135,
-    bottom: 0,
-    overflow: "scroll",
-    marginBottom: -15,
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.only("xs")]: {
-      top: 60,
-      paddingBottom: 10,
-    },
-    [theme.breakpoints.only("sm")]: {
-      top: 122,
-      paddingBottom: 10,
-    },
-  },
-  message: {
-    margin: 18,
-  },
-  listHeading: {
-    borderBottom: "1px solid darkgray",
-    fontWeight: 600,
-  },
-  listItem: {
-    borderBottom: "1px solid lightgray",
-  },
-  searchBox: {
-    padding: "2px 4px",
-    display: "flex",
-    alignItems: "center",
-    width: "98%",
-  },
-  searchField: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  searchTitle: {
-    textAlign: "center",
-  },
-  searchButton: {
-    padding: 10,
-  },
-  reference: {
-    fontWeight: 600,
-  },
-  keyword: {
-    fontWeight: 600,
-    fontSize: "1.1em",
-  },
-  searchHeading: {
-    fontWeight: 600,
-    fontSize: "1.2em",
-    position: "relative",
-    bottom: 2,
-    [theme.breakpoints.down("sm")]: {
-      bottom: 20,
-    },
-  },
-  pagination: {
-    height: 35,
-    whiteSpace: "nowrap",
-  },
-  pageDisplay: {
-    position: "absolute",
-    right: 10,
-    [theme.breakpoints.down("sm")]: {
-      right: "unset",
-      left: 5,
-      bottom: 1,
-    },
-  },
-  pageInfo: {
-    display: "inline-block",
-    fontSize: 15,
-    padding: "5px 10px",
-  },
-  pageCount: {
-    display: "inline-block",
-  },
-  closeButton: {
-    marginRight: 15,
-    marginTop: 11,
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
-  helpIcon: {
-    padding: "8px 12px 0",
-    color: BLACK,
-    marginTop: 10,
-    fontSize: 21,
-  },
-}));
+import { useTheme } from "@mui/material/styles";
 
 const Search = (props) => {
-  const classes = useStyles();
-
+  const theme = useTheme();
   const { setValue, sourceId, versionBooks, versionSource } = props;
   const [searchText, setSearchText] = React.useState("");
   const [bookNames, setBookNames] = React.useState({});
@@ -197,27 +68,46 @@ const Search = (props) => {
       let end = start + 99 < total ? start + 99 : total;
       setPageData(searchResult.result.slice(start - 1, end));
       setPageInfo(
-        <span className={classes.pageDisplay}>
-          <span className={classes.pageInfo}>
+        <Box
+          component="span"
+          sx={{
+            position: "absolute",
+            right: "10px",
+            [theme.breakpoints.down("md")]: {
+              right: "unset",
+              left: "5px",
+              bottom: "1px",
+            },
+          }}
+        >
+          <Box
+            component="span"
+            sx={{
+              display: "inline-block",
+              fontSize: "15px",
+              padding: "5px 10px",
+            }}
+          >
             {start} - {end} of {Number(total).toLocaleString()}
-          </span>
+          </Box>
           {total > 100 ? (
             <Pagination
               count={Math.ceil(total / 100)}
               page={page}
               onChange={pageChange}
-              className={classes.pageCount}
+              sx={{ display: "inline-block" }}
             />
           ) : (
             ""
           )}
-        </span>
+        </Box>
       );
     } else {
       setPageData("");
       setPageInfo("");
     }
-  }, [searchResult, page, classes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchResult, page]);
 
   //search result changed
   React.useEffect(() => {
@@ -228,24 +118,37 @@ const Search = (props) => {
       setMessage(
         <span>
           {t("studyNoSearchResult")}{" "}
-          <span className={classes.keyword}>{searchResult.keyword}</span>
+          <Box component="span" sx={{ fontWeight: 600, fontSize: "1.1em" }}>
+            {searchResult.keyword}
+          </Box>
         </span>
       );
     }
-  }, [searchResult, classes, t]);
+  }, [searchResult, t]);
 
   //set keyword bold
   const highlightKeyword = (versePart, index) => {
-    let className =
-      versePart.localeCompare(searchResult.keyword, undefined, {
-        sensitivity: "base",
-      }) === 0
-        ? classes.keyword
-        : "";
     return (
-      <span key={index} className={className}>
+      <Box
+        component="span"
+        key={index}
+        sx={{
+          fontWeight:
+            versePart.localeCompare(searchResult.keyword, undefined, {
+              sensitivity: "base",
+            }) === 0
+              ? 600
+              : "unset",
+          fontSize:
+            versePart.localeCompare(searchResult.keyword, undefined, {
+              sensitivity: "base",
+            }) === 0
+              ? "1.1em"
+              : "unset",
+        }}
+      >
         {versePart}
-      </span>
+      </Box>
     );
   };
 
@@ -261,16 +164,47 @@ const Search = (props) => {
   };
 
   return (
-    <div className={classes.root}>
-      <Box className={classes.heading}>
+    <Box
+      sx={{
+        width: "100%",
+        marginTop: "77px",
+        [theme.breakpoints.down("lg")]: {
+          marginTop: "66px",
+        },
+        [theme.breakpoints.only("xs")]: {
+          marginTop: "4px",
+        },
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          paddingBottom: "6px",
+          paddingLeft: "15px",
+          borderBottom: "1px solid #f1ecec",
+          [theme.breakpoints.down("md")]: {
+            boxShadow: theme.shadows[1],
+          },
+        }}
+      >
         <Box flexGrow={1}>
           <Paper
             component="form"
-            className={classes.searchBox}
+            sx={{
+              "&.MuiPaper-root": {
+                padding: "2px 4px",
+                display: "flex",
+                alignItems: "center",
+                width: "98%",
+              },
+            }}
             onSubmit={search}
           >
             <InputBase
-              className={classes.searchField}
+              sx={{
+                marginLeft: theme.spacing(1),
+                flex: 1,
+              }}
               placeholder={t("studyEnterSearchText")}
               inputProps={{ "aria-label": "enter search text" }}
               value={searchText}
@@ -278,27 +212,90 @@ const Search = (props) => {
             />
             <IconButton
               type="submit"
-              className={classes.searchButton}
+              sx={{ padding: "10px" }}
               aria-label="search"
               onClick={search}
+              size="large"
             >
               <SearchIcon />
             </IconButton>
           </Paper>
         </Box>
-        <Box className={classes.box}>
-          <Help iconStyle={classes.helpIcon} url={"searchBible"} />
-          <Close className={classes.closeButton} />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Help
+            iconStyle={{
+              color: BLACK,
+              fontSize: "21px",
+            }}
+            url={"searchBible"}
+          />
+          <Close sx={{ marginRight: "15px", marginTop: "3px" }} />
         </Box>
       </Box>
-      <div className={classes.list}>
+      <Box
+        sx={{
+          position: "absolute",
+          right: "0px",
+          left: "0px",
+          top: "135px",
+          bottom: "0px",
+          overflow: "scroll",
+          marginBottom: "-15px",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "&::-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "&::-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+          [theme.breakpoints.only("xs")]: {
+            top: "60px",
+            paddingBottom: "10px",
+          },
+          [theme.breakpoints.only("sm")]: {
+            top: "122px",
+            paddingBottom: "10px",
+          },
+        }}
+      >
         {pageData && pageData.length ? (
           <List component="nav">
-            <ListItem className={classes.listHeading}>
-              <Typography variant="h6" className={classes.searchTitle}>
-                <span className={classes.searchHeading}>
+            <ListItem
+              sx={{
+                borderBottom: "1px solid darkgray",
+                fontWeight: 600,
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  textAlign: "center",
+                }}
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    fontWeight: 600,
+                    fontSize: "1.2em",
+                    position: "relative",
+                    bottom: "2px",
+                    [theme.breakpoints.down("md")]: {
+                      bottom: "20px",
+                    },
+                  }}
+                >
                   {searchResult.keyword}
-                </span>
+                </Box>
                 {pageInfo}
               </Typography>
             </ListItem>
@@ -306,21 +303,26 @@ const Search = (props) => {
               return (
                 <ListItem
                   key={i}
-                  className={classes.listItem}
+                  sx={{
+                    cursor: "pointer",
+                    borderBottom: "1px solid lightgray",
+                  }}
                   data-bookcode={result.bookCode}
                   data-chapter={result.chapter}
                   data-verse={result.verse}
                   onClick={openReference}
-                  button
                 >
                   <ListItemText
-                    classes={{ primary: classes.reference }}
+                    sx={{
+                      "& .MuiListItemText-primary": {
+                        fontWeight: 600,
+                      },
+                    }}
                     primary={`${result.book} ${result.chapter}:${result.verse} `}
                     secondary={
                       <Typography
                         component="span"
                         variant="body2"
-                        className={classes.inline}
                         color="textPrimary"
                       >
                         {result.text.split(regex).map(highlightKeyword)}
@@ -330,13 +332,13 @@ const Search = (props) => {
                 </ListItem>
               );
             })}
-            <div className={classes.pagination}>{pageInfo}</div>
+            <Box sx={{ height: "35px", whiteSpace: "nowrap" }}>{pageInfo}</Box>
           </List>
         ) : (
-          <Typography className={classes.message}>{message}</Typography>
+          <Typography sx={{ margin: "18px" }}>{message}</Typography>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

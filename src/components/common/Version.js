@@ -1,127 +1,49 @@
 import React, { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import List from "@material-ui/core/List";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import ListItem from "@material-ui/core/ListItem";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
+import List from "@mui/material/List";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import ListItem from "@mui/material/ListItem";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
 import { getVersions, capitalize, getLanguageData } from "../common/utility";
 import { PARALLELBIBLE } from "../../store/views";
 import BigTooltip from "./BigTooltip";
-import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
-    border: "1px solid #fff",
-    boxShadow: "1px 1px 1px 1px " + GREY,
-    [theme.breakpoints.down("sm")]: {
-      minWidth: 60,
-      padding: "6px 10px",
-    },
-    [theme.breakpoints.up("sm")]: {
-      left: theme.spacing(0),
-      margin: "4px 15px 4px 0",
-    },
-  },
-  list: {
-    padding: 0,
-  },
-  menuRoot: {
-    backgroundColor: WHITE,
-    boxShadow: "none",
-    border: "1px solid #00000020",
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:before": {
-      display: "none",
-    },
-    "&$expanded": {
-      margin: "auto",
-    },
-  },
-  expanded: {},
-  expansionDetails: {
-    backgroundColor: WHITE,
-    boxShadow: "inset 1px 2px 2px 0px " + GREY,
-    padding: "4px 0px 1px 1px",
-    width: "100%",
-  },
-  summaryPanel: {
-    textTransform: "capitalize",
-    borderBottom: "1px solid #b7b7b726",
-    minHeight: 40,
-    maxHeight: 40,
-    "&$expanded": {
-      minHeight: 40,
-      maxHeight: 40,
-      boxShadow: theme.shadows[4],
-      backgroundColor: LIGHTGREY,
-    },
-  },
-  icon: {
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { styled } from "@mui/system";
+const I = styled("i")(({ theme }) => ({
+  [`&.material-icons`]: {
     left: 5,
     position: "relative",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       left: 0,
       display: "none",
     },
   },
-  versionName: {
-    [theme.breakpoints.down("sm")]: {
-      whiteSpace: "nowrap",
-      minWidth: 30,
-      maxWidth: 118,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-  },
-  paper: {
-    maxHeight: "calc(100vh - 170px)",
-    width: 300,
-  },
-  language: {
-    fontSize: "1rem",
-    width: "100%",
-  },
-  version: {
-    fontSize: "1rem",
-    cursor: "pointer",
-    backgroundColor: WHITE,
-    borderBottom: "1px solid " + LIGHTGREY,
-  },
-  versionSelected: {
-    boxShadow: "inset 0 0 30px " + LIGHTGREY,
-    border: "1px solid " + GREY + "70",
-  },
-  label: {
-    [theme.breakpoints.down("sm")]: {
-      justifyContent: "unset",
-    },
-  },
-  expansionDetailsRoot: {
-    padding: 0,
-  },
-  lang: {
-    color: GREY,
-    fontSize: "0.9rem",
-    float: "right",
+}));
+const VersionName = styled("div")(({ theme }) => ({
+  [theme.breakpoints.down("md")]: {
+    whiteSpace: "nowrap",
+    minWidth: 30,
+    maxWidth: 118,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
 }));
+const StyleSpan = styled("span")({
+  color: GREY,
+  fontSize: "0.9rem",
+  float: "right",
+});
+
 const Version = (props) => {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [displayVersion, setDisplayVersion] = React.useState("Loading...");
   const {
@@ -150,7 +72,7 @@ const Version = (props) => {
   const reference = searchParams.get("reference");
   const location = useLocation();
   const path = location?.pathname;
-  const nonHdView = useMediaQuery('(max-width:1280px)');
+  const nonHdView = useMediaQuery("(max-width:1280px)");
 
   const { t } = useTranslation();
 
@@ -270,7 +192,7 @@ const Version = (props) => {
     const lang = (
       <>
         <span>{found?.languageName || language}</span>
-        <span className={classes.lang}>{language}</span>
+        <StyleSpan>{language}</StyleSpan>
       </>
     );
     return lang;
@@ -286,10 +208,10 @@ const Version = (props) => {
     return code;
   }
   function currentVersion(item) {
-    return item.language.code + "-" + item.version.code.toLowerCase() ===
+    return (
+      item.language.code + "-" + item.version.code.toLowerCase() ===
       version.toLowerCase()
-      ? classes.versionSelected
-      : "";
+    );
   }
   React.useEffect(() => {
     if (version !== "Loading..." && paneNo !== 2) {
@@ -316,7 +238,16 @@ const Version = (props) => {
     } else {
       setDisplayVersion(getDisplayLanguage(language) + "-" + versionCode);
     }
-  }, [landingPage, languageInfo, mobileView, setValue, version, versions,nonHdView,parallelView]);
+  }, [
+    landingPage,
+    languageInfo,
+    mobileView,
+    setValue,
+    version,
+    versions,
+    nonHdView,
+    parallelView,
+  ]);
 
   return (
     <>
@@ -326,17 +257,29 @@ const Version = (props) => {
           aria-haspopup="true"
           onClick={handleClick}
           variant="contained"
-          style={landingPage && mobileView ? { marginRight: 15 } : {}}
-          classes={
-            landingPage
-              ? { root: classes.button }
-              : { root: classes.button, label: classes.label }
-          }
+          style={landingPage && mobileView ? { marginRight: 1.875 } : {}}
+          sx={{
+            fontSize: "1rem",
+            textTransform: "capitalize",
+            backgroundColor: "#fff",
+            border: "1px solid #fff",
+            boxShadow: "1px 1px 1px 1px " + GREY,
+            marginY: { lg: 0.5, xs: "unset" },
+            marginRight: { lg: 1.875, xs: "unset" },
+            marginLeft: { lg: 0, xs: "unset" },
+            paddingX: { xs: 1.25 },
+            paddingY: { xs: 0.75 },
+            minWidth: { lg: "unset", xs: 60 },
+            left: 0,
+            justifyContent: landingPage ? "unset" : "",
+            color: BLACK,
+            "&:hover": {
+              backgroundColor: BLACK + "0a",
+            },
+          }}
         >
-          <div className={classes.versionName}>{displayVersion}</div>
-          <i className={`material-icons ${classes.icon}`}>
-            keyboard_arrow_down
-          </i>
+          <VersionName>{displayVersion}</VersionName>
+          <I className={`material-icons`}>keyboard_arrow_down</I>
         </Button>
       </BigTooltip>
       {versions.length === 0 ? (
@@ -345,7 +288,6 @@ const Version = (props) => {
         <>
           <Menu
             elevation={0}
-            getContentAnchorEl={null}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "center",
@@ -359,9 +301,14 @@ const Version = (props) => {
             keepMounted
             open={Boolean(anchorEl)}
             onClose={handleClose}
-            classes={{
-              list: classes.list,
-              paper: classes.paper,
+            sx={{
+              [`.MuiMenu-paper`]: {
+                maxHeight: "calc(100vh - 170px)",
+                width: 300,
+              },
+              [`.MuiMenu-list`]: {
+                padding: 0,
+              },
             }}
           >
             {versions.sort(sortVersionLanguages).map((version, i) => (
@@ -369,45 +316,90 @@ const Version = (props) => {
                 square
                 expanded={expanded === version.language}
                 onChange={handleChange(version.language)}
-                classes={{
-                  root: classes.menuRoot,
-                  expanded: classes.expanded,
+                sx={{
+                  [`&.MuiAccordion-root`]: {
+                    backgroundColor: WHITE,
+                    boxShadow: "none",
+                    border: "1px solid #00000020",
+                    "&:not(:last-child)": {
+                      borderBottom: 0,
+                    },
+                    "&:before": {
+                      display: "none",
+                    },
+                    "&.Mui-expanded": {
+                      margin: "auto",
+                    },
+                  },
                 }}
                 key={i}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
-                  classes={{
-                    root: classes.summaryPanel,
-                    expanded: classes.expanded,
+                  sx={{
+                    textTransform: "capitalize",
+                    borderBottom: "1px solid #b7b7b726",
+                    minHeight: 40,
+                    maxHeight: 40,
+                    "&.Mui-expanded": {
+                      minHeight: 40,
+                      maxHeight: 40,
+                      boxShadow: 4,
+                      backgroundColor: LIGHTGREY,
+                    },
                   }}
                 >
-                  <Typography className={classes.language}>
+                  <Typography sx={{ fontSize: "1rem", width: "100%" }}>
                     {getFullDisplayLanguage(version.language)}
                   </Typography>
                 </AccordionSummary>
-                <AccordionDetails
-                  classes={{
-                    root: classes.expansionDetailsRoot,
-                  }}
-                >
-                  <List className={classes.expansionDetails}>
+                <AccordionDetails sx={{ padding: 0 }}>
+                  <List
+                    sx={{
+                      backgroundColor: WHITE,
+                      boxShadow: "inset 1px 2px 2px 0px " + GREY,
+                      paddingTop: 0.5,
+                      paddingRight: 0,
+                      paddingBottom: 0.125,
+                      paddingLeft: 0.125,
+                      width: "100%",
+                    }}
+                  >
                     {version.languageVersions.map((item, i) => {
-                      var versionActive = currentVersion(item);
-                      return (
+                      const verCode = item.version?.code?.toUpperCase();
+                      const val = item.language.code + "-" + verCode;
+                      const display = verCode + " : " + item.version.name;
+                      return currentVersion(item) ? (
                         <ListItem
                           key={i}
-                          value={
-                            item.language.code +
-                            "-" +
-                            item.version.code.toUpperCase()
-                          }
+                          value={val}
                           data-sourceid={item.sourceId}
-                          className={`${classes.version} ${versionActive}`}
+                          sx={{
+                            fontSize: "1rem",
+                            cursor: "pointer",
+                            backgroundColor: WHITE,
+                            borderBottom: "1px solid " + LIGHTGREY,
+                            boxShadow: "inset 0 0 30px " + LIGHTGREY,
+                            border: "1px solid " + GREY + "70",
+                          }}
                           onClick={setVersion}
                         >
-                          {item.version.code.toUpperCase()} :{" "}
-                          {item.version.name}
+                          {display}
+                        </ListItem>
+                      ) : (
+                        <ListItem
+                          key={i}
+                          value={val}
+                          data-sourceid={item.sourceId}
+                          sx={{
+                            fontSize: "1rem",
+                            cursor: "pointer",
+                            backgroundColor: WHITE,
+                            borderBottom: "1px solid " + LIGHTGREY,
+                          }}
+                          onClick={setVersion}
+                        >
+                          {display}
                         </ListItem>
                       );
                     })}

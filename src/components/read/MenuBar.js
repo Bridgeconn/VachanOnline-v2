@@ -1,120 +1,41 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import { getAudioBibleObject } from "../common/utility";
 import Setting from "../read/Setting";
 import BookCombo from "../common/BookCombo";
 import Version from "../common/Version";
 import Bookmark from "../bookmark/Bookmark";
 import { AUDIO } from "../../store/views";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 import { BLACK, WHITE } from "../../store/colorCode";
 import Close from "../common/Close";
-import ParallelScroll from "@material-ui/icons/ImportExport";
-import ShareIcon from "@material-ui/icons/Share";
-import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
+import ParallelScroll from "@mui/icons-material/ImportExport";
+import ShareIcon from "@mui/icons-material/Share";
+import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import Help from "../common/Help";
-import { Button, Menu, Snackbar } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import { Alert } from "@material-ui/lab";
+import { Button, Menu, Snackbar } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { Alert } from "@mui/material";
+import { styled } from "@mui/system";
+import { useTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  read: {
-    display: "flex",
-    width: "100%",
-    padding: "0 10px 0 44px",
-    borderBottom: "1px solid #f1ecec",
-    position: "absolute",
-    height: 60,
-    [theme.breakpoints.only("md")]: {
-      padding: "0 10px 0 28px",
-    },
-    top: 72,
-    [theme.breakpoints.only("sm")]: {
-      padding: "0 4px",
-      top: 61,
-    },
-    [theme.breakpoints.only("xs")]: {
-      padding: "0 5.5px",
-      top: (props) => (props.paneNo === 2 ? 0 : 60),
-    },
-    [theme.breakpoints.down("sm")]: {
-      boxShadow: theme.shadows[1],
-    },
-  },
-  selectBox: {
-    [theme.breakpoints.down("md")]: {
-      display: "flex",
-      alignItems: "center",
-    },
-  },
-  select: {
-    marginTop: "-8px",
-    backgroundColor: "red",
-  },
-  info: {
-    padding: 0,
-    width: "30px",
-    [theme.breakpoints.only("sm")]: {
-      width: 25,
-    },
-    marginTop: 20,
-    marginRight: 2,
-    color: "default",
-    cursor: "pointer",
-  },
-  infoParall: {
-    padding: 0,
-    width: 22,
-    marginTop: 15,
-    marginRight: 4,
-    color: "default",
-    cursor: "pointer",
-  },
-  settings: {
-    padding: 0,
-    width: "30px",
-    marginTop: 20,
-    marginLeft: "-5px",
-    marginRight: "-5px",
-    color: "default",
-    cursor: "pointer",
-  },
-  items: {
-    display: "flex",
-    [theme.breakpoints.only("sm")]: {
-      marginLeft: -16,
-    },
-  },
-  verseDisplay: {
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
-    width: 100,
-    paddingLeft: 20,
-    fontWeight: 600,
-  },
-  helpIcon: {
-    color: BLACK,
-    marginTop: 19,
-    marginRight: 4,
-    fontSize: 21,
-  },
-  copyButton: {
-    textTransform: "capitalize",
-    margin: "0 auto",
-    display: "flex",
-  },
-  share: {
-    width: "96%",
-    height: 40,
-    margin: 10,
+const StyleDiv = styled("div")(({ theme }) => ({
+  padding: 0,
+  width: "30px",
+  marginTop: "20px",
+  marginRight: 2,
+  color: "default",
+  cursor: "pointer",
+  [theme.breakpoints.only("sm")]: {
+    width: "25px",
   },
 }));
+
 const MenuBar = (props) => {
+  const theme = useTheme();
   let {
     setValue,
     paneNo,
@@ -145,8 +66,6 @@ const MenuBar = (props) => {
     toggleParallelScroll,
     errorMessage,
   } = props;
-  const styleProps = { paneNo: paneNo };
-  const classes = useStyles(styleProps);
   const { t } = useTranslation();
   function goFull() {
     setFullscreen(true);
@@ -255,20 +174,42 @@ const MenuBar = (props) => {
     ) {
       setAudioIcon(
         <Tooltip title={t("audioBibleText")}>
-          <div className={classes.info} onClick={openAudioBible}>
+          <StyleDiv onClick={openAudioBible}>
             <i className="material-icons md-23">volume_up</i>
-          </div>
+          </StyleDiv>
         </Tooltip>
       );
     } else {
       setValue("audio", false);
       setAudioIcon("");
     }
-  }, [audio, audioBible, bookCode, classes.info, setValue, parallelView, t]);
+  }, [audio, audioBible, bookCode, setValue, parallelView, t]);
   return (
     <div>
-      <Box className={classes.read}>
-        <Box flexGrow={1} className={classes.selectBox}>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          paddingRight: { lg: 1.25, sm: 0.5, xs: 0.6875 },
+          paddingLeft: { lg: 5.5, sm: 0.5, xs: 0.6875 },
+          paddingY: 0,
+          borderBottom: "1px solid #f1ecec",
+          position: "absolute",
+          height: 60,
+          boxShadow: { lg: 0, xs: 1 },
+          top: { lg: 72, sm: 61, xs: props.paneNo === 2 ? 0 : 60 },
+          [theme.breakpoints.only("md")]: {
+            padding: "0 10px 0 28px",
+          },
+        }}
+      >
+        <Box
+          flexGrow={1}
+          sx={{
+            display: { lg: "block", md: "flex", xs: "flex" },
+            alignItems: { lg: "flex-start", md: "center", xs: "center" },
+          }}
+        >
           <Version
             setValue={setValue}
             version={version}
@@ -293,10 +234,14 @@ const MenuBar = (props) => {
           )}
         </Box>
         {errorMessage === "" ? (
-          <Box className={classes.items}>
-            <div className={classes.info}>
+          <Box sx={{ display: "flex", marginLeft: { lg: 0, xs: -2 } }}>
+            <StyleDiv>
               <Tooltip title={t("shareTooltip")}>
-                <ShareIcon fontSize="small" onClick={openShareDialog} />
+                <ShareIcon
+                  fontSize="small"
+                  sx={{ marginTop: "-4px" }}
+                  onClick={openShareDialog}
+                />
               </Tooltip>
               <Menu
                 id="long-menu"
@@ -304,24 +249,22 @@ const MenuBar = (props) => {
                 keepMounted
                 open={open}
                 onClose={closeShareDialog}
-                getContentAnchorEl={null}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
-                PaperProps={{
-                  style: {
-                    maxHeight: 150,
-                    marginTop: 20,
-                    width: 420,
+                sx={{
+                  "& .MuiPaper-root": {
+                    maxHeight: "150px",
+                    marginTop: "20px",
+                    width: "420px",
                     backgroundColor: WHITE,
                   },
                 }}
               >
                 <TextField
                   id="share-url"
-                  variant="outlined"
                   size="small"
                   defaultValue={path}
-                  className={classes.share}
+                  sx={{ width: "96%", height: 40, margin: 1.25 }}
                   InputProps={{
                     readOnly: true,
                   }}
@@ -329,7 +272,18 @@ const MenuBar = (props) => {
                 />
                 <div>
                   <Button
-                    className={classes.copyButton}
+                    sx={{
+                      textTransform: "capitalize",
+                      marginX: "auto",
+                      marginY: 0,
+                      display: "flex",
+                      "&:hover": {
+                        backgroundColor: BLACK + "0a",
+                        border: "1px solid rgba(0, 0, 0, 0.23)",
+                      },
+                      color: BLACK,
+                      border: "1px solid rgba(0, 0, 0, 0.23)",
+                    }}
                     variant="outlined"
                     onClick={handleCopyClick}
                     startIcon={<FileCopyOutlinedIcon />}
@@ -353,27 +307,35 @@ const MenuBar = (props) => {
                   {copyFeedback}
                 </Alert>
               </Snackbar>
-            </div>
+            </StyleDiv>
             {bookmarkIcon}
             {audioIcon}
             {parallelView ? (
               ""
             ) : (
               <Tooltip title={t("menuBarFullScreenToolTip")}>
-                <div onClick={goFull} className={classes.info}>
+                <StyleDiv onClick={goFull}>
                   <i className="material-icons md-23">zoom_out_map</i>
-                </div>
+                </StyleDiv>
               </Tooltip>
             )}
-            <div
-              className={classes.settings}
+            <Box
+              sx={{
+                padding: 0,
+                width: "30px",
+                marginTop: 2.5,
+                marginLeft: -0.625,
+                marginRight: -0.625,
+                color: "default",
+                cursor: "pointer",
+              }}
               aria-label="More"
               aria-controls="long-menu"
               aria-haspopup="true"
               onClick={openSettings}
             >
               <i className="material-icons md-23">settings</i>
-            </div>
+            </Box>
             <Setting
               fontSize={fontSize}
               fontFamily={fontFamily}
@@ -392,30 +354,37 @@ const MenuBar = (props) => {
               paneNo={paneNo}
               metadataList={metadataList}
             />
-            <Help iconStyle={classes.helpIcon} url={url} />
+            <Help
+              iconStyle={{
+                color: BLACK,
+                marginTop: 2.375,
+                marginRight: "2px",
+                fontSize: 21,
+              }}
+              url={url}
+            />
             {mobileView && paneNo === 1 ? (
-              <div
-                className={classes.infoParall}
+              <Box
+                sx={{
+                  padding: 0,
+                  width: 22,
+                  marginTop: 1.875,
+                  marginRight: 0.5,
+                  color: "default",
+                  cursor: "pointer",
+                }}
                 onClick={toggleParallelScroll}
               >
                 {parallelScroll ? (
                   <Tooltip title={t("studyParallelScroll")}>
-                    <ParallelScroll
-                      fontSize="large"
-                      style={{ color: BLACK }}
-                      className={classes.parallelScroll}
-                    />
+                    <ParallelScroll fontSize="large" style={{ color: BLACK }} />
                   </Tooltip>
                 ) : (
                   <Tooltip title={t("studyParallelScrollDisabled")}>
-                    <ParallelScroll
-                      fontSize="large"
-                      color="disabled"
-                      className={classes.parallelScroll}
-                    />
+                    <ParallelScroll fontSize="large" color="disabled" />
                   </Tooltip>
                 )}
-              </div>
+              </Box>
             ) : (
               ""
             )}

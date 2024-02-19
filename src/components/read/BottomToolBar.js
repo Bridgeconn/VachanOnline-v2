@@ -1,40 +1,11 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Highlight from "../highlight/Highlight";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "@mui/icons-material/Close";
 import Note from "../note/Note";
-
-const useStyles = makeStyles((theme) => ({
-  outerDiv:{
-    display:"flex",
-    justifyContent:"center",
-    width:"100%"
-  },
-  root: {
-    width: "100%",
-    position: "absolute",
-    bottom: 0,
-    boxShadow: "0 -1px 4px #b3b6bf",
-    display: "flex",
-    alignItems: "center",
-    [theme.breakpoints.up("sm")]: {
-      width: "350px",
-    },
-    padding: "0 20px",
-    backgroundColor: "white",
-    height: 45,
-  },
-  items: {
-    flexGrow: 1,
-    display: "flex",
-    alignItems: "center",
-  },
-  note: {
-    marginBottom: 20,
-    marginLeft: 15,
-  }
-}));
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles"
 export default function BottomToolBar(props) {
+  const theme = useTheme()
   const {
     userDetails,
     selectedVerses,
@@ -44,12 +15,7 @@ export default function BottomToolBar(props) {
     sourceId,
     bookCode,
     chapter,
-    paneNo,
   } = props;
-  const styleProps = {
-    paneNo: paneNo,
-  };
-  const classes = useStyles(styleProps);
   const [highlightIcon, setHighlightIcon] = React.useState("");
   const [noteIcon, setNoteIcon] = React.useState("");
   function clearSelection() {
@@ -100,16 +66,33 @@ export default function BottomToolBar(props) {
     chapter,
   ]);
   return (
-    <div className={classes.outerDiv}>
-    <div className={classes.root}>
-      <div className={classes.items}>
-        {highlightIcon}
-        <div className={classes.note}>{noteIcon}</div>
-      </div>
-      <div onClick={clearSelection}>
-        <CloseIcon />
-      </div>
-    </div>
-    </div>
+    <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+          position: "absolute",
+          bottom: 0,
+          boxShadow: "0 -1px 4px #b3b6bf",
+          display: "flex",
+          alignItems: "center",
+          [theme.breakpoints.up("sm")]: {
+            width: "350px",
+          },
+          padding: "0 20px",
+          backgroundColor: "white",
+          height: "45px",
+        }}
+      >
+        <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+          {highlightIcon}
+          <Box sx={{ marginBottom: "20px", marginLeft: "15px" }}>
+            {noteIcon}
+          </Box>
+        </Box>
+        <Box onClick={clearSelection}>
+          <CloseIcon />
+        </Box>
+      </Box>
+    </Box>
   );
 }

@@ -3,26 +3,15 @@ import BookCombo from "../common/BookCombo";
 import Select from "react-select";
 import * as actions from "../../store/actions";
 import { capitalize } from "../common/utility";
-import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
+import { styled } from "@mui/system";
+import { useTheme } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-  select: {
-    width: 200,
-    [theme.breakpoints.down("sm")]: {
-      width: 150,
-    },
-  },
-  container: {
-    paddingLeft: 22,
-    display: "flex",
-    alignItems: "center",
-    [theme.breakpoints.only("sm")]: {
-      paddingTop: 5,
-    },
-  },
-  margin: {
-    margin: "0 5px",
+const CustomSelect = styled(Select)(({ theme }) => ({
+  width: "200px",
+  [theme.breakpoints.down("md")]: {
+    width: "150px",
   },
 }));
 const AudioCombo = (props) => {
@@ -37,10 +26,10 @@ const AudioCombo = (props) => {
     setAudios,
     languageCode,
   } = props;
-  const classes = useStyles();
   const [languages, setLanguages] = useState([]);
   const [language, setLanguage] = useState("");
   const [audioLangCode, setAudioLangCode] = useState("hin");
+  const theme = useTheme();
   useEffect(() => {
     if (languages.length) {
       let lang = audioBible?.find((l) => l?.language?.code === languageCode);
@@ -82,16 +71,28 @@ const AudioCombo = (props) => {
     setAudioBooks(versionBooks[audioLangCode]?.filter(filterBooks));
   }, [audioBible, audioLangCode, setAudioBooks, versionBooks]);
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        paddingLeft: "22px",
+        display: "flex",
+        alignItems: "center",
+        [theme.breakpoints.only("sm")]: {
+          paddingTop: "5px",
+        },
+      }}
+    >
       {languages && languages?.length !== 0 && (
-        <Select
-          className={classes.select}
+        <CustomSelect
           value={language}
           onChange={(data) => setLanguage(data)}
           options={languages}
         />
       )}
-      <div className={classes.margin}>
+      <Box
+        sx={{
+          margin: "0 5px",
+        }}
+      >
         <BookCombo
           bookCode={bookCode}
           bookList={audioBooks}
@@ -99,8 +100,8 @@ const AudioCombo = (props) => {
           setValue={setValue1}
           minimal={true}
         />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

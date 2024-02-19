@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import LanguageIcon from "@material-ui/icons/Language";
-import { makeStyles } from "@material-ui/core/styles";
-import { Menu, MenuItem } from "@material-ui/core";
+import LanguageIcon from "@mui/icons-material/Language";
+import { Menu, MenuItem } from "@mui/material";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
@@ -10,16 +9,7 @@ import BigTooltip from "./BigTooltip";
 import { languageCode } from "../../store/languageData";
 import { LIGHTGREY } from "../../store/colorCode";
 
-const useStyles = makeStyles((theme) => ({
-  list: {
-    width: 150,
-  },
-  languageItem: {
-    borderBottom: "1px solid " + LIGHTGREY,
-  },
-}));
 const MultiLanguageDropdown = (props) => {
-  const classes = useStyles();
   const [languageAnchor, setLanguageAnchor] = React.useState(null);
   const open = Boolean(languageAnchor);
   const { locale, setLocale, iconstyle } = props;
@@ -41,10 +31,7 @@ const MultiLanguageDropdown = (props) => {
   return (
     <>
       <BigTooltip title={t("multilingualTooltip")}>
-        <LanguageIcon
-          className={iconstyle}
-          onClick={openLanguage}
-        ></LanguageIcon>
+        <LanguageIcon sx={iconstyle} onClick={openLanguage}></LanguageIcon>
       </BigTooltip>
       <Menu
         id="long-menu"
@@ -52,18 +39,17 @@ const MultiLanguageDropdown = (props) => {
         keepMounted
         open={open}
         onClose={closeLanguage}
-        getContentAnchorEl={null}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
-        style={{ top: 17 }}
-        classes={{ list: classes.list }}
+        style={{ top: "17px" }}
+        sx={{ "& .MuiMenu-list": { width: "150px" } }}
       >
         {Object.keys(languageCode).map((text) => (
           <MenuItem
             key={text}
             onClick={() => handleClick(text)}
             selected={locale === text}
-            className={classes.languageItem}
+            sx={{ borderBottom: "1px solid " + LIGHTGREY }}
           >
             {languageCode[text].name}
           </MenuItem>
