@@ -264,6 +264,7 @@ const PageHeader = (props) => {
         </Toolbar>
         {alert ? (
           <Snackbar
+            sx={{ "&.MuiSnackbar-root": { bottom: "55px" } }}
             open={Boolean(alert)}
             autoHideDuration={8000}
             onClose={handleClose}
