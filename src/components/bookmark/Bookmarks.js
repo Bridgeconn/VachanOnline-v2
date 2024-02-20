@@ -1,93 +1,23 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Typography from "@mui/material/Typography";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
 import { getBookbyCode, capitalize } from "../common/utility";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import Help from "../common/Help";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 94,
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 60,
-    },
-  },
-  heading: {
-    paddingBottom: 10,
-    paddingLeft: 15,
-    marginBottom: 20,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    height: "2.75em",
-    [theme.breakpoints.down("sm")]: {
-      height: 60,
-      marginBottom: 0,
-      paddingBottom: 0,
-      alignItems: "center",
-    },
-  },
-  list: {
-    position: "absolute",
-    right: 0,
-    left: 0,
-    top: 135,
-    bottom: 0,
-    overflow: "scroll",
-    marginBottom: -15,
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.down("sm")]: {
-      top: 120,
-    },
-  },
-  message: {
-    margin: 18,
-  },
-  listItem: {
-    borderBottom: "1px solid lightgray",
-  },
-  closeButton: {
-    marginRight: 15,
-    marginTop: -6,
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
-  helpIcon: {
-    padding: "4px 6px 0",
-    color: BLACK,
-    marginTop: -3,
-    fontSize: 21,
-  },
-}));
 const Bookmarks = (props) => {
-  const classes = useStyles();
   const { uid, versions, setValue, getRegionalBookName, close, mobileView } =
     props;
   const [bookmarkList, setBookmarkList] = React.useState([]);
@@ -183,25 +113,72 @@ const Bookmarks = (props) => {
   };
 
   return (
-    <div className={classes.root}>
-      <Box className={classes.heading}>
+    <Box
+      sx={{
+        width: "100%",
+        marginTop: { xs: 7.75, lg: 11 },
+      }}
+    >
+      <Box
+        sx={{
+          pb: { xs: 0, lg: 1.25 },
+          pl: 1.875,
+          mb: { sm: 0, lg: 2.5 },
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          alignItems: { xs: "center" },
+          height: { xs: 60, lg: 44 },
+        }}
+      >
         <Box flexGrow={1}>
           <Typography variant="h6">{t("bookmarksText")}</Typography>
         </Box>
-        <Box className={classes.box}>
-          <Help iconStyle={classes.helpIcon} url={"bookmarks"} />
-          <Close className={classes.closeButton} />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              marginTop: -0.375,
+              fontSize: 21,
+            }}
+            url={"bookmarks"}
+          />
+          <Close sx={{ marginRight: 1.875, marginTop: -0.085 }} />
         </Box>
       </Box>
-      <div className={classes.list}>
+      <Box
+        sx={{
+          position: "absolute",
+          right: 0,
+          left: 0,
+          top: { xs: 120, lg: 135 },
+          bottom: 0,
+          overflow: "scroll",
+          mb: -1.875,
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+        }}
+      >
         {bookmarks && Object.keys(bookmarks).length !== 0 ? (
           <List component="nav">
             {bookmarkList.map((bookmark, i) => {
               return versionData[bookmark.sourceId] !== undefined ? (
                 <ListItem
                   key={i}
-                  className={classes.listItem}
-                  button
+                  sx={{
+                    borderBottom: "1px solid lightgray",
+                    cursor: "pointer",
+                  }}
                   onClick={mobileView ? close : null}
                 >
                   <ListItemText
@@ -222,6 +199,7 @@ const Bookmarks = (props) => {
                       data-bookcode={bookmark.bookCode}
                       data-chapter={bookmark.chapter}
                       onClick={(e) => deleteBookmark(e)}
+                      size="large"
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -233,12 +211,10 @@ const Bookmarks = (props) => {
             })}
           </List>
         ) : (
-          <Typography className={classes.message}>
-            {t("studyNoBookMarks")}
-          </Typography>
+          <Typography sx={{ margin: 2.25 }}>{t("studyNoBookMarks")}</Typography>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

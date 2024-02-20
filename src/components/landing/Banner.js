@@ -2,105 +2,104 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import banner from "../common/images/banner.jpg";
 import { API } from "../../store/api";
-import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
-import Tooltip from "@material-ui/core/Tooltip";
-import { withStyles } from "@material-ui/core/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { languageCode } from "../../store/languageData";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { styled } from "@mui/system";
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    position: "absolute",
-    top: 80,
+const Heading = styled("h3")(({ theme }) => ({
+  position: "absolute",
+  top: 80,
+  color: WHITE,
+  fontWeight: 800,
+  fontFamily: "Sans",
+  fontSize: "1.2rem",
+  textShadow: "1px 1px 2px " + BLACK,
+  [theme.breakpoints.down("sm")]: {
+    top: 75,
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.1rem",
+  },
+}));
+
+const StyledLink = styled(Link)(() => ({
+  color: WHITE,
+  marginTop: 5,
+  padding: 10,
+  background: BLACK + "50",
+  display: "inline-block",
+  borderRadius: 10,
+  "&:hover": {
     color: WHITE,
-    fontWeight: 800,
-    fontFamily: "Sans",
+    textDecoration: "none",
+    background: BLACK + "60",
+    boxShadow: "0 0 2px " + BLACK,
+  },
+}));
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  bottom: "80px",
+  width: "85%",
+  fontSize: "1.25rem",
+  fontFamily: "Roboto Slab",
+  textAlign: "center",
+  transition: "opacity 0.35s ease-in-out",
+  background: "none",
+  top: "105px",
+  [theme.breakpoints.only("md")]: {
+    width: "80%",
     fontSize: "1.2rem",
-    textShadow: "1px 1px 2px " + BLACK,
-    [theme.breakpoints.down("sm")]: {
-      top: 75,
-    },
-    [theme.breakpoints.down("xs")]: {
-      fontSize: "1.1rem",
-    },
   },
-  imageContainer: {
-    position: "relative",
-    width: "100%",
-    height: "300px",
-    backgroundImage: `url(${banner})`,
-    backgroundRepeat: "round",
-    display: "flex",
-    justifyContent: "center",
+  [theme.breakpoints.down("sm")]: {
+    top: "100px",
+    width: "90%",
+    fontSize: "1.1rem",
   },
-  verse: {
-    position: "absolute",
-    bottom: 80,
-    width: "85%",
-    fontSize: "1.25rem",
-    fontFamily: "Roboto Slab",
-    textAlign: "center",
-    transition: "opacity 0.35s ease-in-out",
-    background: "none",
-    top: 105,
-    [theme.breakpoints.only("md")]: {
-      width: "80%",
-      fontSize: "1.2rem",
-    },
-    [theme.breakpoints.down("sm")]: {
-      top: 100,
-      width: "90%",
-      fontSize: "1.1rem",
-    },
-    [theme.breakpoints.down("xs")]: {
-      fontSize: "1rem",
-    },
-  },
-  reference: {
-    fontStyle: "italic",
+  [theme.breakpoints.down("xs")]: {
     fontSize: "1rem",
-    color: WHITE,
-    [theme.breakpoints.down("xs")]: {
-      fontSize: "0.9rem",
-    },
   },
-  link: {
-    color: WHITE,
-    marginTop: 5,
-    padding: 10,
-    background: BLACK + "50",
-    display: "inline-block",
-    borderRadius: 10,
-    "&:hover": {
-      color: WHITE,
-      textDecoration: "none",
-      background: BLACK + "60",
-      boxShadow: "0 0 2px " + BLACK,
-    },
-  },
-  verseText: {
-    display: "-webkit-box",
-    WebkitLineClamp: 3,
-    textOverflow: "ellipsis",
-    overflow: "hidden",
-    WebkitBoxOrient: "vertical",
+}));
+
+const VerseText = styled(Box)(() => ({
+  display: "-webkit-box",
+  WebkitLineClamp: 3,
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  WebkitBoxOrient: "vertical",
+}));
+
+const ContainerBox = styled(Box)(() => ({
+  position: "relative",
+  width: "100%",
+  height: "300px",
+  backgroundImage: `url(${banner})`,
+  backgroundRepeat: "round",
+  display: "flex",
+  justifyContent: "center",
+}));
+
+const BigTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: WHITE,
+    color: BLACK,
+    boxShadow: theme.shadows[4],
+    border: "1px solid" + GREY,
+    fontSize: 16,
+    marginTop: 0,
   },
 }));
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
-  const BigTooltip = withStyles((theme) => ({
-    tooltip: {
-      backgroundColor: WHITE,
-      color: BLACK,
-      boxShadow: theme.shadows[4],
-      border: "1px solid" + GREY,
-      fontSize: 16,
-      marginTop: 0,
-    },
-  }))(Tooltip);
+  const theme = useTheme();
   const langCode = languageCode[locale].code;
   const [allVerseData, setAllVerseData] = useState();
   const [verseRef, setVerseRef] = useState({
@@ -156,7 +155,6 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
       );
     }
   }, [sourceId, verseRef]);
-  const classes = useStyles();
   const setURL = () => {
     setValue1("bookCode", verseRef?.b);
     setValue1("chapter", verseRef?.c);
@@ -164,27 +162,30 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   };
   const { t } = useTranslation();
   return (
-    <div className={classes.imageContainer}>
-      <h3 className={classes.heading}>{t("landingVerseHeading")}</h3>
+    <ContainerBox>
+      <Heading>{t("landingVerseHeading")}</Heading>
       <BigTooltip title={t("landingVerseHeadingToolTip")}>
-        <div className={classes.verse}>
-          <Link
-            to={{ pathname: "/read" }}
-            className={classes.link}
-            onClick={() => setURL()}
-          >
-            <span className={classes.verseText}>
-            {verseObj ? verseObj.verseContent?.text : ""}
-            </span>
-            <div className={classes.reference}>
+        <StyledBox>
+          <StyledLink to={{ pathname: "/read" }} onClick={() => setURL()}>
+            <VerseText>{verseObj ? verseObj.verseContent?.text : ""}</VerseText>
+            <Box
+              sx={{
+                fontStyle: "italic",
+                fontSize: "1rem",
+                color: WHITE,
+                [theme.breakpoints.down("xs")]: {
+                  fontSize: "0.9rem",
+                },
+              }}
+            >
               {book
                 ? `${book} ${verseObj.chapterNumber}:${verseObj.verseNumber}`
                 : ""}
-            </div>
-          </Link>
-        </div>
+            </Box>
+          </StyledLink>
+        </StyledBox>
       </BigTooltip>
-    </div>
+    </ContainerBox>
   );
 };
 const mapStateToProps = (state) => {

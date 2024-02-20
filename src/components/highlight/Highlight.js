@@ -1,47 +1,28 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Tooltip from "@material-ui/core/Tooltip";
-import Circle from "@material-ui/icons/LensRounded";
-import NotInterestedIcon from "@material-ui/icons/NotInterested";
+import Tooltip from "@mui/material/Tooltip";
+import Circle from "@mui/icons-material/LensRounded";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { useFirebase } from "react-redux-firebase";
 import * as color from "../../store/colorCode";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  colorBox: {
-    padding: 6,
-    display: "flex",
-  },
-  yellow: {
-    color: color.YELLOW,
-  },
-  green: {
-    color: color.GREEN,
-  },
-  cyan: {
-    color: color.CYAN,
-  },
-  pink: {
-    color: color.PINK,
-  },
-  orange: {
-    color: color.ORANGE,
-  },
-}));
-
+const ColorBox = styled("div")({
+  padding: 6,
+  display: "flex",
+});
 function Highlight(props) {
-  const classes = useStyles();
   const firebase = useFirebase();
   const { selectedVerses, setSelectedVerses, refUrl, highlights } = props;
 
   const { t } = useTranslation();
   const colors = [
-    { code: "a", class: classes.yellow },
-    { code: "b", class: classes.green },
-    { code: "c", class: classes.cyan },
-    { code: "d", class: classes.pink },
-    { code: "e", class: classes.orange },
+    { code: "a", class: { color: color.YELLOW } },
+    { code: "b", class: { color: color.GREEN } },
+    { code: "c", class: { color: color.CYAN } },
+    { code: "d", class: { color: color.PINK } },
+    { code: "e", class: { color: color.ORANGE } },
   ];
   const colorClicked = (event) => {
     const color = event.currentTarget.getAttribute("data-code");
@@ -67,24 +48,26 @@ function Highlight(props) {
     });
   };
   return (
-    <div className={classes.colorBox}>
-      {colors.map((color, i) => (
-        <Circle
-          key={i}
-          data-code={color.code}
-          onClick={colorClicked}
-          fontSize="large"
-          className={color.class}
-        />
-      ))}
-      <Tooltip title={t("ClearHighlightToolTip")}>
-        <NotInterestedIcon
-          data-code="clear"
-          onClick={colorClicked}
-          fontSize="large"
-          color="disabled"
-        />
-      </Tooltip>
+    <div>
+      <ColorBox>
+        {colors.map((color, i) => (
+          <Circle
+            key={i}
+            data-code={color.code}
+            onClick={colorClicked}
+            fontSize="large"
+            sx={color.class}
+          />
+        ))}
+        <Tooltip title={t("ClearHighlightToolTip")}>
+          <NotInterestedIcon
+            data-code="clear"
+            onClick={colorClicked}
+            fontSize="large"
+            color="disabled"
+          />
+        </Tooltip>
+      </ColorBox>
     </div>
   );
 }

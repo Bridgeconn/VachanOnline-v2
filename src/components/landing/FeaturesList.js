@@ -1,26 +1,16 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Button from "@material-ui/core/Button";
+import Typography from "@mui/material/Typography";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
-import Link from "@material-ui/core/Link";
-import { Dialog } from "@material-ui/core";
+import Link from "@mui/material/Link";
+import { Dialog } from "@mui/material";
+import { Box } from "@mui/material";
+import { BLACK } from "../../store/colorCode";
 
-const useStyles = makeStyles(() => ({
-  box: {
-    marginBottom: -10,
-    display: "flex",
-    alignItems: "center",
-  },
-  link: {
-    fontSize: 14,
-  },
-}));
 const FeaturesList = () => {
-  const classes = useStyles();
   const { t } = useTranslation();
   const [featuresOpen, setFeaturesOpen] = React.useState(false);
 
@@ -33,14 +23,26 @@ const FeaturesList = () => {
   };
   const addHyperLink = (text, url) => {
     return (
-      <Link className={classes.link} href={url} target="_blank">
+      <Link
+        sx={{
+          fontSize: 14,
+        }}
+        href={url}
+        target="_blank"
+      >
         {text}
       </Link>
     );
   };
   return (
     <>
-      <Link className={classes.link} href="#" onClick={openFeatures}>
+      <Link
+        sx={{
+          fontSize: 14,
+        }}
+        href="#"
+        onClick={openFeatures}
+      >
         {t("featuresList")}
       </Link>
       <Dialog
@@ -52,12 +54,18 @@ const FeaturesList = () => {
         fullWidth={true}
         maxWidth="md"
       >
-        <DialogTitle id="scroll-dialog-title" disableTypography={true}>
-          <div className={classes.box}>
+        <DialogTitle id="scroll-dialog-title">
+          <Box
+            sx={{
+              marginBottom: "-10px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <Typography variant="h5" gutterBottom>
               {t("featuresList")}
             </Typography>
-          </div>
+          </Box>
         </DialogTitle>
         <DialogContent dividers={true}>
           <span>
@@ -92,7 +100,18 @@ const FeaturesList = () => {
           </span>
         </DialogContent>
         <DialogActions>
-          <Button onClick={featuresClose} variant="outlined">
+          <Button
+            onClick={featuresClose}
+            variant="outlined"
+            sx={{
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              "&:hover": {
+                backgroundColor: BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
+          >
             {t("commonClose")}
           </Button>
         </DialogActions>

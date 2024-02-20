@@ -1,114 +1,25 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import Button from "@material-ui/core/Button";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
 import AboutUs from "./AboutUs";
-import FeedbackIcon from "@material-ui/icons/Feedback";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Dialog from "@material-ui/core/Dialog";
+import FeedbackIcon from "@mui/icons-material/Feedback";
+import Typography from "@mui/material/Typography";
+import Dialog from "@mui/material/Dialog";
 import { BLACK, GREY, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
-import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
-import IconButton from "@material-ui/core/IconButton";
+import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
+import IconButton from "@mui/material/IconButton";
 import WhatsNew from "./WhatsNew";
-import { Badge, useMediaQuery } from "@material-ui/core";
+import { Badge, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  landingFooter: {
-    bottom: 0,
-    position: "fixed",
-    background: WHITE,
-    boxShadow:
-      "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
-    borderTop: "1px solid" + GREY,
-    color: "#fff",
-    padding: "5px 15px",
-    marginTop: 40,
-    textAlign: "center",
-    zIndex: 1000,
-    "&div": {
-      display: "inline-block",
-      paddingTop: theme.spacing(3),
-    },
-    [theme.breakpoints.down("sm")]: {
-      flexWrap: "nowrap",
-    },
-  },
-  text: {
-    padding: theme.spacing(1),
-    textAlign: "right",
-    display: "inline-block",
-    float: "right",
-    [theme.breakpoints.down("sm")]: {
-      float: "unset",
-      fontSize: 12,
-      padding: "unset",
-      paddingTop: 6,
-    },
-  },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-    borderRight: "1px solid #fff",
-    display: "inline-block",
-    padding: "0px 10px",
-    fontSize: 16,
-    marginTop: 8,
-    "&:hover": {
-      color: "inherit",
-    },
-    "&:last-child": {
-      borderRight: 0,
-    },
-  },
-  companyLink: {
-    color: BLACK,
-    "&:hover": {
-      color: BLACK,
-      textDecoration: "none",
-    },
-  },
-  button: {
-    marginTop: 3,
-    textTransform: "unset",
-    padding: "2px 10px",
-    fontSize: 16,
-    "&:hover": {
-      color: GREY,
-    },
-    [theme.breakpoints.down("sm")]: {
-      fontSize: 12,
-    },
-  },
-  feedback: {
-    marginTop: 3,
-    textTransform: "unset",
-    padding: "2px 10px",
-    fontSize: 16,
-    "&:hover": {
-      color: GREY,
-    },
-    [theme.breakpoints.down("sm")]: {
-      fontSize: 12,
-    },
-  },
-  rightLinks: {
-    textAlign: "left",
-    [theme.breakpoints.only("xs")]: {
-      textAlign: "center",
-      whiteSpace: "nowrap",
-      marginRight: 15,
-    },
-  },
-}));
 const LandingFooter = (props) => {
-  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [whatsNewOpen, setWhatsNewOpen] = React.useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const openModal = () => {
     setOpen(true);
   };
@@ -126,27 +37,77 @@ const LandingFooter = (props) => {
   };
   return (
     <>
-      <Grid container className={classes.landingFooter}>
-        <Grid item xs={4} sm={3} className={classes.rightLinks}>
+      <Grid
+        container
+        sx={{
+          bottom: 0,
+          position: "fixed",
+          background: WHITE,
+          boxShadow: 3,
+          borderTop: "1px solid" + GREY,
+          color: "#fff",
+          paddingX: 1.875,
+          paddingY: 0.625,
+          marginTop: 0.625,
+          textAlign: "center",
+          zIndex: 1000,
+          flexWrap: { lg: "wrap", xs: "nowrap" },
+          "&div": {
+            display: "inline-block",
+            paddingTop: 3,
+          },
+        }}
+      >
+        <Grid
+          item
+          xs={4}
+          sm={3}
+          sx={{
+            textAlign: { lg: "left", xs: "center" },
+            whiteSpace: { lg: "wrap", xs: "nowrap" },
+            marginRight: { lg: 0, xs: 1.875 },
+          }}
+        >
           <Button
             variant="outlined"
             size="small"
-            color="default"
-            className={classes.button}
+            sx={{
+              marginTop: 0.375,
+              textTransform: "unset",
+              paddingX: 1.25,
+              paddingY: 0.25,
+              fontSize: { lg: 16, xs: 12 },
+              "&:hover": {
+                backgroundColor: BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+              color: BLACK,
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+            }}
             onClick={openModal}
           >
             {t("landingFooterAboutUsBtn")}
           </Button>
         </Grid>
-        <Grid item xs={4} sm={3} className={classes.rightLinks}>
+        <Grid item xs={4} sm={3}>
           <Badge color="error" variant="dot">
             <Button
               variant="outlined"
               size="small"
-              color="default"
-              className={classes.button}
+              sx={{
+                marginTop: 0.375,
+                textTransform: "unset",
+                paddingX: 1.25,
+                paddingY: 0.25,
+                fontSize: { lg: 16, xs: 12 },
+                "&:hover": {
+                  backgroundColor: BLACK + "0a",
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                },
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              }}
               onClick={openWhatsNew}
-              style={{ fontWeight: 800 }}
             >
               {t("WhatsNew")}
             </Button>
@@ -156,10 +117,22 @@ const LandingFooter = (props) => {
           {isTablet ? (
             <IconButton
               aria-label="feedback"
-              className={classes.feedback}
+              sx={{
+                marginTop: 0.375,
+                textTransform: "unset",
+                paddingX: 1.25,
+                paddingY: 0.25,
+                fontSize: { lg: 16, xs: 12 },
+                "&:hover": {
+                  color: BLACK,
+                  backgroundColor: WHITE,
+                  border: "none",
+                },
+              }}
               href="https://forms.office.com/r/qiV0Ym335M"
               target="_blank"
               rel="noopener"
+              size="large"
             >
               <FeedbackOutlinedIcon />
             </IconButton>
@@ -167,8 +140,20 @@ const LandingFooter = (props) => {
             <Button
               variant="outlined"
               size="small"
-              color="default"
-              className={classes.feedback}
+              sx={{
+                marginTop: 0.375,
+                textTransform: "unset",
+                paddingX: 1.25,
+                paddingY: 0.25,
+                fontSize: { lg: 16, xs: 12 },
+                "&:hover": {
+                  color: BLACK,
+                  backgroundColor: BLACK + "0a",
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                },
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              }}
               startIcon={<FeedbackIcon />}
               href="https://forms.office.com/r/qiV0Ym335M"
               target="_blank"
@@ -183,9 +168,24 @@ const LandingFooter = (props) => {
           <Link
             href="https://www.bridgeconn.com/"
             target="_blank"
-            className={classes.companyLink}
+            sx={{
+              color: BLACK,
+              "&:hover": {
+                color: GREY,
+                textDecoration: "none",
+              },
+            }}
+            underline="hover"
           >
-            <Typography className={classes.text}>
+            <Typography
+              sx={{
+                padding: 1,
+                textAlign: "right",
+                display: "inline-block",
+                float: { lg: "right", xs: "unset" },
+                fontSize: { lg: "1rem", xs: 12 },
+              }}
+            >
               {t("landingCompanyYear")}{" "}
               {isMobile ? t("landingCompanyMob") : t("landingCompanyDesktop")}
             </Typography>
