@@ -59,6 +59,7 @@ const TopBar = (props) => {
         <Login
           setMessage={setMessage}
           setAlert={setAlert}
+          message={message}
           person={{
             color: BLACK,
             fontSize: "2rem",
@@ -70,7 +71,7 @@ const TopBar = (props) => {
         />
       )
     );
-  }, [login, userDetails]);
+  }, [login, userDetails, message]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
