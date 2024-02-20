@@ -1,108 +1,27 @@
 import React, { useState, useEffect } from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import Select from "react-select";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Player from "../common/Player";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import Help from "../common/Help";
 import * as actions from "../../store/actions";
-import { makeStyles } from "@material-ui/core/styles";
 import { capitalize, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    position: "absolute",
-    top: 82,
-    bottom: 0,
-    [theme.breakpoints.down("sm")]: {
-      top: 60,
-    },
-  },
-  container: {
-    top: 52,
-    bottom: 0,
-    overflow: "scroll",
-    position: "absolute",
-    width: "100%",
-    padding: "20px 4px 20px 15px",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.down("sm")]: {
-      top: 60,
-      height: "calc(100vh - 160px)",
-    },
-  },
-  heading: {
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    paddingBottom: 12,
-    paddingLeft: 35,
-    marginBottom: 20,
-    minHeight: 51,
-    [theme.breakpoints.down("sm")]: {
-      alignItems: "center",
-      height: 60,
-      paddingBottom: 0,
-      paddingLeft: 15,
-    },
-  },
-  closeButton: {
-    marginRight: 15,
-    marginTop: 7,
-  },
-  box: {
-    display: "flex",
-    alignItems: "center",
-  },
-  helpIcon: {
-    padding: "8px 12px 0",
-    color: BLACK,
-    marginTop: 5,
-    fontSize: 21,
-  },
-  select: {
-    width: 200,
-    [theme.breakpoints.down("sm")]: {
-      width: 150,
-    },
-  },
-  message: {
-    paddingLeft: 20,
-    whiteSpace: "pre-wrap",
-    lineHeight: "1.8rem",
-  },
-  selectBox: {
-    display: "flex",
-    alignItems: "center",
-  },
-  bookLabel: {
-    paddingLeft: 20,
-    verticalAlign: "middle",
-    fontSize: 20,
-    display: "inline-block",
-    [theme.breakpoints.down("md")]: {
-      fontSize: 16,
-      paddingLeft: 5,
-    },
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
+
+const CustomSelect = styled(Select)(({ theme }) => ({
+  width: "200px",
+  [theme.breakpoints.down("md")]: {
+    width: "150px",
   },
 }));
 const Audio = (props) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const {
     audioBible,
     bookCode,
@@ -185,17 +104,39 @@ const Audio = (props) => {
     setAudioBooks(versionBooks[audioLangCode]?.filter(filterBooks));
   }, [audioBible, audioLangCode, versionBooks]);
   return (
-    <div className={classes.root}>
-      <Box className={classes.heading}>
+    <Box
+      sx={{
+        width: "100%",
+        position: "absolute",
+        top: { lg: "78px", md: "68px", xs: 0 },
+        bottom: 0,
+      }}
+    >
+      <Box
+        sx={{
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          paddingBottom: "12px",
+          paddingLeft: "35px",
+          marginBottom: "20px",
+          minHeight: "51px",
+          [theme.breakpoints.down("md")]: {
+            alignItems: "center",
+            height: "60px",
+            paddingBottom: "0px",
+            paddingLeft: "15px",
+          },
+        }}
+      >
         {mobileView ? null : (
-          <Box flexGrow={1}>
+          <Box flexGrow={1} sx={{ display: { lg: "block", md: "none" } }}>
             <Typography variant="h5">{t("audioBibleText")}</Typography>
           </Box>
         )}
-        <Box flexGrow={1} className={classes.selectBox}>
+        <Box flexGrow={1} sx={{ display: "flex", alignItems: "center" }}>
           {languages && languages?.length !== 0 && (
-            <Select
-              className={classes.select}
+            <CustomSelect
               value={language}
               onChange={(data) => setLanguage(data)}
               options={languages}
@@ -204,7 +145,18 @@ const Audio = (props) => {
           {mobileView ? (
             ""
           ) : book ? (
-            <Typography className={classes.bookLabel}>
+            <Typography
+              sx={{
+                paddingLeft: "20px",
+                verticalAlign: "middle",
+                fontSize: "20px",
+                display: "inline-block",
+                [theme.breakpoints.down("lg")]: {
+                  fontSize: "16px",
+                  paddingLeft: "5px",
+                },
+              }}
+            >
               {book} {chapter}
             </Typography>
           ) : (
@@ -221,14 +173,58 @@ const Audio = (props) => {
             />
           ) : null}
         </Box>
-        <Box className={classes.box}>
-          <Help iconStyle={classes.helpIcon} url={"audioBible"} />
-          <Close className={classes.closeButton} />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Help
+            iconStyle={{
+              padding: "8px 12px 0",
+              color: BLACK,
+              marginTop: "5px",
+              fontSize: "21px",
+            }}
+            url={"audioBible"}
+          />
+          <Close sx={{ marginRight: "15px", marginTop: "7px" }} />
         </Box>
       </Box>
-      <div className={classes.container}>
+      <Box
+        sx={{
+          top: "52px",
+          bottom: 0,
+          overflow: "auto",
+          position: "absolute",
+          width: "100%",
+          padding: "20px 4px 20px 15px",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "&::-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "&::-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+          [theme.breakpoints.down("md")]: {
+            top: "60px",
+            height: "calc(100vh - 160px)",
+          },
+        }}
+      >
         {(audioBible?.length === 0 || audioBible?.success === false) && (
-          <h5 className={classes.message}>
+          <h5
+            sx={{
+              paddingLeft: "20px",
+              whiteSpace: "pre-wrap",
+              lineHeight: "1.8rem",
+            }}
+          >
             {t("studyAudioBibleNotAvailableMsg")}
           </h5>
         )}
@@ -240,10 +236,18 @@ const Audio = (props) => {
             languageCode={languageCode}
           />
         ) : (
-          <h5 className={classes.message}>{message}</h5>
+          <h5
+            sx={{
+              paddingLeft: "20px",
+              whiteSpace: "pre-wrap",
+              lineHeight: "1.8rem",
+            }}
+          >
+            {message}
+          </h5>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

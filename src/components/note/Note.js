@@ -1,17 +1,17 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import NoteIcon from "@material-ui/icons/NoteOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import MuiDialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import NoteIcon from "@mui/icons-material/NoteOutlined";
+import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import MuiDialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import MuiDialogActions from "@mui/material/DialogActions";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
@@ -21,69 +21,48 @@ import draftToHtml from "draftjs-to-html";
 import { EditorState, convertToRaw } from "draft-js";
 import { getEditorToolbar } from "../common/utility";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
+import { BLACK } from "../../store/colorCode";
 
-const useStyles = makeStyles((theme) => ({
-  info: {
-    padding: 0,
-    width: "30px",
-    marginTop: 20,
-    marginRight: 4,
-    cursor: "pointer",
-  },
-  paper: {
-    [theme.breakpoints.down("sm")]: {
-      margin: 25,
-    },
-  },
-  textField: {
-    "& textarea": {
-      maxHeight: 190,
-    },
-  },
-  dialog: {
-    padding: 0,
-  },
-  editor: {
-    padding: 10,
-  },
-}));
-const styles = (theme) => ({
+const StyledDialogTitle = styled(MuiDialogTitle)(({ theme }) => ({
   root: {
-    margin: 0,
+    margin: "0px",
     padding: theme.spacing(2),
   },
-  closeButton: {
-    position: "absolute",
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
+}));
 
-const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
+function CustomDialogTitle(props) {
+  const theme = useTheme();
+  const { children, onClose, ...other } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+    <StyledDialogTitle {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton
           aria-label="close"
-          className={classes.closeButton}
           onClick={onClose}
+          size="large"
+          sx={{
+            position: "absolute",
+            right: theme.spacing(1),
+            top: theme.spacing(1),
+            color: theme.palette.grey[500],
+          }}
         >
           <CloseIcon />
         </IconButton>
       ) : null}
-    </MuiDialogTitle>
+    </StyledDialogTitle>
   );
-});
+}
 
-const DialogActions = withStyles((theme) => ({
+const CustomDialogActions = styled(MuiDialogActions)(({ theme }) => ({
   root: {
-    margin: 0,
+    margin: "10px",
     padding: theme.spacing(1),
   },
-}))(MuiDialogActions);
+}));
 
 function Note({
   uid,
@@ -94,7 +73,7 @@ function Note({
   chapter,
   mobileView,
 }) {
-  const classes = useStyles();
+  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [noteText, setNoteText] = React.useState("");
   const [alert, setAlert] = React.useState(false);
@@ -165,12 +144,21 @@ function Note({
       data.users && data.users[uid] && data.users[uid].notes
   );
   return (
-    <div>
-      <div className={classes.info} onClick={openNoteDialog}>
+    <Box>
+      <Box
+        sx={{
+          padding: "0px",
+          width: "30px",
+          marginTop: "20px",
+          marginRight: "4px",
+          cursor: "pointer",
+        }}
+        onClick={openNoteDialog}
+      >
         <Tooltip title={t("commonAddNote")}>
-          <NoteIcon fontSize={mobileView ? "large" : "small"} />
+          <NoteIcon fontSize="large" />
         </Tooltip>
-      </div>
+      </Box>
       <Snackbar
         open={alert}
         autoHideDuration={5000}
@@ -192,31 +180,58 @@ function Note({
         onClose={handleClose}
         aria-labelledby="new-note-dialog"
         open={open}
-        classes={{ paper: classes.paper }}
+        sx={{
+          [theme.breakpoints.down("md")]: {
+            "& .MuiPaper-root": {
+              margin: "25px",
+            },
+          },
+        }}
       >
-        <DialogTitle id="new-note-dialog" onClose={handleClose}>
+        <CustomDialogTitle id="new-note-dialog" onClose={handleClose}>
           {t("commonNoteDialogTitle")}
-        </DialogTitle>
-        <DialogContent dividers className={classes.dialog}>
+        </CustomDialogTitle>
+        <DialogContent dividers sx={{ padding: "0px" }}>
           <Editor
             editorState={editorState}
-            editorStyle={{ height: "30vh" }}
+            editorStyle={{ height: "30vh", padding: "10px" }}
             onEditorStateChange={handleNoteTextChange}
             placeholder={t("commonNotePlaceholder")}
-            editorClassName={classes.editor}
             toolbar={getEditorToolbar(mobileView)}
           />
         </DialogContent>
-        <DialogActions>
-          <Button variant="outlined" onClick={handleClose}>
+        <CustomDialogActions>
+          <Button
+            variant="outlined"
+            sx={{
+              color: BLACK,
+              borderColor: BLACK,
+              "&:hover": {
+                backgroundColor: BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
+            onClick={handleClose}
+          >
             {t("commonCancel")}
           </Button>
-          <Button variant="outlined" onClick={saveNote}>
+          <Button
+            variant="outlined"
+            onClick={saveNote}
+            sx={{
+              color: BLACK,
+              borderColor: BLACK,
+              "&:hover": {
+                backgroundColor: BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
+          >
             {t("commonSave")}
           </Button>
-        </DialogActions>
+        </CustomDialogActions>
       </Dialog>
-    </div>
+    </Box>
   );
 }
 const mapStateToProps = (state) => {

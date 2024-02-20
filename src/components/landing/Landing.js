@@ -1,10 +1,10 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import { useTheme } from "@mui/material/styles";
 import screenshot from "../common/images/screenshot.jpg";
 import playStore from "../common/images/playStore.png";
-import Link from "@material-ui/core/Link";
-import { useMediaQuery } from "@material-ui/core";
+import Link from "@mui/material/Link";
+import { Box, useMediaQuery } from "@mui/material";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { AUDIO, VIDEO } from "../../store/views";
@@ -16,83 +16,25 @@ import LandingFooter from "./LandingFooter";
 import PageHeader from "./PageHeader";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
-const useStyles = makeStyles((theme) => ({
-  body: {
-    backgroundColor: "white",
-  },
-  screenshot: {
-    width: "90%",
-    display: "inline-block",
-    marginBottom: 10,
-    [theme.breakpoints.only("md")]: {
-      width: "60%",
-    },
-  },
-  playStore: {
-    width: "20%",
-    margin: "0 7%",
-    maxWidth: 280,
-    display: "inline-block",
-    [theme.breakpoints.down("sm")]: {
-      width: "30%",
-    },
-  },
-  screenshotDiv: {
-    textAlign: "center",
-  },
-  textRow: {
-    marginBottom: 70,
-    [theme.breakpoints.up("lg")]: {
-      width: "calc(100% - 30px)",
-    },
-    textAlign: "center",
-    [theme.breakpoints.down("md")]: {
-      marginTop: -10,
-    },
-  },
-  imageRow: {
-    display: "flex",
-    justifyContent: "space-evenly",
-    margin: "0 10px",
-    width: "auto",
-    [theme.breakpoints.only("sm")]: {
-      margin: 5,
-    },
-  },
-  text: {
-    fontSize: 20,
-    marginTop: 50,
-    paddingLeft: 30,
-    [theme.breakpoints.down("md")]: {
-      paddingLeft: 0,
-      textAlign: "center",
-      margin: 20,
-    },
-    [theme.breakpoints.only("xs")]: {
-      fontSize: 16,
-    },
-  },
-  storeLink: {
-    textAlign: "center",
-  },
-  iconBox: {
-    margin: "0 auto",
-    justifyContent: "center",
-    padding: "15px 5px",
-    display: "flex",
-    fontSize: "1.4rem",
-    width: 250,
-    marginBottom: 5,
-    cursor: "pointer",
-    [theme.breakpoints.only("xs")]: {
-      width: "43%",
-      fontSize: "1.3rem",
-    },
+import { styled } from "@mui/system";
+const ImageScreen = styled("img")(({ theme }) => ({
+  width: "90%",
+  display: "inline-block",
+  marginBottom: 10,
+  [theme.breakpoints.only("md")]: {
+    width: "60%",
   },
 }));
-
+const ImagePlayStore = styled("img")(({ theme }) => ({
+  width: "20%",
+  margin: "0 7%",
+  maxWidth: 280,
+  display: "inline-block",
+  [theme.breakpoints.down("md")]: {
+    width: "30%",
+  },
+}));
 const Landing = (props) => {
-  const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const { setValue } = props;
@@ -107,13 +49,13 @@ const Landing = (props) => {
   }, [isMobile, setValue]);
   const addLink = () => {
     return process.env.REACT_APP_DOWNLOAD_URL ? (
-      <Link href={process.env.REACT_APP_DOWNLOAD_URL} target="_blank">
+      <Link
+        href={process.env.REACT_APP_DOWNLOAD_URL}
+        target="_blank"
+        underline="hover"
+      >
         <BigTooltip title={t("landingPlayStoreToolTip")}>
-          <img
-            src={playStore}
-            alt={t("landingAlt")}
-            className={classes.playStore}
-          />
+          <ImagePlayStore src={playStore} alt={t("landingAlt")} />
         </BigTooltip>
       </Link>
     ) : (
@@ -121,15 +63,20 @@ const Landing = (props) => {
     );
   };
   return (
-    <Grid className={classes.body}>
+    <Grid sx={{ backgroundColor: "white" }}>
       <PageHeader />
       <Banner />
       <BibleIndex />
       <Grid
         container
         justifyContent="center"
-        spacing={1}
-        className={classes.imageRow}
+        sx={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          marginX: { lg: 1.25, xs: 0.625 },
+          marginY: { lg: 0, xs: 0.625 },
+          width: "auto",
+        }}
       >
         <ImageCard
           icon="volume_up"
@@ -144,9 +91,28 @@ const Landing = (props) => {
         <ImageCard icon="local_library" type="Read" />
         <ImageCard icon="menu_book" type="Study" />
       </Grid>
-      <Grid container spacing={2} className={classes.textRow}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          marginBottom: 8.75,
+          marginTop: { lg: "auto", xs: -1.25 },
+          width: "calc(100% - 30px)",
+          textAlign: "center",
+        }}
+      >
         <Grid item md={12} lg={6}>
-          <div className={classes.text}>
+          <Box
+            sx={{
+              fontSize: { lg: 20, xs: 16 },
+              marginTop: { lg: 6.25, xs: 2.5 },
+              marginRight: { lg: "auto", xs: 2.5 },
+              marginBottom: { lg: "auto", xs: 2.5 },
+              marginLeft: { lg: "auto", xs: 2.5 },
+              paddingLeft: 3.75,
+              textAlign: "center",
+            }}
+          >
             <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
             <p>
               VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
@@ -157,17 +123,13 @@ const Landing = (props) => {
               {t("landingWelcomeMessage4")} VachanGo{" "}
               {t("landingWelcomeMessage5")}
             </p>
-          </div>
+          </Box>
         </Grid>
         <Grid item md={12} lg={6}>
-          <div className={classes.screenshotDiv}>
-            <img
-              src={screenshot}
-              alt="Screenshot"
-              className={classes.screenshot}
-            />
+          <Box sx={{ textAlign: "center" }}>
+            <ImageScreen src={screenshot} alt="Screenshot" />
             <div>{addLink()}</div>
-          </div>
+          </Box>
         </Grid>
       </Grid>
       <LandingFooter />

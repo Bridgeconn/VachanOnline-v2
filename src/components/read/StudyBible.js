@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import ParallelScroll from "@material-ui/icons/ImportExport";
-import Tooltip from "@material-ui/core/Tooltip";
+import { useTheme } from "@mui/material/styles";
+import ParallelScroll from "@mui/icons-material/ImportExport";
+import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import * as views from "../../store/views";
@@ -30,39 +31,23 @@ import {
   getSignBible,
   getChapterVideo,
 } from "../common/utility";
-import { useMediaQuery } from "@material-ui/core";
+import { useMediaQuery } from "@mui/material";
 import BottomBar from "./BottomBar";
 import { useTranslation } from "react-i18next";
-const useStyles = makeStyles((theme) => ({
-  main: {
-    [theme.breakpoints.down("sm")]: {
-      position: "absolute",
-      height: "calc(100% - 3.6rem)",
+
+const StudyBible = (props) => {
+  const theme = useTheme();
+  const biblePaneStyling = {
+    position: "absolute",
+    height: "100%",
+    [theme.breakpoints.down("md")]: {
       width: "100%",
     },
-  },
-  biblePane1: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#fff",
-    borderRight: "1px solid #f7f7f7",
-    overflow: "hidden",
-  },
-  splitPane1: {
-    position: "absolute",
-    width: "50%",
-    height: "100%",
-    backgroundColor: "#fff",
-    borderRight: "1px solid #f7f7f7",
-    overflow: "hidden",
-    [theme.breakpoints.only("xs")]: {
-      borderBottom: "1px solid #f1ecec",
-      width: "100%",
-      height: "calc(50% + 1.8rem)",
+    [theme.breakpoints.up("md")]: {
+      width: "calc(100% - 65px)",
     },
-  },
-  splitPane2: {
+  };
+  const splitPane2Styling = {
     position: "absolute",
     width: "50%",
     height: "100%",
@@ -76,38 +61,8 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
       height: "calc(50% - 1.8rem)",
     },
-  },
-  biblePane: {
-    position: "absolute",
-    height: "100%",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "calc(100% - 65px)",
-    },
-  },
-  rightMenu: {
-    width: 65,
-    boxShadow: "2px 2px 2px 2px" + GREY,
-    position: "absolute",
-    height: "100vh",
-    paddingTop: "60px",
-    maxHeight: "100%",
-    right: 0,
-    bottom: 0,
-    overflow: "hidden",
-    textAlign: "center",
-  },
-  pScroll: {
-    position: "absolute",
-    top: 86,
-    left: "calc(50% - 18px)",
-    zIndex: 1,
-  },
-}));
-const StudyBible = (props) => {
-  const theme = useTheme();
+  };
+
   //ref to get bible panes 1 & 2
   const bibleText1 = useRef();
   const bibleText2 = useRef();
@@ -141,9 +96,9 @@ const StudyBible = (props) => {
     mobileView,
   } = props;
   //if mobile then true, used to change layout
-  const classes = useStyles();
   const { uid } = userDetails;
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const boxStyling = mobileView ? biblePaneStyling : splitPane2Styling;
 
   const { t } = useTranslation();
   //function for moving parallel bibles scroll together
@@ -175,13 +130,28 @@ const StudyBible = (props) => {
   }, []);
   const biblePane = useMemo(() => {
     return !mobileView ? (
-      <div className={classes.splitPane1}>
+      <Box
+        sx={{
+          position: "absolute",
+          width: "50%",
+          height: "100%",
+          backgroundColor: "#fff",
+          borderRight: "1px solid #f7f7f7",
+          overflow: "hidden",
+          [theme.breakpoints.only("xs")]: {
+            borderBottom: "1px solid #f1ecec",
+            width: "100%",
+            height: "calc(50% + 1.8rem)",
+          },
+        }}
+      >
         <BiblePane setValue={setValue1} paneData={panel1} />
-      </div>
+      </Box>
     ) : (
       ""
     );
-  }, [classes.splitPane1, mobileView, panel1, setValue1]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mobileView, panel1, setValue1]);
   const toggleParallelScroll = React.useCallback(() => {
     setValue("parallelScroll", !parallelScroll);
     if (!parallelScroll) {
@@ -190,23 +160,36 @@ const StudyBible = (props) => {
   }, [parallelScroll, setValue, syncPanel, t]);
   const parallelScrollIcon = useMemo(() => {
     return mobileView ? null : (
-      <div onClick={toggleParallelScroll}>
+      <Box onClick={toggleParallelScroll}>
         {parallelScroll ? (
           <Tooltip title={t("studyParallelScroll")}>
-            <ParallelScroll fontSize="large" className={classes.pScroll} />
+            <ParallelScroll
+              fontSize="large"
+              sx={{
+                position: "absolute",
+                top: "86px",
+                left: "calc(50% - 18px)",
+                zIndex: 1,
+              }}
+            />
           </Tooltip>
         ) : (
           <Tooltip title={t("studyParallelScrollDisabled")}>
             <ParallelScroll
               fontSize="large"
               color="disabled"
-              className={classes.pScroll}
+              sx={{
+                position: "absolute",
+                top: "86px",
+                left: "calc(50% - 18px)",
+                zIndex: 1,
+              }}
             />
           </Tooltip>
         )}
-      </div>
+      </Box>
     );
-  }, [classes.pScroll, mobileView, parallelScroll, t, toggleParallelScroll]);
+  }, [mobileView, parallelScroll, t, toggleParallelScroll]);
 
   useEffect(() => {
     if (isMobile) {
@@ -298,19 +281,63 @@ const StudyBible = (props) => {
       case views.SEARCH:
         setPane(
           <>
-            <div className={classes.splitPane1}>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                [theme.breakpoints.only("xs")]: {
+                  borderBottom: "1px solid #f1ecec",
+                  width: "100%",
+                  height: "calc(50% + 1.8rem)",
+                },
+              }}
+            >
               <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
-            <div className={classes.splitPane2}>
+            </Box>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                right: 0,
+                [theme.breakpoints.only("xs")]: {
+                  borderTop: "1px solid " + LIGHTGREY,
+                  top: "calc(50% + 1.8rem)",
+                  width: "100%",
+                  height: "calc(50% - 1.8rem)",
+                },
+              }}
+            >
               <Search />
-            </div>
+            </Box>
           </>
         );
         break;
       case views.PARALLELBIBLE:
         setPane(
           <>
-            <div className={classes.splitPane1}>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                [theme.breakpoints.only("xs")]: {
+                  borderBottom: "1px solid #f1ecec",
+                  width: "100%",
+                  height: "calc(50% + 1.8rem)",
+                },
+              }}
+            >
               <BiblePane
                 setValue={setValue1}
                 paneData={panel1}
@@ -319,10 +346,26 @@ const StudyBible = (props) => {
                 paneNo={1}
                 toggleParallelScroll={toggleParallelScroll}
               />
-            </div>
+            </Box>
             <>
               {parallelScrollIcon}
-              <div className={classes.splitPane2}>
+              <Box
+                sx={{
+                  position: "absolute",
+                  width: "50%",
+                  height: "100%",
+                  backgroundColor: "#fff",
+                  borderRight: "1px solid #f7f7f7",
+                  overflow: "hidden",
+                  right: 0,
+                  [theme.breakpoints.only("xs")]: {
+                    borderTop: "1px solid " + LIGHTGREY,
+                    top: "calc(50% + 1.8rem)",
+                    width: "100%",
+                    height: "calc(50% - 1.8rem)",
+                  },
+                }}
+              >
                 <BiblePane
                   setValue={setValue2}
                   paneData={panel2}
@@ -331,7 +374,7 @@ const StudyBible = (props) => {
                   paneNo={2}
                   toggleParallelScroll={toggleParallelScroll}
                 />
-              </div>
+              </Box>
             </>
           </>
         );
@@ -339,34 +382,71 @@ const StudyBible = (props) => {
       case views.COMMENTARY:
         setPane(
           <>
-            <div className={classes.splitPane1}>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                [theme.breakpoints.only("xs")]: {
+                  borderBottom: "1px solid #f1ecec",
+                  width: "100%",
+                  height: "calc(50% + 1.8rem)",
+                },
+              }}
+            >
               <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
-            <div className={classes.splitPane2}>
+            </Box>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                right: 0,
+                [theme.breakpoints.only("xs")]: {
+                  borderTop: "1px solid " + LIGHTGREY,
+                  top: "calc(50% + 1.8rem)",
+                  width: "100%",
+                  height: "calc(50% - 1.8rem)",
+                },
+              }}
+            >
               <Commentary
                 screenView={"split"}
                 bookShortName={bookObject.short}
               />
-            </div>
+            </Box>
           </>
         );
         break;
       case views.DRAWERCOMMENTARY:
         setPane(
-          <div className={classes.biblePane1}>
+          <Box
+            sx={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              backgroundColor: "#fff",
+              borderRight: "1px solid #f7f7f7",
+              overflow: "hidden",
+            }}
+          >
             <Commentary screenView={"single"} />
-          </div>
+          </Box>
         );
         break;
       case views.DICTIONARY:
         setPane(
           <>
             {biblePane}
-            <div
-              className={mobileView ? classes.biblePane : classes.splitPane2}
-            >
+            <Box sx={boxStyling}>
               <Dictionary setDictionary={setDictionary} />
-            </div>
+            </Box>
           </>
         );
         break;
@@ -374,11 +454,9 @@ const StudyBible = (props) => {
         setPane(
           <>
             {biblePane}
-            <div
-              className={mobileView ? classes.biblePane : classes.splitPane2}
-            >
+            <Box sx={boxStyling}>
               <Infographics panel1={panel1} />
-            </div>
+            </Box>
           </>
         );
         break;
@@ -386,9 +464,7 @@ const StudyBible = (props) => {
         setPane(
           <>
             {biblePane}
-            <div
-              className={mobileView ? classes.biblePane : classes.splitPane2}
-            >
+            <Box sx={boxStyling}>
               <Audio
                 audioBible={audioBible}
                 bookCode={panel1.bookCode}
@@ -397,7 +473,7 @@ const StudyBible = (props) => {
                 languageCode={panel1.languageCode}
                 panel1={panel1}
               />
-            </div>
+            </Box>
           </>
         );
         break;
@@ -405,9 +481,7 @@ const StudyBible = (props) => {
         setPane(
           <>
             {biblePane}
-            <div
-              className={mobileView ? classes.biblePane : classes.splitPane2}
-            >
+            <Box sx={boxStyling}>
               <Video
                 books={versionBooks}
                 video={video}
@@ -415,7 +489,7 @@ const StudyBible = (props) => {
                 languageCode={panel1.languageCode}
                 panel1={panel1}
               />
-            </div>
+            </Box>
           </>
         );
         break;
@@ -423,16 +497,14 @@ const StudyBible = (props) => {
         setPane(
           <>
             {biblePane}
-            <div
-              className={mobileView ? classes.biblePane : classes.splitPane2}
-            >
+            <Box sx={boxStyling}>
               <Bookmarks
                 uid={uid}
                 versions={versions}
                 setValue={setValue1}
                 getRegionalBookName={getRegionalBookName}
               />
-            </div>
+            </Box>
           </>
         );
         break;
@@ -440,16 +512,14 @@ const StudyBible = (props) => {
         setPane(
           <>
             {biblePane}
-            <div
-              className={mobileView ? classes.biblePane : classes.splitPane2}
-            >
+            <Box sx={boxStyling}>
               <Highlights
                 uid={uid}
                 versions={versions}
                 setValue={setValue1}
                 getRegionalBookName={getRegionalBookName}
               />
-            </div>
+            </Box>
           </>
         );
         break;
@@ -457,9 +527,7 @@ const StudyBible = (props) => {
         setPane(
           <>
             {biblePane}
-            <div
-              className={mobileView ? classes.biblePane : classes.splitPane2}
-            >
+            <Box sx={boxStyling}>
               <Notes
                 uid={uid}
                 versions={versions}
@@ -469,17 +537,47 @@ const StudyBible = (props) => {
                 book={bookObject.short}
                 getRegionalBookName={getRegionalBookName}
               />
-            </div>
+            </Box>
           </>
         );
         break;
       case views.READINGPLANS:
         setPane(
           <>
-            <div className={classes.splitPane1}>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                [theme.breakpoints.only("xs")]: {
+                  borderBottom: "1px solid #f1ecec",
+                  width: "100%",
+                  height: "calc(50% + 1.8rem)",
+                },
+              }}
+            >
               <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
-            <div className={classes.splitPane2}>
+            </Box>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                right: 0,
+                [theme.breakpoints.only("xs")]: {
+                  borderTop: "1px solid " + LIGHTGREY,
+                  top: "calc(50% + 1.8rem)",
+                  width: "100%",
+                  height: "calc(50% - 1.8rem)",
+                },
+              }}
+            >
               <ReadingPlan
                 readingPlans={readingPlans}
                 bookList={versionBooks[versionSource[panel1.sourceId]]}
@@ -487,17 +585,47 @@ const StudyBible = (props) => {
                 versesSelected={panel1.versesSelected}
                 mobileView={mobileView}
               />
-            </div>
+            </Box>
           </>
         );
         break;
       case views.SIGNBIBLE:
         setPane(
           <>
-            <div className={classes.splitPane1}>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                [theme.breakpoints.only("xs")]: {
+                  borderBottom: "1px solid #f1ecec",
+                  width: "100%",
+                  height: "calc(50% + 1.8rem)",
+                },
+              }}
+            >
               <BiblePane setValue={setValue1} paneData={panel1} />
-            </div>
-            <div className={classes.splitPane2}>
+            </Box>
+            <Box
+              sx={{
+                position: "absolute",
+                width: "50%",
+                height: "100%",
+                backgroundColor: "#fff",
+                borderRight: "1px solid #f7f7f7",
+                overflow: "hidden",
+                right: 0,
+                [theme.breakpoints.only("xs")]: {
+                  borderTop: "1px solid " + LIGHTGREY,
+                  top: "calc(50% + 1.8rem)",
+                  width: "100%",
+                  height: "calc(50% - 1.8rem)",
+                },
+              }}
+            >
               <SignBible
                 signBible={signBible}
                 panel1={panel1}
@@ -505,13 +633,22 @@ const StudyBible = (props) => {
                 setValue={setValue1}
                 versions={versions}
               />
-            </div>
+            </Box>
           </>
         );
         break;
       case views.DRAWERSIGNBIBLE:
         setPane(
-          <div className={classes.biblePane1}>
+          <Box
+            sx={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              backgroundColor: "#fff",
+              borderRight: "1px solid #f7f7f7",
+              overflow: "hidden",
+            }}
+          >
             <SignBible
               signBible={signBible}
               book={bookObject.short}
@@ -519,20 +656,30 @@ const StudyBible = (props) => {
               versions={versions}
               panel1={panel1}
             />
-          </div>
+          </Box>
         );
         break;
       default:
         setPane(
-          <div className={classes.biblePane1}>
+          <Box
+            sx={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              backgroundColor: "#fff",
+              borderRight: "1px solid #f7f7f7",
+              overflow: "hidden",
+            }}
+          >
             <BiblePane
               setValue={setValue1}
               paneData={panel1}
               singlePane={true}
             />
-          </div>
+          </Box>
         );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     audioBible,
     toggleParallelScroll,
@@ -555,23 +702,53 @@ const StudyBible = (props) => {
     getRegionalBookName,
     versionBooks,
     versionSource,
-    classes.splitPane1,
-    classes.splitPane2,
     mobileView,
-    classes.biblePane1,
-    classes.biblePane,
   ]);
   return (
     <>
       <TopBar />
-      <div className={classes.main}>
-        <div className={classes.biblePane}>{pane}</div>
+      <Box
+        sx={{
+          [theme.breakpoints.down("md")]: {
+            position: "absolute",
+            height: "calc(100% - 3.6rem)",
+            width: "100%",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            height: "100%",
+            [theme.breakpoints.down("md")]: {
+              width: "100%",
+            },
+            [theme.breakpoints.up("md")]: {
+              width: "calc(100% - 65px)",
+            },
+          }}
+        >
+          {pane}
+        </Box>
         {isMobile ? null : (
-          <div className={classes.rightMenu}>
+          <Box
+            sx={{
+              width: "65px",
+              boxShadow: "2px 2px 2px 2px" + GREY,
+              position: "absolute",
+              height: "100vh",
+              paddingTop: "60px",
+              maxHeight: "100%",
+              right: "0px",
+              bottom: "0px",
+              overflow: "hidden",
+              textAlign: "center",
+            }}
+          >
             <BibleMenu />
-          </div>
+          </Box>
         )}
-      </div>
+      </Box>
       {mobileView ? <BottomBar login={login} /> : null}
     </>
   );
