@@ -1,82 +1,59 @@
 import React, { useState } from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Collapse from "@material-ui/core/Collapse";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ReactPlayer from "react-player";
 import { LIGHTGREY } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
 import { t } from "i18next";
+import { Box } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-  titleContainer: {
-    padding: "10px 20px",
-    [theme.breakpoints.down("sm")]: {
-      whiteSpace: "nowrap",
-    },
-  },
-  descContainer: {
-    padding: 0,
-    "&:last-child": {
-      paddingBottom: 0,
-    },
-  },
-  video: {
-    padding: 0,
-    display: "inline-block",
-    verticalAlign: "top",
-    width: "100%",
-    marginBlockStart: 10,
-    maxHeight: "200vh",
-    boxSizing: "content-box",
-    boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
-  },
-  player: {
-    maxHeight: "calc(100vh - 150px)",
-    [theme.breakpoints.down("sm")]: {
-      maxHeight: 240,
-    },
-  },
-  description: {
-    padding: "10px 10px 10px 20px",
-    fontSize: "1.1rem",
-    whiteSpace: "pre-wrap",
-  },
-  islDescription: {
-    maxHeight: 200,
-    overflow: "auto",
-  },
-  heading: {
-    display: "flex",
-    border: "1px solid " + LIGHTGREY,
-    padding: "10px 20px",
-    boxShadow: theme.shadows[2],
-  },
-  descTitle: {
-    fontSize: "1.2rem",
-    width: "100%",
-  },
-  arrow: {
-    borderRadius: 20,
-    fontSize: "1.6rem",
-    boxShadow: theme.shadows[2],
-  },
-}));
+const StyleExpandMoreIcon = (props) => (
+  <ExpandMoreIcon sx={{ borderRadius: 20, fontSize: "1.6rem", boxShadow: 2 }} />
+);
+const StyleExpandLessIcon = (props) => (
+  <ExpandLessIcon sx={{ borderRadius: 20, fontSize: "1.6rem", boxShadow: 2 }} />
+);
 
 const VideoCard = ({ video, playing, setPlaying, language }) => {
-  const classes = useStyles();
   const [showDesc, setShowDesc] = useState(false);
 
   const handleChange = () => {
     setShowDesc((prev) => !prev);
   };
   return (
-    <Card className={classes.video} key={video?.title}>
-      <CardContent className={classes.descContainer}>
-        <Typography className={classes.titleContainer} variant="h6">
+    <Card
+      sx={{
+        padding: 0,
+        display: "inline-block",
+        verticalAlign: "top",
+        width: "100%",
+        marginBlockStart: 1.25,
+        maxHeight: "200vh",
+        boxSizing: "content-box",
+        boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
+      }}
+      key={video?.title}
+    >
+      <CardContent
+        sx={{
+          padding: 0,
+          ":last-child": {
+            paddingBottom: 0,
+          },
+        }}
+      >
+        <Typography
+          sx={{
+            px: 2.5,
+            py: 1.25,
+            whiteSpace: { sm: "nowrap" },
+          }}
+          variant="h6"
+        >
           {language === "isl" ? video?.storyNo + "." : ""} {video?.title}
         </Typography>
         <ReactPlayer
@@ -86,7 +63,7 @@ const VideoCard = ({ video, playing, setPlaying, language }) => {
           controls={true}
           width="100%"
           height={language === "isl" ? "500px" : "360px"}
-          className={classes.player}
+          sx={{ maxHeight: { xs: 240, lg: "calc(100vh - 150px)" } }}
         />
         <BigTooltip
           title={
@@ -95,29 +72,50 @@ const VideoCard = ({ video, playing, setPlaying, language }) => {
               : t("showDescriptionSignLang")
           }
         >
-          <div onClick={handleChange} className={classes.heading}>
-            <Typography className={classes.descTitle}>
+          <Box
+            onClick={handleChange}
+            sx={{
+              display: "flex",
+              border: "1px solid " + LIGHTGREY,
+              padding: "10px 20px",
+              boxShadow: 2,
+            }}
+          >
+            <Typography sx={{ fontSize: "1.2rem", width: "100%" }}>
               {t("descriptionSignLang")}
             </Typography>
-            {showDesc ? (
-              <ExpandLessIcon className={classes.arrow} />
-            ) : (
-              <ExpandMoreIcon className={classes.arrow} />
-            )}
-          </div>
+            {showDesc ? <StyleExpandLessIcon /> : <StyleExpandMoreIcon />}
+          </Box>
         </BigTooltip>
         <Collapse in={showDesc}>
           {language === "isl" ? (
-            <div className={classes.islDescription}>
+            <Box sx={{ maxHeight: 200, overflow: "auto" }}>
               {video?.description?.map((el, i) => (
-                <Typography key={i} className={classes.description}>
+                <Typography
+                  key={i}
+                  sx={{
+                    paddingY: 1.25,
+                    paddingLeft: 2.5,
+                    paddingRight: 1.25,
+                    fontSize: "1.1rem",
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
                   <b>{el?.time ? `${el.time} ` : ""}</b>
                   {el?.text}
                 </Typography>
               ))}
-            </div>
+            </Box>
           ) : (
-            <Typography className={classes.description}>
+            <Typography
+              sx={{
+                paddingY: 1.25,
+                paddingLeft: 1.25,
+                paddingRight: 2.5,
+                fontSize: "1.1rem",
+                whiteSpace: "pre-wrap",
+              }}
+            >
               {video["description"]}
             </Typography>
           )}

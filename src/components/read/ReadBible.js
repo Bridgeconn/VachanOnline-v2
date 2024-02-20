@@ -1,27 +1,16 @@
-import { useMediaQuery } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { Box } from "@mui/material/";
 import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import { getSignBible } from "../common/utility";
 import BiblePane from "./BiblePane";
 import TopBar from "./TopBar";
-
-const useStyles = makeStyles((theme) => ({
-  biblePane1: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#fff",
-    borderRight: "1px solid #f7f7f7",
-    overflow: "hidden",
-  },
-}));
 const ReadBible = (props) => {
   const theme = useTheme();
   let { setValue, setValue1, panel1, signBible } = props;
-  const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   React.useEffect(() => {
     if (isMobile) {
@@ -43,9 +32,18 @@ const ReadBible = (props) => {
   return (
     <>
       <TopBar />
-      <div className={classes.biblePane1}>
+      <Box
+        sx={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#fff",
+          borderRight: "1px solid #f7f7f7",
+          overflow: "hidden",
+        }}
+      >
         <BiblePane setValue={setValue1} paneData={panel1} singlePane={true} />
-      </div>
+      </Box>
     </>
   );
 };
