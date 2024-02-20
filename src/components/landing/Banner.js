@@ -245,14 +245,13 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
           getContentAnchorEl={null}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           transformOrigin={{ vertical: "top", horizontal: "center" }}
-          PaperProps={{
-            style: {
-              maxHeight: 450,
-              marginTop: 20,
-              width: 420,
-              backgroundColor: WHITE,
+          sx={{
+            "& .MuiMenu-paper": {
+              maxHeight: "450px",
+              marginTop: "6px",
+              width: "420px",
               alignItems: "left",
-              paddingLeft: "15px",
+              paddingLeft: "12px",
             },
           }}
         >
