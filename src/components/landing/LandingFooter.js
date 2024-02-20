@@ -60,7 +60,7 @@ const LandingFooter = (props) => {
       >
         <Grid
           item
-          xs={4}
+          xs={3}
           sm={3}
           sx={{
             textAlign: { lg: "left", xs: "center" },
@@ -113,7 +113,7 @@ const LandingFooter = (props) => {
             </Button>
           </Badge>
         </Grid>
-        <Grid item xs={5} sm={1} md={2}>
+        <Grid item xs={1} sm={1} md={2}>
           {isTablet ? (
             <IconButton
               aria-label="feedback"
@@ -164,7 +164,7 @@ const LandingFooter = (props) => {
           )}
         </Grid>
 
-        <Grid item xs={6} sm={5} md={4}>
+        <Grid item xs={4} sm={5} md={4}>
           <Link
             href="https://www.bridgeconn.com/"
             target="_blank"
