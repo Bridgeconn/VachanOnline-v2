@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
 import IconButton from "@mui/material/IconButton";
 import WhatsNew from "./WhatsNew";
-import { useMediaQuery } from "@mui/material";
+import { Badge, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 const LandingFooter = (props) => {
@@ -60,7 +60,7 @@ const LandingFooter = (props) => {
       >
         <Grid
           item
-          xs={4}
+          xs={3}
           sm={3}
           sx={{
             textAlign: { lg: "left", xs: "center" },
@@ -90,28 +90,30 @@ const LandingFooter = (props) => {
           </Button>
         </Grid>
         <Grid item xs={4} sm={3}>
-          <Button
-            variant="outlined"
-            size="small"
-            sx={{
-              marginTop: 0.375,
-              textTransform: "unset",
-              paddingX: 1.25,
-              paddingY: 0.25,
-              fontSize: { lg: 16, xs: 12 },
-              "&:hover": {
-                backgroundColor: BLACK + "0a",
+          <Badge color="error" variant="dot">
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{
+                marginTop: 0.375,
+                textTransform: "unset",
+                paddingX: 1.25,
+                paddingY: 0.25,
+                fontSize: { lg: 16, xs: 12 },
+                "&:hover": {
+                  backgroundColor: BLACK + "0a",
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                },
+                color: BLACK,
                 border: "1px solid rgba(0, 0, 0, 0.23)",
-              },
-              color: BLACK,
-              border: "1px solid rgba(0, 0, 0, 0.23)",
-            }}
-            onClick={openWhatsNew}
-          >
-            {t("WhatsNew")}
-          </Button>
+              }}
+              onClick={openWhatsNew}
+            >
+              {t("WhatsNew")}
+            </Button>
+          </Badge>
         </Grid>
-        <Grid item xs={5} sm={1} md={2}>
+        <Grid item xs={1} sm={1} md={2}>
           {isTablet ? (
             <IconButton
               aria-label="feedback"
@@ -162,7 +164,7 @@ const LandingFooter = (props) => {
           )}
         </Grid>
 
-        <Grid item xs={6} sm={5} md={4}>
+        <Grid item xs={4} sm={5} md={4}>
           <Link
             href="https://www.bridgeconn.com/"
             target="_blank"

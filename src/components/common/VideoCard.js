@@ -3,6 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ReactPlayer from "react-player";
 import { LIGHTGREY } from "../../store/colorCode";
@@ -10,6 +11,9 @@ import BigTooltip from "./BigTooltip";
 import { t } from "i18next";
 import { Box } from "@mui/material";
 
+const StyleExpandMoreIcon = (props) => (
+  <ExpandMoreIcon sx={{ borderRadius: 20, fontSize: "1.6rem", boxShadow: 2 }} />
+);
 const StyleExpandLessIcon = (props) => (
   <ExpandLessIcon sx={{ borderRadius: 20, fontSize: "1.6rem", boxShadow: 2 }} />
 );
@@ -80,7 +84,7 @@ const VideoCard = ({ video, playing, setPlaying, language }) => {
             <Typography sx={{ fontSize: "1.2rem", width: "100%" }}>
               {t("descriptionSignLang")}
             </Typography>
-            {showDesc ? <StyleExpandLessIcon /> : <StyleExpandLessIcon />}
+            {showDesc ? <StyleExpandLessIcon /> : <StyleExpandMoreIcon />}
           </Box>
         </BigTooltip>
         <Collapse in={showDesc}>

@@ -38,11 +38,8 @@ import { styled } from "@mui/system";
 
 const CustomReactPlayer = styled(ReactPlayer)(({ theme, audiobottom }) => ({
   position: "sticky",
-  bottom: "10px",
   left: "35px",
-  [theme.breakpoints.down("md")]: {
-    bottom: audiobottom,
-  },
+  bottom: audiobottom,
   width: "calc(100% - 70px)",
   height: "50px",
 }));
@@ -337,9 +334,8 @@ const Bible = (props) => {
       width: "max-content",
       ...bgColorSx,
     };
-
     return (
-      <span key={item.verseNumber}>
+      <Box component="span" key={item.verseNumber}>
         <Box sx={{ display: lineView ? "table" : "inline" }}>
           <span
             onMouseOver={
@@ -380,7 +376,7 @@ const Bible = (props) => {
           {verseData.includes(",") && <br />}
         </Box>
         {showHeading !== "skip" && getHeading(item, headingSx)}
-      </span>
+      </Box>
     );
   }
   function getStyle(item) {
@@ -469,7 +465,7 @@ const Bible = (props) => {
             {text}
           </Box>
         ) : (
-          <span>{text}</span>
+          <span key={i}>{text}</span>
         );
       });
     }
@@ -983,6 +979,7 @@ const Bible = (props) => {
               controls
               width="calc(100% - 70px)"
               height="50px"
+              audiobottom={audioBottom}
               config={{
                 file: {
                   attributes: {
@@ -1025,10 +1022,32 @@ const Bible = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={handleClose}>
+          <Button
+            variant="outlined"
+            sx={{
+              color: color.BLACK,
+              borderColor: color.BLACK,
+              "&:hover": {
+                backgroundColor: color.BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
+            onClick={handleClose}
+          >
             {t("commonCancel")}
           </Button>
-          <Button variant="outlined" onClick={saveNote}>
+          <Button
+            variant="outlined"
+            sx={{
+              color: color.BLACK,
+              borderColor: color.BLACK,
+              "&:hover": {
+                backgroundColor: color.BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
+            onClick={saveNote}
+          >
             {t("commonSave")}
           </Button>
         </DialogActions>

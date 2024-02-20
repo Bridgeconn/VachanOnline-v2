@@ -41,7 +41,7 @@ const WhatsNew = ({ handleClose }) => {
           <Typography gutterBottom style={{ fontWeight: 800, fontSize: 17 }}>
             {t("featureAdditions")}:
           </Typography>
-          <ul style={{ fontSize: 16 }}>
+          <ul style={{ fontSize: 16, paddingLeft: 17 }}>
             {/* v1.7.0 */}
             <li>{t("multiLanguageInterface")}</li>
             <li>{t("audioBibleListening")}</li>
@@ -61,7 +61,7 @@ const WhatsNew = ({ handleClose }) => {
           >
             {t("enhancements")}:
           </Typography>
-          <ul style={{ fontSize: 16 }}>
+          <ul style={{ fontSize: 16, paddingLeft: 17 }}>
             {/* v1.6.0 */}
             <li>{t("FCBHGospelVideos")} </li>
             {/* v1.5.0 */}

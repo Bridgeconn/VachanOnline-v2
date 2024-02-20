@@ -314,7 +314,7 @@ const Search = (props) => {
                 >
                   <ListItemText
                     sx={{
-                      "&.MuiListItemText-primary": {
+                      "& .MuiListItemText-primary": {
                         fontWeight: 600,
                       },
                     }}

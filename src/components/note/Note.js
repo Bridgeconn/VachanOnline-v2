@@ -156,7 +156,7 @@ function Note({
         onClick={openNoteDialog}
       >
         <Tooltip title={t("commonAddNote")}>
-          <NoteIcon fontSize={mobileView ? "large" : "small"} />
+          <NoteIcon fontSize="large" />
         </Tooltip>
       </Box>
       <Snackbar
@@ -194,7 +194,7 @@ function Note({
         <DialogContent dividers sx={{ padding: "0px" }}>
           <Editor
             editorState={editorState}
-            editorStyle={{ height: "30vh",padding:"10px" }}
+            editorStyle={{ height: "30vh", padding: "10px" }}
             onEditorStateChange={handleNoteTextChange}
             placeholder={t("commonNotePlaceholder")}
             toolbar={getEditorToolbar(mobileView)}
@@ -203,7 +203,14 @@ function Note({
         <CustomDialogActions>
           <Button
             variant="outlined"
-            sx={{ color: BLACK, borderColor: BLACK }}
+            sx={{
+              color: BLACK,
+              borderColor: BLACK,
+              "&:hover": {
+                backgroundColor: BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
             onClick={handleClose}
           >
             {t("commonCancel")}
@@ -211,7 +218,14 @@ function Note({
           <Button
             variant="outlined"
             onClick={saveNote}
-            sx={{ color: BLACK, borderColor: BLACK }}
+            sx={{
+              color: BLACK,
+              borderColor: BLACK,
+              "&:hover": {
+                backgroundColor: BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
           >
             {t("commonSave")}
           </Button>

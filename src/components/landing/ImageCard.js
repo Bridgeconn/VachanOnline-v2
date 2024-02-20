@@ -25,10 +25,10 @@ const I = styled("i")(({ theme }) => ({
 const LinkButton = styled(Link)(({ theme }) => ({
   display: "block",
   margin: "10px",
-  [theme.breakpoints.only("lg")]: {
+  [theme.breakpoints.only("xl")]: {
     display: "unset",
   },
-  [theme.breakpoints.only("md")]: {
+  [theme.breakpoints.only("xl")]: {
     margin: "8px",
   },
   [theme.breakpoints.down("md")]: {
@@ -56,10 +56,8 @@ export default function ImageCard({ icon, type, onClick }) {
     Listen: t("landingListenCaption"),
   };
   return (
-    <Grid item sm={3} xs={6}>
-      <LinkButton
-        to={{ pathname: type === "Read" ? "/read" : "/study" }}
-      >
+    <Grid item sm={3} xs={6} sx={{ p: { sm: 0, xs: 0.5 } }}>
+      <LinkButton to={{ pathname: type === "Read" ? "/read" : "/study" }}>
         <BigTooltip title={caption[type]}>
           <Paper
             sx={{
@@ -70,11 +68,10 @@ export default function ImageCard({ icon, type, onClick }) {
                 display: "flex",
                 [theme.breakpoints.only("lg")]: {
                   margin: "0 5px",
+                  padding: "15px 20px",
                 },
                 [theme.breakpoints.down("lg")]: {
                   flexDirection: "column",
-                },
-                [theme.breakpoints.down("md")]: {
                   width: "95%",
                   margin: "auto",
                 },
@@ -115,10 +112,10 @@ export default function ImageCard({ icon, type, onClick }) {
               </Typography>
               <Box
                 sx={{
-                  fontSize: "20px",
+                  fontSize: { lg: "18px", xl: "20px" },
                   height: isLarge ? "85px" : "115px",
                   display: "flex",
-                  [theme.breakpoints.down("xl")]: {
+                  [theme.breakpoints.down("lg")]: {
                     display: "none",
                   },
                 }}

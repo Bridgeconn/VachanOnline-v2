@@ -17,7 +17,10 @@ const StyledMenuItem = styled(MenuItem)(() => ({
   fontSize: 18,
 }));
 
-const StyledIcon = styled("i")(() => ({ marginTop: "18px" }));
+const StyledIcon = styled("i")(() => ({
+  marginTop: "18px",
+  cursor: "pointer",
+}));
 
 const StyledSlider = styled(Slider)({
   color: BLACK,

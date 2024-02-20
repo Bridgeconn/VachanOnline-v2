@@ -35,7 +35,8 @@ const Login = (props) => {
       fontSize: "1.8rem",
     },
   };
-  const { login, openLogin, setValue, setMessage, setAlert, person } = props;
+  const { login, openLogin, setValue, setMessage, setAlert, person, message } =
+    props;
   const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [email, setEmail] = React.useState("");
@@ -97,8 +98,10 @@ const Login = (props) => {
         .catch((error) => {
           console.log("error");
           if (error.code === "auth/user-not-found") {
+            setMessageOpen(true);
             setMessage(t("loginMessage"));
           } else if (error.code === "auth/wrong-password") {
+            setMessageOpen(true);
             setMessage(t("invalidPswd"));
           } else {
             setMessage(error.message);
@@ -258,13 +261,14 @@ const Login = (props) => {
                       onClose={() => setMessageOpen(false)}
                       severity="error"
                     >
-                      {t("loginSignInWarning")}
+                      {message ? message : t("loginSignInWarning")}
                     </Alert>
                   </Collapse>
                   <Typography component="h1" variant="h5">
                     {t("signInTitle")}
                   </Typography>
-                  <form
+                  <Box
+                    component="form"
                     onSubmit={(e) => signIn(e)}
                     sx={{
                       width: "100%", // Fix IE 11 issue.
@@ -305,6 +309,10 @@ const Login = (props) => {
                         margin: theme.spacing(1, 0, 1),
                         color: BLACK,
                         borderColor: BLACK,
+                        "&:hover": {
+                          backgroundColor: BLACK + "0a",
+                          border: "1px solid rgba(0, 0, 0, 0.23)",
+                        },
                       }}
                     >
                       {t("signInTitle")}
@@ -318,6 +326,10 @@ const Login = (props) => {
                         margin: theme.spacing(1, 0, 1),
                         color: BLACK,
                         borderColor: BLACK,
+                        "&:hover": {
+                          backgroundColor: BLACK + "0a",
+                          border: "1px solid rgba(0, 0, 0, 0.23)",
+                        },
                       }}
                     >
                       {t("loginSignInGoogleBtn")}
@@ -352,7 +364,7 @@ const Login = (props) => {
                         </Link>
                       </Grid>
                     </Grid>
-                  </form>
+                  </Box>
                 </Box>
               ) : form === 2 ? (
                 <Box
@@ -366,7 +378,8 @@ const Login = (props) => {
                   <Typography component="h1" variant="h5">
                     {t("loginSignUpTitle")}
                   </Typography>
-                  <form
+                  <Box
+                    component="form"
                     onSubmit={(e) => signUp(e)}
                     sx={{
                       width: "100%", // Fix IE 11 issue.
@@ -408,6 +421,12 @@ const Login = (props) => {
                       variant="outlined"
                       sx={{
                         margin: theme.spacing(1, 0, 1),
+                        color: BLACK,
+                        borderColor: BLACK,
+                        "&:hover": {
+                          backgroundColor: BLACK + "0a",
+                          border: "1px solid rgba(0, 0, 0, 0.23)",
+                        },
                       }}
                     >
                       {t("loginSignUpBtn")}
@@ -440,7 +459,7 @@ const Login = (props) => {
                         </Link>
                       </Grid>
                     </Grid>
-                  </form>
+                  </Box>
                 </Box>
               ) : (
                 <Box
@@ -457,7 +476,8 @@ const Login = (props) => {
                   <Typography component="p" variant="subtitle2" align="center">
                     {t("loginPswdReset")}
                   </Typography>
-                  <form
+                  <Box
+                    component="form"
                     onSubmit={(e) => resetPassword(e)}
                     sx={{
                       width: "100%", // Fix IE 11 issue.
@@ -486,6 +506,12 @@ const Login = (props) => {
                       variant="outlined"
                       sx={{
                         margin: theme.spacing(1, 0, 1),
+                        color: BLACK,
+                        borderColor: BLACK,
+                        "&:hover": {
+                          backgroundColor: BLACK + "0a",
+                          border: "1px solid rgba(0, 0, 0, 0.23)",
+                        },
                       }}
                     >
                       {t("loginSubmit")}
@@ -506,7 +532,7 @@ const Login = (props) => {
                         </Link>
                       </Grid>
                     </Grid>
-                  </form>
+                  </Box>
                 </Box>
               )}
             </Container>
