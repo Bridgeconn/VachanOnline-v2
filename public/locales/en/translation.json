@@ -187,6 +187,7 @@
   "seeAlsoText": "See Also",
   "refText": "Ref",
   "shareTooltip": "Share",
+  "shareVerseOfTheDayTooltip": "Share Verse of the day",
   "copyToClipBoardBtn": "Copy to Clipboard",
   "clipBoardCopied": "Copied",
   "clipBoardCopiedFailed": "Copy to clipboard failed",
