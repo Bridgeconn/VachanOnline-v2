@@ -55,10 +55,10 @@ const PageHeader = (props) => {
       login ? (
         <LoginMenu userDetails={userDetails} />
       ) : (
-        <Login setMessage={setMessage} setAlert={setAlert} />
+        <Login setMessage={setMessage} setAlert={setAlert} message={message} />
       )
     );
-  }, [login, userDetails]);
+  }, [login, message, userDetails]);
   return (
     <Box
       sx={{
@@ -264,6 +264,7 @@ const PageHeader = (props) => {
         </Toolbar>
         {alert ? (
           <Snackbar
+            sx={{ "&.MuiSnackbar-root": { bottom: "55px" } }}
             open={Boolean(alert)}
             autoHideDuration={8000}
             onClose={handleClose}
