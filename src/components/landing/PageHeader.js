@@ -22,7 +22,7 @@ import { styled } from "@mui/system";
 
 const ImageLogo = styled("img")(({ theme }) => ({
   height: 60,
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     display: "none",
   },
 }));
