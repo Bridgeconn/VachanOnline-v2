@@ -10,14 +10,21 @@ import { LIGHTGREY } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
 import { t } from "i18next";
 import { Box } from "@mui/material";
+import { styled } from "@mui/system";
 
-const StyleExpandMoreIcon = (props) => (
+const StyleExpandMoreIcon = () => (
   <ExpandMoreIcon sx={{ borderRadius: 20, fontSize: "1.6rem", boxShadow: 2 }} />
 );
-const StyleExpandLessIcon = (props) => (
+const StyleExpandLessIcon = () => (
   <ExpandLessIcon sx={{ borderRadius: 20, fontSize: "1.6rem", boxShadow: 2 }} />
 );
 
+const CustomReactPlayer = styled(ReactPlayer)(({ theme }) => ({
+  maxHeight: "calc(100vh - 150px)",
+  [theme.breakpoints.down("sm")]: {
+    maxHeight: "240px",
+  },
+}));
 const VideoCard = ({ video, playing, setPlaying, language }) => {
   const [showDesc, setShowDesc] = useState(false);
 
@@ -56,14 +63,13 @@ const VideoCard = ({ video, playing, setPlaying, language }) => {
         >
           {language === "isl" ? video?.storyNo + "." : ""} {video?.title}
         </Typography>
-        <ReactPlayer
+        <CustomReactPlayer
           playing={playing === video?.url}
           onPlay={() => setPlaying(video?.url)}
           url={video?.url}
           controls={true}
           width="100%"
           height={language === "isl" ? "500px" : "360px"}
-          sx={{ maxHeight: { xs: 240, lg: "calc(100vh - 150px)" } }}
         />
         <BigTooltip
           title={
