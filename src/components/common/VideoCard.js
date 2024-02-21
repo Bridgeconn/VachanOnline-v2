@@ -12,14 +12,14 @@ import { t } from "i18next";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
-const StyleExpandMoreIcon = (props) => (
+const StyleExpandMoreIcon = () => (
   <ExpandMoreIcon sx={{ borderRadius: 20, fontSize: "1.6rem", boxShadow: 2 }} />
 );
-const StyleExpandLessIcon = (props) => (
+const StyleExpandLessIcon = () => (
   <ExpandLessIcon sx={{ borderRadius: 20, fontSize: "1.6rem", boxShadow: 2 }} />
 );
 
-const CustomReactPlayer = styled(ReactPlayer)(({ theme, props }) => ({
+const CustomReactPlayer = styled(ReactPlayer)(({ theme }) => ({
   maxHeight: "calc(100vh - 150px)",
   [theme.breakpoints.down("sm")]: {
     maxHeight: "240px",
