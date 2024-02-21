@@ -108,7 +108,7 @@ const Audio = (props) => {
       sx={{
         width: "100%",
         position: "absolute",
-        top: { lg: "78px", md: "68px", xs: 0 },
+        top: { lg: "78px", md: "68px", xs: "58px" },
         bottom: 0,
       }}
     >
