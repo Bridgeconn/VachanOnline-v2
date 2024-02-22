@@ -7,7 +7,7 @@ import Link from "@mui/material/Link";
 import { Box, useMediaQuery } from "@mui/material";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import { AUDIO, VIDEO } from "../../store/views";
+import { VIDEO } from "../../store/views";
 import BibleIndex from "../landing/BibleIndex";
 import Banner from "./Banner";
 import ImageCard from "./ImageCard";
@@ -78,11 +78,7 @@ const Landing = (props) => {
           width: "auto",
         }}
       >
-        <ImageCard
-          icon="volume_up"
-          type="Listen"
-          onClick={() => setValue("parallelView", AUDIO)}
-        />
+        <ImageCard icon="volume_up" type="Listen" />
         <ImageCard
           icon="videocam"
           type="Watch"

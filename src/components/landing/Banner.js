@@ -95,7 +95,22 @@ const ContainerBox = styled(Box)(() => ({
 }));
 
 const BigTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
+  <Tooltip
+    {...props}
+    classes={{ popper: className }}
+    slotProps={{
+      popper: {
+        modifiers: [
+          {
+            name: "offset",
+            options: {
+              offset: [0, -20],
+            },
+          },
+        ],
+      },
+    }}
+  />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: WHITE,
@@ -242,7 +257,6 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
           keepMounted
           open={open}
           onClose={closeShareDialog}
-          getContentAnchorEl={null}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           transformOrigin={{ vertical: "top", horizontal: "center" }}
           sx={{

@@ -57,7 +57,16 @@ export default function ImageCard({ icon, type, onClick }) {
   };
   return (
     <Grid item sm={3} xs={6} sx={{ p: { sm: 0, xs: 0.5 } }}>
-      <LinkButton to={{ pathname: type === "Read" ? "/read" : "/study" }}>
+      <LinkButton
+        to={{
+          pathname:
+            type === "Read"
+              ? "/read"
+              : type === "Study"
+              ? "/study"
+              : "/audiobible",
+        }}
+      >
         <BigTooltip title={caption[type]}>
           <Paper
             sx={{
