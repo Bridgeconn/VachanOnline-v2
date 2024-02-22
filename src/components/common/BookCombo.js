@@ -322,9 +322,7 @@ const BookCombo = (props) => {
           variant="contained"
           onClick={openCombo}
           ref={bookDropdown}
-          style={
-            landingPage && mobile ? { marginLeft: 0, marginRight: 15 } : {}
-          }
+          style={landingPage && mobile ? { marginRight: 15 } : {}}
           sx={{
             [`&.MuiButton-root`]: {
               fontSize: "1rem",
