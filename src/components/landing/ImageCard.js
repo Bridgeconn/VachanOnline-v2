@@ -62,9 +62,9 @@ export default function ImageCard({ icon, type, onClick }) {
           pathname:
             type === "Read"
               ? "/read"
-              : type === "Study"
-              ? "/study"
-              : "/audiobible",
+              : type === "Listen"
+              ? "/audiobible"
+              : "/study",
         }}
       >
         <BigTooltip title={caption[type]}>
