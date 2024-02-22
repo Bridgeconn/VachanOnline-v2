@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import BigTooltip from "../common/BigTooltip";
 import { languageCode } from "../../store/languageData";
-import { BLACK, GREY, WHITE } from "../../store/colorCode";
+import { BLACK, WHITE } from "../../store/colorCode";
 import ShareIcon from "@mui/icons-material/Share";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { Button, Menu, Snackbar, TextField } from "@mui/material";
@@ -94,33 +94,6 @@ const ContainerBox = styled(Box)(() => ({
   justifyContent: "center",
 }));
 
-const BigTooltip = styled(({ className, ...props }) => (
-  <Tooltip
-    {...props}
-    classes={{ popper: className }}
-    slotProps={{
-      popper: {
-        modifiers: [
-          {
-            name: "offset",
-            options: {
-              offset: [0, -20],
-            },
-          },
-        ],
-      },
-    }}
-  />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: WHITE,
-    color: BLACK,
-    boxShadow: theme.shadows[4],
-    border: "1px solid" + GREY,
-    fontSize: 16,
-    marginTop: 0,
-  },
-}));
 const Banner = ({ setValue1, locale, versions, versionBooks }) => {
   const theme = useTheme();
   const langCode = languageCode[locale].code;
@@ -238,7 +211,7 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
     <ContainerBox>
       <Heading>
         {t("landingVerseHeading")}
-        <Tooltip title={t("shareVerseOfTheDayTooltip")}>
+        <BigTooltip title={t("shareVerseOfTheDayTooltip")} placement="right">
           <ShareIcon
             fontSize="small"
             onClick={openShareDialog}
@@ -250,7 +223,7 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
               marginLeft: "8px",
             }}
           />
-        </Tooltip>
+        </BigTooltip>
         <Menu
           id="long-menu"
           anchorEl={shareAnchor}
@@ -321,8 +294,11 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
           </Alert>
         </Snackbar>
       </Heading>
-      <BigTooltip title={t("landingVerseHeadingToolTip")}>
-        <StyledBox>
+      <StyledBox>
+        <BigTooltip
+          title={t("landingVerseHeadingToolTip")}
+          placement="bottom-end"
+        >
           <StyledLink to={{ pathname: "/read" }} onClick={() => setURL()}>
             <VerseText>{verseObj ? verseObj.verseContent?.text : ""}</VerseText>
             <Box
@@ -340,8 +316,8 @@ const Banner = ({ setValue1, locale, versions, versionBooks }) => {
                 : ""}
             </Box>
           </StyledLink>
-        </StyledBox>
-      </BigTooltip>
+        </BigTooltip>
+      </StyledBox>
     </ContainerBox>
   );
 };
