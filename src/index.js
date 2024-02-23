@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./fonts/Gautami.ttf";
 import "./fonts/GurbaniLipi.ttf";
@@ -32,8 +32,8 @@ import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 // Initialize firebase instance
 initFirebase();
 const store = configureStore({});
-
-render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider
       firebase={firebase}
@@ -42,8 +42,7 @@ render(
     >
       <App />
     </ReactReduxFirebaseProvider>
-  </Provider>,
-  document.getElementById("root")
+  </Provider>
 );
 
 // If you want your app to work offline and load faster, you can change

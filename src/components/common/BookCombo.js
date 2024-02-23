@@ -1,174 +1,32 @@
 import React from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { bibleChapters, colorGroup } from "../../store/bibleData";
 import { connect } from "react-redux";
 import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
 import BigTooltip from "./BigTooltip";
-import { Typography } from "@material-ui/core";
-import { MOBILEPV } from "../../store/views";
+import { Box, ListItemButton, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { SYNCPANEL } from "../../store/actions";
-const useStyles = makeStyles((theme) => ({
-  button: {
-    fontSize: "1rem",
-    margin: 4,
-    padding: "6px 0 6px 12px",
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
-    border: "1px solid #fff",
-    boxShadow: "1px 1px 1px 1px " + GREY,
-    [theme.breakpoints.only("sm")]: {
-      padding: 6,
-      maxWidth: (props) => (props.parallelView ? 110 : 165),
-    },
-    [theme.breakpoints.down("xs")]: {
-      maxWidth: 165,
-      padding: (props) =>
-        props.screen === "info" ||
-        props.screen === "audio" ||
-        props.screen === "video"
-          ? 4
-          : 6,
-      margin: 9,
-    },
-  },
-  icon: {
+import { styled } from "@mui/system";
+const I = styled("i")(({ theme }) => ({
+  [`&.material-icons`]: {
     left: 3,
     position: "relative",
     width: 30,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("lg")]: {
       left: 0,
       display: "none",
     },
   },
-  root: {
-    width: "100%",
-    maxWidth: 680,
-    backgroundColor: WHITE,
-    textTransform: "capitalize",
-    maxHeight: "calc(100vh - 170px)",
-  },
-  paper: {
-    position: "relative",
-    maxHeight: "calc(100vh - 170px)",
-    width: 358,
-    backgroundColor: WHITE,
-    color: "#2a2a2a",
-    "@media (max-width: 370px)": {
-      width: 320,
-    },
-  },
-  book: {
-    margin: "3px 3px 4px 6px",
-    paddingBottom: 1,
-    display: "inline-block",
-    width: 160,
-    transition: "width 500ms ease-out, height 500ms ease-out",
-    textAlign: "center",
-    padding: "0px 0px",
-    fontSize: "11px",
-    border: "1px solid #d2d2d2c9",
-    backgroundColor: WHITE,
-    "@media (max-width: 370px)": {
-      margin: "3px 5px 3px 1px",
-      width: 146,
-    },
-  },
-  bookText: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    width: 160,
-    "@media (max-width: 370px)": {
-      width: 140,
-    },
-  },
-  headers: {
-    margin: 4,
-    display: "inline-block",
-    fontWeight: "bold",
-    width: 330,
-    fontSize: "16px",
-    height: 35,
-    borderRadius: 4,
-    boxShadow: "1px 1px 1px 1px" + GREY,
-    textAlign: "center",
-    "@media (max-width: 370px)": {
-      width: 294,
-    },
-  },
-  openBook: {
-    border: "1px solid #ccc",
-    backgroundColor: LIGHTGREY,
-    color: BLACK,
-    "&:hover": {
-      border: "1px solid #ccc",
-      backgroundColor: WHITE,
-      color: BLACK,
-    },
-    [theme.breakpoints.down("md")]: {
-      "&:hover": {
-        backgroundColor: LIGHTGREY,
-      },
-    },
-  },
-  chapterList: {
-    paddingTop: 5,
-    backgroundColor: "white",
-  },
-  chapter: {
-    margin: "0 0 3px 3px",
-    display: "inline-block",
-    width: 45,
-    border: "1px solid #ccc",
-    textAlign: "center",
-    padding: "8px 0",
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  },
-  openChapter: {
-    border: "1px solid #ccc",
-    backgroundColor: LIGHTGREY,
-    color: BLACK,
-    "&:hover": {
-      border: "1px solid #ccc",
-      backgroundColor: GREY,
-    },
-  },
-  bookName: {
-    whiteSpace: "nowrap",
-    minWidth: 100,
-    width: "fit-content",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  bookNameBox: {
-    [theme.breakpoints.down("sm")]: {
-      whiteSpace: "nowrap",
-      minWidth: 130,
-      maxWidth: 150,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-  },
-  verseDisplay: {
-    display: "inline-flex",
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    border: "1px solid #fff",
-    boxShadow: "1px 1px 1px 1px " + GREY,
-    margin: 4,
-    padding: "6px 10px",
-    borderRadius: 4,
-  },
 }));
+
 const BookCombo = (props) => {
   const {
     paneNo,
@@ -187,12 +45,6 @@ const BookCombo = (props) => {
 
   const { t } = useTranslation();
   //classes for styling
-  const parallelMV = MOBILEPV.includes(parallelView);
-  const styleProps = {
-    screen: screen,
-    parallelView: parallelMV,
-  };
-  const classes = useStyles(styleProps);
   const theme = useTheme();
   //if mobile then true, used to change layout
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -371,7 +223,22 @@ const BookCombo = (props) => {
 
   function otHeader() {
     return bookList.find((item) => item.book_id <= 39) ? (
-      <ListItem className={classes.headers}>
+      <ListItem
+        sx={{
+          margin: 0.5,
+          display: "inline-block",
+          fontWeight: "bold",
+          width: 330,
+          fontSize: "16px",
+          height: 35,
+          borderRadius: 1,
+          boxShadow: "1px 1px 1px 1px" + GREY,
+          textAlign: "center",
+          "@media (max-width: 370px)": {
+            width: 294,
+          },
+        }}
+      >
         {t("commonOldTestamentHead")}
       </ListItem>
     ) : (
@@ -381,7 +248,22 @@ const BookCombo = (props) => {
   function ntHeader(item) {
     const ntBook = bookList.find((item) => item.book_id >= 40);
     return item?.book_code === ntBook?.book_code ? (
-      <ListItem className={classes.headers}>
+      <ListItem
+        sx={{
+          margin: 0.5,
+          display: "inline-block",
+          fontWeight: "bold",
+          width: 330,
+          fontSize: "16px",
+          height: 35,
+          borderRadius: 0.5,
+          boxShadow: "1px 1px 1px 1px" + GREY,
+          textAlign: "center",
+          "@media (max-width: 370px)": {
+            width: 294,
+          },
+        }}
+      >
         {t("commonNewTestamentHead")}
       </ListItem>
     ) : (
@@ -414,7 +296,21 @@ const BookCombo = (props) => {
     }
   };
   return verseData ? (
-    <Typography variant="button" className={classes.verseDisplay}>
+    <Typography
+      variant="button"
+      sx={{
+        display: "inline-flex",
+        fontSize: "1rem",
+        textTransform: "capitalize",
+        border: "1px solid #fff",
+        boxShadow: "1px 1px 1px 1px " + GREY,
+        margin: 0.5,
+        paddingX: 1.25,
+        paddingY: 0.75,
+        borderRadius: 1,
+        color: BLACK,
+      }}
+    >
       {`${bookDisplay} ${chapter}:${verseData}`}
     </Typography>
   ) : (
@@ -426,23 +322,68 @@ const BookCombo = (props) => {
           variant="contained"
           onClick={openCombo}
           ref={bookDropdown}
-          style={
-            landingPage && mobile ? { marginLeft: 0, marginRight: 15 } : {}
-          }
-          classes={{ root: classes.button }}
+          style={landingPage && mobile ? { marginRight: 15 } : {}}
+          sx={{
+            [`&.MuiButton-root`]: {
+              fontSize: "1rem",
+              paddingRight: {
+                lg: 0.75,
+                xs:
+                  screen === "info" || screen === "audio" || screen === "video"
+                    ? 0.5
+                    : 0.75,
+              },
+              paddingLeft: {
+                lg: 1.5,
+                xs:
+                  screen === "info" || screen === "audio" || screen === "video"
+                    ? 0.5
+                    : 0.75,
+              },
+              paddingY: 0.75,
+              textTransform: "capitalize",
+              backgroundColor: "#fff",
+              border: "1px solid #fff",
+              boxShadow: "1px 1px 1px 1px " + GREY,
+              maxWidth: { lg: "unset", xs: parallelView ? 120 : 140 },
+              margin: { lg: 0.5, xs: 1.125 },
+              color: BLACK,
+              "&:hover": {
+                backgroundColor: BLACK + "0a",
+              },
+            },
+          }}
         >
           {minimal === true ? (
-            <div
-              className={classes.bookName}
-            >{`${bookDisplay}  ${chapter}`}</div>
+            <Box
+              sx={{
+                whiteSpace: "nowrap",
+                minWidth: "100px",
+                width: "fit-content",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                [theme.breakpoints.only("md")]: {
+                  maxWidth: parallelView ? "120px" : "130px",
+                },
+                [theme.breakpoints.down("sm")]: {
+                  maxWidth: "120px",
+                },
+              }}
+            >{`${bookDisplay}  ${chapter}`}</Box>
           ) : (
-            <div className={classes.bookNameBox}>
+            <Box
+              sx={{
+                whiteSpace: { lg: "wrap", xs: "nowrap" },
+                minWidth: { sm: "unset", xs: 110 },
+                maxWidth: { lg: "unset", xs: 150 },
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
               {`${bookDisplay} ${chapter}`}
-            </div>
+            </Box>
           )}
-          <i className={`material-icons ${classes.icon}`}>
-            keyboard_arrow_down
-          </i>
+          <I className={`material-icons`}>keyboard_arrow_down</I>
         </Button>
       </BigTooltip>
       {/* If no book list dont render menu */}
@@ -451,7 +392,6 @@ const BookCombo = (props) => {
       ) : (
         <Menu
           elevation={0}
-          getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left",
@@ -465,63 +405,138 @@ const BookCombo = (props) => {
           keepMounted
           open={comboOpen}
           onClose={() => closeMenu(false)}
-          classes={{ paper: classes.paper }}
+          sx={{
+            [`.MuiMenu-paper `]: {
+              position: "relative",
+              maxHeight: "calc(100vh - 170px)",
+              width: 358,
+              backgroundColor: WHITE,
+              color: "#2a2a2a",
+              "@media (max-width: 370px)": {
+                width: 320,
+              },
+            },
+          }}
         >
           {/*List of books*/}
           {otHeader()}
           <List
             component="nav"
             aria-labelledby="nested-list-subheader"
-            className={classes.root}
+            sx={{
+              [`&.MuiList-root `]: {
+                width: "100%",
+                maxWidth: 680,
+                backgroundColor: WHITE,
+                textTransform: "capitalize",
+                maxHeight: "calc(100vh - 170px)",
+              },
+            }}
           >
             {bookList.map((item) => {
-              let open =
-                openBookCode === item.book_code ? classes.openBook : "";
               return (
                 <React.Fragment key={item.book_id}>
                   {ntHeader(item)}
-                  <ListItem
+                  <ListItemButton
                     value={item.short}
                     data-bookcode={item.book_code}
-                    button
                     onClick={(event) => bookClicked(event)}
-                    className={`${classes.book} ${open}`}
-                    ref={open === "" ? null : openBookRef}
+                    sx={{
+                      marginTop: 0.375,
+                      marginRight: 0.375,
+                      marginBottom: 0.5,
+                      marginLeft: 0.75,
+                      paddingBottom: 0.125,
+                      display: "inline-block",
+                      width: 160,
+                      transition: "width 500ms ease-out, height 500ms ease-out",
+                      textAlign: "center",
+                      padding: 0,
+                      fontSize: "11px",
+                      border:
+                        openBookCode === item.book_code
+                          ? "1px solid #ccc"
+                          : "1px solid #d2d2d2c9",
+                      backgroundColor:
+                        openBookCode === item.book_code ? LIGHTGREY : WHITE,
+                      "@media (max-width: 370px)": {
+                        margin: "3px 5px 3px 1px",
+                        width: 146,
+                      },
+                      color: BLACK,
+                      "&:hover": {
+                        border: "1px solid #ccc",
+                        backgroundColor: BLACK + "0a",
+                        color: BLACK,
+                      },
+                    }}
+                    ref={openBookCode !== item.book_code ? null : openBookRef}
                     style={{
                       borderLeft: "4px solid" + colorGroup[item.book_code],
                     }}
                   >
                     <ListItemText
                       primary={item.short}
-                      classes={{ primary: classes.bookText }}
+                      sx={{
+                        [`&.MuiListItemText-primary `]: {
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          width: 160,
+                          "@media (max-width: 370px)": {
+                            width: 140,
+                          },
+                        },
+                      }}
                     />
-                  </ListItem>
+                  </ListItemButton>
                   {/* if chapterRow equal to current book index show chapters */}
                   {chapterRow === item.book_code &&
                   selectedChapterList?.length !== 0 ? (
                     <List
                       component="div"
                       disablePadding
-                      className={classes.chapterList}
+                      sx={{ paddingTop: 0.625, backgroundColor: "white" }}
                     >
                       {selectedChapterList.map((chapterObject, i) => {
-                        var chapterActive =
-                          openBookCode === bookCode &&
-                          chapterObject.number === parseInt(chapter)
-                            ? classes.openChapter
-                            : "";
                         return (
-                          <ListItem
-                            button
+                          <ListItemButton
                             key={chapterObject.number}
                             data-bookcode={chapterObject.bibleBookCode}
                             data-chapter={chapterObject.number}
-                            className={`${classes.chapter} ${chapterActive}`}
+                            sx={{
+                              marginTop: 0,
+                              marginRight: 0,
+                              marginBottom: 0.375,
+                              marginLeft: 0.375,
+                              display: "inline-block",
+                              width: 45,
+                              border:
+                                openBookCode === bookCode &&
+                                chapterObject.number === parseInt(chapter)
+                                  ? "1px solid #ccc"
+                                  : "1px solid #ccc",
+                              textAlign: "center",
+                              paddingX: 0,
+                              paddingY: 1,
+                              fontFamily:
+                                '"Roboto", "Helvetica", "Arial", sans-serif',
+                              backgroundColor:
+                                openBookCode === bookCode &&
+                                chapterObject.number === parseInt(chapter)
+                                  ? LIGHTGREY
+                                  : WHITE,
+                              color: BLACK,
+                              "&:hover": {
+                                border: "1px solid #ccc",
+                                backgroundColor: BLACK + "0a",
+                              },
+                            }}
                             onClick={clickChapter}
                             ref={i === 0 ? firstChapterRef : null}
                           >
                             {chapterObject.number}
-                          </ListItem>
+                          </ListItemButton>
                         );
                       })}
                     </List>

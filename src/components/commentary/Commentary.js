@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import Box from "@material-ui/core/Box";
+import { useTheme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Collapse from "@mui/material/Collapse";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import Box from "@mui/material/Box";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import CommentaryCombo from "./CommentaryCombo";
@@ -14,154 +14,25 @@ import parse from "html-react-parser";
 import Close from "../common/Close";
 import BookCombo from "../common/BookCombo";
 import Viewer from "react-viewer";
-import { LIGHTGREY } from "../../store/colorCode";
-import { Paper } from "@material-ui/core";
+import Help from "../common/Help";
+import { BLACK, LIGHTGREY } from "../../store/colorCode";
+import { Paper } from "@mui/material";
+import { styled } from "@mui/system";
 import { useTranslation } from "react-i18next";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 82,
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
-    [theme.breakpoints.only("xs")]: {
-      marginTop: (props) => (props.screenView === "single" ? 60 : 0),
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 60,
-    },
-  },
-  title: {
-    paddingLeft: 35,
-    paddingBottom: 7,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    [theme.breakpoints.down("sm")]: {
-      paddingLeft: 5,
-      paddingBottom: 0,
-      marginBottom: 0,
-      alignItems: "center",
-      boxShadow: theme.shadows[1],
-    },
-  },
-  titleComment: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
-  introTitle: {
-    fontSize: "1.2rem",
-    width: "100%",
-  },
-  introHeading: {
-    display: "flex",
-    border: "1px solid " + LIGHTGREY,
-    padding: "10px 20px",
-    boxShadow: theme.shadows[2],
-  },
-  introText: {
-    margin: "0 6px",
-    padding: "20px 20px 30px 30px",
-  },
-  text: {
-    height: "calc(100vh - 203px)",
-    marginTop: 2,
-    marginBottom: 68,
-    flexGrow: 1,
-    color: "#464545",
-    fontFamily: "Roboto,Noto Sans",
-    overflow: "scroll",
-    fontSize: "1rem",
-    fontWeight: 400,
-    lineHeight: 1.5,
-    letterSpacing: "0.01em",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "& span": {
-      fontWeight: 600,
-      display: "block",
-    },
-    "& p": {
-      marginBottom: 10,
-    },
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    "& img": {
-      float: "right",
-      marginLeft: 30,
-      maxWidth: "70%",
-      margin: "30px 0px",
-    },
-    [theme.breakpoints.only("sm")]: {
-      marginBottom: 45,
-    },
-    [theme.breakpoints.only("xs")]: {
-      marginBottom: (props) => (props.screenView === "single" ? 45 : -15),
-    },
-  },
-  verseText: {
-    padding: "20px 20px 30px 30px",
-  },
-  message: {
-    padding: "20px 15px 2px 15px",
-  },
-  bookLabel: {
-    paddingLeft: 20,
-    verticalAlign: "middle",
-    fontSize: 20,
-    display: "inline-block",
-    [theme.breakpoints.down("md")]: {
-      fontSize: 16,
-      paddingLeft: 5,
-    },
-  },
-  bookNameBox: {
-    [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      alignItems: "center",
-    },
-    [theme.breakpoints.down("md")]: {
-      whiteSpace: "nowrap",
-    },
-  },
-  icons: {
-    display: "flex",
-    marginTop: 4,
-    marginLeft: -5,
-    [theme.breakpoints.down("sm")]: {
-      marginLeft: 0,
-    },
-  },
-  metadata: {
-    marginLeft: "auto",
-    display: "inline-block",
-    marginTop: -14,
-  },
-  closeButton: {
-    marginRight: 10,
-    marginTop: -6,
-    [theme.breakpoints.down("sm")]: {
-      marginTop: "0.2rem",
-    },
-  },
-  arrow: {
-    borderRadius: 20,
-    fontSize: "1.6rem",
-    boxShadow: theme.shadows[2],
-  },
+const CustomExpandLess = styled(ExpandLessIcon)(({ theme }) => ({
+  borderRadius: "20px",
+  fontSize: "1.6rem",
+  boxShadow: theme.shadows[2],
 }));
 
+const CustomExpandMore = styled(ExpandMoreIcon)(({ theme }) => ({
+  borderRadius: "20px",
+  fontSize: "1.6rem",
+  boxShadow: theme.shadows[2],
+}));
 const Commentary = (props) => {
+  const theme = useTheme();
   const [commentaryText, setCommentaryText] = React.useState("");
   const [commentaryObject, setCommentaryObject] = React.useState();
   const [verseLabel, setVerseLabel] = React.useState("Verse");
@@ -186,16 +57,11 @@ const Commentary = (props) => {
     screenView,
     bookShortName,
   } = props;
-  const styleProps = {
-    screenView: screenView,
-  };
 
   const { t } = useTranslation();
-  const classes = useStyles(styleProps);
   const { version, bookCode, chapter } = panel1;
   const [visible, setVisible] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0);
-
   const ref = {
     book: book,
     chapter: chapter,
@@ -397,12 +263,58 @@ const Commentary = (props) => {
     setShowIntro((prev) => !prev);
   };
   return (
-    <div className={classes.root}>
-      <Box className={classes.title}>
-        <Box flexGrow={1} className={classes.titleComment}>
+    <Box
+      sx={{
+        width: "100%",
+        marginTop: "82px",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        [theme.breakpoints.down("lg")]: {
+          marginTop: "71px",
+        },
+        [theme.breakpoints.only("xs")]: {
+          marginTop: screenView === "single" ? "60px" : "0px",
+        },
+      }}
+    >
+      <Box
+        sx={{
+          paddingLeft: "35px",
+          paddingBottom: { sm: "7px", xs: "0" },
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          [theme.breakpoints.down("md")]: {
+            paddingLeft: "5px",
+            marginBottom: "0px",
+            alignItems: "center",
+            boxShadow: theme.shadows[1],
+          },
+        }}
+      >
+        <Box
+          flexGrow={1}
+          sx={{
+            [theme.breakpoints.down("lg")]: {
+              display: "none",
+            },
+          }}
+        >
           <Typography variant="h6">{t("commentariesText")}</Typography>
         </Box>
-        <Box flexGrow={1} className={classes.bookNameBox}>
+        <Box
+          flexGrow={1}
+          sx={{
+            [theme.breakpoints.down("md")]: {
+              display: "flex",
+              alignItems: "center",
+            },
+            [theme.breakpoints.down("lg")]: {
+              whiteSpace: "nowrap",
+            },
+          }}
+        >
           <CommentaryCombo
             commentaries={props.commentaries}
             commentary={props.commentary}
@@ -417,22 +329,65 @@ const Commentary = (props) => {
               minimal={true}
             />
           ) : (
-            <Typography className={classes.bookLabel}>
+            <Typography
+              sx={{
+                paddingLeft: "20px",
+                verticalAlign: "middle",
+                fontSize: "20px",
+                display: "inline-block",
+                [theme.breakpoints.down("lg")]: {
+                  fontSize: "16px",
+                  paddingLeft: "5px",
+                },
+              }}
+            >
               {book} {chapter}
             </Typography>
           )}
         </Box>
 
-        <Box className={classes.icons}>
-          <div className={classes.metadata}>
+        <Box
+          sx={{
+            display: "flex",
+            marginTop: "4px",
+            marginLeft: "-5px",
+            [theme.breakpoints.down("md")]: {
+              marginLeft: "0px",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              marginLeft: "auto",
+              display: "inline-block",
+              marginTop: "-14px",
+            }}
+          >
             <Metadata
               metadataList={commentary.metadata}
               title="Version Name (in Eng)"
               abbreviation="Abbreviation"
               mobileView={mobileView}
             ></Metadata>
-          </div>
-          <Close className={classes.closeButton} />
+          </Box>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              marginTop: "5px",
+              marginRight: "5px",
+              fontSize: "21px",
+            }}
+            url={"commentaries"}
+          />
+          <Close
+            sx={{
+              marginRight: "10px",
+              marginTop: "-7px",
+              [theme.breakpoints.down("md")]: {
+                marginTop: "0.2rem",
+              },
+            }}
+          />
         </Box>
       </Box>
       {commentaryImages ? (
@@ -449,39 +404,100 @@ const Commentary = (props) => {
         ""
       )}
       {message && (
-        <h5 className={classes.message}>
+        <Box component="h5" sx={{ padding: "20px 15px 2px 15px" }}>
           {message === "loading"
             ? "Loading"
             : t("studyNoCommentaryAvailable", { ref })}
-        </h5>
+        </Box>
       )}
       {commentaryIntro.bookIntro && (
-        <div onClick={toggleIntro} className={classes.introHeading}>
-          <Typography className={classes.introTitle}>
+        <Box
+          onClick={toggleIntro}
+          sx={{
+            fontSize: "1.2rem",
+            width: "100%",
+            border: "1px solid " + LIGHTGREY,
+            display: "flex",
+            padding: "10px 20px",
+            boxShadow:
+              "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+          }}
+        >
+          <Typography sx={{ fontSize: "1.2rem", width: "100%" }}>
             {t("studyCommIntroTo", { book })}
           </Typography>
-          {showIntro ? (
-            <ExpandLessIcon className={classes.arrow} />
-          ) : (
-            <ExpandMoreIcon className={classes.arrow} />
-          )}
-        </div>
+          {showIntro ? <CustomExpandLess /> : <CustomExpandMore />}
+        </Box>
       )}
-      <div onClick={openImage} className={classes.text}>
+      <Box
+        onClick={openImage}
+        sx={{
+          height: "calc(100vh - 203px)",
+          marginTop: "2px",
+          marginBottom: "68px",
+          flexGrow: 1,
+          color: "#464545",
+          fontFamily: "Roboto,Noto Sans",
+          overflow: "scroll",
+          fontSize: "1rem",
+          fontWeight: 400,
+          lineHeight: 1.5,
+          letterSpacing: "0.01em",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "& span": {
+            fontWeight: 600,
+            display: "block",
+          },
+          "& p": {
+            marginBottom: "10px",
+          },
+          "&::-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "&::-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+          "& img": {
+            float: "right",
+            marginLeft: "30px",
+            maxWidth: "70%",
+            margin: "30px 0px",
+          },
+          [theme.breakpoints.only("sm")]: {
+            marginBottom: "45px",
+          },
+          [theme.breakpoints.only("xs")]: {
+            marginBottom: screenView === "single" ? "45px" : "-15px",
+          },
+        }}
+      >
         {!message && (
           <Collapse in={showIntro} timeout={600}>
-            <Paper elevation={4} className={classes.introText}>
+            <Paper
+              elevation={4}
+              sx={{
+                "&.MuiPaper-root": {
+                  margin: "0 6px",
+                  padding: "20px 20px 30px 30px",
+                },
+              }}
+            >
               {parse(commentaryIntro.bookIntro)}
             </Paper>
           </Collapse>
         )}
         {!message && commentaryText && (
-          <div ref={textRef} className={classes.verseText}>
+          <Box ref={textRef} sx={{ padding: "20px 20px 30px 30px" }}>
             {parse(commentaryText)}
-          </div>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

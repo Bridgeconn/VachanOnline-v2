@@ -1,80 +1,49 @@
 import React from "react";
 import firebase from "firebase/compat/app";
-import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Popover from "@material-ui/core/Popover";
-import Collapse from "@material-ui/core/Collapse";
-import Alert from "@material-ui/lab/Alert";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Popover from "@mui/material/Popover";
+import Collapse from "@mui/material/Collapse";
+import Alert from "@mui/material/Alert";
+import PersonIcon from "@mui/icons-material/Person";
 import { useTranslation } from "react-i18next";
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(1, 0, 1),
-  },
-  button: {
-    margin: theme.spacing(1.5),
-    backgroundColor: "#fff",
-    border: "1px solid #fff",
-    "& hover": {
-      textDecoration: "none",
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginLeft: "20%",
-      width: "60%",
-      marginTop: 0,
-    },
-  },
-  signBtn: {
-    backgroundColor: "#fff",
-    border: "1px solid #d3d3d3",
-    "& hover": {
-      textDecoration: "none",
-    },
-    [theme.breakpoints.down("sm")]: {
-      whiteSpace: "nowrap",
-    },
-  },
-  links: {
-    marginTop: 10,
-  },
-  message: {
-    position: "relative",
-    bottom: 20,
-  },
-}));
+import { connect } from "react-redux";
+import BigTooltip from "../common/BigTooltip";
+import { useTheme } from "@mui/material/styles";
+import { BLACK } from "../../store/colorCode";
 
 const Login = (props) => {
-  const classes = useStyles();
-  const { login, openLogin, setValue, setMessage, setAlert } = props;
+  const theme = useTheme();
+  const newStyles = {
+    cursor: "pointer",
+    marginLeft: 3,
+    fontSize: "2rem",
+    padding: "0 8px",
+    boxSizing: "content-box",
+    "& hover": {
+      textDecoration: "none",
+    },
+    [theme.breakpoints.down("md")]: {
+      whiteSpace: "nowrap",
+      fontSize: "1.8rem",
+    },
+  };
+  const { login, openLogin, setValue, setMessage, setAlert, person, message } =
+    props;
   const menuRef = React.useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [form, setForm] = React.useState(1);
   const [messageOpen, setMessageOpen] = React.useState(false);
+  const loginStyles = person ? person : newStyles;
 
   const open = Boolean(anchorEl);
   const { t } = useTranslation();
@@ -129,8 +98,10 @@ const Login = (props) => {
         .catch((error) => {
           console.log("error");
           if (error.code === "auth/user-not-found") {
+            setMessageOpen(true);
             setMessage(t("loginMessage"));
           } else if (error.code === "auth/wrong-password") {
+            setMessageOpen(true);
             setMessage(t("invalidPswd"));
           } else {
             setMessage(error.message);
@@ -250,16 +221,9 @@ const Login = (props) => {
         </Button>
       ) : (
         <>
-          <Button
-            aria-describedby="sign-in"
-            variant="contained"
-            size="small"
-            ref={menuRef}
-            onClick={openForm}
-            className={classes.signBtn}
-          >
-            {t("signInTitle")}
-          </Button>
+          <BigTooltip title={t("signInTitle")}>
+            <PersonIcon sx={loginStyles} ref={menuRef} onClick={openForm} />
+          </BigTooltip>
           <Popover
             id="sign-in"
             open={open}
@@ -277,26 +241,43 @@ const Login = (props) => {
             <Container component="main" maxWidth="xs">
               <CssBaseline />
               {form === 1 ? (
-                <div className={classes.paper}>
-                  <Collapse in={messageOpen} className={classes.message}>
+                <Box
+                  sx={{
+                    marginTop: theme.spacing(8),
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Collapse
+                    in={messageOpen}
+                    sx={{
+                      position: "relative",
+                      bottom: "20px",
+                    }}
+                  >
                     <Alert
                       variant="filled"
                       onClose={() => setMessageOpen(false)}
                       severity="error"
                     >
-                      {t("loginSignInWarning")}
+                      {message ? message : t("loginSignInWarning")}
                     </Alert>
                   </Collapse>
                   <Typography component="h1" variant="h5">
                     {t("signInTitle")}
                   </Typography>
-                  <form
+                  <Box
+                    component="form"
                     onSubmit={(e) => signIn(e)}
-                    className={classes.form}
+                    sx={{
+                      width: "100%", // Fix IE 11 issue.
+                      marginTop: theme.spacing(3),
+                      marginBottom: theme.spacing(3),
+                    }}
                     noValidate
                   >
                     <TextField
-                      variant="outlined"
                       margin="normal"
                       required
                       fullWidth
@@ -309,7 +290,6 @@ const Login = (props) => {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
-                      variant="outlined"
                       margin="normal"
                       required
                       fullWidth
@@ -325,7 +305,15 @@ const Login = (props) => {
                       type="submit"
                       fullWidth
                       variant="outlined"
-                      className={classes.submit}
+                      sx={{
+                        margin: theme.spacing(1, 0, 1),
+                        color: BLACK,
+                        borderColor: BLACK,
+                        "&:hover": {
+                          backgroundColor: BLACK + "0a",
+                          border: "1px solid rgba(0, 0, 0, 0.23)",
+                        },
+                      }}
                     >
                       {t("signInTitle")}
                     </Button>
@@ -334,7 +322,15 @@ const Login = (props) => {
                       fullWidth
                       variant="outlined"
                       onClick={signInGoogle}
-                      className={classes.submit}
+                      sx={{
+                        margin: theme.spacing(1, 0, 1),
+                        color: BLACK,
+                        borderColor: BLACK,
+                        "&:hover": {
+                          backgroundColor: BLACK + "0a",
+                          border: "1px solid rgba(0, 0, 0, 0.23)",
+                        },
+                      }}
                     >
                       {t("loginSignInGoogleBtn")}
                     </Button>
@@ -343,38 +339,58 @@ const Login = (props) => {
                       fullWidth
                       variant="outlined"
                       onClick={signInFacebook}
-                      className={classes.submit}
                     >
                       Sign in with Facebook
                     </Button> */}
-                    <Grid container className={classes.links}>
+                    <Grid container sx={{ marginTop: "10px" }}>
                       <Grid item xs>
-                        <Link href="#" variant="body2" onClick={openForgot}>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openForgot}
+                          underline="hover"
+                        >
                           {t("loginForgotPswd")}
                         </Link>
                       </Grid>
                       <Grid item>
-                        <Link href="#" variant="body2" onClick={openSignUp}>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openSignUp}
+                          underline="hover"
+                        >
                           {t("loginSignUpMsg")}
                         </Link>
                       </Grid>
                     </Grid>
-                  </form>
-                </div>
+                  </Box>
+                </Box>
               ) : form === 2 ? (
-                <div className={classes.paper}>
+                <Box
+                  sx={{
+                    marginTop: theme.spacing(8),
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
                   <Typography component="h1" variant="h5">
                     {t("loginSignUpTitle")}
                   </Typography>
-                  <form
+                  <Box
+                    component="form"
                     onSubmit={(e) => signUp(e)}
-                    className={classes.form}
+                    sx={{
+                      width: "100%", // Fix IE 11 issue.
+                      marginTop: theme.spacing(3),
+                      marginBottom: theme.spacing(3),
+                    }}
                     noValidate
                   >
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
                         <TextField
-                          variant="outlined"
                           required
                           fullWidth
                           id="email"
@@ -387,7 +403,6 @@ const Login = (props) => {
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
-                          variant="outlined"
                           required
                           fullWidth
                           name="password"
@@ -404,45 +419,76 @@ const Login = (props) => {
                       type="submit"
                       fullWidth
                       variant="outlined"
-                      className={classes.submit}
+                      sx={{
+                        margin: theme.spacing(1, 0, 1),
+                        color: BLACK,
+                        borderColor: BLACK,
+                        "&:hover": {
+                          backgroundColor: BLACK + "0a",
+                          border: "1px solid rgba(0, 0, 0, 0.23)",
+                        },
+                      }}
                     >
                       {t("loginSignUpBtn")}
                     </Button>
                     <Grid
                       container
                       justifyContent="flex-end"
-                      className={classes.links}
+                      sx={{
+                        marginTop: "10px",
+                      }}
                     >
                       <Grid item xs>
-                        <Link href="#" variant="body2" onClick={openForgot}>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openForgot}
+                          underline="hover"
+                        >
                           {t("loginForgotPswd")}
                         </Link>
                       </Grid>
                       <Grid item>
-                        <Link href="#" variant="body2" onClick={openSignIn}>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openSignIn}
+                          underline="hover"
+                        >
                           {t("loginSignInMsg")}
                         </Link>
                       </Grid>
                     </Grid>
-                  </form>
-                </div>
+                  </Box>
+                </Box>
               ) : (
-                <div className={classes.paper}>
+                <Box
+                  sx={{
+                    marginTop: theme.spacing(8),
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
                   <Typography component="h1" variant="h5" gutterBottom={true}>
                     {t("loginForgotPswd")}
                   </Typography>
                   <Typography component="p" variant="subtitle2" align="center">
                     {t("loginPswdReset")}
                   </Typography>
-                  <form
+                  <Box
+                    component="form"
                     onSubmit={(e) => resetPassword(e)}
-                    className={classes.form}
+                    sx={{
+                      width: "100%", // Fix IE 11 issue.
+                      marginTop: theme.spacing(3),
+                      marginBottom: theme.spacing(3),
+                    }}
                     noValidate
                   >
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
                         <TextField
-                          variant="outlined"
                           required
                           fullWidth
                           id="email"
@@ -458,23 +504,36 @@ const Login = (props) => {
                       type="submit"
                       fullWidth
                       variant="outlined"
-                      className={classes.submit}
+                      sx={{
+                        margin: theme.spacing(1, 0, 1),
+                        color: BLACK,
+                        borderColor: BLACK,
+                        "&:hover": {
+                          backgroundColor: BLACK + "0a",
+                          border: "1px solid rgba(0, 0, 0, 0.23)",
+                        },
+                      }}
                     >
                       {t("loginSubmit")}
                     </Button>
                     <Grid
                       container
                       justifyContent="flex-end"
-                      className={classes.links}
+                      sx={{ marginTop: "10px" }}
                     >
                       <Grid item>
-                        <Link href="#" variant="body2" onClick={openSignIn}>
+                        <Link
+                          href="#"
+                          variant="body2"
+                          onClick={openSignIn}
+                          underline="hover"
+                        >
                           {t("loginBackSignIn")}
                         </Link>
                       </Grid>
                     </Grid>
-                  </form>
-                </div>
+                  </Box>
+                </Box>
               )}
             </Container>
           </Popover>

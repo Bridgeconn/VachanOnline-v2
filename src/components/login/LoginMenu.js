@@ -1,34 +1,21 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import firebase from "firebase/compat/app";
-import Menu from "@material-ui/core/Menu";
-import IconButton from "@material-ui/core/IconButton";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
+import Menu from "@mui/material/Menu";
+import IconButton from "@mui/material/IconButton";
+import ListItemText from "@mui/material/ListItemText";
+import Avatar from "@mui/material/Avatar";
+import List from "@mui/material/List";
+import { ListItemButton } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import { useTranslation } from "react-i18next";
 import { GREY } from "../../store/colorCode";
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    width: "100%",
-    maxWidth: 300,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: "1px 1px 4px 1px " + GREY,
-  },
-  emailText: {
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "0.75rem",
-    },
-  },
-}));
+import BigTooltip from "../common/BigTooltip";
+import { useTheme } from "@mui/material/styles";
 
 const LoginMenu = (props) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const { userDetails, setValue } = props;
   const [menuOpen, setMenuOpen] = React.useState(null);
   const { t } = useTranslation();
@@ -66,12 +53,14 @@ const LoginMenu = (props) => {
         aria-haspopup="true"
         onClick={handleProfileMenuOpen}
         color="inherit"
+        size="large"
       >
-        <Avatar alt={userDetails.email} src={userDetails.photoURL} />
+        <BigTooltip title={t("loginSignOutBtn")}>
+          <Avatar alt={userDetails.email} src={userDetails.photoURL} />
+        </BigTooltip>
       </IconButton>
       <Menu
         elevation={0}
-        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "center",
@@ -84,20 +73,25 @@ const LoginMenu = (props) => {
         keepMounted
         open={Boolean(menuOpen)}
         onClose={handleClose}
-        classes={{
-          paper: classes.paper,
+        sx={{
+          "& .MuiPaper-root": {
+            width: "100%",
+            maxWidth: "300px",
+            backgroundColor: theme.palette.background.paper,
+            boxShadow: "1px 1px 4px 1px " + GREY,
+          },
         }}
       >
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem button>
+          <ListItemButton>
             <ListItemText primary={userDetails.email} />
-          </ListItem>
+          </ListItemButton>
         </List>
         <Divider />
         <List component="nav" aria-label="secondary mailbox folders">
-          <ListItem button>
+          <ListItemButton>
             <ListItemText primary={t("loginSignOutBtn")} onClick={signOut} />
-          </ListItem>
+          </ListItemButton>
         </List>
       </Menu>
     </>

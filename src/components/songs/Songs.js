@@ -1,135 +1,26 @@
 import React, { useMemo, useEffect, useCallback } from "react";
-import Drawer from "@material-ui/core/Drawer";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import AppBar from "@material-ui/core/AppBar";
-import Divider from "@material-ui/core/Divider";
-import Link from "@material-ui/core/Link";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import Drawer from "@mui/material/Drawer";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import AppBar from "@mui/material/AppBar";
+import Divider from "@mui/material/Divider";
+import Link from "@mui/material/Link";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import ReactPlayer from "react-player";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Box, Typography } from "@material-ui/core";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
 import axios from "axios";
-import { makeStyles } from "@material-ui/core/styles";
 import Setting from "../common/Setting";
 import TopBar from "../read/TopBar";
-import { BLACK, GREY, WHITE } from "../../store/colorCode";
-import { t } from "i18next";
+import Help from "../common/Help";
+import { BLACK, WHITE } from "../../store/colorCode";
+import { useTranslation } from "react-i18next";
 
 const drawerWidth = 350;
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 200,
-  },
-  root: {
-    display: "flex",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-      marginTop: 61,
-    },
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    zIndex: 1000,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    marginTop: 65,
-    backgroundColor: "rgb(137, 191, 221)",
-  },
-  listDirection: {
-    textAlign: "left",
-  },
-  drawerContainer: {
-    overflow: "auto",
-    fontSize: "1.2rem",
-  },
-  mobileHeading: {
-    color: WHITE,
-    textShadow: "1px 1px 2px hsl(246 37% 47% / 1)",
-    textAlign: "center",
-    background:
-      "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 90.2%)",
-  },
-  heading: {
-    fontSize: "2rem",
-    color: WHITE,
-    background:
-      "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 100.2%)",
-    textAlign: "center",
-    [theme.breakpoints.down("sm")]: { display: "none" },
-    lineHeight: "1.8",
-    height: 56,
-  },
-  lyricsHeading: {
-    lineHeight: "1.255",
-    margin: "5px 0",
-    textAlign: "center",
-    color: "rgb(150, 144, 204)",
-    textShadow: "6px 4px 7px rgb(143 143 145 / 83%)",
-    fontSize: "1.6rem",
-  },
-  linkList: {
-    marginLeft: 5,
-    color: BLACK,
-    "&:hover": {
-      color: GREY,
-    },
-  },
-  mobileBox: {
-    display: "flex",
-    [theme.breakpoints.down("sm")]: {
-      alignItems: "center",
-    },
-  },
-  mobileLangCombo: {
-    minWidth: 100,
-  },
-  mobileComboBox: {
-    display: "flex",
-  },
-  box: {
-    padding: 20,
-    whiteSpace: "pre-wrap",
-    overflow: "auto",
-    flexGrow: 1,
-    width: "100%",
-  },
-  player: {
-    margin: 10,
-    width: "calc(100% - 20px)",
-    "& audio": {
-      outlineWidth: 0,
-    },
-  },
-  playerBox: {
-    width: "100%",
-  },
-  songList: {
-    marginLeft: 10,
-    flexGrow: 1,
-    maxWidth: 300,
-  },
-  content: {
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
-    height: "calc(100vh - 65px)",
-    marginTop: 65,
-    [theme.breakpoints.down("sm")]: {
-      height: "calc(100vh - 160px)",
-      marginTop: 0,
-    },
-  },
-}));
 const Songs = () => {
   const [languageJson, setLanguageJson] = React.useState({});
   const [lang, setLang] = React.useState("");
@@ -138,9 +29,9 @@ const Songs = () => {
   const [currentSong, setCurrentSong] = React.useState(null);
   const [lyrics, setLyrics] = React.useState("");
 
+  const { t } = useTranslation();
   const theme = useTheme();
-  const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isLarge = useMediaQuery("(min-width:1150px)");
   const getLang = (event) => {
     setLang(event.target.value);
@@ -190,25 +81,44 @@ const Songs = () => {
       <AppBar position="fixed">
         <TopBar />
       </AppBar>
-      <div className={classes.root}>
+      <Box
+        sx={{
+          display: "flex",
+          [theme.breakpoints.down("md")]: {
+            flexDirection: "column",
+            marginTop: 7.625,
+          },
+        }}
+      >
         {isMobile === true ? (
-          <Box className={classes.mobile}>
-            <Box className={classes.mobileHeading}>
+          <Box>
+            <Box
+              sx={{
+                color: WHITE,
+                textShadow: "1px 1px 2px hsl(246 37% 47% / 1)",
+                textAlign: "center",
+                background:
+                  "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 90.2%)",
+              }}
+            >
               <Typography variant="h4">{t("songsText")}</Typography>
             </Box>
-            <Box className={classes.mobileBox}>
-              <Box p={1} flexGrow={1} className={classes.mobileComboBox}>
-                <FormControl
-                  variant="outlined"
-                  size="small"
-                  className={classes.mobileLangCombo}
-                >
-                  <Select value={lang} onChange={getLang}>
+            <Box
+              sx={{
+                display: "flex",
+                [theme.breakpoints.down("md")]: {
+                  alignItems: "center",
+                },
+              }}
+            >
+              <Box p={1} flexGrow={1} sx={{ display: "flex" }}>
+                <FormControl size="small" sx={{ minWidth: 100 }}>
+                  <Select variant="outlined" value={lang} onChange={getLang}>
                     {Object.keys(languageJson).map((text) => (
                       <MenuItem
                         key={text}
                         value={text}
-                        className={classes.listDirection}
+                        sx={{ textAlign: "left" }}
                       >
                         {languageJson[text]}
                       </MenuItem>
@@ -216,18 +126,18 @@ const Songs = () => {
                   </Select>
                 </FormControl>
                 <FormControl
-                  variant="outlined"
                   size="small"
-                  className={classes.songList}
+                  sx={{ marginLeft: 1.25, flexGrow: 1, maxWidth: 300 }}
                 >
                   {songs?.length > 0 && currentSong && (
                     <Select
+                      variant="outlined"
                       value={JSON.stringify(currentSong)}
                       onChange={songSelect}
                     >
                       {songs?.map((song, y) => (
                         <MenuItem
-                          className={classes.listDirection}
+                          sx={{ textAlign: "left" }}
                           key={y}
                           data-id={y + 1}
                           value={JSON.stringify(song)}
@@ -247,24 +157,34 @@ const Songs = () => {
           </Box>
         ) : (
           <Drawer
-            className={classes.drawer}
-            variant="permanent"
-            classes={{
-              paper: classes.drawerPaper,
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              zIndex: 1000,
+              "& .MuiPaper-root": {
+                width: drawerWidth,
+              },
             }}
+            variant="permanent"
           >
-            <div className={classes.drawerHeader}>
+            <Box
+              sx={{
+                marginTop: 8.125,
+                backgroundColor: "rgb(137, 191, 221)",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
               <FormControl
-                variant="outlined"
                 size="small"
-                className={classes.formControl}
+                sx={{ margin: theme.spacing(1), minWidth: 200 }}
               >
-                <Select value={lang}>
+                <Select variant="outlined" value={lang}>
                   {Object.keys(languageJson).map((text) => (
                     <MenuItem
                       key={text}
                       value={text}
-                      className={classes.listDirection}
+                      sx={{ textAlign: "left" }}
                     >
                       {languageJson[text]}
                     </MenuItem>
@@ -272,39 +192,106 @@ const Songs = () => {
                 </Select>
               </FormControl>
               <Setting fontSize={fontSize} setFontSize={setFontSize} />
-            </div>
+            </Box>
             <Divider />
-            <div className={classes.drawerContainer}>
+            <Box sx={{ overflow: "auto", fontSize: "1.2rem" }}>
               <List>
                 {songs?.map((song) => (
-                  <ListItem key={song.sno} className={classes.listDirection}>
+                  <ListItem
+                    key={song.sno}
+                    sx={{
+                      textAlign: "left",
+                    }}
+                  >
                     {song.sno + "."}
                     <Link
-                      className={classes.linkList}
                       href="#"
+                      sx={{
+                        marginLeft: 0.625,
+                        cursor: "pointer",
+                        color: BLACK,
+                        "&:hover": {
+                          color: BLACK,
+                        },
+                      }}
                       onClick={() => setCurrentSong(song)}
+                      underline="hover"
                     >
                       {song.name}
                     </Link>
                   </ListItem>
                 ))}
               </List>
-            </div>
+            </Box>
           </Drawer>
         )}
-        <div className={classes.content}>
-          <Typography variant="h3" className={classes.heading}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+            height: "calc(100vh - 72px)",
+            marginTop: 8.125,
+            [theme.breakpoints.down("md")]: {
+              height: "calc(100vh - 160px)",
+              marginTop: 0,
+            },
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{
+              fontSize: "2rem",
+              color: WHITE,
+              background:
+                "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 100.2%)",
+              textAlign: "center",
+              [theme.breakpoints.down("md")]: { display: "none" },
+              lineHeight: "1.8",
+              height: 56,
+            }}
+          >
             {isLarge ? t("songsPageTitleDesktop") : t("songsText")}
+            <Help
+              iconStyle={{
+                fontSize: 21,
+                float: "right",
+                marginRight: 3.75,
+                marginTop: 2.5,
+                color: BLACK,
+              }}
+              url={"songs"}
+            />
           </Typography>
-          <Typography variant="h4" className={classes.lyricsHeading}>
+          <Typography
+            variant="h4"
+            sx={{
+              lineHeight: "1.65",
+              margin: "0.625px 0",
+              textAlign: "center",
+              color: "rgb(150, 144, 204)",
+              textShadow: "6px 4px 7px rgb(143 143 145 / 83%)",
+              fontSize: "1.6rem",
+            }}
+          >
             {currentSong?.sno}. {currentSong?.name}
           </Typography>
           <Divider />
-          <div className={classes.box} style={{ fontSize: fontSize }}>
+          <Box
+            sx={{
+              padding: 2.5,
+              whiteSpace: "pre-wrap",
+              overflow: "auto",
+              flexGrow: 1,
+              width: "100%",
+            }}
+            style={{ fontSize: fontSize }}
+          >
             {lyrics}
-          </div>
+          </Box>
           {currentSong?.url !== undefined ? (
-            <div className={classes.playerBox}>
+            <Box sx={{ width: "100%" }}>
               <Divider />
               <ReactPlayer
                 url={
@@ -316,7 +303,13 @@ const Songs = () => {
                 controls
                 width="calc(100% - 20px)"
                 height="50px"
-                className={classes.player}
+                sx={{
+                  margin: 10,
+                  width: "calc(100% - 20px)",
+                  "& audio": {
+                    outlineWidth: 0,
+                  },
+                }}
                 onError={() =>
                   console.log(
                     "error",
@@ -334,12 +327,12 @@ const Songs = () => {
                   },
                 }}
               />
-            </div>
+            </Box>
           ) : (
             ""
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 };

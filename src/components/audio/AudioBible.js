@@ -1,86 +1,55 @@
 import React from "react";
 import TopBar from "../read/TopBar";
 import AudioCombo from "./AudioCombo";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Player from "../common/Player";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 import * as actions from "../../store/actions";
-import { makeStyles } from "@material-ui/core/styles";
-import { AppBar, useMediaQuery, useTheme } from "@material-ui/core";
+import { AppBar, useMediaQuery,Box } from "@mui/material";
 import { connect } from "react-redux";
 import { getAllBooks, getAudioBibles } from "../common/utility";
 import { nextButtonClick, previousClick } from "../common/utility";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 82,
-    display: "flex",
-    height: "100%",
-    marginBottom: 10,
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 60,
-      marginBottom: 5,
-      flexDirection: "column-reverse",
-    },
-    [theme.breakpoints.only("xs")]: {
-      marginTop: 65,
-      marginBottom: 0,
-    },
+const ArrowForward = styled(ArrowForwardIosIcon)(({ theme }) => ({
+  position: "absolute",
+  cursor: "pointer",
+  boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
+  borderRadius: "50%",
+  backgroundColor: "rgb(255, 255, 255)",
+  border: "1px white",
+  padding: "7px",
+  [theme.breakpoints.up("md")]: {
+    right: "40px",
   },
-  prevChapter: {
-    position: "absolute",
-    cursor: "pointer",
-    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
-    borderRadius: "50%",
-    backgroundColor: "rgb(255, 255, 255)",
-    border: "1px white",
-    padding: 7,
-    [theme.breakpoints.up("md")]: {
-      left: 40,
-    },
-    [theme.breakpoints.down("sm")]: {
-      left: 10,
-      top: "unset",
-      bottom: "1.5rem",
-    },
-  },
-  nextChapter: {
-    position: "absolute",
-    cursor: "pointer",
-    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
-    borderRadius: "50%",
-    backgroundColor: "rgb(255, 255, 255)",
-    border: "1px white",
-    padding: 7,
-    [theme.breakpoints.up("md")]: {
-      right: 40,
-    },
-    [theme.breakpoints.down("sm")]: {
-      right: 10,
-      top: "unset",
-      bottom: "1.5rem",
-    },
-  },
-  gap: {
-    margin: "0 auto",
-    [theme.breakpoints.down("sm")]: {
-      margin: "auto",
-    },
-  },
-  playerGap: {
-    padding: "0 10%",
-    [theme.breakpoints.only("sm")]: {
-      padding: "0 50px",
-    },
-    [theme.breakpoints.down("xs")]: {
-      padding: 5,
-    },
+  [theme.breakpoints.down("md")]: {
+    right: "10px",
+    top: "unset",
+    bottom: "1.5rem",
   },
 }));
+const ArrowBackward = styled(ArrowBackIosIcon)(({ theme }) => ({
+  position: "absolute",
+  cursor: "pointer",
+  boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
+  borderRadius: "50%",
+  backgroundColor: "rgb(255, 255, 255)",
+  border: "1px white",
+  padding: "7px",
+  [theme.breakpoints.up("md")]: {
+    left: "40px",
+  },
+  [theme.breakpoints.down("md")]: {
+    left: "10px",
+    top: "unset",
+    bottom: "1.5rem",
+  },
+}));
+
 const AudioBible = (props) => {
   const {
     panel1,
@@ -91,8 +60,7 @@ const AudioBible = (props) => {
     setVersionBooks,
   } = props;
   const theme = useTheme();
-  const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [audios, setAudios] = React.useState(null);
   const [audioBooks, setAudioBooks] = React.useState([]);
   const { chapter, bookCode, language } = panel1;
@@ -117,9 +85,8 @@ const AudioBible = (props) => {
   }, [audioBible?.length, setValue, languageCode]);
   const getPrevious = () => {
     return (
-      <ArrowBackIosIcon
+      <ArrowBackward
         fontSize="large"
-        className={classes.prevChapter}
         onClick={() =>
           previousClick(audioBooks, bookCode, chapter, setValue1, audioBookList)
         }
@@ -128,9 +95,8 @@ const AudioBible = (props) => {
   };
   const getNext = () => {
     return (
-      <ArrowForwardIosIcon
+      <ArrowForward
         fontSize="large"
-        className={classes.nextChapter}
         onClick={() =>
           nextButtonClick(
             audioBooks,
@@ -148,7 +114,24 @@ const AudioBible = (props) => {
       <AppBar position="fixed">
         <TopBar />
       </AppBar>
-      <div className={classes.root}>
+      <Box
+        sx={{
+          width: "100%",
+          marginTop: "82px",
+          display: "flex",
+          height: "100%",
+          marginBottom: "10px",
+          [theme.breakpoints.down("md")]: {
+            marginTop: "60px",
+            marginBottom: "5px",
+            flexDirection: "column-reverse",
+          },
+          [theme.breakpoints.only("xs")]: {
+            marginTop: "65px",
+            marginBottom: 0,
+          },
+        }}
+      >
         <AudioCombo
           setAudios={setAudios}
           audioBooks={audioBooks}
@@ -160,12 +143,30 @@ const AudioBible = (props) => {
           mobileView={isMobile}
         />
         {isMobile ? <Divider /> : ""}
-        <Typography variant="h4" className={classes.gap}>
+        <Typography
+          variant="h4"
+          sx={{
+            margin: "0 auto",
+            [theme.breakpoints.down("md")]: {
+              margin: "auto",
+            },
+          }}
+        >
           {t("audioBibleText")}
         </Typography>
-      </div>
+      </Box>
       <Divider />
-      <div className={classes.playerGap}>
+      <Box 
+      sx={{
+        padding: "0 10%",
+    [theme.breakpoints.only("sm")]: {
+      padding: "0 50px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "5px",
+    },
+      }}
+      >
         <Player
           audios={audios}
           bookCode={bookCode}
@@ -184,7 +185,7 @@ const AudioBible = (props) => {
         chapters.length === parseInt(chapter)
           ? ""
           : getNext()}
-      </div>
+      </Box>
     </>
   );
 };

@@ -1,107 +1,32 @@
 import React, { useState, useEffect } from "react";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 import ModalVideo from "react-modal-video";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import Select from "react-select";
 import { capitalize, getBookbyCode, getShortBook } from "../common/utility";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import BookCombo from "../common/BookCombo";
+import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { bibleBooks } from "../../store/bibleData";
+import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    position: "absolute",
-    top: 82,
-    bottom: 0,
-    [theme.breakpoints.down("sm")]: {
-      top: 60,
-    },
-  },
-  container: {
-    top: 52,
-    bottom: 0,
-    overflow: "scroll",
-    position: "absolute",
-    width: "100%",
-    padding: "12px 4px 0 15px",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.down("sm")]: {
-      top: 60,
-    },
-  },
-  heading: {
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    paddingBottom: 12,
-    paddingLeft: 35,
-    marginBottom: 20,
-    minHeight: 51,
-    [theme.breakpoints.down("sm")]: {
-      height: 60,
-      paddingBottom: 0,
-      alignItems: "center",
-    },
-  },
-  video: {
-    width: "48%",
-    padding: 0,
-    margin: "0 2% 2% 0",
-    display: "inline-block",
-    verticalAlign: "top",
-    [theme.breakpoints.down("sm")]: {
-      width: "97%",
-      marginBottom: 25,
-    },
-  },
-  title: {
-    paddingTop: 4,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  },
-  closeButton: {
-    marginRight: 15,
-    marginTop: 7,
-  },
-  select: {
-    width: 200,
-    [theme.breakpoints.down("sm")]: {
-      width: 130,
-    },
-  },
-  message: {
-    paddingLeft: 20,
-  },
-  selectBox: {
-    [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      alignItems: "center",
-    },
+const StyledSelect = styled(Select)(({ theme }) => ({
+  width: 200,
+  [theme.breakpoints.down("md")]: {
+    width: 130,
   },
 }));
+
 const Video = (props) => {
-  const classes = useStyles();
   let {
     video,
     chapterVideo,
@@ -124,6 +49,7 @@ const Video = (props) => {
   const [videoBooks, setVideoBooks] = useState([]);
 
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const getVideoData = (url) => {
     const vimeo = "https://vimeo.com/";
@@ -208,7 +134,14 @@ const Video = (props) => {
     };
     if (language) {
       const lang = video.find((obj) => obj?.language?.code === language?.value);
-      if (lang?.books?.hasOwnProperty(bookCode)) {
+      let chapterAvail = true;
+      if (chapterVideo[language?.value] !== undefined) {
+        const avlChapters = chapterVideo[language?.value]?.[bookCode]
+          ? Object.keys(chapterVideo[language?.value]?.[bookCode])
+          : [];
+        chapterAvail = avlChapters.includes(chapter.toString());
+      }
+      if (lang?.books?.hasOwnProperty(bookCode) && chapterAvail) {
         const _videos = lang.books[bookCode];
         setVideos(filterVideos(_videos));
         setMessage("");
@@ -218,23 +151,53 @@ const Video = (props) => {
         const ref = {
           language: language?.label,
           book: book ? book : getBookbyCode(bookCode)?.book,
+          chapter: chapter,
         };
         setMessage(t("studyNoVideosAvailable", { ref }));
       }
     }
   }, [video, bookCode, language, books, chapterVideo, chapter, t]);
   return (
-    <div className={classes.root}>
-      <Box className={classes.heading}>
+    <Box
+      sx={{
+        width: "100%",
+        position: "absolute",
+        top: { lg: 82, md: 71, xs: 60 },
+        bottom: 0,
+      }}
+    >
+      <Box
+        sx={{
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          paddingBottom: 0.96,
+          paddingLeft: 4.375,
+          marginBottom: 2.5,
+          minHeight: 51,
+          [theme.breakpoints.down("md")]: {
+            height: 60,
+            paddingBottom: 0,
+            alignItems: "center",
+          },
+        }}
+      >
         {mobileView ? null : (
           <Box flexGrow={1}>
             <Typography variant="h6">{t("videosText")}</Typography>{" "}
           </Box>
         )}
-        <Box flexGrow={1} className={classes.selectBox}>
+        <Box
+          flexGrow={1}
+          sx={{
+            [theme.breakpoints.down("md")]: {
+              display: "flex",
+              alignItems: "center",
+            },
+          }}
+        >
           {languages && languages?.length !== 0 && (
-            <Select
-              className={classes.select}
+            <StyledSelect
               value={language}
               onChange={(data) => setLanguage(data)}
               options={languages}
@@ -251,11 +214,44 @@ const Video = (props) => {
             />
           ) : null}
         </Box>
-        <Box>
-          <Close className={classes.closeButton} />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Help
+            iconStyle={{
+              padding: "1px 1.5px 0",
+              color: BLACK,
+              marginTop: 0.275,
+              fontSize: 23,
+            }}
+            url={"videos"}
+          />
+          <Close sx={{ marginRight: 1.875, marginTop: 0.875 }} />
         </Box>
       </Box>
-      <div className={classes.container}>
+      <Box
+        sx={{
+          top: 52,
+          bottom: 0,
+          overflow: "scroll",
+          position: "absolute",
+          width: "100%",
+          padding: "12px 0.7px 0 13px",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "&::-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "&::-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+          [theme.breakpoints.down("md")]: {
+            top: 60,
+          },
+        }}
+      >
         {videos?.length > 0 && (
           <div>
             <ModalVideo
@@ -272,14 +268,23 @@ const Video = (props) => {
                   onClick={() => {
                     handleVideoClick(source, id);
                   }}
-                  className={classes.video}
+                  sx={{
+                    width: "48%",
+                    padding: 0,
+                    margin: "0 2% 2% 0",
+                    display: "inline-block",
+                    verticalAlign: "top",
+                    [theme.breakpoints.down("md")]: {
+                      width: "97%",
+                      marginBottom: 3.125,
+                    },
+                  }}
                 >
                   <CardActionArea>
                     <CardMedia
                       component="img"
                       alt="Video"
                       height="244"
-                      className={classes.media}
                       image={imageUrl}
                       title="Video"
                     />
@@ -289,7 +294,12 @@ const Video = (props) => {
                         variant="h5"
                         component="h2"
                         title={video.title}
-                        className={classes.title}
+                        sx={{
+                          paddingTop: 0.5,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
                       >
                         {video.title}
                       </Typography>
@@ -300,9 +310,9 @@ const Video = (props) => {
             })}
           </div>
         )}
-        {message && <h5 className={classes.message}>{message}</h5>}
-      </div>
-    </div>
+        {message && <h5 sx={{ paddingLeft: 3.5 }}>{message}</h5>}
+      </Box>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

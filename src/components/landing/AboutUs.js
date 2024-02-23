@@ -1,83 +1,67 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
+import Typography from "@mui/material/Typography";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import { useTranslation } from "react-i18next";
+import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
+import FeaturesList from "./FeaturesList";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles(() => ({
-  subheading: {
-    fontWeight: 600,
-    margin: "20px 0 10px",
-  },
-  bold: {
-    fontWeight: 600,
-  },
-  underline: {
-    textDecoration: "underline",
-  },
-  space: {
-    display: "inline-block",
-    paddingTop: 10,
-  },
-  releaseNotes: {
-    color: "#3E8A61",
-  },
-  list: {
-    "& li": {
-      margin: "5px 0",
-    },
-  },
-}));
+const BoldSpan = styled("span")({
+  fontWeight: 600,
+});
 const AboutUs = ({ handleClose }) => {
-  const classes = useStyles();
   const { t } = useTranslation();
   const addLink = (text, prefix) => {
     return (
-      <Link href={prefix + text} target="_blank">
+      <Link href={prefix + text} target="_blank" underline="hover">
         {` ${text}`}
       </Link>
     );
   };
   const addHyperLink = (text, url) => {
     return (
-      <Link href={url} target="_blank">
+      <Link href={url} target="_blank" underline="hover">
         {` ${text}`}
       </Link>
     );
   };
-  const addStyle = (text, style) => {
-    return <span className={classes[style]}>{" " + text}</span>;
-  };
   return (
     <>
-      <DialogTitle
-        className={classes.title}
-        id="scroll-dialog-title"
-        disableTypography={true}
-      >
-        <Typography variant="h5" gutterBottom>
-          {t("landingAboutUsHead")}
-        </Typography>
+      <DialogTitle id="scroll-dialog-title">
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h5" sx={{ flexGrow: 1 }} gutterBottom>
+            {t("landingAboutUsHead")}
+          </Typography>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              fontSize: 21,
+              marginTop: "-10px",
+              cursor: "pointer",
+            }}
+            url={"about"}
+          />
+        </Box>
       </DialogTitle>
       <DialogContent dividers={true}>
-        <Typography variant="h5" className={classes.subheading}>
-          The Vachan Project
-        </Typography>
+        <Typography variant="h5">The Vachan Project</Typography>
         <Typography variant="body1" gutterBottom>
-          {addStyle("VachanOnline", "bold")}{" "}
-          {t("landingAboutUsVachanProjectContent1")} {". "}
-          {addStyle("VachanGo", "bold")}{" "}
+          <BoldSpan> VachanOnline </BoldSpan>
+          {t("landingAboutUsVachanProjectContent1")}
+          {". "}
+          <BoldSpan>VachanGo </BoldSpan>
           {t("landingAboutUsVachanProjectContent2")}
-          {addStyle("The Vachan Project", "bold")}{" "}
+          {". "}
+          <BoldSpan>The Vachan Project </BoldSpan>
           {t("landingAboutUsVachanProjectContent3")}
         </Typography>
-        <Typography variant="h6" className={classes.subheading}>
-          {t("landingAboutUsContentTitle")}
-        </Typography>
+        <Typography variant="h5">{t("landingAboutUsContentTitle")}</Typography>
         <Typography variant="body1" gutterBottom>
           {t("landingAboutUsContent1")}{" "}
           {addHyperLink("VachanOnline", "https://vachanonline.com")}{" "}
@@ -93,28 +77,37 @@ const AboutUs = ({ handleClose }) => {
           )}
           {t("landingAboutUsContent4")}
         </Typography>
-        <Typography variant="h6" className={classes.subheading}>
+        <Typography variant="h5">
           {t("landingAboutUsTechnologyTitle")}
         </Typography>
         <Typography variant="body1">
           {t("landingAboutUsTechnologyMsg")}
         </Typography>
-        <Typography variant="body1" className={classes.subheading}>
+        <Typography variant="h6">
           {addHyperLink(
             t("landingAboutUsGithubRelease"),
             "https://github.com/Bridgeconn/VachanOnline-v2/releases"
           )}
         </Typography>
-
-        <Typography variant="h6" className={classes.subheading}>
-          {t("landingAboutUsContactUs")}
-        </Typography>
+        <FeaturesList />
+        <Typography variant="h6">{t("landingAboutUsContactUs")}</Typography>
         <Typography variant="body1" component="div" gutterBottom>
           {addLink("thevachanproject@bridgeconn.com", "mailto:")}
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant="outlined">
+        <Button
+          onClick={handleClose}
+          variant="outlined"
+          sx={{
+            color: BLACK,
+            border: "1px solid rgba(0, 0, 0, 0.23)",
+            "&:hover": {
+              backgroundColor: BLACK + "0a",
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+            },
+          }}
+        >
           {t("commonClose")}
         </Button>
       </DialogActions>

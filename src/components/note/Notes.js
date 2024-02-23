@@ -1,158 +1,42 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Snackbar from "@material-ui/core/Snackbar";
-import Tooltip from "@material-ui/core/Tooltip";
-import Button from "@material-ui/core/Button";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddBox from "@material-ui/icons/AddBox";
-import EditIcon from "@material-ui/icons/Edit";
-import Grid from "@material-ui/core/Grid";
-import Alert from "@material-ui/lab/Alert";
+import Typography from "@mui/material/Typography";
+import Snackbar from "@mui/material/Snackbar";
+import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddBox from "@mui/icons-material/AddBox";
+import EditIcon from "@mui/icons-material/Edit";
+import Grid from "@mui/material/Grid";
+import Alert from "@mui/material/Alert";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
 import { getBookbyCode, capitalize, getEditorToolbar } from "../common/utility";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import * as actions from "../../store/actions";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import draftToHtml from "draftjs-to-html";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
 import { useTranslation } from "react-i18next";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: "5.278rem",
-    display: "flex",
-    flexDirection: "column",
-    height: "calc( 100vh - 5.278rem)",
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 60,
-      height: "calc( 100vh - 60px)",
-    },
-  },
-  paper: {
-    [theme.breakpoints.down("sm")]: {
-      margin: 25,
-    },
-  },
-  heading: {
-    paddingBottom: 10,
-    paddingLeft: 15,
-    marginBottom: 10,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    height: "3.4em",
-    [theme.breakpoints.down("sm")]: {
-      height: 60,
-      marginBottom: 0,
-      paddingBottom: 0,
-      alignItems: "center",
-    },
-  },
-
-  ".rdw-editor-main": {
-    [theme.breakpoints.down("md")]: {
-      width: "80vw",
-      height: "30vh",
-    },
-  },
-  notesHeading: {
-    display: "flex",
-  },
-  list: {
-    overflow: "auto",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginBottom: 60,
-    },
-  },
-  message: {
-    margin: 18,
-  },
-  listHeading: {
-    borderBottom: "1px solid darkgray",
-    fontWeight: 600,
-    [theme.breakpoints.down("md")]: {
-      justifyContent: "space-between",
-    },
-  },
-  listItem: {
-    borderBottom: "1px solid lightgray",
-    paddingTop: 4,
-    paddingBottom: 4,
-  },
-  form: {
-    paddingLeft: 10,
-    borderBottom: "1px solid gray",
-  },
-  lastModified: {
-    color: "#0000008a",
-    paddingTop: 18,
-    [theme.breakpoints.down("md")]: {
-      paddingTop: 5,
-      display: "inline-block",
-    },
-  },
-  formButtons: {
-    textAlign: "right",
-    [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      justifyContent: "center",
-    },
-  },
-  button: {
-    margin: "10px 5px",
-  },
-  addNote: {
-    position: "relative",
-    bottom: 5,
-    padding: theme.spacing(1),
-  },
-  noteBody: {
-    "& textarea": {
-      maxHeight: 114,
-    },
-  },
-  closeButton: {
-    marginRight: 15,
-    marginTop: -6,
-  },
-  dialog: {
-    padding: 0,
-  },
-  editor: {
-    padding: 10,
-  },
-}));
+import { BLACK } from "../../store/colorCode";
+import Help from "../common/Help";
+import { useTheme } from "@mui/material/styles";
 
 function Notes(props) {
+  const theme = useTheme();
   const {
     uid,
     versions,
@@ -188,9 +72,6 @@ function Notes(props) {
   const closeAlert = () => {
     setAlert(false);
   };
-  const styleProps = { addNote: addNote };
-  const classes = useStyles(styleProps);
-
   const handleNoteTextChange = (editorState) => {
     setNoteText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
     setEditorState(editorState);
@@ -471,51 +352,100 @@ function Notes(props) {
   };
 
   return (
-    <div className={classes.root}>
-      {mobileView ? null : (
-        <Box className={classes.heading}>
-          <Box flexGrow={1}>
-            <Typography variant="h6" className={classes.notesHeading}>
-              {t("commonNotes")}
-              {Array.isArray(versesSelected) &&
-              versesSelected.length &&
-              !edit ? (
-                <Tooltip title={t("commonAddNote")}>
+    <Box
+      sx={{
+        width: "100%",
+        marginTop: { lg: "81px", md: "71px", xs: "72px" },
+        display: "flex",
+        flexDirection: "column",
+        height: "calc( 100vh - 5.278rem)",
+        [theme.breakpoints.down("md")]: {
+          height: "calc( 100vh - 60px)",
+        },
+      }}
+    >
+      <Box
+        sx={{
+          paddingBottom: "10px",
+          paddingLeft: "15px",
+          marginBottom: "10px",
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          height: "60px",
+          [theme.breakpoints.down("md")]: {
+            height: "60px",
+            marginBottom: "0px",
+            paddingBottom: "5px",
+            alignItems: "center",
+          },
+        }}
+      >
+        <Box flexGrow={1}>
+          <Typography variant="h6" sx={{ display: "flex" }}>
+            {t("commonNotes")}
+            {Array.isArray(versesSelected) && versesSelected.length && !edit ? (
+              <Tooltip title={t("commonAddNote")}>
+                <IconButton
+                  aria-label="add"
+                  sx={{
+                    position: "relative",
+                    bottom: "5px",
+                    padding: theme.spacing(1),
+                    display: mobileView ? "none" : "",
+                  }}
+                  onClick={clickAddNote}
+                  size="large"
+                >
+                  <AddBox />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title={t("commonSelectVerses")}>
+                <span>
                   <IconButton
                     aria-label="add"
-                    className={classes.addNote}
-                    onClick={clickAddNote}
+                    sx={{
+                      position: "relative",
+                      bottom: "5px",
+                      padding: theme.spacing(1),
+                      display: mobileView ? "none" : "",
+                    }}
+                    disabled
+                    size="large"
                   >
                     <AddBox />
                   </IconButton>
-                </Tooltip>
-              ) : (
-                <Tooltip title={t("commonSelectVerses")}>
-                  <>
-                    <IconButton
-                      aria-label="add"
-                      className={classes.addNote}
-                      disabled
-                    >
-                      <AddBox />
-                    </IconButton>
-                  </>
-                </Tooltip>
-              )}
-            </Typography>
-          </Box>
-          <Box>
-            <Close className={classes.closeButton} />
-          </Box>
+                </span>
+              </Tooltip>
+            )}
+          </Typography>
         </Box>
-      )}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              marginTop: "-3px",
+              fontSize: "21px",
+            }}
+            url={"notes"}
+          />
+          <Close sx={{ marginRight: "15px" }} />
+        </Box>
+      </Box>
       {mobileView ? (
         /* mobile view edit list */
         <Dialog
           onClose={handleClose}
           aria-labelledby="note-title"
           open={open}
-          classes={{ paper: classes.paper }}
+          sx={{
+            [theme.breakpoints.down("md")]: {
+              "& .MuiPaper-root": {
+                margin: "25px",
+              },
+            },
+          }}
         >
           <DialogTitle id="note-title" onClose={handleClose}>
             Note for {book} {chapter}:{" "}
@@ -523,32 +453,73 @@ function Notes(props) {
               ?.sort((a, b) => parseInt(a) - parseInt(b))
               .join(", ")}
           </DialogTitle>
-          <DialogContent dividers className={classes.dialog}>
+          <DialogContent dividers sx={{ padding: "0px" }}>
             <Editor
               editorState={editorState}
-              editorStyle={{ height: "30vh", overflow: "auto" }}
+              editorStyle={{
+                height: "30vh",
+                overflow: "auto",
+                padding: "10px",
+              }}
               onEditorStateChange={handleNoteTextChange}
-              editorClassName={classes.editor}
               toolbar={getEditorToolbar(true)}
             />
           </DialogContent>
           <DialogActions>
             <Grid container>
-              <Grid item xs={6} className={classes.lastModified}>
+              <Grid
+                item
+                xs={6}
+                sx={{
+                  color: "#0000008a",
+                  paddingTop: "18px",
+                  [theme.breakpoints.down("lg")]: {
+                    paddingTop: "5px",
+                    display: "inline-block",
+                    fontSize: "0.875rem",
+                  },
+                }}
+              >
                 {t("studyNotesLastModified")} :{" "}
                 {new Date(modifiedTime).toLocaleString()}
               </Grid>
-              <Grid item xs={6} className={classes.formButtons}>
+              <Grid
+                item
+                xs={6}
+                sx={{
+                  textAlign: "right",
+                  [theme.breakpoints.down("md")]: {
+                    display: "flex",
+                    justifyContent: "center",
+                  },
+                }}
+              >
                 <Button
                   variant="outlined"
-                  className={classes.button}
+                  sx={{
+                    margin: "10px 5px",
+                    color: BLACK,
+                    borderColor: BLACK,
+                    "&:hover": {
+                      backgroundColor: BLACK + "0a",
+                      border: "1px solid rgba(0, 0, 0, 0.23)",
+                    },
+                  }}
                   onClick={handleClose}
                 >
                   {t("commonCancel")}
                 </Button>
                 <Button
                   variant="outlined"
-                  className={classes.button}
+                  sx={{
+                    margin: "10px 5px",
+                    color: BLACK,
+                    borderColor: BLACK,
+                    "&:hover": {
+                      backgroundColor: BLACK + "0a",
+                      border: "1px solid rgba(0, 0, 0, 0.23)",
+                    },
+                  }}
                   onClick={saveNote}
                 >
                   {t("commonSave")}
@@ -558,7 +529,7 @@ function Notes(props) {
           </DialogActions>
         </Dialog>
       ) : addNote ? (
-        <div className={classes.form}>
+        <Box sx={{ paddingLeft: "10px", borderBottom: "1px solid gray" }}>
           <Typography variant="h6" gutterBottom>
             {t("studyNotesBookChapterVerse", { ref })}
           </Typography>
@@ -566,28 +537,66 @@ function Notes(props) {
           <Editor
             editorState={editorState}
             onEditorStateChange={handleNoteTextChange}
-            editorStyle={{ height: "30vh" }}
+            editorStyle={{ height: "30vh", padding: "0px" }}
             toolbar={getEditorToolbar(false)}
           />
           <Grid container>
-            <Grid item xs={7} className={classes.lastModified}>
+            <Grid
+              item
+              xs={7}
+              sx={{
+                color: "#0000008a",
+                paddingTop: "18px",
+                [theme.breakpoints.down("lg")]: {
+                  paddingTop: "5px",
+                  display: "inline-block",
+                  fontSize: "0.875rem",
+                },
+              }}
+            >
               {modifiedTime &&
                 t("studyNotesLastModified") +
                   ":" +
                   " " +
                   new Date(modifiedTime).toLocaleString()}
             </Grid>
-            <Grid item xs={5} className={classes.formButtons}>
+            <Grid
+              item
+              xs={5}
+              sx={{
+                textAlign: "right",
+                [theme.breakpoints.down("md")]: {
+                  display: "flex",
+                  justifyContent: "center",
+                },
+              }}
+            >
               <Button
                 variant="outlined"
-                className={classes.button}
+                sx={{
+                  margin: "10px 5px",
+                  color: BLACK,
+                  borderColor: BLACK,
+                  "&:hover": {
+                    backgroundColor: BLACK + "0a",
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
+                  },
+                }}
                 onClick={resetForm}
               >
                 {t("commonCancel")}
               </Button>
               <Button
                 variant="outlined"
-                className={classes.button}
+                sx={{
+                  margin: "10px 5px",
+                  color: BLACK,
+                  borderColor: BLACK,
+                  "&:hover": {
+                    backgroundColor: BLACK + "0a",
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
+                  },
+                }}
                 onClick={saveNote}
               >
                 {t("commonSave")}
@@ -609,34 +618,62 @@ function Notes(props) {
               {alertMessage}
             </Alert>
           </Snackbar>
-        </div>
+        </Box>
       ) : (
         ""
       )}
-      <div className={classes.list}>
+      <Box
+        sx={{
+          overflow: "auto",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          "&::-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "&::-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+          [theme.breakpoints.down("md")]: {
+            marginBottom: "60px",
+          },
+        }}
+      >
         {notes && Object.keys(notes).length !== 0 ? (
           <List component="nav">
             {chapterNoteList && Object.keys(chapterNoteList).length !== 0 ? (
               <>
-                <ListItem className={classes.listHeading}>
+                <ListItem
+                  sx={{
+                    borderBottom: "1px solid darkgray",
+                    fontWeight: 600,
+                    [theme.breakpoints.down("lg")]: {
+                      justifyContent: "space-between",
+                    },
+                  }}
+                >
                   <Typography variant="h5">
                     {t("studyNotesBookChapter", { ref })}
                   </Typography>
-                  {mobileView ? (
-                    <Close className={classes.closeButton} />
-                  ) : null}
                 </ListItem>
                 {chapterNoteList.map((note, i) => {
                   return versionData[note.sourceId] !== undefined ? (
                     <ListItem
                       key={i}
-                      className={classes.listItem}
+                      sx={{
+                        borderBottom: "1px solid lightgray",
+                        paddingTop: "4px",
+                        paddingBottom: "4px",
+                        cursor: "pointer",
+                      }}
                       data-sourceid={note.sourceId}
                       data-bookcode={note.bookCode}
                       data-chapter={note.chapter}
                       data-index={note.index}
                       onClick={openRef}
-                      button
                     >
                       <ListItemText
                         primary={`${versionData[note.sourceId][0]} ${
@@ -654,6 +691,7 @@ function Notes(props) {
                             data-chapter={note.chapter}
                             data-index={note.index}
                             onClick={(event) => editNote(event)}
+                            size="large"
                           >
                             <EditIcon />
                           </IconButton>
@@ -666,6 +704,7 @@ function Notes(props) {
                           data-chapter={note.chapter}
                           data-index={note.index}
                           onClick={(e) => deleteNote(e)}
+                          size="large"
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -679,20 +718,32 @@ function Notes(props) {
             ) : (
               ""
             )}
-            <ListItem className={classes.listHeading}>
+            <ListItem
+              sx={{
+                borderBottom: "1px solid darkgray",
+                fontWeight: 600,
+                [theme.breakpoints.down("lg")]: {
+                  justifyContent: "space-between",
+                },
+              }}
+            >
               <Typography variant="h5">{t("studyAllNotesTitle")}</Typography>
             </ListItem>
             {noteList.map((note, i) => {
               return versionData[note.sourceId] !== undefined ? (
                 <ListItem
                   key={i}
-                  className={classes.listItem}
+                  sx={{
+                    borderBottom: "1px solid lightgray",
+                    paddingTop: "4px",
+                    paddingBottom: "4px",
+                    cursor: "pointer",
+                  }}
                   data-sourceid={note.sourceId}
                   data-bookcode={note.bookCode}
                   data-chapter={note.chapter}
                   data-index={note.index}
                   onClick={openRef}
-                  button
                 >
                   <ListItemText
                     primary={`${versionData[note.sourceId][0]} ${note.book} ${
@@ -710,6 +761,7 @@ function Notes(props) {
                         data-chapter={note.chapter}
                         data-index={note.index}
                         onClick={(event) => editNote(event)}
+                        size="large"
                       >
                         <EditIcon />
                       </IconButton>
@@ -722,6 +774,7 @@ function Notes(props) {
                       data-chapter={note.chapter}
                       data-index={note.index}
                       onClick={(e) => deleteNote(e)}
+                      size="large"
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -733,12 +786,12 @@ function Notes(props) {
             })}
           </List>
         ) : (
-          <Typography className={classes.message}>
+          <Typography sx={{ margin: "18px" }}>
             {t("studySelectVerseStart")}
           </Typography>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 const mapStateToProps = (state) => {

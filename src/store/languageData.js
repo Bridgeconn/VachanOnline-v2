@@ -27,3 +27,8 @@ export const languageJson = [
   { language: "urdu", languageName: "उर्दू", langCode: "urd" },
   { language: "varli-davri", languageName: "વારલી", langCode: "vav" },
 ];
+
+export const languageCode = {
+  en: { code: "eng", name: "English" },
+  hi: { code: "hin", name: "Hindi" },
+};

@@ -1,162 +1,65 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Calendar from "react-calendar";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Close from "../common/Close";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import axios from "axios";
 import "react-calendar/dist/Calendar.css";
-import Typography from "@material-ui/core/Typography";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import Typography from "@mui/material/Typography";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import Select from "react-select";
-import Tooltip from "@material-ui/core/Tooltip";
-import Button from "@material-ui/core/Button";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import { GREY } from "../../store/colorCode";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { BLACK, GREY } from "../../store/colorCode";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
+import Help from "../common/Help";
+import { styled } from "@mui/system";
+import { ListItemButton } from "@mui/material";
 
-const BigTooltip = withStyles((theme) => ({
-  tooltip: {
+const BigTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: "#ffd580",
     color: "rgba(0, 0, 0, 0.87)",
     boxShadow: theme.shadows[4],
     border: "1px solid orange",
     fontSize: 16,
   },
-}))(Tooltip);
+}));
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    marginTop: 82,
-    [theme.breakpoints.only("xs")]: {
-      marginTop: 5,
-    },
-    [theme.breakpoints.only("sm")]: {
-      marginTop: 70,
-    },
-  },
-  main: {
-    top: 134,
-    bottom: 0,
-    paddingTop: 30,
-    overflow: "auto",
-    position: "absolute",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.only("xs")]: {
-      width: "100%",
-      padding: "0 5px",
-      top: 57,
-    },
-    [theme.breakpoints.only("sm")]: {
-      width: "100%",
-      top: 123,
-      paddingTop: 0,
-    },
-  },
-  container: {
-    width: "100%",
-    marginTop: 60,
-    [theme.breakpoints.down("sm")]: {
-      marginTop: 0,
-    },
-  },
-  refBox: {
-    [theme.breakpoints.down("sm")]: {
-      display: "flex",
-    },
-  },
-  heading: {
-    paddingBottom: 10,
-    paddingLeft: 15,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    height: "2.75em",
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
-  calendar: {
-    display: "block",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "50%",
-    [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
-  },
-  message: {
-    margin: 18,
-  },
-  listItem: {
-    borderBottom: "1px solid lightgray",
-  },
-  title: {
-    paddingLeft: 35,
-    paddingBottom: 12,
-    marginBottom: 20,
-    borderBottom: "1px solid #f1ecec",
-    display: "flex",
-    width: "100%",
-    [theme.breakpoints.down("sm")]: {
-      boxShadow: theme.shadows[1],
-      paddingLeft: 15,
-    },
-  },
-  refText: {
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "1rem",
-      marginRight: 5,
-    },
-  },
-  select: {
-    width: 200,
-    [theme.breakpoints.down("md")]: {
-      width: 150,
-      padding: "0 15px",
-    },
-    [theme.breakpoints.only("xs")]: {
-      width: 200,
-      padding: "0 15px",
-    },
-  },
-  closeButton: {
-    marginTop: 7,
-    marginRight: 15,
-  },
-  dateContainer: {
-    display: "flex",
-  },
-  loading: {
-    paddingLeft: 20,
-  },
-  list: {
-    [theme.breakpoints.down("sm")]: {
-      bottom: 50,
-      top: 0,
-    },
-  },
-  date: {
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
+const StyledSelect = styled(Select)(({ theme }) => ({
+  width: 200,
+  padding: "0 15px",
+  [theme.breakpoints.only("xs")]: {
+    width: 190,
+    padding: "0 15px",
   },
 }));
 
+const StyledDatePicker = styled(ReactDatePicker)(({ theme }) => ({
+  display: "block",
+  marginLeft: "auto",
+  marginRight: "auto",
+  width: "50%",
+  [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
+}));
+
+const StyledCalendar = styled(Calendar)(({ theme }) => ({
+  display: "block",
+  marginLeft: "auto",
+  marginRight: "auto",
+  width: "50%",
+  [theme.breakpoints.down("sm")]: { width: 120, marginTop: 6 },
+}));
+
+const Heading = styled("h3")({ paddingLeft: 20 });
+
 const ReadingPlan = (props) => {
-  const classes = useStyles();
   const { setValue1, bookList, mobileView, readingPlans } = props;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [plans, setPlans] = useState([]);
@@ -181,6 +84,11 @@ const ReadingPlan = (props) => {
     "Nov",
     "Dec",
   ];
+  const ref = {
+    date: selectedDate.getDate(),
+    month: months[selectedDate.getMonth()],
+    year: selectedDate.getFullYear(),
+  };
   const getBookText = (dataRef, text) => {
     let ref = dataRef.split(" ");
     let book = bookList.find((element) => element.book_code === ref[0]);
@@ -212,7 +120,13 @@ const ReadingPlan = (props) => {
       variant="contained"
       onClick={onClick}
       ref={ref}
-      classes={{ root: classes.date }}
+      sx={{
+        [`&.MuiButton-root`]: {
+          textTransform: "capitalize",
+          backgroundColor: "#fff",
+        },
+        color: BLACK,
+      }}
     >
       {value}
     </Button>
@@ -249,8 +163,18 @@ const ReadingPlan = (props) => {
   }, [planData, selectedDate]);
 
   return (
-    <div className={classes.root}>
-      <Box className={classes.title}>
+    <Box sx={{ width: "100%", marginTop: { lg: 10.125, sm: 8.75, xs: 0.625 } }}>
+      <Box
+        sx={{
+          paddingLeft: { lg: 4.375, xs: 1.875 },
+          paddingBottom: 1.5,
+          marginBottom: 2.5,
+          borderBottom: "1px solid #f1ecec",
+          display: "flex",
+          width: "100%",
+          boxShadow: { lg: 0, xs: 1 },
+        }}
+      >
         <Box flexGrow={1}>
           {mobileView ? null : (
             <Typography variant="h6"> {t("readingPlansText")}</Typography>
@@ -258,17 +182,15 @@ const ReadingPlan = (props) => {
         </Box>
         <Box flexGrow={1}>
           {plan ? (
-            <div className={mobileView ? classes.dateContainer : null}>
-              <Select
-                className={classes.select}
+            <Box sx={{ display: { lg: "block", xs: "flex" } }}>
+              <StyledSelect
                 defaultValue={plan}
                 onChange={(data) => setPlan(data)}
                 options={plans}
                 isSearchable={false}
               />
               {mobileView ? (
-                <ReactDatePicker
-                  className={classes.calendar}
+                <StyledDatePicker
                   selected={selectedDate}
                   onChange={(date) => setSelectedDate(date)}
                   withPortal
@@ -280,52 +202,102 @@ const ReadingPlan = (props) => {
                   customInput={<CustomInput />}
                 />
               ) : null}
-            </div>
+            </Box>
           ) : (
             ""
           )}
         </Box>
-        <Box>
-          <Close className={classes.closeButton} />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Help
+            iconStyle={{
+              color: BLACK,
+              marginTop: 0.625,
+              fontSize: 21,
+            }}
+            url={"readingPlans"}
+          />
+          <Close
+            className={{ marginTop: 0.875, marginRight: { lg: 1.875, xs: 0 } }}
+          />
         </Box>
       </Box>
-      <Box className={classes.main}>
+      <Box
+        sx={{
+          top: { lg: 134, sm: 123, xs: 57 },
+          bottom: 0,
+          paddingTop: { md: 3.75, sm: 0, xs: 0 },
+          paddingRight: { xs: 0 },
+          paddingBottom: { xs: 0.625 },
+          paddingLeft: { xs: 0.625 },
+          overflow: "auto",
+          position: "absolute",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+          width: "100%",
+          "-webkit-scrollbar": {
+            width: "0.45em",
+          },
+          "-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.4)",
+            outline: "1px solid slategrey",
+          },
+        }}
+      >
         {mobileView ? null : (
-          <Calendar
-            className={classes.calendar}
+          <StyledCalendar
             onChange={(date) => setSelectedDate(date)}
             value={selectedDate}
           />
         )}
-        <div className={classes.container}>
-          <Box className={classes.heading}>
-            <Box flexGrow={1} className={classes.refBox}>
-              <Typography variant="h6" className={classes.refText}>
-                {t("readingPlanBibleRef") +
-                  " " +
-                  selectedDate.getDate() +
-                  "-" +
-                  months[selectedDate.getMonth()] +
-                  "-" +
-                  selectedDate.getFullYear()}
+        <Box sx={{ width: "100%", marginTop: { md: 7.5, sm: 0 } }}>
+          <Box
+            sx={{
+              paddingBottom: 1.25,
+              paddingLeft: 1.875,
+              borderBottom: "1px solid #f1ecec",
+              display: { md: "flex", xs: "none" },
+              width: "100%",
+              height: "2.75em",
+            }}
+          >
+            <Box flexGrow={1} sx={{ display: { lg: "block", xs: "flex" } }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: "1.25rem",
+                }}
+              >
+                {t("readingPlanBibleRef", { ref })}
               </Typography>
             </Box>
           </Box>
           <>
             {loading ? (
-              <h3 className={classes.loading}>Loading</h3>
+              <Heading>Loading</Heading>
             ) : readingList.length !== 0 ? (
-              <List component="nav" className={classes.list}>
+              <List
+                component="nav"
+                sx={{
+                  bottom: 50,
+                  top: 0,
+                }}
+              >
                 {readingList.map((reading, i) => {
                   const bookText = getBookText(reading.ref, reading.text);
                   return bookText ? (
-                    <ListItem key={i} className={classes.listItem} button>
+                    <ListItemButton
+                      key={i}
+                      sx={{ borderBottom: "1px solid lightgray" }}
+                    >
                       <ListItemText
                         primary={bookText}
                         data-ref={reading.ref}
                         onClick={(e) => openChapter(e)}
                       />
-                    </ListItem>
+                    </ListItemButton>
                   ) : (
                     <BigTooltip
                       key={i}
@@ -333,12 +305,15 @@ const ReadingPlan = (props) => {
                       arrow
                     >
                       <span>
-                        <ListItem key={i} className={classes.listItem} button>
+                        <ListItem
+                          key={i}
+                          sx={{ borderBottom: "1px solid lightgray" }}
+                        >
                           <Button
                             aria-label="Book not available"
-                            style={{
+                            sx={{
                               textTransform: "none",
-                              marginLeft: "-8px",
+                              marginLeft: -1,
                             }}
                             disabled
                             endIcon={<ErrorOutlineIcon />}
@@ -347,7 +322,7 @@ const ReadingPlan = (props) => {
                           </Button>
                           {mobileView ? (
                             <Typography
-                              style={{
+                              sx={{
                                 color: GREY,
                                 fontSize: "0.9rem",
                                 float: "right",
@@ -363,14 +338,14 @@ const ReadingPlan = (props) => {
                 })}
               </List>
             ) : (
-              <Typography className={classes.message}>
+              <Typography sx={{ margin: 2.25 }}>
                 {t("noReadingPlanAvailable")}
               </Typography>
             )}
           </>
-        </div>
+        </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 export default ReadingPlan;

@@ -1,11 +1,19 @@
+import { Box } from "@mui/material";
 import {
   readingPlanAPI,
   signBibleAPI,
   API,
   chapterVideoAPI,
   languageDataAPI,
+  obsDataAPI,
 } from "../../store/api";
 import { bibleBooks, bibleChapters } from "../../store/bibleData";
+import {
+  punctPattern1,
+  punctPattern2,
+  verseCarryingMarkers,
+} from "../../store/usfm";
+
 //Function to get the bible versions
 export const getVersions = (
   setVersions,
@@ -43,6 +51,9 @@ export const getVersions = (
             .languageVersions.find(
               (e) => e.version.code?.toUpperCase() === versionCode
             );
+          if (version === undefined) {
+            version = versions[0].languageVersions[0];
+          }
         } catch (e) {
           // last read or hindi IRV version not available use first versions
         }
@@ -304,9 +315,9 @@ const checkValidChapter = (bookCode, chapter) => {
 const getBookCode = (book, bookList) => {
   let bookCode = "";
   // check the search string contains full English Book Name
-  let bookObj = bibleBooks.find((b) => b.book.toLowerCase() === book);
+  let bookObj = bookList.find((a) => a.short === book);
   if (bookObj) {
-    bookCode = bookObj.abbreviation;
+    bookCode = bookObj.book_code;
   } else {
     bookObj = bookList.find(
       (b) =>
@@ -384,9 +395,17 @@ export const getReference = (search, bookList) => {
   const searchArr1 = bookChapter.split(/\s+/);
   const chapter = Number(searchArr1.pop());
   const bookName = searchArr1.join(" ").toLowerCase();
-
+  const refObj = bibleBooks.find(
+    (b) => b.book.toLowerCase() === bookName || b.abbreviation === bookName
+  );
+  const refObjLocal = bookList.find(
+    (b) => b.short === bookName || b.abbr === bookName
+  );
   //check the search string contains valid book
-  const bookCode = getBookCode(bookName, bookList);
+  const bookCode = getBookCode(
+    refObj?.abbreviation ? refObj?.abbreviation : refObjLocal?.abbr,
+    bookList
+  );
   //If search string has book code, then check the corresponding total chapter count
   if (bookCode) {
     if (checkValidChapter(bookCode, chapter)) {
@@ -532,4 +551,167 @@ export const getLanguageData = (setValue) => {
     .catch(function (error) {
       console.log(error);
     });
+};
+export const getObsLanguageData = (setValue, setLang) => {
+  obsDataAPI
+    ?.get("languageData.json")
+    .then(function (response) {
+      setValue("obsLanguageInfo", response.data);
+      setLang(response.data[0].langCode);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+export const getVerse = (verse, sx) => {
+  if (verse?.contents?.length === 1 && typeof verse?.contents[0] === "string") {
+    return verse.verseText;
+  }
+  return parseTags(verse?.contents, sx);
+};
+
+function parseTags(tags, sx) {
+  let verse = [];
+  if (Array.isArray(tags)) {
+    for (let item of tags) {
+      if (["q1", "q2", "q3", "q4", "b"].includes(Object.keys(item)[0])) {
+        verse.push(Object.keys(item)[0]);
+      }
+      if (typeof item === "string") {
+        verse.push(item);
+      } else if (typeof item === "object") {
+        const tag = item.closing?.replace(/[^a-z+]/gi, "");
+        if (verseCarryingMarkers.includes(tag)) {
+          verse.push(parseTags(item[tag]));
+        }
+      } else {
+        console.log("Case not handled, see tag below");
+        console.log(tags);
+      }
+    }
+  }
+  let verseMap = [];
+  let verseString = "";
+  let previousText = "";
+
+  verse.forEach((item, i) => {
+    if (["q1", "q2", "q3", "q4", "b"].includes(item)) {
+      verseMap.push(verseString);
+      verseMap.push(item);
+      verseString = "";
+    } else {
+      if (
+        punctPattern1.test(item) ||
+        punctPattern2.test(previousText) ||
+        (typeof previousText === "string" && previousText?.endsWith(" ")) ||
+        previousText === ""
+      ) {
+        verseString += item;
+      } else if (item !== "") {
+        verseString += ` ${item}`;
+      }
+    }
+    if (i === verse.length - 1 && verseString !== "") {
+      verseMap.push(verseString);
+    }
+    previousText = item;
+  });
+
+  let poetry = "";
+
+  const styling = (text) => {
+    if (poetry === "q1") {
+      poetry = "";
+      return (
+        <Box sx={sx} className="poetry1">
+          {text}
+        </Box>
+      );
+    }
+    if (poetry === "q2") {
+      poetry = "";
+      return (
+        <Box sx={sx} className="poetry2">
+          {text}
+        </Box>
+      );
+    }
+    if (poetry === "q3") {
+      poetry = "";
+      return (
+        <Box sx={sx} className="poetry3">
+          {text}
+        </Box>
+      );
+    }
+    if (poetry === "q4") {
+      poetry = "";
+      return (
+        <Box sx={sx} className="poetry4">
+          {text}
+        </Box>
+      );
+    }
+    return text;
+  };
+
+  const verseText = verseMap.map((text) => {
+    if (["q1", "q2", "q3", "q4"].includes(text)) {
+      poetry = text;
+      return "";
+    } else if (text === "b") {
+      return <Box sx={{ display: "block", height: "10px" }}></Box>;
+    } else if (text !== "") {
+      return styling(text);
+    }
+    previousText = text;
+    return "";
+  });
+  return verseText;
+}
+export const parseHeading = (item, headingSx) => {
+  if (Array.isArray(item)) {
+    const [first] = item;
+    if (typeof first === "object") {
+      const tag = Object.keys(first)[0];
+      if (tag.match(/ms.?/)) {
+        const heading = first[tag];
+        if (heading && heading !== "" && typeof heading === "string") {
+          return (
+            <Box key={heading} sx={headingSx}>
+              {heading}
+            </Box>
+          );
+        }
+      }
+      if (tag.match(/s.?/)) {
+        const heading = first[tag][0];
+        if (heading && heading !== "" && typeof heading === "string") {
+          return (
+            <Box key={heading} sx={headingSx}>
+              {heading}
+            </Box>
+          );
+        }
+      }
+    }
+  }
+  return "";
+};
+export const getHeading = (item, headingSx) => {
+  try {
+    const { contents } = item;
+    if (contents) {
+      for (item of contents) {
+        const heading = parseHeading(item, headingSx);
+        if (heading !== "") {
+          return heading;
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  return "";
 };

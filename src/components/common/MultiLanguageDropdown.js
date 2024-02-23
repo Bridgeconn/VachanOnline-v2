@@ -1,22 +1,19 @@
 import React, { useEffect } from "react";
-import LanguageIcon from "@material-ui/icons/Language";
-import { makeStyles } from "@material-ui/core/styles";
-import { Divider, Menu, MenuItem } from "@material-ui/core";
+import LanguageIcon from "@mui/icons-material/Language";
+import { Menu, MenuItem } from "@mui/material";
 import i18n from "../../i18n";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
+import { useTranslation } from "react-i18next";
+import BigTooltip from "./BigTooltip";
+import { languageCode } from "../../store/languageData";
+import { LIGHTGREY } from "../../store/colorCode";
 
-const useStyles = makeStyles((theme) => ({
-  list: {
-    width: 150,
-  },
-}));
 const MultiLanguageDropdown = (props) => {
-  const classes = useStyles();
   const [languageAnchor, setLanguageAnchor] = React.useState(null);
   const open = Boolean(languageAnchor);
   const { locale, setLocale, iconstyle } = props;
-
+  const { t } = useTranslation();
   function openLanguage(event) {
     setLanguageAnchor(event.currentTarget);
   }
@@ -33,26 +30,30 @@ const MultiLanguageDropdown = (props) => {
   }, [setLocale]);
   return (
     <>
-      <LanguageIcon className={iconstyle} onClick={openLanguage}></LanguageIcon>
+      <BigTooltip title={t("multilingualTooltip")}>
+        <LanguageIcon sx={iconstyle} onClick={openLanguage}></LanguageIcon>
+      </BigTooltip>
       <Menu
         id="long-menu"
         anchorEl={languageAnchor}
         keepMounted
         open={open}
         onClose={closeLanguage}
-        getContentAnchorEl={null}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
-        style={{ top: 17 }}
-        classes={{ list: classes.list }}
+        style={{ top: "17px" }}
+        sx={{ "& .MuiMenu-list": { width: "150px" } }}
       >
-        <MenuItem onClick={() => handleClick("en")} selected={locale === "en"}>
-          English
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => handleClick("hi")} selected={locale === "hi"}>
-          Hindi
-        </MenuItem>
+        {Object.keys(languageCode).map((text) => (
+          <MenuItem
+            key={text}
+            onClick={() => handleClick(text)}
+            selected={locale === text}
+            sx={{ borderBottom: "1px solid " + LIGHTGREY }}
+          >
+            {languageCode[text].name}
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );

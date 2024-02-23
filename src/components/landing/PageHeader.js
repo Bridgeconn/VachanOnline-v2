@@ -1,102 +1,44 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import Login from "../login/Login";
 import LoginMenu from "../login/LoginMenu";
 import logo from "../common/images/logo.png";
 import favicon from "../common/images/favicon.png";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { SIGNBIBLE } from "../../store/views";
 import { SETVALUE } from "../../store/actions";
 import { WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
-import { Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { Box, Snackbar } from "@mui/material";
+import { Alert } from "@mui/material";
 import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    position: "absolute",
-    top: 0,
-    display: "flex",
-    width: "100%",
-  },
-  appBar: {
-    background: "rgba(0,0,0,0.5)",
-    paddingLeft: 10,
-    [theme.breakpoints.down("sm")]: {
-      padding: 0,
-    },
-  },
-  links: {
-    flexGrow: 1,
-  },
-  logo: {
-    height: 60,
-  },
-  favicon: {
-    height: 50,
-  },
-  stories: {
-    color: "#e0e0e0",
-    marginRight: 4,
-    marginTop: 2,
-    "&:hover": {
-      color: "#d0d0d0",
-    },
-  },
-  signBible: {
-    color: "#e0e0e0",
-    marginTop: 2,
-    marginRight: 10,
-    "&:hover": {
-      color: "#d0d0d0",
-    },
-  },
-  languageMenu: {
-    width: 150,
-  },
-  islBadge: {
-    marginRight: 8,
-  },
-  legacySite: {
-    textTransform: "unset",
-    fontSize: "1.2rem",
-    margin: "3px 0 0 15px",
-    "&:hover": {
-      color: "inherit",
-    },
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
-  islIcon: {
-    padding: "8px 12px 0",
-    color: WHITE,
-  },
-  languageIcon: {
-    cursor: "pointer",
-    marginLeft: 10,
-    width: "25px",
-    fontSize: "2rem",
+const ImageLogo = styled("img")(({ theme }) => ({
+  height: 60,
+  [theme.breakpoints.down("lg")]: {
+    display: "none",
   },
 }));
+const ImageFavicon = styled("img")({
+  height: 50,
+});
+const I = styled("i")({ padding: "8px 8px 0", color: WHITE });
 
 const PageHeader = (props) => {
-  const classes = useStyles();
   const [loginButton, setLoginButton] = React.useState();
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const mobileLandscape = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobileLandscape = useMediaQuery(theme.breakpoints.down("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
   let { login, userDetails, setParallelView, setLocale } = props;
   const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
@@ -113,37 +55,60 @@ const PageHeader = (props) => {
       login ? (
         <LoginMenu userDetails={userDetails} />
       ) : (
-        <Login setMessage={setMessage} setAlert={setAlert} />
+        <Login setMessage={setMessage} setAlert={setAlert} message={message} />
       )
     );
-  }, [login, userDetails]);
+  }, [login, message, userDetails]);
   return (
-    <div className={classes.root}>
-      <AppBar className={classes.appBar} position="static">
-        <Toolbar>
-          <div className={classes.links}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        position: "absolute",
+        top: 0,
+        display: "flex",
+        width: "100%",
+      }}
+    >
+      <AppBar
+        sx={{
+          background: "rgba(0,0,0,0.5)",
+          paddingLeft: { lg: 1.25, xs: 0 },
+          zIndex: 1,
+        }}
+        position="static"
+      >
+        <Toolbar
+          sx={{
+            [`&.MuiToolbar-root
+           `]: { paddingX: 1.5, paddingY: 0 },
+          }}
+        >
+          <Box flexGrow={1}>
             <Link to={{ pathname: "/study" }}>
-              <img src={favicon} alt="logo" className={classes.favicon} />
-              {mobile === true ? (
-                ""
-              ) : (
-                <img src={logo} alt={"logo"} className={classes.logo} />
-              )}
+              <ImageFavicon src={favicon} alt="logo" />
+              {mobile === true ? "" : <ImageLogo src={logo} alt={"logo"} />}
             </Link>
-          </div>
+          </Box>
           <Link
             to={{
               pathname: "/audiobible",
             }}
           >
             {mobileLandscape ? (
-              <i className={`material-icons ${classes.islIcon}`}>headphones</i>
+              <I className={`material-icons`}>headphones</I>
             ) : (
               <Button
                 variant="outlined"
                 size="small"
                 color="inherit"
-                className={classes.signBible}
+                sx={{
+                  color: "#e0e0e0",
+                  marginTop: 0.25,
+                  marginRight: 1.25,
+                  "&:hover": {
+                    color: "#d0d0d0",
+                  },
+                }}
                 title={t("audioBibleText")}
                 aria-label="audio bible"
                 target="_blank"
@@ -161,18 +126,25 @@ const PageHeader = (props) => {
               }}
             >
               {mobileLandscape ? (
-                <i
-                  className={`material-icons ${classes.islIcon}`}
+                <I
+                  className={`material-icons`}
                   onClick={() => setParallelView(SIGNBIBLE)}
                 >
                   sign_language
-                </i>
+                </I>
               ) : (
                 <Button
                   variant="outlined"
                   size="small"
                   color="inherit"
-                  className={classes.signBible}
+                  sx={{
+                    color: "#e0e0e0",
+                    marginTop: 0.25,
+                    marginRight: 1.25,
+                    "&:hover": {
+                      color: "#d0d0d0",
+                    },
+                  }}
                   title={t("landingPageHeaderISLVToolTip")}
                   aria-label="sign language bible"
                   target="_blank"
@@ -180,7 +152,7 @@ const PageHeader = (props) => {
                   onClick={() => setParallelView(SIGNBIBLE)}
                   startIcon={<i className="material-icons">sign_language</i>}
                 >
-                  {t("ISLVBibleText")}
+                  {isTablet ? t("ISLVTopBarBtnTab") : t("ISLVBibleText")}
                 </Button>
               )}
             </Link>
@@ -194,15 +166,20 @@ const PageHeader = (props) => {
               }}
             >
               {mobileLandscape ? (
-                <i className={`material-icons ${classes.islIcon}`}>
-                  music_note
-                </i>
+                <I className={`material-icons`}>music_note</I>
               ) : (
                 <Button
                   variant="outlined"
                   size="small"
                   color="inherit"
-                  className={classes.signBible}
+                  sx={{
+                    color: "#e0e0e0",
+                    marginTop: 0.25,
+                    marginRight: 1.25,
+                    "&:hover": {
+                      color: "#d0d0d0",
+                    },
+                  }}
                   title={t("songsText")}
                   aria-label="Song"
                   target="_blank"
@@ -219,15 +196,20 @@ const PageHeader = (props) => {
           {process.env.REACT_APP_BIBLE_STORIES_URL !== undefined ? (
             <Link to="/biblestories">
               {mobileLandscape ? (
-                <i className={`material-icons ${classes.islIcon}`}>
-                  auto_stories
-                </i>
+                <I className={`material-icons`}>auto_stories</I>
               ) : (
                 <Button
                   variant="outlined"
                   size="small"
                   color="inherit"
-                  className={classes.stories}
+                  sx={{
+                    color: "#e0e0e0",
+                    marginRight: 0.5,
+                    marginTop: 0.25,
+                    "&:hover": {
+                      color: "#d0d0d0",
+                    },
+                  }}
                   title={t("bibleStoriesText")}
                   aria-label="bible stories"
                   target="_blank"
@@ -241,14 +223,52 @@ const PageHeader = (props) => {
           ) : (
             ""
           )}
+          {process.env.REACT_APP_DOCUMENT_URL ? (
+            <Link to={process.env.REACT_APP_DOCUMENT_URL} target="_blank">
+              {mobileLandscape ? (
+                ""
+              ) : (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  sx={{
+                    color: "#e0e0e0",
+                    marginTop: 0.25,
+                    marginRight: 1.25,
+                    "&:hover": {
+                      color: "#d0d0d0",
+                    },
+                  }}
+                  title={t("landingHelpBtn")}
+                  aria-label="Help"
+                  rel="noopener"
+                  startIcon={<i className="material-icons">help_outline</i>}
+                >
+                  {t("landingHelpBtn")}
+                </Button>
+              )}
+            </Link>
+          ) : (
+            ""
+          )}
           {loginButton}
-          <MultiLanguageDropdown iconstyle={classes.languageIcon} />
+          <MultiLanguageDropdown
+            iconstyle={{
+              cursor: "pointer",
+              marginLeft: 0.375,
+              width: "25px",
+              fontSize: "2rem",
+            }}
+          />
         </Toolbar>
         {alert ? (
           <Snackbar
+            sx={{ "&.MuiSnackbar-root": { bottom: "55px" } }}
             open={Boolean(alert)}
             autoHideDuration={8000}
             onClose={handleClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
             <Alert variant="filled" onClose={handleClose} severity={alert}>
               {message}
@@ -258,7 +278,7 @@ const PageHeader = (props) => {
           ""
         )}
       </AppBar>
-    </div>
+    </Box>
   );
 };
 const mapStateToProps = (state) => {

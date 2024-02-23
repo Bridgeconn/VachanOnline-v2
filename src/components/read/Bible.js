@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
 import ReactPlayer from "react-player";
-import NoteIcon from "@material-ui/icons/NoteOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
+import NoteIcon from "@mui/icons-material/NoteOutlined";
+import Tooltip from "@mui/material/Tooltip";
 import { NOTE } from "../../store/views";
 import { API, CancelToken } from "../../store/api";
 import GetChapterNotes from "../note/GetChapterNotes";
 import * as color from "../../store/colorCode";
-import { Button, Divider, Snackbar, Typography } from "@material-ui/core";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import { Button, Divider, Snackbar, Typography } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import parse from "html-react-parser";
 import { useFirebase } from "react-redux-firebase";
 import {
@@ -19,255 +18,80 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { getAudioBibleObject, getEditorToolbar } from "../common/utility";
+} from "@mui/material";
+import { Alert, Box } from "@mui/material";
+import {
+  getAudioBibleObject,
+  getEditorToolbar,
+  getHeading,
+  getVerse,
+  parseHeading,
+} from "../common/utility";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
 import { Editor } from "react-draft-wysiwyg";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  biblePanel: {
-    position: "absolute",
-    backgroundColor: "#fff",
-    width: "100%",
-    height: "100%",
-    borderRight: "1px solid " + color.LIGHTGREY,
-    "& p": {
-      textAlign: "justify",
-      color: "#464545",
-      marginBottom: 5,
-    },
-  },
-  paper: {
-    [theme.breakpoints.down("sm")]: {
-      margin: 25,
-    },
-  },
-  bibleReadingPane: {
-    position: "absolute",
-    paddingTop: 20,
-    height: "100%",
-    overflow: "scroll",
-    lineHeight: "2em",
-    scrollbarWidth: "thin",
-    scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-    width: "100%",
-    "&::-webkit-scrollbar": {
-      width: "0.45em",
-    },
-    "&::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.4)",
-      outline: "1px solid slategrey",
-    },
-    [theme.breakpoints.up("md")]: {
-      paddingRight: (props) => (props.padding > 40 ? props.padding : 40),
-      paddingLeft: (props) => (props.padding > 40 ? props.padding : 40),
-    },
-    [theme.breakpoints.down("sm")]: {
-      paddingRight: 15,
-      paddingLeft: 15,
-      lineHeight: "1.8em",
-    },
-  },
-  prevChapter: {
-    position: "absolute",
-    top: "45%",
-    cursor: "pointer",
-    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
-    borderRadius: "50%",
-    backgroundColor: "rgb(255, 255, 255)",
-    border: "1px white",
-    padding: 7,
-    [theme.breakpoints.up("md")]: {
-      left: (props) => (props.padding > 40 ? props.padding / 2 : 20),
-    },
-    [theme.breakpoints.down("sm")]: {
-      left: 10,
-      top: "unset",
-      bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
-    },
-  },
-  nextChapter: {
-    position: "absolute",
-    top: "45%",
-    cursor: "pointer",
-    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
-    borderRadius: "50%",
-    backgroundColor: "rgb(255, 255, 255)",
-    border: "1px white",
-    padding: 7,
-    [theme.breakpoints.up("md")]: {
-      right: (props) => (props.padding > 40 ? props.padding / 2 : 20),
-    },
-    [theme.breakpoints.down("sm")]: {
-      right: 10,
-      top: "unset",
-      bottom: (props) => (props.audioBottom === "0.5rem" ? "1.5rem" : "4.5rem"),
-    },
-  },
-  loading: {
-    padding: 20,
-  },
-  player: {
-    position: "sticky",
-    bottom: "10px",
-    left: 35,
-    [theme.breakpoints.down("sm")]: {
-      bottom: (props) => props.audioBottom,
-    },
-  },
-  text: {
-    padding: "12px 25px 30px",
-    marginBottom: 20,
-    maxWidth: 1191,
-    [`@media print`]: {
-      fontSize: "1.2rem",
-    },
-    [theme.breakpoints.up("md")]: {
-      boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginBottom: 50,
-      padding: "0 0 50px 5px",
-    },
-  },
-  verseText: {
-    paddingTop: 4,
-  },
-  verseNumber: {
-    fontWeight: 600,
-    paddingLeft: 3,
-    bottom: 4,
-    position: "relative",
-    fontSize: ".8em",
-    color: color.MEDIUMGREY,
-  },
-  sectionHeading: {
-    fontSize: "1.3em",
-    display: "block",
-    paddingTop: 12,
-    fontWeight: 700,
-  },
-  yellow: {
-    backgroundColor: color.YELLOW,
-  },
-  green: {
-    backgroundColor: color.GREEN,
-  },
-  cyan: {
-    backgroundColor: color.CYAN,
-  },
-  pink: {
-    backgroundColor: color.PINK,
-  },
-  orange: {
-    backgroundColor: color.ORANGE,
-  },
-  [`@media print`]: {
-    yellow: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.YELLOW : "unset",
-    },
-    green: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.GREEN : "unset",
-    },
-    cyan: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.CYAN : "unset",
-    },
-    pink: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.PINK : "unset",
-    },
-    orange: {
-      backgroundColor: (props) =>
-        props.printHighlights ? color.ORANGE : "unset",
-    },
-  },
-  selectedVerse: {
-    backgroundColor: "#d9e8ef",
-    [`@media print`]: {
-      backgroundColor: "unset",
-    },
-  },
-  lineView: {
-    display: "table",
-  },
-  firstVerse: {
-    fontSize: "1.8em",
-    bottom: -2,
-    color: color.BLACK,
-  },
-  noteIcon: {
-    [`@media print`]: {
-      display: (props) => (props.printNotes ? "inline-block" : "none"),
-    },
-  },
-  bookRef: {
-    display: "none",
-    [`@media print`]: {
-      textTransform: "capitalize",
-      display: "block",
-      textAlign: "center",
-    },
-  },
-  footNotes: {
-    display: "none",
-    [`@media print`]: {
-      display: (props) => (props.printNotes ? "block" : "none"),
-      marginTop: 200,
-    },
-  },
-  underline: {
-    color: "grey",
-    textDecoration: "underline",
-  },
-  noteTitle: {
-    paddingBottom: 20,
-  },
-  noteList: {
-    paddingTop: 20,
-  },
-  noteDialog: {
-    padding: 0,
-  },
-  editor: {
-    padding: 10,
-  },
-  readChapterButton: {
-    display: "inline-flex",
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    border: "1px solid #fff",
-    boxShadow: "1px 1px 1px 1px " + color.GREY,
-    margin: 4,
-    padding: "6px 10px",
-    borderRadius: 4,
-  },
-  searchHeading: {
-    textTransform: "capitalize",
-    fontWeight: 600,
-    fontSize: 14,
-  },
-  divider: {
-    marginTop: 12,
-    marginBottom: 12,
-  },
-  hoverVerse: {
-    background: color.LIGHTGREY,
-  },
+const CustomReactPlayer = styled(ReactPlayer)(({ theme, audiobottom }) => ({
+  position: "sticky",
+  left: "35px",
+  bottom: audiobottom,
+  width: "calc(100% - 70px)",
+  height: "50px",
 }));
+
+const ArrowBack = styled(ArrowBackIosIcon)(
+  ({ theme, padding, audiobottom }) => ({
+    position: "absolute",
+    top: "45%",
+    cursor: "pointer",
+    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
+    borderRadius: "50%",
+    backgroundColor: "rgb(255, 255, 255)",
+    border: "1px white",
+    padding: "7px",
+    [theme.breakpoints.up("md")]: {
+      left: padding > 5 ? padding / 2 : 2.5,
+    },
+    [theme.breakpoints.down("md")]: {
+      left: "10px",
+      top: "unset",
+      bottom: audiobottom === "0.5rem" ? "1.5rem" : "4.5rem",
+    },
+  })
+);
+
+const ArrowForward = styled(ArrowForwardIosIcon)(
+  ({ theme, padding, audiobottom }) => ({
+    position: "absolute",
+    top: "45%",
+    cursor: "pointer",
+    boxShadow: "rgb(0 0 0 / 50%) 0px 3px 10px 0px",
+    borderRadius: "50%",
+    backgroundColor: "rgb(255, 255, 255)",
+    border: "1px white",
+    padding: "7px",
+    [theme.breakpoints.up("md")]: {
+      right: padding > 5 ? padding / 2 : 2.5,
+    },
+    [theme.breakpoints.down("md")]: {
+      right: "10px",
+      top: "unset",
+      bottom: audiobottom === "0.5rem" ? "1.5rem" : "4.5rem",
+    },
+  })
+);
+const LoadingHeading = styled("h3")({
+  paddingLeft: 20,
+});
+
 const Bible = (props) => {
+  const theme = useTheme();
   const [verses, setVerses] = React.useState([]);
-  const [headings, setHeadings] = React.useState("");
   const [loadingText, setLoadingText] = React.useState("Loading");
   const [isLoading, setIsLoading] = React.useState(true);
   const [previous, setPrevious] = React.useState({});
@@ -325,15 +149,6 @@ const Bible = (props) => {
   } = props;
   const { t } = useTranslation();
   const audioBottom = selectedVerses?.length > 0 ? "3.5rem" : "0.5rem";
-  const styleProps = {
-    padding: padding,
-    singlePane: singlePane,
-    printNotes: printNotes,
-    printHighlights: printHighlights,
-    paneNo: paneNo,
-    audioBottom: audioBottom,
-  };
-  const classes = useStyles(styleProps);
   const [bookDisplay, setBookDisplay] = React.useState("");
   const bookList = versionBooks[versionSource[sourceId]];
   const [previousBook, setPreviousBook] = React.useState("");
@@ -347,53 +162,13 @@ const Bible = (props) => {
   const [editorState, setEditorState] = React.useState(
     EditorState.createEmpty()
   );
-  //new usfm json structure
-  const getHeading = (contents) => {
-    if (contents) {
-      let data = contents.find((item) => Array.isArray(item));
-      if (data) {
-        for (let section of data) {
-          if (
-            Object.keys(section)[0].startsWith("s") &&
-            typeof section[Object.keys(section)[0]][0] === "string"
-          ) {
-            return section[Object.keys(section)[0]][0];
-          }
-        }
-      }
-    }
+  const headingSx = {
+    fontSize: "1.3em",
+    display: "block",
+    paddingTop: "12px",
+    fontWeight: 700,
+    textIndent: 0,
   };
-  const isVerse = useCallback((content) => {
-    return (
-      typeof content === "object" &&
-      content !== null &&
-      "verseNumber" in content
-    );
-  }, []);
-  //new usfm json structure
-  const getHeadings = useCallback(
-    (chapter) => {
-      const headings = {};
-      let verse = 1;
-      let heading = getHeading(chapter);
-      if (heading) {
-        headings[1] = heading;
-      }
-      chapter?.forEach((item) => {
-        if (item) {
-          if (!Array.isArray(item) && isVerse(item)) {
-            heading = getHeading(item.contents);
-            if (heading) {
-              headings[verse + 1] = heading;
-            }
-            verse = parseInt(item.verseNumber);
-          }
-        }
-      });
-      return headings;
-    },
-    [isVerse]
-  );
   const showNoteMessage = () => {
     setAlert(true);
     setAlertMessage(t("readNotesAlertMsg"));
@@ -462,50 +237,135 @@ const Bible = (props) => {
         }
       });
   };
-  function showVerse(item, chapter, verseData) {
+
+  function getShowHeading(verseData, verseNumber) {
+    const verseNo = parseInt(verseNumber);
+    if (verseData !== "") {
+      if (verseData?.match(/\d+-\d+/g)) {
+        const [start, end] = verseData.split("-");
+        if (parseInt(start) === verseNo + 1) {
+          return "show";
+        }
+        if (parseInt(end) === verseNo) {
+          return "skip";
+        }
+      } else if (!isNaN(verseData)) {
+        if (parseInt(verseData) === verseNo + 1) {
+          return "show";
+        }
+        if (parseInt(verseData) === verseNo) {
+          return "skip";
+        }
+      }
+    }
+    return "";
+  }
+  function showText(item, chapter, verseData) {
+    if (verseData === "" || verseData.split("-")[0] === "1") {
+      // show chapter heading only for verse 1
+      const heading = parseHeading(item, headingSx);
+      if (heading !== "") {
+        return heading;
+      }
+    }
+    if (item?.verseNumber === "" || isNaN(item?.verseNumber)) {
+      if (item?.verseNumber?.includes("-")) {
+        const [start, end] = item?.verseNumber?.split("-");
+        if (isNaN(start) || isNaN(end)) {
+          return "";
+        }
+      } else {
+        return "";
+      }
+    }
+    const showHeading = getShowHeading(verseData, item.verseNumber);
+    if (showHeading === "show") {
+      return getHeading(item, headingSx);
+    }
     if (!filterVerse(verseData, item.verseNumber)) {
       return "";
     }
     const verse = parseInt(item.verseNumber);
-    const verseClass =
-      selectedVerses?.indexOf(verse) > -1
-        ? `${classes.verseText} ${classes.selectedVerse}`
-        : hoverVerse === verse && isHoverVerse && parallelScroll
-        ? `${classes.hoverVerse}`
-        : highlightVerses.indexOf(verse) > -1
-        ? `${classes.verseText} ${colorClasses[highlighMap[verse]]}`
-        : `${classes.verseText}`;
-    const verseNumberClass =
-      verse === 1
-        ? `${classes.verseNumber} ${classes.firstVerse}`
-        : `${classes.verseNumber}`;
+
+    const verseNumber = {
+      fontWeight: 600,
+      paddingLeft: "3px",
+      bottom: verse === 1 ? "-2px" : "4px",
+      position: "relative",
+      fontSize: verse === 1 ? "1.8em" : ".8em",
+      color: verse === 1 ? color.BLACK : color.MEDIUMGREY,
+      display: "inline",
+    };
+
     const verseNo = verse === 1 ? chapter : item.verseNumber;
-    const sectionHeading = headings[item.verseNumber] || "";
+
+    const bgColorSx = {
+      backgroundColor:
+        selectedVerses?.indexOf(verse) > -1
+          ? "#d9e8ef"
+          : !mobileView &&
+            hoverVerse === verse &&
+            isHoverVerse &&
+            parallelScroll
+          ? color.LIGHTGREY
+          : highlightVerses.indexOf(verse) > -1
+          ? colors[highlighMap[verse]]
+          : "transparent",
+      [`@media print`]: {
+        backgroundColor: printHighlights
+          ? colors[highlighMap[verse]]
+          : "transparent",
+      },
+    };
+    const poetrySx = {
+      "&.poetry1": {
+        textIndent: "1rem",
+      },
+      "&.poetry2": {
+        textIndent: "2.5rem",
+      },
+      "&.poetry3": {
+        textIndent: "3rem",
+      },
+      "&.poetry4": {
+        textIndent: "3.5rem",
+      },
+      display: "block",
+      width: "max-content",
+      ...bgColorSx,
+    };
     return (
-      <span key={item.verseNumber}>
-        {sectionHeading && sectionHeading !== "" ? (
-          <span className={classes.sectionHeading}>{sectionHeading}</span>
-        ) : (
-          ""
-        )}
-        <span className={lineViewClass}>
+      <Box component="span" key={item.verseNumber}>
+        <Box sx={{ display: lineView ? "table" : "inline" }}>
           <span
-            onMouseOver={() => setMainValue("hoverVerse", verse)}
+            onMouseOver={
+              mobileView ? null : () => setMainValue("hoverVerse", verse)
+            }
             onClick={handleVerseClick}
             data-verse={item.verseNumber}
           >
-            <span className={verseClass}>
-              <span className={verseNumberClass}>
+            <Box
+              sx={{
+                paddingTop: "4px",
+                display: "inline",
+                ...bgColorSx,
+              }}
+            >
+              <Box sx={verseNumber}>
                 {verseNo}
                 &nbsp;
-              </span>
-              {item.verseText + " "}
-            </span>
+              </Box>
+              {getVerse(item, poetrySx)}
+            </Box>
           </span>
           {/*If verse has note then show note icon to open notes pane */}
           {notes && notes.includes(verse) ? (
             <NoteIcon
-              className={classes.noteIcon}
+              sx={{
+                [`@media print`]: {
+                  display: printNotes ? "inline-block" : "none",
+                },
+              }}
               fontSize="small"
               color="disabled"
               onClick={() => openNoteDialog(verse)}
@@ -514,37 +374,103 @@ const Bible = (props) => {
             ""
           )}
           {verseData.includes(",") && <br />}
-        </span>
-      </span>
+        </Box>
+        {showHeading !== "skip" && getHeading(item, headingSx)}
+      </Box>
     );
   }
+  function getStyle(item) {
+    let type = "";
+    if (typeof item === "object" && "contents" in item) {
+      type = item?.contents?.reduce((acc, cur) => {
+        if (typeof cur === "object") {
+          const tag = Object.keys(cur)[0];
+          if (tag === "p") {
+            return "p";
+          }
+          if (tag === "q1" || tag === "q2") {
+            return "q";
+          }
+        }
+        return acc;
+      }, "");
+    }
+    return type;
+  }
+  function splitParas(segments) {
+    const paras = [];
+    let i = 0;
+    let lastTag = "p";
+    for (const item of segments) {
+      if (typeof paras[i] === "undefined") {
+        paras[i] = { tag: lastTag, items: [] };
+      }
+      paras[i].items.push(item);
+      lastTag = getStyle(item);
+      if (lastTag !== "") {
+        i++;
+      }
+    }
+    return paras;
+  }
+
   //multi verses, passage in a same chapter
-  function showMultiVerse(item, chapter, verseData) {
-    if (verseData?.match(/^[0-9,-]*$/g)) {
+  function displayBibleText(verses, chapter, verseData) {
+    const paras = splitParas(verses);
+    if (verseData !== "" && verseData?.match(/^[0-9,-]*$/g)) {
       return verseData?.split(",").map((element, i) => {
+        const notLast = i !== verseData?.split(",").length - 1;
         return (
-          <span key={element + i}>
+          <Box key={element + i}>
             {verseData?.indexOf(",") !== -1 && (
-              <>
-                <Typography variant="button" className={classes.searchHeading}>
-                  {`${bookDisplay} ${chapter}:${element}`}
-                </Typography>
-                <br />
-              </>
+              // if multi sections show separate headings
+              <Typography
+                variant="button"
+                sx={{
+                  textTransform: "capitalize",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                }}
+              >
+                {`${bookDisplay} ${chapter}:${element}`}
+              </Typography>
             )}
-            {verses.map((item) => showVerse(item, chapter, element))}
-            {i !== verseData?.split(",").length - 1 ? (
-              <Divider className={classes.divider} />
+            {paras.map((para) => {
+              let text = para?.items.map((item) =>
+                showText(item, chapter, element)
+              );
+              return para.tag === "p" ? (
+                <Box sx={{ textIndent: lineView ? "unset" : "1.5rem" }}>
+                  {text}
+                </Box>
+              ) : (
+                <span>{text}</span>
+              );
+            })}
+            {notLast ? (
+              <Divider sx={{ marginTop: "12px", marginBottom: "12px" }} />
             ) : (
               ""
             )}
-          </span>
+          </Box>
         );
       });
     } else {
-      return verses.map((item) => showVerse(item, chapter, verseData));
+      return paras.map((para, i) => {
+        let text = para?.items.map((item) =>
+          showText(item, chapter, verseData)
+        );
+        return para.tag === "p" ? (
+          <Box sx={{ textIndent: lineView ? "unset" : "1.5rem" }} key={i}>
+            {text}
+          </Box>
+        ) : (
+          <span key={i}>{text}</span>
+        );
+      });
     }
   }
+
   function filterVerse(verseData, verseNumber) {
     if (verseData) {
       if (isNaN(verseData)) {
@@ -609,12 +535,12 @@ const Bible = (props) => {
       setFont(fontFamily === "Sans" ? sans[language] : serif[language]);
     }
   }, [version, fontFamily]);
-  const colorClasses = {
-    a: classes.yellow,
-    b: classes.green,
-    c: classes.cyan,
-    d: classes.pink,
-    e: classes.orange,
+  const colors = {
+    a: color.YELLOW,
+    b: color.GREEN,
+    c: color.CYAN,
+    d: color.PINK,
+    e: color.ORANGE,
   };
   React.useEffect(() => {
     if (highlights) {
@@ -652,10 +578,8 @@ const Bible = (props) => {
             setLoadingText(t("readBookUploadedSoon"));
           } else {
             setLoadingText("");
-
             let contents = response.data.chapterContent.contents;
-            setVerses(contents ? contents.filter(isVerse) : []);
-            setHeadings(getHeadings(contents));
+            setVerses(contents);
           }
           setIsLoading(false);
         })
@@ -663,7 +587,7 @@ const Bible = (props) => {
           console.log(error);
         });
     }
-  }, [sourceId, bookCode, chapter, getHeadings, isVerse, t]);
+  }, [sourceId, bookCode, chapter, t]);
   //if audio bible show icon
   React.useEffect(() => {
     if (currentAudio) {
@@ -789,7 +713,6 @@ const Bible = (props) => {
       setNotes([]);
     }
   }, [bookCode, chapter, sourceId, userDetails]);
-  const lineViewClass = lineView ? classes.lineView : "";
   React.useEffect(() => {
     setMainValue("playing", "");
   }, [sourceId, bookCode, chapter, setMainValue]);
@@ -822,8 +745,10 @@ const Bible = (props) => {
   const getPageMargins = () => {
     return `@page { margin: 20mm !important; }`;
   };
-  const addStyle = (text, style) => {
-    return <span className={classes[style]}>{" " + text}</span>;
+  const addStyle = (text) => {
+    return (
+      <Box sx={{ color: "grey", textDecoration: "underline" }}>{text}</Box>
+    );
   };
   const getPrevious = () => {
     if (parallelScroll && paneNo === 2 && mobileView) {
@@ -831,9 +756,10 @@ const Bible = (props) => {
     }
     return previous && Object.values(previous).length !== 0 ? (
       <Tooltip title={previousBook + " " + previous.chapterId}>
-        <ArrowBackIosIcon
+        <ArrowBack
           fontSize="large"
-          className={classes.prevChapter}
+          padding={padding}
+          audiobottom={audioBottom}
           onClick={prevClick}
         />
       </Tooltip>
@@ -852,9 +778,10 @@ const Bible = (props) => {
     }
     return next && Object.values(next).length !== 0 ? (
       <Tooltip title={nextBook + " " + next.chapterId}>
-        <ArrowForwardIosIcon
+        <ArrowForward
           fontSize="large"
-          className={classes.nextChapter}
+          padding={padding}
+          audiobottom={audioBottom}
           onClick={nextClick}
         />
       </Tooltip>
@@ -865,7 +792,7 @@ const Bible = (props) => {
 
   useEffect(() => {
     if (verses?.length > 0 && verseData !== "") {
-      const verseArr = verses.map((a) => a.verseNumber);
+      const verseArr = verses.map((a) => a?.verseNumber);
       if (isNaN(verseData)) {
         //check for verse range
         if (verseData?.match(/^[0-9-]*$/g)) {
@@ -903,53 +830,131 @@ const Bible = (props) => {
     chapter: chapter,
   };
   return (
-    <div
-      className={classes.biblePanel}
-      style={{
+    <Box
+      sx={{
+        position: "absolute",
+        backgroundColor: "#fff",
+        width: "100%",
+        height: "100%",
+        borderRight: "1px solid " + color.LIGHTGREY,
+        "& p": {
+          textAlign: "justify",
+          color: "#464545",
+          marginBottom: "5px",
+        },
         fontFamily: font,
         fontSize: fontSize,
       }}
     >
       {!isLoading && loadingText !== t("readBookUploadedSoon") ? (
-        <div
+        <Box
           onScroll={() => {
             scrollText();
           }}
           ref={props.ref1}
-          onMouseOut={() => setMainValue("hoverVerse", "")}
-          className={
-            audio
-              ? `${classes.bibleReadingPane} ${classes.audio}`
-              : classes.bibleReadingPane
-          }
+          sx={{
+            position: "absolute",
+            paddingTop: "20px",
+            height: "100%",
+            overflow: "scroll",
+            lineHeight: "2em",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            width: "100%",
+            "&::-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+            [theme.breakpoints.up("md")]: {
+              paddingRight: () => (padding > 5 ? padding / 8 : 5),
+              paddingLeft: () => (padding > 5 ? padding / 8 : 5),
+            },
+            [theme.breakpoints.down("md")]: {
+              paddingRight: "15px",
+              paddingLeft: "15px",
+              lineHeight: "1.8em",
+            },
+          }}
         >
           {fetchData}
-          <div className={classes.text} ref={printRef}>
+          <Box
+            sx={{
+              padding: "12px 25px 30px",
+              marginBottom: "20px",
+              maxWidth: "1191px",
+              [`@media print`]: {
+                fontSize: "1.2rem",
+              },
+              [theme.breakpoints.up("md")]: {
+                boxShadow: "0 2px 6px 0 hsl(0deg 0% 47% / 60%)",
+              },
+              [theme.breakpoints.down("md")]: {
+                marginBottom: "50px",
+                padding: "0 0 50px 5px",
+              },
+            }}
+            onMouseLeave={() => setMainValue("hoverVerse", "")}
+            ref={printRef}
+          >
             <style>{getPageMargins()}</style>
-            <Typography className={classes.bookRef} variant="h4">
+            <Typography
+              sx={{
+                display: "none",
+                [`@media print`]: {
+                  textTransform: "capitalize",
+                  display: "block",
+                  textAlign: "center",
+                },
+              }}
+              variant="h4"
+            >
               {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
-            {showMultiVerse(verses, chapter, verseData)}
-            <br />
-            <br />
+            {displayBibleText(verses, chapter, verseData)}
             {verseData !== "" ? (
               <Button
                 id="button"
                 variant="outlined"
                 onClick={handleChapter}
-                className={classes.readChapterButton}
+                sx={{
+                  display: "inline-flex",
+                  fontSize: "1rem",
+                  textTransform: "capitalize",
+                  border: "1px solid #fff",
+                  boxShadow: "1px 1px 1px 1px " + color.GREY,
+                  margin: "4px",
+                  marginTop: "20px",
+                  padding: "6px 10px",
+                  borderRadius: "4px",
+                  color: color.BLACK,
+                  borderColor: color.BLACK,
+                }}
               >
                 {t("readChapterBtnSearchPassage", { ref })}
               </Button>
             ) : (
               ""
             )}
-            <div className={classes.footNotes}>
-              <Typography className={classes.noteTitle} variant="h4">
+            <Box
+              sx={{
+                display: "none",
+                [`@media print`]: {
+                  display: printNotes ? "block" : "none",
+                  marginTop: "200px",
+                },
+              }}
+            >
+              <Typography sx={{ paddingBottom: "20px" }} variant="h4">
                 {t("commonNotes")} :
               </Typography>
               <Divider />
-              <div className={classes.noteList}>
+              <Box sx={{ paddingTop: "20px" }}>
                 {notesText?.map((item, i) => {
                   return (
                     <ul key={i}>
@@ -961,11 +966,11 @@ const Bible = (props) => {
                     </ul>
                   );
                 })}
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
           {audio ? (
-            <ReactPlayer
+            <CustomReactPlayer
               url={audioUrl}
               playing={playing === paneNo}
               onPlay={() => {
@@ -974,7 +979,7 @@ const Bible = (props) => {
               controls
               width="calc(100% - 70px)"
               height="50px"
-              className={classes.player}
+              audiobottom={audioBottom}
               config={{
                 file: {
                   attributes: {
@@ -986,9 +991,9 @@ const Bible = (props) => {
           ) : (
             ""
           )}
-        </div>
+        </Box>
       ) : (
-        <h3 className={classes.loading}>{loadingText}</h3>
+        <LoadingHeading>{loadingText}</LoadingHeading>
       )}
       {getPrevious()}
       {getNext()}
@@ -996,26 +1001,53 @@ const Bible = (props) => {
         onClose={handleClose}
         aria-labelledby="mobile-edit-note-dialog"
         open={open}
-        classes={{ paper: classes.paper }}
+        sx={{
+          "& .MuiPaper-root": {
+            [theme.breakpoints.down("md")]: {
+              margin: "25px",
+            },
+          },
+        }}
       >
         <DialogTitle id="mobile-edit-note-dialog" onClose={handleClose}>
           {t("commonNotes")}
         </DialogTitle>
-        <DialogContent dividers className={classes.noteDialog}>
+        <DialogContent dividers sx={{ padding: 0 }}>
           <Editor
             editorState={editorState}
+            editorStyle={{ padding: "10px", height: "30vh" }}
             onEditorStateChange={handleNoteTextChange}
             placeholder={t("commonNotePlaceholder")}
-            editorStyle={{ height: "30vh" }}
-            editorClassName={classes.editor}
             toolbar={getEditorToolbar(true)}
           />
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={handleClose}>
+          <Button
+            variant="outlined"
+            sx={{
+              color: color.BLACK,
+              borderColor: color.BLACK,
+              "&:hover": {
+                backgroundColor: color.BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
+            onClick={handleClose}
+          >
             {t("commonCancel")}
           </Button>
-          <Button variant="outlined" onClick={saveNote}>
+          <Button
+            variant="outlined"
+            sx={{
+              color: color.BLACK,
+              borderColor: color.BLACK,
+              "&:hover": {
+                backgroundColor: color.BLACK + "0a",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              },
+            }}
+            onClick={saveNote}
+          >
             {t("commonSave")}
           </Button>
         </DialogActions>
@@ -1035,7 +1067,7 @@ const Bible = (props) => {
           {alertMessage}
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
   );
 };
 

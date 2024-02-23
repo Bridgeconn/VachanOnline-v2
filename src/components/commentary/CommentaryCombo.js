@@ -1,98 +1,31 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import ListItem from "@material-ui/core/ListItem";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
+import List from "@mui/material/List";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import { GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import { BLACK, GREY, LIGHTGREY, WHITE } from "../../store/colorCode";
+import { styled } from "@mui/system";
+import { useTheme } from "@mui/material/styles";
+import ListItemButton from "@mui/material/ListItemButton";
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    fontSize: "1rem",
-    textTransform: "capitalize",
-    backgroundColor: "#fff",
-    border: "1px solid #fff",
-    boxShadow: "1px 1px 1px 1px " + GREY,
-    [theme.breakpoints.down("sm")]: {
-      maxWidth: 130,
-      margin: "9px 5px",
-    },
-    [theme.breakpoints.up("md")]: {
-      left: theme.spacing(0),
-      marginRight: 10,
-    },
-  },
-  list: {
-    padding: 0,
-  },
-  menuRoot: {
-    backgroundColor: WHITE,
-    boxShadow: "none",
-    border: "1px solid #00000020",
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:before": {
-      display: "none",
-    },
-    "&$expanded": {
-      margin: "auto",
-    },
-  },
-  expanded: {},
-  expansionDetails: {
-    backgroundColor: "#ffffff",
-    boxShadow: "inset 1px 2px 2px 0px " + GREY,
-    padding: "1px 0px 0px 0px",
-    width: "100%",
-  },
-  summaryPanel: {
-    textTransform: "capitalize",
-    borderBottom: "1px solid #b7b7b726",
-    "&$expanded": {
-      minHeight: 50,
-      backgroundColor: LIGHTGREY,
-    },
-  },
-  content: {
-    margin: "10px 0",
-    "&$expanded": {
-      margin: "12px 0",
-    },
-  },
-  icon: {
-    left: 15,
+const I = styled("i")(({ theme }) => ({
+  [`&.material-icons`]: {
+    left: "15px",
     position: "relative",
     [theme.breakpoints.only("xs")]: {
       display: "none",
     },
   },
-  paper: {
-    maxHeight: "calc(100vh - 170px)",
-    width: 300,
-    border: "1px solid #d3d4d5",
-  },
-  language: {
-    fontSize: "1rem",
-  },
-  commentary: {
-    fontSize: "1rem",
-    cursor: "pointer",
-  },
-  versionSelected: {
-    boxShadow: "inset 0 0 30px " + LIGHTGREY,
-    border: "1px solid " + GREY + "70",
-  },
 }));
+
 const CommentaryCombo = (props) => {
-  const classes = useStyles();
+  const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { commentary, setValue, commentaryLang } = props;
   const [expanded, setExpanded] = React.useState(commentaryLang);
@@ -115,10 +48,11 @@ const CommentaryCombo = (props) => {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  const classesI = `material-icons ${classes.icon}`;
-  function currentVersion(item){
-    return item?.code === commentary?.code && item?.metadata["Language Name"] === commentary?.metadata["Language Name"] ? classes.versionSelected : "";
-    
+  function currentVersion(item) {
+    return (
+      item?.code === commentary?.code &&
+      item?.metadata["Language Name"] === commentary?.metadata["Language Name"]
+    );
   }
   React.useEffect(() => {
     if (commentaryLang) {
@@ -132,17 +66,33 @@ const CommentaryCombo = (props) => {
         aria-haspopup="true"
         onClick={handleClick}
         variant="contained"
-        classes={{ root: classes.button }}
+        sx={{
+          "&.MuiButton-root": {
+            fontSize: "1rem",
+            textTransform: "capitalize",
+            backgroundColor: "#fff",
+            border: "1px solid #fff",
+            boxShadow: "1px 1px 1px 1px " + GREY,
+            [theme.breakpoints.down("sm")]: {
+              maxWidth: "130px",
+              margin: "9px 5px",
+            },
+            [theme.breakpoints.up("md")]: {
+              left: theme.spacing(0),
+              marginRight: "10px",
+            },
+            color: BLACK,
+          },
+        }}
       >
         {commentary.code}
-        <i className={classesI}>keyboard_arrow_downn</i>
+        <I className={`material-icons`}>keyboard_arrow_downn</I>
       </Button>
       {!props.commentaries || props.commentaries.length === 0 ? (
         ""
       ) : (
         <Menu
           elevation={0}
-          getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left",
@@ -156,50 +106,96 @@ const CommentaryCombo = (props) => {
           keepMounted
           open={Boolean(anchorEl)}
           onClose={handleClose}
-          classes={{
-            list: classes.list,
-            paper: classes.paper,
+          sx={{
+            "& .MuiList-root": {
+              padding: 0,
+            },
+            "& .MuiPaper-root": {
+              maxHeight: "calc(100vh - 170px)",
+              width: "300px",
+              border: "1px solid #d3d4d5",
+            },
           }}
         >
           {props.commentaries.map((languages, i) => (
             <Accordion
               expanded={expanded === languages.language}
               onChange={handleChange(languages.language)}
-              classes={{
-                root: classes.menuRoot,
-                expanded: classes.expanded,
+              sx={{
+                "&.MuiAccordionDetails-root": {
+                  backgroundColor: WHITE,
+                  boxShadow: "none",
+                  border: "1px solid #00000020",
+                  "&:not(:last-child)": {
+                    borderBottom: 0,
+                  },
+                  "&:before": {
+                    display: "none",
+                  },
+                  "&.Mui-expanded": {
+                    margin: "auto",
+                  },
+                },
+                "&.Mui-expanded": {
+                  margin: "0px",
+                },
               }}
               key={i}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                classes={{
-                  root: classes.summaryPanel,
-                  expanded: classes.expanded,
-                  content: classes.content,
+                sx={{
+                  "&.MuiAccordionSummary-root": {
+                    textTransform: "capitalize",
+                    borderBottom: "1px solid #b7b7b726",
+                    "&.Mui-expanded": {
+                      minHeight: "50px",
+                      backgroundColor: LIGHTGREY,
+                    },
+                  },
+                  "&.Mui-expanded": {},
+                  "& .MuiAccordionSummary-content": {
+                    margin: "10px 0",
+                    "&.Mui-expanded": {
+                      margin: "12px 0",
+                    },
+                  },
                 }}
               >
-                <Typography className={classes.language}>
+                <Typography sx={{ fontSize: "1rem" }}>
                   {languages.language}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails style={{ padding: 0 }}>
-                <List className={classes.expansionDetails}>
+                <List
+                  sx={{
+                    backgroundColor: "#ffffff",
+                    boxShadow: "inset 1px 2px 2px 0px " + GREY,
+                    padding: "1px 0px 0px 0px",
+                    width: "100%",
+                  }}
+                >
                   {languages.commentaries.map((item, i) => {
-                    var versionActive = currentVersion(item)
-                    return(
-                    <ListItem
-                      key={i}
-                      value={encodeURIComponent(JSON.stringify(item))}
-                      className={`${classes.commentary} ${versionActive}`}
-                      onClick={(e) => setCommentary(e, languages.language)}
-                    >
-                      {item.code.toUpperCase()} : {item.name}
-                    </ListItem>
-                    )
+                    var versionActive = currentVersion(item);
+                    return (
+                      <ListItemButton
+                        selected={versionActive}
+                        key={i}
+                        value={encodeURIComponent(JSON.stringify(item))}
+                        sx={{
+                          "&.Mui-selected": {
+                            fontSize: "1rem",
+                            cursor: "default",
+                            boxShadow: "inset 0 0 30px " + LIGHTGREY,
+                            border: "1px solid " + GREY + "70",
+                          },
+                        }}
+                        onClick={(e) => setCommentary(e, languages.language)}
+                      >
+                        {item.code.toUpperCase()} : {item.name}
+                      </ListItemButton>
+                    );
                   })}
-                
-                    
                 </List>
               </AccordionDetails>
             </Accordion>

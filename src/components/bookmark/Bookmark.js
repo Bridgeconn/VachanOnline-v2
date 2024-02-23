@@ -1,24 +1,16 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import Tooltip from "@material-ui/core/Tooltip";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import Tooltip from "@mui/material/Tooltip";
 import { useFirebase } from "react-redux-firebase";
 import { useFirebaseConnect } from "react-redux-firebase";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  info: {
-    padding: 0,
-    width: "30px",
-    marginTop: 20,
-    marginRight: 4,
-    cursor: "pointer",
-  },
-}));
 export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
-  const classes = useStyles();
+  const theme = useTheme();
   const firebase = useFirebase();
   const [bookmarked, setBookmarked] = React.useState(false);
   const [bookmarks, setBookmarks] = React.useState([]);
@@ -54,7 +46,19 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
       .set(newBookmarks, function (error) {});
   }
   return (
-    <div onClick={toggleBookmark} className={classes.info}>
+    <Box
+      onClick={toggleBookmark}
+      sx={{
+        padding: 0,
+        width: "30px",
+        mt: 2.25,
+        mr: 0.5,
+        cursor: "pointer",
+        [theme.breakpoints.only("sm")]: {
+          width: "25px",
+        },
+      }}
+    >
       {bookmarked ? (
         <Tooltip title={t("bookMarkedText")}>
           <BookmarkIcon style={{ color: "#ff0000" }} fontSize="small" />
@@ -64,6 +68,6 @@ export default function Bookmark({ uid, sourceId, bookCode, chapter }) {
           <BookmarkBorderIcon fontSize="small" />
         </Tooltip>
       )}
-    </div>
+    </Box>
   );
 }
