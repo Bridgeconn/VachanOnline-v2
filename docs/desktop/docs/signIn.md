@@ -4,7 +4,7 @@ description: Sign In instructions
 
 # Sign In
 
-The user can Sign In to VachanOnline in 2 ways as described below
+The user can Sign In to VachanOnline in 2 ways as described below.
 
 ## Sign In with Google
 

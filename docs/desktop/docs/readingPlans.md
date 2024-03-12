@@ -14,3 +14,5 @@ The required Bible chapter appears on the left side of the screen.
 
 It is possible to read the entire Bible in a year with the M'Cheyne Reading Plan.
 <img src="/img/assets/readingplan.png"  width="1000px" alt="readingplan"/>
+
+If the user needs help, they can visit the user guide page by clicking on **(4)**.
