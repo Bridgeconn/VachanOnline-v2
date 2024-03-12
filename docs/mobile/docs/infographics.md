@@ -10,11 +10,11 @@ description: Infographics feature instructions
 
 3. If the book has Infographics, it will appear on the screen.  
 
-<img src="/img/assets/info1.png" width="500px" alt="info1" />
+<img src="/img/assets/info1.png" width="500px" alt="info1" className="img-border" />
 
 4. The user can click on a card to enlarge the image in it. 
 
-<img src="/img/assets/info2.png" width="500px" alt="info2" />
+<img src="/img/assets/info2.png" width="500px" alt="info2" className="img-border"  />
 
 5. Once the image is enlarged the user can rotate, zoom in or out, and navigate to the next and previous images by choosing the options listed below the image **(3)**. 
 

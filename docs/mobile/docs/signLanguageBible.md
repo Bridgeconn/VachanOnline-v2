@@ -19,8 +19,9 @@ description: Sign Language Bible feature instructions
 5. The book and chapter number **(5)** are displayed at the top of the video. 
 
 6. The video displays the verse number and keywords that appear throughout the video **(6)**. 
+7. Video description is accessible by clicking the downward pointing arrow  **(7)**.
 
-7. The user can click on the close button **(7)** to close the Sign Bible panel.
+7. The user can click on the close button **(8)** to close the Sign Bible panel.
   
 ### 2. Full page view
 

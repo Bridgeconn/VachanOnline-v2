@@ -12,9 +12,9 @@ On visiting the website **[VachanOnline.com](https://vachanonline.com/)**, the b
 
 From here the user can access the following features from the landing page:
 
-1. [Study Bible](./studyBible) **(1, 7, 11)**
+1. [Study Bible](./studyBible) **(1, 8, 12)**
 
-2. [Read Bible](./readBible) **(2, 10)**
+2. [Read Bible](./readBible) **(2, 11)**
 
 3. [Sign Language Bible](./signLanguageBible) **(4)**
 
@@ -22,16 +22,34 @@ From here the user can access the following features from the landing page:
 
 5. [Bible Stories](./bibleStories) **(6)**
 
-6. [Audio Bibles](./audioBible) **(3, 8)**
+6. [Audio Bibles](./audioBible) **(3, 9)**
 
-7. [Videos](./videos) **(9)**
+7. [Videos](./videos) **(10)**
 
+Clicking **(7)** will take the user to the user guide page, where they can get **help** with using the website.
+
+### Multi Language UI
+
+The website offers bilingual functionality in both English and Hindi. To switch between languages, users can click on the multilanguage UI icon **(1)** and select their preferred language **(2)**. The user interface adapts accordingly to display content in the chosen language.
+<img src="/img/assets/mui.png"  width="500px" alt="mui"/>
+
+For first-time visitors, upon accessing the website, a dialogue box appears presenting the option to select a language preference. Once the user selects their preferred language, the UI adjusts accordingly, and the choice is saved in the website's memory. The user interface will automatically appear in the language that was previously selected on every visit to the website.
+
+### Verse of the day
+
+<img src="/img/assets/verse.png"  width="800px" alt="verse"/>
+
+Every day, a new verse is featured on the landing page, available for users to share with friends and family. To share the verse, users simply click on the share icon **(1)** next to it and then select the "copy to clipboard" **(2)** button. A confirmation message will appear, indicating that the verse has been copied. Users can then paste the URL into any browser or messaging app such as Facebook or WhatsApp to share it. The shared link directs recipients to the specific verse of the day, where they can also choose to read the entire chapter by clicking on a "Read more" button.
+
+### Footer
 At the bottom of the page in the footer also there are some links as described below
 <img src="/img/assets/bottombar.png"  width="1000px" alt="bottombar"/>
 
 1. [About Us](./about) **(1)**
 
-2. [Feedback](./about#feedback) **(2)**
+2. [What's new](./about#whats-new) **(2)**
+
+3. [Feedback](./about#feedback) **(3)**
 
 ## Study Bible Page
 
@@ -41,7 +59,7 @@ When the user accesses the **Study Bible Page** they will be directed to the Stu
 
 1. There is a Menu on the right side **(1)**, which allows the user to access the following features: [Search Bible](./searchBible), [Parallel Bible](./studyBible#parallel-bible), [Commentaries](./commentaries), [Sign Language Bible](./signLanguageBible), [Infographics](./infographics), [Audio Bibles](./audioBible), [Videos](./videos), [Reading Plans](./readingPlans), [Dictionaries](./dictionaries), [Bookmarks\*](./bookmarks), [Highlights\*](./highlights), [Notes\*](./notes)
 
-2. The Bible reading page shows one chapter at a time. There are drop-downs to control the Version **(2)** and Bible Reference **(3)** on the upper left side. Here, the users can select their preferred Language, Version, Book and Chapter.
+2. The Bible reading page shows one chapter at a time. There are drop-downs to select the language **(2)** and Bible Reference **(3)** on the upper left side. Here, the users can select their preferred Language, Version, Book and Chapter.
 
 3. These drop-down menus are also available on the landing page. The user can select the version, book, and chapter, and then click the **Start** button to begin reading.
 

@@ -11,11 +11,13 @@ description: Highlights feature instructions
 4.  The verse will be highlighted for future reference. 
 5.  To clear the portions highlighted earlier, select the verses **(4)** and use the clear icon **(6)** to remove the highlights from the selected verses. 
 6.  To close the bottom toolbar click the close button **(7)**.  
+
 <img src="/img/assets/highlights.png"  width="500px" alt="highlights" className="img-border"/>
 
 To access the previously highlighted verses, the user has to click on the [Drawer Menu](./websiteNavigation#drawer-menu) on the Study Bible page and select **Highlights**.  
 
 <img src="/img/assets/highlights1.png"  width="500px" alt="highlight1" className="img-border"/>
+
 The list of the previously highlighted verses appear.
 
 1. The user can select any verse **(1)** they wish to read. 

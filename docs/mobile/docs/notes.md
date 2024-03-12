@@ -13,9 +13,11 @@ description: Notes feature instructions
 <img src="/img/assets/notes.png"  width="500px" alt="notes" className="img-border"/>
 
 4. Notes can be taken by the user **(5)** and saved **(6)** for later use.
+
 <img src="/img/assets/notes1.png"  width="500px" alt="notes1" className="img-border"/>
 
 5. When notes for a verse have been saved, the **Notes** icon shows after the verse **(7)**. 
+
 <img src="/img/assets/notes2.png"  width="500px" alt="notes2" className="img-border"/>
 
 6. A pop-up dialogue box will appear when the user click the note icon.

@@ -6,7 +6,7 @@ description: Videos feature instructions
 
 1. The user can access the Videos by clicking on [Drawer Menu](./websiteNavigation#drawer-menu) and selecting **Videos** from the drawer. 
 
-<img src="/img/assets/videos1.png"  width="500px" alt="videos1"/>
+<img src="/img/assets/videos1.png"  width="500px" alt="videos1" className="img-border"/>
 
 2. The user can select the language, Bible book and chapter from the drop-down menus **(1)**. 
 
@@ -16,7 +16,7 @@ description: Videos feature instructions
 
 5. To exit the Videos, the user has to click the cancel button in the top right corner **(2)**.  
 
-<img src="/img/assets/videos2.png"  width="500px" alt="videos2"/>
+<img src="/img/assets/videos2.png"  width="500px" alt="videos2" className="img-border"/>
 
 6. The video will start playing in a dialog box  as shown below. 
 

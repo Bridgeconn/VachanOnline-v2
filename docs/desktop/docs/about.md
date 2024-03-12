@@ -10,6 +10,9 @@ Upon clicking the **About Us (1)** button in the bottom bar on the Landing Page,
 
 <img src="/img/assets/bottombar.png"  width="1000px" alt="bottombar"/>
 
+## What's New
+Updates and improvements for the previous three releases can be viewed in the what's new **(2)** tab. It also has a link to assist users in navigating the website and a list of all the features.
+
 ## Feedback
 
 A **Feedback form** is offered to collect valuable feedback from the Vachan Online users and to have a better idea of the overall user experience.
