@@ -187,7 +187,11 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
             }}
           >
             <Box
-              sx={{ textAlign: "center", borderBottom: "1px solid #f1ecec" }}
+              sx={{
+                textAlign: "center",
+                borderBottom: "1px solid #f1ecec",
+                paddingTop: "10px",
+              }}
             >
               <Typography variant="h4">{t("bibleStoriesText")}</Typography>
             </Box>

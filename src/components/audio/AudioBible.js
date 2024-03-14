@@ -7,7 +7,7 @@ import Player from "../common/Player";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import * as actions from "../../store/actions";
-import { AppBar, useMediaQuery,Box } from "@mui/material";
+import { AppBar, useMediaQuery, Box } from "@mui/material";
 import { connect } from "react-redux";
 import { getAllBooks, getAudioBibles } from "../common/utility";
 import { nextButtonClick, previousClick } from "../common/utility";
@@ -149,6 +149,7 @@ const AudioBible = (props) => {
             margin: "0 auto",
             [theme.breakpoints.down("md")]: {
               margin: "auto",
+              paddingTop: "10px",
             },
           }}
         >
@@ -156,16 +157,16 @@ const AudioBible = (props) => {
         </Typography>
       </Box>
       <Divider />
-      <Box 
-      sx={{
-        padding: "0 10%",
-    [theme.breakpoints.only("sm")]: {
-      padding: "0 50px",
-    },
-    [theme.breakpoints.down("sm")]: {
-      padding: "5px",
-    },
-      }}
+      <Box
+        sx={{
+          padding: "0 10%",
+          [theme.breakpoints.only("sm")]: {
+            padding: "0 50px",
+          },
+          [theme.breakpoints.down("sm")]: {
+            padding: "5px",
+          },
+        }}
       >
         <Player
           audios={audios}
