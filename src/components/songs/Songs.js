@@ -101,7 +101,9 @@ const Songs = () => {
                   "linear-gradient(109.6deg, rgb(137, 191, 221) 11.2%, rgb(150, 144, 204) 90.2%)",
               }}
             >
-              <Typography variant="h4">{t("songsText")}</Typography>
+              <Typography variant="h4" paddingTop="10px">
+                {t("songsText")}
+              </Typography>
             </Box>
             <Box
               sx={{
