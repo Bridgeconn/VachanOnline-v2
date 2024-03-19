@@ -20,7 +20,7 @@ To ensure that all of our visitors have a pleasant browsing experience, we keep 
 
 <!-- <img src="/img/assets/feedback1.png"  width="1000px" alt="feedback1"/> -->
 
-The feedback form is available on the landing page **(2)** (See image above) as well as the Bible reading page **(2)**( See image below).
+The feedback form is available on the landing page **(3)** (See image above) as well as the Bible reading page **(2)**( See image below).
 
 The user must click on the Feedback button and enter the necessary information in the feedback form.
 

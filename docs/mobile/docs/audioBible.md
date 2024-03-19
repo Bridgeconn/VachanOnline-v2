@@ -40,7 +40,7 @@ The users can access Audio Bible page by clicking at **(2)** on the [Landing pag
 
 There's a dedicated page for Oral Bibles designed for languages without a script. To access it, users simply click on the Audio icon located on the landing page.
 
- <img src="/img/assets/audio1.png" width="1000px" alt="audio1" /> 
+ <img src="/img/assets/audio1.png" width="500px" alt="audio1" /> 
  
 
-Then select the desired language **(1)** from the drop-down menu. The users can choose the specific book and chapter **(2)** they wish to listen to and hit the play button **(3)** to start the audio playback. Additionally, users have the option to adjust the volume and playback speed **(4)** using the settings available.
+The user has to select the desired language, book and chapter **(1)** from the drop-down menu. To listen to the selected audio the user has to hit the play button **(2)**. Additionally, users have the option to adjust the volume **(3)** and playback speed **(4)**  using the settings available.

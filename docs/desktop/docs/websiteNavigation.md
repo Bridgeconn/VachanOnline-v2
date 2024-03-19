@@ -59,7 +59,7 @@ When the user accesses the **Study Bible Page** they will be directed to the Stu
 
 1. There is a Menu on the right side **(1)**, which allows the user to access the following features: [Search Bible](./searchBible), [Parallel Bible](./studyBible#parallel-bible), [Commentaries](./commentaries), [Sign Language Bible](./signLanguageBible), [Infographics](./infographics), [Audio Bibles](./audioBible), [Videos](./videos), [Reading Plans](./readingPlans), [Dictionaries](./dictionaries), [Bookmarks\*](./bookmarks), [Highlights\*](./highlights), [Notes\*](./notes)
 
-2. The Bible reading page shows one chapter at a time. There are drop-downs to select the language **(2)** and Bible Reference **(3)** on the upper left side. Here, the users can select their preferred Language, Version, Book and Chapter.
+2. The Bible reading page shows one chapter at a time. There are drop-downs to select the language **(2)** and book **(3)** on the upper left side. Here, the users can select their preferred Language, Version, Book and Chapter.
 
 3. These drop-down menus are also available on the landing page. The user can select the version, book, and chapter, and then click the **Start** button to begin reading.
 

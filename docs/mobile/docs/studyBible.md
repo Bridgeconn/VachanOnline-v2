@@ -18,7 +18,7 @@ To access the Bible and start reading, the user should follow these steps:
 
 ###
 
-3. On the Study Bible page, the user has the options to take [Notes](./notes), [Highlight verses](./highlights), [Bookmark chapters](./bookmarks) and choose the [font](./readBible#font-settings) **(3)**.
+3. On the Study Bible page, the user has the options to [Share Bible passage](./readBible#search-bible-reference), [Bookmark chapters](./bookmarks),  and choose the [font](./readBible#font-settings) **(3)**.
 
 <img src="/img/assets/studybiblebottombar.png" width="500px" alt="studybiblenavigation" className="img-border" />
 
