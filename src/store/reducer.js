@@ -68,6 +68,7 @@ const defaultState = {
     audio: false,
     language: "hindi",
   },
+  banner:false
 };
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -135,8 +136,13 @@ const reducer = (state = defaultState, action) => {
         ...state,
         dictionary: { ...state.dictionary, [action.name]: action.value },
       };
-    default:
-      return state;
+    case actions.SETBANNER:
+        return {
+          ...state,
+          banner: action.value,
+        };
+      default:
+      return state;   
   }
 };
 export default reducer;
