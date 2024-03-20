@@ -8,7 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useFirebase } from "react-redux-firebase";
 import { isLoaded, isEmpty, useFirebaseConnect } from "react-redux-firebase";
 import { connect, useSelector } from "react-redux";
-import { getBookbyCode, capitalize } from "../common/utility";
+import { getBookbyCode, capitalize, getShortBook } from "../common/utility";
 import Close from "../common/Close";
 import Box from "@mui/material/Box";
 import * as actions from "../../store/actions";
@@ -16,9 +16,18 @@ import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
 import { ListItemButton } from "@mui/material";
+import MetaTags from "../common/MetaTags";
 const Highlights = (props) => {
-  const { uid, versions, setValue, getRegionalBookName, close, mobileView } =
-    props;
+  const {
+    uid,
+    versions,
+    setValue,
+    getRegionalBookName,
+    close,
+    mobileView,
+    panel1,
+    versionBooks,
+  } = props;
   const [highlightList, setHighlightList] = React.useState([]);
   const [versionData, setVersionData] = React.useState({});
   const firebase = useFirebase();
@@ -128,106 +137,118 @@ const Highlights = (props) => {
         }
       });
   };
-
+  const bookName = getShortBook(
+    versionBooks,
+    panel1?.languageCode,
+    panel1?.bookCode
+  );
   return (
-    <Box sx={{ width: "100%", marginTop: { lg: 11, xs: 7.5 } }}>
-      <Box
-        sx={{
-          paddingBottom: { lg: 1.25, xs: 0 },
-          paddingLeft: 1.875,
-          marginBottom: { lg: 2.5, xs: 0 },
-          borderBottom: "1px solid #f1ecec",
-          display: "flex",
-          width: "100%",
-          alignItems: "center",
-          height: { lg: "2.75em", xs: 60 },
-        }}
-      >
-        <Box flexGrow={1}>
-          <Typography variant="h6">{t("highlightsText")}</Typography>
+    <>
+      <MetaTags
+        title={`${bookName} ${panel1?.chapter} - Highlights`}
+        description={`highlights`}
+      />
+      <Box sx={{ width: "100%", marginTop: { lg: 11, xs: 7.5 } }}>
+        <Box
+          sx={{
+            paddingBottom: { lg: 1.25, xs: 0 },
+            paddingLeft: 1.875,
+            marginBottom: { lg: 2.5, xs: 0 },
+            borderBottom: "1px solid #f1ecec",
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+            height: { lg: "2.75em", xs: 60 },
+          }}
+        >
+          <Box flexGrow={1}>
+            <Typography variant="h6">{t("highlightsText")}</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Help
+              iconStyle={{ color: BLACK, marginTop: -0.375, fontSize: 21 }}
+              url={"highlights"}
+            />
+            <Close className={{ marginRight: 1.875, marginTop: 0.375 }} />
+          </Box>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Help
-            iconStyle={{ color: BLACK, marginTop: -0.375, fontSize: 21 }}
-            url={"highlights"}
-          />
-          <Close className={{ marginRight: 1.875, marginTop: 0.375 }} />
+        <Box
+          sx={{
+            position: "absolute",
+            right: 0,
+            left: 0,
+            top: { lg: 135, xs: 120 },
+            bottom: 0,
+            overflow: "scroll",
+            marginBottom: -1.875,
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            "&::-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+          }}
+        >
+          {highlightList && highlightList.length !== 0 ? (
+            <List component="nav">
+              {highlightList.map((highlight, i) => {
+                return versionData[highlight.sourceId] !== undefined ? (
+                  <ListItemButton
+                    key={i}
+                    sx={{ borderBottom: "1px solid lightgray" }}
+                    data-sourceid={highlight.sourceId}
+                    data-bookcode={highlight.bookCode}
+                    data-chapter={highlight.chapter}
+                    data-book={highlight.book}
+                    onClick={openHighlight}
+                  >
+                    <ListItemText
+                      onClick={mobileView ? close : null}
+                      primary={`${versionData[highlight.sourceId][0]} ${
+                        highlight.book
+                      } ${highlight.chapter}:${highlight.verse}`}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        data-sourceid={highlight.sourceId}
+                        data-bookcode={highlight.bookCode}
+                        data-chapter={highlight.chapter}
+                        data-verse={highlight.verse}
+                        onClick={(e) => deleteHighlight(e)}
+                        size="large"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItemButton>
+                ) : (
+                  ""
+                );
+              })}
+            </List>
+          ) : (
+            <Typography sx={{ margin: 2.25 }}>
+              {t("selectVerseHighlight")}
+            </Typography>
+          )}
         </Box>
       </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          right: 0,
-          left: 0,
-          top: { lg: 135, xs: 120 },
-          bottom: 0,
-          overflow: "scroll",
-          marginBottom: -1.875,
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          "&::-webkit-scrollbar": {
-            width: "0.45em",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.4)",
-            outline: "1px solid slategrey",
-          },
-        }}
-      >
-        {highlightList && highlightList.length !== 0 ? (
-          <List component="nav">
-            {highlightList.map((highlight, i) => {
-              return versionData[highlight.sourceId] !== undefined ? (
-                <ListItemButton
-                  key={i}
-                  sx={{ borderBottom: "1px solid lightgray" }}
-                  data-sourceid={highlight.sourceId}
-                  data-bookcode={highlight.bookCode}
-                  data-chapter={highlight.chapter}
-                  data-book={highlight.book}
-                  onClick={openHighlight}
-                >
-                  <ListItemText
-                    onClick={mobileView ? close : null}
-                    primary={`${versionData[highlight.sourceId][0]} ${
-                      highlight.book
-                    } ${highlight.chapter}:${highlight.verse}`}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      data-sourceid={highlight.sourceId}
-                      data-bookcode={highlight.bookCode}
-                      data-chapter={highlight.chapter}
-                      data-verse={highlight.verse}
-                      onClick={(e) => deleteHighlight(e)}
-                      size="large"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItemButton>
-              ) : (
-                ""
-              );
-            })}
-          </List>
-        ) : (
-          <Typography sx={{ margin: 2.25 }}>
-            {t("selectVerseHighlight")}
-          </Typography>
-        )}
-      </Box>
-    </Box>
+    </>
   );
 };
 const mapStateToProps = (state) => {
   return {
     mobileView: state.local.mobileView,
+    panel1: state.local.panel1,
+    versionBooks: state.local.versionBooks,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -4,12 +4,13 @@ import { Box } from "@mui/material/";
 import React from "react";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
-import { getSignBible } from "../common/utility";
+import { getShortBook, getSignBible } from "../common/utility";
 import BiblePane from "./BiblePane";
 import TopBar from "./TopBar";
+import MetaTags from "../common/MetaTags";
 const ReadBible = (props) => {
   const theme = useTheme();
-  let { setValue, setValue1, panel1, signBible } = props;
+  let { setValue, setValue1, panel1, signBible, versionBooks } = props;
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   React.useEffect(() => {
@@ -28,9 +29,17 @@ const ReadBible = (props) => {
       getSignBible(setValue);
     }
   }, [signBible.length, setValue]);
-
+  const book = getShortBook(
+    versionBooks,
+    panel1?.languageCode,
+    panel1?.bookCode
+  );
   return (
     <>
+      <MetaTags
+        title={` ${book} ${panel1?.chapter} - Read Bible`}
+        description={`${panel1?.version} ${book} ${panel1?.chapter};read Bible`}
+      />
       <TopBar />
       <Box
         sx={{
@@ -52,6 +61,7 @@ const mapStateToProps = (state) => {
   return {
     panel1: state.local.panel1,
     signBible: state.local.signBible,
+    versionBooks: state.local.versionBooks,
   };
 };
 

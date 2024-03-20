@@ -19,6 +19,9 @@ import { useTranslation } from "react-i18next";
 import Help from "../common/Help";
 import { styled } from "@mui/system";
 import { ListItemButton } from "@mui/material";
+import MetaTags from "../common/MetaTags";
+import { connect } from "react-redux";
+import { getShortBook } from "../common/utility";
 
 const BigTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -60,7 +63,14 @@ const StyledCalendar = styled(Calendar)(({ theme }) => ({
 const Heading = styled("h3")({ paddingLeft: 20 });
 
 const ReadingPlan = (props) => {
-  const { setValue1, bookList, mobileView, readingPlans } = props;
+  const {
+    setValue1,
+    bookList,
+    mobileView,
+    readingPlans,
+    panel1,
+    versionBooks,
+  } = props;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [plans, setPlans] = useState([]);
   const [plan, setPlan] = useState("");
@@ -161,191 +171,212 @@ const ReadingPlan = (props) => {
       setReadingList(daysPlan ? daysPlan.reading : []);
     }
   }, [planData, selectedDate]);
-
+  const bookName = getShortBook(
+    versionBooks,
+    panel1?.languageCode,
+    panel1?.bookCode
+  );
   return (
-    <Box sx={{ width: "100%", marginTop: { lg: 10.125, sm: 8.75, xs: 0.625 } }}>
+    <>
+      <MetaTags
+        title={`${bookName} ${panel1?.chapter} - Reading Plans`}
+        description={`reading plans,${plan?.label}`}
+      />
       <Box
-        sx={{
-          paddingLeft: { lg: 4.375, xs: 1.875 },
-          paddingBottom: 1.5,
-          marginBottom: 2.5,
-          borderBottom: "1px solid #f1ecec",
-          display: "flex",
-          width: "100%",
-          boxShadow: { lg: 0, xs: 1 },
-        }}
+        sx={{ width: "100%", marginTop: { lg: 10.125, sm: 8.75, xs: 0.625 } }}
       >
-        <Box flexGrow={1}>
-          {mobileView ? null : (
-            <Typography variant="h6"> {t("readingPlansText")}</Typography>
-          )}
-        </Box>
-        <Box flexGrow={1}>
-          {plan ? (
-            <Box sx={{ display: { lg: "block", xs: "flex" } }}>
-              <StyledSelect
-                defaultValue={plan}
-                onChange={(data) => setPlan(data)}
-                options={plans}
-                isSearchable={false}
-              />
-              {mobileView ? (
-                <StyledDatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  withPortal
-                  todayButton="Today"
-                  dateFormat="dd MMM"
-                  showMonthDropdown
-                  minDate={new Date(new Date().getFullYear(), 0, 1)}
-                  maxDate={new Date(new Date().getFullYear(), 11, 31)}
-                  customInput={<CustomInput />}
-                />
-              ) : null}
-            </Box>
-          ) : (
-            ""
-          )}
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Help
-            iconStyle={{
-              color: BLACK,
-              marginTop: 0.625,
-              fontSize: 21,
-            }}
-            url={"readingPlans"}
-          />
-          <Close
-            className={{ marginTop: 0.875, marginRight: { lg: 1.875, xs: 0 } }}
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          top: { lg: 134, sm: 123, xs: 57 },
-          bottom: 0,
-          paddingTop: { md: 3.75, sm: 0, xs: 0 },
-          paddingRight: { xs: 0 },
-          paddingBottom: { xs: 0.625 },
-          paddingLeft: { xs: 0.625 },
-          overflow: "auto",
-          position: "absolute",
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          width: "100%",
-          "-webkit-scrollbar": {
-            width: "0.45em",
-          },
-          "-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-          },
-          "-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.4)",
-            outline: "1px solid slategrey",
-          },
-        }}
-      >
-        {mobileView ? null : (
-          <StyledCalendar
-            onChange={(date) => setSelectedDate(date)}
-            value={selectedDate}
-          />
-        )}
-        <Box sx={{ width: "100%", marginTop: { md: 7.5, sm: 0 } }}>
-          <Box
-            sx={{
-              paddingBottom: 1.25,
-              paddingLeft: 1.875,
-              borderBottom: "1px solid #f1ecec",
-              display: { md: "flex", xs: "none" },
-              width: "100%",
-              height: "2.75em",
-            }}
-          >
-            <Box flexGrow={1} sx={{ display: { lg: "block", xs: "flex" } }}>
-              <Typography
-                variant="h6"
-                sx={{
-                  fontSize: "1.25rem",
-                }}
-              >
-                {t("readingPlanBibleRef", { ref })}
-              </Typography>
-            </Box>
-          </Box>
-          <>
-            {loading ? (
-              <Heading>Loading</Heading>
-            ) : readingList.length !== 0 ? (
-              <List
-                component="nav"
-                sx={{
-                  bottom: 50,
-                  top: 0,
-                }}
-              >
-                {readingList.map((reading, i) => {
-                  const bookText = getBookText(reading.ref, reading.text);
-                  return bookText ? (
-                    <ListItemButton
-                      key={i}
-                      sx={{ borderBottom: "1px solid lightgray" }}
-                    >
-                      <ListItemText
-                        primary={bookText}
-                        data-ref={reading.ref}
-                        onClick={(e) => openChapter(e)}
-                      />
-                    </ListItemButton>
-                  ) : (
-                    <BigTooltip
-                      key={i}
-                      title={t("readingPlanBookNotAvailableToolTip")}
-                      arrow
-                    >
-                      <span>
-                        <ListItem
-                          key={i}
-                          sx={{ borderBottom: "1px solid lightgray" }}
-                        >
-                          <Button
-                            aria-label="Book not available"
-                            sx={{
-                              textTransform: "none",
-                              marginLeft: -1,
-                            }}
-                            disabled
-                            endIcon={<ErrorOutlineIcon />}
-                          >
-                            {reading.text}
-                          </Button>
-                          {mobileView ? (
-                            <Typography
-                              sx={{
-                                color: GREY,
-                                fontSize: "0.9rem",
-                                float: "right",
-                              }}
-                            >
-                              {t("readingPlanBookNotAvailableMob")}
-                            </Typography>
-                          ) : null}
-                        </ListItem>
-                      </span>
-                    </BigTooltip>
-                  );
-                })}
-              </List>
-            ) : (
-              <Typography sx={{ margin: 2.25 }}>
-                {t("noReadingPlanAvailable")}
-              </Typography>
+        <Box
+          sx={{
+            paddingLeft: { lg: 4.375, xs: 1.875 },
+            paddingBottom: 1.5,
+            marginBottom: 2.5,
+            borderBottom: "1px solid #f1ecec",
+            display: "flex",
+            width: "100%",
+            boxShadow: { lg: 0, xs: 1 },
+          }}
+        >
+          <Box flexGrow={1}>
+            {mobileView ? null : (
+              <Typography variant="h6"> {t("readingPlansText")}</Typography>
             )}
-          </>
+          </Box>
+          <Box flexGrow={1}>
+            {plan ? (
+              <Box sx={{ display: { lg: "block", xs: "flex" } }}>
+                <StyledSelect
+                  defaultValue={plan}
+                  onChange={(data) => setPlan(data)}
+                  options={plans}
+                  isSearchable={false}
+                />
+                {mobileView ? (
+                  <StyledDatePicker
+                    selected={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
+                    withPortal
+                    todayButton="Today"
+                    dateFormat="dd MMM"
+                    showMonthDropdown
+                    minDate={new Date(new Date().getFullYear(), 0, 1)}
+                    maxDate={new Date(new Date().getFullYear(), 11, 31)}
+                    customInput={<CustomInput />}
+                  />
+                ) : null}
+              </Box>
+            ) : (
+              ""
+            )}
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Help
+              iconStyle={{
+                color: BLACK,
+                marginTop: 0.625,
+                fontSize: 21,
+              }}
+              url={"readingPlans"}
+            />
+            <Close
+              className={{
+                marginTop: 0.875,
+                marginRight: { lg: 1.875, xs: 0 },
+              }}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            top: { lg: 134, sm: 123, xs: 57 },
+            bottom: 0,
+            paddingTop: { md: 3.75, sm: 0, xs: 0 },
+            paddingRight: { xs: 0 },
+            paddingBottom: { xs: 0.625 },
+            paddingLeft: { xs: 0.625 },
+            overflow: "auto",
+            position: "absolute",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            width: "100%",
+            "-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+          }}
+        >
+          {mobileView ? null : (
+            <StyledCalendar
+              onChange={(date) => setSelectedDate(date)}
+              value={selectedDate}
+            />
+          )}
+          <Box sx={{ width: "100%", marginTop: { md: 7.5, sm: 0 } }}>
+            <Box
+              sx={{
+                paddingBottom: 1.25,
+                paddingLeft: 1.875,
+                borderBottom: "1px solid #f1ecec",
+                display: { md: "flex", xs: "none" },
+                width: "100%",
+                height: "2.75em",
+              }}
+            >
+              <Box flexGrow={1} sx={{ display: { lg: "block", xs: "flex" } }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: "1.25rem",
+                  }}
+                >
+                  {t("readingPlanBibleRef", { ref })}
+                </Typography>
+              </Box>
+            </Box>
+            <>
+              {loading ? (
+                <Heading>Loading</Heading>
+              ) : readingList.length !== 0 ? (
+                <List
+                  component="nav"
+                  sx={{
+                    bottom: 50,
+                    top: 0,
+                  }}
+                >
+                  {readingList.map((reading, i) => {
+                    const bookText = getBookText(reading.ref, reading.text);
+                    return bookText ? (
+                      <ListItemButton
+                        key={i}
+                        sx={{ borderBottom: "1px solid lightgray" }}
+                      >
+                        <ListItemText
+                          primary={bookText}
+                          data-ref={reading.ref}
+                          onClick={(e) => openChapter(e)}
+                        />
+                      </ListItemButton>
+                    ) : (
+                      <BigTooltip
+                        key={i}
+                        title={t("readingPlanBookNotAvailableToolTip")}
+                        arrow
+                      >
+                        <span>
+                          <ListItem
+                            key={i}
+                            sx={{ borderBottom: "1px solid lightgray" }}
+                          >
+                            <Button
+                              aria-label="Book not available"
+                              sx={{
+                                textTransform: "none",
+                                marginLeft: -1,
+                              }}
+                              disabled
+                              endIcon={<ErrorOutlineIcon />}
+                            >
+                              {reading.text}
+                            </Button>
+                            {mobileView ? (
+                              <Typography
+                                sx={{
+                                  color: GREY,
+                                  fontSize: "0.9rem",
+                                  float: "right",
+                                }}
+                              >
+                                {t("readingPlanBookNotAvailableMob")}
+                              </Typography>
+                            ) : null}
+                          </ListItem>
+                        </span>
+                      </BigTooltip>
+                    );
+                  })}
+                </List>
+              ) : (
+                <Typography sx={{ margin: 2.25 }}>
+                  {t("noReadingPlanAvailable")}
+                </Typography>
+              )}
+            </>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
-export default ReadingPlan;
+const mapStateToProps = (state) => {
+  return {
+    panel1: state.local.panel1,
+    versionBooks: state.local.versionBooks,
+  };
+};
+export default connect(mapStateToProps, null)(ReadingPlan);

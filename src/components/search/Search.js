@@ -8,7 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Pagination from "@mui/material/Pagination";
-import { searchBible } from "../common/utility";
+import { getShortBook, searchBible } from "../common/utility";
 import * as actions from "../../store/actions";
 import { connect } from "react-redux";
 import Close from "../common/Close";
@@ -17,10 +17,11 @@ import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
 import { useTheme } from "@mui/material/styles";
+import MetaTags from "../common/MetaTags";
 
 const Search = (props) => {
   const theme = useTheme();
-  const { setValue, sourceId, versionBooks, versionSource } = props;
+  const { setValue, sourceId, versionBooks, versionSource, panel1 } = props;
   const [searchText, setSearchText] = React.useState("");
   const [bookNames, setBookNames] = React.useState({});
   const [searchResult, setSearchResult] = React.useState({});
@@ -162,183 +163,195 @@ const Search = (props) => {
     setValue("chapter", chapter);
     setValue("versesSelected", [verse]);
   };
-
+  const bookName = getShortBook(
+    versionBooks,
+    panel1?.languageCode,
+    panel1?.bookCode
+  );
   return (
-    <Box
-      sx={{
-        width: "100%",
-        marginTop: "77px",
-        [theme.breakpoints.down("lg")]: {
-          marginTop: "66px",
-        },
-        [theme.breakpoints.only("xs")]: {
-          marginTop: "4px",
-        },
-      }}
-    >
+    <>
+      <MetaTags
+        title={`${bookName} ${panel1?.chapter} - Search Bible`}
+        description={`${searchResult?.keyword} serach bible`}
+      />
       <Box
         sx={{
-          display: "flex",
-          paddingBottom: "6px",
-          paddingLeft: "15px",
-          borderBottom: "1px solid #f1ecec",
-          [theme.breakpoints.down("md")]: {
-            boxShadow: theme.shadows[1],
+          width: "100%",
+          marginTop: "77px",
+          [theme.breakpoints.down("lg")]: {
+            marginTop: "66px",
+          },
+          [theme.breakpoints.only("xs")]: {
+            marginTop: "4px",
           },
         }}
       >
-        <Box flexGrow={1}>
-          <Paper
-            component="form"
-            sx={{
-              "&.MuiPaper-root": {
-                padding: "2px 4px",
-                display: "flex",
-                alignItems: "center",
-                width: "98%",
-              },
-            }}
-            onSubmit={search}
-          >
-            <InputBase
-              sx={{
-                marginLeft: theme.spacing(1),
-                flex: 1,
-              }}
-              placeholder={t("studyEnterSearchText")}
-              inputProps={{ "aria-label": "enter search text" }}
-              value={searchText}
-              onChange={handleSearchTextChange}
-            />
-            <IconButton
-              type="submit"
-              sx={{ padding: "10px" }}
-              aria-label="search"
-              onClick={search}
-              size="large"
-            >
-              <SearchIcon />
-            </IconButton>
-          </Paper>
-        </Box>
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
+            paddingBottom: "6px",
+            paddingLeft: "15px",
+            borderBottom: "1px solid #f1ecec",
+            [theme.breakpoints.down("md")]: {
+              boxShadow: theme.shadows[1],
+            },
           }}
         >
-          <Help
-            iconStyle={{
-              color: BLACK,
-              fontSize: "21px",
-            }}
-            url={"searchBible"}
-          />
-          <Close sx={{ marginRight: "15px", marginTop: "3px" }} />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          right: "0px",
-          left: "0px",
-          top: "135px",
-          bottom: "0px",
-          overflow: "scroll",
-          marginBottom: "-15px",
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          "&::-webkit-scrollbar": {
-            width: "0.45em",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.4)",
-            outline: "1px solid slategrey",
-          },
-          [theme.breakpoints.only("xs")]: {
-            top: "60px",
-            paddingBottom: "10px",
-          },
-          [theme.breakpoints.only("sm")]: {
-            top: "122px",
-            paddingBottom: "10px",
-          },
-        }}
-      >
-        {pageData && pageData.length ? (
-          <List component="nav">
-            <ListItem
+          <Box flexGrow={1}>
+            <Paper
+              component="form"
               sx={{
-                borderBottom: "1px solid darkgray",
-                fontWeight: 600,
+                "&.MuiPaper-root": {
+                  padding: "2px 4px",
+                  display: "flex",
+                  alignItems: "center",
+                  width: "98%",
+                },
               }}
+              onSubmit={search}
             >
-              <Typography
-                variant="h6"
+              <InputBase
                 sx={{
-                  textAlign: "center",
+                  marginLeft: theme.spacing(1),
+                  flex: 1,
+                }}
+                placeholder={t("studyEnterSearchText")}
+                inputProps={{ "aria-label": "enter search text" }}
+                value={searchText}
+                onChange={handleSearchTextChange}
+              />
+              <IconButton
+                type="submit"
+                sx={{ padding: "10px" }}
+                aria-label="search"
+                onClick={search}
+                size="large"
+              >
+                <SearchIcon />
+              </IconButton>
+            </Paper>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Help
+              iconStyle={{
+                color: BLACK,
+                fontSize: "21px",
+              }}
+              url={"searchBible"}
+            />
+            <Close sx={{ marginRight: "15px", marginTop: "3px" }} />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            right: "0px",
+            left: "0px",
+            top: "135px",
+            bottom: "0px",
+            overflow: "scroll",
+            marginBottom: "-15px",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            "&::-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+            [theme.breakpoints.only("xs")]: {
+              top: "60px",
+              paddingBottom: "10px",
+            },
+            [theme.breakpoints.only("sm")]: {
+              top: "122px",
+              paddingBottom: "10px",
+            },
+          }}
+        >
+          {pageData && pageData.length ? (
+            <List component="nav">
+              <ListItem
+                sx={{
+                  borderBottom: "1px solid darkgray",
+                  fontWeight: 600,
                 }}
               >
-                <Box
-                  component="span"
+                <Typography
+                  variant="h6"
                   sx={{
-                    fontWeight: 600,
-                    fontSize: "1.2em",
-                    position: "relative",
-                    bottom: "2px",
-                    [theme.breakpoints.down("md")]: {
-                      bottom: "20px",
-                    },
+                    textAlign: "center",
                   }}
                 >
-                  {searchResult.keyword}
-                </Box>
-                {pageInfo}
-              </Typography>
-            </ListItem>
-            {pageData.map((result, i) => {
-              return (
-                <ListItem
-                  key={i}
-                  sx={{
-                    cursor: "pointer",
-                    borderBottom: "1px solid lightgray",
-                  }}
-                  data-bookcode={result.bookCode}
-                  data-chapter={result.chapter}
-                  data-verse={result.verse}
-                  onClick={openReference}
-                >
-                  <ListItemText
+                  <Box
+                    component="span"
                     sx={{
-                      "& .MuiListItemText-primary": {
-                        fontWeight: 600,
+                      fontWeight: 600,
+                      fontSize: "1.2em",
+                      position: "relative",
+                      bottom: "2px",
+                      [theme.breakpoints.down("md")]: {
+                        bottom: "20px",
                       },
                     }}
-                    primary={`${result.book} ${result.chapter}:${result.verse} `}
-                    secondary={
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        color="textPrimary"
-                      >
-                        {result.text.split(regex).map(highlightKeyword)}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-              );
-            })}
-            <Box sx={{ height: "35px", whiteSpace: "nowrap" }}>{pageInfo}</Box>
-          </List>
-        ) : (
-          <Typography sx={{ margin: "18px" }}>{message}</Typography>
-        )}
+                  >
+                    {searchResult.keyword}
+                  </Box>
+                  {pageInfo}
+                </Typography>
+              </ListItem>
+              {pageData.map((result, i) => {
+                return (
+                  <ListItem
+                    key={i}
+                    sx={{
+                      cursor: "pointer",
+                      borderBottom: "1px solid lightgray",
+                    }}
+                    data-bookcode={result.bookCode}
+                    data-chapter={result.chapter}
+                    data-verse={result.verse}
+                    onClick={openReference}
+                  >
+                    <ListItemText
+                      sx={{
+                        "& .MuiListItemText-primary": {
+                          fontWeight: 600,
+                        },
+                      }}
+                      primary={`${result.book} ${result.chapter}:${result.verse} `}
+                      secondary={
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          color="textPrimary"
+                        >
+                          {result.text.split(regex).map(highlightKeyword)}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                );
+              })}
+              <Box sx={{ height: "35px", whiteSpace: "nowrap" }}>
+                {pageInfo}
+              </Box>
+            </List>
+          ) : (
+            <Typography sx={{ margin: "18px" }}>{message}</Typography>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
@@ -347,6 +360,7 @@ const mapStateToProps = (state) => {
     versionBooks: state.local.versionBooks,
     versionSource: state.local.versionSource,
     sourceId: state.local.panel1.sourceId,
+    panel1: state.local.panel1,
   };
 };
 

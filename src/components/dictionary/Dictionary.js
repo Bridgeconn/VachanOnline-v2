@@ -5,12 +5,17 @@ import DictionaryCombo from "./DictionaryCombo";
 import Box from "@mui/material/Box";
 import DictionaryWordCombo from "./DictionaryWordCombo";
 import Metadata from "../common/Metadata";
-import { getDictionaryIndex, getDictionaryWord } from "../common/utility";
+import {
+  getDictionaryIndex,
+  getDictionaryWord,
+  getShortBook,
+} from "../common/utility";
 import Close from "../common/Close";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
+import MetaTags from "../common/MetaTags";
 const Heading = styled("div")({
   fontWeight: "bold",
   fontSize: "1.2em",
@@ -22,7 +27,8 @@ const LoadingHeading = styled("h3")({
 });
 const Dictionary = (props) => {
   const [dictionaryText, setDictionaryText] = React.useState("");
-  let { dictionary, version, setDictionary, mobileView } = props;
+  let { dictionary, version, setDictionary, mobileView, versionBooks, panel1 } =
+    props;
   let {
     dictionaries,
     selectedDictionary,
@@ -110,114 +116,125 @@ const Dictionary = (props) => {
       );
     }
   }, [dictionaryWord.word, t, wordMeaning]);
+  const bookName = getShortBook(
+    versionBooks,
+    panel1?.languageCode,
+    panel1?.bookCode
+  );
   return (
-    <Box sx={{ width: "100%", marginTop: { lg: 10.125, xs: 7.75 } }}>
-      <Box
-        sx={{
-          paddingLeft: { lg: 4.375, xs: 0 },
-          paddingBottom: { lg: 1, xs: 0 },
-          marginBottom: 2.5,
-          height: { lg: "auto", xs: 60 },
-          alignItems: "center",
-          borderBottom: "1px solid #f1ecec",
-          display: "flex",
-          width: "100%",
-        }}
-      >
-        <Typography
-          variant="h6"
-          sx={{
-            marginRight: 1.25,
-            display: { lg: "block", xs: "none" },
-          }}
-        >
-          {t("studyDictionaryTitle")}
-        </Typography>
-        <Box flexGrow={1}>
-          <DictionaryCombo
-            dictionaries={dictionaries}
-            selectedDictionary={selectedDictionary}
-            setDictionary={setDictionary}
-          />
-          <DictionaryWordCombo
-            dictionaryIndex={dictionaryIndex}
-            dictionaryWord={dictionaryWord}
-            setDictionary={setDictionary}
-          ></DictionaryWordCombo>
-        </Box>
+    <>
+      <MetaTags
+        title={`${bookName} ${panel1?.chapter} - Dictionary`}
+        description={`${selectedDictionary?.name} ${selectedDictionary?.metadata["Language Name"]}  dictionary`}
+      />
+      <Box sx={{ width: "100%", marginTop: { lg: 10.125, xs: 7.75 } }}>
         <Box
           sx={{
+            paddingLeft: { lg: 4.375, xs: 0 },
+            paddingBottom: { lg: 1, xs: 0 },
+            marginBottom: 2.5,
+            height: { lg: "auto", xs: 60 },
+            alignItems: "center",
+            borderBottom: "1px solid #f1ecec",
             display: "flex",
-            marginTop: 0.5,
-            flexWrap: "nowrap",
-            marginLeft: { lg: -0.625, xs: 0 },
+            width: "100%",
           }}
         >
-          <Box sx={{ marginTop: -1.25 }}>
-            <Metadata
-              metadataList={selectedDictionary.metadata}
-              title="Version Name (in Eng)"
-              abbreviation="Abbreviation"
-              mobileView={mobileView}
-            ></Metadata>
-          </Box>
-          <Help
-            iconStyle={{
-              color: BLACK,
-              fontSize: 19.5,
-              marginTop: 1.375,
-              marginRight: 0.625,
+          <Typography
+            variant="h6"
+            sx={{
+              marginRight: 1.25,
+              display: { lg: "block", xs: "none" },
             }}
-            url={"dictionaries"}
-          />
-          <Close className={{ marginTop: 0.875, marginRight: 1.875 }} />
+          >
+            {t("studyDictionaryTitle")}
+          </Typography>
+          <Box flexGrow={1}>
+            <DictionaryCombo
+              dictionaries={dictionaries}
+              selectedDictionary={selectedDictionary}
+              setDictionary={setDictionary}
+            />
+            <DictionaryWordCombo
+              dictionaryIndex={dictionaryIndex}
+              dictionaryWord={dictionaryWord}
+              setDictionary={setDictionary}
+            ></DictionaryWordCombo>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              marginTop: 0.5,
+              flexWrap: "nowrap",
+              marginLeft: { lg: -0.625, xs: 0 },
+            }}
+          >
+            <Box sx={{ marginTop: -1.25 }}>
+              <Metadata
+                metadataList={selectedDictionary.metadata}
+                title="Version Name (in Eng)"
+                abbreviation="Abbreviation"
+                mobileView={mobileView}
+              ></Metadata>
+            </Box>
+            <Help
+              iconStyle={{
+                color: BLACK,
+                fontSize: 19.5,
+                marginTop: 1.375,
+                marginRight: 0.625,
+              }}
+              url={"dictionaries"}
+            />
+            <Close className={{ marginTop: 0.875, marginRight: 1.875 }} />
+          </Box>
         </Box>
+        {dictionaryText.length === 0 ? (
+          <LoadingHeading>Loading</LoadingHeading>
+        ) : (
+          <Box
+            sx={{
+              position: "absolute",
+              right: 0,
+              left: { lg: 35, xs: 20 },
+              top: { lg: 135, xs: 120 },
+              padding: "20px 20px 20px 0",
+              bottom: 0,
+              color: "#464545",
+              fontFamily: "Roboto,Noto Sans",
+              overflow: "auto",
+              fontSize: "1rem",
+              fontWeight: 400,
+              lineHeight: 1.5,
+              letterSpacing: "0.00938em",
+              marginBottom: -1.875,
+              scrollbarWidth: "thin",
+              scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+              textAlign: { lg: "left", xs: "justify" },
+              "& span": {
+                fontWeight: 600,
+                display: "block",
+              },
+              "& p": {
+                marginBottom: 10,
+              },
+              "-webkit-scrollbar": {
+                width: "0.45em",
+              },
+              "-webkit-scrollbar-track": {
+                WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+              },
+              "-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,.4)",
+                outline: "1px solid slategrey",
+              },
+            }}
+          >
+            {dictionaryText}
+          </Box>
+        )}
       </Box>
-      {dictionaryText.length === 0 ? (
-        <LoadingHeading>Loading</LoadingHeading>
-      ) : (
-        <Box
-          sx={{
-            position: "absolute",
-            right: 0,
-            left: { lg: 35, xs: 20 },
-            top: { lg: 135, xs: 120 },
-            padding: "20px 20px 20px 0",
-            bottom: 0,
-            color: "#464545",
-            fontFamily: "Roboto,Noto Sans",
-            overflow: "auto",
-            fontSize: "1rem",
-            fontWeight: 400,
-            lineHeight: 1.5,
-            letterSpacing: "0.00938em",
-            marginBottom: -1.875,
-            scrollbarWidth: "thin",
-            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-            textAlign: { lg: "left", xs: "justify" },
-            "& span": {
-              fontWeight: 600,
-              display: "block",
-            },
-            "& p": {
-              marginBottom: 10,
-            },
-            "-webkit-scrollbar": {
-              width: "0.45em",
-            },
-            "-webkit-scrollbar-track": {
-              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-            },
-            "-webkit-scrollbar-thumb": {
-              backgroundColor: "rgba(0,0,0,.4)",
-              outline: "1px solid slategrey",
-            },
-          }}
-        >
-          {dictionaryText}
-        </Box>
-      )}
-    </Box>
+    </>
   );
 };
 const mapStateToProps = (state) => {
@@ -225,6 +242,8 @@ const mapStateToProps = (state) => {
     dictionary: state.local.dictionary,
     version: state.local.panel1.version,
     mobileView: state.local.mobileView,
+    panel1: state.local.panel1,
+    versionBooks: state.local.versionBooks,
   };
 };
 export default connect(mapStateToProps)(Dictionary);

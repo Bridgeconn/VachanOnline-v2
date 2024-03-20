@@ -14,6 +14,8 @@ import Help from "../common/Help";
 import { bibleBooks } from "../../store/bibleData";
 import parse from "html-react-parser";
 import { styled } from "@mui/system";
+import { getShortBook } from "../common/utility";
+import MetaTags from "../common/MetaTags";
 
 const MessageStyle = styled("h5")({
   paddingLeft: 20,
@@ -111,98 +113,109 @@ const SignBible = (props) => {
       }
     }
   }, [signBible, bookCode, chapter, book, t, avlBookNames]);
+  const bookName = getShortBook(
+    versionBooks,
+    panel1?.languageCode,
+    panel1?.bookCode
+  );
   return (
-    <Box
-      sx={{
-        width: "100%",
-        position: "absolute",
-        top: {
-          lg: 72,
-          sm: 62,
-          xs: parallelView === "DRAWERSIGNBIBLE" ? 60 : 0,
-        },
-        bottom: 0,
-      }}
-    >
+    <>
+      <MetaTags
+        title={`${bookName} ${panel1?.chapter} - ISLV Bible `}
+        description={`Sign language bible`}
+      />
       <Box
         sx={{
-          borderBottom: "1px solid #f1ecec",
-          display: "flex",
           width: "100%",
-          paddingBottom: { lg: 1.5, xs: 0 },
-          paddingLeft: 4.375,
-          marginBottom: 2.5,
-          height: 60,
-          alignItems: "center",
-        }}
-      >
-        <Box flexGrow={1}>
-          <Typography variant="h6">{heading}</Typography>
-        </Box>
-        <Box flexGrow={1}>
-          {mobileView && parallelView === views.DRAWERSIGNBIBLE ? (
-            <BookCombo
-              bookCode={bookCode}
-              chapter={chapter}
-              setValue={setValue}
-              bookList={getBooks(versionBooks[versionSource[sourceId]])}
-              minimal={true}
-            />
-          ) : (
-            <Typography variant="h6">
-              {book} {chapter}
-            </Typography>
-          )}
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Help
-            iconStyle={{ color: BLACK, marginTop: 0.625, fontSize: 21 }}
-            url={"signLanguageBible"}
-          />
-          <Close className={{ marginRight: 1.875, marginTop: 0.875 }} />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          top: 60,
-          bottom: -16,
-          overflow: "scroll",
           position: "absolute",
-          width: "100%",
-          paddingTop: 1.5,
-          paddingRight: 1.25,
-          paddingBottom: 1.875,
-          paddingLeft: 1.25,
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          "&::-webkit-scrollbar": {
-            width: "0.45em",
+          top: {
+            lg: 72,
+            sm: 62,
+            xs: parallelView === "DRAWERSIGNBIBLE" ? 60 : 0,
           },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.4)",
-            outline: "1px solid slategrey",
-          },
+          bottom: 0,
         }}
       >
-        <>
-          {videos &&
-            videos?.map((video, i) => {
-              return (
-                <VideoCard
-                  key={i}
-                  video={video}
-                  playing={playing}
-                  setPlaying={setPlaying}
-                />
-              );
-            })}
-          {message && <MessageStyle>{parse(message)}</MessageStyle>}
-        </>
+        <Box
+          sx={{
+            borderBottom: "1px solid #f1ecec",
+            display: "flex",
+            width: "100%",
+            paddingBottom: { lg: 1.5, xs: 0 },
+            paddingLeft: 4.375,
+            marginBottom: 2.5,
+            height: 60,
+            alignItems: "center",
+          }}
+        >
+          <Box flexGrow={1}>
+            <Typography variant="h6">{heading}</Typography>
+          </Box>
+          <Box flexGrow={1}>
+            {mobileView && parallelView === views.DRAWERSIGNBIBLE ? (
+              <BookCombo
+                bookCode={bookCode}
+                chapter={chapter}
+                setValue={setValue}
+                bookList={getBooks(versionBooks[versionSource[sourceId]])}
+                minimal={true}
+              />
+            ) : (
+              <Typography variant="h6">
+                {book} {chapter}
+              </Typography>
+            )}
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Help
+              iconStyle={{ color: BLACK, marginTop: 0.625, fontSize: 21 }}
+              url={"signLanguageBible"}
+            />
+            <Close className={{ marginRight: 1.875, marginTop: 0.875 }} />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            top: 60,
+            bottom: -16,
+            overflow: "scroll",
+            position: "absolute",
+            width: "100%",
+            paddingTop: 1.5,
+            paddingRight: 1.25,
+            paddingBottom: 1.875,
+            paddingLeft: 1.25,
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            "&::-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+          }}
+        >
+          <>
+            {videos &&
+              videos?.map((video, i) => {
+                return (
+                  <VideoCard
+                    key={i}
+                    video={video}
+                    playing={playing}
+                    setPlaying={setPlaying}
+                  />
+                );
+              })}
+            {message && <MessageStyle>{parse(message)}</MessageStyle>}
+          </>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 const mapStateToProps = (state) => {

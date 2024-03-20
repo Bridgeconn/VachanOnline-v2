@@ -19,6 +19,7 @@ import TopBar from "../read/TopBar";
 import Help from "../common/Help";
 import { BLACK, WHITE } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
+import MetaTags from "../common/MetaTags";
 
 const drawerWidth = 350;
 const Songs = () => {
@@ -78,6 +79,10 @@ const Songs = () => {
   }, [API, currentSong, lang]);
   return (
     <>
+      <MetaTags
+        title={`${currentSong?.name} - Songs`}
+        description={`${currentSong?.name};songs ${languageJson[lang]}`}
+      />
       <AppBar position="fixed">
         <TopBar />
       </AppBar>

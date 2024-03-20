@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-full-screen": "^0.2.5",
+    "react-helmet": "^6.1.0",
     "react-i18next": "^13.3.1",
     "react-markdown": "^6.0.3",
     "react-modal-video": "^1.2.8",

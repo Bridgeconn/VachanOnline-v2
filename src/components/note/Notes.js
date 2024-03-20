@@ -34,6 +34,7 @@ import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import Help from "../common/Help";
 import { useTheme } from "@mui/material/styles";
+import MetaTags from "../common/MetaTags";
 
 function Notes(props) {
   const theme = useTheme();
@@ -350,59 +351,48 @@ function Notes(props) {
         }
       });
   };
-
   return (
-    <Box
-      sx={{
-        width: "100%",
-        marginTop: { lg: "81px", md: "71px", xs: "72px" },
-        display: "flex",
-        flexDirection: "column",
-        height: "calc( 100vh - 5.278rem)",
-        [theme.breakpoints.down("md")]: {
-          height: "calc( 100vh - 60px)",
-        },
-      }}
-    >
+    <>
+      <MetaTags
+        title={`${book} ${panel1?.chapter} - Notes`}
+        description={`notes`}
+      />
       <Box
         sx={{
-          paddingBottom: "10px",
-          paddingLeft: "15px",
-          marginBottom: "10px",
-          borderBottom: "1px solid #f1ecec",
-          display: "flex",
           width: "100%",
-          height: "60px",
+          marginTop: { lg: "81px", md: "71px", xs: "72px" },
+          display: "flex",
+          flexDirection: "column",
+          height: "calc( 100vh - 5.278rem)",
           [theme.breakpoints.down("md")]: {
-            height: "60px",
-            marginBottom: "0px",
-            paddingBottom: "5px",
-            alignItems: "center",
+            height: "calc( 100vh - 60px)",
           },
         }}
       >
-        <Box flexGrow={1}>
-          <Typography variant="h6" sx={{ display: "flex" }}>
-            {t("commonNotes")}
-            {Array.isArray(versesSelected) && versesSelected.length && !edit ? (
-              <Tooltip title={t("commonAddNote")}>
-                <IconButton
-                  aria-label="add"
-                  sx={{
-                    position: "relative",
-                    bottom: "5px",
-                    padding: theme.spacing(1),
-                    display: mobileView ? "none" : "",
-                  }}
-                  onClick={clickAddNote}
-                  size="large"
-                >
-                  <AddBox />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title={t("commonSelectVerses")}>
-                <span>
+        <Box
+          sx={{
+            paddingBottom: "10px",
+            paddingLeft: "15px",
+            marginBottom: "10px",
+            borderBottom: "1px solid #f1ecec",
+            display: "flex",
+            width: "100%",
+            height: "60px",
+            [theme.breakpoints.down("md")]: {
+              height: "60px",
+              marginBottom: "0px",
+              paddingBottom: "5px",
+              alignItems: "center",
+            },
+          }}
+        >
+          <Box flexGrow={1}>
+            <Typography variant="h6" sx={{ display: "flex" }}>
+              {t("commonNotes")}
+              {Array.isArray(versesSelected) &&
+              versesSelected.length &&
+              !edit ? (
+                <Tooltip title={t("commonAddNote")}>
                   <IconButton
                     aria-label="add"
                     sx={{
@@ -411,65 +401,156 @@ function Notes(props) {
                       padding: theme.spacing(1),
                       display: mobileView ? "none" : "",
                     }}
-                    disabled
+                    onClick={clickAddNote}
                     size="large"
                   >
                     <AddBox />
                   </IconButton>
-                </span>
-              </Tooltip>
-            )}
-          </Typography>
+                </Tooltip>
+              ) : (
+                <Tooltip title={t("commonSelectVerses")}>
+                  <span>
+                    <IconButton
+                      aria-label="add"
+                      sx={{
+                        position: "relative",
+                        bottom: "5px",
+                        padding: theme.spacing(1),
+                        display: mobileView ? "none" : "",
+                      }}
+                      disabled
+                      size="large"
+                    >
+                      <AddBox />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              )}
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Help
+              iconStyle={{
+                color: BLACK,
+                marginTop: "-3px",
+                fontSize: "21px",
+              }}
+              url={"notes"}
+            />
+            <Close sx={{ marginRight: "15px" }} />
+          </Box>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Help
-            iconStyle={{
-              color: BLACK,
-              marginTop: "-3px",
-              fontSize: "21px",
-            }}
-            url={"notes"}
-          />
-          <Close sx={{ marginRight: "15px" }} />
-        </Box>
-      </Box>
-      {mobileView ? (
-        /* mobile view edit list */
-        <Dialog
-          onClose={handleClose}
-          aria-labelledby="note-title"
-          open={open}
-          sx={{
-            [theme.breakpoints.down("md")]: {
-              "& .MuiPaper-root": {
-                margin: "25px",
+        {mobileView ? (
+          /* mobile view edit list */
+          <Dialog
+            onClose={handleClose}
+            aria-labelledby="note-title"
+            open={open}
+            sx={{
+              [theme.breakpoints.down("md")]: {
+                "& .MuiPaper-root": {
+                  margin: "25px",
+                },
               },
-            },
-          }}
-        >
-          <DialogTitle id="note-title" onClose={handleClose}>
-            Note for {book} {chapter}:{" "}
-            {versesSelected
-              ?.sort((a, b) => parseInt(a) - parseInt(b))
-              .join(", ")}
-          </DialogTitle>
-          <DialogContent dividers sx={{ padding: "0px" }}>
+            }}
+          >
+            <DialogTitle id="note-title" onClose={handleClose}>
+              Note for {book} {chapter}:{" "}
+              {versesSelected
+                ?.sort((a, b) => parseInt(a) - parseInt(b))
+                .join(", ")}
+            </DialogTitle>
+            <DialogContent dividers sx={{ padding: "0px" }}>
+              <Editor
+                editorState={editorState}
+                editorStyle={{
+                  height: "30vh",
+                  overflow: "auto",
+                  padding: "10px",
+                }}
+                onEditorStateChange={handleNoteTextChange}
+                toolbar={getEditorToolbar(true)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Grid container>
+                <Grid
+                  item
+                  xs={6}
+                  sx={{
+                    color: "#0000008a",
+                    paddingTop: "18px",
+                    [theme.breakpoints.down("lg")]: {
+                      paddingTop: "5px",
+                      display: "inline-block",
+                      fontSize: "0.875rem",
+                    },
+                  }}
+                >
+                  {t("studyNotesLastModified")} :{" "}
+                  {new Date(modifiedTime).toLocaleString()}
+                </Grid>
+                <Grid
+                  item
+                  xs={6}
+                  sx={{
+                    textAlign: "right",
+                    [theme.breakpoints.down("md")]: {
+                      display: "flex",
+                      justifyContent: "center",
+                    },
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      margin: "10px 5px",
+                      color: BLACK,
+                      borderColor: BLACK,
+                      "&:hover": {
+                        backgroundColor: BLACK + "0a",
+                        border: "1px solid rgba(0, 0, 0, 0.23)",
+                      },
+                    }}
+                    onClick={handleClose}
+                  >
+                    {t("commonCancel")}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      margin: "10px 5px",
+                      color: BLACK,
+                      borderColor: BLACK,
+                      "&:hover": {
+                        backgroundColor: BLACK + "0a",
+                        border: "1px solid rgba(0, 0, 0, 0.23)",
+                      },
+                    }}
+                    onClick={saveNote}
+                  >
+                    {t("commonSave")}
+                  </Button>
+                </Grid>
+              </Grid>
+            </DialogActions>
+          </Dialog>
+        ) : addNote ? (
+          <Box sx={{ paddingLeft: "10px", borderBottom: "1px solid gray" }}>
+            <Typography variant="h6" gutterBottom>
+              {t("studyNotesBookChapterVerse", { ref })}
+            </Typography>
+            {/*edit note */}
             <Editor
               editorState={editorState}
-              editorStyle={{
-                height: "30vh",
-                overflow: "auto",
-                padding: "10px",
-              }}
               onEditorStateChange={handleNoteTextChange}
-              toolbar={getEditorToolbar(true)}
+              editorStyle={{ height: "30vh", padding: "0px" }}
+              toolbar={getEditorToolbar(false)}
             />
-          </DialogContent>
-          <DialogActions>
             <Grid container>
               <Grid
                 item
-                xs={6}
+                xs={7}
                 sx={{
                   color: "#0000008a",
                   paddingTop: "18px",
@@ -480,12 +561,15 @@ function Notes(props) {
                   },
                 }}
               >
-                {t("studyNotesLastModified")} :{" "}
-                {new Date(modifiedTime).toLocaleString()}
+                {modifiedTime &&
+                  t("studyNotesLastModified") +
+                    ":" +
+                    " " +
+                    new Date(modifiedTime).toLocaleString()}
               </Grid>
               <Grid
                 item
-                xs={6}
+                xs={5}
                 sx={{
                   textAlign: "right",
                   [theme.breakpoints.down("md")]: {
@@ -505,7 +589,7 @@ function Notes(props) {
                       border: "1px solid rgba(0, 0, 0, 0.23)",
                     },
                   }}
-                  onClick={handleClose}
+                  onClick={resetForm}
                 >
                   {t("commonCancel")}
                 </Button>
@@ -526,272 +610,198 @@ function Notes(props) {
                 </Button>
               </Grid>
             </Grid>
-          </DialogActions>
-        </Dialog>
-      ) : addNote ? (
-        <Box sx={{ paddingLeft: "10px", borderBottom: "1px solid gray" }}>
-          <Typography variant="h6" gutterBottom>
-            {t("studyNotesBookChapterVerse", { ref })}
-          </Typography>
-          {/*edit note */}
-          <Editor
-            editorState={editorState}
-            onEditorStateChange={handleNoteTextChange}
-            editorStyle={{ height: "30vh", padding: "0px" }}
-            toolbar={getEditorToolbar(false)}
-          />
-          <Grid container>
-            <Grid
-              item
-              xs={7}
-              sx={{
-                color: "#0000008a",
-                paddingTop: "18px",
-                [theme.breakpoints.down("lg")]: {
-                  paddingTop: "5px",
-                  display: "inline-block",
-                  fontSize: "0.875rem",
-                },
-              }}
-            >
-              {modifiedTime &&
-                t("studyNotesLastModified") +
-                  ":" +
-                  " " +
-                  new Date(modifiedTime).toLocaleString()}
-            </Grid>
-            <Grid
-              item
-              xs={5}
-              sx={{
-                textAlign: "right",
-                [theme.breakpoints.down("md")]: {
-                  display: "flex",
-                  justifyContent: "center",
-                },
-              }}
-            >
-              <Button
-                variant="outlined"
-                sx={{
-                  margin: "10px 5px",
-                  color: BLACK,
-                  borderColor: BLACK,
-                  "&:hover": {
-                    backgroundColor: BLACK + "0a",
-                    border: "1px solid rgba(0, 0, 0, 0.23)",
-                  },
-                }}
-                onClick={resetForm}
-              >
-                {t("commonCancel")}
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  margin: "10px 5px",
-                  color: BLACK,
-                  borderColor: BLACK,
-                  "&:hover": {
-                    backgroundColor: BLACK + "0a",
-                    border: "1px solid rgba(0, 0, 0, 0.23)",
-                  },
-                }}
-                onClick={saveNote}
-              >
-                {t("commonSave")}
-              </Button>
-            </Grid>
-          </Grid>
-          <Snackbar
-            open={alert}
-            autoHideDuration={5000}
-            onClose={closeAlert}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          >
-            <Alert
-              elevation={6}
-              variant="filled"
+            <Snackbar
+              open={alert}
+              autoHideDuration={5000}
               onClose={closeAlert}
-              severity="warning"
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
             >
-              {alertMessage}
-            </Alert>
-          </Snackbar>
-        </Box>
-      ) : (
-        ""
-      )}
-      <Box
-        sx={{
-          overflow: "auto",
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          "&::-webkit-scrollbar": {
-            width: "0.45em",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.4)",
-            outline: "1px solid slategrey",
-          },
-          [theme.breakpoints.down("md")]: {
-            marginBottom: "60px",
-          },
-        }}
-      >
-        {notes && Object.keys(notes).length !== 0 ? (
-          <List component="nav">
-            {chapterNoteList && Object.keys(chapterNoteList).length !== 0 ? (
-              <>
-                <ListItem
-                  sx={{
-                    borderBottom: "1px solid darkgray",
-                    fontWeight: 600,
-                    [theme.breakpoints.down("lg")]: {
-                      justifyContent: "space-between",
-                    },
-                  }}
-                >
-                  <Typography variant="h5">
-                    {t("studyNotesBookChapter", { ref })}
-                  </Typography>
-                </ListItem>
-                {chapterNoteList.map((note, i) => {
-                  return versionData[note.sourceId] !== undefined ? (
-                    <ListItem
-                      key={i}
-                      sx={{
-                        borderBottom: "1px solid lightgray",
-                        paddingTop: "4px",
-                        paddingBottom: "4px",
-                        cursor: "pointer",
-                      }}
-                      data-sourceid={note.sourceId}
-                      data-bookcode={note.bookCode}
-                      data-chapter={note.chapter}
-                      data-index={note.index}
-                      onClick={openRef}
-                    >
-                      <ListItemText
-                        primary={`${versionData[note.sourceId][0]} ${
-                          note.book
-                        } ${note.chapter}:${note.verse}`}
-                        secondary={new Date(note.modifiedTime).toLocaleString()}
-                      />
-                      <ListItemSecondaryAction>
-                        {mobileView && (
-                          <IconButton
-                            edge="end"
-                            aria-label="editNote"
-                            data-sourceid={note.sourceId}
-                            data-bookcode={note.bookCode}
-                            data-chapter={note.chapter}
-                            data-index={note.index}
-                            onClick={(event) => editNote(event)}
-                            size="large"
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        )}
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          data-sourceid={note.sourceId}
-                          data-bookcode={note.bookCode}
-                          data-chapter={note.chapter}
-                          data-index={note.index}
-                          onClick={(e) => deleteNote(e)}
-                          size="large"
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ) : (
-                    ""
-                  );
-                })}
-              </>
-            ) : (
-              ""
-            )}
-            <ListItem
-              sx={{
-                borderBottom: "1px solid darkgray",
-                fontWeight: 600,
-                [theme.breakpoints.down("lg")]: {
-                  justifyContent: "space-between",
-                },
-              }}
-            >
-              <Typography variant="h5">{t("studyAllNotesTitle")}</Typography>
-            </ListItem>
-            {noteList.map((note, i) => {
-              return versionData[note.sourceId] !== undefined ? (
-                <ListItem
-                  key={i}
-                  sx={{
-                    borderBottom: "1px solid lightgray",
-                    paddingTop: "4px",
-                    paddingBottom: "4px",
-                    cursor: "pointer",
-                  }}
-                  data-sourceid={note.sourceId}
-                  data-bookcode={note.bookCode}
-                  data-chapter={note.chapter}
-                  data-index={note.index}
-                  onClick={openRef}
-                >
-                  <ListItemText
-                    primary={`${versionData[note.sourceId][0]} ${note.book} ${
-                      note.chapter
-                    }:${note.verse}`}
-                    secondary={new Date(note.modifiedTime).toLocaleString()}
-                  />
-                  <ListItemSecondaryAction>
-                    {mobileView && (
-                      <IconButton
-                        edge="end"
-                        aria-label="editNote"
+              <Alert
+                elevation={6}
+                variant="filled"
+                onClose={closeAlert}
+                severity="warning"
+              >
+                {alertMessage}
+              </Alert>
+            </Snackbar>
+          </Box>
+        ) : (
+          ""
+        )}
+        <Box
+          sx={{
+            overflow: "auto",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            "&::-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+            [theme.breakpoints.down("md")]: {
+              marginBottom: "60px",
+            },
+          }}
+        >
+          {notes && Object.keys(notes).length !== 0 ? (
+            <List component="nav">
+              {chapterNoteList && Object.keys(chapterNoteList).length !== 0 ? (
+                <>
+                  <ListItem
+                    sx={{
+                      borderBottom: "1px solid darkgray",
+                      fontWeight: 600,
+                      [theme.breakpoints.down("lg")]: {
+                        justifyContent: "space-between",
+                      },
+                    }}
+                  >
+                    <Typography variant="h5">
+                      {t("studyNotesBookChapter", { ref })}
+                    </Typography>
+                  </ListItem>
+                  {chapterNoteList.map((note, i) => {
+                    return versionData[note.sourceId] !== undefined ? (
+                      <ListItem
+                        key={i}
+                        sx={{
+                          borderBottom: "1px solid lightgray",
+                          paddingTop: "4px",
+                          paddingBottom: "4px",
+                          cursor: "pointer",
+                        }}
                         data-sourceid={note.sourceId}
                         data-bookcode={note.bookCode}
                         data-chapter={note.chapter}
                         data-index={note.index}
-                        onClick={(event) => editNote(event)}
-                        size="large"
+                        onClick={openRef}
                       >
-                        <EditIcon />
-                      </IconButton>
-                    )}
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      data-sourceid={note.sourceId}
-                      data-bookcode={note.bookCode}
-                      data-chapter={note.chapter}
-                      data-index={note.index}
-                      onClick={(e) => deleteNote(e)}
-                      size="large"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
+                        <ListItemText
+                          primary={`${versionData[note.sourceId][0]} ${
+                            note.book
+                          } ${note.chapter}:${note.verse}`}
+                          secondary={new Date(
+                            note.modifiedTime
+                          ).toLocaleString()}
+                        />
+                        <ListItemSecondaryAction>
+                          {mobileView && (
+                            <IconButton
+                              edge="end"
+                              aria-label="editNote"
+                              data-sourceid={note.sourceId}
+                              data-bookcode={note.bookCode}
+                              data-chapter={note.chapter}
+                              data-index={note.index}
+                              onClick={(event) => editNote(event)}
+                              size="large"
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          )}
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            data-sourceid={note.sourceId}
+                            data-bookcode={note.bookCode}
+                            data-chapter={note.chapter}
+                            data-index={note.index}
+                            onClick={(e) => deleteNote(e)}
+                            size="large"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ) : (
+                      ""
+                    );
+                  })}
+                </>
               ) : (
                 ""
-              );
-            })}
-          </List>
-        ) : (
-          <Typography sx={{ margin: "18px" }}>
-            {t("studySelectVerseStart")}
-          </Typography>
-        )}
+              )}
+              <ListItem
+                sx={{
+                  borderBottom: "1px solid darkgray",
+                  fontWeight: 600,
+                  [theme.breakpoints.down("lg")]: {
+                    justifyContent: "space-between",
+                  },
+                }}
+              >
+                <Typography variant="h5">{t("studyAllNotesTitle")}</Typography>
+              </ListItem>
+              {noteList.map((note, i) => {
+                return versionData[note.sourceId] !== undefined ? (
+                  <ListItem
+                    key={i}
+                    sx={{
+                      borderBottom: "1px solid lightgray",
+                      paddingTop: "4px",
+                      paddingBottom: "4px",
+                      cursor: "pointer",
+                    }}
+                    data-sourceid={note.sourceId}
+                    data-bookcode={note.bookCode}
+                    data-chapter={note.chapter}
+                    data-index={note.index}
+                    onClick={openRef}
+                  >
+                    <ListItemText
+                      primary={`${versionData[note.sourceId][0]} ${note.book} ${
+                        note.chapter
+                      }:${note.verse}`}
+                      secondary={new Date(note.modifiedTime).toLocaleString()}
+                    />
+                    <ListItemSecondaryAction>
+                      {mobileView && (
+                        <IconButton
+                          edge="end"
+                          aria-label="editNote"
+                          data-sourceid={note.sourceId}
+                          data-bookcode={note.bookCode}
+                          data-chapter={note.chapter}
+                          data-index={note.index}
+                          onClick={(event) => editNote(event)}
+                          size="large"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      )}
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        data-sourceid={note.sourceId}
+                        data-bookcode={note.bookCode}
+                        data-chapter={note.chapter}
+                        data-index={note.index}
+                        onClick={(e) => deleteNote(e)}
+                        size="large"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ) : (
+                  ""
+                );
+              })}
+            </List>
+          ) : (
+            <Typography sx={{ margin: "18px" }}>
+              {t("studySelectVerseStart")}
+            </Typography>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 const mapStateToProps = (state) => {

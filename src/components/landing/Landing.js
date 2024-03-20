@@ -17,6 +17,7 @@ import PageHeader from "./PageHeader";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/system";
+import MetaTags from "../common/MetaTags";
 const ImageScreen = styled("img")(({ theme }) => ({
   width: "90%",
   display: "inline-block",
@@ -63,72 +64,80 @@ const Landing = (props) => {
     );
   };
   return (
-    <Grid sx={{ backgroundColor: "white" }}>
-      <PageHeader />
-      <Banner />
-      <BibleIndex />
-      <Grid
-        container
-        justifyContent="center"
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          marginX: { lg: 1.25, xs: 0.625 },
-          marginY: { lg: 0, xs: 0.625 },
-          width: "auto",
-        }}
-      >
-        <ImageCard icon="volume_up" type="Listen" />
-        <ImageCard
-          icon="videocam"
-          type="Watch"
-          onClick={() => setValue("parallelView", VIDEO)}
-        />
-        <ImageCard icon="local_library" type="Read" />
-        <ImageCard icon="menu_book" type="Study" />
-      </Grid>
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          marginBottom: 8.75,
-          marginTop: { lg: "auto", xs: -1.25 },
-          width: "calc(100% - 30px)",
-          textAlign: "center",
-        }}
-      >
-        <Grid item md={12} lg={6}>
-          <Box
-            sx={{
-              fontSize: { lg: 20, xs: 16 },
-              marginTop: { lg: 6.25, xs: 2.5 },
-              marginRight: { lg: "auto", xs: 2.5 },
-              marginBottom: { lg: "auto", xs: 2.5 },
-              marginLeft: { lg: "auto", xs: 2.5 },
-              paddingLeft: 3.75,
-              textAlign: "center",
-            }}
-          >
-            <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
-            <p>
-              VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
-              {t("landingWelcomeMessage2")}
-            </p>
-            <p>
-              {t("landingWelcomeMessage4")} VachanGo{" "}
-              {t("landingWelcomeMessage5")}
-            </p>
-          </Box>
+    <>
+      <MetaTags
+        title={"Vachan Online"}
+        description={
+          "bible verse of the day, bible verses, holy bible, bible study, tamil bible, telugu bible, bible kjv online, audio bible, online bible, sign language bible, read bible online, bible animations, bible videos"
+        }
+      />
+      <Grid sx={{ backgroundColor: "white" }}>
+        <PageHeader />
+        <Banner />
+        <BibleIndex />
+        <Grid
+          container
+          justifyContent="center"
+          sx={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginX: { lg: 1.25, xs: 0.625 },
+            marginY: { lg: 0, xs: 0.625 },
+            width: "auto",
+          }}
+        >
+          <ImageCard icon="volume_up" type="Listen" />
+          <ImageCard
+            icon="videocam"
+            type="Watch"
+            onClick={() => setValue("parallelView", VIDEO)}
+          />
+          <ImageCard icon="local_library" type="Read" />
+          <ImageCard icon="menu_book" type="Study" />
         </Grid>
-        <Grid item md={12} lg={6}>
-          <Box sx={{ textAlign: "center" }}>
-            <ImageScreen src={screenshot} alt="Screenshot" />
-            <div>{addLink()}</div>
-          </Box>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            marginBottom: 8.75,
+            marginTop: { lg: "auto", xs: -1.25 },
+            width: "calc(100% - 30px)",
+            textAlign: "center",
+          }}
+        >
+          <Grid item md={12} lg={6}>
+            <Box
+              sx={{
+                fontSize: { lg: 20, xs: 16 },
+                marginTop: { lg: 6.25, xs: 2.5 },
+                marginRight: { lg: "auto", xs: 2.5 },
+                marginBottom: { lg: "auto", xs: 2.5 },
+                marginLeft: { lg: "auto", xs: 2.5 },
+                paddingLeft: 3.75,
+                textAlign: "center",
+              }}
+            >
+              <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
+              <p>
+                VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
+                {t("landingWelcomeMessage2")}
+              </p>
+              <p>
+                {t("landingWelcomeMessage4")} VachanGo{" "}
+                {t("landingWelcomeMessage5")}
+              </p>
+            </Box>
+          </Grid>
+          <Grid item md={12} lg={6}>
+            <Box sx={{ textAlign: "center" }}>
+              <ImageScreen src={screenshot} alt="Screenshot" />
+              <div>{addLink()}</div>
+            </Box>
+          </Grid>
         </Grid>
+        <LandingFooter />
       </Grid>
-      <LandingFooter />
-    </Grid>
+    </>
   );
 };
 

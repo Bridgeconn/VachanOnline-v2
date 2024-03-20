@@ -15,6 +15,7 @@ import * as actions from "../../store/actions";
 import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import { styled } from "@mui/system";
+import MetaTags from "../common/MetaTags";
 
 const StyledSelect = styled(Select)(({ theme }) => ({
   width: 200,
@@ -91,145 +92,155 @@ const Infographics = (props) => {
       }
     }
   }, [infographics, bookCode, language, versionBooks, t]);
-
+  const bookName = getShortBook(
+    versionBooks,
+    panel1?.languageCode,
+    panel1?.bookCode
+  );
   return (
-    <Box
-      sx={{
-        width: "100%",
-        position: "absolute",
-        top: { lg: 81, xs: 62 },
-        bottom: 0,
-      }}
-    >
+    <>
+      <MetaTags
+        title={`${bookName} ${panel1?.chapter} - Infographics`}
+        description={`${language?.label} infographics`}
+      />
       <Box
         sx={{
-          borderBottom: "1px solid #f1ecec",
-          display: "flex",
           width: "100%",
-          paddingBottom: { lg: 1.5, xs: 0 },
-          paddingLeft: 4.375,
-          minHeight: 51,
-          height: { lg: "auto", xs: 60 },
-          alignItems: "center",
+          position: "absolute",
+          top: { lg: 81, xs: 62 },
+          bottom: 0,
         }}
       >
-        {mobileView ? null : (
-          <Box flexGrow={1}>
-            <Typography variant="h6">{t("infographicsText")}</Typography>
-          </Box>
-        )}
         <Box
-          flexGrow={1}
           sx={{
-            display: { lg: "block", xs: "flex" },
-            alignItems: { lg: "flex-start", xs: "center" },
+            borderBottom: "1px solid #f1ecec",
+            display: "flex",
+            width: "100%",
+            paddingBottom: { lg: 1.5, xs: 0 },
+            paddingLeft: 4.375,
+            minHeight: 51,
+            height: { lg: "auto", xs: 60 },
+            alignItems: "center",
           }}
         >
-          {languages && languages?.length !== 0 && (
-            <StyledSelect
-              value={language}
-              onChange={(data) => setLanguage(data)}
-              options={languages}
-            />
+          {mobileView ? null : (
+            <Box flexGrow={1}>
+              <Typography variant="h6">{t("infographicsText")}</Typography>
+            </Box>
           )}
-          {mobileView && bookCode ? (
-            <BookCombo
-              bookCode={bookCode}
-              bookList={versionBooks[language.value]}
-              chapter={chapter}
-              setValue={setValue}
-              minimal={true}
-              screen={"info"}
+          <Box
+            flexGrow={1}
+            sx={{
+              display: { lg: "block", xs: "flex" },
+              alignItems: { lg: "flex-start", xs: "center" },
+            }}
+          >
+            {languages && languages?.length !== 0 && (
+              <StyledSelect
+                value={language}
+                onChange={(data) => setLanguage(data)}
+                options={languages}
+              />
+            )}
+            {mobileView && bookCode ? (
+              <BookCombo
+                bookCode={bookCode}
+                bookList={versionBooks[language.value]}
+                chapter={chapter}
+                setValue={setValue}
+                minimal={true}
+                screen={"info"}
+              />
+            ) : null}
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Help
+              iconStyle={{ color: BLACK, marginTop: 0.625, fontSize: 21 }}
+              url={"infographics"}
             />
-          ) : null}
+            <Close className={{ marginRight: 1.875, marginTop: 0.875 }} />
+          </Box>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Help
-            iconStyle={{ color: BLACK, marginTop: 0.625, fontSize: 21 }}
-            url={"infographics"}
-          />
-          <Close className={{ marginRight: 1.875, marginTop: 0.875 }} />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          top: { lg: 52, xs: 60 },
-          bottom: 0,
-          overflow: "scroll",
-          position: "absolute",
-          width: "100%",
-          paddingTop: 1.5,
-          paddingRight: 0.5,
-          paddingBottom: 0,
-          paddingLeft: 1.875,
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          "&::-webkit-scrollbar": {
-            width: "0.45em",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.4)",
-            outline: "1px solid slategrey",
-          },
-        }}
-      >
-        {bookData?.length > 0 &&
-          bookData.map((pic, index) => {
-            return (
-              <Card
-                key={index}
-                sx={{
-                  minWidth: 170,
-                  width: { lg: 170, xs: "99%" },
-                  display: "inline-block",
-                  marginRight: { lg: 2.5, xs: 0 },
-                  marginTop: 1.25,
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  setVisible(true);
-                  setActiveIndex(index);
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  alt={pic.title}
-                  height="200"
-                  sx={{ objectFit: "contain" }}
-                  image={url + "/thumbs/" + pic.fileName}
-                  title={pic.title}
-                />
-                <CardContent>
-                  <Typography
-                    sx={{
-                      paddingTop: 0.5,
-                      borderTop: "1px solid #f1ecec",
-                      width: "100%",
-                      height: "2em",
-                    }}
-                    gutterBottom
-                  >
-                    {pic.title}
-                  </Typography>
-                </CardContent>
-              </Card>
-            );
-          })}
-        {message && <Heading>{message}</Heading>}
-        <Viewer
-          visible={visible}
-          onClose={() => {
-            setVisible(false);
+        <Box
+          sx={{
+            top: { lg: 52, xs: 60 },
+            bottom: 0,
+            overflow: "scroll",
+            position: "absolute",
+            width: "100%",
+            paddingTop: 1.5,
+            paddingRight: 0.5,
+            paddingBottom: 0,
+            paddingLeft: 1.875,
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            "&::-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
           }}
-          images={bookData}
-          activeIndex={activeIndex}
-          scalable={false}
-        />
+        >
+          {bookData?.length > 0 &&
+            bookData.map((pic, index) => {
+              return (
+                <Card
+                  key={index}
+                  sx={{
+                    minWidth: 170,
+                    width: { lg: 170, xs: "99%" },
+                    display: "inline-block",
+                    marginRight: { lg: 2.5, xs: 0 },
+                    marginTop: 1.25,
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setVisible(true);
+                    setActiveIndex(index);
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    alt={pic.title}
+                    height="200"
+                    sx={{ objectFit: "contain" }}
+                    image={url + "/thumbs/" + pic.fileName}
+                    title={pic.title}
+                  />
+                  <CardContent>
+                    <Typography
+                      sx={{
+                        paddingTop: 0.5,
+                        borderTop: "1px solid #f1ecec",
+                        width: "100%",
+                        height: "2em",
+                      }}
+                      gutterBottom
+                    >
+                      {pic.title}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          {message && <Heading>{message}</Heading>}
+          <Viewer
+            visible={visible}
+            onClose={() => {
+              setVisible(false);
+            }}
+            images={bookData}
+            activeIndex={activeIndex}
+            scalable={false}
+          />
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 const mapStateToProps = (state) => {
