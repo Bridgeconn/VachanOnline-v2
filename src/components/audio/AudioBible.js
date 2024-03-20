@@ -9,11 +9,12 @@ import Typography from "@mui/material/Typography";
 import * as actions from "../../store/actions";
 import { AppBar, useMediaQuery, Box } from "@mui/material";
 import { connect } from "react-redux";
-import { getAllBooks, getAudioBibles } from "../common/utility";
+import { getAllBooks, getAudioBibles, getShortBook } from "../common/utility";
 import { nextButtonClick, previousClick } from "../common/utility";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
+import MetaTags from "../common/MetaTags";
 
 const ArrowForward = styled(ArrowForwardIosIcon)(({ theme }) => ({
   position: "absolute",
@@ -109,8 +110,17 @@ const AudioBible = (props) => {
       />
     );
   };
+  const book = getShortBook(
+    versionBooks,
+    panel1?.languageCode,
+    panel1?.bookCode
+  );
   return (
     <>
+      <MetaTags
+        title={` ${book} ${panel1?.chapter} - Audio Bible`}
+        description={`${panel1?.version} ${book} ${panel1?.chapter};audio Bible`}
+      />
       <AppBar position="fixed">
         <TopBar />
       </AppBar>

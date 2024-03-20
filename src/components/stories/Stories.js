@@ -23,6 +23,7 @@ import { connect } from "react-redux";
 import { getObsLanguageData } from "../common/utility";
 import * as actions from "../../store/actions";
 import Setting from "../common/Setting";
+import MetaTags from "../common/MetaTags";
 
 const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const API = useMemo(
@@ -35,6 +36,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const [manifest, setManifest] = React.useState([]);
   const [fontSize, setFontSize] = React.useState(20);
   const [islStories, setIslStories] = React.useState(null);
+  const [currentStory, setCurrentStory] = React.useState("");
   const [playing, setPlaying] = React.useState("");
   const [rtlList, setRtlList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -42,12 +44,18 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { t } = useTranslation();
-
   const getStory = (event) => {
     event.preventDefault();
     let storyNum = event.currentTarget.getAttribute("data-id");
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
+    setCurrentStory(
+      manifest[
+        event.currentTarget.getAttribute("data-id") === 0
+          ? 0
+          : event.currentTarget.getAttribute("data-id") - 1
+      ]
+    );
     window.scrollTo(0, 0);
   };
   const renderName = (value) => {
@@ -113,6 +121,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
       ))}
     </Select>
   );
+
   React.useEffect(() => {
     getObsLanguageData(setMainValue, setLang);
   }, [setMainValue]);
@@ -120,6 +129,9 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     let storyNum = event.target.value;
     if (storyNum.length < 2) storyNum = "0" + storyNum;
     setStoryId(storyNum);
+    setCurrentStory(
+      manifest[event.target.value === 0 ? 0 : event.target.value - 1]
+    );
   };
   const changeLang = (event) => {
     setLang(event.target.value);
@@ -139,8 +151,14 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
       if (islStories.length < parseInt(storyId)) {
         setStoryId("01");
         setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+        setCurrentStory(
+          islStories?.find((el) => el?.storyNo === parseInt(storyId))
+        );
       } else {
         setStories(islStories?.find((el) => el?.storyNo === parseInt(storyId)));
+        setCurrentStory(
+          islStories?.find((el) => el?.storyNo === parseInt(storyId))
+        );
       }
       setIsLoading(false);
     }
@@ -150,11 +168,13 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     if (lang !== "" && lang) {
       API.get(lang + "/manifest.json").then(function (response) {
         setManifest(response.data);
+        setCurrentStory(response.data[0]);
       });
     }
     if (lang === "isl") {
       API.get(lang + "/isl_obs.json").then(function (response) {
         setIslStories(response.data);
+        setCurrentStory(response.data[0]);
       });
     }
   }, [API, lang]);
@@ -165,8 +185,14 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     });
   }, [API]);
 
+  let langObj = obsLanguageInfo.find((el) => el.langCode === lang);
+
   return (
     <>
+      <MetaTags
+        title={`${currentStory} - Bible Stories`}
+        description={`${currentStory}; ${langObj?.languageName} bible stories`}
+      />
       <AppBar position="fixed">
         <TopBar />
       </AppBar>

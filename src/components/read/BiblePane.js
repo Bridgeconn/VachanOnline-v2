@@ -17,6 +17,8 @@ import { BLACK, GREY } from "../../store/colorCode";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
+import MetaTags from "../common/MetaTags";
+import { getShortBook } from "../common/utility";
 
 const CustomFullScreen = styled(Fullscreen)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -33,6 +35,7 @@ const BiblePane = (props) => {
     toggleParallelScroll,
     setMainValue,
     errorMessage,
+    versionBooks,
   } = props;
 
   const theme = useTheme();
@@ -395,8 +398,21 @@ const BiblePane = (props) => {
       setHighlights([]);
     }
   }, [userDetails, sourceId, bookCode, chapter, setHighlights, setRefUrl]);
+  const book = getShortBook(
+    versionBooks,
+    paneData?.languageCode,
+    paneData?.bookCode
+  );
   return (
     <>
+      <MetaTags
+        title={` ${book} ${paneData?.chapter} - ${
+          singlePane ? "Study Bible" : "Parallel Bible"
+        }`}
+        description={`${paneData?.language}${paneData?.version} ${book} ${
+          paneData?.chapter
+        };${singlePane ? "Study Bible" : "Parallel Bible"}`}
+      />
       <Box>
         {fetchHighlights}
         <MenuBar
@@ -487,6 +503,7 @@ const mapStateToProps = (state) => {
     mobileView: state.local.mobileView,
     userDetails: state.local.userDetails,
     errorMessage: state.local.errorMessage,
+    versionBooks: state.local.versionBooks,
   };
 };
 

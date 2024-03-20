@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { BLACK } from "../../store/colorCode";
 import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
+import MetaTags from "../common/MetaTags";
 
 const CustomSelect = styled(Select)(({ theme }) => ({
   width: "200px",
@@ -31,6 +32,7 @@ const Audio = (props) => {
     mobileView,
     setValue,
     versionBooks,
+    panel1,
   } = props;
 
   const [languages, setLanguages] = useState([]);
@@ -104,154 +106,161 @@ const Audio = (props) => {
     setAudioBooks(versionBooks[audioLangCode]?.filter(filterBooks));
   }, [audioBible, audioLangCode, versionBooks]);
   return (
-    <Box
-      sx={{
-        width: "100%",
-        position: "absolute",
-        top: { lg: "78px", md: "68px", xs: "58px" },
-        bottom: 0,
-      }}
-    >
+    <>
+      <MetaTags
+        title={` ${book} ${panel1?.chapter} - Audio Bible`}
+        description={`${panel1?.version} ${book} ${panel1?.chapter};audio Bible`}
+      />
       <Box
         sx={{
-          borderBottom: "1px solid #f1ecec",
-          display: "flex",
           width: "100%",
-          paddingBottom: "12px",
-          paddingLeft: "35px",
-          marginBottom: "20px",
-          minHeight: "51px",
-          [theme.breakpoints.down("md")]: {
-            alignItems: "center",
-            height: "60px",
-            paddingBottom: "0px",
-            paddingLeft: "15px",
-          },
+          position: "absolute",
+          top: { lg: "78px", md: "68px", xs: "58px" },
+          bottom: 0,
         }}
       >
-        {mobileView ? null : (
-          <Box flexGrow={1} sx={{ display: { lg: "block", md: "none" } }}>
-            <Typography variant="h5">{t("audioBibleText")}</Typography>
+        <Box
+          sx={{
+            borderBottom: "1px solid #f1ecec",
+            display: "flex",
+            width: "100%",
+            paddingBottom: "12px",
+            paddingLeft: "35px",
+            marginBottom: "20px",
+            minHeight: "51px",
+            [theme.breakpoints.down("md")]: {
+              alignItems: "center",
+              height: "60px",
+              paddingBottom: "0px",
+              paddingLeft: "15px",
+            },
+          }}
+        >
+          {mobileView ? null : (
+            <Box flexGrow={1} sx={{ display: { lg: "block", md: "none" } }}>
+              <Typography variant="h5">{t("audioBibleText")}</Typography>
+            </Box>
+          )}
+          <Box flexGrow={1} sx={{ display: "flex", alignItems: "center" }}>
+            {languages && languages?.length !== 0 && (
+              <CustomSelect
+                value={language}
+                onChange={(data) => setLanguage(data)}
+                options={languages}
+              />
+            )}
+            {mobileView ? (
+              ""
+            ) : book ? (
+              <Typography
+                sx={{
+                  paddingLeft: "20px",
+                  verticalAlign: "middle",
+                  fontSize: "20px",
+                  display: "inline-block",
+                  [theme.breakpoints.down("lg")]: {
+                    fontSize: "16px",
+                    paddingLeft: "5px",
+                  },
+                }}
+              >
+                {book} {chapter}
+              </Typography>
+            ) : (
+              ""
+            )}
+            {mobileView && bookCode ? (
+              <BookCombo
+                bookCode={bookCode}
+                bookList={audioBooks}
+                chapter={chapter}
+                setValue={setValue}
+                minimal={true}
+                screen={"audio"}
+              />
+            ) : null}
           </Box>
-        )}
-        <Box flexGrow={1} sx={{ display: "flex", alignItems: "center" }}>
-          {languages && languages?.length !== 0 && (
-            <CustomSelect
-              value={language}
-              onChange={(data) => setLanguage(data)}
-              options={languages}
-            />
-          )}
-          {mobileView ? (
-            ""
-          ) : book ? (
-            <Typography
-              sx={{
-                paddingLeft: "20px",
-                verticalAlign: "middle",
-                fontSize: "20px",
-                display: "inline-block",
-                [theme.breakpoints.down("lg")]: {
-                  fontSize: "16px",
-                  paddingLeft: "5px",
-                },
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Help
+              iconStyle={{
+                padding: "8px 12px 0",
+                color: BLACK,
+                marginTop: "5px",
+                fontSize: "21px",
               }}
-            >
-              {book} {chapter}
-            </Typography>
-          ) : (
-            ""
-          )}
-          {mobileView && bookCode ? (
-            <BookCombo
-              bookCode={bookCode}
-              bookList={audioBooks}
-              chapter={chapter}
-              setValue={setValue}
-              minimal={true}
-              screen={"audio"}
+              url={"audioBible"}
             />
-          ) : null}
+            <Close sx={{ marginRight: "15px", marginTop: "7px" }} />
+          </Box>
         </Box>
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
+            top: "52px",
+            bottom: 0,
+            overflow: "auto",
+            position: "absolute",
+            width: "100%",
+            padding: "20px 4px 20px 15px",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
+            "&::-webkit-scrollbar": {
+              width: "0.45em",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.4)",
+              outline: "1px solid slategrey",
+            },
+            [theme.breakpoints.down("md")]: {
+              top: "60px",
+              height: "calc(100vh - 160px)",
+            },
           }}
         >
-          <Help
-            iconStyle={{
-              padding: "8px 12px 0",
-              color: BLACK,
-              marginTop: "5px",
-              fontSize: "21px",
-            }}
-            url={"audioBible"}
-          />
-          <Close sx={{ marginRight: "15px", marginTop: "7px" }} />
+          {(audioBible?.length === 0 || audioBible?.success === false) && (
+            <h5
+              sx={{
+                paddingLeft: "20px",
+                whiteSpace: "pre-wrap",
+                lineHeight: "1.8rem",
+              }}
+            >
+              {t("studyAudioBibleNotAvailableMsg")}
+            </h5>
+          )}
+          {hasAudio ? (
+            <Player
+              audios={audios}
+              bookCode={bookCode}
+              chapter={chapter}
+              languageCode={languageCode}
+            />
+          ) : (
+            <h5
+              sx={{
+                paddingLeft: "20px",
+                whiteSpace: "pre-wrap",
+                lineHeight: "1.8rem",
+              }}
+            >
+              {message}
+            </h5>
+          )}
         </Box>
       </Box>
-      <Box
-        sx={{
-          top: "52px",
-          bottom: 0,
-          overflow: "auto",
-          position: "absolute",
-          width: "100%",
-          padding: "20px 4px 20px 15px",
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(0,0,0,.4) #eeeeee95",
-          "&::-webkit-scrollbar": {
-            width: "0.45em",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.4)",
-            outline: "1px solid slategrey",
-          },
-          [theme.breakpoints.down("md")]: {
-            top: "60px",
-            height: "calc(100vh - 160px)",
-          },
-        }}
-      >
-        {(audioBible?.length === 0 || audioBible?.success === false) && (
-          <h5
-            sx={{
-              paddingLeft: "20px",
-              whiteSpace: "pre-wrap",
-              lineHeight: "1.8rem",
-            }}
-          >
-            {t("studyAudioBibleNotAvailableMsg")}
-          </h5>
-        )}
-        {hasAudio ? (
-          <Player
-            audios={audios}
-            bookCode={bookCode}
-            chapter={chapter}
-            languageCode={languageCode}
-          />
-        ) : (
-          <h5
-            sx={{
-              paddingLeft: "20px",
-              whiteSpace: "pre-wrap",
-              lineHeight: "1.8rem",
-            }}
-          >
-            {message}
-          </h5>
-        )}
-      </Box>
-    </Box>
+    </>
   );
 };
 const mapStateToProps = (state) => {
   return {
+    panel1: state.local.panel1,
     mobileView: state.local.mobileView,
     versionBooks: state.local.versionBooks,
   };

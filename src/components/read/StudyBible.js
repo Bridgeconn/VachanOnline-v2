@@ -704,6 +704,7 @@ const StudyBible = (props) => {
     versionSource,
     mobileView,
   ]);
+
   return (
     <>
       <TopBar />
