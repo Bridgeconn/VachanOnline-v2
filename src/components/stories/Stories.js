@@ -191,7 +191,7 @@ const Stories = ({ obsLanguageInfo, setMainValue }) => {
     <>
       <MetaTags
         title={`${currentStory} - Bible Stories`}
-        description={`${currentStory}; ${langObj.languageName} bible stories`}
+        description={`${currentStory}; ${langObj?.languageName} bible stories`}
       />
       <AppBar position="fixed">
         <TopBar />
