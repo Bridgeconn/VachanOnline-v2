@@ -94,7 +94,14 @@ const ContainerBox = styled(Box)(() => ({
   justifyContent: "center",
 }));
 
-const Banner = ({ setValue1, locale, versions, versionBooks, panel1,setBanner }) => {
+const Banner = ({
+  setValue1,
+  locale,
+  versions,
+  versionBooks,
+  panel1,
+  setBanner,
+}) => {
   const theme = useTheme();
   const langCode = languageCode[locale].code;
   const [allVerseData, setAllVerseData] = useState();
@@ -204,7 +211,8 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1,setBanner })
 
   const setURL = () => {
     if (
-      versionBooks[panel1.version.split("-")[0]].map((i) => {
+      versionBooks[panel1.version.split("-")[0]]
+        .map((i) => {
           return i.book_code;
         })
         .includes(verseRef.b)
@@ -212,13 +220,11 @@ const Banner = ({ setValue1, locale, versions, versionBooks, panel1,setBanner })
       setValue1("bookCode", verseRef?.b);
       setValue1("chapter", verseRef?.c);
       setValue1("verseData", verseRef?.v);
-      setBanner(false)  
-  }
-  else{
-    setBanner(true)
-  }
-
-};
+      setBanner(false);
+    } else {
+      setBanner(true);
+    }
+  };
   const { t } = useTranslation();
   return (
     <ContainerBox>
@@ -346,8 +352,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setValue1: (name, value) =>
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
-    setBanner: (value) =>
-      dispatch({ type: actions.SETBANNER, value: value }),  
-    };
+    setBanner: (value) => dispatch({ type: actions.SETBANNER, value: value }),
+  };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Banner);
