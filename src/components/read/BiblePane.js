@@ -424,7 +424,7 @@ const BiblePane = (props) => {
             variant="filled"
             sx={{ width: "100%" }}
           >
-            Selected reference not available in current bible
+            {t("bibleRefNotAvailable")}
           </Alert>
         </Snackbar>
         {fetchHighlights}
