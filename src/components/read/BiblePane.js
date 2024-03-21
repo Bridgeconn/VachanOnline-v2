@@ -33,6 +33,8 @@ const BiblePane = (props) => {
     toggleParallelScroll,
     setMainValue,
     errorMessage,
+    banner,
+    setBanner,
   } = props;
 
   const theme = useTheme();
@@ -50,6 +52,18 @@ const BiblePane = (props) => {
   const location = useLocation();
   const path = location?.pathname;
   const { t } = useTranslation();
+  const [snackOpen, setSnackOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (banner === true) {
+      setSnackOpen(true);
+    }
+  }, [banner]);
+
+  const handleSnackClose = (event, reason) => {
+    setSnackOpen(false);
+    setBanner(false);
+  };
 
   function goToSearch() {
     setMainValue("parallelView", SEARCH);
@@ -398,6 +412,21 @@ const BiblePane = (props) => {
   return (
     <>
       <Box>
+        <Snackbar
+          open={snackOpen}
+          autoHideDuration={3000}
+          onClose={handleSnackClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={handleSnackClose}
+            severity="warning"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {t("bibleRefNotAvailable")}
+          </Alert>
+        </Snackbar>
         {fetchHighlights}
         <MenuBar
           {...paneData}
@@ -487,6 +516,7 @@ const mapStateToProps = (state) => {
     mobileView: state.local.mobileView,
     userDetails: state.local.userDetails,
     errorMessage: state.local.errorMessage,
+    banner: state.local.banner,
   };
 };
 
@@ -498,6 +528,7 @@ const mapDispatchToProps = (dispatch) => {
         name: name,
         value: value,
       }),
+    setBanner: (value) => dispatch({ type: actions.SETBANNER, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(BiblePane);

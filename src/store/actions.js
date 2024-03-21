@@ -6,3 +6,4 @@ export const SYNCPANEL = "SYNCPANEL";
 export const SETVALUE = "SETVALUE";
 export const ADDVERSIONBOOKS = "ADDVERSIONBOOKS";
 export const SETDICTIONARY = "SETDICTIONARY";
+export const SETBANNER="SETBANNER"
