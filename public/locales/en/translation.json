@@ -221,5 +221,5 @@
   "featureAdditions": "Feature Additions",
   "enhancements": "Enhancements",
   "learnMore": "Learn More",
-  "bibleRefNotAvailable": "Selected reference not available in current bible"
+  "bibleRefNotAvailable": "The selected reference is not available in the current Bible."
 }

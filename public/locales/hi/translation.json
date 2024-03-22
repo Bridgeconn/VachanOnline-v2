@@ -165,7 +165,7 @@
   "searchBookNotFound": "चयनित बाइबिल में पुस्तक नहीं मिली",
   "searchChapterWarning": "सुनिश्चित करें कि पुस्तक के नाम और अध्याय के बीच एक जगह हो",
   "searchChangeBibleVersion": "संस्करण ड्रॉपडाउन का उपयोग करके बाइबिल बदलें (पहला ड्रॉपडाउन)",
-  "searchBibleRefNotFound": "चयनित बाइबिल में बाइबिल का सन्दर्भ नहीं मिला",
+  "searchBibleRefNotFound": "चयनित संदर्भ वर्तमान बाइबिल में उपलब्ध नहीं है।",
   "searchAnotherRef": "कोई अन्य संदर्भ खोजें",
   "searchInvalid": "अमान्य खोज प्रारूप",
   "egSearchRef": "उदाहरण के लिए",
