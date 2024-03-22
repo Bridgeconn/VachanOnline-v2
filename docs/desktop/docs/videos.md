@@ -15,5 +15,7 @@ If there are any videos available for the book, they are displayed in the right 
 
 The video will start playing in a dialog box as shown below.
 
-Full screen mode and other settings are available at the bottom of the video dialog box **(4)**.
+If users have any questions about the Videos, they can access the help page by clicking on **(4)**.
+
+Full screen mode and other settings are available at the bottom of the video dialog box **(5)**.
 <img src="/img/assets/videos2.png"  width="1000px" alt="videos2"/>

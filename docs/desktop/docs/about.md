@@ -10,6 +10,9 @@ Upon clicking the 'About Us' **(1)** button in the bottom bar on the Landing Pag
 
 <img src="/img/assets/bottombar.png"  width="1000px" alt="bottombar"/>
 
+## What's New
+
+
 ## Feedback
 
 A **Feedback form** is offered to collect valuable feedback from the Vachan Online users and to have a better idea of the overall user experience.
