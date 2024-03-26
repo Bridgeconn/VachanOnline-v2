@@ -10,107 +10,85 @@ import {
 import { useTranslation } from "react-i18next";
 import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-// import LogoutIcon from "@mui/icons-material/Logout";
-//import SearchPassage from "../search/SearchPassage";
-import { useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { BLACK } from "../../store/colorCode";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { styled } from "@mui/system";
-//import IconButton from "@mui/material/IconButton";
-
+import { BLACK } from "../../store/colorCode";
 const I = styled("i")({ padding: "6px 6px 0", color: BLACK });
-export default function SideDrawer(props) {
+export default function TopBarDrawer(props) {
   const { toggleDrawer, open, setParallelView } = props;
-  //const [hideIcons, setHideIcons] = React.useState(false);
-  const theme = useTheme();
-  const mobileView = useMediaQuery(theme.breakpoints.down("md"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
-  //const isMobilePortrait = useMediaQuery(theme.breakpoints.down("sm"));
-  //const location = useLocation();
-  //const path = location?.pathname;
+  const location = useLocation();
+  const path = location?.pathname;
 
   const { t } = useTranslation();
-  // const ISLButton = () => {
-  // const Btn = () => {
-  //   return mobileView ? (
-  //     // eslint-disable-next-line react/jsx-no-undef
-  //     <I className={`material-icons `} onClick={setParallelView}>
-  //       sign_language
-  //     </I>
-  //   ) : (
-  //     <Button
-  //       variant="outlined"
-  //       size="small"
-  //       sx={{
-  //         marginTop: 0.25,
-  //         marginRight: 1.25,
-  //         color: BLACK,
-  //         border: "1px solid rgba(0, 0, 0, 0.23)",
-  //         "&:hover": {
-  //           backgroundColor: BLACK + "0a",
-  //           border: "1px solid rgba(0, 0, 0, 0.23)",
-  //         },
-  //       }}
-  //       title={t("ISLVBibleText")}
-  //       aria-label="sign language bible"
-  //       target="_blank"
-  //       rel="noOpener"
-  //       onClick={setParallelView}
-  //       startIcon={<i className="material-icons">sign_language</i>}
-  //     >
-  //       {isTablet ? t("ISLVTopBarBtnTab") : t("ISLVBibleText")}
-  //     </Button>
-  //   );
-  // };
-  //   if (
-  //     process.env.REACT_APP_SIGNBIBLE_URL === undefined ||
-  //     path.startsWith("/read")
-  //   ) {
-  //     return "";
-  //   }
-  //   return path.startsWith("/study") ? Btn() : <Link to="/study">{Btn()}</Link>;
-  // };
-
-  // const searchBox = () => {
-  //   return <SearchPassage setHideIcons={setHideIcons} />;
-  // };
   return (
     <Drawer
       anchor={"bottom"}
-      variant="temporary"
       open={open}
       border
       sx={{
         "& .MuiPaper-root": {
-          width: "220px",
+          width: "198px",
           paddingTop: "0px",
-          paddingBottom: "170px",
+          paddingBottom: { md: 21.5, xs: 27 },
         },
       }}
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to={"/read"}>
-            <ListItemIcon>
+        <ListItem
+          disablePadding
+          sx={{
+            "&:hover": {
+              color: BLACK,
+            },
+          }}
+        >
+          <ListItemButton
+            component={Link}
+            to={"/read"}
+            disabled={path.startsWith("/read")}
+            sx={{
+              "&:hover": {
+                color: BLACK,
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: BLACK }}>
               {<i className="material-icons">local_library</i>}
             </ListItemIcon>
             <ListItemText primary={t("readTopBarBtn")} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to={"/study"}>
-            <ListItemIcon>
+          <ListItemButton
+            component={Link}
+            to={"/study"}
+            disabled={path.startsWith("/study")}
+            sx={{
+              "&:hover": {
+                color: BLACK,
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: BLACK }}>
               {<i className="material-icons">menu_book</i>}
             </ListItemIcon>
             <ListItemText primary={t("studyBibleTopBarBtn")} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to={"/biblestories"}>
-            <ListItemIcon>
+          <ListItemButton
+            component={Link}
+            to={"/biblestories"}
+            disabled={path.startsWith("/biblestories")}
+            sx={{
+              "&:hover": {
+                color: BLACK,
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: BLACK }}>
               {<i className="material-icons">auto_stories</i>}
             </ListItemIcon>
             <ListItemText primary={t("bibleStoriesText")} />
@@ -118,27 +96,50 @@ export default function SideDrawer(props) {
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton
-            // component={Link}
-            // to={"/study"}
+            component={Link}
+            to={"/study"}
             onClick={setParallelView}
+            sx={{
+              "&:hover": {
+                color: BLACK,
+              },
+            }}
           >
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: BLACK }}>
               {<i className="material-icons">sign_language</i>}
             </ListItemIcon>
             <ListItemText primary={t("ISLVBibleText")} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to={"/songs"}>
-            <ListItemIcon>
+          <ListItemButton
+            component={Link}
+            to={"/songs"}
+            disabled={path.startsWith("/songs")}
+            sx={{
+              "&:hover": {
+                color: BLACK,
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: BLACK }}>
               {<i className="material-icons">music_note</i>}
             </ListItemIcon>
             <ListItemText primary={t("songsText")} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to={"/audiobible"}>
-            <ListItemIcon>
+          <ListItemButton
+            component={Link}
+            to={"/audiobible"}
+            disabled={path.startsWith("/audiobible")}
+            sx={{
+              "&:hover": {
+                color: BLACK,
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: BLACK }}>
               {<i className="material-icons">headphones</i>}
             </ListItemIcon>
             <ListItemText primary={t("audioBibleText")} />
@@ -149,11 +150,23 @@ export default function SideDrawer(props) {
             component="a"
             href="https://vachandev-um.netlify.app/"
             target="_blank"
+            sx={{
+              "&:hover": {
+                color: BLACK,
+              },
+            }}
           >
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: BLACK }}>
               <HelpOutlineIcon />
             </ListItemIcon>
-            <ListItemText primary={t("landingHelpBtn")} />
+            <ListItemText
+              primary={t("landingHelpBtn")}
+              sx={{
+                "&:hover": {
+                  color: BLACK,
+                },
+              }}
+            />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -161,8 +174,13 @@ export default function SideDrawer(props) {
             component="a"
             href="https://forms.office.com/r/qiV0Ym335M"
             target="_blank"
+            sx={{
+              "&:hover": {
+                color: BLACK,
+              },
+            }}
           >
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: BLACK }}>
               {" "}
               <FeedbackOutlinedIcon />
             </ListItemIcon>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { Box, Snackbar, useMediaQuery } from "@mui/material";
 // import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
@@ -16,7 +16,7 @@ import { SIGNBIBLE } from "../../store/views";
 import { connect } from "react-redux";
 import { SETVALUE } from "../../store/actions";
 //import { Tooltip } from "@mui/material";
-//import SearchPassage from "../search/SearchPassage";
+import SearchPassage from "../search/SearchPassage";
 import { Alert } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
@@ -42,16 +42,16 @@ const ImageStyleLogo = styled("img")(({ theme }) => ({
 const TopBar = (props) => {
   //const theme = useTheme();
   const [loginButton, setLoginButton] = React.useState();
-  //const [hideIcons, setHideIcons] = React.useState(false);
+  const [hideIcons, setHideIcons] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
   const [message, setMessage] = React.useState("");
   //const mobileView = useMediaQuery(theme.breakpoints.down("md"));
   //const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
   // const isMobilePortrait = useMediaQuery(theme.breakpoints.down("sm"));
-  //const location = useLocation();
-  //const path = location?.pathname;
+  const location = useLocation();
+  const path = location?.pathname;
   let { login, userDetails, setParallelView, setLocale } = props;
-  //const { t } = useTranslation();
+  const { t } = useTranslation();
   i18n.on("languageChanged", (lng) => setLocale(i18n.language));
   const [open, setOpen] = React.useState(false);
 
@@ -317,13 +317,13 @@ const TopBar = (props) => {
   //     </Tooltip>
   //   );
   // };
-  // const searchBox = () => {
-  //   return <SearchPassage setHideIcons={setHideIcons} />;
-  // };
+  const searchBox = () => {
+    return <SearchPassage setHideIcons={setHideIcons} />;
+  };
   return (
     <Box
       sx={{
-        top: 0,
+        //top: -10,
         display: "flex",
         width: "100%",
         position: "absolute",
@@ -331,7 +331,7 @@ const TopBar = (props) => {
       }}
     >
       <AppBar
-        position="fixed"
+        position="static"
         sx={{
           background: WHITE,
           paddingX: { lg: 1.25, xs: 0 },
@@ -346,10 +346,9 @@ const TopBar = (props) => {
           <Box
             sx={{
               flexGrow: 1,
-
               display: "flex",
               //justifyContent: "space-evenly",
-              minHeight: 50,
+              //minHeight: 50,
               //display: { lg: "inline-block", xs: "block" },
               width: { lg: "auto", xs: "10%" },
               "& a": {
@@ -373,14 +372,25 @@ const TopBar = (props) => {
                   },
                 }}
               >
-                <MenuIcon />
+                <MenuIcon
+                  sx={{
+                    marginTop: "4px",
+                    marginLeft: "-10px",
+                    height: "2em",
+                    fontSize: "1.8rem",
+                  }}
+                />
 
                 {/* <Typography>{t("studyBottomMenuMob")}</Typography> */}
               </Box>
             </span>
-            <ImageStyle src={favicon} alt={"icon"} />
-            <ImageStyleLogo src={logo} alt={"logo"} />
+
+            <Link to="/">
+              <ImageStyle src={favicon} alt={"icon"} />
+              <ImageStyleLogo src={logo} alt={"logo"} />
+            </Link>
           </Box>
+          {path.startsWith("/read") ? searchBox() : ""}
 
           {loginButton}
           <MultiLanguageDropdown
@@ -394,7 +404,11 @@ const TopBar = (props) => {
           />
         </Toolbar>
 
-        <TopBarDrawer toggleDrawer={toggleDrawer} open={open} />
+        <TopBarDrawer
+          toggleDrawer={toggleDrawer}
+          open={open}
+          setParallelView={setParallelView}
+        />
 
         {/* <Link to="/"> */}
         {/* <span onClick={toggleDrawer(true)}></span> */}
@@ -410,7 +424,7 @@ const TopBar = (props) => {
         {path.startsWith("/biblestories") || path.startsWith("/read")
           ? ""
           : StoriesButton()}
-        {path.startsWith("/read") ? searchBox() : ""}
+         {path.startsWith("/read") ? searchBox() : ""}
         {mobileView && hideIcons ? (
           ""
         ) : (
