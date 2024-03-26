@@ -13,9 +13,12 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { Link, useLocation } from "react-router-dom";
 import { styled } from "@mui/system";
 import { BLACK } from "../../store/colorCode";
+import { SETVALUE } from "../../store/actions";
+import { SIGNBIBLE } from "../../store/views";
+import { connect } from "react-redux";
 const I = styled("i")({ padding: "6px 6px 0", color: BLACK });
-export default function TopBarDrawer(props) {
-  const { toggleDrawer, open, setParallelView } = props;
+function TopBarDrawer(props) {
+  const { toggleDrawer, open, setParallelView, parallelView } = props;
   const location = useLocation();
   const path = location?.pathname;
 
@@ -55,7 +58,7 @@ export default function TopBarDrawer(props) {
             }}
           >
             <ListItemIcon sx={{ color: BLACK }}>
-              {<i className="material-icons">local_library</i>}
+              {<I className="material-icons">local_library</I>}
             </ListItemIcon>
             <ListItemText primary={t("readTopBarBtn")} />
           </ListItemButton>
@@ -64,7 +67,8 @@ export default function TopBarDrawer(props) {
           <ListItemButton
             component={Link}
             to={"/study"}
-            disabled={path.startsWith("/study")}
+            onClick={() => setParallelView(null)}
+            disabled={path.startsWith("/study") && parallelView !== "SIGNBIBLE"}
             sx={{
               "&:hover": {
                 color: BLACK,
@@ -72,7 +76,7 @@ export default function TopBarDrawer(props) {
             }}
           >
             <ListItemIcon sx={{ color: BLACK }}>
-              {<i className="material-icons">menu_book</i>}
+              {<I className="material-icons">menu_book</I>}
             </ListItemIcon>
             <ListItemText primary={t("studyBibleTopBarBtn")} />
           </ListItemButton>
@@ -89,7 +93,7 @@ export default function TopBarDrawer(props) {
             }}
           >
             <ListItemIcon sx={{ color: BLACK }}>
-              {<i className="material-icons">auto_stories</i>}
+              {<I className="material-icons">auto_stories</I>}
             </ListItemIcon>
             <ListItemText primary={t("bibleStoriesText")} />
           </ListItemButton>
@@ -98,15 +102,16 @@ export default function TopBarDrawer(props) {
           <ListItemButton
             component={Link}
             to={"/study"}
-            onClick={setParallelView}
+            onClick={() => setParallelView(SIGNBIBLE)}
             sx={{
               "&:hover": {
                 color: BLACK,
               },
             }}
+            disabled={path.startsWith("/study") && parallelView === "SIGNBIBLE"}
           >
             <ListItemIcon sx={{ color: BLACK }}>
-              {<i className="material-icons">sign_language</i>}
+              {<I className="material-icons">sign_language</I>}
             </ListItemIcon>
             <ListItemText primary={t("ISLVBibleText")} />
           </ListItemButton>
@@ -123,7 +128,7 @@ export default function TopBarDrawer(props) {
             }}
           >
             <ListItemIcon sx={{ color: BLACK }}>
-              {<i className="material-icons">music_note</i>}
+              {<I className="material-icons">music_note</I>}
             </ListItemIcon>
             <ListItemText primary={t("songsText")} />
           </ListItemButton>
@@ -140,7 +145,7 @@ export default function TopBarDrawer(props) {
             }}
           >
             <ListItemIcon sx={{ color: BLACK }}>
-              {<i className="material-icons">headphones</i>}
+              {<I className="material-icons">headphones</I>}
             </ListItemIcon>
             <ListItemText primary={t("audioBibleText")} />
           </ListItemButton>
@@ -191,3 +196,16 @@ export default function TopBarDrawer(props) {
     </Drawer>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    parallelView: state.local.parallelView,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setParallelView: (value) =>
+      dispatch({ type: SETVALUE, name: "parallelView", value: value }),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TopBarDrawer);
