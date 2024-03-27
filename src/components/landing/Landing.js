@@ -13,10 +13,11 @@ import Banner from "./Banner";
 import ImageCard from "./ImageCard";
 import "./Landing.css";
 import LandingFooter from "./LandingFooter";
-import PageHeader from "./PageHeader";
 import BigTooltip from "../common/BigTooltip";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/system";
+import VerseOfTheDayCard from "./VerseOfTheDayCard";
+import TopBar from "../read/TopBar";
 const ImageScreen = styled("img")(({ theme }) => ({
   width: "90%",
   display: "inline-block",
@@ -38,7 +39,7 @@ const Landing = (props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const { setValue } = props;
-
+  console.log(props.verseObj);
   const { t } = useTranslation();
   React.useEffect(() => {
     if (isMobile) {
@@ -64,7 +65,7 @@ const Landing = (props) => {
   };
   return (
     <Grid sx={{ backgroundColor: "white" }}>
-      <PageHeader />
+      <TopBar />
       <Banner />
       <BibleIndex />
       <Grid
@@ -110,14 +111,9 @@ const Landing = (props) => {
             }}
           >
             <h3>{t("landingWelcomeHeading")} VachanOnline.com</h3>
-            <p>
-              VachanOnline.com {t("landingWelcomeMessage1")} VachanGo{" "}
-              {t("landingWelcomeMessage2")}
-            </p>
-            <p>
-              {t("landingWelcomeMessage4")} VachanGo{" "}
-              {t("landingWelcomeMessage5")}
-            </p>
+            <p>{t("landingWelcomeMessage1")}</p>
+            <p>{t("landingWelcomeMessage2")}</p>
+            <p>{t("landingWelcomeMessage3")}</p>
           </Box>
         </Grid>
         <Grid item md={12} lg={6}>
@@ -127,15 +123,20 @@ const Landing = (props) => {
           </Box>
         </Grid>
       </Grid>
+      <VerseOfTheDayCard />
       <LandingFooter />
     </Grid>
   );
 };
-
+const mapStateToProps = (state) => {
+  return {
+    verseObj: state.local.verseObj,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
-export default connect(null, mapDispatchToProps)(Landing);
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

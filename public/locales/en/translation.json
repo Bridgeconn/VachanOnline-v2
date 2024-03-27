@@ -23,7 +23,7 @@
   "landingPageHeaderAudio": "Audio",
   "multilingualTooltip": "Languages",
   "landingSelectBibleHeading": "Study the Bible in your Language",
-  "landingVerseHeading": "VERSE OF THE DAY",
+  "landingVerseHeading": "Verse Of The Day",
   "landingVerseHeadingToolTip": "Click to read the Verse",
   "landingStartBtn": "START",
   "landingStartBtnToolTip": "Click here to read the Bible",
@@ -56,11 +56,9 @@
   "commonClose": "Close",
   "landingPlayStoreToolTip": "Get the app on the Google Play Store",
   "landingWelcomeHeading": "Welcome to",
-  "landingWelcomeMessage1": "and the companion",
-  "landingWelcomeMessage2": "app is a premier Scripture Engagement website in Indian Languages!",
-  "landingWelcomeMessage3": "So what is Scripture engagement? It is a way of studying the Bible with resources and tools to assist you understand the Bible. With a host of commentaries, videos, audio Bibles and reading plans in your heart language, our desire is that you will find this website to be a place where you can interact with Scripture, find resources to understand it, journal your spiritual growth and enjoy developing a growing relationship with God.",
-  "landingWelcomeMessage4": "The",
-  "landingWelcomeMessage5": "companion app enables you take your Bible and your Notes with you wherever you go!",
+  "landingWelcomeMessage1": "At Vachan Online, we believe that the timeless wisdom and teachings of the Bible should be accessible to everyone, regardless of language or background. That's why we've curated a special section where you can immerse yourself in the rich narratives of the Bible in various Indian languages.",
+  "landingWelcomeMessage2": "Discover the Bible stories that resonate with your heart and soul. Whether you prefer Hindi, Tamil, Telugu, Bengali, or any other language, you'll find a treasure trove of stories waiting for you.",
+  "landingWelcomeMessage3": "For our friends who communicate through sign languages,we offer Bible stories in Indian Sign Language (ISL).",
   "landingFooterFeedbackBtn": "Feedback",
   "landingCompanyYear": "© 2020 ",
   "landingCompanyMob": "BCS",
@@ -221,5 +219,8 @@
   "featureAdditions": "Feature Additions",
   "enhancements": "Enhancements",
   "learnMore": "Learn More",
-  "bibleRefNotAvailable": "The selected reference is not available in the current Bible."
+  "bibleRefNotAvailable": "The selected reference is not available in the current Bible.",
+  "skipPageHeading": " Skip Landing Page and redirect to",
+  "readBiblePageHeading": "Read Bible Page",
+  "studyBiblePageHeading": "Study Bible Page"
 }

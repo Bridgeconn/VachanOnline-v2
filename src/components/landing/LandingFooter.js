@@ -13,10 +13,13 @@ import IconButton from "@mui/material/IconButton";
 import WhatsNew from "./WhatsNew";
 import { Badge, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import SkipLandingPage from "./SkipLandingPage";
 
 const LandingFooter = (props) => {
   const [open, setOpen] = React.useState(false);
   const [whatsNewOpen, setWhatsNewOpen] = React.useState(false);
+  const [skipLandingOpen, setSkipLandingOpen] = React.useState(false);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -26,9 +29,14 @@ const LandingFooter = (props) => {
   const openWhatsNew = () => {
     setWhatsNewOpen(true);
   };
-
+  const openSkipLanding = () => {
+    setSkipLandingOpen(true);
+  };
   const whatsNewClose = () => {
     setWhatsNewOpen(false);
+  };
+  const skipLandingPageClose = () => {
+    setSkipLandingOpen(false);
   };
 
   const { t } = useTranslation();
@@ -89,7 +97,7 @@ const LandingFooter = (props) => {
             {t("landingFooterAboutUsBtn")}
           </Button>
         </Grid>
-        <Grid item xs={4} sm={3}>
+        <Grid item xs={4} sm={1}>
           <Badge color="error" variant="dot">
             <Button
               variant="outlined"
@@ -112,6 +120,52 @@ const LandingFooter = (props) => {
               {t("WhatsNew")}
             </Button>
           </Badge>
+        </Grid>
+        <Grid item xs={4} sm={1}>
+          {isTablet ? (
+            <IconButton
+              aria-label="feedback"
+              sx={{
+                marginTop: 0.375,
+                textTransform: "unset",
+                paddingX: 1.25,
+                paddingY: 0.25,
+                fontSize: { lg: 16, xs: 12 },
+                "&:hover": {
+                  color: BLACK,
+                  backgroundColor: WHITE,
+                  border: "none",
+                },
+              }}
+              href="https://forms.office.com/r/qiV0Ym335M"
+              target="_blank"
+              rel="noopener"
+              size="large"
+            >
+              <FeedbackOutlinedIcon />
+            </IconButton>
+          ) : (
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{
+                marginTop: 0.375,
+                textTransform: "unset",
+                paddingX: 1.25,
+                paddingY: 0.25,
+                fontSize: { lg: 16, xs: 12 },
+                "&:hover": {
+                  backgroundColor: BLACK + "0a",
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                },
+                color: BLACK,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              }}
+              onClick={openSkipLanding}
+            >
+              skip
+            </Button>
+          )}
         </Grid>
         <Grid item xs={1} sm={1} md={2}>
           {isTablet ? (
@@ -213,6 +267,20 @@ const LandingFooter = (props) => {
         maxWidth="md"
       >
         <WhatsNew handleClose={whatsNewClose} />
+      </Dialog>
+      <Dialog
+        open={skipLandingOpen}
+        onClose={skipLandingPageClose}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="md"
+      >
+        <SkipLandingPage
+          handleClose={skipLandingPageClose}
+          setSkipLandingOpen={setSkipLandingOpen}
+        />
       </Dialog>
     </>
   );
