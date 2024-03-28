@@ -25,14 +25,11 @@ function TopBarDrawer(props) {
   const { t } = useTranslation();
   return (
     <Drawer
-      anchor={"bottom"}
       open={open}
       border
       sx={{
         "& .MuiPaper-root": {
           width: "198px",
-          paddingTop: "0px",
-          paddingBottom: { md: 21.5, xs: 27 },
         },
       }}
       onClick={toggleDrawer(false)}
@@ -150,30 +147,32 @@ function TopBarDrawer(props) {
             <ListItemText primary={t("audioBibleText")} />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton
-            component="a"
-            href="https://vachandev-um.netlify.app/"
-            target="_blank"
-            sx={{
-              "&:hover": {
-                color: BLACK,
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: BLACK }}>
-              <HelpOutlineIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary={t("landingHelpBtn")}
+        {process.env.REACT_APP_DOCUMENT_URL && (
+          <ListItem disablePadding>
+            <ListItemButton
+              component="a"
+              href={process.env.REACT_APP_DOCUMENT_URL}
+              target="_blank"
               sx={{
                 "&:hover": {
                   color: BLACK,
                 },
               }}
-            />
-          </ListItemButton>
-        </ListItem>
+            >
+              <ListItemIcon sx={{ color: BLACK }}>
+                <HelpOutlineIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={t("landingHelpBtn")}
+                sx={{
+                  "&:hover": {
+                    color: BLACK,
+                  },
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        )}
         <ListItem disablePadding>
           <ListItemButton
             component="a"

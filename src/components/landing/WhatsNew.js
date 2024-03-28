@@ -72,7 +72,8 @@ const WhatsNew = ({ handleClose }) => {
           <div style={{ paddingBottom: 10 }}>
             <FeaturesList />
           </div>
-          {addHyperLink(t("learnWebsite"), "https://vachandev-um.netlify.app/")}
+          {process.env.REACT_APP_DOCUMENT_URL &&
+            addHyperLink(t("learnWebsite"), process.env.REACT_APP_DOCUMENT_URL)}
         </span>
       </DialogContent>
       <DialogActions>

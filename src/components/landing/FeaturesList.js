@@ -93,10 +93,11 @@ const FeaturesList = () => {
               <li>{t("multiLanguageInterface")}</li>
               <li>{t("printSavePdf")} </li>
             </ul>
-            {addHyperLink(
-              t("learnWebsite"),
-              "https://vachandev-um.netlify.app"
-            )}
+            {process.env.REACT_APP_DOCUMENT_URL &&
+              addHyperLink(
+                t("learnWebsite"),
+                process.env.REACT_APP_DOCUMENT_URL
+              )}
           </span>
         </DialogContent>
         <DialogActions>

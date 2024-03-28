@@ -120,31 +120,14 @@ const TopBar = (props) => {
               },
             }}
           >
-            <span onClick={toggleDrawer(true)}>
-              <Box
-                sx={{
-                  width: 40,
-                  paddingTop: 0.75,
-                  paddingLeft: 1.25,
-                  color: BLACK,
-                  "& p": {
-                    color: "#000",
-                    fontSize: "0.65rem",
-                    paddingTop: 0.625,
-                  },
-                }}
-              >
-                <MenuIcon
-                  sx={{
-                    marginTop: "4px",
-                    marginLeft: "-10px",
-                    height: "2em",
-                    fontSize: "1.8rem",
-                  }}
-                />
-              </Box>
-            </span>
-
+            <MenuIcon
+              onClick={toggleDrawer(true)}
+              sx={{
+                width: 40,
+                marginTop: "20px",
+                fontSize: "2rem",
+              }}
+            />
             <Link to="/">
               <ImageStyle src={favicon} alt={"icon"} />
               <ImageStyleLogo src={logo} alt={"logo"} />
@@ -168,14 +151,12 @@ const TopBar = (props) => {
             </>
           )}
         </Toolbar>
-
         <TopBarDrawer
           toggleDrawer={toggleDrawer}
           open={open}
           setParallelView={setParallelView}
         />
       </AppBar>
-
       {alert ? (
         <Snackbar
           open={Boolean(alert)}
