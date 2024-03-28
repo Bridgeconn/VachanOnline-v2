@@ -1,14 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import {
-  Box,
-  Icon,
-  InputBase,
-  Paper,
-  Snackbar,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Snackbar, useMediaQuery } from "@mui/material";
 import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -29,7 +22,6 @@ import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import MultiLanguageDropdown from "../common/MultiLanguageDropdown";
 import { styled } from "@mui/system";
-import BigTooltip from "../common/BigTooltip";
 
 const ImageStyle = styled("img")(({ theme }) => ({
   height: 50,
@@ -313,30 +305,6 @@ const TopBar = (props) => {
       </Tooltip>
     );
   };
-  const searchHints = (
-    <div>
-      <h5>{t("searchHints")}:-</h5>
-      <h6>
-        <b>{t("chapterSearch")}:</b>
-      </h6>
-      <span>
-        <i>{t("egSearchRef")}</i> gen 49 or നഹൂം 1 or यहूदा 1
-      </span>
-      <h6>
-        <b>{t("verseSearchRef")}:</b>
-      </h6>
-      <span>
-        <i>{t("egSearchRef")}:</i> ഇയ്യോബ് 42:2 or genesis 12:2,3 or रूत 2:12
-      </span>
-      <h6>
-        <b>{t("passageSearch")}</b>
-      </h6>
-      <span>
-        <i>{t("egSearchRef")}: </i>rev 1:13-16 or 1 योहान 4:8-10,16,20-25
-      </span>
-    </div>
-  );
-
   const searchBox = () => {
     return <SearchPassage setHideIcons={setHideIcons} />;
   };
@@ -379,54 +347,6 @@ const TopBar = (props) => {
               <ImageStyleLogo src={logo} alt={"logo"} />
             </Link>
           </Box>
-          {mobileView ? (
-            <I className={`material-icons`}>manage_search</I>
-          ) : path.startsWith("/read") ? (
-            ""
-          ) : (
-            <BigTooltip
-              disableFocusListener={mobileView ? true : false}
-              title={searchHints}
-              sx={{
-                width: { lg: 350, xs: 300 },
-              }}
-            >
-              <Paper
-                component="form"
-                // onSubmit={showSearchResult}
-                sx={{
-                  paddingX: 0.4,
-                  paddingY: 0.4,
-                  display: "flex",
-                  alignItems: "center",
-                  height: 40,
-                  width: { lg: 350, xs: 300 },
-                  marginLeft: { lg: 2.5, xs: 0 },
-                  marginRight: { lg: 1.25, xs: 0 },
-                }}
-              >
-                <IconButton type="submit" size="large">
-                  <Icon className={`material-icons`}>manage_search</Icon>
-                </IconButton>
-                <InputBase
-                  sx={{
-                    marginLeft: 1,
-                    flex: 1,
-                    width: { lg: "auto", xs: 155 },
-                    "& .MuiInputBase-input": { height: "80px" },
-                  }}
-                  placeholder={t("seachPlaceHolderTopbar")}
-                  // value={searchText}
-                  name="search"
-                  autoComplete="off"
-                  // onChange={handleSearchTextChange}
-                />
-                {/* {searchText && (
-            <CloseIcon onClick={clearTextField} sx={{ cursor: "pointer" }} />
-          )} */}
-              </Paper>
-            </BigTooltip>
-          )}
           {path.startsWith("/audiobible") || path.startsWith("/read")
             ? ""
             : AudioBible()}

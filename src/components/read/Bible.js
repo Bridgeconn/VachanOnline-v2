@@ -444,7 +444,7 @@ const Bible = (props) => {
                   {text}
                 </Box>
               ) : (
-                <span style={{ textTransform: "capitalize" }}>{text}</span>
+                <span>{text}</span>
               );
             })}
             {notLast ? (
@@ -914,7 +914,7 @@ const Bible = (props) => {
               }}
               variant="h4"
             >
-              {version + " " + bookDisplay + " " + chapter}
+              {version + " " + bookDisplay + " " + chapter}{" "}
             </Typography>
             {displayBibleText(verses, chapter, verseData)}
             {verseData !== "" ? (

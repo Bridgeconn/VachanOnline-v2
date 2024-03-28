@@ -39,7 +39,9 @@ const Landing = (props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const { setValue } = props;
-  console.log(props.verseObj);
+  const skipLanding = () => {
+    localStorage.setItem("skipPage", true);
+  };
   const { t } = useTranslation();
   React.useEffect(() => {
     if (isMobile) {
@@ -88,6 +90,17 @@ const Landing = (props) => {
         <ImageCard icon="local_library" type="Read" />
         <ImageCard icon="menu_book" type="Study" />
       </Grid>
+      <Box
+        sx={{
+          float: "right",
+          padding: 1,
+          display: "block",
+        }}
+      >
+        <Link href="#" color="inherit" onClick={skipLanding}>
+          {t("skipPageHeading")}
+        </Link>
+      </Box>
       <Grid
         container
         spacing={2}
@@ -128,15 +141,11 @@ const Landing = (props) => {
     </Grid>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    verseObj: state.local.verseObj,
-  };
-};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     setValue: (name, value) =>
       dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Landing);
+export default connect(null, mapDispatchToProps)(Landing);

@@ -22,7 +22,6 @@ const theme = createTheme();
 function Loading() {
   return <>Loading...</>;
 }
-const pageRedirectTo = localStorage.getItem("pageRedirectTo");
 const skipPage = localStorage.getItem("skipPage");
 const App = () => (
   <StyledEngineProvider injectFirst>
@@ -32,20 +31,7 @@ const App = () => (
           <CssBaseline />
           <UILanguageDialog />
           <Routes>
-            <Route
-              path="/"
-              element={
-                skipPage ? (
-                  skipPage && pageRedirectTo === "/study" ? (
-                    <StudyBible />
-                  ) : (
-                    <ReadBible />
-                  )
-                ) : (
-                  <Landing />
-                )
-              }
-            />
+            <Route path="/" element={skipPage ? <StudyBible /> : <Landing />} />
             <Route path="/read" element={<ReadBible />} />
             <Route path="/study" element={<StudyBible />} />
             <Route path="/biblestories" element={<Stories />} />

@@ -220,7 +220,5 @@
   "enhancements": "Enhancements",
   "learnMore": "Learn More",
   "bibleRefNotAvailable": "The selected reference is not available in the current Bible.",
-  "skipPageHeading": " Skip Landing Page and redirect to",
-  "readBiblePageHeading": "Read Bible Page",
-  "studyBiblePageHeading": "Study Bible Page"
+  "skipPageHeading": " Skip Landing Page in future"
 }
