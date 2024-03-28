@@ -11,13 +11,18 @@ import "./App.scss";
 import Songs from "./components/songs/Songs";
 import AudioBible from "./components/audio/AudioBible";
 import UILanguageDialog from "./components/common/UILanguageDialog";
-import { ThemeProvider, StyledEngineProvider, createTheme } from "@mui/material/styles";
+import {
+  ThemeProvider,
+  StyledEngineProvider,
+  createTheme,
+} from "@mui/material/styles";
 
 const theme = createTheme();
 
 function Loading() {
   return <>Loading...</>;
 }
+const skipPage = localStorage.getItem("skipPage");
 const App = () => (
   <StyledEngineProvider injectFirst>
     <ThemeProvider theme={theme}>
@@ -26,7 +31,7 @@ const App = () => (
           <CssBaseline />
           <UILanguageDialog />
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={skipPage ? <StudyBible /> : <Landing />} />
             <Route path="/read" element={<ReadBible />} />
             <Route path="/study" element={<StudyBible />} />
             <Route path="/biblestories" element={<Stories />} />

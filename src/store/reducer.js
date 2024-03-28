@@ -22,6 +22,7 @@ const defaultState = {
   errorMessage: "",
   hoverVerse: "",
   locale: "en",
+  verseObj: {},
   audioBible: [],
   video: [],
   chapterVideo: [],
@@ -68,7 +69,7 @@ const defaultState = {
     audio: false,
     language: "hindi",
   },
-  banner:false
+  banner: false,
 };
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -137,12 +138,12 @@ const reducer = (state = defaultState, action) => {
         dictionary: { ...state.dictionary, [action.name]: action.value },
       };
     case actions.SETBANNER:
-        return {
-          ...state,
-          banner: action.value,
-        };
-      default:
-      return state;   
+      return {
+        ...state,
+        banner: action.value,
+      };
+    default:
+      return state;
   }
 };
 export default reducer;

@@ -25,6 +25,7 @@ const Heading = styled("h3")(({ theme }) => ({
   fontWeight: 800,
   fontFamily: "Sans",
   fontSize: "1.2rem",
+  textTransform: "uppercase",
   textShadow: "1px 1px 2px " + BLACK,
   background: BLACK + "50",
   borderRadius: 10,
@@ -101,6 +102,7 @@ const Banner = ({
   versionBooks,
   panel1,
   setBanner,
+  setValue,
 }) => {
   const theme = useTheme();
   const langCode = languageCode[locale].code;
@@ -204,10 +206,11 @@ const Banner = ({
       API.get(`bibles/${sourceId}/verses/${book}.${chapter}.${verse}`).then(
         (response) => {
           setVerseObj(response.data);
+          setValue("verseObj", response.data);
         }
       );
     }
-  }, [sourceId, verseRef]);
+  }, [setValue, sourceId, verseRef]);
 
   const setURL = () => {
     if (
@@ -353,6 +356,8 @@ const mapDispatchToProps = (dispatch) => {
     setValue1: (name, value) =>
       dispatch({ type: actions.SETVALUE1, name: name, value: value }),
     setBanner: (value) => dispatch({ type: actions.SETBANNER, value: value }),
+    setValue: (name, value) =>
+      dispatch({ type: actions.SETVALUE, name: name, value: value }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Banner);
